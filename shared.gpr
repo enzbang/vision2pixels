@@ -1,0 +1,56 @@
+------------------------------------------------------------------------------
+--                              Vision2Pixels                               --
+--                                                                          --
+--                           Copyright (C) 2006                             --
+--                      Olivier Ramonat - Pascal Obry                       --
+--                                                                          --
+--  This library is free software; you can redistribute it and/or modify    --
+--  it under the terms of the GNU General Public License as published by    --
+--  the Free Software Foundation; either version 2 of the License, or (at   --
+--  your option) any later version.                                         --
+--                                                                          --
+--  This library is distributed in the hope that it will be useful, but     --
+--  WITHOUT ANY WARRANTY; without even the implied warranty of              --
+--  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU       --
+--  General Public License for more details.                                --
+--                                                                          --
+--  You should have received a copy of the GNU General Public License       --
+--  along with this library; if not, write to the Free Software Foundation, --
+--  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
+------------------------------------------------------------------------------
+
+project Shared is
+
+   for Source_Dirs use ();
+   --  No sources for this project
+
+   type Build_Type is ("Debug", "Release");
+   Build : Build_Type := external ("PRJ_BUILD", "Release");
+
+   --------------
+   -- Compiler --
+   --------------
+
+   Common_Options  :=
+     ("-gnat05", "-gnatwcfijkmruv", "-gnaty3abcefhiklmnoprstx", "-Wall");
+   --  Common options used for the Debug and Release modes
+
+   Debug_Options   :=
+     ("-g", "-gnata", "-gnatVa", "-gnatQ", "-gnato", "-gnatwe");
+
+   Release_Options :=
+     ("-O2", "-gnatn");
+
+   package Compiler is
+
+      case Build is
+         when "Debug" =>
+            for Default_Switches ("Ada") use Common_Options & Debug_Options;
+
+         when "Release" =>
+            for Default_Switches ("Ada") use Common_Options & Release_Options;
+      end case;
+
+   end Compiler;
+
+end Shared;
