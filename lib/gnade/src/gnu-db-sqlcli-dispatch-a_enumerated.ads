@@ -55,6 +55,7 @@ private
                   Data      : in  Attr.Aux;
                   ErrorCode : out SQLRETURN);
 
+   Get_Access : constant Attr_Get_Func := Get'Access;
+   Set_Access : constant Attr_Set_Proc := Set'Access;
+
 end GNU.DB.SQLCLI.Dispatch.A_Enumerated;
-
-

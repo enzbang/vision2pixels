@@ -59,8 +59,8 @@ package body GNU.DB.SQLCLI.Dispatch.A_Context is
 
    procedure Register (Index : in Attr.T) is
    begin
-      Get_Dispatch_Array (Index) := Get'Access;
-      Set_Dispatch_Array (Index) := Set'Access;
+      Get_Dispatch_Array (Index) := Get_Access;
+      Set_Dispatch_Array (Index) := Set_Access;
    end Register;
 
 end GNU.DB.SQLCLI.Dispatch.A_Context;
