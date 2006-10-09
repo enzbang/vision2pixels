@@ -29,10 +29,10 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with G2f.Io;
+with G2F.IO;
 with Ada.Text_IO;
 
-package body G2f.Image_Resize is
+package body G2F.Image_Resize is
 
    function Magnify_Image (I : in Image_Ptr) return Image_Ptr is
       function C_Magnify_Image
@@ -68,14 +68,14 @@ package body G2f.Image_Resize is
    --
    function Resize_Image
      (I      : in Image_Ptr;
-      I_S    : in G2f.Io.Image_Size;
+      I_S    : in G2F.IO.Image_Size;
       Filter : Resize_Filter := Lanczos;
       Blur   : T_Blur        := 1.0)
       return   Image_Ptr
    is
       function C_Resize_Image
         (I           : in Image_Ptr;
-         Column, Row : in G2f.Io.Image_Size_T;
+         Column, Row : in G2F.IO.Image_Size_T;
          Filter      : in Resize_Filter;
          Blur        : in T_Blur;
          E           : in Exception_Info_Ptr := Ex_Info_Ptr)
@@ -94,12 +94,12 @@ package body G2f.Image_Resize is
    --
    function Sample_Image
      (I    : in Image_Ptr;
-      I_S  : in G2f.Io.Image_Size)
+      I_S  : in G2F.IO.Image_Size)
       return Image_Ptr
    is
       function C_Sample_Image
         (I           : in Image_Ptr;
-         Column, Row : in G2f.Io.Image_Size_T;
+         Column, Row : in G2F.IO.Image_Size_T;
          E           : in Exception_Info_Ptr := Ex_Info_Ptr)
          return        Image_Ptr;
       pragma Import (C, C_Sample_Image, "SampleImage");
@@ -115,12 +115,12 @@ package body G2f.Image_Resize is
    --
    function Scale_Image
      (I    : in Image_Ptr;
-      I_S  : in G2f.Io.Image_Size)
+      I_S  : in G2F.IO.Image_Size)
       return Image_Ptr
    is
       function C_Scale_Image
         (I             : in Image_Ptr;
-         Columns, Rows : in G2f.Io.Image_Size_T)
+         Columns, Rows : in G2F.IO.Image_Size_T)
          return          Image_Ptr;
       pragma Import (C, C_Scale_Image, "ScaleImage");
       Mon_Image : Image_Ptr := null;
@@ -135,12 +135,12 @@ package body G2f.Image_Resize is
    --
    function Thumbnail_Image
      (I    : in Image_Ptr;
-      I_S  : in G2f.Io.Image_Size)
+      I_S  : in G2F.IO.Image_Size)
       return Image_Ptr
    is
       function C_Thumbnail_Image
         (I             : in Image_Ptr;
-         Columns, Rows : in G2f.Io.Image_Size_T)
+         Columns, Rows : in G2F.IO.Image_Size_T)
          return          Image_Ptr;
       pragma Import (C, C_Thumbnail_Image, "ThumbnailImage");
       Mon_Image : Image_Ptr := null;
@@ -152,4 +152,4 @@ package body G2f.Image_Resize is
       return Mon_Image;
    end Thumbnail_Image;
 
-end G2f.Image_Resize;
+end G2F.Image_Resize;

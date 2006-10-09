@@ -29,8 +29,8 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with G2f; use G2f;
-package G2f.Image_Enhance is
+with G2F; use G2F;
+package G2F.Image_Enhance is
 
    Enhance_Error : exception;
 
@@ -92,4 +92,4 @@ package G2f.Image_Enhance is
    procedure Normalize_Image (I : in out Image_Ptr);
    --
    --
-end G2f.Image_Enhance;
+end G2F.Image_Enhance;

@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------
 ---------
---                              G2f_Io                                      --
+--                              G2F_IO                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
 --                            Ali Bendriss                                  --
@@ -36,7 +36,7 @@ with Interfaces.C.Extensions;
 with System;
 with Interfaces.C.Strings;
 
-package G2f is
+package G2F is
 
    package C renames Interfaces.C;
    package C_Ext renames Interfaces.C.Extensions;
@@ -48,12 +48,11 @@ package G2f is
    type Image_Info_Ptr is private;
    type Image_Ptr is private;
    type Blob_Info_Ptr is private;
-   --
+
    GetExceptionInfo_Error : exception;
-   --
+
    procedure Destroy_Magick;
-   --
-   -- public type
+
    type Quantum_8 is new C.unsigned_char;
    for Quantum_8'Size use 8;
    pragma Convention (C, Quantum_8);
@@ -66,13 +65,12 @@ package G2f is
    for Quantum_32'Size use 32;
    pragma Convention (C, Quantum_32);
 
-   --
    -- Set the quantum_depth according to your ImageMagick
    -- Quantum configuration;
+
    subtype Quantum_Depth is Quantum_16;
    subtype Quantum is Quantum_16;
-   --
-   --
+
    type Compression_Type is (
       UndefinedCompression,
       NoCompression,
@@ -86,7 +84,7 @@ package G2f is
       RLECompression,
       ZipCompression);
    pragma Convention (C, Compression_Type);
-   --
+
    type Interlace_Type is (
       UndefinedInterlace,
       NoInterlace,
@@ -94,13 +92,13 @@ package G2f is
       PlaneInterlace,
       PartitionInterlace);
    pragma Convention (C, Interlace_Type);
-   --
+
    type Resolution_Type is (
       UndefinedResolution,
       PixelsPerInchResolution,
       PixelsPerCentimeterResolution);
    pragma Convention (C, Resolution_Type);
-   --
+
    type Filter_Types is (
       Undefined_Filter,
       Point_Filter,
@@ -119,6 +117,7 @@ package G2f is
       Bessel_Filter,
       Sinc_Filter);
    pragma Convention (C, Filter_Types);
+
    for Filter_Types use
      (Undefined_Filter => 0,
       Point_Filter     => 1,
@@ -156,7 +155,6 @@ package G2f is
    pragma Convention (C, Channel_Type);
    --  for Channel_Type use (???);
 
-   --
    procedure Put_Magick_Exception;
    procedure Put_Image_Exception (I : in Image_Ptr);
 
@@ -171,7 +169,7 @@ private
    type Endian_Type is (UndefinedEndian, LSBEndian, MSBEndian);
    pragma Convention (C, Endian_Type);
 
-   type Pixel_Packet is record --litle endian specifique
+   type Pixel_Packet is record --  Litle endian specifique
       Blue, Green, Red, Opacity : Quantum;
    end record;
    pragma Convention (C, Pixel_Packet);
@@ -268,97 +266,77 @@ private
    type MagickSizeType is new C.long;
 
    type MagickBooleanType is access procedure
-  (Str  : in C.Strings.chars_ptr;
-   Off  : in MagickOffsetType;
-   Size : in MagickSizeType;
-   V    : in C_Ext.void_ptr);
+     (Str  : in C.Strings.chars_ptr;
+      Off  : in MagickOffsetType;
+      Size : in MagickSizeType;
+      V    : in C_Ext.void_ptr);
    pragma Convention (C, MagickBooleanType);
 
    type StreamHandler is access procedure
-  (Image : in Image_Ptr;
-   V     : in C_Ext.void_ptr;
-   Size  : in C.size_t);
+     (Image : in Image_Ptr;
+      V     : in C_Ext.void_ptr;
+      Size  : in C.size_t);
    pragma Convention (C, StreamHandler);
 
    type Image_Info is record
-      Compression : Compression_Type;
-
-      Orientation : Orientation_Type;
-
-      Temporary, Adjoin, Affirm, Antialias : MagickBooleanType;
-
-      Size, Extract, Page, Scenes : Interfaces.C.Strings.chars_ptr;
-
-      Scene, Number_Scenes, Depth : C.unsigned_long;
-
-      Interlace : Interlace_Type;
-
-      Endian : Endian_Type;
-
-      Units : Resolution_Type;
-
-      Quality : C.unsigned_long;
-
-      Sampling_Factor, Server_Name, Font, Texture, Density : 
-        Interfaces.C.Strings.chars_ptr;
-
-      Pointsize, Fuzz : C.double;
-
-      Background_Color, Border_Color, Matte_Color : Pixel_Packet;
-
-      Dither, Monochrome : MagickBooleanType;
-
-      Colors : C.unsigned_long;
-
-      Colorspace : Colorspace_Type;
-
-      ImageType : Image_Type;
-
-      PreviewType : Preview_Type;
-
-      Group : C.long;
-
-      Ping, Verbose : MagickBooleanType;
-
-      View, Authenticate : Interfaces.C.Strings.chars_ptr;
-
-      Channel : Channel_Type;
-
-      Attributes : Image_Ptr;
-
-      Options : C_Ext.void_ptr;
-
-      Progress_Monitor : MagickBooleanType;  -- C.Unsigned; -- Typedef
-                                             --MagickBooleanType
-      -- (*MagickProgressMonitor)
-      --     (Const Char *,
-      --      Const MagickOffsetType,
-      --      Const MagickSizeType,Void *);
-
-      Client_Data, Cache : C_Ext.void_ptr;
-
-      Stream : StreamHandler;
-      --typedef unsigned int
-      --(*StreamHandler)(const Image *,const void *,const size_t);
-      File : File_Ptr;
-
-      Blob : C_Ext.void_ptr;
-
-      Length : C.size_t;
-
-      Magick, Unique, Zero, Filename : C.char_array (MaxTextExtent);
-
-      Debug : MagickBooleanType;
-
-      --  deprecated
-
-      Tile : Interfaces.C.Strings.chars_ptr;
-
-      Subimage, Subrange : C.unsigned_long;
-
-      Pen : Pixel_Packet;
-
-      Signature : C.unsigned_long;
+      Compression      : Compression_Type;
+      Orientation      : Orientation_Type;
+      Temporary,
+      Adjoin,
+      Affirm,
+      Antialias        : MagickBooleanType;
+      Size,
+      Extract,
+      Page,
+      Scenes           : Interfaces.C.Strings.chars_ptr;
+      Scene,
+      Number_Scenes,
+      Depth            : C.unsigned_long;
+      Interlace        : Interlace_Type;
+      Endian           : Endian_Type;
+      Units            : Resolution_Type;
+      Quality          : C.unsigned_long;
+      Sampling_Factor,
+      Server_Name,
+      Font,
+      Texture,
+      Density          : Interfaces.C.Strings.chars_ptr;
+      Pointsize,
+      Fuzz             : C.double;
+      Background_Color,
+      Border_Color,
+      Matte_Color      : Pixel_Packet;
+      Dither,
+      Monochrome       : MagickBooleanType;
+      Colors           : C.unsigned_long;
+      Colorspace       : Colorspace_Type;
+      ImageType        : Image_Type;
+      PreviewType      : Preview_Type;
+      Group            : C.long;
+      Ping,
+      Verbose          : MagickBooleanType;
+      View,
+      Authenticate     : Interfaces.C.Strings.chars_ptr;
+      Channel          : Channel_Type;
+      Attributes       : Image_Ptr;
+      Options          : C_Ext.void_ptr;
+      Progress_Monitor : MagickBooleanType;
+      Client_Data,
+      Cache            : C_Ext.void_ptr;
+      Stream           : StreamHandler;
+      File             : File_Ptr;
+      Blob             : C_Ext.void_ptr;
+      Length           : C.size_t;
+      Magick,
+      Unique,
+      Zero,
+      Filename         : C.char_array (MaxTextExtent);
+      Debug            : MagickBooleanType; --  Deprecated
+      Tile             : Interfaces.C.Strings.chars_ptr;
+      Subimage,
+      Subrange         : C.unsigned_long;
+      Pen              : Pixel_Packet;
+      Signature        : C.unsigned_long;
    end record;
    pragma Convention (C, Image_Info);
 
@@ -400,6 +378,7 @@ private
       Signature : C.unsigned_long;
    end record;
    pragma Convention (C, Profile_Info);
+
    type Profile_Info_Ptr is access Profile_Info;
    pragma Convention (C, Profile_Info_Ptr);
 
@@ -478,13 +457,16 @@ private
    pragma Convention (C, Dispose_Type);
 
    type Error_Info is record
-      Mean_Error_Per_Pixel, Normalized_Mean_Error, Normalized_Maximum_Error : 
-        C.double;
+      Mean_Error_Per_Pixel,
+      Normalized_Mean_Error,
+      Normalized_Maximum_Error : C.double;
    end record;
    pragma Convention (C, Error_Info);
 
    type Timer is record
-      Start, Stop, Total : C.double;
+      Start,
+      Stop,
+      Total : C.double;
    end record;
    pragma Convention (C, Timer);
 
@@ -495,9 +477,10 @@ private
    pragma Convention (C, Timer_State);
 
    type Timer_Info is record
-      User, Elapsed : Timer;
-      State         : Timer_State;
-      Signature     : C.unsigned_long;
+      User,
+      Elapsed   : Timer;
+      State     : Timer_State;
+      Signature : C.unsigned_long;
    end record;
    pragma Convention (C, Timer_Info);
 
@@ -506,16 +489,19 @@ private
    pragma Convention (C, Image_Attribute_Ptr);
 
    type Image_Attribute is record
-      Key, Value     : Interfaces.C.Strings.chars_ptr;
-      Compression    : C.unsigned;
-      Previous, Next : Image_Attribute_Ptr;
+      Key,
+      Value       : Interfaces.C.Strings.chars_ptr;
+      Compression : C.unsigned;
+      Previous,
+      Next        : Image_Attribute_Ptr;
    end record;
    pragma Convention (C, Image_Attribute);
 
    type T_Buffer is array (0 .. 10) of C.unsigned_char;
    type Ascii_85_Info is record
-      Offset, Line_Break : C.long;
-      Buffer             : T_Buffer;
+      Offset,
+      Line_Break : C.long;
+      Buffer     : T_Buffer;
    end record;
    pragma Convention (C, Ascii_85_Info);
 
@@ -594,12 +580,11 @@ private
    type Exception_Info_Ptr is access Exception_Info;
    pragma Convention (C, Exception_Info_Ptr);
 
-   ----------------------------------------------------------------------------
-   ---
-   -- semaphore !win32
-   -- original source code from  File : s-osinte.ads
-   ----------------------------------------------------------------------------
-   ---
+   ----------------------------------------------------
+   --               semaphore !win32                 --
+   -- original source code from  File : s-osinte.ads --
+   ----------------------------------------------------
+
    type sigjmp_buf is array (Integer range 0 .. 38) of C.int;
    pragma Convention (C, sigjmp_buf);
 
@@ -642,17 +627,11 @@ private
 
    type Semaphore_Info_Ptr is access all Semaphore_Info;
    pragma Convention (C, Semaphore_Info_Ptr);
-   ----------------------------------------------------------------------------
-   -----------
-   -- /semaphore
-   ----------------------------------------------------------------------------
-   -----------
-   --
-   ----------------------------------------------------------------------------
-   -----------
-   -- blob !win32
-   ----------------------------------------------------------------------------
-   ------------
+
+   -----------------
+   -- blob !win32 --
+   -----------------
+
    type Off_T is new Long_Integer;
    pragma Convention (C, Off_T);
 
@@ -668,153 +647,110 @@ private
    pragma Convention (C, Stream_Type);
 
    type Blob_Info is record
-      Length, Extent, Quantum : C.size_t;
-
-      Mapped, Eof : C.unsigned;
-
-      Offset, Size : Off_T;
-
-      Exempt, Status, Temporary : C.unsigned;
-
-      S_Type : Stream_Type;
-
-      File : File_Ptr;
-
-      Stream : C.unsigned;
-
-      Data : Unsigned_Char_Ptr;
-
-      Debug : C.unsigned;
-
-      Semaphore : Semaphore_Info_Ptr;
-
+      Length,
+      Extent,
+      Quantum         : C.size_t;
+      Mapped,
+      Eof             : C.unsigned;
+      Offset,
+      Size            : Off_T;
+      Exempt,
+      Status,
+      Temporary       : C.unsigned;
+      S_Type          : Stream_Type;
+      File            : File_Ptr;
+      Stream          : C.unsigned;
+      Data            : Unsigned_Char_Ptr;
+      Debug           : C.unsigned;
+      Semaphore       : Semaphore_Info_Ptr;
       Reference_Count : C.long;
-
-      Signature : C.unsigned_long;
+      Signature       : C.unsigned_long;
    end record;
    pragma Convention (C, Blob_Info);
 
    type Blob_Info_Ptr is access Blob_Info;
    pragma Convention (C, Blob_Info_Ptr);
 
-   ----------------------------------------------------------------------------
-   ------------
-   -- /blob
-   ----------------------------------------------------------------------------
-   ------------
    type Image is record
-      Storage_Class : Class_Type;
-
-      Colorspace : Colorspace_Type;
-
-      Compression : Compression_Type;
-
-      Quality : C.unsigned_long;
-
-      Orientation : Orientation_Type;
-
-      Taint, Matte : C.unsigned;
-
-      Columns, Rows : C.unsigned_long;
-
-      Depth, Colors : C.unsigned_long;
-
-      Colormap : Pixel_Packet_Ptr;
-
-      Background_Color, Border_Color, Matte_Color : Pixel_Packet;
-
-      Gamma : C.double;
-
-      Chromaticity : Chromaticity_Info;
-
-      RenderingIntent : Rendering_Intent;
-
-      Profiles : C_Ext.void_ptr;
-
-      Units : Resolution_Type;
-
-      Montage, Directory, Geometry : Interfaces.C.Strings.chars_ptr;
-
-      Offset : C.long;
-
-      X_Resolution, Y_Resolution : C.double;
-
-      Page, Extract_Info, Tile_Info : Rectangle_Info; -- the use of Tile_Info
-                                                      --is deprectated
-
-      Bias, Blur, Fuzz : C.double;
-
-      Filter : Filter_Types;
-
-      Interlace : Interlace_Type;
-
-      Endian : Endian_Type;
-
-      Gravity : Gravity_Type;
-
-      Compose : Composite_Operator;
-
-      Dispose : Dispose_Type;
-
-      Clip_Mask : Image_Ptr;
-
-      Scene, Image_Delay, Ticks_Per_Second, Iterations, Total_Colors : 
-        C.unsigned_long;
-
-      Start_Loop : C.long;
-
-      Error : Error_Info;
-
-      Timer : Timer_Info;
-
-      Progress_Monitor : C.unsigned;   -- Typedef MagickBooleanType
-                                       -- (*MagickProgressMonitor)
-                                       --     (Const Char *,
-                                       --      Const MagickOffsetType,
-                                       --      Const MagickSizeType,Void *);
-
-      Client_Data : C_Ext.void_ptr;
-
-      Cache : C_Ext.void_ptr;
-
-      -- Attributes:Image_Attribute_Ptr;
-      Attributes : C_Ext.void_ptr;
-
-      Ascii85 : Ascii_85_Info_Ptr;
-
-      Blob : Blob_Info_Ptr;
-
-      Filename, Magick_Filename, Magick : C.char_array (MaxTextExtent);
-
-      Magick_Columns, Magick_Rows : C.unsigned_long;
-
-      Image_Exception : Exception_Info;
-
-      Debug : C.unsigned;
-
-      Reference_Count : C.long;
-
-      Semaphore : Semaphore_Info_Ptr;
-
-      ColorProfile, IptcProfile : Profile_Info;
-      GenericProfile            : Profile_Info_Ptr;
-
-      GenericProfiles : C.unsigned_long;
-
-      Signature : C.unsigned_long;
-
-      Previous, List, Next : Image_Ptr;
+      Storage_Class    : Class_Type;
+      Colorspace       : Colorspace_Type;
+      Compression      : Compression_Type;
+      Quality          : C.unsigned_long;
+      Orientation      : Orientation_Type;
+      Taint,
+      Matte            : C.unsigned;
+      Columns,
+      Rows             : C.unsigned_long;
+      Depth,
+      Colors           : C.unsigned_long;
+      Colormap         : Pixel_Packet_Ptr;
+      Background_Color,
+      Border_Color,
+      Matte_Color      : Pixel_Packet;
+      Gamma            : C.double;
+      Chromaticity     : Chromaticity_Info;
+      RenderingIntent  : Rendering_Intent;
+      Profiles         : C_Ext.void_ptr;
+      Units            : Resolution_Type;
+      Montage,
+      Directory,
+      Geometry         : Interfaces.C.Strings.chars_ptr;
+      Offset           : C.long;
+      X_Resolution,
+      Y_Resolution     : C.double;
+      Page,
+      Extract_Info,
+      Tile_Info        : Rectangle_Info; --  deprecated
+      Bias,
+      Blur,
+      Fuzz             : C.double;
+      Filter           : Filter_Types;
+      Interlace        : Interlace_Type;
+      Endian           : Endian_Type;
+      Gravity          : Gravity_Type;
+      Compose          : Composite_Operator;
+      Dispose          : Dispose_Type;
+      Clip_Mask        : Image_Ptr;
+      Scene,
+      Image_Delay,
+      Ticks_Per_Second,
+      Iterations,
+      Total_Colors     : C.unsigned_long;
+      Start_Loop       : C.long;
+      Error            : Error_Info;
+      Timer            : Timer_Info;
+      Progress_Monitor : MagickBooleanType;
+      Client_Data      : C_Ext.void_ptr;
+      Cache            : C_Ext.void_ptr;
+      Attributes       : C_Ext.void_ptr;
+      Ascii85          : Ascii_85_Info_Ptr;
+      Blob             : Blob_Info_Ptr;
+      Filename,
+      Magick_Filename,
+      Magick           : C.char_array (MaxTextExtent);
+      Magick_Columns,
+      Magick_Rows      : C.unsigned_long;
+      Image_Exception  : Exception_Info;
+      Debug            : C.unsigned;
+      Reference_Count  : C.long;
+      Semaphore        : Semaphore_Info_Ptr;
+      ColorProfile,
+      IptcProfile      : Profile_Info;
+      GenericProfile   : Profile_Info_Ptr;
+      GenericProfiles  : C.unsigned_long;
+      Signature        : C.unsigned_long;
+      Previous,
+      List,
+      Next             : Image_Ptr;
    end record;
    pragma Convention (C, Image);
-   --
-   --
+
    procedure Initialize_Magick;
-   --
-   --
+
    function Get_Exception_Info
-     (G_E_I : in Exception_Info)
-      return  Exception_Info_Ptr;
+     (G_E_I : in Exception_Info) return  Exception_Info_Ptr;
+
    Ex_Info     : Exception_Info;
    Ex_Info_Ptr : Exception_Info_Ptr := new Exception_Info;
-   --
-end G2f;
+
+end G2F;

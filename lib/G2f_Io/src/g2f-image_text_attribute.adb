@@ -33,7 +33,7 @@ with Interfaces.C.Strings;
 with Ada.Characters.Handling;
 with Ada.Unchecked_Deallocation;
 
-package body G2f.Image_Text_Attribute is
+package body G2F.Image_Text_Attribute is
 
    procedure Ada_Free is new Ada.Unchecked_Deallocation (
       Image_Attribute,
@@ -144,4 +144,4 @@ package body G2f.Image_Text_Attribute is
       return To_Ada (Value (Res.all.Value));
    end Get_Image_Text_Attribute;
 
-end G2f.Image_Text_Attribute;
+end G2F.Image_Text_Attribute;

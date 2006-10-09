@@ -1,6 +1,6 @@
 --------------------------------------------------
 ------------------------------
---                              G2f_Io                                      --
+--                              G2F_IO                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
 --                            Ali Bendriss                                  --
@@ -33,7 +33,7 @@ with Ada.Text_IO;
 with Interfaces.C.Strings;
 with Ada.Strings.Fixed;
 
-package body G2f.Io is
+package body G2F.IO is
 
    use Interfaces.C;
 
@@ -206,4 +206,4 @@ package body G2f.Io is
       return Ims;
    end Get_Image_Size;
 
-end G2f.Io;
+end G2F.IO;

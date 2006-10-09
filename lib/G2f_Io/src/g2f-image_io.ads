@@ -29,9 +29,9 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with G2f;
+with G2F;
 
-package G2f.Image_Io is
+package G2F.Image_IO is
 
    Clone_ImageInfo_Error, Read_Image_Error, Write_Image_Error, Ping_Image_Error
 : exception;
@@ -58,4 +58,4 @@ package G2f.Image_Io is
 
    -- /image
 
-end G2f.Image_Io;
+end G2F.Image_IO;

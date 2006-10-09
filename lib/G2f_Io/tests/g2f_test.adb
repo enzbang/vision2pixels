@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------------
---                              G2f_Io                                      --
+--                              G2f_IO                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
 --                            Ali Bendriss                                  --
@@ -28,15 +28,15 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with G2f;  use G2f;
-with G2f.Io; use G2f.Io;
-with G2f.Image_Io; use G2f.Image_Io;
-with G2f.Image_Enhance;
-with G2f.Image_Resize;
-with G2f.Image_Text_Attribute;
+with G2F;  use G2F;
+with G2F.IO; use G2F.IO;
+with G2F.Image_IO; use G2F.Image_IO;
+with G2F.Image_Enhance;
+with G2F.Image_Resize;
+with G2F.Image_Text_Attribute;
 with Ada.Text_IO;
 
-procedure G2f_Test is
+procedure G2F_Test is
 
    Info : Image_Info_Ptr;
    Test_Image : Image_Ptr;
@@ -105,23 +105,23 @@ begin
 
    Lite_Size := (X => 400, Y => 300);
 
-   Test_Image := G2f.Image_Resize.Resize_Image
-     (Test_Image, Lite_Size, G2f.Image_Resize.Mitchell, 0.3);
+   Test_Image := G2F.Image_Resize.Resize_Image
+     (Test_Image, Lite_Size, G2F.Image_Resize.Mitchell, 0.3);
 
-   G2f.Image_Enhance.Negate_Image (Test_Image);
-   G2f.Image_Text_Attribute.Set_Image_Text_Attribute
+   G2F.Image_Enhance.Negate_Image (Test_Image);
+   G2F.Image_Text_Attribute.Set_Image_Text_Attribute
      (Test_Image,
-      G2f.Image_Text_Attribute.Copyright,
+      G2F.Image_Text_Attribute.Copyright,
       "Ali Bendriss");
-   G2f.Image_Text_Attribute.Set_Image_Text_Attribute
+   G2F.Image_Text_Attribute.Set_Image_Text_Attribute
      (Test_Image,
-      G2f.Image_Text_Attribute.Software,
-      "G2f_Io Version alpha 03");
+      G2F.Image_Text_Attribute.Software,
+      "G2F_IO Version alpha 03");
    Ada.Text_IO.Put_Line ("Software: "
-                           & G2f.Image_Text_Attribute.Get_Image_Text_Attribute
-                           (Test_Image, G2f.Image_Text_Attribute.Software));
+                           & G2F.Image_Text_Attribute.Get_Image_Text_Attribute
+                           (Test_Image, G2F.Image_Text_Attribute.Software));
    Ada.Text_IO.Put_Line ("Copyright: "
-                           & G2f.Image_Text_Attribute.Get_Image_Text_Attribute
+                           & G2F.Image_Text_Attribute.Get_Image_Text_Attribute
                            (Test_Image, "Copyright"));
 
    --
@@ -144,12 +144,12 @@ begin
    Destroy_Magick;
 
 exception
-   when G2f.Image_Io.Write_Image_Error =>
+   when G2F.Image_IO.Write_Image_Error =>
       Put_Image_Exception (Test_Image);
-   when G2f.Image_Io.Read_Image_Error =>
+   when G2F.Image_IO.Read_Image_Error =>
       Put_Magick_Exception;
       raise;
-   when G2f.Image_Resize.Resize_Error =>
+   when G2F.Image_Resize.Resize_Error =>
       Put_Magick_Exception;
       raise;
-end G2f_Test;
+end G2F_Test;
