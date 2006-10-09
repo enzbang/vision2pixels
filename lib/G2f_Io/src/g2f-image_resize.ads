@@ -1,10 +1,11 @@
-------------------------------------------------------------------------------
+----------------------------------------------------------
+----------------------
 --                              G2f_Io                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
 --                            Ali Bendriss                                  --
 --                                                                          --
---  Author: Ali Bendriss                                                    -- 
+--  Author: Ali Bendriss                                                    --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -32,40 +33,68 @@ with G2f.Io;
 
 package G2f.Image_Resize is
 
-   Resize_Error:exception;
-
+   Resize_Error : exception;
 
    type T_Blur is new Float;
    for T_Blur'Size use 64;
 
-   type Resize_Filter is (Point, Box, Triangle,
-                          Hermite,Hanning, Blackman,
-                          Gaussian,Quandratic, Cubic,
-                          Catrom,Mitchell, Lanczos, Bessel,Sinc);
+   type Resize_Filter is (
+      Point,
+      Box,
+      Triangle,
+      Hermite,
+      Hanning,
+      Blackman,
+      Gaussian,
+      Quandratic,
+      Cubic,
+      Catrom,
+      Mitchell,
+      Lanczos,
+      Bessel,
+      Sinc);
 
-   for Resize_Filter use (Bessel=>14,   Blackman=>7, Box=>2,
-                          Catrom=>11,   Cubic=>10,   Gaussian=>8,
-                          Hanning=>5,   Hermite=>4,  Lanczos=>13,
-                          Mitchell=>12, Point=>1,    Quandratic=>9,
-                          Sinc=>15,     Triangle=>3);
+   for Resize_Filter use
+     (Bessel     => 14,
+      Blackman   => 7,
+      Box        => 2,
+      Catrom     => 11,
+      Cubic      => 10,
+      Gaussian   => 8,
+      Hanning    => 5,
+      Hermite    => 4,
+      Lanczos    => 13,
+      Mitchell   => 12,
+      Point      => 1,
+      Quandratic => 9,
+      Sinc       => 15,
+      Triangle   => 3);
    --
    --
-   function  Magnify_Image (I:in Image_Ptr) return Image_Ptr;
+   function Magnify_Image (I : in Image_Ptr) return Image_Ptr;
    --
-   function Minify_Image (I:in Image_Ptr) return Image_Ptr;
+   function Minify_Image (I : in Image_Ptr) return Image_Ptr;
    --
-   function Resize_Image (I:in Image_Ptr;
-                          I_S:in G2f.Io.Image_Size;
-                          Filter:Resize_Filter:=Lanczos;
-                          Blur:T_Blur:=1.0) return Image_Ptr;
+   function Resize_Image
+     (I      : in Image_Ptr;
+      I_S    : in G2f.Io.Image_Size;
+      Filter : Resize_Filter := Lanczos;
+      Blur   : T_Blur        := 1.0)
+      return   Image_Ptr;
    --
-   function Sample_Image (I:in Image_Ptr;
-                          I_S:in G2f.Io.Image_Size) return Image_Ptr;
+   function Sample_Image
+     (I    : in Image_Ptr;
+      I_S  : in G2f.Io.Image_Size)
+      return Image_Ptr;
    --
-   function Scale_Image (I:in Image_Ptr;
-                         I_S:in G2f.Io.Image_Size) return Image_Ptr;
+   function Scale_Image
+     (I    : in Image_Ptr;
+      I_S  : in G2f.Io.Image_Size)
+      return Image_Ptr;
    --
-   function Thumbnail_Image (I:in Image_Ptr;
-                             I_S:in G2f.Io.Image_Size) return Image_Ptr;
+   function Thumbnail_Image
+     (I    : in Image_Ptr;
+      I_S  : in G2f.Io.Image_Size)
+      return Image_Ptr;
 
 end G2f.Image_Resize;

@@ -1,10 +1,11 @@
-------------------------------------------------------------------------------
+--------------------------------------------------
+------------------------------
 --                              G2f_Io                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
 --                            Ali Bendriss                                  --
 --                                                                          --
---  Author: Ali Bendriss                                                    -- 
+--  Author: Ali Bendriss                                                    --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -31,26 +32,55 @@
 with G2f; use G2f;
 package G2f.Image_Text_Attribute is
 
-   Attribute_Error,
-   No_Attribute:exception;
+   Attribute_Error, No_Attribute : exception;
 
-   type Tag_Attribute is (DocumentName,ImageDescription,Make,Model,Software,DateTime,Artist,
-                          Copyright,ExposureTime,GPSInfo,ISOSpeedRatings,OECF,ExifVersion,
-                          DateTimeOriginal,DateTimeDigitized,UserComment,SubSecTime,
-                          SubSecTimeOriginal,SubSecTimeDigitized,SubjectLocation,
-                          ExposureIndex,FileSource,SceneType);
+   type Tag_Attribute is (
+      DocumentName,
+      ImageDescription,
+      Make,
+      Model,
+      Software,
+      DateTime,
+      Artist,
+      Copyright,
+      ExposureTime,
+      GPSInfo,
+      ISOSpeedRatings,
+      OECF,
+      ExifVersion,
+      DateTimeOriginal,
+      DateTimeDigitized,
+      UserComment,
+      SubSecTime,
+      SubSecTimeOriginal,
+      SubSecTimeDigitized,
+      SubjectLocation,
+      ExposureIndex,
+      FileSource,
+      SceneType);
    --
    --
-   procedure Set_Image_Text_Attribute ( I:in out Image_Ptr;Key: in Tag_Attribute; Value: in String );
+   procedure Set_Image_Text_Attribute
+     (I     : in out Image_Ptr;
+      Key   : in Tag_Attribute;
+      Value : in String);
    --
    --
-   procedure Set_Image_Text_Attribute ( I:in out Image_Ptr; Key, Value: in String );
+   procedure Set_Image_Text_Attribute
+     (I          : in out Image_Ptr;
+      Key, Value : in String);
    --
    --
-   function Get_Image_Text_Attribute ( I:in Image_Ptr; Key: in Tag_Attribute ) return String;
+   function Get_Image_Text_Attribute
+     (I    : in Image_Ptr;
+      Key  : in Tag_Attribute)
+      return String;
    --
    --
-   function Get_Image_Text_Attribute ( I:in Image_Ptr; Key: in String ) return String;
+   function Get_Image_Text_Attribute
+     (I    : in Image_Ptr;
+      Key  : in String)
+      return String;
    --
    --
 end G2f.Image_Text_Attribute;
