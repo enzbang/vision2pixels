@@ -1,5 +1,5 @@
 ------------------------------------------------------------------------------
---                              G2f_Io                                      --
+--                              G2F_IO                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
 --                            Ali Bendriss                                  --
@@ -33,7 +33,7 @@ with Ada.Unchecked_Deallocation;
 with Ada.Text_IO;
 with Interfaces.C.Strings;                 use Interfaces.C.Strings;
 
-package body G2f is
+package body G2F is
 
    procedure Initialize_Magick is
       procedure InitializeMagick
@@ -132,4 +132,4 @@ package body G2f is
 begin
    Initialize_Magick;
    Ex_Info_Ptr := Get_Exception_Info (Ex_Info);
-end G2f;
+end G2F;

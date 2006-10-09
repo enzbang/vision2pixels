@@ -31,7 +31,7 @@
 
 with Ada.Text_IO;
 
-package body G2f.Image_Enhance is
+package body G2F.Image_Enhance is
 
    procedure Contrast_Image
      (I       : in out Image_Ptr;
@@ -210,4 +210,4 @@ package body G2f.Image_Enhance is
       end if;
    end Normalize_Image;
 
-end G2f.Image_Enhance;
+end G2F.Image_Enhance;

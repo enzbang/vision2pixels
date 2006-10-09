@@ -29,8 +29,8 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with G2f; use G2f;
-package G2f.Image_Text_Attribute is
+with G2F; use G2F;
+package G2F.Image_Text_Attribute is
 
    Attribute_Error, No_Attribute : exception;
 
@@ -83,4 +83,4 @@ package G2f.Image_Text_Attribute is
       return String;
    --
    --
-end G2f.Image_Text_Attribute;
+end G2F.Image_Text_Attribute;

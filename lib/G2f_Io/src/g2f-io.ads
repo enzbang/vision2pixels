@@ -1,6 +1,6 @@
 --------------------------------------------------------------
 ------------------
---                              G2f_Io                                      --
+--                              G2F_IO                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
 --                            Ali Bendriss                                  --
@@ -29,7 +29,7 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-package G2f.Io is
+package G2F.IO is
 
    type Supported_Image_Formats is (
       Magick_8BIM,
@@ -231,4 +231,4 @@ package G2f.Io is
 
    function Get_Image_Size (I : in Image_Ptr) return Image_Size;
 
-end G2f.Io;
+end G2f.IO;

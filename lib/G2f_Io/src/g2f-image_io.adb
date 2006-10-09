@@ -31,10 +31,10 @@
 
 with Ada.Text_IO; use Ada.Text_IO;
 
-with G2f;
-with G2f.Io; use G2f.Io;
+with G2F;
+with G2F.IO; use G2F.IO;
 
-package body G2f.Image_Io is
+package body G2F.Image_IO is
 
    -- image_info
    function Clone_Image_Info
@@ -129,4 +129,4 @@ package body G2f.Image_Io is
    end Destroy_Image;
    -- /image
 
-end G2f.Image_Io;
+end G2F.Image_IO;

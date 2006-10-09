@@ -29,9 +29,9 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with G2f.Io;
+with G2F.IO;
 
-package G2f.Image_Resize is
+package G2F.Image_Resize is
 
    Resize_Error : exception;
 
@@ -77,24 +77,24 @@ package G2f.Image_Resize is
    --
    function Resize_Image
      (I      : in Image_Ptr;
-      I_S    : in G2f.Io.Image_Size;
+      I_S    : in G2F.IO.Image_Size;
       Filter : Resize_Filter := Lanczos;
       Blur   : T_Blur        := 1.0)
       return   Image_Ptr;
    --
    function Sample_Image
      (I    : in Image_Ptr;
-      I_S  : in G2f.Io.Image_Size)
+      I_S  : in G2F.IO.Image_Size)
       return Image_Ptr;
    --
    function Scale_Image
      (I    : in Image_Ptr;
-      I_S  : in G2f.Io.Image_Size)
+      I_S  : in G2F.IO.Image_Size)
       return Image_Ptr;
    --
    function Thumbnail_Image
      (I    : in Image_Ptr;
-      I_S  : in G2f.Io.Image_Size)
+      I_S  : in G2F.IO.Image_Size)
       return Image_Ptr;
 
-end G2f.Image_Resize;
+end G2F.Image_Resize;
