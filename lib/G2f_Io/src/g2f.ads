@@ -1,4 +1,5 @@
-------------------------------------------------------------------------------
+-----------------------------------------------------------------------
+---------
 --                              G2f_Io                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
@@ -40,30 +41,30 @@ package G2f is
    package C renames Interfaces.C;
    package C_Ext renames Interfaces.C.Extensions;
 
-   pragma Linker_Options("-lMagick");
-   pragma Linker_Options("-lm");
-   pragma Linker_Options("-L/usr/X11R6/lib/");
+   pragma Linker_Options ("-lMagick");
+   pragma Linker_Options ("-lm");
+   pragma Linker_Options ("-L/usr/X11R6/lib/");
 
    type Image_Info_Ptr is private;
    type Image_Ptr is private;
    type Blob_Info_Ptr is private;
    --
-   GetExceptionInfo_Error: exception;
+   GetExceptionInfo_Error : exception;
    --
    procedure Destroy_Magick;
    --
    -- public type
-   type  Quantum_8 is new C.Unsigned_Char;
+   type Quantum_8 is new C.unsigned_char;
    for Quantum_8'Size use 8;
    pragma Convention (C, Quantum_8);
 
-   type  Quantum_16 is new C.Unsigned_Short;
+   type Quantum_16 is new C.unsigned_short;
    for Quantum_16'Size use 16;
    pragma Convention (C, Quantum_16);
 
-   type  Quantum_32 is new C.Unsigned;
+   type Quantum_32 is new C.unsigned;
    for Quantum_32'Size use 32;
-   pragma Convention(C,Quantum_32);
+   pragma Convention (C, Quantum_32);
 
    --
    -- Set the quantum_depth according to your ImageMagick
@@ -72,8 +73,8 @@ package G2f is
    subtype Quantum is Quantum_16;
    --
    --
-   type Compression_Type is
-     (UndefinedCompression,
+   type Compression_Type is (
+      UndefinedCompression,
       NoCompression,
       BZipCompression,
       FaxCompression,
@@ -84,76 +85,99 @@ package G2f is
       LZWCompression,
       RLECompression,
       ZipCompression);
-   pragma Convention (C,Compression_Type);
+   pragma Convention (C, Compression_Type);
    --
-   type Interlace_Type  is
-     (UndefinedInterlace,
+   type Interlace_Type is (
+      UndefinedInterlace,
       NoInterlace,
       LineInterlace,
       PlaneInterlace,
       PartitionInterlace);
-   pragma Convention (C,Interlace_Type);
+   pragma Convention (C, Interlace_Type);
    --
-   type Resolution_Type is
-     (UndefinedResolution,
+   type Resolution_Type is (
+      UndefinedResolution,
       PixelsPerInchResolution,
       PixelsPerCentimeterResolution);
    pragma Convention (C, Resolution_Type);
    --
-   type Filter_Types is (Undefined_Filter,Point_Filter,Box_Filter,Triangle_Filter,
-                         Hermite_Filter,Hanning_Filter,Hamming_Filter,Blackman_Filter,
-                         Gaussian_Filter,Quadratic_Filter,Cubic_Filter,Catrom_Filter,
-                         Mitchell_Filter,Lanczos_Filter,Bessel_Filter,Sinc_Filter);
-   pragma Convention (C,Filter_Types);
-   for Filter_Types use (Undefined_Filter=>0,Point_Filter=>1,Box_Filter=>2,Triangle_Filter=>3,
-                         Hermite_Filter=>4,Hanning_Filter=>5,Hamming_Filter=>6,Blackman_Filter=>7,
-                         Gaussian_Filter=>8,Quadratic_Filter=>9,Cubic_Filter=>10,Catrom_Filter=>11,
-                         Mitchell_Filter=>12,Lanczos_Filter=>13,Bessel_Filter=>14,Sinc_Filter=>15);
+   type Filter_Types is (
+      Undefined_Filter,
+      Point_Filter,
+      Box_Filter,
+      Triangle_Filter,
+      Hermite_Filter,
+      Hanning_Filter,
+      Hamming_Filter,
+      Blackman_Filter,
+      Gaussian_Filter,
+      Quadratic_Filter,
+      Cubic_Filter,
+      Catrom_Filter,
+      Mitchell_Filter,
+      Lanczos_Filter,
+      Bessel_Filter,
+      Sinc_Filter);
+   pragma Convention (C, Filter_Types);
+   for Filter_Types use
+     (Undefined_Filter => 0,
+      Point_Filter     => 1,
+      Box_Filter       => 2,
+      Triangle_Filter  => 3,
+      Hermite_Filter   => 4,
+      Hanning_Filter   => 5,
+      Hamming_Filter   => 6,
+      Blackman_Filter  => 7,
+      Gaussian_Filter  => 8,
+      Quadratic_Filter => 9,
+      Cubic_Filter     => 10,
+      Catrom_Filter    => 11,
+      Mitchell_Filter  => 12,
+      Lanczos_Filter   => 13,
+      Bessel_Filter    => 14,
+      Sinc_Filter      => 15);
 
-   type Channel_Type is
-     (UndefinedChannel,
-      RedChannel , -- = 0x0001,
-      GrayChannel , --  = 0x0001,
-      CyanChannel , -- = 0x0001,
-      GreenChannel , -- = 0x0002,
-      MagentaChannel , -- = 0x0002,
-      BlueChannel , -- = 0x0004,
-      YellowChannel , -- = 0x0004,
-      AlphaChannel , -- = 0x0008,
-      OpacityChannel , -- = 0x0008,
-      MatteChannel , -- = 0x0008,  -- Deprecated
-      BlackChannel , -- = 0x0020,
-      IndexChannel , -- = 0x0020,
+   type Channel_Type is (
+      UndefinedChannel,
+      RedChannel, -- = 0x0001,
+      GrayChannel, --  = 0x0001,
+      CyanChannel, -- = 0x0001,
+      GreenChannel, -- = 0x0002,
+      MagentaChannel, -- = 0x0002,
+      BlueChannel, -- = 0x0004,
+      YellowChannel, -- = 0x0004,
+      AlphaChannel, -- = 0x0008,
+      OpacityChannel, -- = 0x0008,
+      MatteChannel, -- = 0x0008,  -- Deprecated
+      BlackChannel, -- = 0x0020,
+      IndexChannel, -- = 0x0020,
       AllChannels -- = 0xff
-      );
+     );
    pragma Convention (C, Channel_Type);
    --  for Channel_Type use (???);
 
    --
    procedure Put_Magick_Exception;
-   procedure Put_Image_Exception(I: in image_ptr);
+   procedure Put_Image_Exception (I : in Image_Ptr);
 
 private
 
-   procedure Free(I:in out Image_Info_Ptr);
-   procedure Free(I:in out Image_Ptr);
+   procedure Free (I : in out Image_Info_Ptr);
+   procedure Free (I : in out Image_Ptr);
 
    type File_Ptr is access Interfaces.C_Streams.FILEs;
-   pragma Convention(C,File_Ptr);
+   pragma Convention (C, File_Ptr);
 
    type Endian_Type is (UndefinedEndian, LSBEndian, MSBEndian);
-   pragma Convention (C,Endian_Type);
+   pragma Convention (C, Endian_Type);
 
-   type Pixel_Packet  is record --litle endian specifique
-      Blue,
-      Green,
-      Red,
-      Opacity : Quantum;
+   type Pixel_Packet is record --litle endian specifique
+      Blue, Green, Red, Opacity : Quantum;
    end record;
    pragma Convention (C, Pixel_Packet);
 
-   type Colorspace_Type is
-     (UndefinedColorspace,
+   type Colorspace_Type is (
+      UndefinedColorspace,
       RGBColorspace,
       GRAYColorspace,
       TransparentColorspace,
@@ -175,8 +199,8 @@ private
       LogColorspace);
    pragma Convention (C, Colorspace_Type);
 
-   type Image_Type is
-     (UndefinedType,
+   type Image_Type is (
+      UndefinedType,
       BilevelType,
       GrayscaleType,
       GrayscaleMatteType,
@@ -189,8 +213,8 @@ private
       OptimizeType);
    pragma Convention (C, Image_Type);
 
-   type Orientation_Type is
-     (UndefinedOrientation,
+   type Orientation_Type is (
+      UndefinedOrientation,
       TopLeftOrientation,
       TopRightOrientation,
       BottomRightOrientation,
@@ -199,10 +223,10 @@ private
       RightTopOrientation,
       RightBottomOrientation,
       LeftBottomOrientation);
-   pragma Convention (C,Orientation_Type);
+   pragma Convention (C, Orientation_Type);
 
-   type Preview_Type is
-     (UndefinedPreview,
+   type Preview_Type is (
+      UndefinedPreview,
       RotatePreview,
       ShearPreview,
       RollPreview,
@@ -236,511 +260,561 @@ private
 
    type Image;
    type Image_Ptr is access Image;
-   pragma Convention(C,Image_Ptr);
+   pragma Convention (C, Image_Ptr);
 
-   subtype MaxTextExtent is C.Size_T range 1 .. 4_096;
+   subtype MaxTextExtent is C.size_t range 1 .. 4_096;
 
-   type MagickOffsetType is new C.Long;
-   type MagickSizeType is new C.Long;
+   type MagickOffsetType is new C.long;
+   type MagickSizeType is new C.long;
 
-   type MagickBooleanType is access
-     procedure (Str  : in C.Strings.Chars_Ptr;
-                Off  : in MagickOffsetType;
-                Size : in MagickSizeType;
-                V    : in C_Ext.Void_Ptr);
+   type MagickBooleanType is access procedure
+  (Str  : in C.Strings.chars_ptr;
+   Off  : in MagickOffsetType;
+   Size : in MagickSizeType;
+   V    : in C_Ext.void_ptr);
    pragma Convention (C, MagickBooleanType);
 
-   type StreamHandler is access
-     procedure (Image : in Image_Ptr;
-                V     : in C_Ext.Void_Ptr;
-                Size  : in C.Size_T);
+   type StreamHandler is access procedure
+  (Image : in Image_Ptr;
+   V     : in C_Ext.void_ptr;
+   Size  : in C.size_t);
    pragma Convention (C, StreamHandler);
 
    type Image_Info is record
-      Compression:Compression_Type;
+      Compression : Compression_Type;
 
-      Orientation:Orientation_Type;
+      Orientation : Orientation_Type;
 
-      Temporary,
-      Adjoin,
-      Affirm,
-      Antialias: MagickBooleanType;
+      Temporary, Adjoin, Affirm, Antialias : MagickBooleanType;
 
-      Size,
-      Extract,
-      Page,
-      Scenes:Interfaces.C.Strings.Chars_Ptr;
+      Size, Extract, Page, Scenes : Interfaces.C.Strings.chars_ptr;
 
-      Scene,
-      Number_Scenes,
-      Depth:C.Unsigned_Long;
+      Scene, Number_Scenes, Depth : C.unsigned_long;
 
-      Interlace:Interlace_Type;
+      Interlace : Interlace_Type;
 
-      Endian:Endian_Type;
+      Endian : Endian_Type;
 
-      Units:Resolution_Type;
+      Units : Resolution_Type;
 
-      Quality:C.Unsigned_Long;
+      Quality : C.unsigned_long;
 
-      Sampling_Factor,
-      Server_Name,
-      Font,
-      Texture,
-      Density:Interfaces.C.Strings.Chars_Ptr;
+      Sampling_Factor, Server_Name, Font, Texture, Density : 
+        Interfaces.C.Strings.chars_ptr;
 
-      Pointsize,
-      Fuzz:C.Double;
+      Pointsize, Fuzz : C.double;
 
-      Background_Color,
-      Border_Color,
-      Matte_Color:Pixel_Packet;
+      Background_Color, Border_Color, Matte_Color : Pixel_Packet;
 
-      Dither,
-      Monochrome:MagickBooleanType;
+      Dither, Monochrome : MagickBooleanType;
 
-      Colors:C.Unsigned_Long;
+      Colors : C.unsigned_long;
 
-      Colorspace:Colorspace_Type;
+      Colorspace : Colorspace_Type;
 
-      ImageType:Image_Type;
+      ImageType : Image_Type;
 
-      PreviewType:Preview_Type;
+      PreviewType : Preview_Type;
 
-      Group:C.Long;
+      Group : C.long;
 
-      Ping,
-      Verbose:MagickBooleanType;
+      Ping, Verbose : MagickBooleanType;
 
-      View,
-      Authenticate:Interfaces.C.Strings.Chars_Ptr;
+      View, Authenticate : Interfaces.C.Strings.chars_ptr;
 
-      Channel:Channel_Type;
+      Channel : Channel_Type;
 
-      Attributes:Image_Ptr;
+      Attributes : Image_Ptr;
 
-      Options:C_Ext.Void_Ptr;
+      Options : C_Ext.void_ptr;
 
-      Progress_Monitor:MagickBooleanType; -- C.Unsigned; -- Typedef MagickBooleanType
-                                   -- (*MagickProgressMonitor)
-                                   --     (Const Char *,
-                                   --      Const MagickOffsetType,
-                                   --      Const MagickSizeType,Void *);
+      Progress_Monitor : MagickBooleanType;  -- C.Unsigned; -- Typedef
+                                             --MagickBooleanType
+      -- (*MagickProgressMonitor)
+      --     (Const Char *,
+      --      Const MagickOffsetType,
+      --      Const MagickSizeType,Void *);
 
-      Client_Data, Cache :C_Ext.Void_Ptr;
+      Client_Data, Cache : C_Ext.void_ptr;
 
-      Stream:StreamHandler;
+      Stream : StreamHandler;
       --typedef unsigned int
-                         --(*StreamHandler)(const Image *,const void *,const size_t);
-      File:File_Ptr;
+      --(*StreamHandler)(const Image *,const void *,const size_t);
+      File : File_Ptr;
 
-      Blob:C_Ext.Void_Ptr;
+      Blob : C_Ext.void_ptr;
 
-      Length:C.Size_T;
+      Length : C.size_t;
 
-      Magick,
-      Unique,
-      Zero,
-      Filename:C.Char_Array(MaxTextExtent);
+      Magick, Unique, Zero, Filename : C.char_array (MaxTextExtent);
 
-      Debug:MagickBooleanType;
+      Debug : MagickBooleanType;
 
       --  deprecated
 
-      Tile:Interfaces.C.Strings.Chars_Ptr;
+      Tile : Interfaces.C.Strings.chars_ptr;
 
-      Subimage,
-      Subrange:C.Unsigned_Long;
+      Subimage, Subrange : C.unsigned_long;
 
-      Pen:Pixel_Packet;
+      Pen : Pixel_Packet;
 
-      Signature:C.Unsigned_Long;
+      Signature : C.unsigned_long;
    end record;
-   pragma Convention (C,Image_Info);
+   pragma Convention (C, Image_Info);
 
    type Image_Info_Ptr is access all Image_Info;
-   pragma Convention (C,Image_Info_Ptr);
+   pragma Convention (C, Image_Info_Ptr);
 
    ----------
    -- Image
    ----------
 
-   type Class_Type is (UndefinedClass,DirectClass,PseudoClass);
-   pragma Convention (C,Class_Type);
+   type Class_Type is (UndefinedClass, DirectClass, PseudoClass);
+   pragma Convention (C, Class_Type);
 
    type Pixel_Packet_Ptr is access all Pixel_Packet;
-   pragma Convention (C,Pixel_Packet_Ptr);
+   pragma Convention (C, Pixel_Packet_Ptr);
 
    type Point_Info is record
-      X:C.Double;
-      Y:C.Double;
-      Z:C.Double;
+      X : C.double;
+      Y : C.double;
+      Z : C.double;
    end record;
-   pragma Convention (C,Point_Info);
+   pragma Convention (C, Point_Info);
 
    type Chromaticity_Info is record
-      Red_Primary:Point_Info;
-      Green_Primary:Point_Info;
-      Blue_Primary:Point_Info;
-      White_Point:Point_Info;
+      Red_Primary   : Point_Info;
+      Green_Primary : Point_Info;
+      Blue_Primary  : Point_Info;
+      White_Point   : Point_Info;
    end record;
-   pragma Convention (C,Chromaticity_Info);
+   pragma Convention (C, Chromaticity_Info);
 
-   type Unsigned_Char_Ptr is access C.Unsigned_Char;
-   pragma Convention (C,Unsigned_Char_Ptr);
+   type Unsigned_Char_Ptr is access C.unsigned_char;
+   pragma Convention (C, Unsigned_Char_Ptr);
 
    type Profile_Info is record
-      Name:Interfaces.C.Strings.Chars_Ptr;
-      Length:C.Size_T;
-      Info:Unsigned_Char_Ptr;
-      Signature:C.Unsigned_Long;
+      Name      : Interfaces.C.Strings.chars_ptr;
+      Length    : C.size_t;
+      Info      : Unsigned_Char_Ptr;
+      Signature : C.unsigned_long;
    end record;
-   pragma Convention (C,Profile_Info);
+   pragma Convention (C, Profile_Info);
    type Profile_Info_Ptr is access Profile_Info;
-   pragma Convention (C,Profile_Info_Ptr);
+   pragma Convention (C, Profile_Info_Ptr);
 
-   type Rendering_Intent is (UndefinedIntent,SaturationIntent,PerceptualIntent,AbsoluteIntent,RelativeIntent);
-   pragma Convention (C,Rendering_Intent);
+   type Rendering_Intent is (
+      UndefinedIntent,
+      SaturationIntent,
+      PerceptualIntent,
+      AbsoluteIntent,
+      RelativeIntent);
+   pragma Convention (C, Rendering_Intent);
 
    type Rectangle_Info is record
-      Width,
-      Height:C.Unsigned_Long;
-      X,
-      Y:C.Long;
+      Width, Height : C.unsigned_long;
+      X, Y          : C.long;
    end record;
-   pragma Convention (C,Rectangle_Info);
+   pragma Convention (C, Rectangle_Info);
 
-   type Gravity_Type is (ForgetGravity,NorthWestGravity,NorthGravity,
-                         NorthEastGravity,WestGravity,CenterGravity,
-                         EastGravity, SouthWestGravity,SouthGravity,
-                         SouthEastGravity,StaticGravity);
-   pragma Convention (C,Gravity_Type);
+   type Gravity_Type is (
+      ForgetGravity,
+      NorthWestGravity,
+      NorthGravity,
+      NorthEastGravity,
+      WestGravity,
+      CenterGravity,
+      EastGravity,
+      SouthWestGravity,
+      SouthGravity,
+      SouthEastGravity,
+      StaticGravity);
+   pragma Convention (C, Gravity_Type);
 
-   type Composite_Operator is (UndefinedCompositeOp,OverCompositeOp,InCompositeOp,
-                               OutCompositeOp,AtopCompositeOp,XorCompositeOp,
-                               PlusCompositeOp,MinusCompositeOp,AddCompositeOp,
-                               SubtractCompositeOp,DifferenceCompositeOp,MultiplyCompositeOp,
-                               BumpmapCompositeOp,CopyCompositeOp,CopyRedCompositeOp,
-                               CopyGreenCompositeOp,CopyBlueCompositeOp,CopyOpacityCompositeOp,
-                               ClearCompositeOp,DissolveCompositeOp,DisplaceCompositeOp,
-                               ModulateCompositeOp,ThresholdCompositeOp,NoCompositeOp,
-                               DarkenCompositeOp,LightenCompositeOp,HueCompositeOp,
-                               SaturateCompositeOp,ColorizeCompositeOp,LuminizeCompositeOp,
-                               ScreenCompositeOp,OverlayCompositeOp,CopyCyanCompositeOp,
-                               CopyMagentaCompositeOp,CopyYellowCompositeOp,CopyBlackCompositeOp);
-   pragma Convention (C,Composite_Operator);
+   type Composite_Operator is (
+      UndefinedCompositeOp,
+      OverCompositeOp,
+      InCompositeOp,
+      OutCompositeOp,
+      AtopCompositeOp,
+      XorCompositeOp,
+      PlusCompositeOp,
+      MinusCompositeOp,
+      AddCompositeOp,
+      SubtractCompositeOp,
+      DifferenceCompositeOp,
+      MultiplyCompositeOp,
+      BumpmapCompositeOp,
+      CopyCompositeOp,
+      CopyRedCompositeOp,
+      CopyGreenCompositeOp,
+      CopyBlueCompositeOp,
+      CopyOpacityCompositeOp,
+      ClearCompositeOp,
+      DissolveCompositeOp,
+      DisplaceCompositeOp,
+      ModulateCompositeOp,
+      ThresholdCompositeOp,
+      NoCompositeOp,
+      DarkenCompositeOp,
+      LightenCompositeOp,
+      HueCompositeOp,
+      SaturateCompositeOp,
+      ColorizeCompositeOp,
+      LuminizeCompositeOp,
+      ScreenCompositeOp,
+      OverlayCompositeOp,
+      CopyCyanCompositeOp,
+      CopyMagentaCompositeOp,
+      CopyYellowCompositeOp,
+      CopyBlackCompositeOp);
+   pragma Convention (C, Composite_Operator);
 
-   type Dispose_Type is (UndefinedDispose,NoneDispose,BackgroundDispose,PreviousDispose);
-   pragma Convention (C,Dispose_Type);
+   type Dispose_Type is (
+      UndefinedDispose,
+      NoneDispose,
+      BackgroundDispose,
+      PreviousDispose);
+   pragma Convention (C, Dispose_Type);
 
    type Error_Info is record
-      Mean_Error_Per_Pixel,
-      Normalized_Mean_Error,
-      Normalized_Maximum_Error:C.Double;
+      Mean_Error_Per_Pixel, Normalized_Mean_Error, Normalized_Maximum_Error : 
+        C.double;
    end record;
-   pragma Convention (C,Error_Info);
+   pragma Convention (C, Error_Info);
 
    type Timer is record
-      Start,
-      Stop,
-      Total:C.Double;
+      Start, Stop, Total : C.double;
    end record;
-   pragma Convention (C,Timer);
+   pragma Convention (C, Timer);
 
-   type Timer_State is (UndefinedTimerState,StoppedTimerState, RunningTimerState);
-   pragma Convention (C,Timer_State);
+   type Timer_State is (
+      UndefinedTimerState,
+      StoppedTimerState,
+      RunningTimerState);
+   pragma Convention (C, Timer_State);
 
    type Timer_Info is record
-      User,
-      Elapsed:Timer;
-      State:Timer_State;
-      Signature:C.Unsigned_Long;
+      User, Elapsed : Timer;
+      State         : Timer_State;
+      Signature     : C.unsigned_long;
    end record;
-   pragma Convention (C,Timer_Info);
+   pragma Convention (C, Timer_Info);
 
    type Image_Attribute;
    type Image_Attribute_Ptr is access all Image_Attribute;
-   pragma Convention (C,Image_Attribute_Ptr);
+   pragma Convention (C, Image_Attribute_Ptr);
 
    type Image_Attribute is record
-      Key,
-      Value:Interfaces.C.Strings.Chars_Ptr;
-      Compression:C.Unsigned;
-      Previous,
-      Next:Image_Attribute_Ptr;
+      Key, Value     : Interfaces.C.Strings.chars_ptr;
+      Compression    : C.unsigned;
+      Previous, Next : Image_Attribute_Ptr;
    end record;
-   pragma Convention (C,Image_Attribute);
+   pragma Convention (C, Image_Attribute);
 
-   type T_Buffer is array (0..10) of C.Unsigned_Char;
+   type T_Buffer is array (0 .. 10) of C.unsigned_char;
    type Ascii_85_Info is record
-      Offset,
-      Line_Break:C.Long;
-      Buffer:T_Buffer;
+      Offset, Line_Break : C.long;
+      Buffer             : T_Buffer;
    end record;
-   pragma Convention (C,Ascii_85_Info);
+   pragma Convention (C, Ascii_85_Info);
 
    type Ascii_85_Info_Ptr is access Ascii_85_Info;
-   pragma Convention (C,Ascii_85_Info_Ptr);
+   pragma Convention (C, Ascii_85_Info_Ptr);
 
-   type Exception_Type is (UndefinedException,WarningException ,ResourceLimitWarning ,TypeWarning ,OptionWarning ,
-                           DelegateWarning ,MissingDelegateWarning ,CorruptImageWarning ,FileOpenWarning ,
-                           BlobWarning ,StreamWarning ,CacheWarning ,CoderWarning ,ModuleWarning ,
-                           DrawWarning ,ImageWarning ,XServerWarning ,MonitorWarning ,RegistryWarning ,
-                           ConfigureWarning ,ErrorException ,ResourceLimitError ,TypeError ,OptionError ,
-                           DelegateError,MissingDelegateError ,CorruptImageError ,FileOpenError ,BlobError ,
-                           StreamError ,CacheError ,CoderError ,ModuleError ,DrawError ,ImageError ,
-                           XServerError ,MonitorError ,RegistryError ,ConfigureError ,
-                           FatalErrorException ,ResourceLimitFatalError ,TypeFatalError ,OptionFatalError ,
-                           DelegateFatalError ,MissingDelegateFatalError ,CorruptImageFatalError ,
-                           FileOpenFatalError ,  BlobFatalError ,  StreamFatalError ,
-                           CacheFatalError ,CoderFatalError ,ModuleFatalError ,DrawFatalError ,
-                           ImageFatalError ,  XServerFatalError ,MonitorFatalError ,
-                           RegistryFatalError ,  ConfigureFatalError);
-   pragma Convention (C,Exception_Type);
+   type Exception_Type is (
+      UndefinedException,
+      WarningException,
+      ResourceLimitWarning,
+      TypeWarning,
+      OptionWarning,
+      DelegateWarning,
+      MissingDelegateWarning,
+      CorruptImageWarning,
+      FileOpenWarning,
+      BlobWarning,
+      StreamWarning,
+      CacheWarning,
+      CoderWarning,
+      ModuleWarning,
+      DrawWarning,
+      ImageWarning,
+      XServerWarning,
+      MonitorWarning,
+      RegistryWarning,
+      ConfigureWarning,
+      ErrorException,
+      ResourceLimitError,
+      TypeError,
+      OptionError,
+      DelegateError,
+      MissingDelegateError,
+      CorruptImageError,
+      FileOpenError,
+      BlobError,
+      StreamError,
+      CacheError,
+      CoderError,
+      ModuleError,
+      DrawError,
+      ImageError,
+      XServerError,
+      MonitorError,
+      RegistryError,
+      ConfigureError,
+      FatalErrorException,
+      ResourceLimitFatalError,
+      TypeFatalError,
+      OptionFatalError,
+      DelegateFatalError,
+      MissingDelegateFatalError,
+      CorruptImageFatalError,
+      FileOpenFatalError,
+      BlobFatalError,
+      StreamFatalError,
+      CacheFatalError,
+      CoderFatalError,
+      ModuleFatalError,
+      DrawFatalError,
+      ImageFatalError,
+      XServerFatalError,
+      MonitorFatalError,
+      RegistryFatalError,
+      ConfigureFatalError);
+   pragma Convention (C, Exception_Type);
 
-   type Exception_Info  is record
-      Severity:C.Int; --Exception_Type;
-      Error_Number:C.Int;
-      Reason,
-      Description:Interfaces.C.Strings.Chars_Ptr;
-      Signature:C.Unsigned_Long;
+   type Exception_Info is record
+      Severity            : C.int; --Exception_Type;
+      Error_Number        : C.int;
+      Reason, Description : Interfaces.C.Strings.chars_ptr;
+      Signature           : C.unsigned_long;
    end record;
-   pragma Convention (C,Exception_Info);
+   pragma Convention (C, Exception_Info);
 
    type Exception_Info_Ptr is access Exception_Info;
-   pragma Convention (C,Exception_Info_Ptr);
+   pragma Convention (C, Exception_Info_Ptr);
 
-   -----------------------------------------------------------------------------
+   ----------------------------------------------------------------------------
+   ---
    -- semaphore !win32
    -- original source code from  File : s-osinte.ads
-   -----------------------------------------------------------------------------
-   type sigjmp_buf is array (Integer range 0 .. 38) of C.Int;
-   pragma Convention (C,Sigjmp_Buf);
+   ----------------------------------------------------------------------------
+   ---
+   type sigjmp_buf is array (Integer range 0 .. 38) of C.int;
+   pragma Convention (C, sigjmp_buf);
 
    type pthread_t_struct is record
       context    : sigjmp_buf;
       pbody      : sigjmp_buf;
-      errno      : C.Int;
-      ret        : C.Int;
+      errno      : C.int;
+      ret        : C.int;
       stack_base : System.Address;
    end record;
    pragma Convention (C, pthread_t_struct);
 
    type pthread_t is access all pthread_t_struct;
-   pragma Convention (C,Pthread_T);
+   pragma Convention (C, pthread_t);
 
    type queue_t is record
       head : System.Address;
       tail : System.Address;
    end record;
-   pragma Convention (C,Queue_T);
+   pragma Convention (C, queue_t);
 
    type pthread_mutex_t is record
-      queue                 : Queue_T;
+      queue                 : queue_t;
       lock                  : C.plain_char;
       owner                 : System.Address;
-      flags                 : C.Int;
-      prio_ceiling          : C.Int;
-      protocol              : C.Int;
-      prev_max_ceiling_prio : C.Int;
+      flags                 : C.int;
+      prio_ceiling          : C.int;
+      protocol              : C.int;
+      prev_max_ceiling_prio : C.int;
    end record;
    pragma Convention (C, pthread_mutex_t);
 
    type Semaphore_Info is record
-      Mutex:Pthread_Mutex_T;
-      Id:Pthread_T;
-      Lock:C.Unsigned;
-      Signature:C.Unsigned_Long;
+      Mutex     : pthread_mutex_t;
+      Id        : pthread_t;
+      Lock      : C.unsigned;
+      Signature : C.unsigned_long;
    end record;
-   pragma Convention (C,Semaphore_Info);
+   pragma Convention (C, Semaphore_Info);
 
-   type  Semaphore_Info_Ptr is access all Semaphore_Info;
-   pragma Convention (C,Semaphore_Info_Ptr);
-   -------------------------------------------------------------------------------------
+   type Semaphore_Info_Ptr is access all Semaphore_Info;
+   pragma Convention (C, Semaphore_Info_Ptr);
+   ----------------------------------------------------------------------------
+   -----------
    -- /semaphore
-   -------------------------------------------------------------------------------------
+   ----------------------------------------------------------------------------
+   -----------
    --
-   -------------------------------------------------------------------------------------
+   ----------------------------------------------------------------------------
+   -----------
    -- blob !win32
-   --------------------------------------------------------------------------------------
+   ----------------------------------------------------------------------------
+   ------------
    type Off_T is new Long_Integer;
-   pragma Convention (C,Off_T);
+   pragma Convention (C, Off_T);
 
-   type Stream_Type is (UndefinedStream,FileStream,StandardStream,PipeStream,
-                        ZipStream,BZipStream,FifoStream,BlobStream);
-   pragma Convention (C,Stream_Type);
+   type Stream_Type is (
+      UndefinedStream,
+      FileStream,
+      StandardStream,
+      PipeStream,
+      ZipStream,
+      BZipStream,
+      FifoStream,
+      BlobStream);
+   pragma Convention (C, Stream_Type);
 
    type Blob_Info is record
-      Length,
-      Extent,
-      Quantum:C.Size_T;
+      Length, Extent, Quantum : C.size_t;
 
-      Mapped,
-       Eof:C.Unsigned;
+      Mapped, Eof : C.unsigned;
 
-      Offset,
-      Size:Off_T;
+      Offset, Size : Off_T;
 
-      Exempt,
-      Status,
-      Temporary:C.Unsigned;
+      Exempt, Status, Temporary : C.unsigned;
 
-      S_Type:Stream_Type;
+      S_Type : Stream_Type;
 
-      File:File_Ptr;
+      File : File_Ptr;
 
-      Stream:C.Unsigned;
+      Stream : C.unsigned;
 
-      Data:Unsigned_Char_Ptr;
+      Data : Unsigned_Char_Ptr;
 
-      Debug:C.Unsigned;
+      Debug : C.unsigned;
 
-      Semaphore:Semaphore_Info_Ptr;
+      Semaphore : Semaphore_Info_Ptr;
 
-      Reference_Count:C.Long;
+      Reference_Count : C.long;
 
-      Signature:C.Unsigned_Long;
+      Signature : C.unsigned_long;
    end record;
-   pragma Convention (C,Blob_Info);
+   pragma Convention (C, Blob_Info);
 
    type Blob_Info_Ptr is access Blob_Info;
-   pragma Convention (C,Blob_Info_Ptr);
+   pragma Convention (C, Blob_Info_Ptr);
 
-   --------------------------------------------------------------------------------------
+   ----------------------------------------------------------------------------
+   ------------
    -- /blob
-   --------------------------------------------------------------------------------------
+   ----------------------------------------------------------------------------
+   ------------
    type Image is record
-      Storage_Class:Class_Type;
+      Storage_Class : Class_Type;
 
-      Colorspace:Colorspace_Type;
+      Colorspace : Colorspace_Type;
 
-      Compression:Compression_Type;
+      Compression : Compression_Type;
 
-      Quality:C.Unsigned_Long;
+      Quality : C.unsigned_long;
 
-      Orientation:Orientation_Type;
+      Orientation : Orientation_Type;
 
-      Taint,
-      Matte:C.Unsigned;
+      Taint, Matte : C.unsigned;
 
-      Columns,
-      Rows:C.Unsigned_Long;
+      Columns, Rows : C.unsigned_long;
 
-      Depth,
-      Colors:C.Unsigned_Long;
+      Depth, Colors : C.unsigned_long;
 
-      Colormap:Pixel_Packet_Ptr;
+      Colormap : Pixel_Packet_Ptr;
 
-      Background_Color,
-      Border_Color,
-      Matte_Color:Pixel_Packet;
+      Background_Color, Border_Color, Matte_Color : Pixel_Packet;
 
-      Gamma:C.Double;
+      Gamma : C.double;
 
-      Chromaticity:Chromaticity_Info;
+      Chromaticity : Chromaticity_Info;
 
-      RenderingIntent:Rendering_Intent;
+      RenderingIntent : Rendering_Intent;
 
-      Profiles:C_Ext.Void_Ptr;
+      Profiles : C_Ext.void_ptr;
 
-      Units:Resolution_Type;
+      Units : Resolution_Type;
 
-      Montage,
-      Directory,
-      Geometry:Interfaces.C.Strings.Chars_Ptr;
+      Montage, Directory, Geometry : Interfaces.C.Strings.chars_ptr;
 
-      Offset:C.Long;
+      Offset : C.long;
 
-      X_Resolution,
-      Y_Resolution:C.Double;
+      X_Resolution, Y_Resolution : C.double;
 
-      Page,
-      Extract_Info,
-      Tile_Info:Rectangle_Info; -- the use of Tile_Info is deprectated
+      Page, Extract_Info, Tile_Info : Rectangle_Info; -- the use of Tile_Info
+                                                      --is deprectated
 
-      Bias,
-      Blur,
-      Fuzz:C.Double;
+      Bias, Blur, Fuzz : C.double;
 
-      Filter:Filter_Types;
+      Filter : Filter_Types;
 
-      Interlace:Interlace_Type;
+      Interlace : Interlace_Type;
 
-      Endian:Endian_Type;
+      Endian : Endian_Type;
 
-      Gravity:Gravity_Type;
+      Gravity : Gravity_Type;
 
-      Compose:Composite_Operator;
+      Compose : Composite_Operator;
 
-      Dispose:  Dispose_Type;
+      Dispose : Dispose_Type;
 
-      Clip_Mask: Image_Ptr;
+      Clip_Mask : Image_Ptr;
 
-      Scene,
-      Image_Delay,
-      Ticks_Per_Second,
-      Iterations,
-      Total_Colors:C.Unsigned_Long;
+      Scene, Image_Delay, Ticks_Per_Second, Iterations, Total_Colors : 
+        C.unsigned_long;
 
-      Start_Loop:C.Long;
+      Start_Loop : C.long;
 
-      Error:Error_Info;
+      Error : Error_Info;
 
-      Timer:Timer_Info;
+      Timer : Timer_Info;
 
-      Progress_Monitor:C.Unsigned; -- Typedef MagickBooleanType
-                                   -- (*MagickProgressMonitor)
-                                   --     (Const Char *,
-                                   --      Const MagickOffsetType,
-                                   --      Const MagickSizeType,Void *);
+      Progress_Monitor : C.unsigned;   -- Typedef MagickBooleanType
+                                       -- (*MagickProgressMonitor)
+                                       --     (Const Char *,
+                                       --      Const MagickOffsetType,
+                                       --      Const MagickSizeType,Void *);
 
+      Client_Data : C_Ext.void_ptr;
 
-      Client_Data:C_Ext.Void_Ptr;
-
-      Cache:C_Ext.Void_Ptr;
+      Cache : C_Ext.void_ptr;
 
       -- Attributes:Image_Attribute_Ptr;
-      Attributes:C_Ext.Void_Ptr;
+      Attributes : C_Ext.void_ptr;
 
-      Ascii85:Ascii_85_Info_Ptr;
+      Ascii85 : Ascii_85_Info_Ptr;
 
-      Blob:Blob_Info_Ptr;
+      Blob : Blob_Info_Ptr;
 
-      Filename,
-      Magick_Filename,
-      Magick:C.Char_Array(MaxTextExtent);
+      Filename, Magick_Filename, Magick : C.char_array (MaxTextExtent);
 
-      Magick_Columns,
-      Magick_Rows:C.Unsigned_Long;
+      Magick_Columns, Magick_Rows : C.unsigned_long;
 
-      Image_Exception:Exception_Info;
+      Image_Exception : Exception_Info;
 
-      Debug:C.Unsigned;
+      Debug : C.unsigned;
 
-      Reference_Count:C.Long;
+      Reference_Count : C.long;
 
-      Semaphore:Semaphore_Info_Ptr;
+      Semaphore : Semaphore_Info_Ptr;
 
-      ColorProfile,
-      IptcProfile:Profile_Info;
-      GenericProfile:Profile_Info_Ptr;
+      ColorProfile, IptcProfile : Profile_Info;
+      GenericProfile            : Profile_Info_Ptr;
 
-      GenericProfiles:C.Unsigned_Long;
+      GenericProfiles : C.unsigned_long;
 
-      Signature:C.Unsigned_Long;
+      Signature : C.unsigned_long;
 
-      Previous,
-      List,
-      Next:Image_Ptr;
+      Previous, List, Next : Image_Ptr;
    end record;
-   pragma Convention (C,Image);
+   pragma Convention (C, Image);
    --
    --
    procedure Initialize_Magick;
    --
    --
-   function Get_Exception_Info (G_E_I: in Exception_Info ) return  Exception_Info_Ptr;
-   Ex_Info:Exception_Info;
-   Ex_Info_Ptr:Exception_Info_Ptr:=new Exception_Info;
+   function Get_Exception_Info
+     (G_E_I : in Exception_Info)
+      return  Exception_Info_Ptr;
+   Ex_Info     : Exception_Info;
+   Ex_Info_Ptr : Exception_Info_Ptr := new Exception_Info;
    --
 end G2f;

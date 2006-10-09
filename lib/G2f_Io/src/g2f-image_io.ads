@@ -1,10 +1,11 @@
-------------------------------------------------------------------------------
+--------------------------------------------------------------
+------------------
 --                              G2f_Io                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
 --                            Ali Bendriss                                  --
 --                                                                          --
---  Author: Ali Bendriss                                                    -- 
+--  Author: Ali Bendriss                                                    --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -32,29 +33,28 @@ with G2f;
 
 package G2f.Image_Io is
 
-   Clone_ImageInfo_Error,
-   Read_Image_Error,
-   Write_Image_Error,
-   Ping_Image_Error:exception;
+   Clone_ImageInfo_Error, Read_Image_Error, Write_Image_Error, Ping_Image_Error
+: exception;
 
    -- image_info
 
-   function Clone_Image_Info (Image_Info_In: in Image_Info_Ptr) return Image_Info_Ptr;
+   function Clone_Image_Info
+     (Image_Info_In : in Image_Info_Ptr)
+      return          Image_Info_Ptr;
 
-   procedure Destroy_Image_Info (Image_Info_In: in out Image_Info_Ptr);
+   procedure Destroy_Image_Info (Image_Info_In : in out Image_Info_Ptr);
 
    -- /image_info
 
    -- image
 
-   function Read_Image (I:in Image_Info_Ptr) return Image_Ptr;
+   function Read_Image (I : in Image_Info_Ptr) return Image_Ptr;
 
-   procedure Write_Image(I:in Image_Info_Ptr;
-                         E:in Image_Ptr);
+   procedure Write_Image (I : in Image_Info_Ptr; E : in Image_Ptr);
 
-   procedure Destroy_Image (Image_In:in out Image_Ptr);
+   procedure Destroy_Image (Image_In : in out Image_Ptr);
 
-   function Ping_Image (I:in Image_Info_Ptr) return Image_Ptr;
+   function Ping_Image (I : in Image_Info_Ptr) return Image_Ptr;
 
    -- /image
 

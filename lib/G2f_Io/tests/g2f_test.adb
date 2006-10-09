@@ -41,8 +41,8 @@ procedure G2f_Test is
    Info : Image_Info_Ptr;
    Test_Image : Image_Ptr;
    My_Size, Lite_Size : Image_Size;
-   In_Filename : String := "adapowered.jpg";
-   Out_Filename : String := "magick.png";
+   In_Filename : constant String := "adapowered.jpg";
+   Out_Filename : constant String := "magick.png";
 begin
 
    Info := Clone_Image_Info (Info);
@@ -86,14 +86,16 @@ begin
    --  Image compression
 
    Ada.Text_IO.Put ("Image compression methode : ");
-   Ada.Text_IO.Put_Line (Compression_Type'Image (Get_Compression (Test_Image)));
+   Ada.Text_IO.Put_Line
+     (Compression_Type'Image (Get_Compression (Test_Image)));
    Ada.Text_IO.Put ("Setting image compression to : ");
 
 
    --  You may take care to use a compression methode supported by the
    --  image format and the target system.
 
-   Ada.Text_IO.Put_Line (Compression_Type'Image (Get_Compression (Test_Image)));
+   Ada.Text_IO.Put_Line
+     (Compression_Type'Image (Get_Compression (Test_Image)));
 
    Ada.Text_IO.Put_Line ("Get image size");
    My_Size := Get_Image_Size (Test_Image);
@@ -108,9 +110,13 @@ begin
 
    G2f.Image_Enhance.Negate_Image (Test_Image);
    G2f.Image_Text_Attribute.Set_Image_Text_Attribute
-     (Test_Image, G2f.Image_Text_Attribute.Copyright, "Ali Bendriss");
+     (Test_Image,
+      G2f.Image_Text_Attribute.Copyright,
+      "Ali Bendriss");
    G2f.Image_Text_Attribute.Set_Image_Text_Attribute
-     (Test_Image, G2f.Image_Text_Attribute.Software, "G2f_Io Version alpha 03");
+     (Test_Image,
+      G2f.Image_Text_Attribute.Software,
+      "G2f_Io Version alpha 03");
    Ada.Text_IO.Put_Line ("Software: "
                            & G2f.Image_Text_Attribute.Get_Image_Text_Attribute
                            (Test_Image, G2f.Image_Text_Attribute.Software));
