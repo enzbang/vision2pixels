@@ -1,3 +1,4 @@
+
 with Ada.Unchecked_Deallocation;
 with Ada.Text_IO;
 
@@ -84,7 +85,7 @@ package body GNU.DB.SQLite3 is
          when 22 => return SQLITE_NOLFS;
          when 23 => return SQLITE_AUTH;
          when 24 => return SQLITE_FORMAT;
-         when 25 => return SQLITE_RANGE; 
+         when 25 => return SQLITE_RANGE;
          when 26 => return SQLITE_NOTADB;
          when 100 => return SQLITE_ROW;
          when 101 => return SQLITE_DONE;
@@ -1191,8 +1192,7 @@ package body GNU.DB.SQLite3 is
       -- );
 
    begin
-
-      return int_to_ret_val(sqlite3_open(C.To_C(Filename), Self.db'Access));
+      return int_to_ret_val(sqlite3_open(C.To_C (Filename), Self.db'Access));
 
    end open;
 

@@ -403,7 +403,7 @@ package GNU.DB.SQLite3 is
       return Return_Value;
    -- sqlite3.h:627
    -- int sqlite3_bind_double(sqlite3_stmt*, int, double);
-   
+
    function bind_int
      (stmt : Statement_Reference;
       N    : integer;
@@ -411,7 +411,7 @@ package GNU.DB.SQLite3 is
       return Return_Value;
    -- sqlite3.h:628
    -- int sqlite3_bind_int(sqlite3_stmt*, int, int);
-   
+
    function bind_int64
      (stmt : Statement_Reference;
       N    : integer;
