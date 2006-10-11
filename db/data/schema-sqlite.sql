@@ -32,7 +32,7 @@ create table "photo" (
 "filename" varchar(512) not null unique,
 "category_id" int not null,
 "date_publication" date not null,
-"last_comment_id" int not null,
+"last_comment_id" int,
 "template_id" int not null,
 "visit_counter" int not null,
 "comment_counter" int not null,
