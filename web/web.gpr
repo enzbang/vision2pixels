@@ -21,6 +21,7 @@
 
 with "../shared";
 with "../db/db";
+with "../db/db_test";
 with "../image/image";
 with "../lib/gnade/gnade";
 
