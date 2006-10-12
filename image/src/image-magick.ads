@@ -2,7 +2,7 @@
 --                              Vision2Pixels                               --
 --                                                                          --
 --                           Copyright (C) 2006                             --
---                      Olivier Ramonat - Pascal Obry                       --
+--                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -19,18 +19,15 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
-with "../shared";
-with "../lib/g2f_io/g2f";
+with G2F.IO;
 
-project Image is
+package Image.Magick is
 
-   for Source_Dirs use ("src");
-   for Object_Dir use "obj";
+   use G2F;
 
-   for Library_Dir use "lib";
-   for Library_Name use "v2p_image";
-   for Library_Kind use "static";
+   function Thumbnail
+     (Img   : G2F.Image_Ptr;
+      Size  : G2F.IO.Image_Size)
+     return G2F.Image_Ptr;
 
-   package Compiler renames Shared.Compiler;
-
-end Image;
+end Image.Magick;

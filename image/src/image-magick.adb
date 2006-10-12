@@ -2,7 +2,7 @@
 --                              Vision2Pixels                               --
 --                                                                          --
 --                           Copyright (C) 2006                             --
---                      Olivier Ramonat - Pascal Obry                       --
+--                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -19,18 +19,41 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
-with "../shared";
-with "../lib/g2f_io/g2f";
+with G2F.Image_Resize;
+with Ada.Text_IO;
 
-project Image is
+package body Image.Magick is
 
-   for Source_Dirs use ("src");
-   for Object_Dir use "obj";
+   use G2F.Image_Resize;
+   use G2F.IO;
+   use Ada.Text_IO;
 
-   for Library_Dir use "lib";
-   for Library_Name use "v2p_image";
-   for Library_Kind use "static";
+   function Thumbnail
+     (Img   : G2F.Image_Ptr;
+      Size  : G2F.IO.Image_Size)
+      return G2F.Image_Ptr
+   is
+      Original_Size : constant Image_Size := Get_Image_Size (Img);
+      X_Length      : Image_Size_T;
+      Y_Length      : Image_Size_T;
+      Thumb : G2F.Image_Ptr;
+   begin
+      if Original_Size.X / Size.X > Original_Size.Y / Size.Y then
+         X_Length := Size.X;
+         Y_Length := Original_Size.Y * Size.X / Original_Size.X;
+      else
+         X_Length := Original_Size.X * Y_Length / Original_Size.Y;
+         Y_Length := Size.Y;
+      end if;
 
-   package Compiler renames Shared.Compiler;
+      Put_Line ("OX" & Image_Size_T'Image (Original_Size.X));
+      Put_Line ("X" & Image_Size_T'Image (X_Length));
+      Put_Line ("Y" & Image_Size_T'Image (Y_Length));
 
-end Image;
+
+      Thumb := G2F.Image_Resize.Resize_Image
+        (Img, (X_Length, Y_Length), G2F.Image_Resize.Mitchell, 0.0);
+      return Thumb;
+   end Thumbnail;
+
+end Image.Magick;
