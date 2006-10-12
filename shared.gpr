@@ -2,7 +2,7 @@
 --                              Vision2Pixels                               --
 --                                                                          --
 --                           Copyright (C) 2006                             --
---                      Olivier Ramonat - Pascal Obry                       --
+--                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -52,5 +52,13 @@ project Shared is
       end case;
 
    end Compiler;
+
+   ------------
+   -- Binder --
+   ------------
+
+   package Binder is
+      for Default_Switches ("Ada") use ("-E");
+   end Binder;
 
 end Shared;

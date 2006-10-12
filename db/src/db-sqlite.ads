@@ -19,16 +19,11 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Indefinite_Vectors;
+with GNU.DB.SQLite3;
 
-package DB is
+package DB.SQLite is
 
-   use Ada;
-
-   DB_Error : exception;
-   --  Raised for all errors reported by the database
-
-   type Handle is abstract tagged private;
+   type Handle is new DB.Handle with private;
 
    --  Open / Close
 
@@ -36,54 +31,57 @@ package DB is
      (DB       : in out Handle;
       Name     : in String;
       User     : in String := "";
-      Password : in String := "") is abstract;
+      Password : in String := "");
    --  Open the database named Name
 
-   procedure Close (DB : in out Handle) is abstract;
+   procedure Close (DB : in out Handle);
    --  Close the current database
 
    --  Transaction
 
-   procedure Begin_Transaction (DB : in Handle) is abstract;
+   procedure Begin_Transaction (DB : in Handle);
    --  Start a new transaction, do not support embedded transactions
 
-   procedure Commit (DB : in Handle) is abstract;
+   procedure Commit (DB : in Handle);
    --  Commit the current transaction
 
-   procedure Rollback (DB : in Handle) is abstract;
+   procedure Rollback (DB : in Handle);
    --  Rollback the current transaction
 
    --  Statement
 
-   type Iterator is abstract tagged private;
-
-   package String_Vectors is
-     new Containers.Indefinite_Vectors (Natural, String);
+   type Iterator is new DB.Iterator with private;
 
    procedure Prepare_Select
      (DB   : in     Handle;
-      Iter : in out Iterator'Class;
-      SQL  : in     String) is abstract;
+      Iter : in out Standard.DB.Iterator'Class;
+      SQL  : in     String);
    --  Prepare a select statement (SQL must be a select command)
 
    procedure Get_Line
      (Iter   : in out Iterator;
-      Result :    out String_Vectors.Vector) is abstract;
+      Result :    out String_Vectors.Vector);
    --  Returns the current row and move to the next one
 
-   function More (Iter : in Iterator) return Boolean is abstract;
+   function More (Iter : in Iterator) return Boolean;
    --  Returns True if there is more data (row) to fetch
 
-   procedure End_Select (Iter : in out Iterator) is abstract;
-   --  Finalize a select statement
+   procedure End_Select (Iter : in out Iterator);
 
-   procedure Execute (DB : in Handle; SQL : in String) is abstract;
+   procedure Execute (DB : in Handle; SQL : in String);
    --  Execute SQL request into DB
 
 private
 
-   type Handle is abstract tagged null record;
+   type Handle is new DB.Handle with record
+      H : GNU.DB.SQLite3.Handle;
+   end record;
 
-   type Iterator is abstract tagged null record;
+   type Iterator is new DB.Iterator with record
+      H    : Handle;
+      S    : aliased GNU.DB.SQLite3.Statement;
+      Col  : Natural;
+      More : Boolean;
+   end record;
 
-end DB;
+end DB.SQLite;

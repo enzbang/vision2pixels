@@ -2,7 +2,7 @@
 --                              Vision2Pixels                               --
 --                                                                          --
 --                           Copyright (C) 2006                             --
---                      Olivier Ramonat - Pascal Obry                       --
+--                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -19,18 +19,50 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
-with "../shared";
-with "../lib/gnade/gnade";
+with Ada.Text_IO;
 
-project DB is
+pragma Warnings (Off);
+with DB.SQLite;
 
-   for Source_Dirs use ("src");
-   for Object_Dir use "obj";
+procedure Test_DB1 is
 
-   for Library_Dir use "lib";
-   for Library_Name use "v2p_db";
-   for Library_Kind use "static";
+   use Ada;
 
-   package Compiler renames Shared.Compiler;
+   H   : DB.SQLite.Handle;
+   I   : DB.SQLite.Iterator;
+   Res : DB.String_Vectors.Vector;
 
-end DB;
+   procedure Print (Position : DB.String_Vectors.Cursor);
+   --  Print an item
+
+   procedure Print (Position : DB.String_Vectors.Cursor) is
+   begin
+      Text_IO.Put (DB.String_Vectors.Element (Position) & " ");
+   end Print;
+
+begin
+   DB.SQLite.Connect (H, "../data/testing.db");
+
+   begin
+      DB.SQLite.Execute
+        (H, "insert into user values ('toto', 'pwd', 'toto@here.com')");
+   exception
+      when others =>
+         --  Catch all exceptions, just in case the data have already been
+         --  inserted into the database.
+         null;
+   end;
+
+   DB.SQLite.Prepare_Select (H, I, "select * from user;");
+
+   while DB.SQLite.More (I) loop
+      DB.SQLite.Get_Line (I, Res);
+      DB.String_Vectors.Iterate (Res, Print'Access);
+      DB.String_Vectors.Clear (Res);
+      Text_IO.New_Line;
+   end loop;
+
+   DB.SQLite.End_Select (I);
+
+   DB.SQLite.Close (H);
+end Test_DB1;
