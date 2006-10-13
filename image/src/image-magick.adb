@@ -20,13 +20,11 @@
 ------------------------------------------------------------------------------
 
 with G2F.Image_Resize;
-with Ada.Text_IO;
 
 package body Image.Magick is
 
    use G2F.Image_Resize;
    use G2F.IO;
-   use Ada.Text_IO;
 
    function Thumbnail
      (Img   : G2F.Image_Ptr;
@@ -45,11 +43,6 @@ package body Image.Magick is
          X_Length := Original_Size.X * Y_Length / Original_Size.Y;
          Y_Length := Size.Y;
       end if;
-
-      Put_Line ("OX" & Image_Size_T'Image (Original_Size.X));
-      Put_Line ("X" & Image_Size_T'Image (X_Length));
-      Put_Line ("Y" & Image_Size_T'Image (Y_Length));
-
 
       Thumb := G2F.Image_Resize.Resize_Image
         (Img, (X_Length, Y_Length), G2F.Image_Resize.Mitchell, 0.0);
