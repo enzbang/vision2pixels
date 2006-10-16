@@ -2,7 +2,7 @@
 --                              Vision2Pixels                               --
 --                                                                          --
 --                           Copyright (C) 2006                             --
---                      Olivier Ramonat - Pascal Obry                       --
+--                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -20,24 +20,31 @@
 ------------------------------------------------------------------------------
 
 with "../../shared";
-with "g2f.gpr";
+with "g2f";
 
 project G2F_Tests is
 
-   for Source_Dirs use ("src");
+   for Source_Dirs use ("tests");
    for Object_Dir use "obj";
+   for Main use ("g2f_test.adb");
 
-   case Shared.Build is
-      when "Release" =>
-         for Source_Dirs use ();
-      when "Debug" =>
-         for Source_Dirs use ("tests");
-         for Main use ("g2f_test.adb");
-   end case;
+   --------------
+   -- Compiler --
+   --------------
 
    package Compiler renames Shared.Compiler;
 
+   ------------
+   -- Linker --
+   ------------
+
    package Linker is
-      for Default_Switches ("ada") use ("-lodbc");
+      case Shared.OS is
+         when "Windows_NT" =>
+            for Default_Switches ("Ada") use ("-lMagick", "-lgdi32");
+         when others =>
+            null;
+      end case;
    end Linker;
+
 end G2F_Tests;

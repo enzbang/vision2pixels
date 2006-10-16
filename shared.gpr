@@ -27,6 +27,9 @@ project Shared is
    type Build_Type is ("Debug", "Release");
    Build : Build_Type := external ("PRJ_BUILD", "Release");
 
+   type OS_Type is ("UNIX", "Windows_NT");
+   OS : OS_Type := external ("OS", "UNIX");
+
    --------------
    -- Compiler --
    --------------
