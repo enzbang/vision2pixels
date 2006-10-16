@@ -569,17 +569,6 @@ private
       ConfigureFatalError);
    pragma Convention (C, Exception_Type);
 
-   type Exception_Info is record
-      Severity            : C.int; --Exception_Type;
-      Error_Number        : C.int;
-      Reason, Description : Interfaces.C.Strings.chars_ptr;
-      Signature           : C.unsigned_long;
-   end record;
-   pragma Convention (C, Exception_Info);
-
-   type Exception_Info_Ptr is access Exception_Info;
-   pragma Convention (C, Exception_Info_Ptr);
-
    ----------------------------------------------------
    --               semaphore !win32                 --
    -- original source code from  File : s-osinte.ads --
@@ -627,6 +616,20 @@ private
 
    type Semaphore_Info_Ptr is access all Semaphore_Info;
    pragma Convention (C, Semaphore_Info_Ptr);
+
+   type Exception_Info is record
+      Severity            : C.int; --Exception_Type;
+      Error_Number        : C.int;
+      Reason, Description : Interfaces.C.Strings.chars_ptr;
+      Exceptions          : C_Ext.Void_Ptr;
+      Relinquish          : MagickBooleanType;
+      Semaphore           : Semaphore_Info_Ptr;
+      Signature           : C.unsigned_long;
+   end record;
+   pragma Convention (C, Exception_Info);
+
+   type Exception_Info_Ptr is access Exception_Info;
+   pragma Convention (C, Exception_Info_Ptr);
 
    -----------------
    -- blob !win32 --
