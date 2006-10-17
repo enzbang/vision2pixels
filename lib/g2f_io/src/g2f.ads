@@ -353,18 +353,18 @@ private
    type Pixel_Packet_Ptr is access all Pixel_Packet;
    pragma Convention (C, Pixel_Packet_Ptr);
 
-   type Point_Info is record
+   type Primary_Info is record
       X : C.double;
       Y : C.double;
       Z : C.double;
    end record;
-   pragma Convention (C, Point_Info);
+   pragma Convention (C, Primary_Info);
 
    type Chromaticity_Info is record
-      Red_Primary   : Point_Info;
-      Green_Primary : Point_Info;
-      Blue_Primary  : Point_Info;
-      White_Point   : Point_Info;
+      Red_Primary   : Primary_Info;
+      Green_Primary : Primary_Info;
+      Blue_Primary  : Primary_Info;
+      White_Point   : Primary_Info;
    end record;
    pragma Convention (C, Chromaticity_Info);
 
@@ -674,77 +674,91 @@ private
    type Blob_Info_Ptr is access Blob_Info;
    pragma Convention (C, Blob_Info_Ptr);
 
+   type InterpolatePixelMethod is
+     (UndefinedInterpolatePixel,
+      AverageInterpolatePixel,
+      BicubicInterpolatePixel,
+      BilinearInterpolatePixel,
+      FilterInterpolatePixel,
+      IntegerInterpolatePixel,
+      MeshInterpolatePixel,
+      NearestNeighborInterpolatePixel);
+   pragma Convention (C, InterpolatePixelMethod);
+
    type Image is record
-      Storage_Class    : Class_Type;
-      Colorspace       : Colorspace_Type;
-      Compression      : Compression_Type;
-      Quality          : C.unsigned_long;
-      Orientation      : Orientation_Type;
+      Storage_Class            : Class_Type;
+      Colorspace               : Colorspace_Type;
+      Compression              : Compression_Type;
+      Quality                  : C.unsigned_long;
+      Orientation              : Orientation_Type;
       Taint,
-      Matte            : C.unsigned;
+      Matte                    : MagickBooleanType;
       Columns,
-      Rows             : C.unsigned_long;
+      Rows                     : C.unsigned_long;
       Depth,
-      Colors           : C.unsigned_long;
-      Colormap         : Pixel_Packet_Ptr;
+      Colors                   : C.unsigned_long;
+      Colormap                 : Pixel_Packet_Ptr;
       Background_Color,
       Border_Color,
-      Matte_Color      : Pixel_Packet;
-      Gamma            : C.double;
-      Chromaticity     : Chromaticity_Info;
-      RenderingIntent  : Rendering_Intent;
-      Profiles         : C_Ext.void_ptr;
-      Units            : Resolution_Type;
+      Matte_Color              : Pixel_Packet;
+      Gamma                    : C.double;
+      Chromaticity             : Chromaticity_Info;
+      RenderingIntent          : Rendering_Intent;
+      Profiles                 : C_Ext.void_ptr;
+      Units                    : Resolution_Type;
       Montage,
       Directory,
-      Geometry         : Interfaces.C.Strings.chars_ptr;
-      Offset           : C.long;
+      Geometry                 : Interfaces.C.Strings.chars_ptr;
+      Offset                   : C.long;
       X_Resolution,
-      Y_Resolution     : C.double;
+      Y_Resolution             : C.double;
       Page,
       Extract_Info,
-      Tile_Info        : Rectangle_Info; --  deprecated
+      Tile_Info                : Rectangle_Info; --  deprecated
       Bias,
       Blur,
-      Fuzz             : C.double;
-      Filter           : Filter_Types;
-      Interlace        : Interlace_Type;
-      Endian           : Endian_Type;
-      Gravity          : Gravity_Type;
-      Compose          : Composite_Operator;
-      Dispose          : Dispose_Type;
-      Clip_Mask        : Image_Ptr;
+      Fuzz                     : C.double;
+      Filter                   : Filter_Types;
+      Interlace                : Interlace_Type;
+      Endian                   : Endian_Type;
+      Gravity                  : Gravity_Type;
+      Compose                  : Composite_Operator;
+      Dispose                  : Dispose_Type;
+      Clip_Mask                : Image_Ptr;
       Scene,
       Image_Delay,
       Ticks_Per_Second,
       Iterations,
-      Total_Colors     : C.unsigned_long;
-      Start_Loop       : C.long;
-      Error            : Error_Info;
-      Timer            : Timer_Info;
-      Progress_Monitor : MagickBooleanType;
-      Client_Data      : C_Ext.void_ptr;
-      Cache            : C_Ext.void_ptr;
-      Attributes       : C_Ext.void_ptr;
-      Ascii85          : Ascii_85_Info_Ptr;
-      Blob             : Blob_Info_Ptr;
+      Total_Colors             : C.unsigned_long;
+      Start_Loop               : C.long;
+      Error                    : Error_Info;
+      Timer                    : Timer_Info;
+      Progress_Monitor         : MagickBooleanType; -- MagickProgressMonitor;
+      Client_Data              : C_Ext.void_ptr;
+      Cache                    : C_Ext.void_ptr;
+      Attributes               : C_Ext.void_ptr;
+      Ascii85                  : Ascii_85_Info_Ptr;
+      Blob                     : Blob_Info_Ptr;
       Filename,
       Magick_Filename,
-      Magick           : C.char_array (MaxTextExtent);
+      Magick                   : C.char_array (MaxTextExtent);
       Magick_Columns,
-      Magick_Rows      : C.unsigned_long;
-      Image_Exception  : Exception_Info;
-      Debug            : C.unsigned;
-      Reference_Count  : C.long;
-      Semaphore        : Semaphore_Info_Ptr;
+      Magick_Rows              : C.unsigned_long;
+      Image_Exception          : Exception_Info;
+      Debug                    : MagickBooleanType;
+      Reference_Count          : C.long;
+      Semaphore                : Semaphore_Info_Ptr;
       ColorProfile,
-      IptcProfile      : Profile_Info;
-      GenericProfile   : Profile_Info_Ptr;
-      GenericProfiles  : C.unsigned_long;
-      Signature        : C.unsigned_long;
+      IptcProfile              : Profile_Info;
+      GenericProfile           : Profile_Info_Ptr;
+      GenericProfiles          : C.unsigned_long;
+      Signature                : C.unsigned_long;
       Previous,
       List,
-      Next             : Image_Ptr;
+      Next                     : Image_Ptr;
+      Interpolate              : InterpolatePixelMethod;
+      Black_Point_Compensation : MagickBooleanType;
+      Transparent_Color        : Pixel_Packet;
    end record;
    pragma Convention (C, Image);
 
