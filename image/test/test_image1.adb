@@ -20,18 +20,19 @@
 ------------------------------------------------------------------------------
 
 with G2F;
-with Image;
+with Image.Data;
 
 procedure Test_Image1 is
 
    In_Filename : constant String := "adapowered.jpg";
-   Test_Image : Image.Image_Data;
+   Category    : constant String := "Test";
+   Test_Image  : Image.Data.Image_Data;
 
 begin
 
    --  Read image info and create thumbnail
 
-   Image.Init_Image_Data (Test_Image, In_Filename);
+   Image.Data.Init_Image_Data (Test_Image, In_Filename, Category);
 
    G2F.Destroy_Magick;
 end Test_Image1;
