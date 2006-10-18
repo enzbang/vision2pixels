@@ -19,8 +19,57 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
-package Image is
+with Ada.Exceptions;
+with Config;
 
-   pragma Pure;
+package body Image.Config is
 
-end Image;
+   use Ada.Exceptions;
+
+   Config_File : constant String := "v2p-image.ini";
+
+   Configured : Boolean := False;
+
+   type Config_Parameters is
+     (Images_Path, Thumbs_Path);
+
+   package Image_Config is new Standard.Config (Config_Parameters);
+
+   -------------------
+   --  Images_Path  --
+   -------------------
+
+   function Images_Path return String is
+   begin
+      if Configured then
+         return Image_Config.Get_Value (Images_Path);
+      else
+         Raise_Exception
+           (Constraint_Error'Identity,
+            "(Images_Path) : Image module not configured");
+      end if;
+   end Images_Path;
+
+   -------------------
+   --  Thumbs_Path  --
+   -------------------
+
+   function Thumbs_Path return String is
+   begin
+      if Configured then
+         return Image_Config.Get_Value (Thumbs_Path);
+      else
+         Raise_Exception
+           (Constraint_Error'Identity,
+            "(Thumbs_Path) : Image module not configured");
+      end if;
+   end Thumbs_Path;
+begin
+   Image_Config.IO.Open (Config_File);
+   Configured := True;
+exception
+   when Image_Config.IO.Uncomplete_Config =>
+      Configured := True;
+   when others =>
+      null;
+end Image.Config;

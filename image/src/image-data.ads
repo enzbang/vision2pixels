@@ -19,8 +19,37 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
-package Image is
+with Ada.Finalization;
+with G2F.IO;
+with Ada.Strings.Unbounded;
 
-   pragma Pure;
+package Image.Data is
 
-end Image;
+   use Ada.Strings.Unbounded;
+
+   type Image_Data is private;
+
+   Thumbnail_Size : constant G2F.IO.Image_Size := (150, 150);
+
+   procedure Initialize (Img : in out Image_Data);
+   --  Initialize Image_Ptr and Image_Info_Ptr structures
+
+   procedure Finalize (Img : in Image_Data);
+   --  Destroys Image
+
+   procedure Init_Image_Data
+      (Img      : in out Image_Data;
+       Filename : in     String;
+       Category : in     String);
+   --  Set image filename, read image info and create thumbnail
+
+private
+
+   type Image_Data is new Ada.Finalization.Controlled with
+      record
+         Info_Ptr  : G2F.Image_Info_Ptr;
+         Image_Ptr : G2F.Image_Ptr;
+         Category  : Unbounded_String;
+      end record;
+
+end Image.Data;

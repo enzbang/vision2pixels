@@ -19,8 +19,12 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
-package Image is
+package Image.Config is
 
-   pragma Pure;
+   function Images_Path return String;
+   --  Returns the path to the images
 
-end Image;
+   function Thumbs_Path return String;
+   --  Returns the path to the thumbnails
+
+end Image.Config;

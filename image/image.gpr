@@ -21,12 +21,12 @@
 
 with "../shared";
 with "../lib/g2f_io/g2f";
+with "../lib/components/config";
 
 project Image is
 
    for Source_Dirs use ("src");
    for Object_Dir use "obj";
-
    for Library_Dir use "lib";
    for Library_Name use "v2p_image";
    for Library_Kind use "static";
@@ -34,3 +34,4 @@ project Image is
    package Compiler renames Shared.Compiler;
 
 end Image;
+
