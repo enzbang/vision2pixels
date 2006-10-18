@@ -49,7 +49,7 @@ package body Image.Data is
    --  Init_Image_Data  --
    -----------------------
 
-   procedure Init_Image_Data
+   procedure Init
      (Img      : in out Image_Data;
       Filename : in     String;
       Category : in     String) is
@@ -97,7 +97,7 @@ package body Image.Data is
    exception
       when G2F.Image_IO.Read_Image_Error =>
          Put_Line ("Read image error - Thumbnail has not been created");
-   end Init_Image_Data;
+   end Init;
 
    ------------------
    --  Initialize  --
