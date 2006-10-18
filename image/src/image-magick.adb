@@ -44,8 +44,12 @@ package body Image.Magick is
          Y_Length := Size.Y;
       end if;
 
-      Thumb := G2F.Image_Resize.Resize_Image
-        (Img, (X_Length, Y_Length), G2F.Image_Resize.Mitchell, 0.0);
+      --  Thumb := G2F.Image_Resize.Resize_Image
+      --  (Img, (X_Length, Y_Length), G2F.Image_Resize.Mitchell, 0.0);
+
+      Thumb := G2F.Image_Resize.Thumbnail_Image
+        (Img, (X_Length, Y_Length));
+
       return Thumb;
    end Thumbnail;
 
