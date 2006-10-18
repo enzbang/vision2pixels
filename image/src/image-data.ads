@@ -37,7 +37,7 @@ package Image.Data is
    procedure Finalize (Img : in Image_Data);
    --  Destroys Image
 
-   procedure Init_Image_Data
+   procedure Init
       (Img      : in out Image_Data;
        Filename : in     String;
        Category : in     String);

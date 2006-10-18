@@ -32,7 +32,7 @@ begin
 
    --  Read image info and create thumbnail
 
-   Image.Data.Init_Image_Data (Test_Image, In_Filename, Category);
+   Image.Data.Init (Test_Image, In_Filename, Category);
 
    G2F.Destroy_Magick;
 end Test_Image1;
