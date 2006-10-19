@@ -19,20 +19,23 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
-with G2F;
-with Image.Data;
+with Ada.Strings.Unbounded;
+use Ada.Strings.Unbounded;
 
-procedure Test_Image1 is
+with AUnit.Test_Cases;
+use AUnit.Test_Cases;
 
-   In_Filename : constant String := "adapowered.jpg";
-   Category    : constant String := "Test";
-   Test_Image  : Image.Data.Image_Data;
+package Image_Tests.Thumbnails is
 
-begin
+   type Test_Case is new AUnit.Test_Cases.Test_Case with null record;
 
-   --  Read image info and create thumbnail
+   procedure Register_Tests (T : in out Test_Case);
+   --  Register routines to be run
 
-   Image.Data.Init (Test_Image, In_Filename, Category);
+   procedure Tear_Down (T : in out Test_Case);
+   --  Releases all resources
 
-   G2F.Destroy_Magick;
-end Test_Image1;
+   function Name (T : Test_Case) return String_Access;
+   --  Returns name identifying the test case
+
+end Image_Tests.Thumbnails;
