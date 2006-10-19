@@ -19,39 +19,17 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
-with "../shared";
-with "image";
-with "aunit";
+with AUnit.Test_Suites;
+with Image_Tests.Thumbnails;
 
-project Image_Test is
+use AUnit.Test_Suites;
 
-   for Source_Dirs use ("test");
-   for Object_Dir use "test";
-   for Main use ("image_harness");
+pragma Style_Checks (Off);
 
-   --------------
-   -- Compiler --
-   --------------
-
-   package Compiler renames Shared.Compiler;
-
-   ------------
-   -- Binder --
-   ------------
-
-   package Binder renames Shared.Binder;
-
-   ------------
-   -- Linker --
-   ------------
-
-   package Linker is
-      case Shared.OS is
-         when "Windows_NT" =>
-            for Default_Switches ("Ada") use ("-lMagick", "-lgdi32");
-         when others =>
-            null;
-      end case;
-   end Linker;
-
-end Image_Test;
+function Image_Suite return Access_Test_Suite is
+   Result : Access_Test_Suite := new Test_Suite;
+   pragma Warnings (Off, Result);
+begin
+   Add_Test (Result, new Image_Tests.Thumbnails.Test_Case);
+   return Result;
+end Image_Suite;
