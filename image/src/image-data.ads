@@ -31,12 +31,6 @@ package Image.Data is
 
    Thumbnail_Size : constant G2F.IO.Image_Size := (150, 150);
 
-   procedure Initialize (Img : in out Image_Data);
-   --  Initialize Image_Ptr and Image_Info_Ptr structures
-
-   procedure Finalize (Img : in Image_Data);
-   --  Destroys Image
-
    procedure Init
       (Img      : in out Image_Data;
        Filename : in     String;
@@ -45,11 +39,16 @@ package Image.Data is
 
 private
 
-   type Image_Data is new Ada.Finalization.Controlled with
-      record
-         Info_Ptr  : G2F.Image_Info_Ptr;
-         Image_Ptr : G2F.Image_Ptr;
-         Category  : Unbounded_String;
-      end record;
+   type Image_Data is new Ada.Finalization.Controlled with record
+      Info_Ptr  : G2F.Image_Info_Ptr;
+      Image_Ptr : G2F.Image_Ptr;
+      Category  : Unbounded_String;
+   end record;
+
+   overriding procedure Initialize (Img : in out Image_Data);
+   --  Initialize Image_Ptr and Image_Info_Ptr structures
+
+   overriding procedure Finalize (Img : in out Image_Data);
+   --  Destroys Image
 
 end Image.Data;

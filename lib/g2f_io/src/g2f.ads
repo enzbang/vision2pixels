@@ -136,24 +136,23 @@ package G2F is
       Bessel_Filter    => 14,
       Sinc_Filter      => 15);
 
-   type Channel_Type is (
-      UndefinedChannel,
-      RedChannel, -- = 0x0001,
-      GrayChannel, --  = 0x0001,
-      CyanChannel, -- = 0x0001,
-      GreenChannel, -- = 0x0002,
-      MagentaChannel, -- = 0x0002,
-      BlueChannel, -- = 0x0004,
-      YellowChannel, -- = 0x0004,
-      AlphaChannel, -- = 0x0008,
-      OpacityChannel, -- = 0x0008,
-      MatteChannel, -- = 0x0008,  -- Deprecated
-      BlackChannel, -- = 0x0020,
-      IndexChannel, -- = 0x0020,
-      AllChannels -- = 0xff
-     );
+   type Channel_Type is new C.Int;
    pragma Convention (C, Channel_Type);
-   --  for Channel_Type use (???);
+
+   UndefinedChannel : constant := 16#0000#;
+   RedChannel       : constant := 16#0001#;
+   GrayChannel      : constant := 16#0001#;
+   CyanChannel      : constant := 16#0001#;
+   GreenChannel     : constant := 16#0002#;
+   MagentaChannel   : constant := 16#0002#;
+   BlueChannel      : constant := 16#0004#;
+   YellowChannel    : constant := 16#0004#;
+   AlphaChannel     : constant := 16#0008#;
+   OpacityChannel   : constant := 16#0008#;
+   MatteChannel     : constant := 16#0008#;  -- Deprecated
+   BlackChannel     : constant := 16#0020#;
+   IndexChannel     : constant := 16#0020#;
+   AllChannels      : constant := 16#00ff#;
 
    procedure Put_Magick_Exception;
    procedure Put_Image_Exception (I : in Image_Ptr);

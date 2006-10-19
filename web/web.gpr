@@ -25,7 +25,6 @@ with "../db/db_test";
 with "../image/image";
 with "../image/image_test";
 with "../lib/gnade/gnade";
-with "../lib/components/config";
 
 project Web is
 
