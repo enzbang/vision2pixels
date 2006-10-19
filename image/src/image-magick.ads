@@ -26,8 +26,8 @@ package Image.Magick is
    use G2F;
 
    function Thumbnail
-     (Img   : G2F.Image_Ptr;
-      Size  : G2F.IO.Image_Size)
-     return G2F.Image_Ptr;
+     (Img  : G2F.Image_Ptr;
+      Size : G2F.IO.Image_Size)
+      return G2F.Image_Ptr;
 
 end Image.Magick;

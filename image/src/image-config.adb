@@ -19,19 +19,15 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
-with Ada.Exceptions;
 with Config;
 
 package body Image.Config is
-
-   use Ada.Exceptions;
 
    Config_File : constant String := "v2p-image.ini";
 
    Configured : Boolean := False;
 
-   type Config_Parameters is
-     (Images_Path, Thumbs_Path);
+   type Config_Parameters is (Images_Path, Thumbs_Path);
 
    package Image_Config is new Standard.Config (Config_Parameters);
 
@@ -44,9 +40,8 @@ package body Image.Config is
       if Configured then
          return Image_Config.Get_Value (Images_Path);
       else
-         Raise_Exception
-           (Constraint_Error'Identity,
-            "(Images_Path) : Image module not configured");
+         raise Constraint_Error
+           with "(Images_Path) : Image module not configured";
       end if;
    end Images_Path;
 
@@ -59,11 +54,11 @@ package body Image.Config is
       if Configured then
          return Image_Config.Get_Value (Thumbs_Path);
       else
-         Raise_Exception
-           (Constraint_Error'Identity,
-            "(Thumbs_Path) : Image module not configured");
+         raise Constraint_Error
+           with "(Thumbs_Path) : Image module not configured";
       end if;
    end Thumbs_Path;
+
 begin
    Image_Config.IO.Open (Config_File);
    Configured := True;

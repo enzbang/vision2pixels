@@ -121,7 +121,7 @@ package body G2F.Image_Resize is
       function C_Scale_Image
         (I             : in Image_Ptr;
          Columns, Rows : in G2F.IO.Image_Size_T;
-         E    : in Exception_Info_Ptr := Ex_Info_Ptr)
+         E             : in Exception_Info_Ptr := Ex_Info_Ptr)
          return          Image_Ptr;
       pragma Import (C, C_Scale_Image, "ScaleImage");
       Mon_Image : Image_Ptr := null;
@@ -142,7 +142,7 @@ package body G2F.Image_Resize is
       function C_Thumbnail_Image
         (I             : in Image_Ptr;
          Columns, Rows : in G2F.IO.Image_Size_T;
-         E    : in Exception_Info_Ptr := Ex_Info_Ptr)
+         E             : in Exception_Info_Ptr := Ex_Info_Ptr)
          return          Image_Ptr;
       pragma Import (C, C_Thumbnail_Image, "ThumbnailImage");
       Mon_Image : Image_Ptr := null;

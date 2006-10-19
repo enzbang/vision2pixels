@@ -19,25 +19,26 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
-with G2F.Image_IO;
-with Image.Magick;
-with Image.Config;
 with Ada.Text_IO;
 with Ada.Directories;
 
+with G2F.Image_IO;
+with Image.Magick;
+with Image.Config;
+
 package body Image.Data is
 
+   use Ada.Text_IO;
+   use Ada.Directories;
    use G2F;
    use G2F.IO;
    use G2F.Image_IO;
-   use Ada.Text_IO;
-   use Ada.Directories;
 
    ----------------
    --  Finalize  --
    ----------------
 
-   procedure Finalize (Img : in Image_Data) is
+   procedure Finalize (Img : in out Image_Data) is
       Info_Ptr : Image_Info_Ptr := Img.Info_Ptr;
       Img_Ptr  : Image_Ptr      := Img.Image_Ptr;
    begin
@@ -45,22 +46,23 @@ package body Image.Data is
       Destroy_Image_Info (Info_Ptr);
    end Finalize;
 
-   -----------------------
-   --  Init_Image_Data  --
-   -----------------------
+   ----------
+   -- Init --
+   ----------
 
    procedure Init
      (Img      : in out Image_Data;
       Filename : in     String;
-      Category : in     String) is
-      Thumb : Image_Ptr;
+      Category : in     String)
+   is
+      Thumb      : Image_Ptr;
       Thumb_Info : Image_Info_Ptr;
-      Thumb_Name : constant String
-        := Image.Config.Thumbs_Path
-        & "/" & Category & "/" & Simple_Name (Filename);
-      Image_Name : constant String
-        := Image.Config.Images_Path
-        & "/" & Category & "/" & Simple_Name (Filename);
+      Thumb_Name : constant String :=
+                     Image.Config.Thumbs_Path
+                       & "/" & Category & "/" & Simple_Name (Filename);
+      Image_Name : constant String :=
+                     Image.Config.Images_Path
+                       & "/" & Category & "/" & Simple_Name (Filename);
    begin
 
       if not Exists (Containing_Directory (Thumb_Name)) then
@@ -108,6 +110,7 @@ package body Image.Data is
    begin
       Img.Info_Ptr := Clone_Image_Info (Info);
    end Initialize;
+
 begin
    if not Exists (Image.Config.Images_Path) then
       Create_Path (Image.Config.Images_Path);
@@ -116,5 +119,4 @@ begin
    if not Exists (Image.Config.Thumbs_Path) then
       Create_Path (Image.Config.Thumbs_Path);
    end if;
-
 end Image.Data;
