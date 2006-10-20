@@ -19,12 +19,14 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
-package Image.Config is
+with "jpeg";
+with "gdi";
 
-   function Images_Path return String;
-   --  Returns the path to the images
+project Magick is
+   for Source_Files use ();
 
-   function Thumbs_Path return String;
-   --  Returns the path to the thumbnails
-
-end Image.Config;
+   for Library_Dir use "lib";
+   for Library_Name use "Magick";
+   for Library_Kind use "static";
+   for Externally_Built use "true";
+end Magick;

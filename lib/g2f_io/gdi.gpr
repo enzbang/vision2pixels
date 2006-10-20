@@ -19,32 +19,19 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
-with "../shared";
-with "image";
-with "aunit";
+with "../../shared";
 
-project Image_Test is
+project gdi is
+   for Source_Files use ();
 
-   for Source_Dirs use ("test");
-   for Object_Dir use "test";
-   for Main use ("image_harness");
+   case Shared.OS is
+      when "Windows_NT" =>
+         for Library_Dir use "lib";
+         for Library_Name use "gdi32";
+         for Library_Kind use "static";
+         for Externally_Built use "true";
+      when others =>
+         null;
+   end case;
 
-   --------------
-   -- Compiler --
-   --------------
-
-   package Compiler renames Shared.Compiler;
-
-   ------------
-   -- Binder --
-   ------------
-
-   package Binder renames Shared.Binder;
-
-   ------------
-   -- Linker --
-   ------------
-
-   package Linker renames Shared.Linker;
-
-end Image_Test;
+end gdi;

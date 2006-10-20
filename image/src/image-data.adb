@@ -24,7 +24,7 @@ with Ada.Directories;
 
 with G2F.Image_IO;
 with Image.Magick;
-with Image.Config;
+with Settings;
 
 package body Image.Data is
 
@@ -58,13 +58,12 @@ package body Image.Data is
       Thumb      : Image_Ptr;
       Thumb_Info : Image_Info_Ptr;
       Thumb_Name : constant String :=
-                     Image.Config.Thumbs_Path
+                     Settings.Get_Thumbs_Path
                        & "/" & Category & "/" & Simple_Name (Filename);
       Image_Name : constant String :=
-                     Image.Config.Images_Path
+                     Settings.Get_Images_Path
                        & "/" & Category & "/" & Simple_Name (Filename);
    begin
-
       if not Exists (Containing_Directory (Thumb_Name)) then
          Create_Path (Containing_Directory (Thumb_Name));
       end if;
@@ -112,11 +111,11 @@ package body Image.Data is
    end Initialize;
 
 begin
-   if not Exists (Image.Config.Images_Path) then
-      Create_Path (Image.Config.Images_Path);
+   if not Exists (Settings.Get_Images_Path) then
+      Create_Path (Settings.Get_Images_Path);
    end if;
 
-   if not Exists (Image.Config.Thumbs_Path) then
-      Create_Path (Image.Config.Thumbs_Path);
+   if not Exists (Settings.Get_Thumbs_Path) then
+      Create_Path (Settings.Get_Thumbs_Path);
    end if;
 end Image.Data;

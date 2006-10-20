@@ -20,6 +20,7 @@
 ------------------------------------------------------------------------------
 
 with "../../shared";
+with "magick";
 
 project G2F is
 
@@ -39,6 +40,10 @@ project G2F is
 
    Release_Options :=
      ("-O2");
+
+   --------------
+   -- Compiler --
+   --------------
 
    package Compiler is
 
