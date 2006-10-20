@@ -30,6 +30,9 @@ project Shared is
    type OS_Type is ("UNIX", "Windows_NT");
    OS : OS_Type := external ("OS", "UNIX");
 
+   ImageMagick_Lib := "/opt/magick/lib";
+   Jpeg_Lib        := "/opt/jpeg/lib";
+
    --------------
    -- Compiler --
    --------------
@@ -63,5 +66,14 @@ project Shared is
    package Binder is
       for Default_Switches ("Ada") use ("-E");
    end Binder;
+
+   ------------
+   -- Linker --
+   ------------
+
+   package Linker is
+      for Default_Switches ("Ada") use 
+         ("-L" & ImageMagick_Lib, "-L" & Jpeg_Lib);
+   end Linker;
 
 end Shared;
