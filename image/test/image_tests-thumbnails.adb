@@ -25,7 +25,7 @@ with Ada.Directories;
 
 with G2F;
 with Image.Data;
-with Image.Config;
+with Settings;
 
 use AUnit.Test_Cases.Registration;
 use AUnit.Assertions;
@@ -46,7 +46,7 @@ package body Image_Tests.Thumbnails is
       Test_Image  : Image.Data.Image_Data;
 
       Out_Directory : constant String :=
-         Ada.Directories.Compose (Image.Config.Thumbs_Path, Category);
+         Ada.Directories.Compose (Settings.Get_Thumbs_Path, Category);
       Out_Filename  : constant String :=
          Ada.Directories.Compose (Out_Directory, In_Filename);
    begin
