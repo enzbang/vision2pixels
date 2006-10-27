@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>@_PAGE_TITLE_@</title>
+  </head>
+  <body>
+
+    <div id="main_image">
+      <img alt="@_IMAGE_DESCRIPTION_@" src="@_IMAGE_SOURCE_@"/>
+    </div>
+
+
+    <!--
+@@TABLE@@
+    -->
+
+    <div id="level_@_COMMENT_LEVEL_@">
+      <h2 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h2>
+      <p>Posté par
+      <a href="@_AUTHOR_PAGE_@" >@__AUTHOR_@</a>
+      le @_COMMENT_DATE_@.
+      </p>
+      <p>@_COMMENT_BODY_@</p>
+
+      <!--
+      @@IF@@ @_NB_LEVELS_TO_CLOSE@ > 0
+      @_REPEAT("</div>"):_NB_LEVELS_TO_CLOSE@
+      @@END_IF@@
+      -->
+
+    <!--
+@@END_TABLE@@
+    -->
+
+    <address>Written by <a href="mailto:pascal@obry.net">Pascal Obry</a> and <a href="mailto:v2p@ramonat.fr">Olivier Ramonat</a></address>
+
+  </body>
+</html>
