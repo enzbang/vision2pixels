@@ -1,0 +1,12 @@
+@@IF@@ @_LOGIN_@ = ""
+@@-- Login failed
+<response>
+   <replace id="status_bar">impossible de se connecter</replace>
+</response>
+@@ELSE@@
+@@-- Login OK
+<response>
+   <replace id="status_bar">login ok</replace>
+   <replace id="login">@_LOGIN_@</replace>
+</response>
+@@END_IF@@

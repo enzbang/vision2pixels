@@ -19,69 +19,9 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
-project Shared is
+package V2P.Web_Server is
 
-   for Source_Dirs use ();
-   --  No sources for this project
+   procedure Start;
+   --  Start the Web Server, port is taken from the ini file
 
-   type Build_Type is ("Debug", "Release");
-   Build : Build_Type := external ("PRJ_BUILD", "Release");
-
-   type OS_Type is ("UNIX", "Windows_NT");
-   OS : OS_Type := external ("OS", "UNIX");
-
-   ImageMagick_Lib := "/opt/magick/lib";
-   Jpeg_Lib        := "/opt/jpeg/lib";
-
-   -------------
-   -- Builder --
-   -------------
-
-   package Builder is
-      for Default_Switches ("Ada") use ("-m");
-   end Builder;
-
-   --------------
-   -- Compiler --
-   --------------
-
-   Common_Options  :=
-     ("-gnat05", "-gnatwcfijkmruv", "-gnaty3abcefhiklmnoprstx", "-Wall");
-   --  Common options used for the Debug and Release modes
-
-   Debug_Options   :=
-     ("-g", "-gnata", "-gnatVa", "-gnatQ", "-gnato", "-gnatwe");
-
-   Release_Options :=
-     ("-O2", "-gnatn");
-
-   package Compiler is
-
-      case Build is
-         when "Debug" =>
-            for Default_Switches ("Ada") use Common_Options & Debug_Options;
-
-         when "Release" =>
-            for Default_Switches ("Ada") use Common_Options & Release_Options;
-      end case;
-
-   end Compiler;
-
-   ------------
-   -- Binder --
-   ------------
-
-   package Binder is
-      for Default_Switches ("Ada") use ("-E");
-   end Binder;
-
-   ------------
-   -- Linker --
-   ------------
-
-   package Linker is
-      for Default_Switches ("Ada") use
-         ("-L" & ImageMagick_Lib, "-L" & Jpeg_Lib);
-   end Linker;
-
-end Shared;
+end V2P.Web_Server;

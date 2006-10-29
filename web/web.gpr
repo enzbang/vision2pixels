@@ -19,6 +19,8 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
+with "aws";
+
 with "../shared";
 with "../db/db";
 with "../db/db_test";
@@ -34,11 +36,23 @@ project Web is
    for Exec_Dir use "bin";
    for Main use ("vision2pixels.adb");
 
+   -------------
+   -- Builder --
+   -------------
+
+   package Builder renames Shared.Builder;
+
    --------------
    -- Compiler --
    --------------
 
    package Compiler renames Shared.Compiler;
+
+   ------------
+   -- Binder --
+   ------------
+
+   package Binder renames Shared.Binder;
 
    ------------
    -- Linker --

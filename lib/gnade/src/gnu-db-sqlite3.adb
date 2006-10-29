@@ -36,11 +36,16 @@ package body GNU.DB.SQLite3 is
    pragma Inline(To_Ada);
 
    function To_Ada
-     (Thing : CS.Chars_Ptr)
+     (Thing : CS.chars_ptr)
       return string
    is
+      use type CS.chars_ptr;
    begin
-      return CS.Value(Thing);
+      if Thing = CS.Null_Ptr then
+         return "";
+      else
+         return CS.Value (Thing);
+      end if;
    end To_Ada;
    pragma Inline(To_Ada);
 
