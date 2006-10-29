@@ -160,7 +160,7 @@ package body DB.SQLite is
       pragma Assert (Iter in Iterator);
 
       Iterator (Iter).H := DB;
-      Iterator (Iter).More := True;
+      Iterator (Iter).More := False;
 
       Check_Result
         ("prepare_select",

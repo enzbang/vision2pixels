@@ -58,7 +58,7 @@ package DB is
    type Iterator is abstract tagged private;
 
    package String_Vectors is
-     new Containers.Indefinite_Vectors (Natural, String);
+     new Containers.Indefinite_Vectors (Positive, String);
 
    procedure Prepare_Select
      (DB   : in     Handle;

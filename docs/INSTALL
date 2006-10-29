@@ -1,17 +1,22 @@
 
 Some notes for building Vision2Pixels from sources.
 
-Vision2Pixels needs some libraries:
+Vision2Pixels needs some support libraries:
 
    * ImageMagick (required)
 
      Tested with ImageMagick 6.2.4.
 
+   * JPEG (required for ImageMagick JPEG support)
+
+     Tested with JPEG v6b
+
    * SQLite3 (optional)
 
      Needed only if using the SQLite3 database and not the ODBC
      support. With ODBC it is possible to use any databases
-     like MySQL, PostgreSQL for example.
+     like PostgreSQL or MySQL for example.
+
 
 Building
 --------
@@ -33,9 +38,9 @@ Building libraries
 
    V2P requires at least the JPEG support. 
 
-   - building jpegsrc.v2b.tar.gz :
+   - building jpegsrc.v6b.tar.gz :
 
-   $ tar xfz jpegsrc.v2b.tar.gz
+   $ tar xfz jpegsrc.v6b.tar.gz
    $ cd jpeg-6b
    $ prefix=/opt/jpeg
    $ ./configure --prefix=$prefix --build=i686-pc-mingw32
@@ -68,3 +73,4 @@ Building libraries
 	--enable-delegate-build
 
    $ make
+   $ make install

@@ -19,7 +19,17 @@
 --  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
 ------------------------------------------------------------------------------
 
+with Ada.Text_IO;
+with Ada.Exceptions;
+
+with V2P.Web_Server;
+
 procedure Vision2Pixels is
+   use Ada;
 begin
-   null;
+   V2P.Web_Server.Start;
+
+exception
+   when E : others =>
+      Text_IO.Put_Line (Exceptions.Exception_Information (E));
 end Vision2Pixels;

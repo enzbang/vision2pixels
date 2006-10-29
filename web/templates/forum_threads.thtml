@@ -1,0 +1,33 @@
+@@INCLUDE@@ ../we_js/aws.tjs
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Liste des Forum</title>
+  </head>
+  <body>
+
+  <div id="status_bar">uuuuuuuu</div>
+
+  @_LAZY_LOGIN_@
+
+    <!--
+@@TABLE@@
+    -->
+
+    <div id="entry">
+      <p><a href="/forum/entry?ID=@_ID_@">@_NAME_@</a></p>
+      <p>@_CATEGORY_@</p>
+      <p>@_COMMENT_COUNTER_@</p>
+    </div>
+
+    <!--
+@@END_TABLE@@
+    -->
+
+    @@INCLUDE@@ footer.html
+
+  </body>
+</html>
