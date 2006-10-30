@@ -4,8 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>Liste des Forum</title>
-@@INCLUDE@@ ../we_js/aws.tjs
-@@--
+    @@INCLUDE@@ ../we_js/aws.tjs
   </head>
   <body>
 
