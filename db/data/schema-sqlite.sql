@@ -12,7 +12,7 @@ create table "template" (
 
 create table "comment" (
 "id" integer not null primary key autoincrement,
-"date" date not null ,
+"date" date default current_timestamp,
 "parent" integer null ,
 "user_login" varchar( 50 ) not null ,
 "comment" longtext not null ,
@@ -31,7 +31,7 @@ create table "photo" (
 "name" varchar(100) not null,
 "filename" varchar(512) not null unique,
 "category_id" integer not null,
-"date_publication" date not null,
+"date_publication" date default current_timestamp,
 "last_comment_id" integer,
 "template_id" integer not null,
 "visit_counter" integer not null,

@@ -7,7 +7,7 @@ INITIAL_DATA="initial-data.sql"
 
 SQLITE=sqlite3
 
-rm ${DATABASE_NAME}
+rm -f ${DATABASE_NAME}
 
 ${SQLITE} ${DATABASE_NAME} < ${SCHEMA_DB}
 ${SQLITE} ${DATABASE_NAME} < ${INITIAL_DATA}
