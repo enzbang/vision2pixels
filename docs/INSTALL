@@ -34,7 +34,7 @@ Building libraries
    this has not been tested.
 
    Note also that we build only the static libraries. Shared libraries are
-   note supported for now.
+   not supported for now.
 
    V2P requires at least the JPEG support. 
 
