@@ -71,7 +71,8 @@ package body V2P.Database is
         (Iter,
          "select photo.name, category.name, photo.filename"
          & " from photo, category "
-         & " where photo.id='" & Id & "' and photo.category_id = category.id");
+         & " where photo.id='" & Id
+         & "' and photo.category_id = category.id");
 
       if Iter.More then
          Iter.Get_Line (Line);
