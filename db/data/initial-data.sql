@@ -3,16 +3,19 @@
 insert into user values ('enzbang', 'password', 'v2p@ramonat.fr');
 insert into user values ('turbo', 'turbopass', 'v2p@obry.net');
 
+--  Create forums
 
---  Create category
+insert into forum values (1, "Forum photographies");
 
-insert into category values (1, 'Test');
+--  Create categories
 
---  Create template
+insert into category values (1, 1, 'Test');
+
+--  Create templates
 
 insert into template values (1, 'mytemplate', 'V2P Template');
 
---  Create photo
+--  Create photos
 
 insert into photo
  ('name', 'filename', 'category_id',
