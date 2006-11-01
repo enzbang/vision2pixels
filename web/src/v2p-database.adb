@@ -24,6 +24,7 @@ with DB;
 with V2P.DB_Handle;
 with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Forum_Threads;
+with V2P.Template_Defs.Forum_List;
 with V2P.Template_Defs.Block_Login;
 
 package body V2P.Database is
@@ -119,6 +120,40 @@ package body V2P.Database is
       return Set;
    end Get_Entry;
 
+   ----------------
+   -- Get_Forums --
+   ----------------
+
+   function Get_Forums return Templates.Translate_Set is
+      use type Templates.Tag;
+
+      Set  : Templates.Translate_Set;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+      Id   : Templates.Tag;
+      Name : Templates.Tag;
+   begin
+      Connect;
+
+      DBH.Prepare_Select (Iter, "select id, name from forum");
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+
+         Id   := Id & DB.String_Vectors.Element (Line, 1);
+         Name := Name & DB.String_Vectors.Element (Line, 2);
+
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert (Set, Templates.Assoc (Forum_List.Id, Id));
+      Templates.Insert (Set, Templates.Assoc (Forum_List.Name, Name));
+
+      return Set;
+   end Get_Forums;
+
    ------------------
    -- Get_Password --
    ------------------
@@ -153,7 +188,8 @@ package body V2P.Database is
    -- Get_Threads --
    -----------------
 
-   function Get_Threads return Templates.Translate_Set is
+   function Get_Threads
+     (Forum_Id : in String) return Templates.Translate_Set is
       use type Templates.Tag;
 
       Set      : Templates.Translate_Set;
@@ -170,7 +206,8 @@ package body V2P.Database is
         (Iter,
          "select photo.id, photo.name, category.name, comment_counter"
          & " from photo, category"
-         & " where photo.category_id = category.id");
+         & " where photo.category_id = category.id"
+         & " and category.forum_id = '" & Forum_Id & "'");
 
       while Iter.More loop
          Iter.Get_Line (Line);

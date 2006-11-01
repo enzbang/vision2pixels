@@ -33,6 +33,7 @@ with AWS.Templates;
 with V2P.Database;
 with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Forum_Threads;
+with V2P.Template_Defs.Forum_List;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.R_Block_Login;
 
@@ -53,12 +54,27 @@ package body V2P.Web_Server is
    function WEJS_Callback (Request : in Status.Data) return Response.Data;
    --  Web Element JavaScript callback
 
+   function CSS_Callback (Request : in Status.Data) return Response.Data;
+   --  Web Element CSS callback
+
    function Final_Parse
      (Request           : in Status.Data;
       Template_Filename : in String;
       Translations      : in Templates.Translate_Set) return Response.Data;
    --  Parsing routines used for all V2P templates. This routine add supports
    --  for lazy tags.
+
+   ------------------
+   -- CSS_Callback --
+   ------------------
+
+   function CSS_Callback (Request : in Status.Data) return Response.Data is
+      URI  : constant String := Status.URI (Request);
+      File : constant String := URI (URI'First + 1 .. URI'Last);
+   begin
+      return Response.File (MIME.Content_Type (File), File);
+   end CSS_Callback;
+
 
    -----------------
    -- Final_Parse --
@@ -123,7 +139,14 @@ package body V2P.Web_Server is
          return Final_Parse
            (Request,
             Template_Defs.Forum_Threads.Template,
-            Database.Get_Threads);
+            Database.Get_Threads
+              (Parameters.Get (P, Template_Defs.Forum_Threads.HTTP.Id)));
+
+      elsif URI = "/forum/list" then
+         return Final_Parse
+           (Request,
+            Template_Defs.Forum_List.Template,
+            Database.Get_Forums);
 
       elsif URI = "/forum/entry" then
          return Final_Parse
@@ -180,6 +203,12 @@ package body V2P.Web_Server is
         (Main_Dispatcher,
          "/we_js",
          Action => Dispatchers.Callback.Create (WEJS_Callback'Access),
+         Prefix => True);
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         "/css",
+         Action => Dispatchers.Callback.Create (CSS_Callback'Access),
          Prefix => True);
 
       Server.Log.Start (HTTP);

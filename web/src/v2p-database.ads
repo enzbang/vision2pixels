@@ -25,9 +25,11 @@ package V2P.Database is
 
    use AWS;
 
-   function Get_Threads return Templates.Translate_Set;
+   function Get_Forums return Templates.Translate_Set;
+   --  Returns the forum list
+
+   function Get_Threads (Forum_Id : in String) return Templates.Translate_Set;
    --  Returns all threads for a given forum
-   --  ??? we will need to select a forum
 
    function Get_Entry (Id : in String) return Templates.Translate_Set;
    --  Returns the full content of the entry Id
