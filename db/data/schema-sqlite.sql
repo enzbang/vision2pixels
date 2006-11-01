@@ -21,9 +21,16 @@ foreign key ("user_login") references user("login"),
 foreign key ("parent") references comment("id")
 );
 
-create table "category" (
+create table "forum" (
 "id" integer not null primary key autoincrement,
 "name" varchar(100) not null
+);
+
+create table "category" (
+"id" integer not null primary key autoincrement,
+"forum_id" integer not null,
+"name" varchar(100) not null,
+foreign key ("forum_id") references photo("id")
 );
 
 create table "photo" (
