@@ -56,13 +56,16 @@ package body V2P.Database is
 
    function Get_Entry (Id : in String) return Templates.Translate_Set is
       use type Templates.Tag;
-      Set      : Templates.Translate_Set;
-      Iter     : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line     : DB.String_Vectors.Vector;
-      User     : Templates.Tag;
-      Date     : Templates.Tag;
-      Comment  : Templates.Tag;
-      Filename : Templates.Tag;
+      Set                : Templates.Translate_Set;
+      Iter               : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line               : DB.String_Vectors.Vector;
+      Comment_Id         : Templates.Tag;
+      Comment_Level      : Templates.Tag;
+      Nb_Levels_To_Close : Templates.Tag;
+      User               : Templates.Tag;
+      Date               : Templates.Tag;
+      Comment            : Templates.Tag;
+      Filename           : Templates.Tag;
    begin
       Connect;
 
@@ -93,7 +96,7 @@ package body V2P.Database is
 
       DBH.Prepare_Select
         (Iter,
-         "select date, user_login, comment, filename"
+         "select comment.id, date, user_login, comment, filename"
          & " from comment, photo_comment"
          & " where photo_id='" & Id
          & "' and photo_comment.comment_id=comment.id");
@@ -101,19 +104,32 @@ package body V2P.Database is
       while Iter.More loop
          Iter.Get_Line (Line);
 
-         Date     := Date     & DB.String_Vectors.Element (Line, 1);
-         User     := User     & DB.String_Vectors.Element (Line, 2);
-         Comment  := Comment  & DB.String_Vectors.Element (Line, 3);
-         Filename := Filename & DB.String_Vectors.Element (Line, 4);
+         Comment_Id := Comment_Id & DB.String_Vectors.Element (Line, 1);
+         Date       := Date       & DB.String_Vectors.Element (Line, 2);
+         User       := User       & DB.String_Vectors.Element (Line, 3);
+         Comment    := Comment    & DB.String_Vectors.Element (Line, 4);
+         Filename   := Filename   & DB.String_Vectors.Element (Line, 5);
+
+         --  Unthreaded view
+
+         Comment_Level      := Comment_Level      & 1;
+         Nb_Levels_To_Close := Nb_Levels_To_Close & 1;
 
          Line.Clear;
       end loop;
 
       Iter.End_Select;
 
+      Templates.Insert
+        (Set, Templates.Assoc (Forum_Entry.Comment_Id, Comment_Id));
       Templates.Insert (Set, Templates.Assoc (Forum_Entry.Date, Date));
       Templates.Insert (Set, Templates.Assoc (Forum_Entry.User, User));
       Templates.Insert (Set, Templates.Assoc (Forum_Entry.Comment, Comment));
+      Templates.Insert
+        (Set, Templates.Assoc (Forum_Entry.Comment_Level, Comment_Level));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Forum_Entry.Nb_Levels_To_Close, Nb_Levels_To_Close));
 --        Templates.Insert
 --          (Set, Templates.Assoc (Forum_Entry.File_Attachment, Filename));
 
