@@ -5,17 +5,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>@_PAGE_TITLE_@</title>
+    <link rel="stylesheet" type="text/css"
+          href="/css/v2p.css" />
+          
+
   </head>
   <body>
-
     <div id="main_image">
       <img alt="@_NAME_@" src="@_IMAGE_SOURCE_@"/>
     </div>
 
-
-    <!--
 @@TABLE@@
-    -->
 
     <div id="level_@_COMMENT_LEVEL_@">
       <h2 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h2>
@@ -25,15 +25,11 @@
       </p>
       <p>@_COMMENT_@</p>
 
-      <!--
       @@IF@@ @_NB_LEVELS_TO_CLOSE_@ > 0
       @_REPEAT("</div>"):NB_LEVELS_TO_CLOSE_@
       @@END_IF@@
-      -->
 
-    <!--
 @@END_TABLE@@
-    -->
 
     @@INCLUDE@@ footer.html
 
