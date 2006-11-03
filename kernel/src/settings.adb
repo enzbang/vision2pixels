@@ -25,7 +25,7 @@ package body Settings is
 
    Config_Filename : constant String := "v2p.ini";
 
-   type Attributes is (DB, Images_Path, Thumbs_Path);
+   type Attributes is (DB, DB_Name, Images_Path, Thumbs_Path);
 
    package Conf is new Config (Attributes);
 
@@ -39,6 +39,15 @@ package body Settings is
    begin
       return DB_Conf.Get_Value (DB);
    end Get_DB;
+
+   -----------------
+   -- Get_DB_Name --
+   -----------------
+
+   function Get_DB_Name return String is
+   begin
+      return Conf.Get_Value (DB_Name);
+   end Get_DB_Name;
 
    ---------------------
    -- Get_Images_Path --

@@ -20,6 +20,7 @@
 ------------------------------------------------------------------------------
 
 with DB;
+with Settings;
 
 with V2P.DB_Handle;
 with V2P.Template_Defs.Forum_Entry;
@@ -45,7 +46,7 @@ package body V2P.Database is
    procedure Connect is
    begin
       if not Connected then
-         DBH.Connect ("../db/data/testing.db");
+         DBH.Connect (Settings.Get_DB_Name);
          Connected := True;
       end if;
    end Connect;
@@ -260,7 +261,7 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc (Block_Login.Login, Id));
       Templates.Insert
-        (Set, Templates.Assoc (Block_Login.Password, Get_Password (Id)));
+        (Set, Templates.Assoc (Block_Login.HTTP.Password, Get_Password (Id)));
 
       return Set;
    end Get_User;
