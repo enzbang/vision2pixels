@@ -4,31 +4,30 @@
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Liste des Forum</title>
+    <title>@_BABEL_THREAD_LIST_@</title>
 @@INCLUDE@@ ../we_js/aws.tjs
 @@--
+    <link rel="stylesheet" type="text/css"
+          href="/css/v2p.css" />
+
   </head>
   <body>
 
-  <div id="status_bar">uuuuuuuu</div>
+  <div id="status_bar"></div>
 
   @_LAZY_LOGIN_@
 
-    <!--
-@@TABLE@@
-    -->
+  @@TABLE@@
 
-    <div id="entry">
-      <p><a href="/forum/entry?ID=@_ID_@">@_NAME_@</a></p>
-      <p>@_CATEGORY_@</p>
-      <p>@_COMMENT_COUNTER_@</p>
-    </div>
+  <div id="entry">
+    <p id="entry_name"><a href="/forum/entry?ID=@_ID_@">@_NAME_@</a></p>
+    <p id="entry_category">@_CATEGORY_@</p>
+    <p id="entry_comment_counter">@_COMMENT_COUNTER_@</p>
+  </div>
 
-    <!--
-@@END_TABLE@@
-    -->
-
-    @@INCLUDE@@ footer.html
+  @@END_TABLE@@
+  
+  @@INCLUDE@@ footer.html
 
   </body>
 </html>
