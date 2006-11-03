@@ -3,30 +3,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
   <head>
     <title>@_BABEL_THREAD_LIST_@</title>
-@@INCLUDE@@ ../we_js/aws.tjs
-@@--
-    <link rel="stylesheet" type="text/css"
-          href="/css/v2p.css" />
+    @@INCLUDE@@ ../we_js/aws.tjs
+    <link rel="stylesheet" type="text/css" href="/css/v2p.css"/>
   </head>
+
   <body>
+    <div id="status_bar"></div>
 
-  <div id="status_bar"></div>
+    @_LAZY_LOGIN_@
 
-  @_LAZY_LOGIN_@
-
-  @@TABLE@@
-
-  <div id="entry">
-    <p id="entry_name"><a href="/forum/entry?ID=@_ID_@">@_NAME_@</a></p>
-    <p id="entry_category">@_CATEGORY_@</p>
-    <p id="entry_comment_counter">@_COMMENT_COUNTER_@</p>
-  </div>
-
-  @@END_TABLE@@
+    @@TABLE@@
+    <div id="entry">
+      <p id="entry_name"><a href="/forum/entry?ID=@_ID_@">@_NAME_@</a></p>
+      <p id="entry_category">@_CATEGORY_@</p>
+      <p id="entry_comment_counter">@_COMMENT_COUNTER_@</p>
+    </div>
+    @@END_TABLE@@
   
-  @@INCLUDE@@ footer.html
-
+    @@INCLUDE@@ footer.html
   </body>
 </html>
