@@ -1,0 +1,6 @@
+@@SET@@ BABEL_CONNECTION_ERROR="Impossible de se connecter"
+@@SET@@ BABEL_ASK_AUTHENTICATION="Authentifiez vous :"
+@@SET@@ BABEL_LOGIN_DEFAULT_VALUE="Pseudo ou e-mail"
+@@SET@@ BABEL_LOGIN_DEFAULT_PASSWORD="Mot de passe"
+@@SET@@ BABEL_FORUM_LIST="Liste des forums : "
+@@SET@@ BABEL_THREAD_LIST="Liste des threads"

@@ -1,28 +1,29 @@
+@@INCLUDE@@ babel.thtml
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Liste des Forums</title>
+    <title>@_BABEL_FORUM_LIST_@</title>
 @@INCLUDE@@ ../we_js/aws.tjs
 @@--
+
+    <link rel="stylesheet" type="text/css"
+          href="/css/v2p.css" />
   </head>
   <body>
+    @_LAZY_LOGIN_@
+    <div id="status_bar"></div>
 
-  @_LAZY_LOGIN_@
-
-    <!--
-@@TABLE@@
-    -->
+    @@TABLE@@
 
     <div id="entry">
+      <h2>@_BABEL_FORUM_LIST_@</h2>
       <p><a href="/forum/threads?ID=@_ID_@">@_NAME_@</a></p>
     </div>
-
-    <!--
-@@END_TABLE@@
-    -->
-
+    
+    @@END_TABLE@@
+    
     @@INCLUDE@@ footer.html
 
   </body>
