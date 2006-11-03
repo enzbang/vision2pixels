@@ -26,6 +26,10 @@ package Settings is
    function Get_DB return DB_Kind;
    --  Returns the DB kind to use
 
+   function Get_DB_Name return String;
+   --  The database name, either the ODBC name or the path to the SQLite
+   --  filename.
+
    function Get_Images_Path return String;
    --  Returns the path to the images
 
