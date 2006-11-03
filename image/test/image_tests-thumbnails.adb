@@ -16,7 +16,7 @@
 --                                                                          --
 --  You should have received a copy of the GNU General Public License       --
 --  along with this library; if not, write to the Free Software Foundation, --
---  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
+--  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
 with AUnit.Test_Cases.Registration;
@@ -27,10 +27,10 @@ with G2F;
 with Image.Data;
 with Settings;
 
-use AUnit.Test_Cases.Registration;
-use AUnit.Assertions;
-
 package body Image_Tests.Thumbnails is
+
+   use AUnit.Test_Cases.Registration;
+   use AUnit.Assertions;
 
    procedure Create_Thumbnail (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  Create Thumbnails

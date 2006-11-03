@@ -16,14 +16,12 @@
 --                                                                          --
 --  You should have received a copy of the GNU General Public License       --
 --  along with this library; if not, write to the Free Software Foundation, --
---  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
+--  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded;
-use Ada.Strings.Unbounded;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-with AUnit.Test_Cases;
-use AUnit.Test_Cases;
+with AUnit.Test_Cases;      use AUnit.Test_Cases;
 
 package Image_Tests.Thumbnails is
 
