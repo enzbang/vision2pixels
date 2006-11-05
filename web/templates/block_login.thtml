@@ -1,4 +1,5 @@
 @@INCLUDE@@ babel.thtml
+<div id="status_bar"></div>
 
 <div id="login">
 @@IF@@ @_LOGIN_@ = ""
@@ -12,6 +13,6 @@
 </p>
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, login_form_enter, 4=>login_form)
 @@ELSE@@
-<p>Bienvenue @_LOGIN_@</p>
+<p>@_BABEL_WELCOME_@ @_LOGIN_@</p>
 @@END_IF@@
 </div>

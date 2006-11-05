@@ -19,6 +19,9 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Exceptions;
+with Ada.Text_IO;
+
 with DB;
 with Settings;
 
@@ -30,6 +33,9 @@ with V2P.Template_Defs.Block_Login;
 
 package body V2P.Database is
 
+   use Ada;
+   use Ada.Exceptions;
+
    use V2P.Template_Defs;
 
    procedure Connect;
@@ -38,6 +44,10 @@ package body V2P.Database is
    DBH       : DB.Handle'Class := DB_Handle.Get;
 
    Connected : Boolean := False;
+
+   function Q (Str : in String) return String;
+   pragma Inline (Q);
+   --  Quote the string
 
    -------------
    -- Connect --
@@ -55,7 +65,7 @@ package body V2P.Database is
    -- Get_Entry --
    ---------------
 
-   function Get_Entry (Id : in String) return Templates.Translate_Set is
+   function Get_Entry (Tid : in String) return Templates.Translate_Set is
       use type Templates.Tag;
       Set                : Templates.Translate_Set;
       Iter               : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -76,8 +86,8 @@ package body V2P.Database is
         (Iter,
          "select photo.name, category.name, photo.filename"
          & " from photo, category "
-         & " where photo.id='" & Id
-         & "' and photo.category_id = category.id");
+         & " where photo.id=" & Q (Tid)
+         & " and photo.category_id = category.id");
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -99,8 +109,8 @@ package body V2P.Database is
         (Iter,
          "select comment.id, date, user_login, comment, filename"
          & " from comment, photo_comment"
-         & " where photo_id='" & Id
-         & "' and photo_comment.comment_id=comment.id");
+         & " where photo_id=" & Q (Tid)
+         & " and photo_comment.comment_id=comment.id");
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -165,7 +175,7 @@ package body V2P.Database is
 
       Iter.End_Select;
 
-      Templates.Insert (Set, Templates.Assoc (Forum_List.Id, Id));
+      Templates.Insert (Set, Templates.Assoc (Forum_List.Fid, Id));
       Templates.Insert (Set, Templates.Assoc (Forum_List.Name, Name));
 
       return Set;
@@ -175,16 +185,16 @@ package body V2P.Database is
    -- Get_Password --
    ------------------
 
-   function Get_Password (User : in String) return String is
+   function Get_Password (Uid : in String) return String is
       use type Templates.Tag;
 
-      Iter     : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line     : DB.String_Vectors.Vector;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
    begin
       Connect;
 
       DBH.Prepare_Select
-        (Iter, "select password from user where login='" & User & ''');
+        (Iter, "select password from user where login=" & Q (Uid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -205,8 +215,7 @@ package body V2P.Database is
    -- Get_Threads --
    -----------------
 
-   function Get_Threads
-     (Forum_Id : in String) return Templates.Translate_Set is
+   function Get_Threads (Fid : in String) return Templates.Translate_Set is
       use type Templates.Tag;
 
       Set      : Templates.Translate_Set;
@@ -224,7 +233,7 @@ package body V2P.Database is
          "select photo.id, photo.name, category.name, comment_counter"
          & " from photo, category"
          & " where photo.category_id = category.id"
-         & " and category.forum_id = '" & Forum_Id & "'");
+         & " and category.forum_id = " & Q (Fid));
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -239,7 +248,7 @@ package body V2P.Database is
 
       Iter.End_Select;
 
-      Templates.Insert (Set, Templates.Assoc (Forum_Threads.Id, Id));
+      Templates.Insert (Set, Templates.Assoc (Forum_Threads.Tid, Id));
       Templates.Insert (Set, Templates.Assoc (Forum_Threads.Name, Name));
       Templates.Insert
         (Set, Templates.Assoc (Forum_Threads.Category, Category));
@@ -253,17 +262,83 @@ package body V2P.Database is
    -- Get_User --
    --------------
 
-   function Get_User (Id : in String) return Templates.Translate_Set is
+   function Get_User (Uid : in String) return Templates.Translate_Set is
       use type Templates.Tag;
 
       Set : Templates.Translate_Set;
    begin
       Templates.Insert
-        (Set, Templates.Assoc (Block_Login.Login, Id));
+        (Set, Templates.Assoc (Block_Login.Login, Uid));
       Templates.Insert
-        (Set, Templates.Assoc (Block_Login.HTTP.Password, Get_Password (Id)));
+        (Set, Templates.Assoc (Block_Login.HTTP.Password, Get_Password (Uid)));
 
       return Set;
    end Get_User;
+
+   --------------------
+   -- Insert_Comment --
+   --------------------
+
+   procedure Insert_Comment
+     (Uid     : in String;
+      Forum   : in String;
+      Thread  : in String;
+      Name    : in String;
+      Comment : in String)
+   is
+      pragma Unreferenced (Forum);
+      pragma Unreferenced (Name);
+
+      procedure Insert_Table_Comment (User_Login, Comment : in String);
+      --  Insert row into Comment table
+
+      procedure Insert_Table_Photo_Comment (Photo_Id, Comment_Id : in String);
+      --  Insert row into Photo_Comment table
+
+      --------------------------
+      -- Insert_Table_Comment --
+      --------------------------
+
+      procedure Insert_Table_Comment (User_Login, Comment : in String) is
+         SQL : constant String :=
+                 "insert into comment ('user_login', 'comment') values ("
+                   & Q (User_Login) & ',' & Q (Comment) & ')';
+      begin
+         DBH.Execute (SQL);
+      end Insert_Table_Comment;
+
+      --------------------------------
+      -- Insert_Table_Photo_Comment --
+      --------------------------------
+
+      procedure Insert_Table_Photo_Comment
+        (Photo_Id, Comment_Id : in String)
+      is
+         SQL : constant String :=
+                 "insert into photo_comment values ("
+                   & Photo_Id & "," & Comment_Id & ')';
+      begin
+         DBH.Execute (SQL);
+      end Insert_Table_Photo_Comment;
+
+   begin
+      DBH.Begin_Transaction;
+      Insert_Table_Comment (Uid, Comment);
+      Insert_Table_Photo_Comment (Thread, DBH.Last_Insert_Rowid);
+      DBH.Commit;
+   exception
+      when E : DB.DB_Error =>
+         DBH.Rollback;
+         Text_IO.Put_Line (Exception_Message (E));
+   end Insert_Comment;
+
+   -------
+   -- Q --
+   -------
+
+   function Q (Str : in String) return String is
+   begin
+      return ''' & Str & ''';
+   end Q;
 
 end V2P.Database;

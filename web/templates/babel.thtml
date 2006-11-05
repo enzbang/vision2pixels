@@ -4,3 +4,5 @@
 @@SET@@ BABEL_LOGIN_DEFAULT_PASSWORD="Mot de passe"
 @@SET@@ BABEL_FORUM_LIST="Liste des forums : "
 @@SET@@ BABEL_THREAD_LIST="Liste des threads"
+@@SET@@ BABEL_WELCOME="Bienvenue"
+@@SET@@ BABEL_ENTER_COMMENT="placer le commentaire ici"

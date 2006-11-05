@@ -21,6 +21,7 @@
 
 with AWS.Config.Set;
 with AWS.Dispatchers.Callback;
+with AWS.Messages;
 with AWS.MIME;
 with AWS.Parameters;
 with AWS.Response;
@@ -35,7 +36,9 @@ with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Forum_Threads;
 with V2P.Template_Defs.Forum_List;
 with V2P.Template_Defs.Block_Login;
+with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.R_Block_Login;
+with V2P.Template_Defs.R_Block_New_Comment;
 
 package body V2P.Web_Server is
 
@@ -57,6 +60,10 @@ package body V2P.Web_Server is
    function CSS_Callback (Request : in Status.Data) return Response.Data;
    --  Web Element CSS callback
 
+   function New_Comment_Callback
+     (Request : in Status.Data) return Response.Data;
+   --  Enter a new comment into the database
+
    function Final_Parse
      (Request           : in Status.Data;
       Template_Filename : in String;
@@ -69,10 +76,17 @@ package body V2P.Web_Server is
    ------------------
 
    function CSS_Callback (Request : in Status.Data) return Response.Data is
-      URI  : constant String := Status.URI (Request);
-      File : constant String := URI (URI'First + 1 .. URI'Last);
+      SID          : constant Session.Id := Status.Session (Request);
+      URI          : constant String := Status.URI (Request);
+      File         : constant String := URI (URI'First + 1 .. URI'Last);
+      Translations : Templates.Translate_Set;
    begin
-      return Response.File (MIME.Content_Type (File), File);
+      Templates.Insert
+        (Translations,
+         Templates.Assoc ("LOGIN", String'(Session.Get (SID, "LOGIN"))));
+      return Response.Build
+        (MIME.Content_Type (File),
+         String'(Templates.Parse (File, Translations)));
    end CSS_Callback;
 
 
@@ -113,18 +127,35 @@ package body V2P.Web_Server is
                  String'(Templates.Parse
                    (Template_Defs.Block_Login.Template,
                       Database.Get_User (Session.Get (SID, "LOGIN"))))));
+
+         elsif Var_Name = Template_Defs.Lazy.New_Comment then
+            Templates.Insert
+              (Translations,
+               Templates.Assoc (Template_Defs.Lazy.New_Comment,
+                 String'(Templates.Parse
+                   (Template_Defs.Block_New_Comment.Template,
+                      (Templates.Assoc
+                         ("LOGIN", String'(Session.Get (SID, "LOGIN"))),
+                       Templates.Assoc ("NAME", "toto"))))));
          end if;
       end Value;
 
       LT : aliased Lazy_Tags;
 
+      Final_Translations : Templates.Translate_Set := Translations;
+
    begin
+      Templates.Insert
+        (Final_Translations,
+         Templates.Assoc ("LOGIN", String'(Session.Get (SID, "LOGIN"))));
+
       return Response.Build
         (MIME.Text_HTML,
          String'(Templates.Parse
            (Template_Filename,
-              Translations,
-              Lazy_Tag => LT'Unchecked_Access)));
+              Final_Translations,
+              Lazy_Tag => LT'Unchecked_Access)),
+         Cache_Control => Messages.Prevent_Cache);
    end Final_Parse;
 
    --------------------
@@ -132,15 +163,22 @@ package body V2P.Web_Server is
    --------------------
 
    function Forum_Callback (Request : in Status.Data) return Response.Data is
+      SID : constant Session.Id := Status.Session (Request);
       URI : constant String := Status.URI (Request);
       P   : constant Parameters.List := Status.Parameters (Request);
    begin
       if URI = "/forum/threads" then
-         return Final_Parse
-           (Request,
-            Template_Defs.Forum_Threads.Template,
-            Database.Get_Threads
-              (Parameters.Get (P, Template_Defs.Forum_Threads.HTTP.Id)));
+         declare
+            FID : constant String :=
+                    Parameters.Get (P, Template_Defs.Forum_Threads.HTTP.Fid);
+         begin
+            --  Set forum Id into the session
+            Session.Set (SID, "FID", FID);
+            return Final_Parse
+              (Request,
+               Template_Defs.Forum_Threads.Template,
+               Database.Get_Threads (FID));
+         end;
 
       elsif URI = "/forum/list" then
          return Final_Parse
@@ -149,11 +187,17 @@ package body V2P.Web_Server is
             Database.Get_Forums);
 
       elsif URI = "/forum/entry" then
-         return Final_Parse
-           (Request,
-            Template_Defs.Forum_Entry.Template,
-            Database.Get_Entry
-              (Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Id)));
+         declare
+            TID : constant String :=
+                    Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Tid);
+         begin
+            --  Set thread Id into the session
+            Session.Set (SID, "TID", TID);
+            return Final_Parse
+              (Request,
+               Template_Defs.Forum_Entry.Template,
+               Database.Get_Entry (TID));
+         end;
       end if;
 
       return Response.Build (MIME.Text_HTML, "not found!");
@@ -182,6 +226,32 @@ package body V2P.Web_Server is
              String'(Session.Get (SID, "LOGIN")))))));
    end Login_Callback;
 
+   --------------------------
+   -- New_Comment_Callback --
+   --------------------------
+
+   function New_Comment_Callback
+     (Request : in Status.Data) return Response.Data
+   is
+      SID     : constant Session.Id := Status.Session (Request);
+      P       : constant Parameters.List := Status.Parameters (Request);
+      Login   : constant String := Session.Get (SID, "LOGIN");
+      FID     : constant String := Session.Get (SID, "FID");
+      TID     : constant String := Session.Get (SID, "TID");
+      Name    : constant String := Parameters.Get (P, "NAME");
+      Comment : constant String := Parameters.Get (P, "COMMENT");
+   begin
+      Database.Insert_Comment (Login, FID, TID, Name, Comment);
+
+      return Response.Build
+        (MIME.Text_XML,
+         String'(Templates.Parse
+           (Template_Defs.R_Block_New_Comment.Template,
+              (1 => Templates.Assoc
+                 (Template_Defs.R_Block_New_Comment.Tid, TID)))),
+         Cache_Control => Messages.Prevent_Cache);
+   end New_Comment_Callback;
+
    -----------
    -- Start --
    -----------
@@ -201,6 +271,11 @@ package body V2P.Web_Server is
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
+         "/comment_form_enter",
+         Action => Dispatchers.Callback.Create (New_Comment_Callback'Access));
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
          "/we_js",
          Action => Dispatchers.Callback.Create (WEJS_Callback'Access),
          Prefix => True);
@@ -211,11 +286,12 @@ package body V2P.Web_Server is
          Action => Dispatchers.Callback.Create (CSS_Callback'Access),
          Prefix => True);
 
-      Server.Log.Start (HTTP);
+      Server.Log.Start (HTTP, Auto_Flush => True);
 
       Server.Log.Start_Error (HTTP);
 
       Config.Set.Session (Configuration, True);
+      Config.Set.Admin_URI (Configuration, "/admin");
 
       Server.Start (HTTP, Main_Dispatcher, Configuration);
 

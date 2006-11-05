@@ -1,21 +1,27 @@
-@@-- @@INCLUDE@@ babel.thtml
-
+@@INCLUDE@@ babel.thtml
+@@--
 @@IF@@ @_LOGIN_@ = ""
 @@-- Login failed
 <response>
    <replace id="status_bar">Erreur ! Impossible de se connecter</replace>
    <apply_style id="status_bar">
-     <attribute id="display" value="block" />
+     <attribute id="display" value="block"/>
+   </apply_style>
+   <apply_style id="new_comment">
+     <attribute id="display" value="none"/>
    </apply_style>
 </response>
 @@ELSE@@
 @@-- Login OK
 <response>
    <apply_style id="status_bar">
-     <attribute id="display" value="none" />
+     <attribute id="display" value="none"/>
    </apply_style>
    <replace id="login">
-     Bienvenue @_LOGIN_@
+     @_BABEL_WELCOME_@ @_LOGIN_@
    </replace>
+   <apply_style id="new_comment">
+     <attribute id="display" value="block"/>
+   </apply_style>
 </response>
 @@END_IF@@

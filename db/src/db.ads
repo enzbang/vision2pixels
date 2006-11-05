@@ -80,6 +80,9 @@ package DB is
    procedure Execute (DB : in Handle; SQL : in String) is abstract;
    --  Execute SQL request into DB
 
+   function Last_Insert_Rowid (DB : in Handle) return String is abstract;
+   --  Returns the Id of the last inserted row id
+
 private
 
    type Handle is abstract tagged null record;
