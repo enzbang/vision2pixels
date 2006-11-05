@@ -101,7 +101,9 @@ package body V2P.Web_Server is
    is
       SID : constant Session.Id := Status.Session (Request);
 
-      type Lazy_Tags is new Templates.Dynamic.Lazy_Tag with null record;
+      type Lazy_Tags is new Templates.Dynamic.Lazy_Tag with record
+         Translations : Templates.Translate_Set;
+      end record;
 
       overriding procedure Value
         (Lazy_Tag     : not null access Lazy_Tags;
@@ -118,15 +120,18 @@ package body V2P.Web_Server is
          Var_Name     : in String;
          Translations : in out Templates.Translate_Set)
       is
-         pragma Unreferenced (Lazy_Tag);
+         Local_Translations : Templates.Translate_Set := Lazy_Tag.Translations;
       begin
          if Var_Name = Template_Defs.Lazy.Login then
+            Templates.Insert
+              (Local_Translations,
+               Database.Get_User (Session.Get (SID, "LOGIN")));
+
             Templates.Insert
               (Translations,
                Templates.Assoc (Template_Defs.Lazy.Login,
                  String'(Templates.Parse
-                   (Template_Defs.Block_Login.Template,
-                      Database.Get_User (Session.Get (SID, "LOGIN"))))));
+                   (Template_Defs.Block_Login.Template, Local_Translations))));
 
          elsif Var_Name = Template_Defs.Lazy.New_Comment then
             Templates.Insert
@@ -134,15 +139,14 @@ package body V2P.Web_Server is
                Templates.Assoc (Template_Defs.Lazy.New_Comment,
                  String'(Templates.Parse
                    (Template_Defs.Block_New_Comment.Template,
-                      (Templates.Assoc
-                         ("LOGIN", String'(Session.Get (SID, "LOGIN"))),
-                       Templates.Assoc ("NAME", "toto"))))));
+                      Local_Translations))));
          end if;
       end Value;
 
-      LT : aliased Lazy_Tags;
-
       Final_Translations : Templates.Translate_Set := Translations;
+
+      LT : aliased Lazy_Tags := (Templates.Dynamic.Lazy_Tag with
+                                 Translations => Final_Translations);
 
    begin
       Templates.Insert
