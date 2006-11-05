@@ -1,4 +1,5 @@
-@@-- HTTP_GET(ID): forum Id
+@@INCLUDE@@ babel.thtml
+@@-- HTTP_GET(FID): forum Id
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -6,8 +7,8 @@
 
   <head>
     <title>@_BABEL_THREAD_LIST_@</title>
-    @@INCLUDE@@ ../we_js/aws.tjs
     <link rel="stylesheet" type="text/css" href="/css/v2p.css"/>
+    @@INCLUDE@@ ../we_js/aws.tjs
   </head>
 
   <body>
@@ -17,7 +18,7 @@
 
     @@TABLE@@
     <div id="entry">
-      <p id="entry_name"><a href="/forum/entry?ID=@_ID_@">@_NAME_@</a></p>
+      <p id="entry_name"><a href="/forum/entry?TID=@_TID_@">@_NAME_@</a></p>
       <p id="entry_category">@_CATEGORY_@</p>
       <p id="entry_comment_counter">@_COMMENT_COUNTER_@</p>
     </div>

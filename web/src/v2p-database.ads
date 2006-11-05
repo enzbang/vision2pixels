@@ -28,17 +28,25 @@ package V2P.Database is
    function Get_Forums return Templates.Translate_Set;
    --  Returns the forum list
 
-   function Get_Threads (Forum_Id : in String) return Templates.Translate_Set;
+   function Get_Threads (Fid : in String) return Templates.Translate_Set;
    --  Returns all threads for a given forum
 
-   function Get_Entry (Id : in String) return Templates.Translate_Set;
+   function Get_Entry (Tid : in String) return Templates.Translate_Set;
    --  Returns the full content of the entry Id
 
-   function Get_User (Id : in String) return Templates.Translate_Set;
+   function Get_User (Uid : in String) return Templates.Translate_Set;
    --  Returns user's Id information
 
-   function Get_Password (User : in String) return String;
+   function Get_Password (Uid : in String) return String;
    --  Returns the password for the given user. Returns the empty string if
    --  User cannot be found into the database.
+
+   procedure Insert_Comment
+     (Uid     : in String;
+      Forum   : in String;
+      Thread  : in String;
+      Name    : in String;
+      Comment : in String);
+   --  Insert comment Name/Comment into the given forum and thread
 
 end V2P.Database;

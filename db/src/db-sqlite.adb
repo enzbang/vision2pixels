@@ -137,6 +137,15 @@ package body DB.SQLite is
       Step_Internal (Iter);
    end Get_Line;
 
+   -----------------------
+   -- Last_Insert_Rowid --
+   -----------------------
+
+   function Last_Insert_Rowid (DB : in Handle) return String is
+   begin
+      return SQLite3.uint64'Image (SQLite3.Last_Insert_Rowid (DB.H));
+   end Last_Insert_Rowid;
+
    ----------
    -- More --
    ----------

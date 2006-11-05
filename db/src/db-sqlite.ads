@@ -71,6 +71,9 @@ package DB.SQLite is
    procedure Execute (DB : in Handle; SQL : in String);
    --  Execute SQL request into DB
 
+   function Last_Insert_Rowid (DB : in Handle) return String;
+   --  Returns the Id of the last inserted row id
+
 private
 
    type Handle is new DB.Handle with record

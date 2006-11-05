@@ -1,4 +1,5 @@
-@@-- HTTP_GET(ID): thread forum Id
+@@INCLUDE@@ babel.thtml
+@@-- HTTP_GET(TID): thread forum Id
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -7,9 +8,12 @@
   <head>
     <title>@_PAGE_TITLE_@</title>
     <link rel="stylesheet" type="text/css" href="/css/v2p.css"/>
+    @@INCLUDE@@ ../we_js/aws.tjs
   </head>
 
   <body>
+    @_LAZY_LOGIN_@
+
     <div id="main_image">
       <img alt="@_NAME_@" src="@_IMAGE_SOURCE_@"/>
     </div>
@@ -27,6 +31,8 @@
     @_REPEAT("</div>"):NB_LEVELS_TO_CLOSE_@
     @@END_IF@@
     @@END_TABLE@@
+
+    @_LAZY_NEW_COMMENT_@
 
     @@INCLUDE@@ footer.html
   </body>
