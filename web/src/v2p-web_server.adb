@@ -40,6 +40,10 @@ with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_New_Comment;
 
+with Ada.Text_IO;
+
+with Settings;
+
 package body V2P.Web_Server is
 
    use AWS;
@@ -59,6 +63,9 @@ package body V2P.Web_Server is
 
    function CSS_Callback (Request : in Status.Data) return Response.Data;
    --  Web Element CSS callback
+
+   function Photos_Callback (Request : in Status.Data) return Response.Data;
+   --  Photos callback
 
    function New_Comment_Callback
      (Request : in Status.Data) return Response.Data;
@@ -256,6 +263,20 @@ package body V2P.Web_Server is
          Cache_Control => Messages.Prevent_Cache);
    end New_Comment_Callback;
 
+   ---------------------
+   -- Photos_Callback --
+   ---------------------
+
+   function Photos_Callback (Request : in Status.Data) return Response.Data is
+      URI  : constant String := Status.URI (Request);
+      File : constant String
+        := Settings.Get_Images_Path & "/"
+          & URI (URI'First +  Image_Source_Prefix'Length + 1 .. URI'Last);
+   begin
+      Ada.Text_IO.Put_Line (File);
+      return Response.File (MIME.Content_Type (File), File);
+   end Photos_Callback;
+
    -----------
    -- Start --
    -----------
@@ -288,6 +309,12 @@ package body V2P.Web_Server is
         (Main_Dispatcher,
          "/css",
          Action => Dispatchers.Callback.Create (CSS_Callback'Access),
+         Prefix => True);
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         "/photos",
+         Action => Dispatchers.Callback.Create (Photos_Callback'Access),
          Prefix => True);
 
       Server.Log.Start (HTTP, Auto_Flush => True);
