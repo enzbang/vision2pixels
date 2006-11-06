@@ -15,7 +15,7 @@
     @_LAZY_LOGIN_@
 
     <div id="main_image">
-      <img alt="@_NAME_@" src="@_IMAGE_SOURCE_@"/>
+      <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"/>
     </div>
 
     @@TABLE@@

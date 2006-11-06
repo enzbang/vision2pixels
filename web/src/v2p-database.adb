@@ -25,6 +25,7 @@ with Ada.Text_IO;
 with DB;
 with Settings;
 
+with V2P.Web_Server;
 with V2P.DB_Handle;
 with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Forum_Threads;
@@ -95,9 +96,16 @@ package body V2P.Database is
          Templates.Insert
            (Set, Templates.Assoc
               (Forum_Entry.Name, DB.String_Vectors.Element (Line, 1)));
+
+         --  Insert the image path
+
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.Image_Source, DB.String_Vectors.Element (Line, 2)));
+              (Forum_Entry.Image_Source_Prefix, V2P.Web_Server.Image_Source_Prefix));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Forum_Entry.Image_Source, DB.String_Vectors.Element (Line, 3)));
          Line.Clear;
       end if;
 
