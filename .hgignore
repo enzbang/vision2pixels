@@ -1,5 +1,11 @@
 syntax: glob
 *~
+*.ali
+*.o
+*.a
+*.dll
+*.exe
+*.so
 
 syntax: regexp
 (.*/)?\#[^/]*\#$
