@@ -1,0 +1,10 @@
+<style type="text/css">
+@import url(/css/base.css);
+@import url(/css/style.css);
+
+@@IF@@ @_LOGIN_@ = ""
+@import url(/css/visitor.css);
+@@ELSE@@
+@import url(/css/user.css);
+@@END_IF@@
+</style>
