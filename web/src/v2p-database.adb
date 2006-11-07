@@ -101,7 +101,8 @@ package body V2P.Database is
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.Image_Source_Prefix, V2P.Web_Server.Image_Source_Prefix));
+              (Forum_Entry.Image_Source_Prefix,
+               V2P.Web_Server.Image_Source_Prefix));
 
          Templates.Insert
            (Set, Templates.Assoc
