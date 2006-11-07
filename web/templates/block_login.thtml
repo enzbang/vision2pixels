@@ -3,11 +3,13 @@
 
 <div id="login">
 @@IF@@ @_LOGIN_@ = ""
-<p>@_BABEL_ASK_AUTHENTICATION_@
 <p>
 <form method="POST" id="login_form">
-<input id="login_input" name="LOGIN" type="entry" value="@_BABEL_LOGIN_DEFAULT_VALUE_@"/>
-<input id="password_input" name="PASSWORD" type="password" value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@"/>
+<label for="LOGIN">@_BABEL_ASK_AUTHENTICATION_@</label>
+<input id="login_input" name="LOGIN" type="entry"
+value="@_BABEL_LOGIN_DEFAULT_VALUE_@" size="15"/>
+<input id="password_input" name="PASSWORD" type="password"
+value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/>
 <input name="ENTER" id="login_form_enter" type="submit" value="OK"/>
 </form>
 </p>
