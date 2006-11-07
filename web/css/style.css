@@ -1,0 +1,134 @@
+/* General */
+
+body {
+    background-color: rgb(20, 20, 20);
+    color: #fff;
+}
+
+a {
+    color : #556666;
+}
+
+a:hover, a:active {
+    color: #778888;
+}
+
+h1 {
+    line-height: normal;
+    color: #cccccc;
+    font-style: normal;
+    text-align: center;
+    padding: 5px;
+    border: solid 2px #665544;
+}
+
+div#login {
+    text-align: right;
+}
+
+label, input {
+    font-size: small;
+    font-weight: bold;
+    color: #998866;
+}
+
+input[type="submit"]{
+    border: 1px solid #ddd;
+    color: black;
+}
+
+input[type="submit"]:hover {
+    background-color:  #eee;
+}
+
+div#status_bar {
+    border: 1px solid red;
+    padding: 0.3em;
+    margin-top:1em;
+    padding-right : 2%;
+}
+
+#footer {
+    padding-top: 2em;
+    text-align: center;
+    clear: both;
+    color: #eeffff;
+}
+
+#footer a {
+    color: #fff;
+}
+
+/* Forum entry */
+
+div.level_1 {
+    border-top : 1px solid gray;
+    padding-bottom: 2em;
+    border-color: #664411;
+}
+
+p.comment_whois {
+    color : #eeffff;
+}
+
+div#new_comment {
+    border: 1px solid blue;
+    padding: 0.3em;
+    margin-top:1em;
+    padding-right : 2%;
+}
+
+/* Forum list */
+
+div.forumlistbar {
+    border-top: 1px black solid;
+    border-bottom: 1px black solid;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 3px;
+    padding-bottom: 2px;
+}
+
+div.forumlistbar a {
+    color: #bbbbcc;
+}
+
+div.forumlistbar a:hover, a:active {
+    color: #ffffff;
+}
+
+/* Thread list */
+
+table#thread_list_table {
+    margin-left: 10%;
+    width: 80%;
+    border-width: 2px;
+    border-color: #333333;
+    border-style: solid;
+    border-collapse: separate;
+    color: #bbbbcc;
+}
+
+table#thread_list_table caption {
+    margin-left: 10%;
+    margin-top: 5em;
+    margin-bottom: 1em;
+}
+
+table#thread_list_table th {
+    background-color: #333333;
+    color: #cccccc;
+}
+
+table#thread_list_table td {
+    color: #cccccc;
+    text-align: center;
+}
+
+table#thread_list_table td a {
+    color: #eeffff;
+}
+
+table#thread_list_table td a:hover, a:active {
+    color: #556666;
+}

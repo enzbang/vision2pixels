@@ -7,7 +7,7 @@
 
   <head>
     <title>@_BABEL_THREAD_LIST_@</title>
-    <link rel="stylesheet" type="text/css" href="/css/v2p.css"/>
+    @@INCLUDE@@ import_css.thtml
     @@INCLUDE@@ ../we_js/aws.tjs
   </head>
 
