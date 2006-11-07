@@ -6,7 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
   <head>
-    <title>@_PAGE_TITLE_@</title>
+    <title>@_NAME_@</title>
     <link rel="stylesheet" type="text/css" href="/css/v2p.css"/>
     @@INCLUDE@@ ../we_js/aws.tjs
   </head>
@@ -14,14 +14,16 @@
   <body>
     @_LAZY_LOGIN_@
 
+    <h1>@_NAME_@</h1>
+
     <div id="main_image">
       <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"/>
     </div>
 
     @@TABLE@@
-    <div id="level_@_COMMENT_LEVEL_@">
+    <div class="level_@_COMMENT_LEVEL_@">
       <h2 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h2>
-      <p>Posté par
+      <p class="comment_whois">Posté par
       <a href="@_USER_PAGE_@" >@_USER_@</a>
       le @_DATE_@.
       </p>

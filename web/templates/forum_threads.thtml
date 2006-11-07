@@ -16,14 +16,19 @@
 
     @_LAZY_LOGIN_@
 
+    <table id="thread_list_table"
+           summary="This table contains all photos for the given forum">
+    <caption>@_BABEL_THREAD_LIST_@</caption>
+    <tr><th>name</th><th>category</th><th>comment counter</th></tr>
     @@TABLE@@
-    <div id="entry">
-      <p id="entry_name"><a href="/forum/entry?TID=@_TID_@">@_NAME_@</a></p>
-      <p id="entry_category">@_CATEGORY_@</p>
-      <p id="entry_comment_counter">@_COMMENT_COUNTER_@</p>
-    </div>
+    <tr>
+      <td><a href="/forum/entry?TID=@_TID_@">@_NAME_@</a></td>
+      <td id="entry_category">@_CATEGORY_@</td>
+      <td id="entry_comment_counter">@_COMMENT_COUNTER_@</td>
+    </tr>
     @@END_TABLE@@
-  
+    </table>
+
     @@INCLUDE@@ footer.html
   </body>
 </html>

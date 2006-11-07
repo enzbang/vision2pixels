@@ -13,13 +13,13 @@
   <body>
     @_LAZY_LOGIN_@
 
-    @@TABLE@@
-    <div id="entry">
-      <h2>@_BABEL_FORUM_LIST_@</h2>
-      <p><a href="/forum/threads?FID=@_FID_@">@_NAME_@</a></p>
+    <div class="forumlistbar">
+      @@TABLE@@
+      <a href="/forum/threads?FID=@_FID_@">@_NAME_@</a> ::
+      @@END_TABLE@@
     </div>
-    @@END_TABLE@@
-    
+
+
     @@INCLUDE@@ footer.html
   </body>
 </html>
