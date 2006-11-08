@@ -13,6 +13,7 @@
 
   <body>
     @_LAZY_LOGIN_@
+    @_LAZY_FORUM_LIST_@
 
     <h1>@_NAME_@</h1>
 
