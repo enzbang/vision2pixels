@@ -12,24 +12,27 @@
   </head>
 
   <body>
-    <div id="status_bar"></div>
+    <div id="global">
+      <hr id="top_global" />
+      <div id="status_bar"></div>      
 
-    @_LAZY_LOGIN_@
-    @_LAZY_FORUM_LIST_@
+      @_LAZY_LOGIN_@
+      @_LAZY_FORUM_LIST_@
 
-    <table id="thread_list_table"
-           summary="This table contains all photos for the given forum">
-    <caption>@_BABEL_THREAD_LIST_@</caption>
-    <tr><th>name</th><th>category</th><th>comment counter</th></tr>
-    @@TABLE@@
-    <tr>
-      <td><a href="/forum/entry?TID=@_TID_@">@_NAME_@</a></td>
-      <td id="entry_category">@_CATEGORY_@</td>
-      <td id="entry_comment_counter">@_COMMENT_COUNTER_@</td>
-    </tr>
-    @@END_TABLE@@
-    </table>
+      <table id="thread_list_table"
+             summary="This table contains all photos for the given forum">
+        <caption>@_BABEL_THREAD_LIST_@</caption>
+        <tr><th>name</th><th>category</th><th>comment counter</th></tr>
+        @@TABLE@@
+        <tr>
+          <td><a href="/forum/entry?TID=@_TID_@">@_NAME_@</a></td>
+          <td id="entry_category">@_CATEGORY_@</td>
+          <td id="entry_comment_counter">@_COMMENT_COUNTER_@</td>
+        </tr>
+        @@END_TABLE@@
+      </table>
 
-    @@INCLUDE@@ footer.html
+      @@INCLUDE@@ footer.html
+    </div>
   </body>
 </html>
