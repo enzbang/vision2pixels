@@ -1,0 +1,5 @@
+    <div class="forumlistbar">
+      @@TABLE@@
+      <a href="/forum/threads?FID=@_FID_@">@_NAME_@</a> ::
+      @@END_TABLE@@
+    </div>
