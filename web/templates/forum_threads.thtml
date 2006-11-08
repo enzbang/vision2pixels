@@ -15,6 +15,7 @@
     <div id="status_bar"></div>
 
     @_LAZY_LOGIN_@
+    @_LAZY_FORUM_LIST_@
 
     <table id="thread_list_table"
            summary="This table contains all photos for the given forum">

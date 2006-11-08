@@ -34,9 +34,10 @@ with AWS.Templates;
 with V2P.Database;
 with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Forum_Threads;
-with V2P.Template_Defs.Forum_List;
+with V2P.Template_Defs.Main_Page;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
+with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_New_Comment;
 
@@ -64,6 +65,10 @@ package body V2P.Web_Server is
 
    function Photos_Callback (Request : in Status.Data) return Response.Data;
    --  Photos callback
+
+   function Main_Page_Callback
+     (Request : in Status.Data) return Response.Data;
+   --  Display v2p main page
 
    function New_Comment_Callback
      (Request : in Status.Data) return Response.Data;
@@ -138,6 +143,14 @@ package body V2P.Web_Server is
                  String'(Templates.Parse
                    (Template_Defs.Block_Login.Template, Local_Translations))));
 
+         elsif Var_Name = Template_Defs.Lazy.Forum_List then
+            Templates.Insert
+              (Translations,
+               Templates.Assoc (Template_Defs.Lazy.Forum_List,
+                 String'(Templates.Parse
+                     (Template_Defs.Block_Forum_List.Template,
+                      Database.Get_Forums))));
+
          elsif Var_Name = Template_Defs.Lazy.New_Comment then
             Templates.Insert
               (Translations,
@@ -189,12 +202,6 @@ package body V2P.Web_Server is
                Database.Get_Threads (FID));
          end;
 
-      elsif URI = "/forum/list" then
-         return Final_Parse
-           (Request,
-            Template_Defs.Forum_List.Template,
-            Database.Get_Forums);
-
       elsif URI = "/forum/entry" then
          declare
             TID : constant String :=
@@ -234,6 +241,21 @@ package body V2P.Web_Server is
             (1 => Templates.Assoc (Template_Defs.R_Block_Login.Login,
              String'(Session.Get (SID, "LOGIN")))))));
    end Login_Callback;
+
+   -----------------------
+   -- Main_Page_Callback --
+   -----------------------
+
+   function Main_Page_Callback
+     (Request : in Status.Data) return Response.Data
+   is
+      Translations : Templates.Translate_Set;
+   begin
+      return Final_Parse
+        (Request,
+         Template_Defs.Main_Page.Template,
+         Translations);
+   end Main_Page_Callback;
 
    --------------------------
    -- New_Comment_Callback --
@@ -314,6 +336,13 @@ package body V2P.Web_Server is
          Image_Source_Prefix,
          Action => Dispatchers.Callback.Create (Photos_Callback'Access),
          Prefix => True);
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         "/",
+         Action => Dispatchers.Callback.Create (Main_Page_Callback'Access),
+         Prefix => True);
+
 
       Server.Log.Start (HTTP, Auto_Flush => True);
 

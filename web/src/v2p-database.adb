@@ -29,7 +29,7 @@ with V2P.Web_Server;
 with V2P.DB_Handle;
 with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Forum_Threads;
-with V2P.Template_Defs.Forum_List;
+with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Login;
 
 package body V2P.Database is
@@ -184,8 +184,8 @@ package body V2P.Database is
 
       Iter.End_Select;
 
-      Templates.Insert (Set, Templates.Assoc (Forum_List.Fid, Id));
-      Templates.Insert (Set, Templates.Assoc (Forum_List.Name, Name));
+      Templates.Insert (Set, Templates.Assoc (Block_Forum_List.Fid, Id));
+      Templates.Insert (Set, Templates.Assoc (Block_Forum_List.Name, Name));
 
       return Set;
    end Get_Forums;
