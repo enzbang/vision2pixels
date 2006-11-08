@@ -1,18 +1,16 @@
 @@INCLUDE@@ babel.thtml
-<div id="status_bar"></div>
-
 <div id="login">
 @@IF@@ @_LOGIN_@ = ""
+<form method="post" id="login_form" action="">
 <p>
-<form method="POST" id="login_form">
-<label for="LOGIN">@_BABEL_ASK_AUTHENTICATION_@</label>
-<input id="login_input" name="LOGIN" type="entry"
+<label for="login_input">@_BABEL_ASK_AUTHENTICATION_@</label>
+<input id="login_input" name="LOGIN" type="text"
 value="@_BABEL_LOGIN_DEFAULT_VALUE_@" size="15"/>
 <input id="password_input" name="PASSWORD" type="password"
 value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/>
 <input name="ENTER" id="login_form_enter" type="submit" value="OK"/>
-</form>
 </p>
+</form>
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, login_form_enter, 4=>login_form)
 @@INCLUDE@@ ../we_js/aws_action_clear.tjs (onfocus, login_input, login_input)
 @@INCLUDE@@ ../we_js/aws_action_clear.tjs (onfocus, password_input, password_input)
@@ -20,3 +18,5 @@ value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/>
 <p>@_BABEL_WELCOME_@ @_LOGIN_@</p>
 @@END_IF@@
 </div>
+
+
