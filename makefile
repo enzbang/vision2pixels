@@ -44,6 +44,8 @@ MODULES_SETUP = ${MODULES:%=%_setup}
 
 MODULES_CLEAN = ${MODULES:%=%_clean}
 
+MODULES_INSTALL = ${MODULES:%=%_install}
+
 # Targets
 
 all: $(MODULES_SETUP) $(MODULES_BUILD)
@@ -64,4 +66,4 @@ ${MODULES_CLEAN}:
 	${MAKE} -C ${@:%_clean=%} clean $(OPTIONS)
 
 ${MODULES_INSTALL}:
-	${MAKE} -C ${@:%_clean=%} install $(OPTIONS)
+	${MAKE} -C ${@:%_install=%} install $(OPTIONS)
