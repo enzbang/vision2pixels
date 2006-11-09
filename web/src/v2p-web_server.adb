@@ -209,7 +209,12 @@ package body V2P.Web_Server is
          begin
             --  Set thread Id into the session
             Session.Set (SID, "TID", TID);
-            Database.Increment_Visit_Counter (TID);
+
+            if Settings.Anonymous_Visit_Counter or
+              (not Settings.Anonymous_Visit_Counter
+               and String'(Session.Get (SID, "LOGIN")) /= "") then
+               Database.Increment_Visit_Counter (TID);
+            end if;
             return Final_Parse
               (Request,
                Template_Defs.Forum_Entry.Template,
