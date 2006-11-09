@@ -6,3 +6,4 @@
 @@SET@@ BABEL_THREAD_LIST="Liste des threads"
 @@SET@@ BABEL_WELCOME="Bienvenue"
 @@SET@@ BABEL_ENTER_COMMENT="placer le commentaire ici"
+@@SET@@ BABEL_LOGOUT="déconnexion"
