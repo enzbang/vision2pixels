@@ -25,6 +25,9 @@
 
 CP=cp -p
 
+all:
+	gnat make -XPRJ_Build=$(MODE) -Pweb
+
 setup:
 	-mkdir gen
 	templates2ada -d templates -o gen/templates.cds \
@@ -51,3 +54,7 @@ install: install-dir
 	$(CP) templates/*.*html $(INSTALL)/templates
 	$(CP) templates/*.txml $(INSTALL)/templates
 	$(CP) we_js/*js $(INSTALL)/we_js
+
+clean:
+	-rm -fr gen src/v2p-template_defs*
+	-gnat clean -r -Pweb
