@@ -1,4 +1,4 @@
-
+###########################################################################
 #                              Vision2Pixels
 #
 #                            Copyright (C) 2006
@@ -19,6 +19,7 @@
 #   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 #  Simple makefile to build Vision2Pixels
+###########################################################################
 
 INSTALL=$(HOME)/opt/v2p
 
