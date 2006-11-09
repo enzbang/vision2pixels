@@ -21,7 +21,10 @@
 #  Simple makefile to build Vision2Pixels
 ###########################################################################
 
+# Options
+
 INSTALL=$(HOME)/opt/v2p
+MODE=Debug
 
 ifeq ($(OS),Windows_NT)
 EXEXT=.exe
@@ -29,16 +32,36 @@ else
 EXEXT=
 endif
 
-OPTIONS = INSTALL="$(INSTALL)" EXEXT="$(EXEXT)"
+OPTIONS = INSTALL="$(INSTALL)" EXEXT="$(EXEXT)" MODE="$(MODE)"
 
-all: setup
-	gnat make -XPRJ_Build=Debug -Pweb/web
+# Modules support
 
-setup:
-	make -C web setup
+MODULES = web
 
-install:
-	make -C web install $(OPTIONS)
+MODULES_BUILD = ${MODULES:%=%_build}
 
-clean:
-	gnat clean -r -Pweb/web
+MODULES_SETUP = ${MODULES:%=%_setup}
+
+MODULES_CLEAN = ${MODULES:%=%_clean}
+
+# Targets
+
+all: $(MODULES_SETUP) $(MODULES_BUILD)
+
+setup: $(MODULES_SETUP)
+
+install: $(MODULES_INSTALL)
+
+clean: $(MODULES_CLEAN)
+
+${MODULES_BUILD}:
+	${MAKE} -C ${@:%_build=%} $(OPTIONS)
+
+${MODULES_SETUP}:
+	${MAKE} -C ${@:%_setup=%} setup $(OPTIONS)
+
+${MODULES_CLEAN}:
+	${MAKE} -C ${@:%_clean=%} clean $(OPTIONS)
+
+${MODULES_INSTALL}:
+	${MAKE} -C ${@:%_clean=%} install $(OPTIONS)
