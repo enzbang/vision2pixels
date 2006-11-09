@@ -25,11 +25,21 @@ package body Settings is
 
    Config_Filename : constant String := "v2p.ini";
 
-   type Attributes is (DB, DB_Name, Images_Path, Thumbs_Path);
+   type Attributes is
+     (DB, DB_Name, Images_Path, Thumbs_Path, Anonymous_Visit_Counter);
 
    package Conf is new Config (Attributes);
 
    package DB_Conf is new Conf.Enum_Values (DB_Kind);
+
+   -----------------------------
+   -- Anonymous_Visit_Counter --
+   -----------------------------
+
+   function Anonymous_Visit_Counter return Boolean is
+   begin
+      return Conf.Get_Value (Anonymous_Visit_Counter);
+   end Anonymous_Visit_Counter;
 
    ------------
    -- Get_DB --

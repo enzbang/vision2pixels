@@ -36,4 +36,7 @@ package Settings is
    function Get_Thumbs_Path return String;
    --  Returns the path to the thumbnails
 
+   function Anonymous_Visit_Counter return Boolean;
+   --  Counts anonymous clicks or only logged user clicks
+
 end Settings;
