@@ -11,12 +11,16 @@ value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/>
 <input name="ENTER" id="login_form_enter" type="submit" value="OK"/>
 </p>
 </form>
+@@ELSE@@
+<p>@_BABEL_WELCOME_@ @_LOGIN_@</p>
+<input name="LOGOUT" id="logout_enter" type="submit" value="@_BABEL_LOGOUT_@"/>
+@@END_IF@@
+@@----------------------------------------------------------------------------
+@@-- Events
+@@-- Login
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, login_form_enter, 4=>login_form)
 @@INCLUDE@@ ../we_js/aws_action_clear.tjs (onfocus, login_input, login_input)
 @@INCLUDE@@ ../we_js/aws_action_clear.tjs (onfocus, password_input, password_input)
-@@ELSE@@
-<p>@_BABEL_WELCOME_@ @_LOGIN_@</p>
-@@END_IF@@
+@@-- Logout
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, logout_enter)
 </div>
-
-

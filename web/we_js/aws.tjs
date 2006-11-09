@@ -138,6 +138,7 @@
       } else {
          $(placeholder_id).innerHTML = placeholder_content;
       }
+      update_behaviour ();
    }
 
    // Clear a node
@@ -227,8 +228,8 @@
 
       /* Redirect to url */
 
-     document.location.href = url;
-  }
+      document.location.href = url;
+   }
 
    // Action on create_sortable
    function aws_xml_handler_create_sortable (node)
