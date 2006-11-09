@@ -49,11 +49,11 @@ install-dir:
 	-mkdir -p $(INSTALL)/we_js
 
 install: install-dir
-	$(CP) bin/vision2pixels$(EXEXT) $(INSTALL)/bin
 	$(CP) css/*.css $(INSTALL)/css
 	$(CP) templates/*.*html $(INSTALL)/templates
 	$(CP) templates/*.txml $(INSTALL)/templates
 	$(CP) we_js/*js $(INSTALL)/we_js
+	$(CP) bin/vision2pixels$(EXEXT) $(INSTALL)/bin
 
 clean:
 	-rm -fr gen src/v2p-template_defs*
