@@ -22,12 +22,18 @@
       <table id="thread_list_table"
              summary="This table contains all photos for the given forum">
         <caption>@_BABEL_THREAD_LIST_@</caption>
-        <tr><th>name</th><th>category</th><th>comment counter</th></tr>
+        <tr>
+          <th>name</th>
+          <th>category</th>
+          <th>comment counter</th>
+          <th>visit_counter</th>
+        </tr>
         @@TABLE@@
         <tr>
           <td><a href="/forum/entry?TID=@_TID_@">@_NAME_@</a></td>
-          <td id="entry_category">@_CATEGORY_@</td>
-          <td id="entry_comment_counter">@_COMMENT_COUNTER_@</td>
+          <td class="entry_category">@_CATEGORY_@</td>
+          <td class="entry_comment_counter">@_COMMENT_COUNTER_@</td>
+          <td class="entry_visit_counter">@_VISIT_COUNTER_@</td>
         </tr>
         @@END_TABLE@@
       </table>
