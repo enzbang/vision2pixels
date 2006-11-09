@@ -284,6 +284,18 @@ package body V2P.Database is
       return Set;
    end Get_User;
 
+   -----------------------------
+   -- Increment_Visit_Counter --
+   -----------------------------
+
+   procedure Increment_Visit_Counter (Pid : in String) is
+      SQL : constant String :=
+              "update photo set visit_counter = visit_counter + 1 where "
+                & "id = " & Q (Pid);
+   begin
+      DBH.Execute (SQL);
+   end Increment_Visit_Counter;
+
    --------------------
    -- Insert_Comment --
    --------------------

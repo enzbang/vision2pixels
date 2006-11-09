@@ -49,4 +49,7 @@ package V2P.Database is
       Comment : in String);
    --  Insert comment Name/Comment into the given forum and thread
 
+   procedure Increment_Visit_Counter (Pid : in String);
+   --  Increment a thread visit counter
+
 end V2P.Database;

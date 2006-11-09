@@ -209,6 +209,7 @@ package body V2P.Web_Server is
          begin
             --  Set thread Id into the session
             Session.Set (SID, "TID", TID);
+            Database.Increment_Visit_Counter (TID);
             return Final_Parse
               (Request,
                Template_Defs.Forum_Entry.Template,
