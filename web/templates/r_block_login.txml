@@ -17,9 +17,7 @@
    <apply_style id="status_bar">
      <attribute id="display" value="none"/>
    </apply_style>
-   <replace id="login">
-     @_BABEL_WELCOME_@ @_LOGIN_@
-   </replace>
+   <replace id="login"><![CDATA[@_LOGIN_FORM_@]]></replace>
    <apply_style id="new_comment">
      <attribute id="display" value="block"/>
    </apply_style>
