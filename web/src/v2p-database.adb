@@ -361,6 +361,29 @@ package body V2P.Database is
          Text_IO.Put_Line (Exception_Message (E));
    end Insert_Comment;
 
+   function Is_Author (Uid, Pid : in String) return Boolean is
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Result : Boolean := False;
+   begin
+      Connect;
+
+      --  Get photo Pid posted by user Uid
+
+      DBH.Prepare_Select
+        (Iter,
+         "select * from user_photo where photo_id  = "
+           & Q (Pid) & " and user_login = " & Q (Uid));
+
+      if Iter.More then
+         Result := True;
+      end if;
+
+      Iter.End_Select;
+
+      return Result;
+
+   end Is_Author;
+
    -------
    -- Q --
    -------

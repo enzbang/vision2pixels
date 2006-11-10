@@ -52,4 +52,7 @@ package V2P.Database is
    procedure Increment_Visit_Counter (Pid : in String);
    --  Increment a thread visit counter
 
+   function Is_Author (Uid, Pid : in String) return Boolean;
+   --  Returns true whether the user of the photo Pid is Uid
+
 end V2P.Database;

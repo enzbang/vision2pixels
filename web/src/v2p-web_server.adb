@@ -210,15 +210,31 @@ package body V2P.Web_Server is
          declare
             TID : constant String :=
                     Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Tid);
+
+            Count_Visit : Boolean := True;
+            Logged_User : constant String
+              := String'(Session.Get (SID, "LOGIN"));
          begin
             --  Set thread Id into the session
             Session.Set (SID, "TID", TID);
 
-            if Settings.Anonymous_Visit_Counter or
-              (not Settings.Anonymous_Visit_Counter
-               and String'(Session.Get (SID, "LOGIN")) /= "") then
+            if not Settings.Anonymous_Visit_Counter then
+               --  Do not count anonymous click
+               if Logged_User = "" then
+                  Count_Visit := False;
+               else
+                  if Settings.Ignore_Author_Click
+                    and Database.Is_Author (Logged_User, TID) then
+                     --  Do not count author click
+                     Count_Visit := False;
+                  end if;
+               end if;
+            end if;
+
+            if Count_Visit then
                Database.Increment_Visit_Counter (TID);
             end if;
+
             return Final_Parse
               (Request,
                Template_Defs.Forum_Entry.Template,

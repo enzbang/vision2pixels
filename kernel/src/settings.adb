@@ -26,7 +26,8 @@ package body Settings is
    Config_Filename : constant String := "v2p.ini";
 
    type Attributes is
-     (DB, DB_Name, Images_Path, Thumbs_Path, Anonymous_Visit_Counter);
+     (DB, DB_Name, Images_Path, Thumbs_Path,
+      Anonymous_Visit_Counter, Ignore_Author_Click);
 
    package Conf is new Config (Attributes);
 
@@ -76,6 +77,15 @@ package body Settings is
    begin
       return Conf.Get_Value (Thumbs_Path);
    end Get_Thumbs_Path;
+
+   -------------------------
+   -- Ignore_Author_Click --
+   -------------------------
+
+   function Ignore_Author_Click return Boolean is
+   begin
+      return Conf.Get_Value (Ignore_Author_Click);
+   end Ignore_Author_Click;
 
 begin
    Conf.IO.Open (Config_Filename);
