@@ -163,6 +163,11 @@ package body Config is
       return Float'Value (To_String (Parameters (Parameter)));
    end Get_Value;
 
+   function Get_Value (Parameter : in Parameter_Name) return Boolean is
+   begin
+      return Boolean'Value (To_String (Parameters (Parameter)));
+   end Get_Value;
+
    ---------------
    -- Set_Value --
    ---------------
@@ -181,6 +186,11 @@ package body Config is
    procedure Set_Value (Parameter : in Parameter_Name; Value : in Float) is
    begin
       Set_Value (Parameter, Float'Image (Value));
+   end Set_Value;
+
+   procedure Set_Value (Parameter : in Parameter_Name; Value : in Boolean) is
+   begin
+      Set_Value (Parameter, Boolean'Image (Value));
    end Set_Value;
 
    -----------------
