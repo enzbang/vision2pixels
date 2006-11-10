@@ -169,6 +169,16 @@ package @_PACKAGE_@ is
    @@END_TABLE@@
        end HTTP;
 @@END_IF@@
+@@IF@@ @_EXIST:AJAX_EVENT_@
+
+   package Ajax is
+      @@TABLE@@
+      @@IF@@ not @_IS_EMPTY:AJAX_EVENT_@
+      @_CAPITALIZE:AJAX_EVENT_@_@_CAPITALIZE:AJAX_ACTION_@ : constant String := "/@_AJAX_EVENT_@$@_AJAX_ACTION_@";
+      @@END_IF@@
+      @@END_TABLE@@
+   end Ajax;
+@@END_IF@@
 
    end @_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@;
 
@@ -212,6 +222,16 @@ package @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@ is
       @@END_IF@@
    @@END_TABLE@@
    end HTTP;
+@@END_IF@@
+@@IF@@ @_EXIST:AJAX_EVENT_@
+
+   package Ajax is
+      @@TABLE@@
+      @@IF@@ not @_IS_EMPTY:AJAX_EVENT_@
+      @_CAPITALIZE:AJAX_EVENT_@_@_CAPITALIZE:AJAX_ACTION_@ : constant String := "/@_AJAX_EVENT_@$@_AJAX_ACTION_@";
+      @@END_IF@@
+      @@END_TABLE@@
+   end Ajax;
 @@END_IF@@
 
 end @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@;
