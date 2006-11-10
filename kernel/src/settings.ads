@@ -39,4 +39,7 @@ package Settings is
    function Anonymous_Visit_Counter return Boolean;
    --  Counts anonymous clicks or only logged user clicks
 
+   function Ignore_Author_Click return Boolean;
+   --  If not Anonymous_Visit_Counter, ignore author click on his photos
+
 end Settings;
