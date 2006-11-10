@@ -56,6 +56,7 @@ package Config is
    function Get_Value (Parameter : in Parameter_Name) return String;
    function Get_Value (Parameter : in Parameter_Name) return Integer;
    function Get_Value (Parameter : in Parameter_Name) return Float;
+   function Get_Value (Parameter : in Parameter_Name) return Boolean;
 
    --  To change the value of a parameter of simple types
 
@@ -65,6 +66,8 @@ package Config is
      (Parameter : in Parameter_Name; Value : in Integer);
    procedure Set_Value
      (Parameter : in Parameter_Name; Value : in Float);
+   procedure Set_Value
+     (Parameter : in Parameter_Name; Value : in Boolean);
 
    --  Handle enumeration types
 

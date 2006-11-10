@@ -227,19 +227,21 @@ package body V2P.Database is
    function Get_Threads (Fid : in String) return Templates.Translate_Set is
       use type Templates.Tag;
 
-      Set      : Templates.Translate_Set;
-      Iter     : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line     : DB.String_Vectors.Vector;
-      Id       : Templates.Tag;
-      Name     : Templates.Tag;
-      Category : Templates.Tag;
-      Counter  : Templates.Tag;
+      Set             : Templates.Translate_Set;
+      Iter            : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line            : DB.String_Vectors.Vector;
+      Id              : Templates.Tag;
+      Name            : Templates.Tag;
+      Category        : Templates.Tag;
+      Comment_Counter : Templates.Tag;
+      Visit_Counter   : Templates.Tag;
    begin
       Connect;
 
       DBH.Prepare_Select
         (Iter,
-         "select photo.id, photo.name, category.name, comment_counter"
+         "select photo.id, photo.name, category.name, "
+         & "comment_counter, visit_counter"
          & " from photo, category"
          & " where photo.category_id = category.id"
          & " and category.forum_id = " & Q (Fid));
@@ -250,7 +252,10 @@ package body V2P.Database is
          Id       := Id       & DB.String_Vectors.Element (Line, 1);
          Name     := Name     & DB.String_Vectors.Element (Line, 2);
          Category := Category & DB.String_Vectors.Element (Line, 3);
-         Counter  := Counter  & DB.String_Vectors.Element (Line, 4);
+         Comment_Counter
+           := Comment_Counter & DB.String_Vectors.Element (Line, 4);
+         Visit_Counter
+           := Visit_Counter & DB.String_Vectors.Element (Line, 5);
 
          Line.Clear;
       end loop;
@@ -262,8 +267,11 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc (Forum_Threads.Category, Category));
       Templates.Insert
-        (Set, Templates.Assoc (Forum_Threads.Comment_Counter, Counter));
-
+        (Set, Templates.Assoc
+           (Forum_Threads.Comment_Counter, Comment_Counter));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Forum_Threads.Visit_Counter, Visit_Counter));
       return Set;
    end Get_Threads;
 
@@ -283,6 +291,18 @@ package body V2P.Database is
 
       return Set;
    end Get_User;
+
+   -----------------------------
+   -- Increment_Visit_Counter --
+   -----------------------------
+
+   procedure Increment_Visit_Counter (Pid : in String) is
+      SQL : constant String :=
+              "update photo set visit_counter = visit_counter + 1 where "
+                & "id = " & Q (Pid);
+   begin
+      DBH.Execute (SQL);
+   end Increment_Visit_Counter;
 
    --------------------
    -- Insert_Comment --
