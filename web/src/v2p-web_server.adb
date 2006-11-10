@@ -39,6 +39,7 @@ with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.R_Block_Login;
+with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_New_Comment;
 
 with Settings;
@@ -56,6 +57,9 @@ package body V2P.Web_Server is
 
    function Login_Callback (Request : in Status.Data) return Response.Data;
    --  Login callback
+
+   function Logout_Callback (Request : in Status.Data) return Response.Data;
+   --  Logout callback
 
    function WEJS_Callback (Request : in Status.Data) return Response.Data;
    --  Web Element JavaScript callback
@@ -238,15 +242,43 @@ package body V2P.Web_Server is
       if Password = Parameters.Get (P, "PASSWORD") then
          Session.Set (SID, "LOGIN", Login);
          Session.Set (SID, "PASSWORD", Password);
+
+         return Response.Build
+           (MIME.Text_XML,
+            String'(Templates.Parse
+              (Template_Defs.R_Block_Login.Template,
+                 (1 => Templates.Assoc (Template_Defs.R_Block_Login.Login,
+                  String'(Session.Get (SID, "LOGIN"))),
+                  2 => Templates.Assoc (Template_Defs.R_Block_Login.Login_Form,
+                    String'(Templates.Parse
+                      (Template_Defs.Block_Login.Template,
+                         (1 => Templates.Assoc
+                            (Template_Defs.Block_Login.Login,
+                             String'(Session.Get (SID, "LOGIN")))))))))));
+      else
+         return Response.Build
+           (MIME.Text_XML,
+            String'(Templates.Parse (Template_Defs.R_Block_Login.Template)));
       end if;
+   end Login_Callback;
+
+   ---------------------
+   -- Logout_Callback --
+   ---------------------
+
+   function Logout_Callback (Request : in Status.Data) return Response.Data is
+      SID : constant Session.Id := Status.Session (Request);
+   begin
+      Session.Delete (SID);
 
       return Response.Build
         (MIME.Text_XML,
          String'(Templates.Parse
-           (Template_Defs.R_Block_Login.Template,
-            (1 => Templates.Assoc (Template_Defs.R_Block_Login.Login,
-             String'(Session.Get (SID, "LOGIN")))))));
-   end Login_Callback;
+           (Template_Defs.R_Block_Logout.Template,
+              (1 => Templates.Assoc (Template_Defs.R_Block_Logout.Login_Form,
+               String'(Templates.Parse
+                 (Template_Defs.Block_Login.Template)))))));
+   end Logout_Callback;
 
    -----------------------
    -- Main_Page_Callback --
@@ -319,6 +351,11 @@ package body V2P.Web_Server is
         (Main_Dispatcher,
          "/login_form_enter",
          Action => Dispatchers.Callback.Create (Login_Callback'Access));
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         "/logout_enter",
+         Action => Dispatchers.Callback.Create (Logout_Callback'Access));
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
