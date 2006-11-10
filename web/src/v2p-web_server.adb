@@ -359,24 +359,24 @@ package body V2P.Web_Server is
    begin
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         "/forum",
-         Action => Dispatchers.Callback.Create (Forum_Callback'Access),
-         Prefix => True);
-
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         "/login_form_enter",
+         Template_Defs.Block_Login.Ajax.Onclick_Login_Form_Enter,
          Action => Dispatchers.Callback.Create (Login_Callback'Access));
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         "/logout_enter",
+         Template_Defs.Block_Login.Ajax.Onclick_Logout_Enter,
          Action => Dispatchers.Callback.Create (Logout_Callback'Access));
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         "/comment_form_enter",
+         Template_Defs.Block_New_Comment.Ajax.Onclick_Comment_Form_Enter,
          Action => Dispatchers.Callback.Create (New_Comment_Callback'Access));
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         "/forum",
+         Action => Dispatchers.Callback.Create (Forum_Callback'Access),
+         Prefix => True);
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
