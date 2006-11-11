@@ -86,7 +86,9 @@ package body Config is
             begin
                for P in Parameter_Name loop
                   if Length (Parameters (P)) = 0 then
-                     raise Uncomplete_Config;
+                     raise Uncomplete_Config
+                       with "Missing value for " & Parameter_Name'Image (P);
+
                   end if;
                end loop;
             end Check_Completness;
