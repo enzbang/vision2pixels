@@ -95,7 +95,7 @@ package body Settings is
    end Ignore_Author_Click;
 
 begin
-   --  Set default valuse
+   --  Set default values
 
    DB_Conf.Set_Value (DB, Defaults.DB);
    Conf.Set_Value (DB_Name, Defaults.DB_Name);
