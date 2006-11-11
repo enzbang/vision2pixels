@@ -48,7 +48,8 @@ package body V2P.Database is
 
    function Q (Str : in String) return String;
    pragma Inline (Q);
-   --  Quote the string
+   --  Quote the string and double all single quote in Str to be able to insert
+   --  a quote into the databse.
 
    -------------
    -- Connect --
@@ -361,8 +362,12 @@ package body V2P.Database is
          Text_IO.Put_Line (Exception_Message (E));
    end Insert_Comment;
 
+   ---------------
+   -- Is_Author --
+   ---------------
+
    function Is_Author (Uid, Pid : in String) return Boolean is
-      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Result : Boolean := False;
    begin
       Connect;
@@ -381,7 +386,6 @@ package body V2P.Database is
       Iter.End_Select;
 
       return Result;
-
    end Is_Author;
 
    -------
@@ -389,8 +393,24 @@ package body V2P.Database is
    -------
 
    function Q (Str : in String) return String is
+      S : String (1 .. 2 + Str'Length * 2);
+      J : Positive := S'First;
    begin
-      return ''' & Str & ''';
+      S (J) := ''';
+
+      for K in Str'Range loop
+         if Str (K) = ''' then
+            J := J + 1;
+            S (J) := ''';
+         end if;
+         J := J + 1;
+         S (J) := Str (K);
+      end loop;
+
+      J := J + 1;
+      S (J) := ''';
+
+      return S (1 .. J);
    end Q;
 
 end V2P.Database;
