@@ -19,9 +19,16 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Exceptions;
+with Ada.Text_IO;
+
 with Config;
+with Defaults;
 
 package body Settings is
+
+   use Ada;
+   use Ada.Exceptions;
 
    Config_Filename : constant String := "v2p.ini";
 
@@ -88,8 +95,25 @@ package body Settings is
    end Ignore_Author_Click;
 
 begin
+   --  Set default valuse
+
+   DB_Conf.Set_Value (DB, Defaults.DB);
+   Conf.Set_Value (DB_Name, Defaults.DB_Name);
+   Conf.Set_Value (Images_Path, Defaults.Images_Path);
+   Conf.Set_Value (Thumbs_Path, Defaults.Thumbs_Path);
+   Conf.Set_Value (Anonymous_Visit_Counter, Defaults.Anonymous_Visit_Counter);
+   Conf.Set_Value (Ignore_Author_Click, Defaults.Ignore_Author_Click);
+
+   --  Now read the config file if any
+
    Conf.IO.Open (Config_Filename);
+   Conf.IO.Close;
 exception
-   when others =>
+   when Conf.IO.Uncomplete_Config =>
+      Conf.IO.Close;
+   when UP : Conf.IO.Unknown_Parameter =>
+      Text_IO.Put_Line (Exception_Message (UP));
+      Conf.IO.Close;
+   when Text_IO.Name_Error =>
       null;
 end Settings;
