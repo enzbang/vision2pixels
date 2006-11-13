@@ -14,8 +14,8 @@
   <body>
     <div id="global">
       <hr id="top_global" />
-      <div id="status_bar"></div>      
-      
+      <div id="status_bar"></div>
+
       @_LAZY_LOGIN_@
       @_LAZY_FORUM_LIST_@
 
@@ -34,14 +34,14 @@
         </p>
         <p>@_COMMENT_@</p>
 
-        @@IF@@ @_NB_LEVELS_TO_CLOSE_@ > 0
-        @_REPEAT("</div>"):NB_LEVELS_TO_CLOSE_@
-        @@END_IF@@
-        @@END_TABLE@@
-        
-        @_LAZY_NEW_COMMENT_@
-        
-        @@INCLUDE@@ footer.html
+      @@IF@@ @_NB_LEVELS_TO_CLOSE_@ > 0
+      @_REPEAT("</div>"):NB_LEVELS_TO_CLOSE_@
+      @@END_IF@@
+      @@END_TABLE@@
+
+      @_LAZY_NEW_COMMENT_@
+
+      @@INCLUDE@@ footer.html
     </div>
   </body>
 </html>
