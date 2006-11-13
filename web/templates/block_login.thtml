@@ -12,8 +12,9 @@ value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/>
 </p>
 </form>
 @@ELSE@@
-<p>@_BABEL_WELCOME_@ @_LOGIN_@</p>
+<p>@_BABEL_WELCOME_@ @_LOGIN_@
 <input name="LOGOUT" id="logout_enter" type="submit" value="@_BABEL_LOGOUT_@"/>
+</p>
 @@END_IF@@
 @@----------------------------------------------------------------------------
 @@-- Events
