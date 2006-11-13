@@ -1,0 +1,60 @@
+<GPS>
+  <Language>
+    <Name>XML Template</Name>
+    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@</Keywords>
+    <Context>
+      <New_Line_Comment_Start>@@--</New_Line_Comment_Start>
+      <String_Delimiter>"</String_Delimiter>
+      <Constant_Character>'</Constant_Character>
+      <Can_Indent>True</Can_Indent>
+      <Syntax_Highlighting>True</Syntax_Highlighting>
+      <Case_Sensitive>False</Case_Sensitive>
+    </Context>
+    <Spec_Suffix>.txml</Spec_Suffix>
+  </Language>
+
+  <Language>
+    <Name>HTML Template</Name>
+    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@</Keywords>
+    <Context>
+      <New_Line_Comment_Start>@@--</New_Line_Comment_Start>
+      <String_Delimiter>"</String_Delimiter>
+      <Constant_Character>'</Constant_Character>
+      <Can_Indent>True</Can_Indent>
+      <Syntax_Highlighting>True</Syntax_Highlighting>
+      <Case_Sensitive>False</Case_Sensitive>
+    </Context>
+    <Spec_Suffix>.thtml</Spec_Suffix>
+  </Language>
+
+  <Language>
+    <Name>Javascript Template</Name>
+    <Parent>Javascript</Parent>
+    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@</Keywords>
+    <Context>
+      <New_Line_Comment_Start>@@--</New_Line_Comment_Start>
+      <String_Delimiter>"</String_Delimiter>
+      <Constant_Character>'</Constant_Character>
+      <Can_Indent>True</Can_Indent>
+      <Syntax_Highlighting>True</Syntax_Highlighting>
+      <Case_Sensitive>False</Case_Sensitive>
+    </Context>
+    <Spec_Suffix>.tjs</Spec_Suffix>
+  </Language>
+
+  <Language>
+    <Name>Ada Template</Name>
+    <Parent>Ada</Parent>
+    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@</Keywords>
+    <Context>
+      <New_Line_Comment_Start>@@--</New_Line_Comment_Start>
+      <String_Delimiter>"</String_Delimiter>
+      <Constant_Character>'</Constant_Character>
+      <Can_Indent>True</Can_Indent>
+      <Syntax_Highlighting>True</Syntax_Highlighting>
+      <Case_Sensitive>False</Case_Sensitive>
+    </Context>
+    <Spec_Suffix>.tads</Spec_Suffix>
+    <Body_Suffix>.tadb</Body_Suffix>
+  </Language>
+</GPS>
