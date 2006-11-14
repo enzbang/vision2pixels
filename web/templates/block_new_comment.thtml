@@ -1,12 +1,13 @@
 @@INCLUDE@@ babel.thtml
 @@--
 <div id="new_comment">
-  <form id="comment_form">
+  <form enctype="multipart/form-data" id="comment_form" action="/comment_form_enter">
     <p><input name="NAME" id="title_input" type="entry" value="@_NAME_@"/></p>
     <p><textarea name="COMMENT"
     id="comment_input"/>@_BABEL_ENTER_COMMENT_@</textarea></p>
+    <p><input name="filename" type="file"/></p>
     <p><input name="ENTER" id="comment_form_enter" type="submit" value="OK"/>
     </p>
   </form>
-  @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, comment_form_enter, 4=>comment_form)
+@@--  @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, comment_form_enter, 4=>comment_form)
 </div>
