@@ -1,7 +1,8 @@
 <GPS>
   <Language>
     <Name>XML Template</Name>
-    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@</Keywords>
+    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@|</Keywords>
+    <Keywords>@_(.*)_@</Keywords>
     <Context>
       <New_Line_Comment_Start>@@--</New_Line_Comment_Start>
       <String_Delimiter>"</String_Delimiter>
@@ -15,7 +16,8 @@
 
   <Language>
     <Name>HTML Template</Name>
-    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@</Keywords>
+    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@|</Keywords>
+    <Keywords>@_(.*)_@</Keywords>
     <Context>
       <New_Line_Comment_Start>@@--</New_Line_Comment_Start>
       <String_Delimiter>"</String_Delimiter>
@@ -30,7 +32,8 @@
   <Language>
     <Name>Javascript Template</Name>
     <Parent>Javascript</Parent>
-    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@</Keywords>
+    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@|</Keywords>
+    <Keywords>@_(.*)_@</Keywords>
     <Context>
       <New_Line_Comment_Start>@@--</New_Line_Comment_Start>
       <String_Delimiter>"</String_Delimiter>
@@ -45,7 +48,8 @@
   <Language>
     <Name>Ada Template</Name>
     <Parent>Ada</Parent>
-    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@</Keywords>
+    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@|</Keywords>
+    <Keywords>@_(.*)_@</Keywords>
     <Context>
       <New_Line_Comment_Start>@@--</New_Line_Comment_Start>
       <String_Delimiter>"</String_Delimiter>
