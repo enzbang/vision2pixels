@@ -31,7 +31,7 @@ project GNADE is
    for Library_Kind use "static";
 
    Common_Options  :=
-     ("-Wall");
+     ("-Wall", "-fno-strict-aliasing");
    --  Common options used for the Debug and Release modes
 
    Debug_Options   :=

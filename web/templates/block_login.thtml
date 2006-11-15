@@ -1,5 +1,5 @@
 @@INCLUDE@@ babel.thtml
-<div id="login">
+@@--
 @@IF@@ @_LOGIN_@ = ""
 <form method="post" id="login_form" action="">
 <p>
@@ -24,4 +24,3 @@ value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/>
 @@INCLUDE@@ ../we_js/aws_action_clear.tjs (onfocus, password_input, password_input)
 @@-- Logout
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, logout_enter)
-</div>

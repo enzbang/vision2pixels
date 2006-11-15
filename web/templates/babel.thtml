@@ -7,3 +7,5 @@
 @@SET@@ BABEL_WELCOME="Bienvenue"
 @@SET@@ BABEL_ENTER_COMMENT="placer le commentaire ici"
 @@SET@@ BABEL_LOGOUT="déconnexion"
+@@SET@@ BABEL_FORUM_POST="Nouveau Message"
+@@SET@@ BABEL_SELECT_FORUM="Choisir un forum"

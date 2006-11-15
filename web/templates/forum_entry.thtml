@@ -16,8 +16,8 @@
       <hr id="top_global" />
       <div id="status_bar"></div>
 
-      @_LAZY_LOGIN_@
-      @_LAZY_FORUM_LIST_@
+      <div id="login">@_LAZY_LOGIN_@</div>
+      <div class="forumlistbar">@_LAZY_FORUM_LIST_@</div>
 
       <h1>@_NAME_@</h1>
 
@@ -39,7 +39,7 @@
       @@END_IF@@
       @@END_TABLE@@
 
-      @_LAZY_NEW_COMMENT_@
+      <div id="new_comment">@_LAZY_NEW_COMMENT_@</div>
 
       @@INCLUDE@@ footer.html
     </div>

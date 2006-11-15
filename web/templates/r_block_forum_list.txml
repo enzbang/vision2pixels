@@ -1,0 +1,9 @@
+@@INCLUDE@@ babel.thtml
+@@--
+<response>
+  <select action="clear" id="sel_category"/>
+  @@TABLE@@
+  <select action="add" id="sel_category"
+   option_value="@_CATEGORY_ID_@" option_content="@_CATEGORY_@"/>
+  @@END_TABLE@@
+</response>

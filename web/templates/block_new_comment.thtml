@@ -1,13 +1,30 @@
 @@INCLUDE@@ babel.thtml
 @@--
-<div id="new_comment">
-  <form enctype="multipart/form-data" id="comment_form" action="/comment_form_enter">
-    <p><input name="NAME" id="title_input" type="entry" value="@_NAME_@"/></p>
-    <p><textarea name="COMMENT"
-    id="comment_input"/>@_BABEL_ENTER_COMMENT_@</textarea></p>
-    <p><input name="filename" type="file"/></p>
-    <p><input name="ENTER" id="comment_form_enter" type="submit" value="OK"/>
-    </p>
-  </form>
-@@--  @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, comment_form_enter, 4=>comment_form)
-</div>
+<form enctype="multipart/form-data" id="comment_form"
+  action="/comment_form_enter" method="POST">
+  @@-- Is user logged
+  <div id="comment_login"><p>
+  @@IF@@ @_LOGIN_@ = ""
+    <input name="ANONYMOUS_USER" id="anonymous_user" type="entry"/>
+  @@ELSE@@
+    @_LOGIN_@
+  @@END_IF@@
+  </p></div>
+  @@-- Is user in a specific forum
+  <p>
+  @@IF@@ @_EXIST:FID_@
+    @_FORUM_NAME_@
+    <input name="FORUM" id="sel_forum_list" type="hidden" value="@_FID_@"/>
+    <input name="CATEGORY" id="sel_category" type="hidden" value="@_Category_Id_@"/>
+  @@ELSE@@
+    @_LAZY_FORUM_LIST_SELECT_@
+    <select name="CATEGORY" id="sel_category"></select>
+  @@END_IF@@
+  </p>
+  <p><input name="NAME" id="title_input" type="entry" value="@_NAME_@"/></p>
+  <p><textarea name="COMMENT"
+  id="comment_input"/>@_BABEL_ENTER_COMMENT_@</textarea></p>
+  <p><input name="FILENAME" type="file"/></p>
+  <p><input name="ENTER" id="comment_form_enter" type="submit" value="OK"/></p>
+</form>
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_forum_list, 4=>sel_forum_list)
