@@ -24,29 +24,33 @@
 # Web setup
 
 CP=cp -p
+MKDIR=mkdir -p
+RM=rm -f
 
 all:
 	gnat make -XPRJ_Build=$(MODE) -Pweb
 
 setup:
-	-mkdir gen
+	-$(MKDIR) gen
 	templates2ada -d templates -o gen/templates.cds \
 		-t templates/templates.tads
 	gnat chop -wpq gen/templates.cds src/
-	rm -f gen/templates.cds
+	$(RM) gen/templates.cds
 	templates2ada -d templates -o gen/templates.cds -e .txml \
 		-t templates/templates.tads
 	gnat chop -wpq gen/templates.cds gen/
-	rm -f gen/templates.cds
-	cp gen/v2p-template_defs-* src/
-	rm -fr gen
+	$(RM) gen/templates.cds
+	$(CP) gen/v2p-template_defs-* src/
+	$(RM) -r gen
 
 install-dir:
-	-mkdir -p $(INSTALL)
-	-mkdir -p $(INSTALL)/bin
-	-mkdir -p $(INSTALL)/templates
-	-mkdir -p $(INSTALL)/css
-	-mkdir -p $(INSTALL)/we_js
+	-$(MKDIR) $(INSTALL)
+	-$(MKDIR) $(INSTALL)/bin
+	-$(MKDIR) $(INSTALL)/templates
+	-$(MKDIR) $(INSTALL)/css
+	-$(MKDIR) $(INSTALL)/we_js
+	-$(MKDIR) $(INSTALL)/uploads
+	-$(MKDIR) $(INSTALL)/images
 
 install: install-dir
 	$(CP) css/*.css $(INSTALL)/css
@@ -56,5 +60,5 @@ install: install-dir
 	$(CP) bin/vision2pixels$(EXEXT) $(INSTALL)/bin
 
 clean:
-	-rm -fr gen src/v2p-template_defs*
+	-$(RM) -r gen src/v2p-template_defs*
 	-gnat clean -r -Pweb

@@ -14,10 +14,10 @@
   <body>
     <div id="global">
       <hr id="top_global" />
-      <div id="status_bar"></div>      
+      <div id="status_bar"></div>
 
-      @_LAZY_LOGIN_@
-      @_LAZY_FORUM_LIST_@
+      <div id="login">@_LAZY_LOGIN_@</div>
+      <div class="forumlistbar">@_LAZY_FORUM_LIST_@</div>
 
       <table id="thread_list_table"
              summary="This table contains all photos for the given forum">

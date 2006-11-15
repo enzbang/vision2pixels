@@ -19,6 +19,8 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Directories;
+
 with AWS.Config.Set;
 with AWS.Dispatchers.Callback;
 with AWS.Messages;
@@ -34,19 +36,23 @@ with AWS.Templates;
 with V2P.Database;
 with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Forum_Threads;
+with V2P.Template_Defs.Forum_Post;
 with V2P.Template_Defs.Main_Page;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Logout;
-with V2P.Template_Defs.R_Block_New_Comment;
+with V2P.Template_Defs.R_Block_Forum_List;
 
 with Settings;
 
 package body V2P.Web_Server is
 
+   use Ada;
    use AWS;
+
+   Null_Set : Templates.Translate_Set;
 
    HTTP            : Server.HTTP;
    Configuration   : Config.Object;
@@ -69,6 +75,10 @@ package body V2P.Web_Server is
 
    function Photos_Callback (Request : in Status.Data) return Response.Data;
    --  Photos callback
+
+   function Onchange_Forum_List_Callback
+     (Request : in Status.Data) return Response.Data;
+   --  Called when a new forum is selected
 
    function Main_Page_Callback
      (Request : in Status.Data) return Response.Data;
@@ -125,6 +135,11 @@ package body V2P.Web_Server is
          Translations : in out Templates.Translate_Set);
       --  ??
 
+      Final_Translations : Templates.Translate_Set := Translations;
+
+      LT  : aliased Lazy_Tags := (Templates.Dynamic.Lazy_Tag with
+                                  Translations => Final_Translations);
+
       -----------
       -- Value --
       -----------
@@ -152,23 +167,44 @@ package body V2P.Web_Server is
               (Translations,
                Templates.Assoc (Template_Defs.Lazy.Forum_List,
                  String'(Templates.Parse
-                     (Template_Defs.Block_Forum_List.Template,
+                   (Template_Defs.Block_Forum_List.Template,
                       Database.Get_Forums))));
 
+         elsif Var_Name = Template_Defs.Lazy.Forum_List_Select then
+            Templates.Insert (Local_Translations, Database.Get_Forums);
+            Templates.Insert
+              (Local_Translations,
+               Templates.Assoc
+                 (Template_Defs.Block_Forum_List.For_Select, True));
+
+            Templates.Insert
+              (Translations,
+               Templates.Assoc (Template_Defs.Lazy.Forum_List_Select,
+                 String'(Templates.Parse
+                   (Template_Defs.Block_Forum_List.Template,
+                      Local_Translations))));
+
          elsif Var_Name = Template_Defs.Lazy.New_Comment then
+            if Session.Get (SID, "FID") /= "" then
+               Templates.Insert
+                 (Local_Translations,
+                  Templates.Assoc (Template_Defs.Block_New_Comment.Fid,
+                    String'(Session.Get (SID, "FID"))));
+               Templates.Insert
+                 (Local_Translations,
+                  Templates.Assoc (Template_Defs.Block_New_Comment.Forum_Name,
+                    Database.Get_Forum (Session.Get (SID, "FID"))));
+            end if;
+
             Templates.Insert
               (Translations,
                Templates.Assoc (Template_Defs.Lazy.New_Comment,
                  String'(Templates.Parse
                    (Template_Defs.Block_New_Comment.Template,
-                      Local_Translations))));
+                      Local_Translations,
+                      Lazy_Tag => LT'Unchecked_Access))));
          end if;
       end Value;
-
-      Final_Translations : Templates.Translate_Set := Translations;
-
-      LT : aliased Lazy_Tags := (Templates.Dynamic.Lazy_Tag with
-                                 Translations => Final_Translations);
 
    begin
       Templates.Insert
@@ -212,8 +248,7 @@ package body V2P.Web_Server is
                     Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Tid);
 
             Count_Visit : Boolean := True;
-            Logged_User : constant String
-              := String'(Session.Get (SID, "LOGIN"));
+            Logged_User : constant String := Session.Get (SID, "LOGIN");
          begin
             --  Set thread Id into the session
             Session.Set (SID, "TID", TID);
@@ -224,7 +259,8 @@ package body V2P.Web_Server is
                   Count_Visit := False;
                else
                   if Settings.Ignore_Author_Click
-                    and Database.Is_Author (Logged_User, TID) then
+                    and then Database.Is_Author (Logged_User, TID)
+                  then
                      --  Do not count author click
                      Count_Visit := False;
                   end if;
@@ -240,6 +276,10 @@ package body V2P.Web_Server is
                Template_Defs.Forum_Entry.Template,
                Database.Get_Entry (TID));
          end;
+
+      elsif URI = "/forum/post" then
+         return Final_Parse
+           (Request, Template_Defs.Forum_Post.Template, Null_Set);
       end if;
 
       return Response.Build (MIME.Text_HTML, "not found!");
@@ -303,8 +343,17 @@ package body V2P.Web_Server is
    function Main_Page_Callback
      (Request : in Status.Data) return Response.Data
    is
+      SID          : constant Session.Id := Status.Session (Request);
       Translations : Templates.Translate_Set;
    begin
+      --  Main page, remove the current session status
+      if Session.Exist (SID, "TID") then
+         Session.Remove (SID, "TID");
+      end if;
+      if Session.Exist (SID, "FID") then
+         Session.Remove (SID, "FID");
+      end if;
+
       return Final_Parse
         (Request,
          Template_Defs.Main_Page.Template,
@@ -318,24 +367,80 @@ package body V2P.Web_Server is
    function New_Comment_Callback
      (Request : in Status.Data) return Response.Data
    is
-      SID     : constant Session.Id := Status.Session (Request);
-      P       : constant Parameters.List := Status.Parameters (Request);
-      Login   : constant String := Session.Get (SID, "LOGIN");
-      FID     : constant String := Session.Get (SID, "FID");
-      TID     : constant String := Session.Get (SID, "TID");
-      Name    : constant String := Parameters.Get (P, "NAME");
-      Comment : constant String := Parameters.Get (P, "COMMENT");
-   begin
-      Database.Insert_Comment (Login, FID, TID, Name, Comment);
+      function Target_Filename (Filename : in String) return String;
+      --  Returns the target filename for the uploaded directory
 
+      function Simple_Name (Filename : in String) return String;
+      --  Returns the base name and extension or the empty string if filename
+      --  is empty.
+
+      -----------------
+      -- Simple_Name --
+      -----------------
+
+      function Simple_Name (Filename : in String) return String is
+      begin
+         if Filename = "" then
+            return "";
+         else
+            return Directories.Simple_Name (Filename);
+         end if;
+      end Simple_Name;
+
+      ---------------------
+      -- Target_Filename --
+      ---------------------
+
+      function Target_Filename (Filename : in String) return String is
+      begin
+         return Directories.Compose (Settings.Get_Images_Path, Filename);
+      end Target_Filename;
+
+      SID       : constant Session.Id := Status.Session (Request);
+      P         : constant Parameters.List := Status.Parameters (Request);
+      Login     : constant String := Session.Get (SID, "LOGIN");
+      TID       : constant String := Session.Get (SID, "TID");
+      Name      : constant String := Parameters.Get (P, "NAME");
+      Comment   : constant String := Parameters.Get (P, "COMMENT");
+      Filename  : constant String := Parameters.Get (P, "FILENAME");
+      CID       : constant String := Parameters.Get (P, "CATEGORY");
+      Forum     : constant String := Parameters.Get (P, "FORUM");
+
+   begin
+      if Filename /= "" then
+         Directories.Rename
+           (Filename, Target_Filename (Simple_Name (Filename)));
+      end if;
+
+      if TID = "" then
+         --  New post
+         Database.Insert_Post
+           (Login, CID, Name, Comment, Simple_Name (Filename));
+         return Response.URL (Location => "/forum/threads?FID=" & Forum);
+      else
+         Database.Insert_Comment
+           (Login, TID, Name, Comment, Simple_Name (Filename));
+         return Response.URL (Location => "/forum/entry?TID=" & TID);
+      end if;
+   end New_Comment_Callback;
+
+   ----------------------------------
+   -- Onchange_Forum_List_Callback --
+   ----------------------------------
+
+   function Onchange_Forum_List_Callback
+     (Request : in Status.Data) return Response.Data
+   is
+      P   : constant Parameters.List := Status.Parameters (Request);
+      Fid : constant String := Parameters.Get (P, "sel_forum_list");
+      --  ??
+   begin
       return Response.Build
         (MIME.Text_XML,
          String'(Templates.Parse
-           (Template_Defs.R_Block_New_Comment.Template,
-              (1 => Templates.Assoc
-                 (Template_Defs.R_Block_New_Comment.Tid, TID)))),
-         Cache_Control => Messages.Prevent_Cache);
-   end New_Comment_Callback;
+           (Template_Defs.R_Block_Forum_List.Template,
+              Database.Get_Categories (Fid))));
+   end Onchange_Forum_List_Callback;
 
    ---------------------
    -- Photos_Callback --
@@ -369,7 +474,13 @@ package body V2P.Web_Server is
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         Template_Defs.Block_New_Comment.Ajax.Onclick_Comment_Form_Enter,
+         Template_Defs.Block_New_Comment.Ajax.Onchange_Sel_Forum_List,
+         Action => Dispatchers.Callback.Create
+           (Onchange_Forum_List_Callback'Access));
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         "/comment_form_enter",
          Action => Dispatchers.Callback.Create (New_Comment_Callback'Access));
 
       Services.Dispatchers.URI.Register
@@ -402,13 +513,18 @@ package body V2P.Web_Server is
          Action => Dispatchers.Callback.Create (Main_Page_Callback'Access),
          Prefix => True);
 
+      --  Log control
 
       Server.Log.Start (HTTP, Auto_Flush => True);
-
       Server.Log.Start_Error (HTTP);
 
+      --  Server configuration
+
       Config.Set.Session (Configuration, True);
+      Config.Set.Upload_Directory (Configuration, "./uploads/");
       Config.Set.Admin_URI (Configuration, "/admin");
+
+      --  Starting server
 
       Server.Start (HTTP, Main_Dispatcher, Configuration);
 

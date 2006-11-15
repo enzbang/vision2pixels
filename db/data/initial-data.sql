@@ -6,10 +6,13 @@ insert into user values ('turbo', 'turbopass', 'v2p@obry.net');
 --  Create forums
 
 insert into forum values (1, "Forum photographies");
+insert into forum values (2, "Forum matériel");
 
 --  Create categories
 
 insert into category values (1, 1, 'Test');
+insert into category values (2, 2, 'MatCat1');
+insert into category values (3, 2, 'MatCat2');
 
 --  Create templates
 

@@ -28,8 +28,17 @@ package V2P.Database is
    function Get_Forums return Templates.Translate_Set;
    --  Returns the forum list
 
+   function Get_Forum (Fid : in String) return String;
+   --  Returns the DB line for the given forum
+
    function Get_Threads (Fid : in String) return Templates.Translate_Set;
    --  Returns all threads for a given forum
+
+   function Get_Categories (Fid : in String) return Templates.Translate_Set;
+   --  Returns all categories for the given forum
+
+   function Get_Category (Tid : in String) return Templates.Translate_Set;
+   --  Returns the category for the given thread
 
    function Get_Entry (Tid : in String) return Templates.Translate_Set;
    --  Returns the full content of the entry Id
@@ -42,12 +51,20 @@ package V2P.Database is
    --  User cannot be found into the database.
 
    procedure Insert_Comment
-     (Uid     : in String;
-      Forum   : in String;
-      Thread  : in String;
-      Name    : in String;
-      Comment : in String);
+     (Uid      : in String;
+      Thread   : in String;
+      Name     : in String;
+      Comment  : in String;
+      Filename : in String);
    --  Insert comment Name/Comment into the given forum and thread
+
+   procedure Insert_Post
+     (Uid         : in String;
+      Category_Id : in String;
+      Name        : in String;
+      Comment     : in String;
+      Filename    : in String);
+   --  Insert a new post into the database
 
    procedure Increment_Visit_Counter (Pid : in String);
    --  Increment a thread visit counter

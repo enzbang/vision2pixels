@@ -1,5 +1,0 @@
-@@INCLUDE@@ babel.thtml
-@@--
-<response>
-  <location url="/forum/entry?TID=@_TID_@"/>
-</response>

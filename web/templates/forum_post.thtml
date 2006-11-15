@@ -1,27 +1,24 @@
 @@INCLUDE@@ babel.thtml
-@@--
+@@-- HTTP_GET(FID): forum Id
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
   <head>
-    <title>@_BABEL_FORUM_LIST_@</title>
+    <title>@_BABEL_FORUM_POST_@</title>
     @@INCLUDE@@ import_css.thtml
     @@INCLUDE@@ ../we_js/aws.tjs
   </head>
 
   <body>
-
     <div id="global">
       <hr id="top_global" />
       <div id="status_bar"></div>
 
       <div id="login">@_LAZY_LOGIN_@</div>
 
-      <div id="forum_post"><a href="/forum/post">@_BABEL_FORUM_POST_@</a></div>
-
-      <div class="forumlistbar">@_LAZY_FORUM_LIST_@</div>
+      <div id="new_comment">@_LAZY_NEW_COMMENT_@</div>
 
       @@INCLUDE@@ footer.html
     </div>
