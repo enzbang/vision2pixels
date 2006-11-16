@@ -20,14 +20,14 @@ insert into template values (1, 'mytemplate', 'V2P Template');
 
 --  Create photos
 
-insert into photo
+insert into post
  ('name', 'filename', 'category_id',
   'template_id', 'visit_counter', 'comment_counter')
   values
   ('une première photo', 'toto.jpg', 1,
    1, 0, 0);
 
-insert into user_photo values
+insert into user_post values
  ('enzbang', 1);
 
 --  Photo comments
@@ -37,48 +37,48 @@ insert into comment
   values
   ('turbo', 'What a beautiful landscape !');
 
-insert into photo_comment values (1, 1);
-update photo set comment_counter=comment_counter + 1;
+insert into post_comment values (1, 1);
+update post set comment_counter=comment_counter + 1;
 
 insert into comment
   ('parent', 'user_login', 'comment')
   values
   (1, 'enzbang', 'What ? This is a portrait !');
 
-insert into photo_comment values (1, 2);
-update photo set comment_counter=comment_counter + 1;
+insert into post_comment values (1, 2);
+update post set comment_counter=comment_counter + 1;
 
 insert into comment
   ('parent', 'user_login', 'comment')
   values
   (2, 'turbo', 'Oups sorry ;)');
 
-insert into photo_comment values (1, 3);
-update photo set comment_counter=comment_counter + 1;
+insert into post_comment values (1, 3);
+update post set comment_counter=comment_counter + 1;
 
 insert into comment
   ('user_login', 'comment')
   values
   ('turbo', 'Why not another thread ?');
 
-insert into photo_comment values (1, 4);
-update photo set comment_counter=comment_counter + 1;
+insert into post_comment values (1, 4);
+update post set comment_counter=comment_counter + 1;
 
 insert into comment
   ('parent', 'user_login', 'comment')
   values
   (4, 'enzbang', "Oh dear, it's wonderful");
 
-insert into photo_comment values (1, 5);
-update photo set comment_counter=comment_counter + 1;
+insert into post_comment values (1, 5);
+update post set comment_counter=comment_counter + 1;
 
 insert into comment
   ('parent', 'user_login', 'comment')
   values
   (5, 'turbo', 'Yes, it is.');
 
-insert into photo_comment values (1, 6);
-update photo set comment_counter=comment_counter + 1;
+insert into post_comment values (1, 6);
+update post set comment_counter=comment_counter + 1;
 
 
 

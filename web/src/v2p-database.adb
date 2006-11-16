@@ -118,7 +118,7 @@ package body V2P.Database is
 
       DBH.Prepare_Select
         (Iter, "select id, name from category"
-           & " where photo.category_id=category.id photo.id=" & Q (Tid));
+           & " where post.category_id=category.id post.id=" & Q (Tid));
 
       while Iter.More loop
          --  ?? only one
@@ -163,10 +163,10 @@ package body V2P.Database is
 
       DBH.Prepare_Select
         (Iter,
-         "select photo.name, category.name, photo.filename"
-         & " from photo, category "
-         & " where photo.id=" & Q (Tid)
-         & " and photo.category_id = category.id");
+         "select post.name, category.name, post.filename"
+         & " from post, category "
+         & " where post.id=" & Q (Tid)
+         & " and post.category_id = category.id");
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -195,9 +195,9 @@ package body V2P.Database is
       DBH.Prepare_Select
         (Iter,
          "select comment.id, date, user_login, comment, filename"
-         & " from comment, photo_comment"
-         & " where photo_id=" & Q (Tid)
-         & " and photo_comment.comment_id=comment.id");
+         & " from comment, post_comment"
+         & " where post_id=" & Q (Tid)
+         & " and post_comment.comment_id=comment.id");
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -348,10 +348,10 @@ package body V2P.Database is
 
       DBH.Prepare_Select
         (Iter,
-         "select photo.id, photo.name, category.name, "
+         "select post.id, post.name, category.name, "
          & "comment_counter, visit_counter"
-         & " from photo, category"
-         & " where photo.category_id = category.id"
+         & " from post, category"
+         & " where post.category_id = category.id"
          & " and category.forum_id = " & Q (Fid));
 
       while Iter.More loop
@@ -406,7 +406,7 @@ package body V2P.Database is
 
    procedure Increment_Visit_Counter (Pid : in String) is
       SQL : constant String :=
-              "update photo set visit_counter = visit_counter + 1 where "
+              "update post set visit_counter = visit_counter + 1 where "
                 & "id = " & Q (Pid);
    begin
       DBH.Execute (SQL);
@@ -428,8 +428,8 @@ package body V2P.Database is
       procedure Insert_Table_Comment (User_Login, Comment : in String);
       --  Insert row into Comment table
 
-      procedure Insert_Table_Photo_Comment (Photo_Id, Comment_Id : in String);
-      --  Insert row into Photo_Comment table
+      procedure Insert_Table_post_Comment (post_Id, Comment_Id : in String);
+      --  Insert row into post_Comment table
 
       --------------------------
       -- Insert_Table_Comment --
@@ -446,23 +446,23 @@ package body V2P.Database is
       end Insert_Table_Comment;
 
       --------------------------------
-      -- Insert_Table_Photo_Comment --
+      -- Insert_Table_post_Comment --
       --------------------------------
 
-      procedure Insert_Table_Photo_Comment
-        (Photo_Id, Comment_Id : in String)
+      procedure Insert_Table_post_Comment
+        (post_Id, Comment_Id : in String)
       is
          SQL : constant String :=
-                 "insert into photo_comment values ("
-                   & Photo_Id & "," & Comment_Id & ')';
+                 "insert into post_comment values ("
+                   & post_Id & "," & Comment_Id & ')';
       begin
          DBH.Execute (SQL);
-      end Insert_Table_Photo_Comment;
+      end Insert_Table_post_Comment;
 
    begin
       DBH.Begin_Transaction;
       Insert_Table_Comment (Uid, Comment);
-      Insert_Table_Photo_Comment (Thread, DBH.Last_Insert_Rowid);
+      Insert_Table_post_Comment (Thread, DBH.Last_Insert_Rowid);
       DBH.Commit;
    exception
       when E : DB.DB_Error =>
@@ -483,42 +483,42 @@ package body V2P.Database is
    is
       pragma Unreferenced (Comment);
 
-      procedure Insert_Table_Photo (Name, Filename, Category_Id : in String);
-      --  Insert row into the photo table
+      procedure Insert_Table_Post (Name, Filename, Category_Id : in String);
+      --  Insert row into the post table
 
-      procedure Insert_Table_User_Photo (Uid, Photo_Id : in String);
-      --  Insert row into the user_photo table
+      procedure Insert_Table_User_Post (Uid, Post_Id : in String);
+      --  Insert row into the user_post table
 
       ------------------------
-      -- Insert_Table_Photo --
+      -- Insert_Table_post --
       ------------------------
 
-      procedure Insert_Table_Photo (Name, Filename, Category_Id : in String) is
+      procedure Insert_Table_Post (Name, Filename, Category_Id : in String) is
          SQL : constant String :=
-                 "insert into photo ('name', 'filename', 'category_id',"
+                 "insert into post ('name', 'filename', 'category_id',"
                    & " 'template_id', 'visit_counter', 'comment_counter')"
                    & " values (" & Q (Name) & ',' & Q (Filename) & ','
                    & Category_Id & ", 1, 0, 0)";
       begin
          DBH.Execute (SQL);
-      end Insert_Table_Photo;
+      end Insert_Table_Post;
 
       -----------------------------
-      -- Insert_Table_User_Photo --
+      -- Insert_Table_User_post --
       -----------------------------
 
-      procedure Insert_Table_User_Photo (Uid, Photo_Id : in String) is
+      procedure Insert_Table_User_Post (Uid, Post_Id : in String) is
          SQL : constant String :=
-                 "insert into user_photo values ("
-                   & Q (Uid) & ',' & Photo_Id & ")";
+                 "insert into user_post values ("
+                   & Q (Uid) & ',' & Post_Id & ")";
       begin
          DBH.Execute (SQL);
-      end Insert_Table_User_Photo;
+      end Insert_Table_User_Post;
 
    begin
       DBH.Begin_Transaction;
-      Insert_Table_Photo (Name, Filename, Category_Id);
-      Insert_Table_User_Photo (Uid, DBH.Last_Insert_Rowid);
+      Insert_Table_Post (Name, Filename, Category_Id);
+      Insert_Table_User_Post (Uid, DBH.Last_Insert_Rowid);
       DBH.Commit;
    exception
       when E : DB.DB_Error =>
@@ -536,11 +536,11 @@ package body V2P.Database is
    begin
       Connect;
 
-      --  Get photo Pid posted by user Uid
+      --  Get post Pid posted by user Uid
 
       DBH.Prepare_Select
         (Iter,
-         "select * from user_photo where photo_id  = "
+         "select * from user_post where post_id  = "
            & Q (Pid) & " and user_login = " & Q (Uid));
 
       if Iter.More then
