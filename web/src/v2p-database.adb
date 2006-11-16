@@ -80,8 +80,7 @@ package body V2P.Database is
       Connect;
 
       DBH.Prepare_Select
-        (Iter, "select id, name from category"
-           & " where forum_id=" & Q (Fid));
+        (Iter, "select id, name from category" & " where forum_id=" & Q (Fid));
 
       while Iter.More loop
          Iter.Get_Line (Line);
