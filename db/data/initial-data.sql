@@ -21,68 +21,47 @@ insert into template values (1, 'mytemplate', 'V2P Template');
 --  Create photos
 
 insert into post
- ('name', 'filename', 'category_id',
-  'template_id', 'visit_counter', 'comment_counter')
-  values
-  ('une première photo', 'toto.jpg', 1,
-   1, 0, 0);
+   ('name', 'filename', 'category_id',
+    'template_id', 'visit_counter', 'comment_counter')
+  values ('une première photo', 'toto.jpg', 1, 1, 0, 0);
 
-insert into user_post values
- ('enzbang', 1);
+insert into user_post values ('enzbang', 1);
+
+--  Comment counter
+
+create trigger update_comment_counter insert on comment
+   begin
+      update post set comment_counter=comment_counter + 1;
+   end;
 
 --  Photo comments
 
-insert into comment
-  ('user_login', 'comment')
-  values
-  ('turbo', 'What a beautiful landscape !');
+insert into comment ('user_login', 'comment')
+  values ('turbo', 'What a beautiful landscape !');
 
 insert into post_comment values (1, 1);
-update post set comment_counter=comment_counter + 1;
 
-insert into comment
-  ('parent', 'user_login', 'comment')
-  values
-  (1, 'enzbang', 'What ? This is a portrait !');
+insert into comment ('parent', 'user_login', 'comment')
+  values (1, 'enzbang', 'What ? This is a portrait !');
 
 insert into post_comment values (1, 2);
-update post set comment_counter=comment_counter + 1;
 
-insert into comment
-  ('parent', 'user_login', 'comment')
-  values
-  (2, 'turbo', 'Oups sorry ;)');
+insert into comment ('parent', 'user_login', 'comment')
+  values (2, 'turbo', 'Oups sorry ;)');
 
 insert into post_comment values (1, 3);
-update post set comment_counter=comment_counter + 1;
 
-insert into comment
-  ('user_login', 'comment')
-  values
-  ('turbo', 'Why not another thread ?');
+insert into comment ('user_login', 'comment')
+  values ('turbo', 'Why not another thread ?');
 
 insert into post_comment values (1, 4);
-update post set comment_counter=comment_counter + 1;
 
-insert into comment
-  ('parent', 'user_login', 'comment')
-  values
-  (4, 'enzbang', "Oh dear, it's wonderful");
+insert into comment ('parent', 'user_login', 'comment')
+  values (4, 'enzbang', "Oh dear, it's wonderful");
 
 insert into post_comment values (1, 5);
-update post set comment_counter=comment_counter + 1;
 
-insert into comment
-  ('parent', 'user_login', 'comment')
-  values
-  (5, 'turbo', 'Yes, it is.');
+insert into comment ('parent', 'user_login', 'comment')
+  values (5, 'turbo', 'Yes, it is.');
 
 insert into post_comment values (1, 6);
-update post set comment_counter=comment_counter + 1;
-
-
-
-
-
-
-
