@@ -70,6 +70,6 @@ package V2P.Database is
    --  Increment a thread visit counter
 
    function Is_Author (Uid, Pid : in String) return Boolean;
-   --  Returns true whether the user of the photo Pid is Uid
+   --  Returns true whether the user of the post Pid is Uid
 
 end V2P.Database;

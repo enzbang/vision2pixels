@@ -30,10 +30,10 @@ create table "category" (
 "id" integer not null primary key autoincrement,
 "forum_id" integer not null,
 "name" varchar(100) not null,
-foreign key ("forum_id") references photo("id")
+foreign key ("forum_id") references post("id")
 );
 
-create table "photo" (
+create table "post" (
 "id" integer not null primary key autoincrement,
 "name" varchar(100) not null,
 "filename" varchar(512) not null unique,
@@ -48,16 +48,16 @@ foreign key ("last_comment_id") references comment("id"),
 foreign key ("template_id") references template_id("id")
 );
 
-create table "photo_comment" (
-"photo_id" integer not null,
+create table "post_comment" (
+"post_id" integer not null,
 "comment_id" integer not null unique,
-foreign key ("photo_id") references photo("id"),
+foreign key ("post_id") references post("id"),
 foreign key ("comment_id") references comment("id")
 );
 
-create table "user_photo" (
+create table "user_post" (
 "user_login" varchar(50) not null,
-"photo_id" integer not null,
-foreign key ("photo_id") references photo("id"),
+"post_id" integer not null,
+foreign key ("post_id") references post("id"),
 foreign key ("user_login") references user("login")
 );
