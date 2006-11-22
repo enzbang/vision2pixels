@@ -1,15 +1,49 @@
 html, body {
     height: 100%;
     margin: 0;
+    padding: 0px;
 }
 
 div#global {
     min-height: 100%;
-    position: relative;
+    width: 100%;
+    position: absolute;
 }
 
 div#status_bar {
     display: none;
+}
+
+#title h1 {
+    position : absolute;
+    width : 70%;
+    margin: 0;
+    padding: 0;
+    padding-left: 1em;
+}
+
+div#login {
+    margin-left: 70%;
+    width: 27%;
+    float: right;
+}
+
+/* Forum List */
+
+div#forumlistbar
+{
+    clear: right;
+    margin: 0;
+    margin-top : 4em;
+    padding: 0 0 6px 10px;
+    height : 1.1em;
+    border-bottom: 1px solid #000;
+}
+
+#forumlistbar ul, li {
+    margin: 0;
+    padding: 0;
+    display: inline;
 }
 
 
@@ -24,12 +58,5 @@ div#main_image {
 #footer {
     position: absolute;
     width: 100%;
-    bottom: 0;
-}
-
-@@--  Creates a hidden hr to fix global div position
-@@--  without this, there is a margin between global div and page top
-
-hr#top_global {
-    margin: 0px;
+    bottom: 10px;
 }

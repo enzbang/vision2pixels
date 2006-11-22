@@ -10,8 +10,7 @@
     </select>
   @@END_IF@@
 @@ELSE@@
-    <div id="forumlistbar">
-      <ul id="forum_list">
+      <ul>
         @@TABLE@@
         <li><a
                @@IF@@ @_FID_@ = @_Current_FID_@
@@ -20,7 +19,5 @@
                href="/forum/threads?FID=@_FID_@">@_FORUM_NAME_@</a></li>
         @@END_TABLE@@
       </ul>
-    </div>
-  <hr id="end_forum_list"/><!--  Hidden. Cancel float left on forum link -->
 @@END_IF@@
 

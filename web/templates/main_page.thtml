@@ -6,22 +6,20 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
   <head>
-    <title>@_BABEL_FORUM_LIST_@</title>
+    <title>@_BABEL_V2P_WEBSITE_NAME_@</title>
     @@INCLUDE@@ import_css.thtml
     @@INCLUDE@@ ../we_js/aws.tjs
   </head>
 
   <body>
-
     <div id="global">
-      <hr id="top_global" />
-      <div id="status_bar"></div>
-
       <div id="login">@_LAZY_LOGIN_@</div>
+      <div id=title><h1><a href="/">@_BABEL_V2P_WEBSITE_NAME_@</a></h1></div>
+      <div id="status_bar"></div>
 
       <div id="forum_post"><a href="/forum/post">@_BABEL_FORUM_POST_@</a></div>
 
-      <div class="forumlistbar">@_LAZY_FORUM_LIST_@</div>
+      <div id="forumlistbar">@_LAZY_FORUM_LIST_@</div>
 
       @@INCLUDE@@ footer.html
     </div>

@@ -1,35 +1,7 @@
-@@--  Set the main site colors
-@@SET@@ V2P_MAIN_BACKGROUND_COLOR=rgb(20, 20, 20)
-@@SET@@ V2P_MAIN_COLOR=#ffffff
-@@SET@@ V2P_MAIN_COLOR_INVERT=#000000
-@@SET@@ V2P_MAIN_LINK_COLOR=#556666
-@@SET@@ V2P_MAIN_LINK_HOVER_COLOR=#778888
-@@SET@@ V2P_ENTRY_BORDER_COLOR=#665544
-@@SET@@ V2P_LABEL_AND_INPUT_COLOR=#998866
-@@SET@@ V2P_COLOR_1=#bbbbcc
-@@SET@@ V2P_COLOR_2=#eeffff
-@@SET@@ V2P_COLOR_3=#333333
-@@SET@@ V2P_COLOR_4=#cccccc
-@@SET@@ V2P_WARNING_COLOR=red
-
 /* General */
 
-body {
-    background-color: @_V2P_MAIN_BACKGROUND_COLOR_@;
-    color: @_V2P_MAIN_COLOR_@;
-}
-
-a {
-    color : @_V2P_MAIN_LINK_COLOR_@;
-}
-
-a:hover, a:active {
-    color: @_V2P_MAIN_LINK_HOVER_COLOR_@;
-}
-
-h1 {
+h2 {
     line-height: normal;
-    color: @_V2P_COLOR_4_@;
     font-style: normal;
     text-align: center;
     padding: 5px;
@@ -43,33 +15,14 @@ div#login {
 label, input {
     font-size: small;
     font-weight: bold;
-    color: @_V2P_LABEL_AND_INPUT_COLOR_@;
 }
 
 input[type="submit"]{
     border: 1px solid @_V2P_MAIN_LINK_COLOR_@;
-    color: @_V2P_MAIN_COLOR_INVERT_@;
-}
-
-input[type="submit"]:hover {
-    background-color:  @_V2P_MAIN_LINK_COLOR_@;
-}
-
-div#status_bar {
-    border: 1px solid @_V2P_WARNING_COLOR_@;
-    padding: 0.3em;
-    margin-top:1em;
-    padding-right : 2%;
 }
 
 #footer {
     text-align: center;
-    clear: both;
-    color: @_V2P_COLOR_2_@;
-}
-
-#footer a {
-    color: @_V2P_MAIN_COLOR_@;
 }
 
 /* Forum entry */
@@ -92,25 +45,18 @@ div#new_comment {
 
 /* Forum list */
 
-#forumlistbar
-{
-    margin: 0;
-    padding: 0 0 20px 10px;
-    border-bottom: 1px solid #000;
+#forumlistbar ul, li {
+    list-style-type: none;
 }
 
 #forumlistbar ul, li {
-    margin: 0;
-    padding: 0;
-    display: inline;
     list-style-type: none;
 }
 
 #forumlistbar a:link, #forumlistbar a:visited
 {
-    float: left;
-    line-height: 14px;
     font-weight: bold;
+    font-size: 1em;
     margin: 0 10px 4px 10px;
     text-decoration: none;
     color: #999;
@@ -125,43 +71,22 @@ div#new_comment {
     background: transparent;
 }
 
-#forumlistbar a:link#forum_active,
-#forumlistbar a:visited#forum_active
-{
-    color: @_V2P_COLOR_1_@;
-}
-
-#forumlistbar a:hover { color: @_V2P_COLOR_4_@; }
-
-hr#end_forum_list {
-    visibility: hidden;
-    clear: left;
-}
 
 /* Thread list */
 
 table#thread_list_table {
+    margin-top: 3em;
     margin-left: 10%;
     width: 80%;
     border-width: 2px;
-    border-color: @_V2P_COLOR_3_@;
     border-style: solid;
     border-collapse: separate;
-    color: @_V2P_COLOR_1_@;
 }
 
 table#thread_list_table caption {
-    margin-left: 10%;
-    margin-top: 5em;
     margin-bottom: 1em;
-}
-
-table#thread_list_table th {
-    background-color: @_V2P_COLOR_3_@;
-    color: @_V2P_COLOR_4_@;
 }
 
 table#thread_list_table td {
     color: @_V2P_COLOR_4_@;
-    text-align: center;
 }

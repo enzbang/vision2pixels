@@ -13,11 +13,11 @@
 
   <body>
     <div id="global">
-      <hr id="top_global" />
+      <div id="login">@_LAZY_LOGIN_@</div>
+      <div id=title><h1><a href="/">@_BABEL_V2P_WEBSITE_NAME_@</a></h1></div>
       <div id="status_bar"></div>
 
-      <div id="login">@_LAZY_LOGIN_@</div>
-      <div class="forumlistbar">@_LAZY_FORUM_LIST_@</div>
+      <div id="forumlistbar">@_LAZY_FORUM_LIST_@</div>
 
       <table id="thread_list_table"
              summary="This table contains all photos for the given forum">
