@@ -13,13 +13,13 @@
 
   <body>
     <div id="global">
-      <hr id="top_global" />
+      <div id="login">@_LAZY_LOGIN_@</div>
+      <div id=title><h1><a href="/">@_BABEL_V2P_WEBSITE_NAME_@</a></h1></div>
       <div id="status_bar"></div>
 
-      <div id="login">@_LAZY_LOGIN_@</div>
-      <div class="forumlistbar">@_LAZY_FORUM_LIST_@</div>
+      <div id="forumlistbar">@_LAZY_FORUM_LIST_@</div>
 
-      <h1>@_NAME_@</h1>
+      <h2>@_NAME_@</h2>
 
       <div id="main_image">
         <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"/>
@@ -27,7 +27,7 @@
 
       @@TABLE@@
       <div class="level_@_COMMENT_LEVEL_@">
-        <h2 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h2>
+        <h3 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h3>
         <p class="comment_whois">Posté par
         <a href="@_USER_PAGE_@" >@_USER_@</a>
         le @_DATE_@.
