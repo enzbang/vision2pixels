@@ -92,19 +92,50 @@ div#new_comment {
 
 /* Forum list */
 
-div.forumlistbar {
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-top: 3px;
-    padding-bottom: 2px;
+#forumlistbar
+{
+    margin: 0;
+    padding: 0 0 20px 10px;
+    border-bottom: 1px solid #000;
 }
 
-div.forumlistbar a {
+#forumlistbar ul, li {
+    margin: 0;
+    padding: 0;
+    display: inline;
+    list-style-type: none;
+}
+
+#forumlistbar a:link, #forumlistbar a:visited
+{
+    float: left;
+    line-height: 14px;
+    font-weight: bold;
+    margin: 0 10px 4px 10px;
+    text-decoration: none;
+    color: #999;
+}
+
+#forumlistbar a:link#forum_active,
+#forumlistbar a:visited#forum_active,
+#forumlistbar a:hover
+{
+    border-bottom: 4px solid #000;
+    padding-bottom: 2px;
+    background: transparent;
+}
+
+#forumlistbar a:link#forum_active,
+#forumlistbar a:visited#forum_active
+{
     color: @_V2P_COLOR_1_@;
 }
 
-div.forumlistbar a:hover, a:active {
-    color: @_V2P_MAIN_COLOR_@;
+#forumlistbar a:hover { color: @_V2P_COLOR_4_@; }
+
+hr#end_forum_list {
+    visibility: hidden;
+    clear: left;
 }
 
 /* Thread list */

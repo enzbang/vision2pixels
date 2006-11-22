@@ -163,12 +163,22 @@ package body V2P.Web_Server is
                    (Template_Defs.Block_Login.Template, Local_Translations))));
 
          elsif Var_Name = Template_Defs.Lazy.Forum_List then
-            Templates.Insert
-              (Translations,
-               Templates.Assoc (Template_Defs.Lazy.Forum_List,
-                 String'(Templates.Parse
-                   (Template_Defs.Block_Forum_List.Template,
-                      Database.Get_Forums))));
+            declare
+               Forum_Set : Templates.Translate_Set :=
+                 Database.Get_Forums;
+            begin
+               Templates.Insert (Forum_Set,
+                                 Templates.Assoc
+                                   (Template_Defs.Block_Forum_List.Current_Fid,
+                                    String'(Session.Get (SID, "FID"))));
+
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc (Template_Defs.Lazy.Forum_List,
+                    String'(Templates.Parse
+                       (Template_Defs.Block_Forum_List.Template,
+                        Forum_Set))));
+            end;
 
          elsif Var_Name = Template_Defs.Lazy.Forum_List_Select then
             Templates.Insert (Local_Translations, Database.Get_Forums);
