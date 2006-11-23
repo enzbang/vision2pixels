@@ -28,7 +28,7 @@ procedure Vision2Pixels is
    use Ada;
 begin
    V2P.Web_Server.Start;
-
+   V2P.Web_Server.Wait;
 exception
    when E : others =>
       Text_IO.Put_Line (Exceptions.Exception_Information (E));
