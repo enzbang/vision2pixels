@@ -23,10 +23,6 @@
 
 # Web setup
 
-CP=cp -p
-MKDIR=mkdir -p
-RM=rm -f
-
 all:
 	gnat make -XPRJ_Build=$(MODE) -Pweb
 
@@ -62,3 +58,5 @@ install: install-dir
 clean:
 	-$(RM) -r gen src/v2p-template_defs*
 	-gnat clean -r -Pweb
+
+runtests:

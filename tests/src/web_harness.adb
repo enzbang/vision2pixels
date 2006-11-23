@@ -19,18 +19,50 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-package V2P.Web_Server is
+with Ada.Text_IO;
+with AUnit.Test_Runner;
 
-   Image_Source_Prefix : constant String := "/photos";
-   --  Image source prefix used to reference images in URL
+with V2P.Web_Server;
 
-   procedure Start;
-   --  Start the Web Server, port is taken from the ini file
+with Web_Suite;
 
-   procedure Wait;
-   --  Wait forever, the server needs to be killed
+procedure Web_Harness is
 
-   procedure Stop;
-   --  Stop the server and returns
+   use Ada;
 
-end V2P.Web_Server;
+   procedure Run is new AUnit.Test_Runner (Web_Suite);
+
+   task Server is
+      entry Started;
+   end Server;
+
+   ------------
+   -- Server --
+   ------------
+
+   task body Server is
+   begin
+      V2P.Web_Server.Start;
+      accept Started;
+   exception
+      when E : others =>
+         Text_IO.Put_Line ("Server failed to start...");
+   end Server;
+
+begin
+   Text_IO.Put_Line ("(web_harness): Begin");
+
+   Text_IO.Put_Line ("(web_harness): Start server");
+   Server.Started;
+
+   --  Run tests
+
+   Text_IO.Put_Line ("(web_harness): run tests");
+   Run;
+
+   --  Stop server
+
+   V2P.Web_Server.Stop;
+
+   Text_IO.Put_Line ("(web_harness): End");
+end Web_Harness;

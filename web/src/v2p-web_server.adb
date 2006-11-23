@@ -537,9 +537,25 @@ package body V2P.Web_Server is
       --  Starting server
 
       Server.Start (HTTP, Main_Dispatcher, Configuration);
-
-      Server.Wait (Server.Forever);
    end Start;
+
+   ----------
+   -- Stop --
+   ----------
+
+   procedure Stop is
+   begin
+      Server.Shutdown (HTTP);
+   end Stop;
+
+   ----------
+   -- Wait --
+   ----------
+
+   procedure Wait is
+   begin
+      Server.Wait (Server.Forever);
+   end Wait;
 
    -------------------
    -- WEJS_Callback --

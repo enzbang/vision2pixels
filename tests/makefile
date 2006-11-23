@@ -21,61 +21,25 @@
 #  Simple makefile to build Vision2Pixels
 ###########################################################################
 
-# Options
+INSTALL_TESTS = $(PWD)/tests/v2p-testdir
 
-INSTALL=$(HOME)/opt/v2p
-MODE=Debug
+build:
+	gnat make -Pregtests
 
-ifeq ($(OS),Windows_NT)
-EXEXT=.exe
-else
-EXEXT=
-endif
+setup install:
 
-CP=cp -p
-MKDIR=mkdir -p
-RM=rm -f
+setup_tests:
+	-$(MKDIR) -p $(INSTALL_TESTS)/db
+	echo "db_name db/testing.db" > $(INSTALL_TESTS)/v2p.ini
 
-OPTIONS = INSTALL="$(INSTALL)" EXEXT="$(EXEXT)" MODE="$(MODE)" \
-	CP="$(CP)" MKDIR="$(MKDIR)" RM="$(RM)" MAKE="$(MAKE)"
+install_tests:
+	$(MAKE) -C ../web INSTALL=$(INSTALL_TESTS) install
+	$(CP) ../db/data/*.s* $(INSTALL_TESTS)/db/
+	(cd $(INSTALL_TESTS)/db; rm testing.db; ./create_database.sh)
+	$(CP) bin/web_harness $(INSTALL_TESTS)/bin
 
-# Modules support
+runtests: setup_tests install_tests
 
-MODULES = web tests
-
-MODULES_SETUP = ${MODULES:%=%_setup}
-
-MODULES_BUILD = ${MODULES:%=%_build}
-
-MODULES_RUNTESTS = ${MODULES:%=%_runtests}
-
-MODULES_INSTALL = ${MODULES:%=%_install}
-
-MODULES_CLEAN = ${MODULES:%=%_clean}
-
-# Targets
-
-all: $(MODULES_SETUP) $(MODULES_BUILD)
-
-setup: $(MODULES_SETUP)
-
-runtests: $(MODULES_RUNTESTS)
-
-install: $(MODULES_INSTALL)
-
-clean: $(MODULES_CLEAN)
-
-${MODULES_SETUP}:
-	${MAKE} -C ${@:%_setup=%} setup $(OPTIONS)
-
-${MODULES_BUILD}:
-	${MAKE} -C ${@:%_build=%} $(OPTIONS)
-
-${MODULES_RUNTESTS}:
-	${MAKE} -C ${@:%_runtests=%} runtests $(OPTIONS)
-
-${MODULES_INSTALL}:
-	${MAKE} -C ${@:%_install=%} install $(OPTIONS)
-
-${MODULES_CLEAN}:
-	${MAKE} -C ${@:%_clean=%} clean $(OPTIONS)
+clean:
+	$(RM) -fr $(INSTALL_TESTS)
+	gnat clean -Pregtests

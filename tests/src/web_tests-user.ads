@@ -19,18 +19,16 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-package V2P.Web_Server is
+with AUnit.Test_Cases;
 
-   Image_Source_Prefix : constant String := "/photos";
-   --  Image source prefix used to reference images in URL
+package Web_Tests.User is
 
-   procedure Start;
-   --  Start the Web Server, port is taken from the ini file
+   type Test_Case is new AUnit.Test_Cases.Test_Case with null record;
 
-   procedure Wait;
-   --  Wait forever, the server needs to be killed
+   procedure Register_Tests (T : in out Test_Case);
+   --  Register routines to be run
 
-   procedure Stop;
-   --  Stop the server and returns
+   function Name (T : Test_Case) return String_Access;
+   --  Returns name identifying the test case
 
-end V2P.Web_Server;
+end Web_Tests.User;

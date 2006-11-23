@@ -19,18 +19,33 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-package V2P.Web_Server is
+with Ada.Strings.Unbounded;
 
-   Image_Source_Prefix : constant String := "/photos";
-   --  Image source prefix used to reference images in URL
+package Web_Tests is
 
-   procedure Start;
-   --  Start the Web Server, port is taken from the ini file
+   use Ada.Strings.Unbounded;
 
-   procedure Wait;
-   --  Wait forever, the server needs to be killed
+   Host : constant String := "localhost";
+   --  v2p web server host
 
-   procedure Stop;
-   --  Stop the server and returns
+   Port : constant := 8080;
+   --  v2p web server port
 
-end V2P.Web_Server;
+   function Encode (Str : in String) return String;
+   --  Encodes Str using HTML &xx; encoding. This is required for all strings
+   --  for proper display with any browser encoding.
+
+   type Word_Set is array (Positive range <>) of Unbounded_String;
+
+   procedure Check (Page : in String; Word : in Word_Set; Message : in String);
+   --  Does nothing if the set of Word appears (in the right order) in Page.
+   --  Otherwise it raises an AUnit assertion and log the web page.
+
+   function "+"
+     (Str : in String)
+      return Unbounded_String
+      renames To_Unbounded_String;
+
+   function "not" (Word : in String) return Unbounded_String;
+
+end Web_Tests;
