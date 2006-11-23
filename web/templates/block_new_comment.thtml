@@ -1,5 +1,5 @@
 @@INCLUDE@@ babel.thtml
-@@--
+@@-- HTTP_URL(/comment_form_enter)
 <form enctype="multipart/form-data" id="comment_form"
   action="/comment_form_enter" method="POST">
   @@-- Is user logged
