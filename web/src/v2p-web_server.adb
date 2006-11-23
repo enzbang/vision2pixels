@@ -215,6 +215,19 @@ package body V2P.Web_Server is
               String'(Session.Get (SID, "FID"))));
       end if;
 
+      --  Adds some URL
+
+      Templates.Insert
+        (Final_Translations,
+         Templates.Assoc
+           ("FORUM_THREAD_URL", Template_Defs.Forum_Threads.URL));
+      Templates.Insert
+        (Final_Translations,
+         Templates.Assoc ("FORUM_POST_URL", Template_Defs.Forum_Post.URL));
+      Templates.Insert
+        (Final_Translations,
+         Templates.Assoc ("FORUM_ENTRY_URL", Template_Defs.Forum_Entry.URL));
+
       return Response.Build
         (MIME.Text_HTML,
          String'(Templates.Parse
@@ -233,7 +246,7 @@ package body V2P.Web_Server is
       URI : constant String := Status.URI (Request);
       P   : constant Parameters.List := Status.Parameters (Request);
    begin
-      if URI = "/forum/threads" then
+      if URI = Template_Defs.Forum_Threads.URL then
          declare
             FID : constant String :=
                     Parameters.Get (P, Template_Defs.Forum_Threads.HTTP.Fid);
@@ -246,7 +259,7 @@ package body V2P.Web_Server is
                Database.Get_Threads (FID));
          end;
 
-      elsif URI = "/forum/entry" then
+      elsif URI = Template_Defs.Forum_Entry.URL then
          declare
             TID : constant String :=
                     Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Tid);
@@ -281,7 +294,7 @@ package body V2P.Web_Server is
                Database.Get_Entry (TID));
          end;
 
-      elsif URI = "/forum/post" then
+      elsif URI = Template_Defs.Forum_Post.URL then
          return Final_Parse
            (Request, Template_Defs.Forum_Post.Template, Null_Set);
       end if;
@@ -420,11 +433,13 @@ package body V2P.Web_Server is
          --  New post
          Database.Insert_Post
            (Login, CID, Name, Comment, Simple_Name (Filename));
-         return Response.URL (Location => "/forum/threads?FID=" & Forum);
+         return Response.URL
+           (Location => Template_Defs.Forum_Threads.URL & "?FID=" & Forum);
       else
          Database.Insert_Comment
            (Login, TID, Name, Comment, Simple_Name (Filename));
-         return Response.URL (Location => "/forum/entry?TID=" & TID);
+         return Response.URL
+           (Location => Template_Defs.Forum_Entry.URL & "?TID=" & TID);
       end if;
    end New_Comment_Callback;
 
@@ -484,7 +499,7 @@ package body V2P.Web_Server is
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         "/comment_form_enter",
+         Template_Defs.Block_New_Comment.URL,
          Action => Dispatchers.Callback.Create (New_Comment_Callback'Access));
 
       Services.Dispatchers.URI.Register
@@ -492,6 +507,7 @@ package body V2P.Web_Server is
          "/forum",
          Action => Dispatchers.Callback.Create (Forum_Callback'Access),
          Prefix => True);
+      --  Forum URI prefix must no be hard coded !
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
@@ -513,7 +529,7 @@ package body V2P.Web_Server is
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         "/",
+         Template_Defs.Main_Page.URL,
          Action => Dispatchers.Callback.Create (Main_Page_Callback'Access),
          Prefix => True);
 
