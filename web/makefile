@@ -23,8 +23,11 @@
 
 # Web setup
 
+INSTALL_TESTS = $(PWD)/web/v2p-testdir
+
 all:
 	gnat make -XPRJ_Build=$(MODE) -Pweb
+	gnat make -XPRJ_Build=$(MODE) -Pweb_test
 
 setup:
 	-$(MKDIR) gen
@@ -58,5 +61,20 @@ install: install-dir
 clean:
 	-$(RM) -r gen src/v2p-template_defs*
 	-gnat clean -r -Pweb
+	$(RM) -fr $(INSTALL_TESTS)
+	gnat clean -Pweb_test
 
-runtests:
+setup_tests:
+	-$(MKDIR) -p $(INSTALL_TESTS)/db
+	echo "db_name db/testing.db" > $(INSTALL_TESTS)/v2p.ini
+
+install_tests:
+	$(MAKE) INSTALL=$(INSTALL_TESTS) install
+	$(CP) ../db/data/*.s* $(INSTALL_TESTS)/db/
+	(cd $(INSTALL_TESTS)/db; rm -f testing.db; ./create_database.sh)
+	$(CP) test/bin/web_harness $(INSTALL_TESTS)/bin
+
+run_tests:
+	(cd $(INSTALL_TESTS); bin/web_harness)
+
+runtests: setup_tests install_tests run_tests
