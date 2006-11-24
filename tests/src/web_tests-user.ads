@@ -28,7 +28,7 @@ package Web_Tests.User is
    procedure Register_Tests (T : in out Test_Case);
    --  Register routines to be run
 
-   function Name (T : Test_Case) return String_Access;
+   function Name (T : in Test_Case) return String_Access;
    --  Returns name identifying the test case
 
 end Web_Tests.User;

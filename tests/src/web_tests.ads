@@ -47,5 +47,7 @@ package Web_Tests is
       renames To_Unbounded_String;
 
    function "not" (Word : in String) return Unbounded_String;
+   -- A word that should not be found into the results, this is intended to be
+   -- used to build a Word_Set.
 
 end Web_Tests;
