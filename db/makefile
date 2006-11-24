@@ -21,61 +21,23 @@
 #  Simple makefile to build Vision2Pixels
 ###########################################################################
 
-# Options
-
-INSTALL=$(HOME)/opt/v2p
-MODE=Debug
-
-ifeq ($(OS),Windows_NT)
-EXEXT=.exe
-else
-EXEXT=
-endif
-
-CP=cp -p
-MKDIR=mkdir -p
-RM=rm -f
-
-OPTIONS = INSTALL="$(INSTALL)" EXEXT="$(EXEXT)" MODE="$(MODE)" \
-	CP="$(CP)" MKDIR="$(MKDIR)" RM="$(RM)" MAKE="$(MAKE)"
-
-# Modules support
-
-MODULES = web image db
-
-MODULES_SETUP = ${MODULES:%=%_setup}
-
-MODULES_BUILD = ${MODULES:%=%_build}
-
-MODULES_RUNTESTS = ${MODULES:%=%_runtests}
-
-MODULES_INSTALL = ${MODULES:%=%_install}
-
-MODULES_CLEAN = ${MODULES:%=%_clean}
-
 # Targets
 
-all: $(MODULES_SETUP) $(MODULES_BUILD)
+all:
+	gnat make -XPRJ_Build=$(MODE) -Pdb_test
 
-setup: $(MODULES_SETUP)
+setup install:
 
-runtests: $(MODULES_RUNTESTS)
+setup_tests:
+	(cd data; rm -f testing.db; ./create_database.sh)
 
-install: $(MODULES_INSTALL)
+run_tests:
+	-(cd test; ./test_db1 > test_db1.res 2>&1)
+	(cd test; diff -w test_db1.out test_db1.res)
+	echo "***** OK - no regression on module DB"
 
-clean: $(MODULES_CLEAN)
+runtests: setup_tests run_tests
 
-${MODULES_SETUP}:
-	${MAKE} -C ${@:%_setup=%} setup $(OPTIONS)
-
-${MODULES_BUILD}:
-	${MAKE} -C ${@:%_build=%} $(OPTIONS)
-
-${MODULES_RUNTESTS}:
-	${MAKE} -C ${@:%_runtests=%} runtests $(OPTIONS)
-
-${MODULES_INSTALL}:
-	${MAKE} -C ${@:%_install=%} install $(OPTIONS)
-
-${MODULES_CLEAN}:
-	${MAKE} -C ${@:%_clean=%} clean $(OPTIONS)
+clean:
+	gnat clean -XPRJ_Build=$(MODE) -Pdb_test
+	-$(RM) test/*.res

@@ -76,5 +76,6 @@ install_tests:
 
 run_tests:
 	(cd $(INSTALL_TESTS); bin/web_harness)
+	echo "***** OK - no regression on module WEB"
 
 runtests: setup_tests install_tests run_tests
