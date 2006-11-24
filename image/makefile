@@ -21,61 +21,19 @@
 #  Simple makefile to build Vision2Pixels
 ###########################################################################
 
-# Options
-
-INSTALL=$(HOME)/opt/v2p
-MODE=Debug
-
-ifeq ($(OS),Windows_NT)
-EXEXT=.exe
-else
-EXEXT=
-endif
-
-CP=cp -p
-MKDIR=mkdir -p
-RM=rm -f
-
-OPTIONS = INSTALL="$(INSTALL)" EXEXT="$(EXEXT)" MODE="$(MODE)" \
-	CP="$(CP)" MKDIR="$(MKDIR)" RM="$(RM)" MAKE="$(MAKE)"
-
-# Modules support
-
-MODULES = web image db
-
-MODULES_SETUP = ${MODULES:%=%_setup}
-
-MODULES_BUILD = ${MODULES:%=%_build}
-
-MODULES_RUNTESTS = ${MODULES:%=%_runtests}
-
-MODULES_INSTALL = ${MODULES:%=%_install}
-
-MODULES_CLEAN = ${MODULES:%=%_clean}
-
 # Targets
 
-all: $(MODULES_SETUP) $(MODULES_BUILD)
+all:
+	gnat make -XPRJ_Build=$(MODE) -Pimage_test
 
-setup: $(MODULES_SETUP)
+setup install:
 
-runtests: $(MODULES_RUNTESTS)
+run_tests:
+	(cd test; ./image_harness)
+	echo "***** OK - no regression on module IMAGE"
 
-install: $(MODULES_INSTALL)
+runtests: run_tests
 
-clean: $(MODULES_CLEAN)
-
-${MODULES_SETUP}:
-	${MAKE} -C ${@:%_setup=%} setup $(OPTIONS)
-
-${MODULES_BUILD}:
-	${MAKE} -C ${@:%_build=%} $(OPTIONS)
-
-${MODULES_RUNTESTS}:
-	${MAKE} -C ${@:%_runtests=%} runtests $(OPTIONS)
-
-${MODULES_INSTALL}:
-	${MAKE} -C ${@:%_install=%} install $(OPTIONS)
-
-${MODULES_CLEAN}:
-	${MAKE} -C ${@:%_clean=%} clean $(OPTIONS)
+clean:
+	gnat clean -XPRJ_Build=$(MODE) -Pimage_test
+	-$(RM) test/*.res
