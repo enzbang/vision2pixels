@@ -20,8 +20,9 @@
 ------------------------------------------------------------------------------
 
 with Ada.Finalization;
-with G2F.IO;
 with Ada.Strings.Unbounded;
+
+with G2F.IO;
 
 package Image.Data is
 
