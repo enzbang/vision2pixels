@@ -41,7 +41,7 @@ OPTIONS = INSTALL="$(INSTALL)" EXEXT="$(EXEXT)" MODE="$(MODE)" \
 
 # Modules support
 
-MODULES = web tests
+MODULES = web
 
 MODULES_SETUP = ${MODULES:%=%_setup}
 
