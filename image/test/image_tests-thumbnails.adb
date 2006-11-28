@@ -29,6 +29,8 @@ with Settings;
 
 package body Image_Tests.Thumbnails is
 
+   use Ada;
+
    use AUnit.Test_Cases.Registration;
    use AUnit.Assertions;
 
@@ -44,14 +46,13 @@ package body Image_Tests.Thumbnails is
       use Image.Data;
       In_Filename : constant String := "adapowered.jpg";
       Category    : constant String := "Test";
-      Test_Image  : Image.Data.Image_Data;
 
       Out_Directory : constant String :=
-        Ada.Directories.Compose (Settings.Get_Thumbs_Path, Category);
+                        Directories.Compose
+                          (Settings.Get_Thumbs_Path, Category);
       Out_Filename  : constant String :=
-        Ada.Directories.Compose (Out_Directory, In_Filename);
-
-      Status : Image_Init_Status;
+                        Directories.Compose (Out_Directory, In_Filename);
+      Test_Image  : Image.Data.Image_Data;
    begin
 
       --  Read image info and create thumbnail
@@ -72,7 +73,7 @@ package body Image_Tests.Thumbnails is
    -- Name --
    ----------
 
-   function Name (T : Test_Case) return String_Access is
+   function Name (T : in Test_Case) return String_Access is
       pragma Unreferenced (T);
    begin
       return new String'("Create image thumbnails");

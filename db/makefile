@@ -21,25 +21,23 @@
 #  Simple makefile to build Vision2Pixels
 ###########################################################################
 
-INSTALL_TESTS = $(PWD)/tests/v2p-testdir
+# Targets
 
-build:
-	gnat make -Pregtests
+all:
+	gnat make -XPRJ_Build=$(MODE) -Pdb_test
 
 setup install:
 
 setup_tests:
-	-$(MKDIR) -p $(INSTALL_TESTS)/db
-	echo "db_name db/testing.db" > $(INSTALL_TESTS)/v2p.ini
+	(cd data; rm -f testing.db; ./create_database.sh)
 
-install_tests:
-	$(MAKE) -C ../web INSTALL=$(INSTALL_TESTS) install
-	$(CP) ../db/data/*.s* $(INSTALL_TESTS)/db/
-	(cd $(INSTALL_TESTS)/db; rm testing.db; ./create_database.sh)
-	$(CP) bin/web_harness $(INSTALL_TESTS)/bin
+run_tests:
+	-(cd test; ./test_db1 > test_db1.res 2>&1)
+	(cd test; diff -w test_db1.out test_db1.res)
+	echo "***** OK - no regression on module DB"
 
-runtests: setup_tests install_tests
+runtests: setup_tests run_tests
 
 clean:
-	$(RM) -fr $(INSTALL_TESTS)
-	gnat clean -Pregtests
+	gnat clean -XPRJ_Build=$(MODE) -Pdb_test
+	-$(RM) test/*.res

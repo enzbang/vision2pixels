@@ -39,11 +39,9 @@ package body Image.Data is
    ----------------
 
    procedure Finalize (Img : in out Image_Data) is
-      Info_Ptr : Image_Info_Ptr := Img.Info_Ptr;
-      Img_Ptr  : Image_Ptr      := Img.Image_Ptr;
    begin
-      Destroy_Image (Img_Ptr);
-      Destroy_Image_Info (Info_Ptr);
+      Destroy_Image (Img.Image_Ptr);
+      Destroy_Image_Info (Img.Info_Ptr);
    end Finalize;
 
    ----------
@@ -56,14 +54,14 @@ package body Image.Data is
       Category : in     String;
       Status    : out    Image_Init_Status)
    is
-      Thumb      : Image_Ptr;
-      Thumb_Info : Image_Info_Ptr;
       Thumb_Name : constant String :=
                      Settings.Get_Thumbs_Path
                        & "/" & Category & "/" & Simple_Name (Filename);
       Image_Name : constant String :=
                      Settings.Get_Images_Path
                        & "/" & Category & "/" & Simple_Name (Filename);
+      Thumb      : Image_Ptr;
+      Thumb_Info : Image_Info_Ptr;
    begin
       if not Exists (Containing_Directory (Thumb_Name)) then
          Create_Path (Containing_Directory (Thumb_Name));
