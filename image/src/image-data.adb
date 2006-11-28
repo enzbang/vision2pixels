@@ -53,7 +53,8 @@ package body Image.Data is
    procedure Init
      (Img      : in out Image_Data;
       Filename : in     String;
-      Category : in     String)
+      Category : in     String;
+      Status    : out    Image_Init_Status)
    is
       Thumb      : Image_Ptr;
       Thumb_Info : Image_Info_Ptr;
@@ -79,6 +80,26 @@ package body Image.Data is
       Img.Category := To_Unbounded_String (Category);
       Img.Image_Ptr := Read_Image (Img.Info_Ptr);
 
+      if Settings.Limit_Image_Size then
+         declare
+            Dimension : constant Image_Size := Get_Image_Size (Img.Image_Ptr);
+            Width     : constant Integer := Integer (Dimension.X);
+            Height    : constant Integer := Integer (Dimension.Y);
+            File_Size : constant Integer := Integer (Size (Filename));
+         begin
+            if Width > Settings.Image_Maximum_Width or
+              Height > Settings.Image_Maximum_Height then
+               Status := Image.Data.Exceed_Max_Image_Dimension;
+               return;
+            end if;
+
+            if File_Size > Settings.Image_Maximum_Size then
+               Status := Image.Data.Exceed_Max_Size;
+               return;
+            end if;
+         end;
+      end if;
+
       --  Save Image in Images_Path/Category
 
       Set_Filename (Img.Image_Ptr, Image_Name);
@@ -94,6 +115,8 @@ package body Image.Data is
 
       Destroy_Image (Thumb);
       Destroy_Image_Info (Thumb_Info);
+
+      Status := Image_Created;
 
    exception
       when G2F.Image_IO.Read_Image_Error =>

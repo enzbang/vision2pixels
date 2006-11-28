@@ -25,6 +25,10 @@ with Ada.Text_IO;
 with Config;
 with Defaults;
 
+--------------
+-- Settings --
+--------------
+
 package body Settings is
 
    use Ada;
@@ -34,7 +38,9 @@ package body Settings is
 
    type Attributes is
      (DB, DB_Name, Images_Path, Thumbs_Path,
-      Anonymous_Visit_Counter, Ignore_Author_Click);
+      Anonymous_Visit_Counter, Ignore_Author_Click,
+      Limit_Image_Size, Image_Maximum_Width, Image_Maximum_Height,
+      Image_Maximum_Size);
 
    package Conf is new Config (Attributes);
 
@@ -94,6 +100,42 @@ package body Settings is
       return Conf.Get_Value (Ignore_Author_Click);
    end Ignore_Author_Click;
 
+   --------------------------
+   -- Image_Maximum_Height --
+   --------------------------
+
+   function Image_Maximum_Height return Integer is
+   begin
+      return Conf.Get_Value (Image_Maximum_Height);
+   end Image_Maximum_Height;
+
+   ------------------------
+   -- Image_Maximum_Size --
+   ------------------------
+
+   function Image_Maximum_Size return Integer is
+   begin
+      return Conf.Get_Value (Image_Maximum_Size);
+   end Image_Maximum_Size;
+
+   -------------------------
+   -- Image_Maximum_Width --
+   -------------------------
+
+   function Image_Maximum_Width return Integer is
+   begin
+      return Conf.Get_Value (Image_Maximum_Width);
+   end Image_Maximum_Width;
+
+   ----------------------
+   -- Limit_Image_Size --
+   ----------------------
+
+   function Limit_Image_Size return Boolean is
+   begin
+      return Conf.Get_Value (Limit_Image_Size);
+   end Limit_Image_Size;
+
 begin
    --  Set default values
 
@@ -103,6 +145,10 @@ begin
    Conf.Set_Value (Thumbs_Path, Defaults.Thumbs_Path);
    Conf.Set_Value (Anonymous_Visit_Counter, Defaults.Anonymous_Visit_Counter);
    Conf.Set_Value (Ignore_Author_Click, Defaults.Ignore_Author_Click);
+   Conf.Set_Value (Limit_Image_Size, Defaults.Limit_Image_Size);
+   Conf.Set_Value (Image_Maximum_Height, Defaults.Image_Maximum_Height);
+   Conf.Set_Value (Image_Maximum_Width, Defaults.Image_Maximum_Width);
+   Conf.Set_Value (Image_Maximum_Size, Defaults.Image_Maximum_Size);
 
    --  Now read the config file if any
 

@@ -29,12 +29,18 @@ package Image.Data is
 
    type Image_Data is private;
 
+   type Image_Init_Status is
+     (Exceed_Max_Image_Dimension,
+      Exceed_Max_Size,
+      Image_Created);
+
    Thumbnail_Size : constant G2F.IO.Image_Size := (150, 150);
 
    procedure Init
       (Img      : in out Image_Data;
        Filename : in     String;
-       Category : in     String);
+       Category : in     String;
+       Status   : out    Image_Init_Status);
    --  Set image filename, read image info and create thumbnail
 
 private

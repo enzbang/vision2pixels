@@ -41,19 +41,25 @@ package body Image_Tests.Thumbnails is
 
    procedure Create_Thumbnail (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
+      use Image.Data;
       In_Filename : constant String := "adapowered.jpg";
       Category    : constant String := "Test";
       Test_Image  : Image.Data.Image_Data;
 
       Out_Directory : constant String :=
-         Ada.Directories.Compose (Settings.Get_Thumbs_Path, Category);
+        Ada.Directories.Compose (Settings.Get_Thumbs_Path, Category);
       Out_Filename  : constant String :=
-         Ada.Directories.Compose (Out_Directory, In_Filename);
+        Ada.Directories.Compose (Out_Directory, In_Filename);
+
+      Status : Image_Init_Status;
    begin
 
       --  Read image info and create thumbnail
 
-      Image.Data.Init (Test_Image, In_Filename, Category);
+      Image.Data.Init (Test_Image, In_Filename, Category, Status);
+
+      Assert (Status = Image_Created,
+              "Error. Test_Image has not been created");
 
       Assert
         (Ada.Directories.Exists (Out_Filename),
