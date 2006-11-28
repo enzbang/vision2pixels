@@ -19,16 +19,35 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AUnit.Test_Cases;
+with Ada.Strings.Unbounded;
 
-package Web_Tests.User is
+package Web_Tests is
 
-   type Test_Case is new AUnit.Test_Cases.Test_Case with null record;
+   use Ada.Strings.Unbounded;
 
-   procedure Register_Tests (T : in out Test_Case);
-   --  Register routines to be run
+   Host : constant String := "localhost";
+   --  v2p web server host
 
-   function Name (T : Test_Case) return String_Access;
-   --  Returns name identifying the test case
+   Port : constant := 8080;
+   --  v2p web server port
 
-end Web_Tests.User;
+   function Encode (Str : in String) return String;
+   --  Encodes Str using HTML &xx; encoding. This is required for all strings
+   --  for proper display with any browser encoding.
+
+   type Word_Set is array (Positive range <>) of Unbounded_String;
+
+   procedure Check (Page : in String; Word : in Word_Set; Message : in String);
+   --  Does nothing if the set of Word appears (in the right order) in Page.
+   --  Otherwise it raises an AUnit assertion and log the web page.
+
+   function "+"
+     (Str : in String)
+      return Unbounded_String
+      renames To_Unbounded_String;
+
+   function "not" (Word : in String) return Unbounded_String;
+   -- A word that should not be found into the results, this is intended to be
+   -- used to build a Word_Set.
+
+end Web_Tests;
