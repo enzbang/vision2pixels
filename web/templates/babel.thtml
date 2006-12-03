@@ -10,3 +10,5 @@
 @@SET@@ BABEL_LOGOUT="déconnexion"
 @@SET@@ BABEL_FORUM_POST="Nouveau Message"
 @@SET@@ BABEL_SELECT_FORUM="Choisir un forum"
+@@SET@@ BABEL_WARN_EXCEED_MAX_SIZE="Attention l'image postée dépasse la taille maximale autorisée"
+@@SET@@ BABEL_WARN_EXCEED_MAX_DIMENSION="Attention l'image postée dépasse les dimensions maximales autorisées"

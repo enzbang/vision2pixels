@@ -25,6 +25,15 @@
 
       <div id="forumlistbar">@_LAZY_FORUM_LIST_@</div>
 
+      @@IF@@ @_V2P_ERROR_@ /= ""
+        @@IF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_IMAGE_DIMENSION_@
+        @_BABEL_WARN_EXCEED_MAX_DIMENSION_@
+        @@ELSIF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_SIZE_@
+        @_BABEL_WARN_EXCEED_MAX_SIZE_@
+        @@END_IF@@
+      @_V2P_ERROR_@
+      @@END_IF@@
+
       @@INCLUDE@@ footer.html
     </div>
   </body>

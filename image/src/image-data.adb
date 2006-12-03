@@ -34,6 +34,15 @@ package body Image.Data is
    use G2F.IO;
    use G2F.Image_IO;
 
+   --------------
+   -- Filename --
+   --------------
+
+   function Filename (Img : in Image_Data) return String is
+   begin
+      return Get_Filename (Img.Image_Ptr);
+   end Filename;
+
    ----------------
    --  Finalize  --
    ----------------

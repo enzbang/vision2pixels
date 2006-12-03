@@ -44,6 +44,9 @@ package Image.Data is
        Status   : out    Image_Init_Status);
    --  Set image filename, read image info and create thumbnail
 
+   function Filename (Img : in Image_Data) return String;
+   --  Returns image filename
+
 private
 
    type Image_Data is new Ada.Finalization.Controlled with record
