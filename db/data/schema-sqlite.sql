@@ -37,6 +37,7 @@ create table "post" (
 "id" integer not null primary key autoincrement,
 "name" varchar(100) not null,
 "filename" varchar(512) unique,
+"comment" longtext,
 "image_height" integer,
 "image_width" integer,
 "image_size" integer,
