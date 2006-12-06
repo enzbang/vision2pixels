@@ -49,9 +49,26 @@ package body Image.Data is
 
    procedure Finalize (Img : in out Image_Data) is
    begin
-      Destroy_Image (Img.Image_Ptr);
-      Destroy_Image_Info (Img.Info_Ptr);
+      if not Is_Null (Img.Image_Ptr) then
+         Destroy_Image (Img.Image_Ptr);
+      end if;
+      if not Is_Null (Img.Info_Ptr) then
+         Destroy_Image_Info (Img.Info_Ptr);
+      end if;
    end Finalize;
+
+   ------------
+   -- Height --
+   ------------
+
+   function Height (Img : in Image_Data) return Integer is
+   begin
+      if Img.Init_Status /= Image_Created then
+         raise Image_Error
+           with "Get_Height : Error image not created";
+      end if;
+      return Img.Height;
+   end Height;
 
    ----------
    -- Init --
@@ -60,8 +77,7 @@ package body Image.Data is
    procedure Init
      (Img      : in out Image_Data;
       Filename : in     String;
-      Category : in     String;
-      Status    : out    Image_Init_Status)
+      Category : in     String)
    is
       Thumb_Name : constant String :=
                      Settings.Get_Thumbs_Path
@@ -90,18 +106,19 @@ package body Image.Data is
       if Settings.Limit_Image_Size then
          declare
             Dimension : constant Image_Size := Get_Image_Size (Img.Image_Ptr);
-            Width     : constant Integer := Integer (Dimension.X);
-            Height    : constant Integer := Integer (Dimension.Y);
-            File_Size : constant Integer := Integer (Size (Filename));
          begin
-            if Width > Settings.Image_Maximum_Width or
-              Height > Settings.Image_Maximum_Height then
-               Status := Image.Data.Exceed_Max_Image_Dimension;
+            Img.Width  := Integer (Dimension.X);
+            Img.Height := Integer (Dimension.Y);
+            Img.Size   := Integer (Size (Filename));
+
+            if Img.Width > Settings.Image_Maximum_Width or
+              Img.Height > Settings.Image_Maximum_Height then
+               Img.Init_Status := Image.Data.Exceed_Max_Image_Dimension;
                return;
             end if;
 
-            if File_Size > Settings.Image_Maximum_Size then
-               Status := Image.Data.Exceed_Max_Size;
+            if Img.Size > Settings.Image_Maximum_Size then
+               Img.Init_Status := Image.Data.Exceed_Max_Size;
                return;
             end if;
          end;
@@ -123,12 +140,17 @@ package body Image.Data is
       Destroy_Image (Thumb);
       Destroy_Image_Info (Thumb_Info);
 
-      Status := Image_Created;
+      Img.Init_Status := Image_Created;
 
    exception
       when G2F.Image_IO.Read_Image_Error =>
          Put_Line ("Read image error - Thumbnail has not been created");
    end Init;
+
+   function Init_Status (Img : in Image_Data) return Image_Init_Status is
+   begin
+      return Img.Init_Status;
+   end Init_Status;
 
    ------------------
    --  Initialize  --
@@ -139,6 +161,33 @@ package body Image.Data is
    begin
       Img.Info_Ptr := Clone_Image_Info (Info);
    end Initialize;
+
+   ----------
+   -- Size --
+   ----------
+
+   function Size (Img : in Image_Data) return Integer is
+   begin
+      if Img.Init_Status /= Image_Created then
+         raise Image_Error
+           with "Get_Size : Error image not created";
+      end if;
+      return Img.Size;
+   end Size;
+
+   -----------
+   -- Width --
+   -----------
+
+   function Width (Img : in Image_Data) return Integer is
+   begin
+      if Img.Init_Status /= Image_Created then
+         raise Image_Error
+           with "Get_Width : Error image not created";
+      end if;
+      return Img.Width;
+   end Width;
+
 
 begin
    if not Exists (Settings.Get_Images_Path) then

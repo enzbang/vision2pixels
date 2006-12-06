@@ -36,7 +36,10 @@ foreign key ("forum_id") references post("id")
 create table "post" (
 "id" integer not null primary key autoincrement,
 "name" varchar(100) not null,
-"filename" varchar(512) not null unique,
+"filename" varchar(512) unique,
+"image_height" integer,
+"image_width" integer,
+"image_size" integer,
 "category_id" integer not null,
 "date_publication" date default current_timestamp,
 "last_comment_id" integer,
