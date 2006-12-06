@@ -129,7 +129,7 @@ package body Web_Tests.User is
    -- Name --
    ----------
 
-   function Name (T : Test_Case) return String_Access is
+   function Name (T : in Test_Case) return String_Access is
    begin
       return new String'("Web_Tests.User");
    end Name;

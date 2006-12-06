@@ -1,5 +1,7 @@
 @@INCLUDE@@ babel.thtml
 @@--
+@@-- HTTP_URL(/): Website root
+@@--
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -17,9 +19,20 @@
       <div id=title><h1><a href="/">@_BABEL_V2P_WEBSITE_NAME_@</a></h1></div>
       <div id="status_bar"></div>
 
-      <div id="forum_post"><a href="/forum/post">@_BABEL_FORUM_POST_@</a></div>
+      <div id="forum_post">
+        <a href="@_FORUM_POST_URL_@">@_BABEL_FORUM_POST_@</a>
+      </div>
 
       <div id="forumlistbar">@_LAZY_FORUM_LIST_@</div>
+
+      @@IF@@ @_V2P_ERROR_@ /= ""
+        @@IF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_IMAGE_DIMENSION_@
+        @_BABEL_WARN_EXCEED_MAX_DIMENSION_@
+        @@ELSIF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_SIZE_@
+        @_BABEL_WARN_EXCEED_MAX_SIZE_@
+        @@END_IF@@
+      @_V2P_ERROR_@
+      @@END_IF@@
 
       @@INCLUDE@@ footer.html
     </div>

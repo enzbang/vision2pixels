@@ -42,4 +42,16 @@ package Settings is
    function Ignore_Author_Click return Boolean;
    --  If not Anonymous_Visit_Counter, ignore author click on his photos
 
+   function Limit_Image_Size return Boolean;
+   --  If set, check image size on creation
+
+   function Image_Maximum_Width return Integer;
+   --  Maximum width dimension of an uploaded image
+
+   function Image_Maximum_Height return Integer;
+   --  Maximum height dimension of an uploaded image
+
+   function Image_Maximum_Size return Integer;
+   --  Limit, in bytes, of an uploaded image size
+
 end Settings;

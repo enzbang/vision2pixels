@@ -1,5 +1,6 @@
 @@INCLUDE@@ babel.thtml
 @@--
+<?xml version="1.0" encoding="utf-8"?>
 <response>
   <select action="clear" id="sel_category"/>
   @@TABLE@@

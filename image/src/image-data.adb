@@ -34,16 +34,23 @@ package body Image.Data is
    use G2F.IO;
    use G2F.Image_IO;
 
+   --------------
+   -- Filename --
+   --------------
+
+   function Filename (Img : in Image_Data) return String is
+   begin
+      return Get_Filename (Img.Image_Ptr);
+   end Filename;
+
    ----------------
    --  Finalize  --
    ----------------
 
    procedure Finalize (Img : in out Image_Data) is
-      Info_Ptr : Image_Info_Ptr := Img.Info_Ptr;
-      Img_Ptr  : Image_Ptr      := Img.Image_Ptr;
    begin
-      Destroy_Image (Img_Ptr);
-      Destroy_Image_Info (Info_Ptr);
+      Destroy_Image (Img.Image_Ptr);
+      Destroy_Image_Info (Img.Info_Ptr);
    end Finalize;
 
    ----------
@@ -53,16 +60,17 @@ package body Image.Data is
    procedure Init
      (Img      : in out Image_Data;
       Filename : in     String;
-      Category : in     String)
+      Category : in     String;
+      Status    : out    Image_Init_Status)
    is
-      Thumb      : Image_Ptr;
-      Thumb_Info : Image_Info_Ptr;
       Thumb_Name : constant String :=
                      Settings.Get_Thumbs_Path
                        & "/" & Category & "/" & Simple_Name (Filename);
       Image_Name : constant String :=
                      Settings.Get_Images_Path
                        & "/" & Category & "/" & Simple_Name (Filename);
+      Thumb      : Image_Ptr;
+      Thumb_Info : Image_Info_Ptr;
    begin
       if not Exists (Containing_Directory (Thumb_Name)) then
          Create_Path (Containing_Directory (Thumb_Name));
@@ -79,6 +87,26 @@ package body Image.Data is
       Img.Category := To_Unbounded_String (Category);
       Img.Image_Ptr := Read_Image (Img.Info_Ptr);
 
+      if Settings.Limit_Image_Size then
+         declare
+            Dimension : constant Image_Size := Get_Image_Size (Img.Image_Ptr);
+            Width     : constant Integer := Integer (Dimension.X);
+            Height    : constant Integer := Integer (Dimension.Y);
+            File_Size : constant Integer := Integer (Size (Filename));
+         begin
+            if Width > Settings.Image_Maximum_Width or
+              Height > Settings.Image_Maximum_Height then
+               Status := Image.Data.Exceed_Max_Image_Dimension;
+               return;
+            end if;
+
+            if File_Size > Settings.Image_Maximum_Size then
+               Status := Image.Data.Exceed_Max_Size;
+               return;
+            end if;
+         end;
+      end if;
+
       --  Save Image in Images_Path/Category
 
       Set_Filename (Img.Image_Ptr, Image_Name);
@@ -94,6 +122,8 @@ package body Image.Data is
 
       Destroy_Image (Thumb);
       Destroy_Image_Info (Thumb_Info);
+
+      Status := Image_Created;
 
    exception
       when G2F.Image_IO.Read_Image_Error =>

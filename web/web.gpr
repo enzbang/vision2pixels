@@ -25,7 +25,6 @@ with "../shared";
 with "../db/db";
 with "../db/db_test";
 with "../image/image";
-with "../image/image_test";
 with "../lib/gnade/gnade";
 with "../kernel/kernel";
 

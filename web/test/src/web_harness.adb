@@ -19,6 +19,8 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+--  This is the main driver for the test suite(s)
+
 with Ada.Text_IO;
 with AUnit.Test_Runner;
 
