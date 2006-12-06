@@ -19,8 +19,6 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Directories;
-
 with AWS.Config.Set;
 with AWS.Dispatchers.Callback;
 with AWS.Messages;
@@ -45,11 +43,12 @@ with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Forum_List;
 
+with Image.Data;
+
 with Settings;
 
 package body V2P.Web_Server is
 
-   use Ada;
    use AWS;
 
    Null_Set : Templates.Translate_Set;
@@ -58,8 +57,17 @@ package body V2P.Web_Server is
    Configuration   : Config.Object;
    Main_Dispatcher : Services.Dispatchers.URI.Handler;
 
-   function Forum_Callback (Request : in Status.Data) return Response.Data;
-   --  Forum callback
+   function Forum_Entry_Callback
+     (Request : in Status.Data) return Response.Data;
+   --  Forum entry callback
+
+   function Forum_Post_Callback
+     (Request : in Status.Data) return Response.Data;
+   --  Forum post callback
+
+   function Forum_Threads_Callback
+     (Request : in Status.Data) return Response.Data;
+   --  Forum threads callback
 
    function Login_Callback (Request : in Status.Data) return Response.Data;
    --  Login callback
@@ -112,7 +120,6 @@ package body V2P.Web_Server is
         (MIME.Content_Type (File),
          String'(Templates.Parse (File, Translations)));
    end CSS_Callback;
-
 
    -----------------
    -- Final_Parse --
@@ -215,6 +222,19 @@ package body V2P.Web_Server is
               String'(Session.Get (SID, "FID"))));
       end if;
 
+      --  Adds some URL
+
+      Templates.Insert
+        (Final_Translations,
+         Templates.Assoc
+           ("FORUM_THREAD_URL", Template_Defs.Forum_Threads.URL));
+      Templates.Insert
+        (Final_Translations,
+         Templates.Assoc ("FORUM_POST_URL", Template_Defs.Forum_Post.URL));
+      Templates.Insert
+        (Final_Translations,
+         Templates.Assoc ("FORUM_ENTRY_URL", Template_Defs.Forum_Entry.URL));
+
       return Response.Build
         (MIME.Text_HTML,
          String'(Templates.Parse
@@ -224,70 +244,75 @@ package body V2P.Web_Server is
          Cache_Control => Messages.Prevent_Cache);
    end Final_Parse;
 
-   --------------------
-   -- Forum_Callback --
-   --------------------
+   --------------------------
+   -- Forum_Entry_Callback --
+   --------------------------
 
-   function Forum_Callback (Request : in Status.Data) return Response.Data is
+   function Forum_Entry_Callback
+     (Request : in Status.Data) return Response.Data is
       SID : constant Session.Id := Status.Session (Request);
-      URI : constant String := Status.URI (Request);
       P   : constant Parameters.List := Status.Parameters (Request);
+      TID : constant String :=
+        Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Tid);
+      Count_Visit : Boolean := True;
+      Logged_User : constant String := Session.Get (SID, "LOGIN");
    begin
-      if URI = "/forum/threads" then
-         declare
-            FID : constant String :=
-                    Parameters.Get (P, Template_Defs.Forum_Threads.HTTP.Fid);
-         begin
-            --  Set forum Id into the session
-            Session.Set (SID, "FID", FID);
-            return Final_Parse
-              (Request,
-               Template_Defs.Forum_Threads.Template,
-               Database.Get_Threads (FID));
-         end;
+      --  Set thread Id into the session
+      Session.Set (SID, "TID", TID);
 
-      elsif URI = "/forum/entry" then
-         declare
-            TID : constant String :=
-                    Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Tid);
-
-            Count_Visit : Boolean := True;
-            Logged_User : constant String := Session.Get (SID, "LOGIN");
-         begin
-            --  Set thread Id into the session
-            Session.Set (SID, "TID", TID);
-
-            if not Settings.Anonymous_Visit_Counter then
-               --  Do not count anonymous click
-               if Logged_User = "" then
-                  Count_Visit := False;
-               else
-                  if Settings.Ignore_Author_Click
-                    and then Database.Is_Author (Logged_User, TID)
-                  then
-                     --  Do not count author click
-                     Count_Visit := False;
-                  end if;
-               end if;
+      if not Settings.Anonymous_Visit_Counter then
+         --  Do not count anonymous click
+         if Logged_User = "" then
+            Count_Visit := False;
+         else
+            if Settings.Ignore_Author_Click
+              and then Database.Is_Author (Logged_User, TID)
+            then
+               --  Do not count author click
+               Count_Visit := False;
             end if;
-
-            if Count_Visit then
-               Database.Increment_Visit_Counter (TID);
-            end if;
-
-            return Final_Parse
-              (Request,
-               Template_Defs.Forum_Entry.Template,
-               Database.Get_Entry (TID));
-         end;
-
-      elsif URI = "/forum/post" then
-         return Final_Parse
-           (Request, Template_Defs.Forum_Post.Template, Null_Set);
+         end if;
       end if;
 
-      return Response.Build (MIME.Text_HTML, "not found!");
-   end Forum_Callback;
+      if Count_Visit then
+         Database.Increment_Visit_Counter (TID);
+      end if;
+
+      return Final_Parse
+        (Request,
+         Template_Defs.Forum_Entry.Template,
+         Database.Get_Entry (TID));
+   end Forum_Entry_Callback;
+
+   -------------------------
+   -- Forum_Post_Callback --
+   -------------------------
+
+   function Forum_Post_Callback
+     (Request : in Status.Data) return Response.Data is
+   begin
+      return Final_Parse
+        (Request, Template_Defs.Forum_Post.Template, Null_Set);
+   end Forum_Post_Callback;
+
+   ----------------------------
+   -- Forum_Threads_Callback --
+   ----------------------------
+
+   function Forum_Threads_Callback
+     (Request : in Status.Data) return Response.Data is
+      SID : constant Session.Id := Status.Session (Request);
+      P   : constant Parameters.List := Status.Parameters (Request);
+      FID : constant String := Parameters.Get
+        (P, Template_Defs.Forum_Threads.HTTP.Fid);
+   begin
+      --  Set forum Id into the session
+      Session.Set (SID, "FID", FID);
+      return Final_Parse
+        (Request,
+         Template_Defs.Forum_Threads.Template,
+         Database.Get_Threads (FID));
+   end Forum_Threads_Callback;
 
    --------------------
    -- Login_Callback --
@@ -371,34 +396,7 @@ package body V2P.Web_Server is
    function New_Comment_Callback
      (Request : in Status.Data) return Response.Data
    is
-      function Target_Filename (Filename : in String) return String;
-      --  Returns the target filename for the uploaded directory
-
-      function Simple_Name (Filename : in String) return String;
-      --  Returns the base name and extension or the empty string if filename
-      --  is empty.
-
-      -----------------
-      -- Simple_Name --
-      -----------------
-
-      function Simple_Name (Filename : in String) return String is
-      begin
-         if Filename = "" then
-            return "";
-         else
-            return Directories.Simple_Name (Filename);
-         end if;
-      end Simple_Name;
-
-      ---------------------
-      -- Target_Filename --
-      ---------------------
-
-      function Target_Filename (Filename : in String) return String is
-      begin
-         return Directories.Compose (Settings.Get_Images_Path, Filename);
-      end Target_Filename;
+      use Image.Data;
 
       SID       : constant Session.Id := Status.Session (Request);
       P         : constant Parameters.List := Status.Parameters (Request);
@@ -410,21 +408,57 @@ package body V2P.Web_Server is
       CID       : constant String := Parameters.Get (P, "CATEGORY");
       Forum     : constant String := Parameters.Get (P, "FORUM");
 
+      New_Image : Image_Data;
+      Status    : Image_Init_Status;
+
+      Translations : Templates.Translate_Set;
+
    begin
       if Filename /= "" then
-         Directories.Rename
-           (Filename, Target_Filename (Simple_Name (Filename)));
+
+         Init (New_Image, Filename, CID, Status);
+
+         if Status /= Image_Created then
+            Templates.Insert
+              (Translations,
+               Templates.Assoc (Template_Defs.Main_Page.V2p_Error,
+                 Image_Init_Status'Image (Status)));
+
+            Templates.Insert
+              (Translations,
+               Templates.Assoc
+                 (Template_Defs.Main_Page.Exceed_Maximum_Image_Dimension,
+                  Image_Init_Status'Image
+                    (Image.Data.Exceed_Max_Image_Dimension)));
+
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc
+                    (Template_Defs.Main_Page.Exceed_Maximum_Size,
+                  Image_Init_Status'Image
+                    (Image.Data.Exceed_Max_Size)));
+
+            return Final_Parse
+              (Request,
+               Template_Defs.Main_Page.Template,
+               Translations);
+         end if;
+
       end if;
 
       if TID = "" then
          --  New post
          Database.Insert_Post
-           (Login, CID, Name, Comment, Simple_Name (Filename));
-         return Response.URL (Location => "/forum/threads?FID=" & Forum);
+           (Login, CID, Name, Comment,
+            Image.Data.Filename (New_Image));
+            --  Simple_Name (Filename));
+         return Response.URL
+           (Location => Template_Defs.Forum_Threads.URL & "?FID=" & Forum);
       else
          Database.Insert_Comment
-           (Login, TID, Name, Comment, Simple_Name (Filename));
-         return Response.URL (Location => "/forum/entry?TID=" & TID);
+           (Login, TID, Name, Comment, Image.Data.Filename (New_Image));
+         return Response.URL
+           (Location => Template_Defs.Forum_Entry.URL & "?TID=" & TID);
       end if;
    end New_Comment_Callback;
 
@@ -484,14 +518,24 @@ package body V2P.Web_Server is
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         "/comment_form_enter",
+         Template_Defs.Block_New_Comment.URL,
          Action => Dispatchers.Callback.Create (New_Comment_Callback'Access));
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         "/forum",
-         Action => Dispatchers.Callback.Create (Forum_Callback'Access),
-         Prefix => True);
+         Template_Defs.Forum_Entry.URL,
+         Action => Dispatchers.Callback.Create (Forum_Entry_Callback'Access));
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         Template_Defs.Forum_Post.URL,
+         Action => Dispatchers.Callback.Create (Forum_Post_Callback'Access));
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         Template_Defs.Forum_Threads.URL,
+         Action => Dispatchers.Callback.Create
+           (Forum_Threads_Callback'Access));
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
@@ -513,7 +557,7 @@ package body V2P.Web_Server is
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         "/",
+         Template_Defs.Main_Page.URL,
          Action => Dispatchers.Callback.Create (Main_Page_Callback'Access),
          Prefix => True);
 

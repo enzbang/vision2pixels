@@ -31,9 +31,8 @@ package body Image.Magick is
    ---------------
 
    function Thumbnail
-     (Img  : G2F.Image_Ptr;
-      Size : G2F.IO.Image_Size)
-      return G2F.Image_Ptr
+     (Img  : in G2F.Image_Ptr;
+      Size : in G2F.IO.Image_Size) return G2F.Image_Ptr
    is
       Original_Size : constant Image_Size := Get_Image_Size (Img);
       X_Length      : Image_Size_T;

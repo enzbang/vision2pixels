@@ -19,44 +19,16 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with "aunit";
+with AUnit.Test_Cases;
 
-with "../shared";
-with "../web/web";
+package Web_Tests.User is
 
-project Regtests is
+   type Test_Case is new AUnit.Test_Cases.Test_Case with null record;
 
-   for Languages use ("Ada");
+   procedure Register_Tests (T : in out Test_Case);
+   --  Register routines to be run
 
-   for Source_Dirs use ("src");
-   for Object_Dir use "obj";
-   for Exec_Dir use "bin";
-   for Main use ("web_harness");
+   function Name (T : in Test_Case) return String_Access;
+   --  Returns name identifying the test case
 
-   -------------
-   -- Builder --
-   -------------
-
-   package Builder renames Shared.Builder;
-
-   --------------
-   -- Compiler --
-   --------------
-
-   package Compiler is
-      for Default_Switches ("Ada") use ("-gnat05") & Shared.Debug_Options;
-   end Compiler;
-
-   ------------
-   -- Binder --
-   ------------
-
-   package Binder renames Shared.Binder;
-
-   ------------
-   -- Linker --
-   ------------
-
-   package Linker renames Shared.Linker;
-
-end Regtests;
+end Web_Tests.User;

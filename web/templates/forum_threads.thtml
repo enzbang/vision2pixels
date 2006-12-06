@@ -1,5 +1,7 @@
 @@INCLUDE@@ babel.thtml
 @@-- HTTP_GET(FID): forum Id
+@@-- HTTP_URL(/forum/threads): Forum Threads URL
+@@--
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -30,7 +32,7 @@
         </tr>
         @@TABLE@@
         <tr>
-          <td><a href="/forum/entry?TID=@_TID_@">@_NAME_@</a></td>
+          <td><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">@_NAME_@</a></td>
           <td class="entry_category">@_CATEGORY_@</td>
           <td class="entry_comment_counter">@_COMMENT_COUNTER_@</td>
           <td class="entry_visit_counter">@_VISIT_COUNTER_@</td>

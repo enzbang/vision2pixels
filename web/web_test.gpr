@@ -19,33 +19,45 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded;
+with "aunit";
 
-package Web_Tests is
+with "../shared";
+with "../image/image_test";
+with "web";
 
-   use Ada.Strings.Unbounded;
+project Web_Test is
 
-   Host : constant String := "localhost";
-   --  v2p web server host
+   for Languages use ("Ada");
 
-   Port : constant := 8080;
-   --  v2p web server port
+   for Source_Dirs use ("test/src");
+   for Object_Dir use "test/obj";
+   for Exec_Dir use "test/bin";
+   for Main use ("web_harness");
 
-   function Encode (Str : in String) return String;
-   --  Encodes Str using HTML &xx; encoding. This is required for all strings
-   --  for proper display with any browser encoding.
+   -------------
+   -- Builder --
+   -------------
 
-   type Word_Set is array (Positive range <>) of Unbounded_String;
+   package Builder renames Shared.Builder;
 
-   procedure Check (Page : in String; Word : in Word_Set; Message : in String);
-   --  Does nothing if the set of Word appears (in the right order) in Page.
-   --  Otherwise it raises an AUnit assertion and log the web page.
+   --------------
+   -- Compiler --
+   --------------
 
-   function "+"
-     (Str : in String)
-      return Unbounded_String
-      renames To_Unbounded_String;
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnat05") & Shared.Debug_Options;
+   end Compiler;
 
-   function "not" (Word : in String) return Unbounded_String;
+   ------------
+   -- Binder --
+   ------------
 
-end Web_Tests;
+   package Binder renames Shared.Binder;
+
+   ------------
+   -- Linker --
+   ------------
+
+   package Linker renames Shared.Linker;
+
+end Web_Test;

@@ -23,16 +23,24 @@ with Settings;
 
 package Defaults is
 
-   DB                      : Settings.DB_Kind := Settings.SQLite3;
+   DB                       : Settings.DB_Kind := Settings.SQLite3;
 
-   DB_Name                 : constant String := "v2p";
+   DB_Name                  : constant String := "v2p";
 
-   Images_Path             : constant String := "images";
+   Images_Path              : constant String := "images";
 
-   Thumbs_Path             : constant String := "images";
+   Thumbs_Path              : constant String := "images";
 
-   Anonymous_Visit_Counter : constant Boolean := False;
+   Anonymous_Visit_Counter  : constant Boolean := False;
 
-   Ignore_Author_Click     : constant Boolean := True;
+   Ignore_Author_Click      : constant Boolean := True;
+
+   Limit_Image_Size         : constant Boolean := True;
+
+   Image_Maximum_Height     : constant Integer := 8;
+
+   Image_Maximum_Width      : constant Integer := 800;
+
+   Image_Maximum_Size       : constant Integer := 1000000;
 
 end Defaults;

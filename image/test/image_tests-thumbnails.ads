@@ -33,7 +33,7 @@ package Image_Tests.Thumbnails is
    procedure Tear_Down (T : in out Test_Case);
    --  Releases all resources
 
-   function Name (T : Test_Case) return String_Access;
+   function Name (T : in Test_Case) return String_Access;
    --  Returns name identifying the test case
 
 end Image_Tests.Thumbnails;

@@ -16,7 +16,7 @@
                @@IF@@ @_FID_@ = @_Current_FID_@
                id="forum_active"
                @@END_IF@@
-               href="/forum/threads?FID=@_FID_@">@_FORUM_NAME_@</a></li>
+               href="@_FORUM_THREAD_URL_@?FID=@_FID_@">@_FORUM_NAME_@</a></li>
         @@END_TABLE@@
       </ul>
 @@END_IF@@
