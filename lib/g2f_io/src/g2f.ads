@@ -157,6 +157,12 @@ package G2F is
    procedure Put_Magick_Exception;
    procedure Put_Image_Exception (I : in Image_Ptr);
 
+   function Is_Null (I : in Image_Ptr) return Boolean;
+   --  Returns true if Image_Ptr is a null pointer
+
+   function Is_Null (I : in Image_Info_Ptr) return Boolean;
+   --  Returns true if Image_Info_Ptr is a null pointer
+
 private
 
    procedure Free (I : in out Image_Info_Ptr);

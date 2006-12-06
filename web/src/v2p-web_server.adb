@@ -409,20 +409,20 @@ package body V2P.Web_Server is
       Forum     : constant String := Parameters.Get (P, "FORUM");
 
       New_Image : Image_Data;
-      Status    : Image_Init_Status;
 
       Translations : Templates.Translate_Set;
 
    begin
+
       if Filename /= "" then
 
-         Init (New_Image, Filename, CID, Status);
+         Init (New_Image, Filename, CID);
 
-         if Status /= Image_Created then
+         if New_Image.Init_Status /= Image_Created then
             Templates.Insert
               (Translations,
                Templates.Assoc (Template_Defs.Main_Page.V2p_Error,
-                 Image_Init_Status'Image (Status)));
+                 Image_Init_Status'Image (New_Image.Init_Status)));
 
             Templates.Insert
               (Translations,
@@ -448,13 +448,23 @@ package body V2P.Web_Server is
 
       if TID = "" then
          --  New post
-         Database.Insert_Post
-           (Login, CID, Name, Comment,
-            Image.Data.Filename (New_Image));
+
+         if Filename /= "" then
+            Database.Insert_Post
+              (Login, CID, Name, Comment,
+               New_Image.Filename,
+               New_Image.Width,
+               New_Image.Height,
+               New_Image.Size);
+         else
+            Database.Insert_Post (Login, CID, Name, Comment);
+         end if;
+
             --  Simple_Name (Filename));
          return Response.URL
            (Location => Template_Defs.Forum_Threads.URL & "?FID=" & Forum);
       else
+
          Database.Insert_Comment
            (Login, TID, Name, Comment, Image.Data.Filename (New_Image));
          return Response.URL

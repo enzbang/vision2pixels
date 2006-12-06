@@ -90,6 +90,16 @@ package body G2F is
       Ada_Free (I);
    end Free;
 
+   function Is_Null (I : in Image_Ptr) return Boolean is
+   begin
+      return I = null;
+   end Is_Null;
+
+   function Is_Null (I : in Image_Info_Ptr) return Boolean is
+   begin
+      return I = null;
+   end Is_Null;
+
    procedure Put_Magick_Exception is
       procedure C_Catch_Exception (E : in Exception_Info_Ptr);
       pragma Import (C, C_Catch_Exception, "CatchException");

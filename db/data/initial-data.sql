@@ -34,7 +34,7 @@ create trigger update_comment_counter insert on comment
       update post set comment_counter=comment_counter + 1;
    end;
 
---  Photo comments
+--  Post comments
 
 insert into comment ('user_login', 'comment')
   values ('turbo', 'What a beautiful landscape !');

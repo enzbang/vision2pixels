@@ -28,6 +28,6 @@ package Image.Magick is
    function Thumbnail
      (Img  : in G2F.Image_Ptr;
       Size : in G2F.IO.Image_Size) return G2F.Image_Ptr;
-   --  ??
+   --  Creates an image thumbnail
 
 end Image.Magick;

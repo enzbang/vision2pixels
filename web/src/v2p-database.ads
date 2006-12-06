@@ -63,7 +63,10 @@ package V2P.Database is
       Category_Id : in String;
       Name        : in String;
       Comment     : in String;
-      Filename    : in String);
+      Filename    : in String  := "";
+      Height      : in Integer := 0;
+      Width       : in Integer := 0;
+      Size        : in Integer := 0);
    --  Insert a new post into the database
 
    procedure Increment_Visit_Counter (Pid : in String);

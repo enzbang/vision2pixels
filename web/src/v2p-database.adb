@@ -51,7 +51,12 @@ package body V2P.Database is
    function Q (Str : in String) return String;
    pragma Inline (Q);
    --  Quote the string and double all single quote in Str to be able to insert
-   --  a quote into the databse.
+   --  a quote into the database.
+   --  Returns Null if empty string
+
+   function I (Int : in Integer) return String;
+   pragma Inline (I);
+   --  Returns Integer image
 
    -------------
    -- Connect --
@@ -399,6 +404,15 @@ package body V2P.Database is
       return Set;
    end Get_User;
 
+   -------
+   -- I --
+   -------
+
+   function I (Int : in Integer) return String is
+   begin
+      return Integer'Image (Int);
+   end I;
+
    -----------------------------
    -- Increment_Visit_Counter --
    -----------------------------
@@ -478,7 +492,10 @@ package body V2P.Database is
       Category_Id : in String;
       Name        : in String;
       Comment     : in String;
-      Filename    : in String)
+      Filename    : in String  := "";
+      Height      : in Integer := 0;
+      Width       : in Integer := 0;
+      Size        : in Integer := 0)
    is
       pragma Unreferenced (Comment);
 
@@ -495,9 +512,11 @@ package body V2P.Database is
       procedure Insert_Table_Post (Name, Filename, Category_Id : in String) is
          SQL : constant String :=
                  "insert into post ('name', 'filename', 'category_id',"
-                   & " 'template_id', 'visit_counter', 'comment_counter')"
+                   & " 'template_id', 'visit_counter', 'comment_counter',"
+                   & " 'image_width', 'image_height', 'image_size')"
                    & " values (" & Q (Name) & ',' & Q (Filename) & ','
-                   & Category_Id & ", 1, 0, 0)";
+                   & Category_Id & ", 1, 0, 0," & I (Width) & ',' & I (Height)
+                   & ',' & I (Size) & ")";
       begin
          DBH.Execute (SQL);
       end Insert_Table_Post;
@@ -559,6 +578,10 @@ package body V2P.Database is
       S : String (1 .. 2 + Str'Length * 2);
       J : Positive := S'First;
    begin
+      if Str = "" then
+         return "null";
+      end if;
+
       S (J) := ''';
 
       for K in Str'Range loop
@@ -575,5 +598,4 @@ package body V2P.Database is
 
       return S (1 .. J);
    end Q;
-
 end V2P.Database;

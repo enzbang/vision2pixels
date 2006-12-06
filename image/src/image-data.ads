@@ -26,9 +26,13 @@ with G2F.IO;
 
 package Image.Data is
 
+   use Ada;
    use Ada.Strings.Unbounded;
 
-   type Image_Data is private;
+   Image_Error : exception;
+   --  Raised for all errors reported by Image.Data
+
+   type Image_Data is tagged private;
 
    type Image_Init_Status is
      (Exceed_Max_Image_Dimension,
@@ -40,19 +44,33 @@ package Image.Data is
    procedure Init
       (Img      : in out Image_Data;
        Filename : in     String;
-       Category : in     String;
-       Status   : out    Image_Init_Status);
+       Category : in     String);
    --  Set image filename, read image info and create thumbnail
 
    function Filename (Img : in Image_Data) return String;
    --  Returns image filename
 
+   function Width (Img : in Image_Data) return Integer;
+   --  Returns image width
+
+   function Height (Img : in Image_Data) return Integer;
+   --  Returns image height
+
+   function Size (Img : in Image_Data) return Integer;
+   --  Returns image size
+
+   function Init_Status (Img : in Image_Data) return Image_Init_Status;
+
 private
 
-   type Image_Data is new Ada.Finalization.Controlled with record
-      Info_Ptr  : G2F.Image_Info_Ptr;
-      Image_Ptr : G2F.Image_Ptr;
-      Category  : Unbounded_String;
+   type Image_Data is new Finalization.Controlled with record
+      Info_Ptr    : G2F.Image_Info_Ptr;
+      Image_Ptr   : G2F.Image_Ptr;
+      Category    : Unbounded_String;
+      Width       : Integer;
+      Height      : Integer;
+      Size        : Integer;
+      Init_Status : Image_Init_Status;
    end record;
 
    overriding procedure Initialize (Img : in out Image_Data);

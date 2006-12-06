@@ -51,21 +51,18 @@ package body Image_Tests.Thumbnails is
       Out_Filename  : constant String := Directories.Compose
         (Out_Directory, In_Filename);
       Test_Image    : Image.Data.Image_Data;
-      Status        : Image.Data.Image_Init_Status;
    begin
 
       --  Read image info and create thumbnail
 
-      Image.Data.Init (Test_Image, In_Filename, Category, Status);
+      Image.Data.Init (Test_Image, In_Filename, Category);
 
-      Assert (Status = Image_Created,
+      Assert (Test_Image.Init_Status = Image_Created,
               "Error. Test_Image has not been created");
 
       Assert
         (Ada.Directories.Exists (Out_Filename),
          Out_Filename & "does not exist");
-
-      G2F.Destroy_Magick;
    end Create_Thumbnail;
 
    ----------
