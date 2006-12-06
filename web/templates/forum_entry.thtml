@@ -23,9 +23,13 @@
 
       <h2>@_NAME_@</h2>
 
+      @@IF@@ @_IMAGE_SOURCE_@ /= ""
       <div id="main_image">
         <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"/>
       </div>
+      @@END_IF@@
+
+      <p>@_IMAGE_COMMENT_@</p>
 
       @@TABLE@@
       <div class="level_@_COMMENT_LEVEL_@">

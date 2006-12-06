@@ -167,7 +167,7 @@ package body V2P.Database is
 
       DBH.Prepare_Select
         (Iter,
-         "select post.name, category.name, post.filename"
+         "select post.name, category.name, post.filename, post.comment"
          & " from post, category "
          & " where post.id=" & Q (Tid)
          & " and post.category_id = category.id");
@@ -189,6 +189,11 @@ package body V2P.Database is
          Templates.Insert
            (Set, Templates.Assoc
               (Forum_Entry.Image_Source, DB.String_Vectors.Element (Line, 3)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Forum_Entry.Image_Comment,
+               DB.String_Vectors.Element (Line, 4)));
          Line.Clear;
       end if;
 
@@ -497,8 +502,6 @@ package body V2P.Database is
       Width       : in Integer := 0;
       Size        : in Integer := 0)
    is
-      pragma Unreferenced (Comment);
-
       procedure Insert_Table_Post (Name, Filename, Category_Id : in String);
       --  Insert row into the post table
 
@@ -511,11 +514,12 @@ package body V2P.Database is
 
       procedure Insert_Table_Post (Name, Filename, Category_Id : in String) is
          SQL : constant String :=
-                 "insert into post ('name', 'filename', 'category_id',"
-                   & " 'template_id', 'visit_counter', 'comment_counter',"
-                   & " 'image_width', 'image_height', 'image_size')"
-                   & " values (" & Q (Name) & ',' & Q (Filename) & ','
-                   & Category_Id & ", 1, 0, 0," & I (Width) & ',' & I (Height)
+                 "insert into post ('name', 'filename', 'comment',"
+                   & "'category_id', 'template_id', 'visit_counter',"
+                   & "'comment_counter','image_width', 'image_height',"
+                   & "'image_size') values (" & Q (Name) & ','
+                   & Q (Filename) & ',' & Q (Comment) & ',' & Category_Id
+                   & ", 1, 0, 0," & I (Width) & ',' & I (Height)
                    & ',' & I (Size) & ")";
       begin
          DBH.Execute (SQL);
