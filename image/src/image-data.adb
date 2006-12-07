@@ -40,6 +40,9 @@ package body Image.Data is
 
    function Filename (Img : in Image_Data) return String is
    begin
+      if Img.Image_Ptr = null then
+         return "";
+      end if;
       return Get_Filename (Img.Image_Ptr);
    end Filename;
 
@@ -49,12 +52,8 @@ package body Image.Data is
 
    procedure Finalize (Img : in out Image_Data) is
    begin
-      if not Is_Null (Img.Image_Ptr) then
-         Destroy_Image (Img.Image_Ptr);
-      end if;
-      if not Is_Null (Img.Info_Ptr) then
-         Destroy_Image_Info (Img.Info_Ptr);
-      end if;
+      Destroy_Image (Img.Image_Ptr);
+      Destroy_Image_Info (Img.Info_Ptr);
    end Finalize;
 
    ------------
@@ -157,9 +156,8 @@ package body Image.Data is
    ------------------
 
    procedure Initialize (Img : in out Image_Data) is
-      Info : Image_Info_Ptr;
    begin
-      Img.Info_Ptr := Clone_Image_Info (Info);
+      Img.Info_Ptr := Clone_Image_Info (null);
    end Initialize;
 
    ----------
