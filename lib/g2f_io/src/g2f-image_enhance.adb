@@ -1,5 +1,4 @@
------------------------------------------------------------------------
----------
+------------------------------------------------------------------------------
 --                              G2f_Io                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
@@ -33,6 +32,10 @@ with Ada.Text_IO;
 
 package body G2F.Image_Enhance is
 
+   --------------------
+   -- Contrast_Image --
+   --------------------
+
    procedure Contrast_Image
      (I       : in out Image_Ptr;
       Sharpen : in Sharpen_T;
@@ -60,6 +63,10 @@ package body G2F.Image_Enhance is
       end if;
    end Contrast_Image;
 
+   --------------------
+   -- Equalize_Image --
+   --------------------
+
    procedure Equalize_Image (I : in out Image_Ptr) is
       use C;
       Res : C.int := 0;
@@ -71,6 +78,10 @@ package body G2F.Image_Enhance is
          raise Enhance_Error;
       end if;
    end Equalize_Image;
+
+   -----------------
+   -- Gamma_Image --
+   -----------------
 
    procedure Gamma_Image
      (I                : in out Image_Ptr;
@@ -97,6 +108,10 @@ package body G2F.Image_Enhance is
          raise Enhance_Error;
       end if;
    end Gamma_Image;
+
+   -----------------
+   -- Level_Image --
+   -----------------
 
    procedure Level_Image
      (I                            : in out Image_Ptr;
@@ -127,6 +142,10 @@ package body G2F.Image_Enhance is
       end if;
    end Level_Image;
 
+   -------------------------
+   -- Level_Image_Channel --
+   -------------------------
+
    procedure Level_Image_Channel
      (I                        : in out Image_Ptr;
       Channel                  : in Channel_T;
@@ -149,6 +168,10 @@ package body G2F.Image_Enhance is
          raise Enhance_Error;
       end if;
    end Level_Image_Channel;
+
+   --------------------
+   -- Modulate_Image --
+   --------------------
 
    procedure Modulate_Image
      (I                           : in out Image_Ptr;
@@ -176,6 +199,10 @@ package body G2F.Image_Enhance is
       end if;
    end Modulate_Image;
 
+   ------------------
+   -- Negate_Image --
+   ------------------
+
    procedure Negate_Image
      (I              : in out Image_Ptr;
       Only_Grayscale : in Boolean := False)
@@ -197,6 +224,10 @@ package body G2F.Image_Enhance is
          raise Enhance_Error;
       end if;
    end Negate_Image;
+
+   ---------------------
+   -- Normalize_Image --
+   ---------------------
 
    procedure Normalize_Image (I : in out Image_Ptr) is
       use C;

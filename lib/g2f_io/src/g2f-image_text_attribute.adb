@@ -1,5 +1,4 @@
-----------------------------------------------------------
-----------------------
+------------------------------------------------------------------------------
 --                              G2f_Io                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
@@ -35,11 +34,17 @@ with Ada.Unchecked_Deallocation;
 
 package body G2F.Image_Text_Attribute is
 
-   procedure Ada_Free is new Ada.Unchecked_Deallocation (
-      Image_Attribute,
-      Image_Attribute_Ptr);
-   --
-   --
+   --------------
+   -- Ada_Free --
+   --------------
+
+   procedure Ada_Free is new Ada.Unchecked_Deallocation
+     (Image_Attribute, Image_Attribute_Ptr);
+
+   ------------------------------
+   -- Set_Image_Text_Attribute --
+   ------------------------------
+
    procedure Set_Image_Text_Attribute
      (I     : in out Image_Ptr;
       Key   : in Tag_Attribute;
@@ -66,8 +71,11 @@ package body G2F.Image_Text_Attribute is
          raise Attribute_Error;
       end if;
    end Set_Image_Text_Attribute;
-   --
-   --
+
+   ------------------------------
+   -- Set_Image_Text_Attribute --
+   ------------------------------
+
    procedure Set_Image_Text_Attribute
      (I          : in out Image_Ptr;
       Key, Value : in String)
@@ -90,8 +98,11 @@ package body G2F.Image_Text_Attribute is
          raise Attribute_Error;
       end if;
    end Set_Image_Text_Attribute;
-   --
-   --
+
+   ------------------------------
+   -- Get_Image_Text_Attribute --
+   ------------------------------
+
    function Get_Image_Text_Attribute
      (I    : in Image_Ptr;
       Key  : in Tag_Attribute)
@@ -118,8 +129,11 @@ package body G2F.Image_Text_Attribute is
       end if;
       return To_Ada (Value (Res.all.Value));
    end Get_Image_Text_Attribute;
-   --
-   --
+
+   ------------------------------
+   -- Get_Image_Text_Attribute --
+   ------------------------------
+
    function Get_Image_Text_Attribute
      (I    : in Image_Ptr;
       Key  : in String)
@@ -138,7 +152,6 @@ package body G2F.Image_Text_Attribute is
    begin
       Res := C_Get_Image_Attribute (I, New_Char_Array (To_C (Key)));
       if Res = null then
-         --raise No_Attribute;
          return "";
       end if;
       return To_Ada (Value (Res.all.Value));

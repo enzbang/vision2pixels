@@ -1,5 +1,4 @@
------------------------------------------------------------------------
----------
+------------------------------------------------------------------------------
 --                              G2F_IO                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
@@ -45,13 +44,21 @@ package G2F is
    pragma Linker_Options ("-lm");
    pragma Linker_Options ("-L/usr/X11R6/lib/");
 
-   type Image_Info_Ptr is private;
-   type Image_Ptr is private;
+   type Image is private;
+   type Image_Info is private;
+
+   type Image_Ptr is access Image;
+   pragma Convention (C, Image_Ptr);
+
+   type Image_Info_Ptr is access all Image_Info;
+   pragma Convention (C, Image_Info_Ptr);
+
    type Blob_Info_Ptr is private;
 
    GetExceptionInfo_Error : exception;
 
    procedure Destroy_Magick;
+   --  destroys the ImageMagick environment
 
    type Quantum_8 is new C.unsigned_char;
    for Quantum_8'Size use 8;
@@ -157,12 +164,6 @@ package G2F is
    procedure Put_Magick_Exception;
    procedure Put_Image_Exception (I : in Image_Ptr);
 
-   function Is_Null (I : in Image_Ptr) return Boolean;
-   --  Returns true if Image_Ptr is a null pointer
-
-   function Is_Null (I : in Image_Info_Ptr) return Boolean;
-   --  Returns true if Image_Info_Ptr is a null pointer
-
 private
 
    procedure Free (I : in out Image_Info_Ptr);
@@ -261,10 +262,6 @@ private
       JPEGPreview);
    pragma Convention (C, Preview_Type);
 
-   type Image;
-   type Image_Ptr is access Image;
-   pragma Convention (C, Image_Ptr);
-
    subtype MaxTextExtent is C.size_t range 1 .. 4_096;
 
    type MagickOffsetType is new C.long;
@@ -344,9 +341,6 @@ private
       Signature        : C.unsigned_long;
    end record;
    pragma Convention (C, Image_Info);
-
-   type Image_Info_Ptr is access all Image_Info;
-   pragma Convention (C, Image_Info_Ptr);
 
    ----------
    -- Image

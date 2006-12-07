@@ -35,6 +35,10 @@ with Interfaces.C.Strings;                 use Interfaces.C.Strings;
 
 package body G2F is
 
+   -----------------------
+   -- Initialize_Magick --
+   -----------------------
+
    procedure Initialize_Magick is
       procedure InitializeMagick
         (Path : in Interfaces.C.Strings.chars_ptr :=
@@ -43,6 +47,10 @@ package body G2F is
    begin
       InitializeMagick;
    end Initialize_Magick;
+
+   ------------------------
+   -- Get_Exception_Info --
+   ------------------------
 
    function Get_Exception_Info
      (G_E_I : in Exception_Info)
@@ -63,6 +71,10 @@ package body G2F is
       return Ex_Info_Ptr;
    end Get_Exception_Info;
 
+   --------------------
+   -- Destroy_Magick --
+   --------------------
+
    procedure Destroy_Magick is
       procedure C_Destroy_Magick;
       pragma Import (C, C_Destroy_Magick, "DestroyMagick");
@@ -74,6 +86,10 @@ package body G2F is
       Ada_Free (Ex_Info_Ptr);
    end Destroy_Magick;
 
+   ----------
+   -- Free --
+   ----------
+
    procedure Free (I : in out Image_Info_Ptr) is
       procedure Ada_Free is new Ada.Unchecked_Deallocation (
          Image_Info,
@@ -82,27 +98,22 @@ package body G2F is
       Ada_Free (I);
    end Free;
 
+   ----------
+   -- Free --
+   ----------
+
    procedure Free (I : in out Image_Ptr) is
-      procedure Ada_Free is new Ada.Unchecked_Deallocation (
-         Image,
-         Image_Ptr);
+      procedure Ada_Free is new Ada.Unchecked_Deallocation
+        (Image, Image_Ptr);
    begin
       Ada_Free (I);
    end Free;
 
-   function Is_Null (I : in Image_Ptr) return Boolean is
-   begin
-      return I = null;
-   end Is_Null;
-
-   function Is_Null (I : in Image_Info_Ptr) return Boolean is
-   begin
-      return I = null;
-   end Is_Null;
-
    procedure Put_Magick_Exception is
       procedure C_Catch_Exception (E : in Exception_Info_Ptr);
       pragma Import (C, C_Catch_Exception, "CatchException");
+      --  returns if no exceptions is found otherwise it reports the exception
+      --  as a warning, error, or fatal depending on the severity.
    begin
       C_Catch_Exception (Ex_Info_Ptr);
       -- Ada.Text_Io.New_Line;
@@ -118,6 +129,10 @@ package body G2F is
       -- Ada.Text_Io.Put_Line("Severity => " &
       --C.Int'Image(Ex_Info_Ptr.all.Severity));
    end Put_Magick_Exception;
+
+   -------------------------
+   -- Put_Image_Exception --
+   -------------------------
 
    procedure Put_Image_Exception (I : in Image_Ptr) is
    begin
@@ -135,8 +150,6 @@ package body G2F is
             C.int'Image (I.all.Image_Exception.Error_Number));
          Ada.Text_IO.Put_Line
            ("Severity => " & C.int'Image (I.all.Image_Exception.Severity));
-         --Ada.Text_Io.Put_Line("Severity => " &
-         --Exception_Type'Image(Ex_Info_Ptr.all.Severity));
       end if;
    end Put_Image_Exception;
 begin
