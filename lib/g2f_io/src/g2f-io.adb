@@ -1,5 +1,4 @@
---------------------------------------------------
-------------------------------
+------------------------------------------------------------------------------
 --                              G2F_IO                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
@@ -37,11 +36,19 @@ package body G2F.IO is
 
    use Interfaces.C;
 
+   ------------------
+   -- Set_Filename --
+   ------------------
+
    procedure Set_Filename (I : in Image_Info_Ptr; S : in String) is
       use Interfaces.C;
    begin
       I.all.Filename (1 .. size_t (S'Last + 1))  := To_C (S);
    end Set_Filename;
+
+   ------------------
+   -- Set_Filename --
+   ------------------
 
    procedure Set_Filename (I : in Image_Ptr; S : in String) is
       use Interfaces.C;
@@ -49,13 +56,20 @@ package body G2F.IO is
       I.all.Filename (1 .. size_t (S'Last + 1))  := To_C (S);
    end Set_Filename;
 
+   ------------------
+   -- Get_Filename --
+   ------------------
+
    function Get_Filename (I : in Image_Info_Ptr) return String is
       use Interfaces.C;
       Res    : String  := To_Ada (I.all.Filename);
       Count  : Natural := 0;
       Prefix : Boolean := False;
    begin
-      --return To_Ada(I.all.Filename);
+      if I = null then
+         return "";
+      end if;
+
       for I in  Res'Range loop
          Count := Count + 1;
          if Res (I) = ':' then
@@ -69,11 +83,22 @@ package body G2F.IO is
       return Res;
    end Get_Filename;
 
+   ------------------
+   -- Get_Filename --
+   ------------------
+
    function Get_Filename (I : in Image_Ptr) return String is
       use Interfaces.C;
    begin
+      if I = null then
+         return "";
+      end if;
       return To_Ada (I.all.Filename);
    end Get_Filename;
+
+   ----------------------
+   -- To_Magick_Format --
+   ----------------------
 
    function To_Magick_Format
      (Format : in Supported_Image_Formats)
@@ -85,6 +110,10 @@ package body G2F.IO is
       Ada.Strings.Fixed.Replace_Slice (Res_Tmp, 1, 7, "");
       return Trim (Res_Tmp, Ada.Strings.Right);
    end To_Magick_Format;
+
+   ----------------
+   -- Set_Format --
+   ----------------
 
    procedure Set_Format
      (I      : in Image_Info_Ptr;
@@ -114,6 +143,10 @@ package body G2F.IO is
       end if;
    end Set_Format;
 
+   ----------------
+   -- Set_Format --
+   ----------------
+
    procedure Set_Format
      (I      : in Image_Ptr;
       Format : in Supported_Image_Formats)
@@ -124,15 +157,27 @@ package body G2F.IO is
          To_C (Res);
    end Set_Format;
 
+   ----------------
+   -- Get_Format --
+   ----------------
+
    function Get_Format (I : in Image_Ptr) return String is
    begin
       return To_Ada (I.all.Magick);
    end Get_Format;
 
+   ----------------
+   -- Get_Format --
+   ----------------
+
    function Get_Format (I : in Image_Info_Ptr) return String is
    begin
       return To_Ada (I.all.Magick);
    end Get_Format;
+
+   ---------------------
+   -- Set_Compression --
+   ---------------------
 
    procedure Set_Compression
      (I : in Image_Info_Ptr;
@@ -142,25 +187,45 @@ package body G2F.IO is
       I.all.Compression := C;
    end Set_Compression;
 
+   ---------------------
+   -- Set_Compression --
+   ---------------------
+
    procedure Set_Compression (I : in Image_Ptr; C : in Compression_Type) is
    begin
       I.all.Compression := C;
    end Set_Compression;
+
+   ---------------------
+   -- Get_Compression --
+   ---------------------
 
    function Get_Compression (I : in Image_Info_Ptr) return Compression_Type is
    begin
       return I.all.Compression;
    end Get_Compression;
 
+   ---------------------
+   -- Get_Compression --
+   ---------------------
+
    function Get_Compression (I : in Image_Ptr) return Compression_Type is
    begin
       return I.all.Compression;
    end Get_Compression;
 
+   ---------------
+   -- Set_Depth --
+   ---------------
+
    procedure Set_Depth (I : in Image_Info_Ptr; D : in Depth) is
    begin
       I.all.Depth := Interfaces.C.unsigned_long (D);
    end Set_Depth;
+
+   ---------------
+   -- Set_Depth --
+   ---------------
 
    procedure Set_Depth (I : in Image_Ptr; D : in Depth) is
       function C_Set_Image_Depth
@@ -176,6 +241,10 @@ package body G2F.IO is
       end if;
    end Set_Depth;
 
+   ---------------
+   -- Get_Depth --
+   ---------------
+
    function Get_Depth (I : in Image_Info_Ptr) return Depth is
    begin
       return Depth (I.all.Depth);
@@ -185,6 +254,10 @@ package body G2F.IO is
    begin
       return Depth (I.all.Depth);
    end Get_Depth;
+
+   --------------------
+   -- Set_Image_Size --
+   --------------------
 
    procedure Set_Image_Size (I : in Image_Info_Ptr; Im_S : in Image_Size) is
       Str_X   : String       := Image_Size_T'Image (Im_S.X);
@@ -197,6 +270,10 @@ package body G2F.IO is
    begin
       I.all.Size := Interfaces.C.Strings.New_Char_Array (X_Y);
    end Set_Image_Size;
+
+   --------------------
+   -- Get_Image_Size --
+   --------------------
 
    function Get_Image_Size (I : in Image_Ptr) return Image_Size is
       Ims : Image_Size;

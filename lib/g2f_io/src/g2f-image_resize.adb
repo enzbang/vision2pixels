@@ -1,5 +1,4 @@
---------------------------------------------------------------------
-------------
+------------------------------------------------------------------------------
 --                              G2f_Io                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
@@ -34,6 +33,10 @@ with Ada.Text_IO;
 
 package body G2F.Image_Resize is
 
+   -------------------
+   -- Magnify_Image --
+   -------------------
+
    function Magnify_Image (I : in Image_Ptr) return Image_Ptr is
       function C_Magnify_Image
         (I    : in Image_Ptr;
@@ -48,8 +51,11 @@ package body G2F.Image_Resize is
       end if;
       return Mon_Image;
    end Magnify_Image;
-   --
-   --
+
+   ------------------
+   -- Minify_Image --
+   ------------------
+
    function Minify_Image (I : in Image_Ptr) return Image_Ptr is
       function C_Minify_Image
         (I    : in Image_Ptr;
@@ -64,8 +70,11 @@ package body G2F.Image_Resize is
       end if;
       return Mon_Image;
    end Minify_Image;
-   --
-   --
+
+   ------------------
+   -- Resize_Image --
+   ------------------
+
    function Resize_Image
      (I      : in Image_Ptr;
       I_S    : in G2F.IO.Image_Size;
@@ -90,8 +99,11 @@ package body G2F.Image_Resize is
       end if;
       return Mon_Image;
    end Resize_Image;
-   --
-   --
+
+   ------------------
+   -- Sample_Image --
+   ------------------
+
    function Sample_Image
      (I    : in Image_Ptr;
       I_S  : in G2F.IO.Image_Size)
@@ -111,8 +123,11 @@ package body G2F.Image_Resize is
       end if;
       return Mon_Image;
    end Sample_Image;
-   --
-   --
+
+   -----------------
+   -- Scale_Image --
+   -----------------
+
    function Scale_Image
      (I    : in Image_Ptr;
       I_S  : in G2F.IO.Image_Size)
@@ -132,8 +147,11 @@ package body G2F.Image_Resize is
       end if;
       return Mon_Image;
    end Scale_Image;
-   --
-   --
+
+   ---------------------
+   -- Thumbnail_Image --
+   ---------------------
+
    function Thumbnail_Image
      (I    : in Image_Ptr;
       I_S  : in G2F.IO.Image_Size)
