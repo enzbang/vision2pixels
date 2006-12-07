@@ -33,14 +33,19 @@ create table "category" (
 foreign key ("forum_id") references post("id")
 );
 
+create table "photo" (
+"id" integer not null primary key autoincrement,
+"filename" varchar(512) unique,
+"image_height" integer,
+"image_width" integer,
+"image_size" integer
+);
+
 create table "post" (
 "id" integer not null primary key autoincrement,
 "name" varchar(100) not null,
-"filename" varchar(512) unique,
+"photo_id" integer,
 "comment" longtext,
-"image_height" integer,
-"image_width" integer,
-"image_size" integer,
 "category_id" integer not null,
 "date_publication" date default current_timestamp,
 "last_comment_id" integer,
@@ -49,7 +54,8 @@ create table "post" (
 "comment_counter" integer not null,
 foreign key ("category_id") references category("id"),
 foreign key ("last_comment_id") references comment("id"),
-foreign key ("template_id") references template_id("id")
+foreign key ("template_id") references template_id("id"),
+foreign key ("photo_id") references photo("id")
 );
 
 create table "post_comment" (
