@@ -40,9 +40,6 @@ package body Image.Data is
 
    function Filename (Img : in Image_Data) return String is
    begin
-      if Img.Image_Ptr = null then
-         return "";
-      end if;
       return Get_Filename (Img.Image_Ptr);
    end Filename;
 
