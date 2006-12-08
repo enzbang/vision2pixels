@@ -28,8 +28,9 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with G2F.IO;
 with Ada.Text_IO;
+
+with G2F.IO;
 
 package body G2F.Image_Resize is
 
@@ -39,11 +40,11 @@ package body G2F.Image_Resize is
 
    function Magnify_Image (I : in Image_Ptr) return Image_Ptr is
       function C_Magnify_Image
-        (I    : in Image_Ptr;
-         E    : in Exception_Info_Ptr := Ex_Info_Ptr)
-         return Image_Ptr;
+        (I : in Image_Ptr;
+         E : in Exception_Info_Ptr := Ex_Info_Ptr) return Image_Ptr;
       pragma Import (C, C_Magnify_Image, "MagnifyImage");
-      Mon_Image : Image_Ptr := null;
+
+      Mon_Image : Image_Ptr;
    begin
       Mon_Image := C_Magnify_Image (I);
       if Mon_Image = null then
@@ -58,11 +59,11 @@ package body G2F.Image_Resize is
 
    function Minify_Image (I : in Image_Ptr) return Image_Ptr is
       function C_Minify_Image
-        (I    : in Image_Ptr;
-         E    : in Exception_Info_Ptr := Ex_Info_Ptr)
-         return Image_Ptr;
+        (I : in Image_Ptr;
+         E : in Exception_Info_Ptr := Ex_Info_Ptr) return Image_Ptr;
       pragma Import (C, C_Minify_Image, "MinifyImage");
-      Mon_Image : Image_Ptr := null;
+
+      Mon_Image : Image_Ptr;
    begin
       Mon_Image := C_Minify_Image (I);
       if Mon_Image = null then
@@ -79,21 +80,19 @@ package body G2F.Image_Resize is
      (I      : in Image_Ptr;
       I_S    : in G2F.IO.Image_Size;
       Filter : Resize_Filter := Lanczos;
-      Blur   : T_Blur        := 1.0)
-      return   Image_Ptr
+      Blur   : T_Blur        := 1.0) return Image_Ptr
    is
       function C_Resize_Image
         (I           : in Image_Ptr;
          Column, Row : in G2F.IO.Image_Size_T;
          Filter      : in Resize_Filter;
          Blur        : in T_Blur;
-         E           : in Exception_Info_Ptr := Ex_Info_Ptr)
-         return        Image_Ptr;
+         E           : in Exception_Info_Ptr := Ex_Info_Ptr) return Image_Ptr;
       pragma Import (C, C_Resize_Image, "ResizeImage");
-      Mon_Image : Image_Ptr := null;
+
+      Mon_Image : Image_Ptr;
    begin
-      Mon_Image :=
-         C_Resize_Image (I, I_S.X, I_S.Y, Filter, Blur, Ex_Info_Ptr);
+      Mon_Image := C_Resize_Image (I, I_S.X, I_S.Y, Filter, Blur, Ex_Info_Ptr);
       if Mon_Image = null then
          raise Resize_Error;
       end if;
@@ -105,17 +104,16 @@ package body G2F.Image_Resize is
    ------------------
 
    function Sample_Image
-     (I    : in Image_Ptr;
-      I_S  : in G2F.IO.Image_Size)
-      return Image_Ptr
+     (I   : in Image_Ptr;
+      I_S : in G2F.IO.Image_Size) return Image_Ptr
    is
       function C_Sample_Image
         (I           : in Image_Ptr;
          Column, Row : in G2F.IO.Image_Size_T;
-         E           : in Exception_Info_Ptr := Ex_Info_Ptr)
-         return        Image_Ptr;
+         E           : in Exception_Info_Ptr := Ex_Info_Ptr) return Image_Ptr;
       pragma Import (C, C_Sample_Image, "SampleImage");
-      Mon_Image : Image_Ptr := null;
+
+      Mon_Image : Image_Ptr;
    begin
       Mon_Image := C_Sample_Image (I, I_S.X, I_S.Y);
       if Mon_Image = null then
@@ -129,9 +127,8 @@ package body G2F.Image_Resize is
    -----------------
 
    function Scale_Image
-     (I    : in Image_Ptr;
-      I_S  : in G2F.IO.Image_Size)
-      return Image_Ptr
+     (I   : in Image_Ptr;
+      I_S : in G2F.IO.Image_Size) return Image_Ptr
    is
       function C_Scale_Image
         (I             : in Image_Ptr;
@@ -139,7 +136,8 @@ package body G2F.Image_Resize is
          E             : in Exception_Info_Ptr := Ex_Info_Ptr)
          return          Image_Ptr;
       pragma Import (C, C_Scale_Image, "ScaleImage");
-      Mon_Image : Image_Ptr := null;
+
+      Mon_Image : Image_Ptr;
    begin
       Mon_Image := C_Scale_Image (I, I_S.X, I_S.Y);
       if Mon_Image = null then
@@ -161,9 +159,10 @@ package body G2F.Image_Resize is
         (I             : in Image_Ptr;
          Columns, Rows : in G2F.IO.Image_Size_T;
          E             : in Exception_Info_Ptr := Ex_Info_Ptr)
-         return          Image_Ptr;
+         return Image_Ptr;
       pragma Import (C, C_Thumbnail_Image, "ThumbnailImage");
-      Mon_Image : Image_Ptr := null;
+
+      Mon_Image : Image_Ptr;
    begin
       Mon_Image := C_Thumbnail_Image (I, I_S.X, I_S.Y);
       if Mon_Image = null then

@@ -92,7 +92,6 @@ package body Image.Data is
          Create_Path (Containing_Directory (Image_Name));
       end if;
 
-
       --  Read image info
 
       Set_Filename (Img.Info_Ptr, Filename);
@@ -107,8 +106,9 @@ package body Image.Data is
             Img.Height := Integer (Dimension.Y);
             Img.Size   := Integer (Size (Filename));
 
-            if Img.Width > Settings.Image_Maximum_Width or
-              Img.Height > Settings.Image_Maximum_Height then
+            if Img.Width > Settings.Image_Maximum_Width
+              or else Img.Height > Settings.Image_Maximum_Height
+            then
                Img.Init_Status := Image.Data.Exceed_Max_Image_Dimension;
                return;
             end if;

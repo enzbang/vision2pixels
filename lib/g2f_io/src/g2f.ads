@@ -180,8 +180,8 @@ private
    end record;
    pragma Convention (C, Pixel_Packet);
 
-   type Colorspace_Type is (
-      UndefinedColorspace,
+   type Colorspace_Type is
+     (UndefinedColorspace,
       RGBColorspace,
       GRAYColorspace,
       TransparentColorspace,
@@ -203,8 +203,8 @@ private
       LogColorspace);
    pragma Convention (C, Colorspace_Type);
 
-   type Image_Type is (
-      UndefinedType,
+   type Image_Type is
+     (UndefinedType,
       BilevelType,
       GrayscaleType,
       GrayscaleMatteType,
@@ -217,8 +217,8 @@ private
       OptimizeType);
    pragma Convention (C, Image_Type);
 
-   type Orientation_Type is (
-      UndefinedOrientation,
+   type Orientation_Type is
+     (UndefinedOrientation,
       TopLeftOrientation,
       TopRightOrientation,
       BottomRightOrientation,
@@ -229,8 +229,8 @@ private
       LeftBottomOrientation);
    pragma Convention (C, Orientation_Type);
 
-   type Preview_Type is (
-      UndefinedPreview,
+   type Preview_Type is
+     (UndefinedPreview,
       RotatePreview,
       ShearPreview,
       RollPreview,
@@ -381,8 +381,8 @@ private
    type Profile_Info_Ptr is access Profile_Info;
    pragma Convention (C, Profile_Info_Ptr);
 
-   type Rendering_Intent is (
-      UndefinedIntent,
+   type Rendering_Intent is
+     (UndefinedIntent,
       SaturationIntent,
       PerceptualIntent,
       AbsoluteIntent,
@@ -395,8 +395,8 @@ private
    end record;
    pragma Convention (C, Rectangle_Info);
 
-   type Gravity_Type is (
-      ForgetGravity,
+   type Gravity_Type is
+     (ForgetGravity,
       NorthWestGravity,
       NorthGravity,
       NorthEastGravity,
@@ -409,8 +409,8 @@ private
       StaticGravity);
    pragma Convention (C, Gravity_Type);
 
-   type Composite_Operator is (
-      UndefinedCompositeOp,
+   type Composite_Operator is
+     (UndefinedCompositeOp,
       OverCompositeOp,
       InCompositeOp,
       OutCompositeOp,
@@ -448,8 +448,8 @@ private
       CopyBlackCompositeOp);
    pragma Convention (C, Composite_Operator);
 
-   type Dispose_Type is (
-      UndefinedDispose,
+   type Dispose_Type is
+     (UndefinedDispose,
       NoneDispose,
       BackgroundDispose,
       PreviousDispose);
@@ -463,14 +463,12 @@ private
    pragma Convention (C, Error_Info);
 
    type Timer is record
-      Start,
-      Stop,
-      Total : C.double;
+      Start, Stop, Total : C.double;
    end record;
    pragma Convention (C, Timer);
 
-   type Timer_State is (
-      UndefinedTimerState,
+   type Timer_State is
+     (UndefinedTimerState,
       StoppedTimerState,
       RunningTimerState);
    pragma Convention (C, Timer_State);
@@ -507,8 +505,8 @@ private
    type Ascii_85_Info_Ptr is access Ascii_85_Info;
    pragma Convention (C, Ascii_85_Info_Ptr);
 
-   type Exception_Type is (
-      UndefinedException,
+   type Exception_Type is
+     (UndefinedException,
       WarningException,
       ResourceLimitWarning,
       TypeWarning,
@@ -568,11 +566,6 @@ private
       ConfigureFatalError);
    pragma Convention (C, Exception_Type);
 
-   ----------------------------------------------------
-   --               semaphore !win32                 --
-   -- original source code from  File : s-osinte.ads --
-   ----------------------------------------------------
-
    type sigjmp_buf is array (Integer range 0 .. 38) of C.int;
    pragma Convention (C, sigjmp_buf);
 
@@ -630,15 +623,11 @@ private
    type Exception_Info_Ptr is access Exception_Info;
    pragma Convention (C, Exception_Info_Ptr);
 
-   -----------------
-   -- blob !win32 --
-   -----------------
-
    type Off_T is new Long_Integer;
    pragma Convention (C, Off_T);
 
-   type Stream_Type is (
-      UndefinedStream,
+   type Stream_Type is
+     (UndefinedStream,
       FileStream,
       StandardStream,
       PipeStream,

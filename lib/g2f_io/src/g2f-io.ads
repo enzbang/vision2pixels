@@ -30,8 +30,8 @@
 
 package G2F.IO is
 
-   type Supported_Image_Formats is (
-      Magick_8BIM,
+   type Supported_Image_Formats is
+     (Magick_8BIM,
       Magick_8BIMTEXT,
       Magick_8BIMWTEXT,
       Magick_APP1,

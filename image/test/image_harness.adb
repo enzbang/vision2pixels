@@ -19,13 +19,21 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Command_Line;
+
 with AUnit.Test_Runner;
 with Image_Suite;
 
 procedure Image_Harness is
 
+   use Ada;
+
    procedure Run is new AUnit.Test_Runner (Image_Suite);
 
 begin
    Run;
+   Command_Line.Set_Exit_Status (Code => Command_Line.Success);
+exception
+   when others =>
+      Command_Line.Set_Exit_Status (Code => Command_Line.Failure);
 end Image_Harness;
