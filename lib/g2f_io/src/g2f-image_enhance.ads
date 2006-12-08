@@ -28,7 +28,6 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with G2F; use G2F;
 package G2F.Image_Enhance is
 
    Enhance_Error : exception;
@@ -39,8 +38,8 @@ package G2F.Image_Enhance is
    type Gamma_Parameter is digits 1 range 0.0 .. 10.0;
    type Persent_Level is new Natural range 0 .. 100;
 
-   type Channel_T is (
-      Red,
+   type Channel_T is
+     (Red,
       Cyan,
       Green,
       Magenta,

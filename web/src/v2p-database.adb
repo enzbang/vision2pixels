@@ -256,9 +256,6 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc
            (Forum_Entry.Nb_Levels_To_Close, Nb_Levels_To_Close));
---        Templates.Insert
---          (Set, Templates.Assoc (Forum_Entry.File_Attachment, Filename));
-
       return Set;
    end Get_Entry;
 

@@ -36,8 +36,7 @@ package G2F.Image_IO is
    Write_Image_Error, Ping_Image_Error : exception;
 
    function Clone_Image_Info
-     (Image_Info_In : in Image_Info_Ptr)
-      return          Image_Info_Ptr;
+     (Image_Info_In : in Image_Info_Ptr) return Image_Info_Ptr;
    --  Makes a duplicate of the given image info, or if image info is NULL, a
    --  new one.
 
@@ -67,4 +66,5 @@ package G2F.Image_IO is
    --  Returns the image size in bytes if it exists and can be the image is
    --  returned as well. Note, only the first image in a multi-frame image file
    --  is pinged.
+
 end G2F.Image_IO;

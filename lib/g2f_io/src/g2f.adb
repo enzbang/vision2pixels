@@ -28,12 +28,15 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with System.Address_To_Access_Conversions;
 with Ada.Unchecked_Deallocation;
 with Ada.Text_IO;
 with Interfaces.C.Strings;                 use Interfaces.C.Strings;
+with System.Address_To_Access_Conversions;
 
 package body G2F is
+
+   use Ada;
+   use System;
 
    -----------------------
    -- Initialize_Magick --
@@ -42,7 +45,7 @@ package body G2F is
    procedure Initialize_Magick is
       procedure InitializeMagick
         (Path : in Interfaces.C.Strings.chars_ptr :=
-        Interfaces.C.Strings.Null_Ptr);
+           Interfaces.C.Strings.Null_Ptr);
       pragma Import (C, InitializeMagick, "InitializeMagick");
    begin
       InitializeMagick;
@@ -58,10 +61,10 @@ package body G2F is
    is
       procedure C_Get_Exception_Info (E : in System.Address);
       pragma Import (C, C_Get_Exception_Info, "GetExceptionInfo");
-      Ex_Info_Ptr : Exception_Info_Ptr := null;
-      package Info_Ptrs is new System.Address_To_Access_Conversions (
-         Exception_Info);
+      package Info_Ptrs is
+        new Address_To_Access_Conversions (Exception_Info);
       use Info_Ptrs;
+      Ex_Info_Ptr : Exception_Info_Ptr := null;
    begin
       C_Get_Exception_Info (G_E_I'Address);
       if Info_Ptrs.To_Pointer (G_E_I'Address) = null then
@@ -78,12 +81,11 @@ package body G2F is
    procedure Destroy_Magick is
       procedure C_Destroy_Magick;
       pragma Import (C, C_Destroy_Magick, "DestroyMagick");
-      procedure Ada_Free is new Ada.Unchecked_Deallocation (
-         Exception_Info,
-         Exception_Info_Ptr);
+      procedure Unchecked_Free is
+        new Unchecked_Deallocation (Exception_Info, Exception_Info_Ptr);
    begin
       C_Destroy_Magick;
-      Ada_Free (Ex_Info_Ptr);
+      Unchecked_Free (Ex_Info_Ptr);
    end Destroy_Magick;
 
    ----------
@@ -91,11 +93,10 @@ package body G2F is
    ----------
 
    procedure Free (I : in out Image_Info_Ptr) is
-      procedure Ada_Free is new Ada.Unchecked_Deallocation (
-         Image_Info,
-         Image_Info_Ptr);
+      procedure Unchecked_Free is
+        new Unchecked_Deallocation (Image_Info, Image_Info_Ptr);
    begin
-      Ada_Free (I);
+      Unchecked_Free (I);
    end Free;
 
    ----------
@@ -103,10 +104,10 @@ package body G2F is
    ----------
 
    procedure Free (I : in out Image_Ptr) is
-      procedure Ada_Free is new Ada.Unchecked_Deallocation
-        (Image, Image_Ptr);
+      procedure Unchecked_Free is
+        new Unchecked_Deallocation (Image, Image_Ptr);
    begin
-      Ada_Free (I);
+      Unchecked_Free (I);
    end Free;
 
    procedure Put_Magick_Exception is
@@ -116,18 +117,6 @@ package body G2F is
       --  as a warning, error, or fatal depending on the severity.
    begin
       C_Catch_Exception (Ex_Info_Ptr);
-      -- Ada.Text_Io.New_Line;
-      -- Ada.Text_Io.Put_Line("Magick_Exception : ");
-      -- Ada.Text_Io.Put("Reason => " &
-      --Interfaces.C.Strings.Value(Ex_Info_Ptr.all.Reason));
-      -- Ada.Text_Io.Put_Line(" " &
-      --Interfaces.C.Strings.Value(Ex_Info_Ptr.all.Description));
-      -- Ada.Text_Io.Put_Line("Error Number =>" &
-      --C.Int'Image(Ex_Info_Ptr.all.Error_Number));
-      ---- Ada.Text_Io.Put_Line("Severity => " &
-      --Exception_Type'Image(Ex_Info_Ptr.all.Severity));
-      -- Ada.Text_Io.Put_Line("Severity => " &
-      --C.Int'Image(Ex_Info_Ptr.all.Severity));
    end Put_Magick_Exception;
 
    -------------------------
@@ -152,6 +141,7 @@ package body G2F is
            ("Severity => " & C.int'Image (I.all.Image_Exception.Severity));
       end if;
    end Put_Image_Exception;
+
 begin
    Initialize_Magick;
    Ex_Info_Ptr := Get_Exception_Info (Ex_Info);

@@ -28,18 +28,13 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with Interfaces.C.Strings;
 with Ada.Characters.Handling;
 with Ada.Unchecked_Deallocation;
+with Interfaces.C.Strings;
 
 package body G2F.Image_Text_Attribute is
 
-   --------------
-   -- Ada_Free --
-   --------------
-
-   procedure Ada_Free is new Ada.Unchecked_Deallocation
-     (Image_Attribute, Image_Attribute_Ptr);
+   use Ada;
 
    ------------------------------
    -- Set_Image_Text_Attribute --
@@ -52,14 +47,15 @@ package body G2F.Image_Text_Attribute is
    is
       use C;
       use Interfaces.C.Strings;
-      Res : C.int := 0;
+
       function C_Set_Image_Text_Attribute
         (I          : in Image_Ptr;
-         Key, Value : in Interfaces.C.Strings.chars_ptr)
-         return       C.int;
+         Key, Value : in Interfaces.C.Strings.chars_ptr) return C.int;
       pragma Import (C, C_Set_Image_Text_Attribute, "SetImageAttribute");
+
+      Res   : C.int := 0;
       Key_S : String :=
-         Ada.Characters.Handling.To_Lower (Tag_Attribute'Image (Key));
+                Characters.Handling.To_Lower (Tag_Attribute'Image (Key));
    begin
       Key_S (1) := Ada.Characters.Handling.To_Upper (Key_S (1));
       Res       :=
@@ -67,7 +63,7 @@ package body G2F.Image_Text_Attribute is
            (I,
             New_Char_Array (To_C (Key_S)),
             New_Char_Array (To_C (Value)));
-      if Res = 0 or I.all.Image_Exception.Severity /= 0 then
+      if Res = 0 or else I.all.Image_Exception.Severity /= 0 then
          raise Attribute_Error;
       end if;
    end Set_Image_Text_Attribute;
@@ -82,19 +78,18 @@ package body G2F.Image_Text_Attribute is
    is
       use C;
       use Interfaces.C.Strings;
-      Res : C.int := 0;
+
       function C_Set_Image_Text_Attribute
         (I          : in Image_Ptr;
-         Key, Value : in Interfaces.C.Strings.chars_ptr)
-         return       C.int;
+         Key, Value : in Interfaces.C.Strings.chars_ptr) return C.int;
+
+      Res : C.int := 0;
       pragma Import (C, C_Set_Image_Text_Attribute, "SetImageAttribute");
    begin
-      Res :=
-         C_Set_Image_Text_Attribute
-           (I,
-            New_Char_Array (To_C (Key)),
-            New_Char_Array (To_C (Value)));
-      if Res = 0 or I.all.Image_Exception.Severity /= 0 then
+      Res := C_Set_Image_Text_Attribute
+        (I, New_Char_Array (To_C (Key)), New_Char_Array (To_C (Value)));
+
+      if Res = 0 or else I.all.Image_Exception.Severity /= 0 then
          raise Attribute_Error;
       end if;
    end Set_Image_Text_Attribute;
@@ -105,18 +100,17 @@ package body G2F.Image_Text_Attribute is
 
    function Get_Image_Text_Attribute
      (I    : in Image_Ptr;
-      Key  : in Tag_Attribute)
-      return String
+      Key  : in Tag_Attribute) return String
    is
       use C;
       use Interfaces.C.Strings;
-      Res : Image_Attribute_Ptr := null;
 
       function C_Get_Image_Attribute
-        (I    : in Image_Ptr;
-         Key  : in Interfaces.C.Strings.chars_ptr)
-         return Image_Attribute_Ptr;
+        (I   : in Image_Ptr;
+         Key : in Interfaces.C.Strings.chars_ptr) return Image_Attribute_Ptr;
       pragma Import (C, C_Get_Image_Attribute, "GetImageAttribute");
+
+      Res : Image_Attribute_Ptr := null;
 
    begin
       Res :=
@@ -124,7 +118,6 @@ package body G2F.Image_Text_Attribute is
            (I,
             New_Char_Array (To_C (Tag_Attribute'Image (Key))));
       if Res = null then
-         --raise No_Attribute;
          return "";
       end if;
       return To_Ada (Value (Res.all.Value));
@@ -135,19 +128,18 @@ package body G2F.Image_Text_Attribute is
    ------------------------------
 
    function Get_Image_Text_Attribute
-     (I    : in Image_Ptr;
-      Key  : in String)
-      return String
+     (I   : in Image_Ptr;
+      Key : in String) return String
    is
       use C;
       use Interfaces.C.Strings;
-      Res : Image_Attribute_Ptr := null;
 
       function C_Get_Image_Attribute
-        (I    : in Image_Ptr;
-         Key  : in Interfaces.C.Strings.chars_ptr)
-         return Image_Attribute_Ptr;
+        (I   : in Image_Ptr;
+         Key : in Interfaces.C.Strings.chars_ptr) return Image_Attribute_Ptr;
       pragma Import (C, C_Get_Image_Attribute, "GetImageAttribute");
+
+      Res : Image_Attribute_Ptr := null;
 
    begin
       Res := C_Get_Image_Attribute (I, New_Char_Array (To_C (Key)));
