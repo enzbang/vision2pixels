@@ -19,18 +19,18 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with "aunit";
-with "../shared";
-with "db";
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-project DB_Test is
+with AUnit.Test_Cases;      use AUnit.Test_Cases;
 
-   for Source_Dirs use ("test");
-   for Object_Dir use "test";
-   for Main use ("db_harness");
+package DB_Tests.User is
 
-   package Compiler renames Shared.Compiler;
+   type Test_Case is new AUnit.Test_Cases.Test_Case with null record;
 
-   package Binder renames Shared.Binder;
+   procedure Register_Tests (T : in out Test_Case);
+   --  Register routines to be run
 
-end DB_Test;
+   function Name (T : in Test_Case) return String_Access;
+   --  Returns name identifying the test case
+
+end DB_Tests.User;

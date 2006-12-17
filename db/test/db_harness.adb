@@ -19,50 +19,13 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;
+with AUnit.Test_Runner;
+with DB_Suite;
 
-pragma Warnings (Off);
-with DB.SQLite;
+procedure DB_Harness is
 
-procedure Test_DB1 is
-
-   use Ada;
-
-   H   : DB.SQLite.Handle;
-   I   : DB.SQLite.Iterator;
-   Res : DB.String_Vectors.Vector;
-
-   procedure Print (Position : DB.String_Vectors.Cursor);
-   --  Print an item
-
-   procedure Print (Position : DB.String_Vectors.Cursor) is
-   begin
-      Text_IO.Put (DB.String_Vectors.Element (Position) & " ");
-   end Print;
+   procedure Run is new AUnit.Test_Runner (DB_Suite);
 
 begin
-   DB.SQLite.Connect (H, "../data/testing.db");
-
-   begin
-      DB.SQLite.Execute
-        (H, "insert into user values ('toto', 'pwd', 'toto@here.com')");
-   exception
-      when others =>
-         --  Catch all exceptions, just in case the data have already been
-         --  inserted into the database.
-         null;
-   end;
-
-   DB.SQLite.Prepare_Select (H, I, "select * from user;");
-
-   while DB.SQLite.More (I) loop
-      DB.SQLite.Get_Line (I, Res);
-      DB.String_Vectors.Iterate (Res, Print'Access);
-      DB.String_Vectors.Clear (Res);
-      Text_IO.New_Line;
-   end loop;
-
-   DB.SQLite.End_Select (I);
-
-   DB.SQLite.Close (H);
-end Test_DB1;
+   Run;
+end DB_Harness;
