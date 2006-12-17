@@ -36,8 +36,11 @@ CP=cp -p
 MKDIR=mkdir -p
 RM=rm -f
 
+LOG := ${shell pwd}/log.${shell date +%Y%m%d-%H%M%S}
+
 OPTIONS = INSTALL="$(INSTALL)" EXEXT="$(EXEXT)" MODE="$(MODE)" \
-	CP="$(CP)" MKDIR="$(MKDIR)" RM="$(RM)" MAKE="$(MAKE)"
+	CP="$(CP)" MKDIR="$(MKDIR)" RM="$(RM)" MAKE="$(MAKE)" \
+	LOG="$(LOG)"
 
 # Modules support
 
@@ -59,7 +62,17 @@ all: $(MODULES_SETUP) $(MODULES_BUILD)
 
 setup: $(MODULES_SETUP)
 
-runtests: $(MODULES_RUNTESTS)
+init_tests:
+	-rm -f $(LOG)
+
+check_tests:
+	echo $(LOG)
+	if [ `grep 0 $(LOG) | wc -l` != 6 ]; then \
+		echo "NOk, some tests have failed"; \
+		false; \
+	fi;
+
+runtests: init_tests $(MODULES_RUNTESTS) check_tests
 
 install: $(MODULES_INSTALL)
 

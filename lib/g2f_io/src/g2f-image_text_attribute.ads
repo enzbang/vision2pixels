@@ -1,5 +1,4 @@
---------------------------------------------------
-------------------------------
+------------------------------------------------------------------------------
 --                              G2f_Io                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
@@ -29,13 +28,12 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with G2F; use G2F;
 package G2F.Image_Text_Attribute is
 
    Attribute_Error, No_Attribute : exception;
 
-   type Tag_Attribute is (
-      DocumentName,
+   type Tag_Attribute is
+     (DocumentName,
       ImageDescription,
       Make,
       Model,
@@ -58,29 +56,32 @@ package G2F.Image_Text_Attribute is
       ExposureIndex,
       FileSource,
       SceneType);
-   --
-   --
+
    procedure Set_Image_Text_Attribute
      (I     : in out Image_Ptr;
-      Key   : in Tag_Attribute;
-      Value : in String);
-   --
-   --
+      Key   : in     Tag_Attribute;
+      Value : in     String);
+   --  Searches the list of image attributes and replaces the attribute value.
+   --  If it is not found in the list, the attribute name and value is added to
+   --  the list.
+
    procedure Set_Image_Text_Attribute
      (I          : in out Image_Ptr;
-      Key, Value : in String);
-   --
-   --
+      Key, Value : in     String);
+   --  Searches the list of image attributes and replaces the attribute value.
+   --  If it is not found in the list, the attribute name and value is added to
+   --  the list.
+
    function Get_Image_Text_Attribute
      (I    : in Image_Ptr;
-      Key  : in Tag_Attribute)
-      return String;
-   --
-   --
+      Key  : in Tag_Attribute) return String;
+   --  Searches the list of image attributes and returns a pointer to the
+   --  attribute if it exists otherwise NULL.
+
    function Get_Image_Text_Attribute
      (I    : in Image_Ptr;
-      Key  : in String)
-      return String;
-   --
-   --
+      Key  : in String) return String;
+   --  Searches the list of image attributes and returns a pointer to the
+   --  attribute if it exists otherwise NULL.
+
 end G2F.Image_Text_Attribute;

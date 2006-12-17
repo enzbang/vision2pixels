@@ -23,6 +23,8 @@
 
 # Targets
 
+LOGFILE := ${shell pwd}/test/db_harness.log.${shell date +%Y%m%d-%H%M%S}
+
 all:
 	gnat make -XPRJ_Build=$(MODE) -Pdb_test
 
@@ -32,11 +34,12 @@ setup_tests:
 	(cd data; rm -f testing.db; ./create_database.sh)
 
 run_tests:
-	(cd test; ./db_harness)
-	echo "***** OK - no regression on module DB"
+	(cd test; ./db_harness > $(LOGFILE))
+	grep "Failed Tests" $(LOGFILE) >> $(LOG)
+	grep "Unexpected Errors" $(LOGFILE) >> $(LOG)
 
 runtests: setup_tests run_tests
 
 clean:
 	gnat clean -XPRJ_Build=$(MODE) -Pdb_test
-	-$(RM) test/*.res
+	-$(RM) test/*.res test/db_harness.log.*

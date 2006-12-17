@@ -1,5 +1,4 @@
---------------------------------------------------
-------------------------------
+------------------------------------------------------------------------------
 --                              G2F_IO                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
@@ -35,7 +34,12 @@ with Ada.Strings.Fixed;
 
 package body G2F.IO is
 
-   use Interfaces.C;
+   use Ada;
+   use Interfaces;
+
+   ------------------
+   -- Set_Filename --
+   ------------------
 
    procedure Set_Filename (I : in Image_Info_Ptr; S : in String) is
       use Interfaces.C;
@@ -43,19 +47,29 @@ package body G2F.IO is
       I.all.Filename (1 .. size_t (S'Last + 1))  := To_C (S);
    end Set_Filename;
 
+   ------------------
+   -- Set_Filename --
+   ------------------
+
    procedure Set_Filename (I : in Image_Ptr; S : in String) is
       use Interfaces.C;
    begin
       I.all.Filename (1 .. size_t (S'Last + 1))  := To_C (S);
    end Set_Filename;
 
+   ------------------
+   -- Get_Filename --
+   ------------------
+
    function Get_Filename (I : in Image_Info_Ptr) return String is
-      use Interfaces.C;
-      Res    : String  := To_Ada (I.all.Filename);
+      Res    : String  := C.To_Ada (I.all.Filename);
       Count  : Natural := 0;
       Prefix : Boolean := False;
    begin
-      --return To_Ada(I.all.Filename);
+      if I = null then
+         return "";
+      end if;
+
       for I in  Res'Range loop
          Count := Count + 1;
          if Res (I) = ':' then
@@ -63,35 +77,51 @@ package body G2F.IO is
             exit;
          end if;
       end loop;
+
       if Prefix = True then
-         Ada.Strings.Fixed.Delete (Res, 1, Count);
+         Strings.Fixed.Delete (Res, 1, Count);
       end if;
       return Res;
    end Get_Filename;
 
+   ------------------
+   -- Get_Filename --
+   ------------------
+
    function Get_Filename (I : in Image_Ptr) return String is
       use Interfaces.C;
    begin
+      if I = null then
+         return "";
+      end if;
       return To_Ada (I.all.Filename);
    end Get_Filename;
 
+   ----------------------
+   -- To_Magick_Format --
+   ----------------------
+
    function To_Magick_Format
-     (Format : in Supported_Image_Formats)
-      return   String
+     (Format : in Supported_Image_Formats) return String
    is
-      use Ada.Strings.Fixed;
+      use Strings.Fixed;
       Res_Tmp : String := Supported_Image_Formats'Image (Format);
    begin
-      Ada.Strings.Fixed.Replace_Slice (Res_Tmp, 1, 7, "");
+      Strings.Fixed.Replace_Slice (Res_Tmp, 1, 7, "");
       return Trim (Res_Tmp, Ada.Strings.Right);
    end To_Magick_Format;
+
+   ----------------
+   -- Set_Format --
+   ----------------
 
    procedure Set_Format
      (I      : in Image_Info_Ptr;
       Format : in Supported_Image_Formats)
    is
-      Res    : String  := To_Magick_Format (Format);
-      Name   : String  := To_Ada (I.all.Filename);
+      use C;
+      Res    : constant String  := To_Magick_Format (Format);
+      Name   : constant String  := To_Ada (I.all.Filename);
       Prefix : Boolean := False;
       Suffix : Boolean := False;
    begin
@@ -102,71 +132,107 @@ package body G2F.IO is
             Suffix := True;
          end if;
       end loop;
+
       if Prefix = False and then Suffix = True then
-         I.all.Filename (
-            size_t (Res'First) .. size_t (Res'Last + 1 + Name'Last + 1)) :=
+         I.all.Filename
+            (size_t (Res'First) .. size_t (Res'Last + 1 + Name'Last + 1)) :=
             To_C (Res & ':' & Name);
-         I.all.Magick (size_t (Res'First) .. size_t (Res'Last + 1)) :=
-            To_C (Res);
+         I.all.Magick
+           (size_t (Res'First) .. size_t (Res'Last + 1)) := To_C (Res);
       else
-         I.all.Magick (size_t (Res'First) .. size_t (Res'Last + 1))  :=
-            To_C (Res);
+         I.all.Magick
+           (size_t (Res'First) .. size_t (Res'Last + 1))  := To_C (Res);
       end if;
    end Set_Format;
+
+   ----------------
+   -- Set_Format --
+   ----------------
 
    procedure Set_Format
      (I      : in Image_Ptr;
       Format : in Supported_Image_Formats)
    is
-      Res : String := To_Magick_Format (Format);
+      use C;
+      Res : constant String := To_Magick_Format (Format);
    begin
-      I.all.Magick (size_t (Res'First) .. size_t (Res'Last + 1))  :=
-         To_C (Res);
+      I.all.Magick (size_t (Res'First) .. size_t (Res'Last + 1)) := To_C (Res);
    end Set_Format;
+
+   ----------------
+   -- Get_Format --
+   ----------------
 
    function Get_Format (I : in Image_Ptr) return String is
    begin
-      return To_Ada (I.all.Magick);
+      return C.To_Ada (I.all.Magick);
    end Get_Format;
+
+   ----------------
+   -- Get_Format --
+   ----------------
 
    function Get_Format (I : in Image_Info_Ptr) return String is
    begin
-      return To_Ada (I.all.Magick);
+      return C.To_Ada (I.all.Magick);
    end Get_Format;
+
+   ---------------------
+   -- Set_Compression --
+   ---------------------
 
    procedure Set_Compression
      (I : in Image_Info_Ptr;
-      C : in Compression_Type)
-   is
+      C : in Compression_Type) is
    begin
       I.all.Compression := C;
    end Set_Compression;
+
+   ---------------------
+   -- Set_Compression --
+   ---------------------
 
    procedure Set_Compression (I : in Image_Ptr; C : in Compression_Type) is
    begin
       I.all.Compression := C;
    end Set_Compression;
 
+   ---------------------
+   -- Get_Compression --
+   ---------------------
+
    function Get_Compression (I : in Image_Info_Ptr) return Compression_Type is
    begin
       return I.all.Compression;
    end Get_Compression;
+
+   ---------------------
+   -- Get_Compression --
+   ---------------------
 
    function Get_Compression (I : in Image_Ptr) return Compression_Type is
    begin
       return I.all.Compression;
    end Get_Compression;
 
+   ---------------
+   -- Set_Depth --
+   ---------------
+
    procedure Set_Depth (I : in Image_Info_Ptr; D : in Depth) is
    begin
       I.all.Depth := Interfaces.C.unsigned_long (D);
    end Set_Depth;
 
+   ---------------
+   -- Set_Depth --
+   ---------------
+
    procedure Set_Depth (I : in Image_Ptr; D : in Depth) is
+      use type C.int;
       function C_Set_Image_Depth
-        (Image : Image_Ptr;
-         Depth : C.unsigned_long)
-         return  C.int;
+        (Image : in Image_Ptr;
+         Depth : in C.unsigned_long) return C.int;
       pragma Import (C, C_Set_Image_Depth, "SetImageDepth");
       Res : C.int := 0;
    begin
@@ -175,6 +241,10 @@ package body G2F.IO is
          raise Depth_Error;
       end if;
    end Set_Depth;
+
+   ---------------
+   -- Get_Depth --
+   ---------------
 
    function Get_Depth (I : in Image_Info_Ptr) return Depth is
    begin
@@ -186,17 +256,25 @@ package body G2F.IO is
       return Depth (I.all.Depth);
    end Get_Depth;
 
+   --------------------
+   -- Set_Image_Size --
+   --------------------
+
    procedure Set_Image_Size (I : in Image_Info_Ptr; Im_S : in Image_Size) is
-      Str_X   : String       := Image_Size_T'Image (Im_S.X);
-      Str_Y   : String       := Image_Size_T'Image (Im_S.Y);
-      Str_X_Y : String       :=
-         (Str_X (Str_X'First + 1 .. Str_X'Last) &
-          'x' &
-          Str_Y (Str_Y'First + 1 .. Str_Y'Last));
-      X_Y     : C.char_array := To_C (Str_X_Y);
+      Str_X   : constant String := Image_Size_T'Image (Im_S.X);
+      Str_Y   : constant String := Image_Size_T'Image (Im_S.Y);
+      Str_X_Y : constant String :=
+                  (Str_X (Str_X'First + 1 .. Str_X'Last) &
+                   'x' &
+                   Str_Y (Str_Y'First + 1 .. Str_Y'Last));
+      X_Y     : constant C.char_array := C.To_C (Str_X_Y);
    begin
       I.all.Size := Interfaces.C.Strings.New_Char_Array (X_Y);
    end Set_Image_Size;
+
+   --------------------
+   -- Get_Image_Size --
+   --------------------
 
    function Get_Image_Size (I : in Image_Ptr) return Image_Size is
       Ims : Image_Size;
