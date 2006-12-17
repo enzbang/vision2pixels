@@ -32,8 +32,7 @@ setup_tests:
 	(cd data; rm -f testing.db; ./create_database.sh)
 
 run_tests:
-	-(cd test; ./test_db1 > test_db1.res 2>&1)
-	(cd test; diff -w test_db1.out test_db1.res)
+	(cd test; ./db_harness)
 	echo "***** OK - no regression on module DB"
 
 runtests: setup_tests run_tests

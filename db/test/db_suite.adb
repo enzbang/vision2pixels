@@ -19,18 +19,17 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with "aunit";
-with "../shared";
-with "db";
+with AUnit.Test_Suites;
+with DB_Tests.User;
 
-project DB_Test is
+use AUnit.Test_Suites;
 
-   for Source_Dirs use ("test");
-   for Object_Dir use "test";
-   for Main use ("db_harness");
+pragma Style_Checks (Off);
 
-   package Compiler renames Shared.Compiler;
-
-   package Binder renames Shared.Binder;
-
-end DB_Test;
+function DB_Suite return Access_Test_Suite is
+   Result : Access_Test_Suite := new Test_Suite;
+   pragma Warnings (Off, Result);
+begin
+   Add_Test (Result, new DB_Tests.User.Test_Case);
+   return Result;
+end DB_Suite;

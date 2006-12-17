@@ -19,9 +19,10 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Directories;
+
 with AUnit.Test_Cases.Registration;
 with AUnit.Assertions;
-with Ada.Directories;
 
 with G2F;
 with Image.Data;
@@ -82,7 +83,6 @@ package body Image_Tests.Thumbnails is
    procedure Register_Tests (T : in out Test_Case) is
    begin
       Register_Routine (T, Create_Thumbnail'Access, "Create Thumbnails");
-      null;
    end Register_Tests;
 
    ---------------

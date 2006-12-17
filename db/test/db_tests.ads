@@ -19,18 +19,8 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with "aunit";
-with "../shared";
-with "db";
+package DB_Tests is
 
-project DB_Test is
+   pragma Pure;
 
-   for Source_Dirs use ("test");
-   for Object_Dir use "test";
-   for Main use ("db_harness");
-
-   package Compiler renames Shared.Compiler;
-
-   package Binder renames Shared.Binder;
-
-end DB_Test;
+end DB_Tests;
