@@ -21,6 +21,10 @@
 
 with Settings;
 
+--------------
+-- Defaults --
+--------------
+
 package Defaults is
 
    DB                       : Settings.DB_Kind := Settings.SQLite3;
@@ -37,7 +41,7 @@ package Defaults is
 
    Limit_Image_Size         : constant Boolean := True;
 
-   Image_Maximum_Height     : constant Integer := 8;
+   Image_Maximum_Height     : constant Integer := 800;
 
    Image_Maximum_Width      : constant Integer := 800;
 

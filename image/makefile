@@ -23,17 +23,21 @@
 
 # Targets
 
+LOGFILE := ${shell pwd}/test/image_harness.log.${shell date +%Y%m%d-%H%M%S}
+
 all:
 	gnat make -XPRJ_Build=$(MODE) -Pimage_test
 
 setup install:
 
 run_tests:
-	(cd test; ./image_harness)
-	echo "***** OK - no regression on module IMAGE"
+	(cd test; ./image_harness > $(LOGFILE))
+	grep "Failed Tests" $(LOGFILE) >> $(LOG)
+	grep "Unexpected Errors" $(LOGFILE) >> $(LOG)
 
 runtests: run_tests
 
 clean:
 	gnat clean -XPRJ_Build=$(MODE) -Pimage_test
-	-$(RM) test/*.res
+	-$(RM) test/*.res test/image_harness.log.*
+	-$(RM) -r images

@@ -160,17 +160,18 @@ package body V2P.Database is
       Date               : Templates.Tag;
       Comment            : Templates.Tag;
       Filename           : Templates.Tag;
+
+      Photo_Id : String := "";
    begin
       Connect;
 
-      --  Get image information
+      --  Get thread information
 
       DBH.Prepare_Select
         (Iter,
-         "select post.name, category.name, post.filename, post.comment"
-         & " from post, category "
-         & " where post.id=" & Q (Tid)
-         & " and post.category_id = category.id");
+         "select name, comment,"
+         & " photo_id from post"
+         & " where id=" & Q (Tid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -179,27 +180,45 @@ package body V2P.Database is
            (Set, Templates.Assoc
               (Forum_Entry.Name, DB.String_Vectors.Element (Line, 1)));
 
-         --  Insert the image path
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Forum_Entry.Image_Source_Prefix,
-               V2P.Web_Server.Image_Source_Prefix));
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Forum_Entry.Image_Source, DB.String_Vectors.Element (Line, 3)));
-
          Templates.Insert
            (Set, Templates.Assoc
               (Forum_Entry.Image_Comment,
-               DB.String_Vectors.Element (Line, 4)));
+               DB.String_Vectors.Element (Line, 2)));
+
+         Photo_Id := DB.String_Vectors.Element (Line, 3);
          Line.Clear;
       end if;
 
       Iter.End_Select;
 
-      --  Get image's thread
+      if Photo_Id /= "" then
+
+         --  Get image information
+
+         DBH.Prepare_Select
+           (Iter, "select filename from photo where id = " & Q (Photo_Id));
+
+         if Iter.More then
+            Iter.Get_Line (Line);
+
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Forum_Entry.Image_Source_Prefix,
+                  V2P.Web_Server.Image_Source_Prefix));
+
+            --  Insert the image path
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Forum_Entry.Image_Source,
+                  DB.String_Vectors.Element (Line, 1)));
+
+            Line.Clear;
+         end if;
+
+         Iter.End_Select;
+      end if;
+
+      --  Get threads
 
       DBH.Prepare_Select
         (Iter,
@@ -237,9 +256,6 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc
            (Forum_Entry.Nb_Levels_To_Close, Nb_Levels_To_Close));
---        Templates.Insert
---          (Set, Templates.Assoc (Forum_Entry.File_Attachment, Filename));
-
       return Set;
    end Get_Entry;
 
@@ -502,25 +518,46 @@ package body V2P.Database is
       Width       : in Integer := 0;
       Size        : in Integer := 0)
    is
-      procedure Insert_Table_Post (Name, Filename, Category_Id : in String);
+      Photo_Id : String := "";
+
+      procedure Insert_Table_Photo
+        (Filename : in String;
+         Height   : in Integer;
+         Width    : in Integer;
+         Size     : in Integer);
+      --  Insert row into the photo table
+
+      procedure Insert_Table_Post
+        (Name, Category_Id, Comment, Photo_Id : in String);
       --  Insert row into the post table
 
       procedure Insert_Table_User_Post (Uid, Post_Id : in String);
       --  Insert row into the user_post table
 
+      procedure Insert_Table_Photo
+        (Filename : in String;
+         Height   : in Integer;
+         Width    : in Integer;
+         Size     : in Integer) is
+         SQL : constant String :=
+                 "insert into photo ('filename', 'height', 'width', 'size') "
+                   & "values (" & Q (Filename) & ',' & I (Height) & ','
+                   & I (Width) & ',' & I (Size) & ')';
+      begin
+         DBH.Execute (SQL);
+      end Insert_Table_Photo;
+
       ------------------------
       -- Insert_Table_post --
       ------------------------
 
-      procedure Insert_Table_Post (Name, Filename, Category_Id : in String) is
+      procedure Insert_Table_Post
+        (Name, Category_Id, Comment, Photo_Id : in String) is
          SQL : constant String :=
-                 "insert into post ('name', 'filename', 'comment',"
-                   & "'category_id', 'template_id', 'visit_counter',"
-                   & "'comment_counter','image_width', 'image_height',"
-                   & "'image_size') values (" & Q (Name) & ','
-                   & Q (Filename) & ',' & Q (Comment) & ',' & Category_Id
-                   & ", 1, 0, 0," & I (Width) & ',' & I (Height)
-                   & ',' & I (Size) & ")";
+                 "insert into post ('name', 'comment', 'category_id',"
+                   & "'template_id', 'visit_counter', 'comment_counter',"
+                   & "'photo_id') values (" & Q (Name) &  ',' & Q (Comment)
+                   & ',' & Category_Id & ", 1, 0, 0," & Q (Photo_Id) & ')';
       begin
          DBH.Execute (SQL);
       end Insert_Table_Post;
@@ -539,7 +576,12 @@ package body V2P.Database is
 
    begin
       DBH.Begin_Transaction;
-      Insert_Table_Post (Name, Filename, Category_Id);
+      if Filename /= "" then
+         Insert_Table_Photo (Filename, Height, Width, Size);
+         Photo_Id := DBH.Last_Insert_Rowid;
+      end if;
+
+      Insert_Table_Post (Name, Category_Id, Comment, Photo_Id);
       Insert_Table_User_Post (Uid, DBH.Last_Insert_Rowid);
       DBH.Commit;
    exception
@@ -583,7 +625,7 @@ package body V2P.Database is
       J : Positive := S'First;
    begin
       if Str = "" then
-         return "null";
+         return "NULL";
       end if;
 
       S (J) := ''';

@@ -1,5 +1,4 @@
---------------------------------------------------------------
-------------------
+------------------------------------------------------------------------------
 --                              G2F_IO                                      --
 --                                                                          --
 --                         Copyright (C) 2004                               --
@@ -31,8 +30,8 @@
 
 package G2F.IO is
 
-   type Supported_Image_Formats is (
-      Magick_8BIM,
+   type Supported_Image_Formats is
+     (Magick_8BIM,
       Magick_8BIMTEXT,
       Magick_8BIMWTEXT,
       Magick_APP1,
@@ -193,42 +192,71 @@ package G2F.IO is
       X, Y : Image_Size_T;
    end record;
 
-   type Depth is new Positive range 1 .. 32; -- ImageMagick support 8/16/32
-                                             --bit depth.
+   type Depth is new Positive range 1 .. 32;
+   -- ImageMagick support 8/16/32 bit depth
 
    procedure Set_Filename (I : in Image_Info_Ptr; S : in String);
+   --  Set image filename
+
    procedure Set_Filename (I : in Image_Ptr; S : in String);
+   --  Set image filename
 
    function Get_Filename (I : in Image_Info_Ptr) return String;
+   --  Get image filename
+
    function Get_Filename (I : in Image_Ptr) return String;
+   --  Get image filename
 
    procedure Set_Format
      (I      : in Image_Info_Ptr;
       Format : in Supported_Image_Formats);
+   --  Set image format
+
    procedure Set_Format
      (I      : in Image_Ptr;
       Format : in Supported_Image_Formats);
+   --  Set image format
 
    function Get_Format (I : in Image_Ptr) return String;
+   --  Get image format
+
    function Get_Format (I : in Image_Info_Ptr) return String;
+   --  Get image format
 
    procedure Set_Compression
      (I : in Image_Info_Ptr;
-      C : in Compression_Type); --compression_type is in ada_magick.ads
+      C : in Compression_Type);
+   --  Set image compression
+
    procedure Set_Compression (I : in Image_Ptr; C : in Compression_Type);
+   --  Set image compression
 
    function Get_Compression (I : in Image_Info_Ptr) return Compression_Type;
+   --  Get image compression
+
    function Get_Compression (I : in Image_Ptr) return Compression_Type;
+   --  Get image compression
 
    procedure Set_Depth (I : in Image_Info_Ptr; D : in Depth);
    procedure Set_Depth (I : in Image_Ptr; D : in Depth);
+   --  translates the pixel quantums across all of the channels so that if they
+   --  are later divided to fit within the specified bit depth, that no
+   --  additional information is lost ( i.e. no remainder will result from the
+   --  division ) . Note that any subsequent image processing is likely to
+   --  increase the effective depth of the image channels. A non-zero value is
+   --  returned if the operation is successful. Check the exception member of
+   --  image to determine the cause for any failure.
 
    function Get_Depth (I : in Image_Info_Ptr) return Depth;
+   --  Get image depth
+
    function Get_Depth (I : in Image_Ptr) return Depth;
+   --  Get image depth
 
    procedure Set_Image_Size (I : in Image_Info_Ptr; Im_S : in Image_Size);
-   -- usefull when reading raw format
+   --  Set image size (usefull when reading raw format)
 
    function Get_Image_Size (I : in Image_Ptr) return Image_Size;
+   --  Get iamge size
 
 end G2f.IO;

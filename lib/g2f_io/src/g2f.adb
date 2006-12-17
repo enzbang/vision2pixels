@@ -28,21 +28,32 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with System.Address_To_Access_Conversions;
 with Ada.Unchecked_Deallocation;
 with Ada.Text_IO;
 with Interfaces.C.Strings;                 use Interfaces.C.Strings;
+with System.Address_To_Access_Conversions;
 
 package body G2F is
+
+   use Ada;
+   use System;
+
+   -----------------------
+   -- Initialize_Magick --
+   -----------------------
 
    procedure Initialize_Magick is
       procedure InitializeMagick
         (Path : in Interfaces.C.Strings.chars_ptr :=
-        Interfaces.C.Strings.Null_Ptr);
+           Interfaces.C.Strings.Null_Ptr);
       pragma Import (C, InitializeMagick, "InitializeMagick");
    begin
       InitializeMagick;
    end Initialize_Magick;
+
+   ------------------------
+   -- Get_Exception_Info --
+   ------------------------
 
    function Get_Exception_Info
      (G_E_I : in Exception_Info)
@@ -50,10 +61,10 @@ package body G2F is
    is
       procedure C_Get_Exception_Info (E : in System.Address);
       pragma Import (C, C_Get_Exception_Info, "GetExceptionInfo");
-      Ex_Info_Ptr : Exception_Info_Ptr := null;
-      package Info_Ptrs is new System.Address_To_Access_Conversions (
-         Exception_Info);
+      package Info_Ptrs is
+        new Address_To_Access_Conversions (Exception_Info);
       use Info_Ptrs;
+      Ex_Info_Ptr : Exception_Info_Ptr := null;
    begin
       C_Get_Exception_Info (G_E_I'Address);
       if Info_Ptrs.To_Pointer (G_E_I'Address) = null then
@@ -63,61 +74,54 @@ package body G2F is
       return Ex_Info_Ptr;
    end Get_Exception_Info;
 
+   --------------------
+   -- Destroy_Magick --
+   --------------------
+
    procedure Destroy_Magick is
       procedure C_Destroy_Magick;
       pragma Import (C, C_Destroy_Magick, "DestroyMagick");
-      procedure Ada_Free is new Ada.Unchecked_Deallocation (
-         Exception_Info,
-         Exception_Info_Ptr);
+      procedure Unchecked_Free is
+        new Unchecked_Deallocation (Exception_Info, Exception_Info_Ptr);
    begin
       C_Destroy_Magick;
-      Ada_Free (Ex_Info_Ptr);
+      Unchecked_Free (Ex_Info_Ptr);
    end Destroy_Magick;
 
+   ----------
+   -- Free --
+   ----------
+
    procedure Free (I : in out Image_Info_Ptr) is
-      procedure Ada_Free is new Ada.Unchecked_Deallocation (
-         Image_Info,
-         Image_Info_Ptr);
+      procedure Unchecked_Free is
+        new Unchecked_Deallocation (Image_Info, Image_Info_Ptr);
    begin
-      Ada_Free (I);
+      Unchecked_Free (I);
    end Free;
+
+   ----------
+   -- Free --
+   ----------
 
    procedure Free (I : in out Image_Ptr) is
-      procedure Ada_Free is new Ada.Unchecked_Deallocation (
-         Image,
-         Image_Ptr);
+      procedure Unchecked_Free is
+        new Unchecked_Deallocation (Image, Image_Ptr);
    begin
-      Ada_Free (I);
+      Unchecked_Free (I);
    end Free;
-
-   function Is_Null (I : in Image_Ptr) return Boolean is
-   begin
-      return I = null;
-   end Is_Null;
-
-   function Is_Null (I : in Image_Info_Ptr) return Boolean is
-   begin
-      return I = null;
-   end Is_Null;
 
    procedure Put_Magick_Exception is
       procedure C_Catch_Exception (E : in Exception_Info_Ptr);
       pragma Import (C, C_Catch_Exception, "CatchException");
+      --  returns if no exceptions is found otherwise it reports the exception
+      --  as a warning, error, or fatal depending on the severity.
    begin
       C_Catch_Exception (Ex_Info_Ptr);
-      -- Ada.Text_Io.New_Line;
-      -- Ada.Text_Io.Put_Line("Magick_Exception : ");
-      -- Ada.Text_Io.Put("Reason => " &
-      --Interfaces.C.Strings.Value(Ex_Info_Ptr.all.Reason));
-      -- Ada.Text_Io.Put_Line(" " &
-      --Interfaces.C.Strings.Value(Ex_Info_Ptr.all.Description));
-      -- Ada.Text_Io.Put_Line("Error Number =>" &
-      --C.Int'Image(Ex_Info_Ptr.all.Error_Number));
-      ---- Ada.Text_Io.Put_Line("Severity => " &
-      --Exception_Type'Image(Ex_Info_Ptr.all.Severity));
-      -- Ada.Text_Io.Put_Line("Severity => " &
-      --C.Int'Image(Ex_Info_Ptr.all.Severity));
    end Put_Magick_Exception;
+
+   -------------------------
+   -- Put_Image_Exception --
+   -------------------------
 
    procedure Put_Image_Exception (I : in Image_Ptr) is
    begin
@@ -135,10 +139,9 @@ package body G2F is
             C.int'Image (I.all.Image_Exception.Error_Number));
          Ada.Text_IO.Put_Line
            ("Severity => " & C.int'Image (I.all.Image_Exception.Severity));
-         --Ada.Text_Io.Put_Line("Severity => " &
-         --Exception_Type'Image(Ex_Info_Ptr.all.Severity));
       end if;
    end Put_Image_Exception;
+
 begin
    Initialize_Magick;
    Ex_Info_Ptr := Get_Exception_Info (Ex_Info);

@@ -18,12 +18,12 @@ insert into category values (3, 2, 'MatCat2');
 
 insert into template values (1, 'mytemplate', 'V2P Template');
 
---  Create photos
+--  Create post
 
 insert into post
-   ('name', 'filename', 'category_id',
+   ('name', 'category_id',
     'template_id', 'visit_counter', 'comment_counter')
-  values ('une première photo', 'toto.jpg', 1, 1, 0, 0);
+  values ('une première photo', 1, 1, 0, 0);
 
 insert into user_post values ('enzbang', 1);
 

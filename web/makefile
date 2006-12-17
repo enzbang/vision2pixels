@@ -23,7 +23,9 @@
 
 # Web setup
 
-INSTALL_TESTS = $(PWD)/web/v2p-testdir
+INSTALL_TESTS := $(PWD)/web/v2p-testdir
+
+LOGFILE := $(INSTALL_TESTS)/web_harness.log.${shell date +%Y%m%d-%H%M%S}
 
 all:
 	gnat make -XPRJ_Build=$(MODE) -Pweb
@@ -75,7 +77,8 @@ install_tests:
 	$(CP) test/bin/web_harness $(INSTALL_TESTS)/bin
 
 run_tests:
-	(cd $(INSTALL_TESTS); bin/web_harness)
-	echo "***** OK - no regression on module WEB"
+	(cd $(INSTALL_TESTS); bin/web_harness > $(LOGFILE))
+	grep "Failed Tests" $(LOGFILE) >> $(LOG)
+	grep "Unexpected Errors" $(LOGFILE) >> $(LOG)
 
 runtests: setup_tests install_tests run_tests
