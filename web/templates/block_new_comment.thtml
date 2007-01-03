@@ -12,7 +12,7 @@
   </p></div>
   @@-- Is user in a specific forum
   <p>
-  @@IF@@ @_EXIST:Current_FID_@
+  @@IF@@ @_EXIST:Current_TID_@
     @_FORUM_NAME_@
     <input name="FORUM" id="sel_forum_list"
      type="hidden" value="@_Current_FID_@"/>

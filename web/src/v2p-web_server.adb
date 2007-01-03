@@ -200,6 +200,14 @@ package body V2P.Web_Server is
                     Database.Get_Forum (Session.Get (SID, "FID"))));
             end if;
 
+            if Session.Get (SID, "TID") /= "" then
+               Templates.Insert
+                 (Local_Translations,
+                  Templates.Assoc
+                    (Template_Defs.Block_New_Comment.Current_Tid,
+                     String'(Session.Get (SID, "TID"))));
+            end if;
+
             Templates.Insert
               (Translations,
                Templates.Assoc (Template_Defs.Lazy.New_Comment,
