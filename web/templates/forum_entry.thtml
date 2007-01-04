@@ -2,25 +2,8 @@
 @@-- HTTP_GET(TID): thread forum Id
 @@-- HTTP_URL(/forum/entry): Forum Entry URL
 @@--
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-  <head>
-    <title>@_NAME_@</title>
-    @@INCLUDE@@ import_css.thtml
-    @@INCLUDE@@ ../we_js/aws.tjs
-  </head>
-
-  <body>
-    <div id="global">
-      <div id="login">@_LAZY_LOGIN_@</div>
-      <div id=title><h1><a href="/">@_BABEL_V2P_WEBSITE_NAME_@</a></h1></div>
-      <div id="status_bar"></div>
-
-      <div id="forumlistbar">@_LAZY_FORUM_LIST_@</div>
-
+@@INCLUDE@@ v2p_top.thtml @_NAME_@ with_forum_list no_forum_post
+@@--
       <h2>@_NAME_@</h2>
 
       @@IF@@ @_IMAGE_SOURCE_@ /= ""
@@ -34,9 +17,8 @@
       @@TABLE@@
       <div class="level_@_COMMENT_LEVEL_@">
         <h3 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h3>
-        <p class="comment_whois">Posté par
-        <a href="@_USER_PAGE_@" >@_USER_@</a>
-        le @_DATE_@.
+        <p class="comment_whois">@_BABEL_ON_DATE_@ @_DATE_@,
+        <a href="@_USER_PAGE_@" >@_USER_@</a> @_BABEL_HAS_WRITTEN_@
         </p>
         <p>@_COMMENT_@</p>
 
@@ -46,8 +28,5 @@
       @@END_TABLE@@
 
       <div id="new_comment">@_LAZY_NEW_COMMENT_@</div>
-
-      @@INCLUDE@@ footer.html
-    </div>
-  </body>
-</html>
+@@--
+@@INCLUDE@@ v2p_end.thtml

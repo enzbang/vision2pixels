@@ -1,0 +1,10 @@
+<ul class="slides">
+@@TABLE@@
+<li><div>
+    <p><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">@_NAME_@</a></p>
+    <p>@_CATEGORY_@</p>
+    <p>@_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@</p>
+    </div>
+</li>
+@@END_TABLE@@
+</ul>

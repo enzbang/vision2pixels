@@ -31,7 +31,9 @@ package V2P.Database is
    function Get_Forum (Fid : in String) return String;
    --  Returns the DB line for the given forum
 
-   function Get_Threads (Fid : in String) return Templates.Translate_Set;
+   function Get_Threads
+     (Fid : in String := ""; User : in String := "")
+      return Templates.Translate_Set;
    --  Returns all threads for a given forum
 
    function Get_Categories (Fid : in String) return Templates.Translate_Set;

@@ -13,7 +13,7 @@
   @@-- Is user in a specific forum
   <p>
   @@IF@@ @_EXIST:Current_TID_@
-    @_FORUM_NAME_@
+    @_FORUM_NAME_@ @_Current_TID_@ @_Current_FID_@
     <input name="FORUM" id="sel_forum_list"
      type="hidden" value="@_Current_FID_@"/>
     <input name="CATEGORY" id="sel_category"

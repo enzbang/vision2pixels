@@ -2,45 +2,11 @@
 @@-- HTTP_GET(FID): forum Id
 @@-- HTTP_URL(/forum/threads): Forum Threads URL
 @@--
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-  <head>
-    <title>@_BABEL_THREAD_LIST_@</title>
-    @@INCLUDE@@ import_css.thtml
-    @@INCLUDE@@ ../we_js/aws.tjs
-  </head>
-
-  <body>
-    <div id="global">
-      <div id="login">@_LAZY_LOGIN_@</div>
-      <div id=title><h1><a href="/">@_BABEL_V2P_WEBSITE_NAME_@</a></h1></div>
-      <div id="status_bar"></div>
-
-      <div id="forumlistbar">@_LAZY_FORUM_LIST_@</div>
-
-      <table id="thread_list_table"
-             summary="This table contains all photos for the given forum">
-        <caption>@_BABEL_THREAD_LIST_@</caption>
-        <tr>
-          <th>name</th>
-          <th>category</th>
-          <th>comment counter</th>
-          <th>visit_counter</th>
-        </tr>
-        @@TABLE@@
-        <tr>
-          <td><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">@_NAME_@</a></td>
-          <td class="entry_category">@_CATEGORY_@</td>
-          <td class="entry_comment_counter">@_COMMENT_COUNTER_@</td>
-          <td class="entry_visit_counter">@_VISIT_COUNTER_@</td>
-        </tr>
-        @@END_TABLE@@
-      </table>
-
-      @@INCLUDE@@ footer.html
-    </div>
-  </body>
-</html>
+@@INCLUDE@@ v2p_top.thtml @_BABEL_THREAD_LIST_@ with_forum_list
+@@--
+@@--
+@_LAZY_FORUM_THREADS_@
+<div id="login">@_LAZY_LOGIN_@</div>
+@@--
+@@--
+@@INCLUDE@@ v2p_end.thtml

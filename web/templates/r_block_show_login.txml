@@ -1,0 +1,8 @@
+@@INCLUDE@@ babel.thtml
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+        <apply_style id="login">
+           <attribute id="display" value="block" />
+        </apply_style>
+</response>

@@ -2,39 +2,30 @@
 @@--
 @@-- HTTP_URL(/): Website root
 @@--
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+@@INCLUDE@@ v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ main
 
-  <head>
-    <title>@_BABEL_V2P_WEBSITE_NAME_@</title>
-    @@INCLUDE@@ import_css.thtml
-    @@INCLUDE@@ ../we_js/aws.tjs
-  </head>
+<div id="end_main_page">
+  @@--  Add your content here following the example
+  <div class="module">
+    <h2></h2>
+    <div id="login">@_LAZY_LOGIN_@</div>
+  </div>
+  <div class="module">
+    <h2>This is a demo site !</h2>
+    <p>Made with
+      <a href="https://savannah.nongnu.org/projects/v2p"
+         title="Vision2Pixels">v2p</a></p>
+    <address>Written by <a href="mailto:pascal@obry.net">Pascal Obry</a> and <a href="mailto:v2p@ramonat.fr">Olivier Ramonat</a></address>
+  </div>
+</div>
 
-  <body>
-    <div id="global">
-      <div id="login">@_LAZY_LOGIN_@</div>
-      <div id=title><h1><a href="/">@_BABEL_V2P_WEBSITE_NAME_@</a></h1></div>
-      <div id="status_bar"></div>
 
-      <div id="forum_post">
-        <a href="@_FORUM_POST_URL_@">@_BABEL_FORUM_POST_@</a>
-      </div>
-
-      <div id="forumlistbar">@_LAZY_FORUM_LIST_@</div>
-
-      @@IF@@ @_V2P_ERROR_@ /= ""
-        @@IF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_IMAGE_DIMENSION_@
-        @_BABEL_WARN_EXCEED_MAX_DIMENSION_@
-        @@ELSIF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_SIZE_@
-        @_BABEL_WARN_EXCEED_MAX_SIZE_@
-        @@END_IF@@
-      @_V2P_ERROR_@
-      @@END_IF@@
-
-      @@INCLUDE@@ footer.html
-    </div>
-  </body>
-</html>
+@@IF@@ @_V2P_ERROR_@ /= ""
+@@IF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_IMAGE_DIMENSION_@
+@_BABEL_WARN_EXCEED_MAX_DIMENSION_@
+@@ELSIF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_SIZE_@
+@_BABEL_WARN_EXCEED_MAX_SIZE_@
+@@END_IF@@
+@_V2P_ERROR_@
+@@END_IF@@
+@@INCLUDE@@ v2p_end.thtml

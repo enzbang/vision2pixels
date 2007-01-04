@@ -36,12 +36,17 @@ with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Forum_Threads;
 with V2P.Template_Defs.Forum_Post;
 with V2P.Template_Defs.Main_Page;
+with V2P.Template_Defs.User;
+with V2P.Template_Defs.V2p_Top;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_Forum_List;
+with V2P.Template_Defs.Block_Forum_Threads;
+with V2P.Template_Defs.Block_User_Password_Change;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Forum_List;
+with V2P.Template_Defs.R_Block_Show_Login;
 
 with Image.Data;
 
@@ -56,6 +61,11 @@ package body V2P.Web_Server is
    HTTP            : Server.HTTP;
    Configuration   : Config.Object;
    Main_Dispatcher : Services.Dispatchers.URI.Handler;
+
+   function Default_Xml_Callback
+     (Request : in Status.Data) return Response.Data;
+   --  Default callback for xml action
+
 
    function Forum_Entry_Callback
      (Request : in Status.Data) return Response.Data;
@@ -74,6 +84,13 @@ package body V2P.Web_Server is
 
    function Logout_Callback (Request : in Status.Data) return Response.Data;
    --  Logout callback
+
+   function User_Callback (Request : in Status.Data) return Response.Data;
+   --  User (homepage) callback
+
+   function User_Password_Change_Callback
+     (Request : in Status.Data) return Response.Data;
+   --  User password change callback
 
    function WEJS_Callback (Request : in Status.Data) return Response.Data;
    --  Web Element JavaScript callback
@@ -120,6 +137,31 @@ package body V2P.Web_Server is
         (MIME.Content_Type (File),
          String'(Templates.Parse (File, Translations)));
    end CSS_Callback;
+
+   --------------------------
+   -- Default_Xml_Callback --
+   --------------------------
+
+   function Default_Xml_Callback
+     (Request : in Status.Data) return Response.Data
+   is
+      function Xml_Associated_File (URI : in String) return String;
+      --  Returns the xml file name associated with this URI
+
+      function Xml_Associated_File (URI : in String) return String is
+      begin
+         if URI = Template_Defs.V2p_Top.Ajax.Onclick_Show_Login then
+            return V2P.Template_Defs.R_Block_Show_Login.Template;
+         end if;
+         return ""; -- ??
+      end Xml_Associated_File;
+
+
+      URI  : constant String := Status.URI (Request);
+      File : constant String := Xml_Associated_File (URI);
+   begin
+      return Response.File (MIME.Text_XML, File);
+   end Default_Xml_Callback;
 
    -----------------
    -- Final_Parse --
@@ -192,15 +234,45 @@ package body V2P.Web_Server is
                    (Template_Defs.Block_Forum_List.Template,
                       Local_Translations))));
 
-         elsif Var_Name = Template_Defs.Lazy.New_Comment then
+         elsif Var_Name = Template_Defs.Lazy.User_Thread_List then
+            if Session.Get (SID, "LOGIN") /= "" then
+               Templates.Insert (Local_Translations,
+                                 Database.Get_Threads
+                                   (User => Session.Get (SID, "LOGIN")));
+
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc (Template_Defs.Lazy.Forum_Threads,
+                    String'(Templates.Parse
+                      (Template_Defs.Block_Forum_Threads.Template,
+                         Local_Translations))));
+            end if;
+         elsif Var_Name = Template_Defs.Lazy.Forum_Threads then
             if Session.Get (SID, "FID") /= "" then
+               Templates.Insert (Local_Translations,
+                                 Database.Get_Threads
+                                   (Fid => Session.Get (SID, "FID")));
+
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc (Template_Defs.Lazy.Forum_Threads,
+                    String'(Templates.Parse
+                      (Template_Defs.Block_Forum_Threads.Template,
+                         Local_Translations))));
+            end if;
+         elsif Var_Name = Template_Defs.Lazy.New_Comment then
+            if Session.Exist (SID, "FID") then
                Templates.Insert
                  (Local_Translations,
                   Templates.Assoc (Template_Defs.Block_New_Comment.Forum_Name,
                     Database.Get_Forum (Session.Get (SID, "FID"))));
+
+               Templates.Insert
+                 (Local_Translations,
+                  Database.Get_Categories (Session.Get (SID, "FID")));
             end if;
 
-            if Session.Get (SID, "TID") /= "" then
+            if Session.Exist (SID, "TID") then
                Templates.Insert
                  (Local_Translations,
                   Templates.Assoc
@@ -316,6 +388,9 @@ package body V2P.Web_Server is
    begin
       --  Set forum Id into the session
       Session.Set (SID, "FID", FID);
+      if Session.Exist (SID, "TID") then
+         Session.Remove (SID, "TID");
+      end if;
       return Final_Parse
         (Request,
          Template_Defs.Forum_Threads.Template,
@@ -520,6 +595,11 @@ package body V2P.Web_Server is
    begin
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
+         Template_Defs.V2p_Top.Ajax.Onclick_Show_Login,
+         Action => Dispatchers.Callback.Create (Default_Xml_Callback'Access));
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
          Template_Defs.Block_Login.Ajax.Onclick_Login_Form_Enter,
          Action => Dispatchers.Callback.Create (Login_Callback'Access));
 
@@ -533,6 +613,13 @@ package body V2P.Web_Server is
          Template_Defs.Block_New_Comment.Ajax.Onchange_Sel_Forum_List,
          Action => Dispatchers.Callback.Create
            (Onchange_Forum_List_Callback'Access));
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         Template_Defs.Block_User_Password_Change.
+           Ajax.Onclick_User_Password_Change_Enter,
+         Action => Dispatchers.Callback.Create
+           (User_Password_Change_Callback'Access));
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
@@ -554,6 +641,12 @@ package body V2P.Web_Server is
          Template_Defs.Forum_Threads.URL,
          Action => Dispatchers.Callback.Create
            (Forum_Threads_Callback'Access));
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         Template_Defs.User.URL,
+         Action => Dispatchers.Callback.Create
+           (User_Callback'Access));
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
@@ -603,6 +696,37 @@ package body V2P.Web_Server is
    begin
       Server.Shutdown (HTTP);
    end Stop;
+
+
+   function User_Callback (Request : in Status.Data) return Response.Data is
+      SID          : constant Session.Id := Status.Session (Request);
+      Translations : Templates.Translate_Set;
+   begin
+      --  User page, remove the current session status
+      if Session.Exist (SID, "TID") then
+         Session.Remove (SID, "TID");
+      end if;
+      if Session.Exist (SID, "FID") then
+         Session.Remove (SID, "FID");
+      end if;
+
+--        if Session.Exist (SID, "LOGIN") then
+--           Translations := Database.Get_Threads
+--             (User => Session.Get (SID, "LOGIN"));
+--        end if;
+
+      return Final_Parse
+        (Request,
+         Template_Defs.User.Template,
+         Translations);
+   end User_Callback;
+
+   function User_Password_Change_Callback
+     (Request : in Status.Data) return Response.Data is
+   begin
+      pragma Unreferenced (Request);
+      return Response.Build (MIME.Text_XML, "");
+   end User_Password_Change_Callback;
 
    ----------
    -- Wait --
