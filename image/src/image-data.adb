@@ -23,6 +23,7 @@ with Ada.Text_IO;
 with Ada.Directories;
 
 with G2F.Image_IO;
+with G2F.IO;
 with Image.Magick;
 with Settings;
 
@@ -83,6 +84,9 @@ package body Image.Data is
                        & "/" & Category & "/" & Simple_Name (Filename);
       Thumb      : Image_Ptr;
       Thumb_Info : Image_Info_Ptr;
+      Thumb_Size : constant G2F.IO.Image_Size :=
+                     (Image_Size_T (Settings.Thumbnail_Maximum_Width),
+                      Image_Size_T (Settings.Thumbnail_Maximum_Height));
    begin
       if not Exists (Containing_Directory (Thumb_Name)) then
          Create_Path (Containing_Directory (Thumb_Name));
@@ -130,7 +134,7 @@ package body Image.Data is
       Thumb_Info := Clone_Image_Info (Img.Info_Ptr);
       Thumb := Read_Image (Thumb_Info);
       Set_Filename (Thumb, Thumb_Name);
-      Thumb := Magick.Thumbnail (Thumb, Thumbnail_Size);
+      Thumb := Magick.Thumbnail (Thumb, Thumb_Size);
       Write_Image (Thumb_Info, Thumb);
 
       Destroy_Image (Thumb);

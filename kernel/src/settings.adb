@@ -40,7 +40,7 @@ package body Settings is
      (DB, DB_Name, Images_Path, Thumbs_Path,
       Anonymous_Visit_Counter, Ignore_Author_Click,
       Limit_Image_Size, Image_Maximum_Width, Image_Maximum_Height,
-      Image_Maximum_Size);
+      Image_Maximum_Size, Thumbnail_Maximum_Width, Thumbnail_Maximum_Height);
 
    package Conf is new Config (Attributes);
 
@@ -136,6 +136,24 @@ package body Settings is
       return Conf.Get_Value (Limit_Image_Size);
    end Limit_Image_Size;
 
+   ------------------------------
+   -- Thumbnail_Maximum_Height --
+   ------------------------------
+
+   function Thumbnail_Maximum_Height return Integer is
+   begin
+      return Conf.Get_Value (Thumbnail_Maximum_Height);
+   end Thumbnail_Maximum_Height;
+
+   -----------------------------
+   -- Thumbnail_Maximum_Width --
+   -----------------------------
+
+   function Thumbnail_Maximum_Width return Integer is
+   begin
+      return Conf.Get_Value (Thumbnail_Maximum_Width);
+   end Thumbnail_Maximum_Width;
+
 begin
    --  Set default values
 
@@ -149,6 +167,9 @@ begin
    Conf.Set_Value (Image_Maximum_Height, Defaults.Image_Maximum_Height);
    Conf.Set_Value (Image_Maximum_Width, Defaults.Image_Maximum_Width);
    Conf.Set_Value (Image_Maximum_Size, Defaults.Image_Maximum_Size);
+   Conf.Set_Value (Thumbnail_Maximum_Width, Defaults.Thumbnail_Maximum_Width);
+   Conf.Set_Value (Thumbnail_Maximum_Height,
+                   Defaults.Thumbnail_Maximum_Height);
 
    --  Now read the config file if any
 

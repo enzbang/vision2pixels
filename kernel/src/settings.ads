@@ -54,4 +54,10 @@ package Settings is
    function Image_Maximum_Size return Integer;
    --  Limit, in bytes, of an uploaded image size
 
+   function Thumbnail_Maximum_Width return Integer;
+   --  Maximum width dimension of a thumbnail image
+
+   function Thumbnail_Maximum_Height return Integer;
+   --  Maximum height dimension of a thumbnail image
+
 end Settings;

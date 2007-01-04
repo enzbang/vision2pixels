@@ -19,10 +19,10 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with G2F;
+
 with Ada.Finalization;
 with Ada.Strings.Unbounded;
-
-with G2F.IO;
 
 package Image.Data is
 
@@ -38,8 +38,6 @@ package Image.Data is
      (Exceed_Max_Image_Dimension,
       Exceed_Max_Size,
       Image_Created);
-
-   Thumbnail_Size : constant G2F.IO.Image_Size := (150, 150);
 
    procedure Init
       (Img      : in out Image_Data;
