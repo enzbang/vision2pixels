@@ -1,62 +1,81 @@
-html, body {
-    height: 100%;
+body {
+  margin:0;
+  padding:0;
+}
+
+h1 {
+  margin:0 0 3px;
+  padding:0 0 .35em;
+}
+
+#content {
+    position:relative;
     margin: 0;
-    padding: 0px;
+    padding:0px 15px 0;
+    width:720px;
+    margin-left:auto;
+    margin-right:auto;
 }
 
-div#global {
-    min-height: 100%;
-    width: 100%;
-    position: absolute;
+.main .forums {
+    background-color: #f7f7f7;
+    width:720px;
+    float: left;
+    margin:0 0 15px;
+    padding:1px 0;
+    text-align:center;
+    border: 1px solid white;
 }
 
-div#status_bar {
+#end_main_page {
+    float:left;
+    width:705px;
+    padding:10px 0 0 15px;
+    margin:0;
+}
+
+.module {
+    float:left;
+    width:320px;
+    margin:0 17px 0 0;
+    padding:0 4px;
+    text-align:left;
+}
+
+.module p, .module address {
+    font-size:85%;
+    line-height:1.6em;
+}
+
+@@-- Do not display forum post if body class is no_forum_post
+body.no_forum_post #forum_post {
     display: none;
 }
 
-#title h1 {
-    position : absolute;
-    width : 70%;
-    margin: 0;
-    padding: 0;
-    padding-left: 1em;
-}
+/\* div#status_bar { \*/
+/\*     display: none; \*/
+/\* } \*/
 
-div#login {
-    margin-left: 70%;
-    width: 27%;
-    float: right;
-}
+/\* div#login { \*/
+/\*     margin-left: 50%; \*/
+/\*     width: 47%; \*/
+/\*     float: right; \*/
+/\* } \*/
 
-/* Forum List */
-
-div#forumlistbar
-{
-    clear: right;
-    margin: 0;
-    margin-top : 4em;
-    padding: 0 0 6px 10px;
-    height : 1.1em;
-    border-bottom: 1px solid #000;
-}
-
-#forumlistbar ul, li {
-    margin: 0;
-    padding: 0;
-    display: inline;
-}
+/\* /* Forum List */ \*/
 
 
-div#main_image {
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-    margin-top : 4em;
-    margin-bottom: 4em;
-}
 
-#footer {
-    position: absolute;
-    width: 100%;
-    bottom: 10px;
-}
+/\* div#main_image { \*/
+/\*     margin-left: auto; \*/
+/\*     margin-right: auto; \*/
+/\*     text-align: center; \*/
+/\*     margin-top : 4em; \*/
+/\*     margin-bottom: 4em; \*/
+/\* } \*/
+
+/\* #footer { \*/
+/\*     position: absolute; \*/
+/\*     width: 100%; \*/
+/\*     bottom: 10px; \*/
+/\* } \*/

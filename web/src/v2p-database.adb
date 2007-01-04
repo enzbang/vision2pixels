@@ -28,7 +28,7 @@ with Settings;
 with V2P.Web_Server;
 with V2P.DB_Handle;
 with V2P.Template_Defs.Forum_Entry;
-with V2P.Template_Defs.Forum_Threads;
+with V2P.Template_Defs.Block_Forum_Threads;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
@@ -357,7 +357,9 @@ package body V2P.Database is
    -- Get_Threads --
    -----------------
 
-   function Get_Threads (Fid : in String) return Templates.Translate_Set is
+   function Get_Threads
+     (Fid  : in String := ""; User : in String := "")
+      return Templates.Translate_Set is
       use type Templates.Tag;
 
       Set             : Templates.Translate_Set;
@@ -368,16 +370,34 @@ package body V2P.Database is
       Category        : Templates.Tag;
       Comment_Counter : Templates.Tag;
       Visit_Counter   : Templates.Tag;
+
+      SQL_Select : constant String := "select post.id, post.name, "
+        & "category.name, comment_counter, visit_counter ";
+      SQL_From   : constant String := " from post, category ";
+      SQL_Where  : constant String := " where post.category_id = category.Id ";
    begin
       Connect;
 
-      DBH.Prepare_Select
-        (Iter,
-         "select post.id, post.name, category.name, "
-         & "comment_counter, visit_counter"
-         & " from post, category"
-         & " where post.category_id = category.id"
-         & " and category.forum_id = " & Q (Fid));
+      if User /= "" and Fid /= "" then
+         DBH.Prepare_Select (Iter,
+                             SQL_Select & SQL_From & ", user_post" & SQL_Where
+                             & "and category.forum_id = " & Q (Fid)
+                             & "and user_post.post_id = post.id"
+                             & "and user_post.user_id = " & Q (User));
+      elsif User /= "" and Fid = "" then
+         Ada.Text_IO.Put_Line
+           (SQL_Select & SQL_From & ", user_post" & SQL_Where
+            & " and user_post.post_id = post.id "
+            & "and user_post.user_login = " & Q (User));
+         DBH.Prepare_Select (Iter,
+                             SQL_Select & SQL_From & ", user_post " & SQL_Where
+                             & " and user_post.post_id = post.id "
+                             & " and user_post.user_login = " & Q (User));
+      else
+         DBH.Prepare_Select (Iter,
+                             SQL_Select & SQL_From & SQL_Where
+                             & " and category.forum_id = " & Q (Fid));
+      end if;
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -395,16 +415,16 @@ package body V2P.Database is
 
       Iter.End_Select;
 
-      Templates.Insert (Set, Templates.Assoc (Forum_Threads.Tid, Id));
-      Templates.Insert (Set, Templates.Assoc (Forum_Threads.Name, Name));
+      Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.Tid, Id));
+      Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.Name, Name));
       Templates.Insert
-        (Set, Templates.Assoc (Forum_Threads.Category, Category));
-      Templates.Insert
-        (Set, Templates.Assoc
-           (Forum_Threads.Comment_Counter, Comment_Counter));
+        (Set, Templates.Assoc (Block_Forum_Threads.Category, Category));
       Templates.Insert
         (Set, Templates.Assoc
-           (Forum_Threads.Visit_Counter, Visit_Counter));
+           (Block_Forum_Threads.Comment_Counter, Comment_Counter));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Block_Forum_Threads.Visit_Counter, Visit_Counter));
       return Set;
    end Get_Threads;
 

@@ -117,6 +117,9 @@ package body DB.SQLite is
    procedure Execute (DB : in Handle; SQL : in String) is
    begin
       Check_Result ("execute", SQLite3.Exec (DB.H, SQL));
+   exception
+      when DB_Error =>
+         raise DB_Error with "DB_Error on Execute " & SQL;
    end Execute;
 
    --------------

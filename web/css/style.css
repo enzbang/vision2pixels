@@ -1,59 +1,65 @@
-/* General */
-
-h2 {
-    line-height: normal;
-    font-style: normal;
-    text-align: center;
-    padding: 5px;
-    border: solid 2px @_V2P_ENTRY_BORDER_COLOR_@;
+body {
+  font:small Verdana,Sans-serif;
+  line-height:1.6em;
+  text-align: center;
 }
 
-div#login {
-    text-align: right;
+h1 {
+  font:180% "Gill Sans","Trebuchet MS",Verdana,Sans-serif;
+  line-height:1.2em;
+  text-align:center;
+  text-transform:uppercase;
+  letter-spacing:.15em;
+  border-bottom:1px solid #ddd;
 }
 
-label, input {
-    font-size: small;
-    font-weight: bold;
+#login {
+    display: block;
 }
 
-input[type="submit"]{
-    border: 1px solid @_V2P_MAIN_LINK_COLOR_@;
+#status_bar {
+    display: none;
 }
 
-#footer {
-    text-align: center;
+.with_forum_list .forums h2  {
+    display: none;
 }
 
-/* Forum entry */
-
-div.level_1 {
-    border-top : 1px solid @_V2P_ENTRY_BORDER_COLOR_@;
-    padding-bottom: 2em;
+.with_forum_list h1 {
+    display: none;
 }
 
-p.comment_whois {
-    color : @_V2P_COLOR_2_@;
+.main .forums h2 {
+    position:relative;
+    top:-10px;
+    margin-bottom:0;
 }
 
-div#new_comment {
-    border : 1px solid @_V2P_ENTRY_BORDER_COLOR_@;
-    padding: 0.3em;
-    margin-top:1em;
-    padding-right : 2%;
+.with_forum_list .forums
+{
+    clear: right;
+    margin: 0;
+    padding: 0 0 6px 10px;
+    height : 1.1em;
+    border-bottom:1px solid #ddd;
 }
 
-/* Forum list */
+.with_forum_list .forums ul, li {
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
 
-#forumlistbar ul, li {
+
+.forums ul, li {
     list-style-type: none;
 }
 
-#forumlistbar ul, li {
+.forums ul, li {
     list-style-type: none;
 }
 
-#forumlistbar a:link, #forumlistbar a:visited
+.forums a:link, .forums a:visited
 {
     font-weight: bold;
     font-size: 1em;
@@ -62,31 +68,111 @@ div#new_comment {
     color: #999;
 }
 
-#forumlistbar a:link#forum_active,
-#forumlistbar a:visited#forum_active,
-#forumlistbar a:hover
+.forums a:link#forum_active,
+.forums a:visited#forum_active,
+.forums a:hover
 {
-    border-bottom: 4px solid #000;
-    padding-bottom: 2px;
+    border-bottom: 4px solid #ddd;
+    padding-bottom: 0px;
     background: transparent;
+    color: #1F1D1D;
 }
 
-
-/* Thread list */
-
-table#thread_list_table {
-    margin-top: 3em;
-    margin-left: 10%;
-    width: 80%;
-    border-width: 2px;
-    border-style: solid;
-    border-collapse: separate;
+.main .forums ul {
+    float:left;
+    width:100%;
+    margin:0;
+    padding-left: 9px;
+    list-style:none;
+    text-align:left;
 }
 
-table#thread_list_table caption {
-    margin-bottom: 1em;
+/\* h2 { \*/
+/\*     line-height: normal; \*/
+/\*     font-style: normal; \*/
+/\*     text-align: center; \*/
+/\*     padding: 5px; \*/
+/\*     border: solid 2px @_V2P_ENTRY_BORDER_COLOR_@; \*/
+/\* } \*/
+
+/\* div#login { \*/
+/\*     text-align: right; \*/
+/\* } \*/
+
+/\* label, input { \*/
+/\*     font-size: small; \*/
+/\*     font-weight: bold; \*/
+/\* } \*/
+
+/\* input[type="submit"]{ \*/
+/\*     border: 1px solid @_V2P_MAIN_LINK_COLOR_@; \*/
+/\* } \*/
+
+.level_1 h3 {
+    border-top : 15px solid @_V2P_ENTRY_BORDER_COLOR_@;
+    padding-bottom: 2em;
 }
 
-table#thread_list_table td {
-    color: @_V2P_COLOR_4_@;
+p.comment_whois {
+    color : @_V2P_COLOR_2_@;
+}
+
+/\* div#new_comment { \*/
+/\*     border : 1px solid @_V2P_ENTRY_BORDER_COLOR_@; \*/
+/\*     padding: 0.3em; \*/
+/\*     margin-top:1em; \*/
+/\*     padding-right : 2%; \*/
+/\* } \*/
+
+@@-- Thread List Table (for block_forum_threads.thtml
+
+.slides {
+  float:left;
+  width:670px;
+  list-style:none;
+  line-height: 0.5em;
+}
+
+.slides li {
+    display:block;
+    float:left;
+    width:200px;
+    margin:0 10px 10px 0;
+    padding:0;
+}
+
+.slides div {
+    display:block;
+    width: 200px;
+}
+
+fieldset
+{
+    border: 1px solid #781351;
+    width: 20em;
+}
+
+legend
+{
+    color: #fff;
+    background: #9999FF;
+    border: 1px solid #781351;
+    padding: 2px 6px;
+}
+
+label
+{
+    width: 8em;
+    float: left;
+}
+
+input
+{
+color: #434343;
+background: #D9D3FF;
+border: 1px solid #781351
+}
+
+input#login_form_enter {
+    display: none;
 }

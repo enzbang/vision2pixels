@@ -1,9 +1,9 @@
 @@--  Set the main site colors
-@@SET@@ V2P_MAIN_BACKGROUND_COLOR=rgb(20, 20, 20)
-@@SET@@ V2P_MAIN_COLOR=#ffffff
+@@SET@@ V2P_MAIN_BACKGROUND_COLOR=#f5f5f5
+@@SET@@ V2P_MAIN_COLOR=#333
 @@SET@@ V2P_MAIN_COLOR_INVERT=#000000
-@@SET@@ V2P_MAIN_LINK_COLOR=#556666
-@@SET@@ V2P_MAIN_LINK_HOVER_COLOR=#778888
+@@SET@@ V2P_MAIN_LINK_COLOR=#258
+@@SET@@ V2P_MAIN_LINK_HOVER_COLOR=#933
 @@SET@@ V2P_ENTRY_BORDER_COLOR=#665544
 @@SET@@ V2P_LABEL_AND_INPUT_COLOR=#998866
 @@SET@@ V2P_COLOR_1=#bbbbcc
@@ -13,7 +13,7 @@
 @@SET@@ V2P_WARNING_COLOR=red
 
 body {
-    background-color: @_V2P_MAIN_BACKGROUND_COLOR_@;
+    background: @_V2P_MAIN_BACKGROUND_COLOR_@  url("/css/img/bg_page.jpg") repeat-x 0 0;
     color: @_V2P_MAIN_COLOR_@;
 }
 
@@ -25,67 +25,66 @@ a:hover, a:active {
     color: @_V2P_MAIN_LINK_HOVER_COLOR_@;
 }
 
-h1, h2 {
-    color: @_V2P_COLOR_4_@;
-}
 
-label, input {
-    color: @_V2P_LABEL_AND_INPUT_COLOR_@;
-}
 
-input[type="submit"]{
-    color: @_V2P_MAIN_COLOR_INVERT_@;
-}
 
-input[type="submit"]:hover {
-    background-color:  @_V2P_MAIN_LINK_COLOR_@;
-}
+/\* label, input { \*/
+/\*     color: @_V2P_LABEL_AND_INPUT_COLOR_@; \*/
+/\* } \*/
 
-#footer {
-    color: @_V2P_COLOR_2_@;
-}
+/\* input[type="submit"]{ \*/
+/\*     color: @_V2P_MAIN_COLOR_INVERT_@; \*/
+/\* } \*/
 
-#footer a {
-    color: @_V2P_MAIN_COLOR_@;
-}
+/\* input[type="submit"]:hover { \*/
+/\*     background-color:  @_V2P_MAIN_LINK_COLOR_@; \*/
+/\* } \*/
 
-p.comment_whois {
-    color : @_V2P_COLOR_2_@;
-}
+/\* #footer { \*/
+/\*     color: @_V2P_COLOR_2_@; \*/
+/\* } \*/
 
-#forumlistbar a:link, #forumlistbar a:visited
-{
-    color: #999;
-}
+/\* #footer a { \*/
+/\*     color: @_V2P_MAIN_COLOR_@; \*/
+/\* } \*/
 
-#forumlistbar a:link#forum_active,
-#forumlistbar a:visited#forum_active
-{
-    color: @_V2P_COLOR_1_@;
-}
+/\* p.comment_whois { \*/
+/\*     color : @_V2P_COLOR_2_@; \*/
+/\* } \*/
 
-#forumlistbar a:link#forum_active,
-#forumlistbar a:visited#forum_active
-{
-    color: @_V2P_COLOR_1_@;
-}
+/\* #forumlistbar a:link, #forumlistbar a:visited \*/
+/\* { \*/
+/\*     color: #999; \*/
+/\* } \*/
 
-#forumlistbar a:hover
-{
-    color: @_V2P_MAIN_COLOR_@;
-}
+/\* #forumlistbar a:link#forum_active, \*/
+/\* #forumlistbar a:visited#forum_active \*/
+/\* { \*/
+/\*     color: @_V2P_COLOR_1_@; \*/
+/\* } \*/
 
-table#thread_list_table {
-    border-color: @_V2P_COLOR_3_@;
-    color: @_V2P_COLOR_1_@;
-}
+/\* #forumlistbar a:link#forum_active, \*/
+/\* #forumlistbar a:visited#forum_active \*/
+/\* { \*/
+/\*     color: @_V2P_COLOR_1_@; \*/
+/\* } \*/
 
-table#thread_list_table th {
-    background-color: @_V2P_COLOR_3_@;
-    color: @_V2P_COLOR_4_@;
-}
+/\* #forumlistbar a:hover \*/
+/\* { \*/
+/\*     color: @_V2P_MAIN_COLOR_@; \*/
+/\* } \*/
 
-table#thread_list_table td {
-    color: @_V2P_COLOR_4_@;
-}
-2
+/\* table#thread_list_table { \*/
+/\*     border-color: @_V2P_COLOR_3_@; \*/
+/\*     color: @_V2P_COLOR_1_@; \*/
+/\* } \*/
+
+/\* table#thread_list_table th { \*/
+/\*     background-color: @_V2P_COLOR_3_@; \*/
+/\*     color: @_V2P_COLOR_4_@; \*/
+/\* } \*/
+
+/\* table#thread_list_table td { \*/
+/\*     color: @_V2P_COLOR_4_@; \*/
+/\* } \*/
+
