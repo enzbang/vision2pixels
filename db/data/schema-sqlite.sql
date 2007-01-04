@@ -36,9 +36,9 @@ foreign key ("forum_id") references post("id")
 create table "photo" (
 "id" integer not null primary key autoincrement,
 "filename" varchar(512) unique,
-"image_height" integer,
-"image_width" integer,
-"image_size" integer
+"height" integer,
+"width" integer,
+"size" integer
 );
 
 create table "post" (

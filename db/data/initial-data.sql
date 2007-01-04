@@ -23,7 +23,7 @@ insert into template values (1, 'mytemplate', 'V2P Template');
 insert into post
    ('name', 'category_id',
     'template_id', 'visit_counter', 'comment_counter')
-  values ('une première photo', 1, 1, 0, 0);
+  values ('un premier post', 1, 1, 0, 0);
 
 insert into user_post values ('enzbang', 1);
 
