@@ -47,4 +47,8 @@ package Defaults is
 
    Image_Maximum_Size       : constant Integer := 1000000;
 
+   Thumbnail_Maximum_Width  : constant Integer := 150;
+
+   Thumbnail_Maximum_Height : constant Integer := 150;
+
 end Defaults;
