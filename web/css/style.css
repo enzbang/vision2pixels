@@ -14,7 +14,11 @@ h1 {
 }
 
 #login {
-    display: block;
+    display: none;
+}
+
+.main #login {
+      display : block;
 }
 
 #status_bar {
@@ -92,7 +96,7 @@ h1 {
 /\*     font-style: normal; \*/
 /\*     text-align: center; \*/
 /\*     padding: 5px; \*/
-/\*     border: solid 2px @_V2P_ENTRY_BORDER_COLOR_@; \*/
+/\*     border: solid 2px ; \*/
 /\* } \*/
 
 /\* div#login { \*/
@@ -105,26 +109,13 @@ h1 {
 /\* } \*/
 
 /\* input[type="submit"]{ \*/
-/\*     border: 1px solid @_V2P_MAIN_LINK_COLOR_@; \*/
+/\*     border: 1px solid ; \*/
 /\* } \*/
 
 .level_1 h3 {
-    border-top : 15px solid @_V2P_ENTRY_BORDER_COLOR_@;
+    border-top : 15px solid ;
     padding-bottom: 2em;
 }
-
-p.comment_whois {
-    color : @_V2P_COLOR_2_@;
-}
-
-/\* div#new_comment { \*/
-/\*     border : 1px solid @_V2P_ENTRY_BORDER_COLOR_@; \*/
-/\*     padding: 0.3em; \*/
-/\*     margin-top:1em; \*/
-/\*     padding-right : 2%; \*/
-/\* } \*/
-
-@@-- Thread List Table (for block_forum_threads.thtml
 
 .slides {
   float:left;
@@ -146,10 +137,17 @@ p.comment_whois {
     width: 200px;
 }
 
-fieldset
+#logged_box, fieldset
 {
+    position: absolute;
+    display: block;
     border: 1px solid #781351;
     width: 20em;
+    background-color: white;
+}
+
+.main #logged_box {
+    position: relative;
 }
 
 legend
@@ -175,4 +173,36 @@ border: 1px solid #781351
 
 input#login_form_enter {
     display: none;
+}
+
+#new_comment {
+    position: relative;
+    margin-top: 2em;
+    padding-top:2em;
+    border-top: 1px solid white;
+    width: 500px;
+    margin-left: 110px;
+}
+
+#new_comment fieldset {
+    position: relative;
+    background-color: transparent;
+    width: 500px;
+}
+
+#new_comment input, #new_comment textarea {
+    width: 90%;
+    margin-left:5%;
+    background-color: transparent;
+    border: dashed 1px #781351;
+    padding: 0.2em;
+    color: #781351;
+}
+
+#new_comment input[type="file"] {
+    width: 75%;
+}
+#new_comment input[type="submit"] {
+    width: 10%;
+    border: solid 1px;
 }
