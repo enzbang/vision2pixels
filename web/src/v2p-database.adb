@@ -146,6 +146,36 @@ package body V2P.Database is
       return Set;
    end Get_Category;
 
+   ----------------------------
+   -- Get_Category_Full_Name --
+   ----------------------------
+
+   function Get_Category_Full_Name (CID : in String) return String is
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+      Name : Unbounded_String;
+   begin
+      Connect;
+
+      DBH.Prepare_Select
+        (Iter, "select f.name, c.name from category c, "
+           & "forum f where f.id = c.forum_id and c.id = " & Q (CID));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Name := To_Unbounded_String (DB.String_Vectors.Element
+                                        (Line, 1));
+         Name := Name & "/" & To_Unbounded_String
+           (DB.String_Vectors.Element (Line, 2));
+         Line.Clear;
+      end if;
+
+      Iter.End_Select;
+
+      return To_String (Name);
+   end Get_Category_Full_Name;
+
    ---------------
    -- Get_Entry --
    ---------------
