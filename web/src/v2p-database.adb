@@ -198,8 +198,8 @@ package body V2P.Database is
          --  Get image information
 
          DBH.Prepare_Select
-           (Iter, "select filename from photo where id = " & Q
-              (To_String (Photo_Id)));
+           (Iter, "select filename from photo where id = "
+              & To_String (Photo_Id));
 
          if Iter.More then
             Iter.Get_Line (Line);
