@@ -491,6 +491,8 @@ package body V2P.Web_Server is
       CID       : constant String := Parameters.Get (P, "CATEGORY");
       Forum     : constant String := Parameters.Get (P, "FORUM");
 
+      Images_Path : constant String := Settings.Get_Images_Path;
+
       New_Image : Image_Data;
 
       Translations : Templates.Translate_Set;
@@ -499,7 +501,7 @@ package body V2P.Web_Server is
 
       if Filename /= "" then
 
-         Init (New_Image, Filename, CID);
+         Init (New_Image, Filename, Database.Get_Category_Full_Name (CID));
 
          if New_Image.Init_Status /= Image_Created then
             Templates.Insert
@@ -530,12 +532,11 @@ package body V2P.Web_Server is
       end if;
 
       if TID = "" then
-         --  New post
-
          if Filename /= "" then
             Database.Insert_Post
               (Login, CID, Name, Comment,
-               New_Image.Filename,
+               New_Image.Filename
+                 ((Images_Path'Length + 2) .. New_Image.Filename'Last),
                New_Image.Width,
                New_Image.Height,
                New_Image.Size);
@@ -543,7 +544,7 @@ package body V2P.Web_Server is
             Database.Insert_Post (Login, CID, Name, Comment);
          end if;
 
-            --  Simple_Name (Filename));
+         --  Simple_Name (Filename));
          return Response.URL
            (Location => Template_Defs.Forum_Threads.URL & "?FID=" & Forum);
       else
