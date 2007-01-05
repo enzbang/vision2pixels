@@ -117,6 +117,14 @@ h1 {
     padding-bottom: 2em;
 }
 
+/\* div#new_comment { \*/
+/\*     border : 1px solid ; \*/
+/\*     padding: 0.3em; \*/
+/\*     margin-top:1em; \*/
+/\*     padding-right : 2%; \*/
+/\* } \*/
+
+
 .slides {
   float:left;
   width:670px;
@@ -150,6 +158,14 @@ h1 {
     position: relative;
 }
 
+#logged_box {
+    padding: 1em;
+}
+
+#logged_box .logged_as {
+    font-style: oblique;
+}
+
 legend
 {
     color: #fff;
@@ -173,6 +189,33 @@ border: 1px solid #781351
 
 input#login_form_enter {
     display: none;
+}
+
+#main_image_comment {
+    width: 500px;
+    margin-left: 110px;
+    font-size: 1.2em;
+}
+
+.comment_whois {
+    text-decoration: underline;
+    font-style: italic;
+    color: #a0a0a0;
+    width: 500px;
+    margin-left: 110px;
+}
+
+.comment_whois a{
+    color : #a0a0a0;
+    font-style: normal;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.comment_body {
+    border-bottom : solid 1px white;
+    width: 500px;
+    margin-left: 110px;
 }
 
 #new_comment {
