@@ -21,6 +21,7 @@
 
 with Ada.Exceptions;
 with Ada.Text_IO;
+with Ada.Strings.Unbounded;
 
 with DB;
 with Settings;
@@ -38,6 +39,7 @@ package body V2P.Database is
 
    use Ada;
    use Ada.Exceptions;
+   use Ada.Strings.Unbounded;
 
    use V2P.Template_Defs;
 
@@ -161,7 +163,7 @@ package body V2P.Database is
       Comment            : Templates.Tag;
       Filename           : Templates.Tag;
 
-      Photo_Id : String := "";
+      Photo_Id : Unbounded_String := To_Unbounded_String ("");
    begin
       Connect;
 
@@ -185,18 +187,19 @@ package body V2P.Database is
               (Forum_Entry.Image_Comment,
                DB.String_Vectors.Element (Line, 2)));
 
-         Photo_Id := DB.String_Vectors.Element (Line, 3);
+         Photo_Id := To_Unbounded_String (DB.String_Vectors.Element (Line, 3));
          Line.Clear;
       end if;
 
       Iter.End_Select;
 
-      if Photo_Id /= "" then
+      if Photo_Id /= To_Unbounded_String ("") then
 
          --  Get image information
 
          DBH.Prepare_Select
-           (Iter, "select filename from photo where id = " & Q (Photo_Id));
+           (Iter, "select filename from photo where id = " & Q
+              (To_String (Photo_Id)));
 
          if Iter.More then
             Iter.Get_Line (Line);
@@ -538,7 +541,6 @@ package body V2P.Database is
       Width       : in Integer := 0;
       Size        : in Integer := 0)
    is
-      Photo_Id : String := "";
 
       procedure Insert_Table_Photo
         (Filename : in String;
@@ -598,14 +600,19 @@ package body V2P.Database is
       DBH.Begin_Transaction;
       if Filename /= "" then
          Insert_Table_Photo (Filename, Height, Width, Size);
-         Photo_Id := DBH.Last_Insert_Rowid;
+         Insert_Table_Post (Name, Category_Id, Comment,
+                            DBH.Last_Insert_Rowid);
+      else
+         Insert_Table_Post (Name, Category_Id, Comment, "");
       end if;
 
-      Insert_Table_Post (Name, Category_Id, Comment, Photo_Id);
       Insert_Table_User_Post (Uid, DBH.Last_Insert_Rowid);
       DBH.Commit;
    exception
       when E : DB.DB_Error =>
+         DBH.Rollback;
+         Text_IO.Put_Line (Exception_Message (E));
+      when E : others =>
          DBH.Rollback;
          Text_IO.Put_Line (Exception_Message (E));
    end Insert_Post;
