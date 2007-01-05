@@ -6,8 +6,6 @@
   <div id="comment_login"><p>
   @@IF@@ @_LOGIN_@ = ""
     <input name="ANONYMOUS_USER" id="anonymous_user" type="entry"/>
-  @@ELSE@@
-    @_LOGIN_@
   @@END_IF@@
   </p></div>
   @@-- Is user in a specific forum
