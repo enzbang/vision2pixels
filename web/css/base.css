@@ -27,6 +27,10 @@ h1 {
     border: 1px solid white;
 }
 
+.forum_post_page .forums {
+    display: none;
+}
+
 #end_main_page {
     float:left;
     width:705px;
@@ -47,7 +51,6 @@ h1 {
     line-height:1.6em;
 }
 
-@@-- Do not display forum post if body class is no_forum_post
 body.no_forum_post #forum_post {
     display: none;
 }
