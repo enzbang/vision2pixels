@@ -2,27 +2,10 @@
 @@-- HTTP_GET(FID): forum Id
 @@-- HTTP_URL(/forum/post): Forum Post URL
 @@--
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
-"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
-  <head>
-    <title>@_BABEL_FORUM_POST_@</title>
-    @@INCLUDE@@ import_css.thtml
-    @@INCLUDE@@ ../we_js/aws.tjs
-  </head>
-
-  <body>
-    <div id="global">
-      <hr id="top_global" />
-      <div id="status_bar"></div>
-
-      <div id="login">@_LAZY_LOGIN_@</div>
-
-      <div id="new_comment">@_LAZY_NEW_COMMENT_@</div>
-
-      @@INCLUDE@@ footer.html
-    </div>
-  </body>
-</html>
+@@INCLUDE@@ v2p_top.thtml @_BABEL_FORUM_POST_@ forum_post_page
+@@IF@@ @_LOGIN_@ = ""
+@_BABEL_LOGIN_REQUIRED_@
+@@ELSE@@
+<div id="new_comment">@_LAZY_NEW_COMMENT_@</div>
+@@END_IF@@
+@@INCLUDE@@ v2p_end.thtml
