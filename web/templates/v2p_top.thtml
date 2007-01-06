@@ -27,11 +27,6 @@
   </p>
 
       <div id="status_bar"></div>
-
-      <div id="forum_post">
-        <a href="@_FORUM_POST_URL_@">@_BABEL_FORUM_POST_@</a>
-      </div>
-
       <div id="content">
         <h1>@_BABEL_V2P_WEBSITE_NAME_@</h1>
 

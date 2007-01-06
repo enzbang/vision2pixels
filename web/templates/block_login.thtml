@@ -17,7 +17,11 @@ value="OK"/></p>
 </fieldset>
 </form>
 @@ELSE@@
-<p>@_BABEL_WELCOME_@ @_LOGIN_@ <a id="logout_enter" href="#">@_BABEL_LOGOUT_@</a>
+<div id="logged_box">
+<p class="logged_as">@_BABEL_LOGGED_AS_@ @_LOGIN_@ </p>
+<p><a href="@_FORUM_POST_URL_@">@_BABEL_NEW_POST_@</a></p>
+<p><a id="logout_enter" href="#">@_BABEL_LOGOUT_@</a></p>
+</div>
 @@-- <input name="LOGOUT" id="logout_enter" type="submit" value="@_BABEL_LOGOUT_@"/>
 </p>
 @@END_IF@@

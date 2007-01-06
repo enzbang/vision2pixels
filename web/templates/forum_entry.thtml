@@ -4,15 +4,13 @@
 @@--
 @@INCLUDE@@ v2p_top.thtml @_NAME_@ with_forum_list no_forum_post
 @@--
-      <h2>@_NAME_@</h2>
-
       @@IF@@ @_IMAGE_SOURCE_@ /= ""
-      <div id="main_image">
+      <p id="main_image">
         <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"/>
-      </div>
+      </p>
       @@END_IF@@
-
-      <p>@_IMAGE_COMMENT_@</p>
+      <h2>@_NAME_@</h2>
+      <p id="main_image_comment">@_IMAGE_COMMENT_@</p>
 
       @@TABLE@@
       <div class="level_@_COMMENT_LEVEL_@">
@@ -20,7 +18,7 @@
         <p class="comment_whois">@_BABEL_ON_DATE_@ @_DATE_@,
         <a href="@_USER_PAGE_@" >@_USER_@</a> @_BABEL_HAS_WRITTEN_@
         </p>
-        <p>@_COMMENT_@</p>
+        <p class="comment_body">@_COMMENT_@</p>
 
       @@IF@@ @_NB_LEVELS_TO_CLOSE_@ > 0
       @_REPEAT("</div>"):NB_LEVELS_TO_CLOSE_@

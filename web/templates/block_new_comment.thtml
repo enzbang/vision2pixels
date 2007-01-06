@@ -2,6 +2,14 @@
 @@-- HTTP_URL(/comment_form_enter)
 <form enctype="multipart/form-data" id="comment_form"
   action="/comment_form_enter" method="POST">
+<fieldset>
+<legend>
+  @@IF@@ @_EXIST:Current_TID_@
+  @_BABEL_NEW_COMMENT_@
+  @@ELSE@@
+  @_BABEL_NEW_POST_@
+  @@END_IF@@
+</legend>
   @@-- Is user logged
   <div id="comment_login"><p>
   @@IF@@ @_LOGIN_@ = ""
@@ -11,7 +19,6 @@
   @@-- Is user in a specific forum
   <p>
   @@IF@@ @_EXIST:Current_TID_@
-    @_FORUM_NAME_@ @_Current_TID_@ @_Current_FID_@
     <input name="FORUM" id="sel_forum_list"
      type="hidden" value="@_Current_FID_@"/>
     <input name="CATEGORY" id="sel_category"
@@ -21,10 +28,9 @@
     <select name="CATEGORY" id="sel_category"></select>
   @@END_IF@@
   </p>
-  <p><input name="NAME" id="title_input" type="entry" value="@_NAME_@"/></p>
-  <p><textarea name="COMMENT"
+ @@-- <p><input name="NAME" id="title_input" type="entry" value="@_NAME_@"/></p>
+  <p><textarea name="COMMENT" size="100"
   id="comment_input"/>@_BABEL_ENTER_COMMENT_@</textarea></p>
-  <p><input name="FILENAME" type="file"/></p>
-  <p><input name="ENTER" id="comment_form_enter" type="submit" value="OK"/></p>
+  <p><input name="FILENAME" type="file"/><input name="ENTER" id="comment_form_enter" type="submit" value="OK"/></p>
 </form>
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_forum_list, 4=>sel_forum_list)
