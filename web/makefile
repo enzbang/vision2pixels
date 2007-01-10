@@ -53,6 +53,7 @@ install-dir:
 	-$(MKDIR) $(INSTALL)/we_js
 	-$(MKDIR) $(INSTALL)/uploads
 	-$(MKDIR) $(INSTALL)/images
+	-$(MKDIR) $(INSTALL)/xml
 
 install: install-dir
 	$(CP) css/*.css $(INSTALL)/css
@@ -60,6 +61,7 @@ install: install-dir
 	$(CP) templates/*.*html $(INSTALL)/templates
 	$(CP) templates/*.txml $(INSTALL)/templates
 	$(CP) we_js/*js $(INSTALL)/we_js
+	$(CP) xml/*xml $(INSTALL)/xml
 	$(CP) bin/vision2pixels$(EXEXT) $(INSTALL)/bin
 
 clean:
