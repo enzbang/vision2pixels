@@ -23,6 +23,8 @@ with Ada.Exceptions;
 with Ada.Text_IO;
 with Ada.Strings.Unbounded;
 
+with GNAT.OS_Lib;
+
 with DB;
 with Settings;
 
@@ -45,6 +47,8 @@ package body V2P.Database is
 
    procedure Connect;
    --  Connect to the database if needed
+
+   DS              : Character renames GNAT.OS_Lib.Directory_Separator;
 
    DBH       : DB.Handle'Class := DB_Handle.Get;
 
@@ -166,7 +170,7 @@ package body V2P.Database is
 
          Name := To_Unbounded_String (DB.String_Vectors.Element
                                         (Line, 1));
-         Name := Name & "/" & To_Unbounded_String
+         Name := Name & DS & To_Unbounded_String
            (DB.String_Vectors.Element (Line, 2));
          Line.Clear;
       end if;
@@ -392,7 +396,8 @@ package body V2P.Database is
 
    function Get_Threads
      (Fid  : in String := ""; User : in String := "")
-      return Templates.Translate_Set is
+      return Templates.Translate_Set
+   is
       use type Templates.Tag;
 
       Set             : Templates.Translate_Set;
@@ -585,6 +590,10 @@ package body V2P.Database is
 
       procedure Insert_Table_User_Post (Uid, Post_Id : in String);
       --  Insert row into the user_post table
+
+      ------------------------
+      -- Insert_Table_Photo --
+      ------------------------
 
       procedure Insert_Table_Photo
         (Filename : in String;
