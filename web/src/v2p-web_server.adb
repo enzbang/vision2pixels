@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -48,10 +48,7 @@ with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Forum_List;
 
 with Image.Data;
-
 with Settings;
-
-with Ada.Text_IO; use Ada;
 
 package body V2P.Web_Server is
 
@@ -66,7 +63,6 @@ package body V2P.Web_Server is
    function Default_Xml_Callback
      (Request : in Status.Data) return Response.Data;
    --  Default callback for xml action
-
 
    function Forum_Entry_Callback
      (Request : in Status.Data) return Response.Data;
@@ -148,10 +144,8 @@ package body V2P.Web_Server is
      (Request : in Status.Data) return Response.Data
    is
       URI  : constant String := Status.URI (Request);
-      File : constant String := "xml"
-        & URI (URI'First .. URI'Last);
+      File : constant String := "xml" & '/' & URI (URI'First + 5 .. URI'Last);
    begin
-      Ada.Text_IO.Put_Line (File);
       return Response.File (MIME.Text_XML, File);
    end Default_Xml_Callback;
 
@@ -337,13 +331,14 @@ package body V2P.Web_Server is
    --------------------------
 
    function Forum_Entry_Callback
-     (Request : in Status.Data) return Response.Data is
-      SID : constant Session.Id := Status.Session (Request);
-      P   : constant Parameters.List := Status.Parameters (Request);
-      TID : constant String :=
-        Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Tid);
-      Count_Visit : Boolean := True;
+     (Request : in Status.Data) return Response.Data
+   is
+      SID         : constant Session.Id := Status.Session (Request);
+      P           : constant Parameters.List := Status.Parameters (Request);
+      TID         : constant String :=
+                      Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Tid);
       Logged_User : constant String := Session.Get (SID, "LOGIN");
+      Count_Visit : Boolean := True;
    begin
       --  Set thread Id into the session
       Session.Set (SID, "TID", TID);
@@ -352,6 +347,7 @@ package body V2P.Web_Server is
          --  Do not count anonymous click
          if Logged_User = "" then
             Count_Visit := False;
+
          else
             if Settings.Ignore_Author_Click
               and then Database.Is_Author (Logged_User, TID)
@@ -388,17 +384,19 @@ package body V2P.Web_Server is
    ----------------------------
 
    function Forum_Threads_Callback
-     (Request : in Status.Data) return Response.Data is
+     (Request : in Status.Data) return Response.Data
+   is
       SID : constant Session.Id := Status.Session (Request);
       P   : constant Parameters.List := Status.Parameters (Request);
-      FID : constant String := Parameters.Get
-        (P, Template_Defs.Forum_Threads.HTTP.Fid);
+      FID : constant String :=
+              Parameters.Get (P, Template_Defs.Forum_Threads.HTTP.Fid);
    begin
       --  Set forum Id into the session
       Session.Set (SID, "FID", FID);
       if Session.Exist (SID, "TID") then
          Session.Remove (SID, "TID");
       end if;
+
       return Final_Parse
         (Request,
          Template_Defs.Forum_Threads.Template,
@@ -415,7 +413,7 @@ package body V2P.Web_Server is
       Login    : constant String := Parameters.Get (P, "LOGIN");
       Password : constant String := Database.Get_Password (Login);
 
-      Set : Templates.Translate_Set;
+      Set      : Templates.Translate_Set;
    begin
       if Password = Parameters.Get (P, "PASSWORD") then
          Session.Set (SID, "LOGIN", Login);
@@ -542,7 +540,6 @@ package body V2P.Web_Server is
                Template_Defs.Main_Page.Template,
                Translations);
          end if;
-
       end if;
 
       if TID = "" then
@@ -554,15 +551,15 @@ package body V2P.Web_Server is
                New_Image.Width,
                New_Image.Height,
                New_Image.Size);
+
          else
             Database.Insert_Post (Login, CID, Name, Comment);
          end if;
 
-         --  Simple_Name (Filename));
          return Response.URL
            (Location => Template_Defs.Forum_Threads.URL & "?FID=" & Forum);
-      else
 
+      else
          Database.Insert_Comment
            (Login, TID, Name, Comment, Image.Data.Filename (New_Image));
          return Response.URL
@@ -610,8 +607,11 @@ package body V2P.Web_Server is
    begin
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         "/xml",
-         Action => Dispatchers.Callback.Create (Default_Xml_Callback'Access));
+         "/xml_",
+         Action => Dispatchers.Callback.Create (Default_Xml_Callback'Access),
+         Prefix => True);
+      --  All URLs starting with /xml_ are handled by a specific callback
+      --  returning the corresponding file in the xml directory.
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
@@ -712,6 +712,9 @@ package body V2P.Web_Server is
       Server.Shutdown (HTTP);
    end Stop;
 
+   -------------------
+   -- User_Callback --
+   -------------------
 
    function User_Callback (Request : in Status.Data) return Response.Data is
       SID          : constant Session.Id := Status.Session (Request);
@@ -735,6 +738,10 @@ package body V2P.Web_Server is
          Template_Defs.User.Template,
          Translations);
    end User_Callback;
+
+   -----------------------------------
+   -- User_Password_Change_Callback --
+   -----------------------------------
 
    function User_Password_Change_Callback
      (Request : in Status.Data) return Response.Data is

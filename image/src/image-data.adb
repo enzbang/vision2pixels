@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,8 +19,12 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;
+with Ada.Calendar;
 with Ada.Directories;
+with Ada.Text_IO;
+
+with GNAT.Calendar.Time_IO;
+with GNAT.OS_Lib;
 
 with G2F.Image_IO;
 with G2F.IO;
@@ -76,18 +80,27 @@ package body Image.Data is
       Filename : in     String;
       Category : in     String)
    is
-      Thumb_Name : constant String :=
-                     Settings.Get_Thumbs_Path
-                       & "/" & Category & "/" & Simple_Name (Filename);
-      Image_Name : constant String :=
-                     Settings.Get_Images_Path
-                       & "/" & Category & "/" & Simple_Name (Filename);
-      Thumb      : Image_Ptr;
-      Thumb_Info : Image_Info_Ptr;
-      Thumb_Size : constant G2F.IO.Image_Size :=
-                     (Image_Size_T (Settings.Thumbnail_Maximum_Width),
-                      Image_Size_T (Settings.Thumbnail_Maximum_Height));
+      DS              : Character renames GNAT.OS_Lib.Directory_Separator;
+      Now             : constant Calendar.Time := Calendar.Clock;
+      Year            : constant String :=
+                          GNAT.Calendar.Time_IO.Image (Now, "%Y");
+      Filename_Prefix : constant String :=
+                          GNAT.Calendar.Time_IO.Image (Now, "%Y%m%d%H%M-");
+      S_Name          : constant String := Simple_Name (Filename);
+      File_Pathname   : constant String :=
+                          Year & DS & Category & DS & Filename_Prefix & S_Name;
+      Thumb_Name      : constant String :=
+                          Settings.Get_Thumbs_Path & DS & File_Pathname;
+      Image_Name      : constant String :=
+                          Settings.Get_Images_Path & DS & File_Pathname;
+      Thumb_Size      : constant G2F.IO.Image_Size :=
+                          (Image_Size_T (Settings.Thumbnail_Maximum_Width),
+                           Image_Size_T (Settings.Thumbnail_Maximum_Height));
+      Thumb           : Image_Ptr;
+      Thumb_Info      : Image_Info_Ptr;
    begin
+      Text_IO.Put_Line ("Thumb_Name : " & Thumb_Name);
+
       if not Exists (Containing_Directory (Thumb_Name)) then
          Create_Path (Containing_Directory (Thumb_Name));
       end if;
@@ -146,6 +159,10 @@ package body Image.Data is
       when G2F.Image_IO.Read_Image_Error =>
          Put_Line ("Read image error - Thumbnail has not been created");
    end Init;
+
+   -----------------
+   -- Init_Status --
+   -----------------
 
    function Init_Status (Img : in Image_Data) return Image_Init_Status is
    begin
