@@ -17,11 +17,12 @@
 @@SET@@ F4 = $7
 @@SET@@ F5 = $8
 
+@@SET@@ CONSTANT_URL = $19
 @@SET@@ ONCOMPLETE = $20
 
 <script>
    function call_@_ACTION_@_@_ID_@()
-      @@INCLUDE@@ aws_func_xml.tjs (@_ACTION_@, @_ID_@, @_PARAMETERS_@, @_F1_@, @_F2_@, @_F3_@, @_F4_@, @_F5_@, 20=>@_ONCOMPLETE_@)
-</script>         
+      @@INCLUDE@@ aws_func_xml.tjs (@_ACTION_@, @_ID_@, @_PARAMETERS_@, @_F1_@, @_F2_@, @_F3_@, @_F4_@, @_F5_@, 19=>@_CONSTANT_URL_@, 20=>@_ONCOMPLETE_@)
+</script>
 
 @@INCLUDE@@ aws_action_js.tjs @_ACTION_@ @_ID_@

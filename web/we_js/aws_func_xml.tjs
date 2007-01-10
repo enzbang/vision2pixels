@@ -17,12 +17,18 @@
 @@SET@@ XML_F4 = $7
 @@SET@@ XML_F5 = $8
 
+@@SET@@ CONSTANT_URL = $19
 @@SET@@ XML_ONCOMPLETE = $20
 
    {
+@@IF@@ @_CONSTANT_URL_@ /= ""
+      var rurl="@_CONSTANT_URL_@";
+@@ELSE@@
       var rurl="/@_XML_ACTION_@$@_XML_ID_@";
+@@END_IF@@
       var rpars = "";
       var roncomplete = "";
+
 @@IF@@ @_XML_PARAMETERS_@ /= ""
       rpars = "@_XML_PARAMETERS_@";
 @@END_IF@@
