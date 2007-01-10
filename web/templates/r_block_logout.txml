@@ -9,4 +9,5 @@
   <apply_style id="new_comment">
     <attribute id="display" value="none"/>
   </apply_style>
+  <replace id="top_links"><![CDATA[@_LAZY_QUICK_LOGIN_@]]></replace>
 </response>

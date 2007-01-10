@@ -37,8 +37,8 @@ with V2P.Template_Defs.Forum_Threads;
 with V2P.Template_Defs.Forum_Post;
 with V2P.Template_Defs.Main_Page;
 with V2P.Template_Defs.User;
-with V2P.Template_Defs.V2p_Top;
 with V2P.Template_Defs.Block_Login;
+with V2P.Template_Defs.Block_Quick_Login;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Forum_Threads;
@@ -46,11 +46,12 @@ with V2P.Template_Defs.Block_User_Password_Change;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Forum_List;
-with V2P.Template_Defs.R_Block_Show_Login;
 
 with Image.Data;
 
 with Settings;
+
+with Ada.Text_IO; use Ada;
 
 package body V2P.Web_Server is
 
@@ -116,7 +117,8 @@ package body V2P.Web_Server is
    function Final_Parse
      (Request           : in Status.Data;
       Template_Filename : in String;
-      Translations      : in Templates.Translate_Set) return Response.Data;
+      Translations      : in Templates.Translate_Set;
+      Filename_Type     : in String := MIME.Text_HTML) return Response.Data;
    --  Parsing routines used for all V2P templates. This routine add supports
    --  for lazy tags.
 
@@ -145,21 +147,11 @@ package body V2P.Web_Server is
    function Default_Xml_Callback
      (Request : in Status.Data) return Response.Data
    is
-      function Xml_Associated_File (URI : in String) return String;
-      --  Returns the xml file name associated with this URI
-
-      function Xml_Associated_File (URI : in String) return String is
-      begin
-         if URI = Template_Defs.V2p_Top.Ajax.Onclick_Show_Login then
-            return V2P.Template_Defs.R_Block_Show_Login.Template;
-         end if;
-         return ""; -- ??
-      end Xml_Associated_File;
-
-
       URI  : constant String := Status.URI (Request);
-      File : constant String := Xml_Associated_File (URI);
+      File : constant String := "xml"
+        & URI (URI'First .. URI'Last);
    begin
+      Ada.Text_IO.Put_Line (File);
       return Response.File (MIME.Text_XML, File);
    end Default_Xml_Callback;
 
@@ -170,7 +162,8 @@ package body V2P.Web_Server is
    function Final_Parse
      (Request           : in Status.Data;
       Template_Filename : in String;
-      Translations      : in Templates.Translate_Set) return Response.Data
+      Translations      : in Templates.Translate_Set;
+      Filename_Type     : in String := MIME.Text_HTML) return Response.Data
    is
       SID : constant Session.Id := Status.Session (Request);
 
@@ -260,12 +253,27 @@ package body V2P.Web_Server is
                       (Template_Defs.Block_Forum_Threads.Template,
                          Local_Translations))));
             end if;
+         elsif Var_Name = Template_Defs.Lazy.Quick_Login then
+            if Session.Get (SID, "LOGIN") /= "" then
+               Templates.Insert (Local_Translations,
+                                 Database.Get_Threads
+                                   (User => Session.Get (SID, "LOGIN")));
+            end if;
+
+            Templates.Insert
+              (Translations,
+               Templates.Assoc (Template_Defs.Lazy.Quick_Login,
+                 String'(Templates.Parse
+                   (Template_Defs.Block_Quick_Login.Template,
+                      Local_Translations))));
+
          elsif Var_Name = Template_Defs.Lazy.New_Comment then
             if Session.Exist (SID, "FID") then
-               Templates.Insert
-                 (Local_Translations,
-                  Templates.Assoc (Template_Defs.Block_New_Comment.Forum_Name,
-                    Database.Get_Forum (Session.Get (SID, "FID"))));
+--                 Templates.Insert
+--                   (Local_Translations,
+--                    Templates.Assoc
+--                 (Template_Defs.Block_New_Comment.Forum_Name,
+--                      Database.Get_Forum (Session.Get (SID, "FID"))));
 
                Templates.Insert
                  (Local_Translations,
@@ -316,7 +324,7 @@ package body V2P.Web_Server is
          Templates.Assoc ("FORUM_ENTRY_URL", Template_Defs.Forum_Entry.URL));
 
       return Response.Build
-        (MIME.Text_HTML,
+        (Filename_Type,
          String'(Templates.Parse
            (Template_Filename,
               Final_Translations,
@@ -406,23 +414,27 @@ package body V2P.Web_Server is
       P        : constant Parameters.List := Status.Parameters (Request);
       Login    : constant String := Parameters.Get (P, "LOGIN");
       Password : constant String := Database.Get_Password (Login);
+
+      Set : Templates.Translate_Set;
    begin
       if Password = Parameters.Get (P, "PASSWORD") then
          Session.Set (SID, "LOGIN", Login);
          Session.Set (SID, "PASSWORD", Password);
 
-         return Response.Build
-           (MIME.Text_XML,
-            String'(Templates.Parse
-              (Template_Defs.R_Block_Login.Template,
-                 (1 => Templates.Assoc (Template_Defs.R_Block_Login.Login,
-                  String'(Session.Get (SID, "LOGIN"))),
-                  2 => Templates.Assoc (Template_Defs.R_Block_Login.Login_Form,
-                    String'(Templates.Parse
-                      (Template_Defs.Block_Login.Template,
-                         (1 => Templates.Assoc
-                            (Template_Defs.Block_Login.Login,
-                             String'(Session.Get (SID, "LOGIN")))))))))));
+         Templates.Insert (Set, Templates.Assoc
+                             (Template_Defs.R_Block_Login.Login,
+                              String'(Session.Get (SID, "LOGIN"))));
+
+         Templates.Insert (Set, Templates.Assoc
+                           (Template_Defs.R_Block_Login.Login_Form,
+              String'(Templates.Parse
+                (Template_Defs.Block_Login.Template,
+                   (1 => Templates.Assoc
+                      (Template_Defs.Block_Login.Login,
+                       String'(Session.Get (SID, "LOGIN"))))))));
+
+         return Final_Parse (Request, Template_Defs.R_Block_Login.Template,
+                             Set, MIME.Text_XML);
       else
          return Response.Build
            (MIME.Text_XML,
@@ -436,16 +448,18 @@ package body V2P.Web_Server is
 
    function Logout_Callback (Request : in Status.Data) return Response.Data is
       SID : constant Session.Id := Status.Session (Request);
+      Set : Templates.Translate_Set;
    begin
       Session.Delete (SID);
 
-      return Response.Build
-        (MIME.Text_XML,
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.R_Block_Logout.Login_Form,
          String'(Templates.Parse
-           (Template_Defs.R_Block_Logout.Template,
-              (1 => Templates.Assoc (Template_Defs.R_Block_Logout.Login_Form,
-               String'(Templates.Parse
-                 (Template_Defs.Block_Login.Template)))))));
+           (Template_Defs.Block_Login.Template))));
+
+      return Final_Parse
+        (Request, Template_Defs.R_Block_Logout.Template,
+         Set, MIME.Text_XML);
    end Logout_Callback;
 
    -----------------------
@@ -596,7 +610,7 @@ package body V2P.Web_Server is
    begin
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         Template_Defs.V2p_Top.Ajax.Onclick_Show_Login,
+         "/xml",
          Action => Dispatchers.Callback.Create (Default_Xml_Callback'Access));
 
       Services.Dispatchers.URI.Register

@@ -13,25 +13,16 @@
 </head>
 
 <body class="@_$2_@ @_$3_@">
-  <p><a href="/">@_BABEL_V2P_SMALL_WEBSITE_NAME_@</a>
-    @@IF@@ @_$2_@ /= main
-    - <span id="show_login">
-    @@IF@@ @_LOGIN_@ = ""
-    @_BABEL_NOT_LOGGED_@
-    @@ELSE@@
-    @_LOGIN_@
-    @@END_IF@@
-    </span>
-    @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, show_login, show_login)
-    @@END_IF@@
+  <p id="top_links">
+    @_LAZY_QUICK_LOGIN_@
   </p>
 
-      <div id="status_bar"></div>
-      <div id="content">
-        <h1>@_BABEL_V2P_WEBSITE_NAME_@</h1>
+  <div id="status_bar"></div>
+  <div id="content">
+    <h1>@_BABEL_V2P_WEBSITE_NAME_@</h1>
 
-        <div class="forums">
-          <h2>Liste des forums</h2>
+    <div class="forums">
+      <h2>Liste des forums</h2>
 
-          @_LAZY_FORUM_LIST_@
-        </div>
+      @_LAZY_FORUM_LIST_@
+    </div>
