@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -41,17 +41,13 @@ package body Image.Magick is
    begin
       if Original_Size.X / Size.X > Original_Size.Y / Size.Y then
          X_Length := Size.X;
-         Y_Length := Original_Size.Y * Size.X / Original_Size.X;
+         Y_Length := Original_Size.Y * X_Length / Original_Size.X;
       else
-         X_Length := Original_Size.X * Y_Length / Original_Size.Y;
          Y_Length := Size.Y;
+         X_Length := Original_Size.X * Y_Length / Original_Size.Y;
       end if;
 
-      --  Thumb := G2F.Image_Resize.Resize_Image
-      --  (Img, (X_Length, Y_Length), G2F.Image_Resize.Mitchell, 0.0);
-
-      Thumb := G2F.Image_Resize.Thumbnail_Image
-        (Img, (X_Length, Y_Length));
+      Thumb := G2F.Image_Resize.Thumbnail_Image (Img, (X_Length, Y_Length));
 
       return Thumb;
    end Thumbnail;
