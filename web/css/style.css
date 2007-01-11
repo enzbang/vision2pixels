@@ -91,39 +91,10 @@ h1 {
     text-align:left;
 }
 
-/\* h2 { \*/
-/\*     line-height: normal; \*/
-/\*     font-style: normal; \*/
-/\*     text-align: center; \*/
-/\*     padding: 5px; \*/
-/\*     border: solid 2px ; \*/
-/\* } \*/
-
-/\* div#login { \*/
-/\*     text-align: right; \*/
-/\* } \*/
-
-/\* label, input { \*/
-/\*     font-size: small; \*/
-/\*     font-weight: bold; \*/
-/\* } \*/
-
-/\* input[type="submit"]{ \*/
-/\*     border: 1px solid ; \*/
-/\* } \*/
-
 .level_1 h3 {
     border-top : 15px solid ;
     padding-bottom: 2em;
 }
-
-/\* div#new_comment { \*/
-/\*     border : 1px solid ; \*/
-/\*     padding: 0.3em; \*/
-/\*     margin-top:1em; \*/
-/\*     padding-right : 2%; \*/
-/\* } \*/
-
 
 .slides {
   float:left;

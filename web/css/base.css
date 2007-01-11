@@ -27,7 +27,7 @@ h1 {
     border: 1px solid white;
 }
 
-.forum_post_page .forums {
+.forum_post_page .forums, .no_forum_post #title_name_input {
     display: none;
 }
 
@@ -54,31 +54,3 @@ h1 {
 body.no_forum_post #forum_post {
     display: none;
 }
-
-/\* div#status_bar { \*/
-/\*     display: none; \*/
-/\* } \*/
-
-/\* div#login { \*/
-/\*     margin-left: 50%; \*/
-/\*     width: 47%; \*/
-/\*     float: right; \*/
-/\* } \*/
-
-/\* /* Forum List */ \*/
-
-
-
-/\* div#main_image { \*/
-/\*     margin-left: auto; \*/
-/\*     margin-right: auto; \*/
-/\*     text-align: center; \*/
-/\*     margin-top : 4em; \*/
-/\*     margin-bottom: 4em; \*/
-/\* } \*/
-
-/\* #footer { \*/
-/\*     position: absolute; \*/
-/\*     width: 100%; \*/
-/\*     bottom: 10px; \*/
-/\* } \*/
