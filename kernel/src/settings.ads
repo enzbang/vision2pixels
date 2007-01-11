@@ -42,6 +42,9 @@ package Settings is
    function Ignore_Author_Click return Boolean;
    --  If not Anonymous_Visit_Counter, ignore author click on his photos
 
+   function Anonymous_Comment return Boolean;
+   --  If true, allows anonymous comment
+
    function Limit_Image_Size return Boolean;
    --  If set, check image size on creation
 

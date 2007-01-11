@@ -16,7 +16,13 @@
       <div class="level_@_COMMENT_LEVEL_@">
         <h3 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h3>
         <p class="comment_whois">@_BABEL_ON_DATE_@ @_DATE_@,
-        <a href="@_USER_PAGE_@" >@_USER_@</a> @_BABEL_HAS_WRITTEN_@
+        <a href="@_USER_PAGE_@" >
+        @@IF@@ @_USER_@ /= ""
+        @_USER_@
+        @@ELSE@@
+        @_BABEL_IS_ANONYMOUS_@ @_ANONYMOUS_USER_@
+        @@END_IF@@
+        </a> @_BABEL_HAS_WRITTEN_@
         </p>
         <p class="comment_body">@_COMMENT_@</p>
 
