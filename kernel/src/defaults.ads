@@ -37,6 +37,8 @@ package Defaults is
 
    Anonymous_Visit_Counter  : constant Boolean := False;
 
+   Anonymous_Comment        : constant Boolean := True;
+
    Ignore_Author_Click      : constant Boolean := True;
 
    Limit_Image_Size         : constant Boolean := True;

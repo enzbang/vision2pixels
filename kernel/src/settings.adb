@@ -38,13 +38,22 @@ package body Settings is
 
    type Attributes is
      (DB, DB_Name, Images_Path, Thumbs_Path,
-      Anonymous_Visit_Counter, Ignore_Author_Click,
+      Anonymous_Visit_Counter, Anonymous_Comment, Ignore_Author_Click,
       Limit_Image_Size, Image_Maximum_Width, Image_Maximum_Height,
       Image_Maximum_Size, Thumbnail_Maximum_Width, Thumbnail_Maximum_Height);
 
    package Conf is new Config (Attributes);
 
    package DB_Conf is new Conf.Enum_Values (DB_Kind);
+
+   -----------------------
+   -- Anonymous_Comment --
+   -----------------------
+
+   function Anonymous_Comment return Boolean is
+   begin
+      return Conf.Get_Value (Anonymous_Comment);
+   end Anonymous_Comment;
 
    -----------------------------
    -- Anonymous_Visit_Counter --
@@ -162,6 +171,7 @@ begin
    Conf.Set_Value (Images_Path, Defaults.Images_Path);
    Conf.Set_Value (Thumbs_Path, Defaults.Thumbs_Path);
    Conf.Set_Value (Anonymous_Visit_Counter, Defaults.Anonymous_Visit_Counter);
+   Conf.Set_Value (Anonymous_Comment, Defaults.Anonymous_Comment);
    Conf.Set_Value (Ignore_Author_Click, Defaults.Ignore_Author_Click);
    Conf.Set_Value (Limit_Image_Size, Defaults.Limit_Image_Size);
    Conf.Set_Value (Image_Maximum_Height, Defaults.Image_Maximum_Height);

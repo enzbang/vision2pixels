@@ -497,6 +497,7 @@ package body V2P.Web_Server is
       P         : constant Parameters.List := Status.Parameters (Request);
       Login     : constant String := Session.Get (SID, "LOGIN");
       TID       : constant String := Session.Get (SID, "TID");
+      Anonymous : constant String := Parameters.Get (P, "ANONYMOUS_USER");
       Name      : constant String := Parameters.Get (P, "NAME");
       Comment   : constant String := Parameters.Get (P, "COMMENT");
       Filename  : constant String := Parameters.Get (P, "FILENAME");
@@ -561,7 +562,8 @@ package body V2P.Web_Server is
 
       else
          Database.Insert_Comment
-           (Login, TID, Name, Comment, Image.Data.Filename (New_Image));
+           (Login, Anonymous, TID, Name, Comment,
+            Image.Data.Filename (New_Image));
          return Response.URL
            (Location => Template_Defs.Forum_Entry.URL & "?TID=" & TID);
       end if;

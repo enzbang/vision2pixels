@@ -193,6 +193,7 @@ package body V2P.Database is
       Comment_Level      : Templates.Tag;
       Nb_Levels_To_Close : Templates.Tag;
       User               : Templates.Tag;
+      Anonymous          : Templates.Tag;
       Date               : Templates.Tag;
       Comment            : Templates.Tag;
       Filename           : Templates.Tag;
@@ -259,7 +260,8 @@ package body V2P.Database is
 
       DBH.Prepare_Select
         (Iter,
-         "select comment.id, date, user_login, comment, filename"
+         "select comment.id, date, user_login, anonymous_user, "
+         & "comment, filename"
          & " from comment, post_comment"
          & " where post_id=" & Q (Tid)
          & " and post_comment.comment_id=comment.id");
@@ -270,8 +272,9 @@ package body V2P.Database is
          Comment_Id := Comment_Id & DB.String_Vectors.Element (Line, 1);
          Date       := Date       & DB.String_Vectors.Element (Line, 2);
          User       := User       & DB.String_Vectors.Element (Line, 3);
-         Comment    := Comment    & DB.String_Vectors.Element (Line, 4);
-         Filename   := Filename   & DB.String_Vectors.Element (Line, 5);
+         Anonymous  := Anonymous  & DB.String_Vectors.Element (Line, 4);
+         Comment    := Comment    & DB.String_Vectors.Element (Line, 5);
+         Filename   := Filename   & DB.String_Vectors.Element (Line, 6);
 
          --  Unthreaded view
 
@@ -287,6 +290,8 @@ package body V2P.Database is
         (Set, Templates.Assoc (Forum_Entry.Comment_Id, Comment_Id));
       Templates.Insert (Set, Templates.Assoc (Forum_Entry.Date, Date));
       Templates.Insert (Set, Templates.Assoc (Forum_Entry.User, User));
+      Templates.Insert (Set, Templates.Assoc (Forum_Entry.Anonymous_User,
+        Anonymous));
       Templates.Insert (Set, Templates.Assoc (Forum_Entry.Comment, Comment));
       Templates.Insert
         (Set, Templates.Assoc (Forum_Entry.Comment_Level, Comment_Level));
@@ -509,15 +514,17 @@ package body V2P.Database is
    --------------------
 
    procedure Insert_Comment
-     (Uid      : in String;
-      Thread   : in String;
-      Name     : in String;
-      Comment  : in String;
-      Filename : in String)
+     (Uid       : in String;
+      Anonymous : in String;
+      Thread    : in String;
+      Name      : in String;
+      Comment   : in String;
+      Filename  : in String)
    is
       pragma Unreferenced (Name);
 
-      procedure Insert_Table_Comment (User_Login, Comment : in String);
+      procedure Insert_Table_Comment
+        (User_Login, Anonymous, Comment : in String);
       --  Insert row into Comment table
 
       procedure Insert_Table_post_Comment (post_Id, Comment_Id : in String);
@@ -527,11 +534,14 @@ package body V2P.Database is
       -- Insert_Table_Comment --
       --------------------------
 
-      procedure Insert_Table_Comment (User_Login, Comment : in String) is
+      procedure Insert_Table_Comment
+        (User_Login, Anonymous, Comment : in String)
+      is
          SQL : constant String :=
-                 "insert into comment ('user_login', 'comment', 'filename')"
+                 "insert into comment ('user_login', 'anonymous_user', "
+                   & "'comment', 'filename')"
                    & " values ("
-                   & Q (User_Login) & ',' & Q (Comment)
+                   & Q (User_Login) & ',' & Q (Anonymous) & ',' & Q (Comment)
                    & ',' & Q (Filename) & ')';
       begin
          DBH.Execute (SQL);
@@ -553,7 +563,7 @@ package body V2P.Database is
 
    begin
       DBH.Begin_Transaction;
-      Insert_Table_Comment (Uid, Comment);
+      Insert_Table_Comment (Uid, Anonymous, Comment);
       Insert_Table_post_Comment (Thread, DBH.Last_Insert_Rowid);
       DBH.Commit;
    exception

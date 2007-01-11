@@ -56,11 +56,12 @@ package V2P.Database is
    --  User cannot be found into the database.
 
    procedure Insert_Comment
-     (Uid      : in String;
-      Thread   : in String;
-      Name     : in String;
-      Comment  : in String;
-      Filename : in String);
+     (Uid       : in String;
+      Anonymous : in String;
+      Thread    : in String;
+      Name      : in String;
+      Comment   : in String;
+      Filename  : in String);
    --  Insert comment Name/Comment into the given forum and thread
 
    procedure Insert_Post
