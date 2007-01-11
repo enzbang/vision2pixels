@@ -28,7 +28,8 @@
     <select name="CATEGORY" id="sel_category"></select>
   @@END_IF@@
   </p>
- @@-- <p><input name="NAME" id="title_input" type="entry" value="@_NAME_@"/></p>
+  <p id="title_name_input">
+  <input name="NAME" id="title_input" type="entry" value="@_NAME_@"/></p>
   <p><textarea name="COMMENT" size="100"
   id="comment_input"/>@_BABEL_ENTER_COMMENT_@</textarea></p>
   <p><input name="FILENAME" type="file"/><input name="ENTER" id="comment_form_enter" type="submit" value="OK"/></p>
