@@ -99,8 +99,6 @@ package body Image.Data is
       Thumb           : Image_Ptr;
       Thumb_Info      : Image_Info_Ptr;
    begin
-      Text_IO.Put_Line ("Thumb_Name : " & Thumb_Name);
-
       if not Exists (Containing_Directory (Thumb_Name)) then
          Create_Path (Containing_Directory (Thumb_Name));
       end if;
