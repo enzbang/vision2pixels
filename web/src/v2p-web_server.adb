@@ -98,6 +98,9 @@ package body V2P.Web_Server is
    function Photos_Callback (Request : in Status.Data) return Response.Data;
    --  Photos callback
 
+   function Thumbs_Callback (Request : in Status.Data) return Response.Data;
+   --  Thumbs callback
+
    function Onchange_Forum_List_Callback
      (Request : in Status.Data) return Response.Data;
    --  Called when a new forum is selected
@@ -234,11 +237,12 @@ package body V2P.Web_Server is
                       (Template_Defs.Block_Forum_Threads.Template,
                          Local_Translations))));
             end if;
+
          elsif Var_Name = Template_Defs.Lazy.Forum_Threads then
             if Session.Get (SID, "FID") /= "" then
-               Templates.Insert (Local_Translations,
-                                 Database.Get_Threads
-                                   (Fid => Session.Get (SID, "FID")));
+               Templates.Insert
+                 (Local_Translations,
+                  Database.Get_Threads (Fid => Session.Get (SID, "FID")));
 
                Templates.Insert
                  (Translations,
@@ -247,11 +251,12 @@ package body V2P.Web_Server is
                       (Template_Defs.Block_Forum_Threads.Template,
                          Local_Translations))));
             end if;
+
          elsif Var_Name = Template_Defs.Lazy.Quick_Login then
             if Session.Get (SID, "LOGIN") /= "" then
-               Templates.Insert (Local_Translations,
-                                 Database.Get_Threads
-                                   (User => Session.Get (SID, "LOGIN")));
+               Templates.Insert
+                 (Local_Translations,
+                  Database.Get_Threads (User => Session.Get (SID, "LOGIN")));
             end if;
 
             Templates.Insert
@@ -263,11 +268,6 @@ package body V2P.Web_Server is
 
          elsif Var_Name = Template_Defs.Lazy.New_Comment then
             if Session.Exist (SID, "FID") then
---                 Templates.Insert
---                   (Local_Translations,
---                    Templates.Assoc
---                 (Template_Defs.Block_New_Comment.Forum_Name,
---                      Database.Get_Forum (Session.Get (SID, "FID"))));
 
                Templates.Insert
                  (Local_Translations,
@@ -596,7 +596,7 @@ package body V2P.Web_Server is
       File : constant String :=
                Settings.Get_Images_Path & "/"
                  & URI (URI'First +
-                          Image_Source_Prefix'Length + 1 .. URI'Last);
+                          Images_Source_Prefix'Length + 1 .. URI'Last);
    begin
       return Response.File (MIME.Content_Type (File), File);
    end Photos_Callback;
@@ -679,8 +679,14 @@ package body V2P.Web_Server is
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         Image_Source_Prefix,
+         Images_Source_Prefix,
          Action => Dispatchers.Callback.Create (Photos_Callback'Access),
+         Prefix => True);
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         Thumbs_Source_Prefix,
+         Action => Dispatchers.Callback.Create (Thumbs_Callback'Access),
          Prefix => True);
 
       Services.Dispatchers.URI.Register
@@ -714,6 +720,20 @@ package body V2P.Web_Server is
       Server.Shutdown (HTTP);
    end Stop;
 
+   ---------------------
+   -- Thumbs_Callback --
+   ---------------------
+
+   function Thumbs_Callback (Request : in Status.Data) return Response.Data is
+      URI  : constant String := Status.URI (Request);
+      File : constant String :=
+               Settings.Get_Thumbs_Path & "/"
+                 & URI (URI'First +
+                          Thumbs_Source_Prefix'Length + 1 .. URI'Last);
+   begin
+      return Response.File (MIME.Content_Type (File), File);
+   end Thumbs_Callback;
+
    -------------------
    -- User_Callback --
    -------------------
@@ -730,15 +750,9 @@ package body V2P.Web_Server is
          Session.Remove (SID, "FID");
       end if;
 
---        if Session.Exist (SID, "LOGIN") then
---           Translations := Database.Get_Threads
---             (User => Session.Get (SID, "LOGIN"));
---        end if;
-
       return Final_Parse
         (Request,
-         Template_Defs.User.Template,
-         Translations);
+         Template_Defs.User.Template, Translations);
    end User_Callback;
 
    -----------------------------------

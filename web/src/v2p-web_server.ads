@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -21,8 +21,11 @@
 
 package V2P.Web_Server is
 
-   Image_Source_Prefix : constant String := "/photos";
-   --  Image source prefix used to reference images in URL
+   Images_Source_Prefix : constant String := "/photos";
+   --  Source prefix used to reference images in URL
+
+   Thumbs_Source_Prefix : constant String := "/thumbs";
+   --  Source prefix used to reference thumbs in URL
 
    procedure Start;
    --  Start the Web Server, port is taken from the ini file
