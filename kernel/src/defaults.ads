@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -33,7 +33,7 @@ package Defaults is
 
    Images_Path              : constant String := "images";
 
-   Thumbs_Path              : constant String := "images";
+   Thumbs_Path              : constant String := "thumbs";
 
    Anonymous_Visit_Counter  : constant Boolean := False;
 

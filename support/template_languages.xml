@@ -1,10 +1,11 @@
 <GPS>
   <Language>
     <Name>XML Template</Name>
-    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@|</Keywords>
+    <Parent>XML</Parent>
+    <Keywords mode="append">@@(TABLE|SET|E(LSE|ND_(IF|TABLE))|I(F|NCLUDE))@@|</Keywords>
     <Keywords>@_([^ ]*)_@</Keywords>
     <Context>
-      <New_Line_Comment_Start>@@--</New_Line_Comment_Start>
+      <New_Line_Comment_Start mode="append">@@--</New_Line_Comment_Start>
       <String_Delimiter>&quot;</String_Delimiter>
       <Constant_Character>&apos;</Constant_Character>
       <Can_Indent>True</Can_Indent>
@@ -16,10 +17,11 @@
 
   <Language>
     <Name>HTML Template</Name>
-    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@|</Keywords>
+    <Parent>HTML</Parent>
+    <Keywords mode="append">@@(TABLE|SET|E(LSE|ND_(IF|TABLE))|I(F|NCLUDE))@@|</Keywords>
     <Keywords>@_([^ ]*)_@</Keywords>
     <Context>
-      <New_Line_Comment_Start>@@--</New_Line_Comment_Start>
+      <New_Line_Comment_Start mode="append">@@--</New_Line_Comment_Start>
       <String_Delimiter>&quot;</String_Delimiter>
       <Constant_Character>&apos;</Constant_Character>
       <Can_Indent>True</Can_Indent>
@@ -32,10 +34,10 @@
   <Language>
     <Name>Javascript Template</Name>
     <Parent>Javascript</Parent>
-    <Keywords>@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@|</Keywords>
+    <Keywords mode="append">@@(TABLE|SET|E(LSE|ND_(IF|TABLE))|I(F|NCLUDE))@@|</Keywords>
     <Keywords>@_([^ ]*)_@</Keywords>
     <Context>
-      <New_Line_Comment_Start>@@--</New_Line_Comment_Start>
+      <New_Line_Comment_Start mode="append">@@--</New_Line_Comment_Start>
       <String_Delimiter>&quot;</String_Delimiter>
       <Constant_Character>&apos;</Constant_Character>
       <Can_Indent>True</Can_Indent>
@@ -48,7 +50,7 @@
   <Language>
     <Name>Ada Template</Name>
     <Parent>Ada</Parent>
-    <Keywords mode="append">@@(TABLE|SET|IF|END_IF|END_TABLE|ELSE|INCLUDE)@@|</Keywords>
+    <Keywords mode="append">@@(TABLE|SET|E(LSE|ND_(IF|TABLE))|I(F|NCLUDE))@@|</Keywords>
     <Keywords>@_([^ ]*)_@</Keywords>
     <Context>
       <New_Line_Comment_Start mode="append">@@--</New_Line_Comment_Start>

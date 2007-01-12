@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -48,7 +48,7 @@ package body V2P.Database is
    procedure Connect;
    --  Connect to the database if needed
 
-   DS              : Character renames GNAT.OS_Lib.Directory_Separator;
+   DS        : Character renames GNAT.OS_Lib.Directory_Separator;
 
    DBH       : DB.Handle'Class := DB_Handle.Get;
 
@@ -198,17 +198,14 @@ package body V2P.Database is
       Comment            : Templates.Tag;
       Filename           : Templates.Tag;
 
-      Photo_Id : Unbounded_String := To_Unbounded_String ("");
+      Photo_Id           : Unbounded_String := To_Unbounded_String ("");
    begin
       Connect;
 
       --  Get thread information
 
       DBH.Prepare_Select
-        (Iter,
-         "select name, comment,"
-         & " photo_id from post"
-         & " where id=" & Q (Tid));
+        (Iter, "select name, comment, photo_id from post where id=" & Q (Tid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -233,8 +230,8 @@ package body V2P.Database is
          --  Get image information
 
          DBH.Prepare_Select
-           (Iter, "select filename from photo where id = "
-              & To_String (Photo_Id));
+           (Iter,
+            "select filename from photo where id = " & To_String (Photo_Id));
 
          if Iter.More then
             Iter.Get_Line (Line);
@@ -242,9 +239,10 @@ package body V2P.Database is
             Templates.Insert
               (Set, Templates.Assoc
                  (Forum_Entry.Image_Source_Prefix,
-                  V2P.Web_Server.Image_Source_Prefix));
+                  V2P.Web_Server.Images_Source_Prefix));
 
             --  Insert the image path
+
             Templates.Insert
               (Set, Templates.Assoc
                  (Forum_Entry.Image_Source,
@@ -290,14 +288,15 @@ package body V2P.Database is
         (Set, Templates.Assoc (Forum_Entry.Comment_Id, Comment_Id));
       Templates.Insert (Set, Templates.Assoc (Forum_Entry.Date, Date));
       Templates.Insert (Set, Templates.Assoc (Forum_Entry.User, User));
-      Templates.Insert (Set, Templates.Assoc (Forum_Entry.Anonymous_User,
-        Anonymous));
+      Templates.Insert
+        (Set, Templates.Assoc (Forum_Entry.Anonymous_User, Anonymous));
       Templates.Insert (Set, Templates.Assoc (Forum_Entry.Comment, Comment));
       Templates.Insert
         (Set, Templates.Assoc (Forum_Entry.Comment_Level, Comment_Level));
       Templates.Insert
-        (Set, Templates.Assoc
-           (Forum_Entry.Nb_Levels_To_Close, Nb_Levels_To_Close));
+        (Set,
+         Templates.Assoc (Forum_Entry.Nb_Levels_To_Close, Nb_Levels_To_Close));
+
       return Set;
    end Get_Entry;
 
@@ -405,6 +404,13 @@ package body V2P.Database is
    is
       use type Templates.Tag;
 
+      SQL_Select : constant String :=
+                     "select post.id, post.name, photo.filename, "
+                       & "category.name, comment_counter, visit_counter ";
+      SQL_From   : constant String := " from post, category, photo ";
+      SQL_Where  : constant String := " where post.category_id = category.id "
+        & " and post.photo_id = photo.id";
+
       Set             : Templates.Translate_Set;
       Iter            : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line            : DB.String_Vectors.Vector;
@@ -413,50 +419,64 @@ package body V2P.Database is
       Category        : Templates.Tag;
       Comment_Counter : Templates.Tag;
       Visit_Counter   : Templates.Tag;
+      Thumb           : Templates.Tag;
 
-      SQL_Select : constant String := "select post.id, post.name, "
-        & "category.name, comment_counter, visit_counter ";
-      SQL_From   : constant String := " from post, category ";
-      SQL_Where  : constant String := " where post.category_id = category.Id ";
    begin
       Connect;
 
-      if User /= "" and Fid /= "" then
-         DBH.Prepare_Select (Iter,
-                             SQL_Select & SQL_From & ", user_post" & SQL_Where
-                             & "and category.forum_id = " & Q (Fid)
-                             & "and user_post.post_id = post.id"
-                             & "and user_post.user_id = " & Q (User));
-      elsif User /= "" and Fid = "" then
-         Ada.Text_IO.Put_Line
-           (SQL_Select & SQL_From & ", user_post" & SQL_Where
+      if User /= "" and then Fid /= "" then
+         --  ???
+         DBH.Prepare_Select
+           (Iter,
+            SQL_Select & SQL_From & ", user_post" & SQL_Where
+            & "and category.forum_id = " & Q (Fid)
+            & "and user_post.post_id = post.id"
+            & "and user_post.user_id = " & Q (User));
+
+      elsif User /= "" and then Fid = "" then
+         --  ???
+         DBH.Prepare_Select
+           (Iter,
+            SQL_Select & SQL_From & ", user_post " & SQL_Where
             & " and user_post.post_id = post.id "
-            & "and user_post.user_login = " & Q (User));
-         DBH.Prepare_Select (Iter,
-                             SQL_Select & SQL_From & ", user_post " & SQL_Where
-                             & " and user_post.post_id = post.id "
-                             & " and user_post.user_login = " & Q (User));
+            & " and user_post.user_login = " & Q (User));
+
       else
-         DBH.Prepare_Select (Iter,
-                             SQL_Select & SQL_From & SQL_Where
-                             & " and category.forum_id = " & Q (Fid));
+         --  Anonymous login
+
+         DBH.Prepare_Select
+           (Iter,
+            SQL_Select & SQL_From & SQL_Where
+            & " and category.forum_id = " & Q (Fid));
       end if;
 
       while Iter.More loop
          Iter.Get_Line (Line);
 
-         Id       := Id       & DB.String_Vectors.Element (Line, 1);
-         Name     := Name     & DB.String_Vectors.Element (Line, 2);
-         Category := Category & DB.String_Vectors.Element (Line, 3);
-         Comment_Counter
-           := Comment_Counter & DB.String_Vectors.Element (Line, 4);
-         Visit_Counter
-           := Visit_Counter & DB.String_Vectors.Element (Line, 5);
+         Id              := Id       & DB.String_Vectors.Element (Line, 1);
+         Name            := Name     & DB.String_Vectors.Element (Line, 2);
+         Thumb           := Thumb    & DB.String_Vectors.Element (Line, 3);
+         Category        := Category & DB.String_Vectors.Element (Line, 4);
+         Comment_Counter := Comment_Counter
+           & DB.String_Vectors.Element (Line, 5);
+         Visit_Counter   := Visit_Counter
+           & DB.String_Vectors.Element (Line, 6);
 
          Line.Clear;
       end loop;
 
       Iter.End_Select;
+
+      --  Insert the thumb path
+
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Block_Forum_Threads.Thumb_Source_Prefix,
+            V2P.Web_Server.Thumbs_Source_Prefix));
+
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Block_Forum_Threads.Thumb_Source, Thumb));
 
       Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.Tid, Id));
       Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.Name, Name));
@@ -623,12 +643,13 @@ package body V2P.Database is
       ------------------------
 
       procedure Insert_Table_Post
-        (Name, Category_Id, Comment, Photo_Id : in String) is
+        (Name, Category_Id, Comment, Photo_Id : in String)
+      is
          SQL : constant String :=
                  "insert into post ('name', 'comment', 'category_id',"
                    & "'template_id', 'visit_counter', 'comment_counter',"
                    & "'photo_id') values (" & Q (Name) &  ',' & Q (Comment)
-                   & ',' & Category_Id & ", 1, 0, 0," & Q (Photo_Id) & ')';
+                   & ',' & Category_Id & ", 1, 0, 0," & Photo_Id & ')';
       begin
          DBH.Execute (SQL);
       end Insert_Table_Post;
@@ -647,10 +668,10 @@ package body V2P.Database is
 
    begin
       DBH.Begin_Transaction;
+
       if Filename /= "" then
          Insert_Table_Photo (Filename, Height, Width, Size);
-         Insert_Table_Post (Name, Category_Id, Comment,
-                            DBH.Last_Insert_Rowid);
+         Insert_Table_Post (Name, Category_Id, Comment, DBH.Last_Insert_Rowid);
       else
          Insert_Table_Post (Name, Category_Id, Comment, "");
       end if;
