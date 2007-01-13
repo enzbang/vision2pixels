@@ -4,7 +4,7 @@
   action="/comment_form_enter" method="POST">
 <fieldset>
 <legend>
-  @_BABEL_NEW_COMMENT_@
+  @_BABEL_NEW_POST_@
 </legend>
   @@-- Is user logged
   <div id="comment_login"><p>
@@ -14,14 +14,12 @@
   </p></div>
   @@-- Is user in a specific forum
   <p>
-    <input name="FORUM" id="sel_forum_list"
-     type="hidden" value="@_Current_FID_@"/>
-    <input name="CATEGORY" id="sel_category"
-     type="hidden" value="@_Category_Id_@"/>
-     <input name="TID" id="TID" type="hidden" value="@_Current_TID_@" />
+    @_LAZY_FORUM_LIST_SELECT_@
+    <select name="CATEGORY" id="sel_category"></select>
+    <input name="TID" id="TID" type="hidden" value="" />
   </p>
   <p id="title_name_input">
-@@--  <input name="NAME" id="title_input" type="entry" value="@_NAME_@"/></p>
+@_BABEL_POST_NAME_@  <input name="NAME" id="title_input" type="entry" value=""/></p>
   <p><textarea name="COMMENT" size="100"
   id="comment_input"/>@_BABEL_ENTER_COMMENT_@</textarea></p>
   <p><input name="FILENAME" type="file"/><input name="ENTER" id="comment_form_enter" type="submit" value="OK"/></p>
