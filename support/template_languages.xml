@@ -3,7 +3,7 @@
     <Name>XML Template</Name>
     <Parent>XML</Parent>
     <Keywords mode="append">@@(TABLE|SET|E(LSE|ND_(IF|TABLE))|I(F|NCLUDE))@@|</Keywords>
-    <Keywords>@_([^ ]*)_@</Keywords>
+    <Keywords>@_([^ ]+)_@</Keywords>
     <Context>
       <New_Line_Comment_Start mode="append">@@--</New_Line_Comment_Start>
       <String_Delimiter>&quot;</String_Delimiter>
@@ -17,9 +17,9 @@
 
   <Language>
     <Name>HTML Template</Name>
-    <Parent>HTML</Parent>
+    <Parent>XML</Parent>
     <Keywords mode="append">@@(TABLE|SET|E(LSE|ND_(IF|TABLE))|I(F|NCLUDE))@@|</Keywords>
-    <Keywords>@_([^ ]*)_@</Keywords>
+    <Keywords>@_([^ ]+)_@</Keywords>
     <Context>
       <New_Line_Comment_Start mode="append">@@--</New_Line_Comment_Start>
       <String_Delimiter>&quot;</String_Delimiter>
@@ -35,7 +35,7 @@
     <Name>Javascript Template</Name>
     <Parent>Javascript</Parent>
     <Keywords mode="append">@@(TABLE|SET|E(LSE|ND_(IF|TABLE))|I(F|NCLUDE))@@|</Keywords>
-    <Keywords>@_([^ ]*)_@</Keywords>
+    <Keywords>@_([^ ]+)_@</Keywords>
     <Context>
       <New_Line_Comment_Start mode="append">@@--</New_Line_Comment_Start>
       <String_Delimiter>&quot;</String_Delimiter>
@@ -51,7 +51,7 @@
     <Name>Ada Template</Name>
     <Parent>Ada</Parent>
     <Keywords mode="append">@@(TABLE|SET|E(LSE|ND_(IF|TABLE))|I(F|NCLUDE))@@|</Keywords>
-    <Keywords>@_([^ ]*)_@</Keywords>
+    <Keywords>@_([^ ]+)_@</Keywords>
     <Context>
       <New_Line_Comment_Start mode="append">@@--</New_Line_Comment_Start>
       <String_Delimiter>&quot;</String_Delimiter>
