@@ -1,22 +1,9 @@
-@@IF@@ @_FOR_SELECT_@
-  @@IF@@ @_FID'LENGTH_@ = 1
-    @_FORUM_NAME_@
-  @@ELSE@@
-    <select name="FORUM" id="sel_forum_list">
-      <option value="x">@_BABEL_SELECT_FORUM_@</option>
-      @@TABLE@@
-      <option value="@_FID_@">@_FORUM_NAME_@</option>
-      @@END_TABLE@@
-    </select>
-  @@END_IF@@
-@@ELSE@@
-      <ul>
-        @@TABLE@@
-        <li><a
-               @@IF@@ @_FID_@ = @_Current_FID_@
-               id="forum_active"
-               @@END_IF@@
-               href="@_FORUM_THREAD_URL_@?FID=@_FID_@">@_FORUM_NAME_@</a></li>
-        @@END_TABLE@@
-      </ul>
+ <ul>
+@@TABLE@@
+<li><a
+@@IF@@ @_FID_@ = @_Current_FID_@
+id="forum_active"
 @@END_IF@@
+href="@_FORUM_THREAD_URL_@?FID=@_FID_@">@_FORUM_NAME_@</a></li>
+@@END_TABLE@@
+</ul>
