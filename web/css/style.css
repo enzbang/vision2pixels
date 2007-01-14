@@ -159,7 +159,15 @@ border: 1px solid #781351
 }
 
 input#login_form_enter {
-    display: none;
+/*    display: none;*/
+/* It is not possible to use the display property here as IE7 will
+refuse to activate the form if the submit button is not displayed. For
+the record, using "visibility: hidden" does not work. So the trick is
+to make the button with a null size and move it outside of the
+display. */
+    width: 0;
+    heigh: 0;
+    position: absolute; left: -9000px;
 }
 
 #main_image_comment {
@@ -221,6 +229,7 @@ input#login_form_enter {
 #new_comment input[type="file"] {
     width: 75%;
 }
+
 #new_comment input[type="submit"] {
     width: 10%;
     border: solid 1px;

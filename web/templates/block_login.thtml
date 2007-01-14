@@ -11,8 +11,7 @@ value="@_BABEL_LOGIN_DEFAULT_VALUE_@" size="15"/></p>
 <p><label for="password_input">Password</label>
 <input id="password_input" name="PASSWORD" type="password"
 value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/></p>
-<p><input name="ENTER" id="login_form_enter" type="submit"
-value="OK"/></p>
+<p><input name="ENTER" id="login_form_enter" type="submit" value="OK"/></p>
 <p><a href="my">Créer/Modifier votre compte</p>
 <p id="block_login_close">@_BABEL_CLICK_TO_CLOSE_@</p>
 </fieldset>
