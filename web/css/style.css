@@ -205,12 +205,17 @@ input#login_form_enter {
 }
 
 #new_comment input, #new_comment textarea {
-    width: 90%;
+    width: 70%;
     margin-left:5%;
     background-color: transparent;
     border: dashed 1px #781351;
     padding: 0.2em;
     color: #781351;
+}
+
+#new_comment label {
+    max-width: 30%;
+    color: DarkSlateBlue;
 }
 
 #new_comment input[type="file"] {
@@ -219,4 +224,8 @@ input#login_form_enter {
 #new_comment input[type="submit"] {
     width: 10%;
     border: solid 1px;
+}
+
+.thumbs img {
+    border : thin solid silver;
 }
