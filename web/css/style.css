@@ -92,7 +92,7 @@ h1 {
 }
 
 .level_1 h3 {
-    border-top : 15px solid ;
+    border-top : 1px solid white;
     padding-bottom: 2em;
 }
 
@@ -192,9 +192,9 @@ display. */
 }
 
 .comment_body {
-    border-bottom : solid 1px white;
     width: 500px;
     margin-left: 110px;
+    padding-bottom: 1em;
 }
 
 #new_comment {

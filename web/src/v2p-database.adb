@@ -205,7 +205,13 @@ package body V2P.Database is
       --  Get thread information
 
       DBH.Prepare_Select
-        (Iter, "select name, comment, photo_id from post where id=" & Q (Tid));
+        (Iter, "select post.name, post.comment, "
+         & "case post.photo_id is null "
+         & "when 1 then NULL else photo.filename end "
+         & "from post, photo where "
+         & "((post.photo_id NOTNULL and photo.id = post.photo_id) "
+         & "or (post.photo_id ISNULL)) "
+         & "and post.id=" & Q (Tid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -219,40 +225,21 @@ package body V2P.Database is
               (Forum_Entry.Image_Comment,
                DB.String_Vectors.Element (Line, 2)));
 
-         Photo_Id := To_Unbounded_String (DB.String_Vectors.Element (Line, 3));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Forum_Entry.Image_Source_Prefix,
+               V2P.Web_Server.Images_Source_Prefix));
+
+         --  Insert the image path
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Forum_Entry.Image_Source,
+               DB.String_Vectors.Element (Line, 3)));
          Line.Clear;
       end if;
 
       Iter.End_Select;
-
-      if Photo_Id /= To_Unbounded_String ("") then
-
-         --  Get image information
-
-         DBH.Prepare_Select
-           (Iter,
-            "select filename from photo where id = " & To_String (Photo_Id));
-
-         if Iter.More then
-            Iter.Get_Line (Line);
-
-            Templates.Insert
-              (Set, Templates.Assoc
-                 (Forum_Entry.Image_Source_Prefix,
-                  V2P.Web_Server.Images_Source_Prefix));
-
-            --  Insert the image path
-
-            Templates.Insert
-              (Set, Templates.Assoc
-                 (Forum_Entry.Image_Source,
-                  DB.String_Vectors.Element (Line, 1)));
-
-            Line.Clear;
-         end if;
-
-         Iter.End_Select;
-      end if;
 
       --  Get threads
 
@@ -405,11 +392,13 @@ package body V2P.Database is
       use type Templates.Tag;
 
       SQL_Select : constant String :=
-                     "select post.id, post.name, photo.filename, "
+                     "select post.id, post.name, case post.photo_id is null "
+                       & "when 1 then NULL else photo.filename end, "
                        & "category.name, comment_counter, visit_counter ";
       SQL_From   : constant String := " from post, category, photo ";
       SQL_Where  : constant String := " where post.category_id = category.id "
-        & " and post.photo_id = photo.id";
+        & " and ((photo_id NOTNULL and photo.id = post.photo_id) "
+        & "or (photo_id ISNULL))";
 
       Set             : Templates.Translate_Set;
       Iter            : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -673,7 +662,7 @@ package body V2P.Database is
          Insert_Table_Photo (Filename, Height, Width, Size);
          Insert_Table_Post (Name, Category_Id, Comment, DBH.Last_Insert_Rowid);
       else
-         Insert_Table_Post (Name, Category_Id, Comment, "");
+         Insert_Table_Post (Name, Category_Id, Comment, "Null");
       end if;
 
       Insert_Table_User_Post (Uid, DBH.Last_Insert_Rowid);

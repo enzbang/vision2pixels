@@ -14,6 +14,7 @@
 @@SET@@ BABEL_NOT_LOGGED="Non connecté"
 @@SET@@ BABEL_NEW_POST="Poster un nouveau message"
 @@SET@@ BABEL_NEW_COMMENT="Commentez !"
+@@SET@@ BABEL_POST_NAME="Titre :"
 @@SET@@ BABEL_COMMENT_TITLE="Titre"
 @@SET@@ BABEL_COMMENT_CONTENT="Commentaire : "
 @@SET@@ BABEL_SELECT_FORUM="Choisir un forum"
