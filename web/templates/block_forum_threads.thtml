@@ -7,8 +7,7 @@
 @@ELSE@@
 @@END_IF@@
     <p><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">@_NAME_@</a></p>
-    <p>@_CATEGORY_@ @_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@
-    </p>
+    <p>@_CATEGORY_@ @_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@</p>
 </li>
 @@END_TABLE@@
 </ul>

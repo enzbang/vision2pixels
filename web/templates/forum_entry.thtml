@@ -13,15 +13,21 @@
       <h2>@_NAME_@</h2>
       <p id="main_image_comment">@_IMAGE_COMMENT_@</p>
 
+      <h2 id="comments_section">Commentaires</h2>
+
       @@TABLE@@
-      <div class="level_@_COMMENT_LEVEL_@">
-        <h3 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h3>
+      <div class="level_@_COMMENT_LEVEL_@ type_@_MOD(2):TABLE_LINE_@">
+@@--        <h3 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h3>
+@@-- Comment title line since it's not yet used
         <p class="comment_whois">@_BABEL_ON_DATE_@ @_DATE_@,
+        @@IF@@ @_USER_@ = ""
+        @_BABEL_IS_ANONYMOUS_@
+        @@END_IF@@
         <a href="@_USER_PAGE_@" >
         @@IF@@ @_USER_@ /= ""
         @_USER_@
         @@ELSE@@
-        @_BABEL_IS_ANONYMOUS_@ @_ANONYMOUS_USER_@
+        @_ANONYMOUS_USER_@
         @@END_IF@@
         </a> @_BABEL_HAS_WRITTEN_@
         </p>

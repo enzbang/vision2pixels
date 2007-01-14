@@ -91,9 +91,14 @@ h1 {
     text-align:left;
 }
 
-.level_1 h3 {
-    border-top : 1px solid white;
-    padding-bottom: 2em;
+div.level_1 {
+    background-color: white;
+    border : thin solid silver;
+    margin: 0.4em;
+}
+
+div.type_0 {
+    background-color: WhiteSmoke;
 }
 
 .slides {
@@ -101,6 +106,7 @@ h1 {
   width:670px;
   list-style:none;
   line-height: 0.5em;
+  margin-top:4em;
 }
 
 .slides li {
@@ -194,7 +200,6 @@ display. */
 .comment_body {
     width: 500px;
     margin-left: 110px;
-    padding-bottom: 1em;
 }
 
 #new_comment {
@@ -237,6 +242,7 @@ display. */
 
 .thumbs img {
     border : thin solid silver;
+    margin-bottom: 0.3em;
 }
 
 .main span#show_login a {
@@ -247,4 +253,19 @@ display. */
 
 span#show_login a {
     margin-left: 1em;
+}
+
+#content {
+    border : thin solid silver;
+}
+
+.main #content {
+    border: none;
+}
+
+h2#comments_section {
+    color:DarkGray;
+    font-size:small;
+    text-align:left;
+    margin-left:1em;
 }
