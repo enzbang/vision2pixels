@@ -40,7 +40,9 @@ with V2P.Template_Defs.User;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_Quick_Login;
 with V2P.Template_Defs.Block_New_Comment;
+with V2P.Template_Defs.Block_New_Post;
 with V2P.Template_Defs.Block_Forum_List;
+with V2P.Template_Defs.Block_Forum_Select;
 with V2P.Template_Defs.Block_Forum_Threads;
 with V2P.Template_Defs.Block_User_Password_Change;
 with V2P.Template_Defs.R_Block_Login;
@@ -213,15 +215,10 @@ package body V2P.Web_Server is
          elsif Var_Name = Template_Defs.Lazy.Forum_List_Select then
             Templates.Insert (Local_Translations, Database.Get_Forums);
             Templates.Insert
-              (Local_Translations,
-               Templates.Assoc
-                 (Template_Defs.Block_Forum_List.For_Select, True));
-
-            Templates.Insert
               (Translations,
                Templates.Assoc (Template_Defs.Lazy.Forum_List_Select,
                  String'(Templates.Parse
-                   (Template_Defs.Block_Forum_List.Template,
+                   (Template_Defs.Block_Forum_Select.Template,
                       Local_Translations))));
 
          elsif Var_Name = Template_Defs.Lazy.User_Thread_List then
@@ -287,6 +284,14 @@ package body V2P.Web_Server is
                Templates.Assoc (Template_Defs.Lazy.New_Comment,
                  String'(Templates.Parse
                    (Template_Defs.Block_New_Comment.Template,
+                      Local_Translations,
+                      Lazy_Tag => LT'Unchecked_Access))));
+         elsif Var_Name = Template_Defs.Lazy.New_Post then
+            Templates.Insert
+              (Translations,
+               Templates.Assoc (Template_Defs.Lazy.New_Post,
+                 String'(Templates.Parse
+                   (Template_Defs.Block_New_Post.Template,
                       Local_Translations,
                       Lazy_Tag => LT'Unchecked_Access))));
          end if;
@@ -496,7 +501,7 @@ package body V2P.Web_Server is
       SID       : constant Session.Id := Status.Session (Request);
       P         : constant Parameters.List := Status.Parameters (Request);
       Login     : constant String := Session.Get (SID, "LOGIN");
-      TID       : constant String := Session.Get (SID, "TID");
+      TID       : constant String := Parameters.Get (P, "TID");
       Anonymous : constant String := Parameters.Get (P, "ANONYMOUS_USER");
       Name      : constant String := Parameters.Get (P, "NAME");
       Comment   : constant String := Parameters.Get (P, "COMMENT");
