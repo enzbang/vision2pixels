@@ -205,7 +205,13 @@ package body V2P.Database is
       --  Get thread information
 
       DBH.Prepare_Select
-        (Iter, "select name, comment, photo_id from post where id=" & Q (Tid));
+        (Iter, "select post.name, post.comment, "
+         & "case post.photo_id is null "
+         & "when 1 then NULL else photo.filename end "
+         & "from post, photo where "
+         & "((post.photo_id NOTNULL and photo.id = post.photo_id) "
+         & "or (post.photo_id ISNULL)) "
+         & "and post.id=" & Q (Tid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -219,40 +225,21 @@ package body V2P.Database is
               (Forum_Entry.Image_Comment,
                DB.String_Vectors.Element (Line, 2)));
 
-         Photo_Id := To_Unbounded_String (DB.String_Vectors.Element (Line, 3));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Forum_Entry.Image_Source_Prefix,
+               V2P.Web_Server.Images_Source_Prefix));
+
+         --  Insert the image path
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Forum_Entry.Image_Source,
+               DB.String_Vectors.Element (Line, 3)));
          Line.Clear;
       end if;
 
       Iter.End_Select;
-
-      if Photo_Id /= To_Unbounded_String ("") then
-
-         --  Get image information
-
-         DBH.Prepare_Select
-           (Iter,
-            "select filename from photo where id = " & To_String (Photo_Id));
-
-         if Iter.More then
-            Iter.Get_Line (Line);
-
-            Templates.Insert
-              (Set, Templates.Assoc
-                 (Forum_Entry.Image_Source_Prefix,
-                  V2P.Web_Server.Images_Source_Prefix));
-
-            --  Insert the image path
-
-            Templates.Insert
-              (Set, Templates.Assoc
-                 (Forum_Entry.Image_Source,
-                  DB.String_Vectors.Element (Line, 1)));
-
-            Line.Clear;
-         end if;
-
-         Iter.End_Select;
-      end if;
 
       --  Get threads
 
