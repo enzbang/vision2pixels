@@ -54,3 +54,7 @@ h1 {
 body.no_forum_post #forum_post {
     display: none;
 }
+
+body.main p#block_login_close {
+    display:none;
+}

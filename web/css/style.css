@@ -229,3 +229,13 @@ input#login_form_enter {
 .thumbs img {
     border : thin solid silver;
 }
+
+.main span#show_login a {
+    color: slateGray;
+    font-style : oblique;
+    text-decoration: none;
+}
+
+span#show_login a {
+    margin-left: 1em;
+}
