@@ -250,12 +250,6 @@ package body V2P.Web_Server is
             end if;
 
          elsif Var_Name = Template_Defs.Lazy.Quick_Login then
-            if Session.Get (SID, "LOGIN") /= "" then
-               Templates.Insert
-                 (Local_Translations,
-                  Database.Get_Threads (User => Session.Get (SID, "LOGIN")));
-            end if;
-
             Templates.Insert
               (Translations,
                Templates.Assoc (Template_Defs.Lazy.Quick_Login,
@@ -427,14 +421,6 @@ package body V2P.Web_Server is
          Templates.Insert (Set, Templates.Assoc
                              (Template_Defs.R_Block_Login.Login,
                               String'(Session.Get (SID, "LOGIN"))));
-
-         Templates.Insert (Set, Templates.Assoc
-                           (Template_Defs.R_Block_Login.Login_Form,
-              String'(Templates.Parse
-                (Template_Defs.Block_Login.Template,
-                   (1 => Templates.Assoc
-                      (Template_Defs.Block_Login.Login,
-                       String'(Session.Get (SID, "LOGIN"))))))));
 
          return Final_Parse (Request, Template_Defs.R_Block_Login.Template,
                              Set, MIME.Text_XML);

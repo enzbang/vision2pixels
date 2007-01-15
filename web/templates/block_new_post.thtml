@@ -19,9 +19,12 @@
     <input name="TID" id="TID" type="hidden" value="" />
   </p>
   <p id="title_name_input">
-@_BABEL_POST_NAME_@  <input name="NAME" id="title_input" type="entry" value=""/></p>
-  <p><textarea name="COMMENT" size="100"
-  id="comment_input"/>@_BABEL_ENTER_COMMENT_@</textarea></p>
+  <label for="title_input">
+  @_BABEL_POST_NAME_@</label>
+  <input name="NAME" id="title_input" type="entry" value=""/></p>
+  <p><label for id="comment_input">@_BABEL_ENTER_COMMENT_@</label>
+  <textarea name="COMMENT" size="100"
+  id="comment_input"/></textarea></p>
   <p><input name="FILENAME" type="file"/><input name="ENTER" id="comment_form_enter" type="submit" value="OK"/></p>
 </form>
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_forum_list, 4=>sel_forum_list)
