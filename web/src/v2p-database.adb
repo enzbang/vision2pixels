@@ -198,7 +198,6 @@ package body V2P.Database is
       Comment            : Templates.Tag;
       Filename           : Templates.Tag;
 
-      Photo_Id           : Unbounded_String := To_Unbounded_String ("");
    begin
       Connect;
 
@@ -271,8 +270,9 @@ package body V2P.Database is
 
       Iter.End_Select;
 
-      Templates.Insert
-        (Set, Templates.Assoc (Forum_Entry.Comment_Id, Comment_Id));
+      --    Templates.Insert
+      --      (Set, Templates.Assoc (Forum_Entry.Comment_Id, Comment_Id));
+      --    Comment id is not active since thread view is not supported
       Templates.Insert (Set, Templates.Assoc (Forum_Entry.Date, Date));
       Templates.Insert (Set, Templates.Assoc (Forum_Entry.User, User));
       Templates.Insert
