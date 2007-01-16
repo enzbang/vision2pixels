@@ -20,6 +20,7 @@
 @@SET@@ BABEL_YOUR_NAME="Votre nom : "
 @@SET@@ BABEL_SELECT_FORUM="Choisir un forum"
 @@SET@@ BABEL_LOGGED_AS="Connecté en tant que "
+@@SET@@ BABEL_DOES_NOT_EXIST="La page que vous avez demandé n'existe pas."
 @@SET@@ BABEL_WARN_EXCEED_MAX_SIZE="Attention l'image postée dépasse la taille maximale autorisée"
 @@SET@@ BABEL_WARN_EXCEED_MAX_DIMENSION="Attention l'image postée dépasse les dimensions maximales autorisées"
 @@SET@@ BABEL_LOGIN_REQUIRED="Vous devez être connecté pour poster un message"
