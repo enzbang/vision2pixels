@@ -269,3 +269,9 @@ h2#comments_section {
     text-align:left;
     margin-left:1em;
 }
+
+#doesnotexist {
+   padding-top: 5em;
+   color: red;
+   font-size:2em;
+}

@@ -36,6 +36,7 @@ with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Forum_Threads;
 with V2P.Template_Defs.Forum_Post;
 with V2P.Template_Defs.Main_Page;
+with V2P.Template_Defs.Error;
 with V2P.Template_Defs.User;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_Quick_Login;
@@ -111,6 +112,10 @@ package body V2P.Web_Server is
      (Request : in Status.Data) return Response.Data;
    --  Display v2p main page
 
+   function Error_Callback
+     (Request : in Status.Data) return Response.Data;
+   --  Error callback
+
    function New_Comment_Callback
      (Request : in Status.Data) return Response.Data;
    --  Enter a new comment into the database
@@ -153,6 +158,22 @@ package body V2P.Web_Server is
    begin
       return Response.File (MIME.Text_XML, File);
    end Default_Xml_Callback;
+
+   --------------------
+   -- Error_Callback --
+   --------------------
+
+   function Error_Callback
+     (Request : in Status.Data) return Response.Data
+   is
+      Translations : Templates.Translate_Set;
+   begin
+      --  ??? Should return 404 Error
+      return Final_Parse
+        (Request,
+         Template_Defs.Error.Template,
+         Translations);
+   end Error_Callback;
 
    -----------------
    -- Final_Parse --
@@ -683,7 +704,12 @@ package body V2P.Web_Server is
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
          Template_Defs.Main_Page.URL,
-         Action => Dispatchers.Callback.Create (Main_Page_Callback'Access),
+         Action => Dispatchers.Callback.Create (Main_Page_Callback'Access));
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         "/",
+         Action => Dispatchers.Callback.Create (Error_Callback'Access),
          Prefix => True);
 
       --  Log control
