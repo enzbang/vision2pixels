@@ -20,16 +20,15 @@
 @@--        <h3 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h3>
 @@-- Comment title line since it's not yet used
         <p class="comment_whois">@_BABEL_ON_DATE_@ @_DATE_@,
-        @@IF@@ @_USER_@ = ""
-        @_BABEL_IS_ANONYMOUS_@
-        @@END_IF@@
-        <a href="@_USER_PAGE_@" >
         @@IF@@ @_USER_@ /= ""
+        <a href="@_USER_PAGE_@" >
         @_USER_@
+        </a>
         @@ELSE@@
+        @_BABEL_IS_ANONYMOUS_@
         @_ANONYMOUS_USER_@
         @@END_IF@@
-        </a> @_BABEL_HAS_WRITTEN_@
+        @_BABEL_HAS_WRITTEN_@
         </p>
         <p class="comment_body">@_COMMENT_@</p>
 
