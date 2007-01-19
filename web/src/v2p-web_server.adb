@@ -19,6 +19,8 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;
+
 with AWS.Config.Set;
 with AWS.Dispatchers.Callback;
 with AWS.Messages;
@@ -45,16 +47,20 @@ with V2P.Template_Defs.Block_New_Post;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Forum_Select;
 with V2P.Template_Defs.Block_Forum_Threads;
+with V2P.Template_Defs.Block_Forum_Filter;
+with V2P.Template_Defs.Block_Forum_Navigate;
 with V2P.Template_Defs.Block_User_Password_Change;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Forum_List;
+with V2P.Template_Defs.R_Block_Forum_Filter;
 
 with Image.Data;
 with Settings;
 
 package body V2P.Web_Server is
 
+   use Ada.Strings.Unbounded;
    use AWS;
 
    Null_Set : Templates.Translate_Set;
@@ -108,6 +114,10 @@ package body V2P.Web_Server is
      (Request : in Status.Data) return Response.Data;
    --  Called when a new forum is selected
 
+   function Onchange_Filter_Forum
+     (Request : in Status.Data) return Response.Data;
+   --  Called when changing the forum sorting
+
    function Main_Page_Callback
      (Request : in Status.Data) return Response.Data;
    --  Display v2p main page
@@ -119,6 +129,13 @@ package body V2P.Web_Server is
    function New_Comment_Callback
      (Request : in Status.Data) return Response.Data;
    --  Enter a new comment into the database
+
+   function Final_Parse
+     (Request           : in Status.Data;
+      Template_Filename : in String;
+      Translations      : in Templates.Translate_Set) return Unbounded_String;
+   --  Parsing routines used for all V2P templates. This routine add supports
+   --  for lazy tags. Returns the resulting message body.
 
    function Final_Parse
      (Request           : in Status.Data;
@@ -182,8 +199,7 @@ package body V2P.Web_Server is
    function Final_Parse
      (Request           : in Status.Data;
       Template_Filename : in String;
-      Translations      : in Templates.Translate_Set;
-      Filename_Type     : in String := MIME.Text_HTML) return Response.Data
+      Translations      : in Templates.Translate_Set) return Unbounded_String
    is
       SID : constant Session.Id := Status.Session (Request);
 
@@ -199,8 +215,9 @@ package body V2P.Web_Server is
 
       Final_Translations : Templates.Translate_Set := Translations;
 
-      LT  : aliased Lazy_Tags := (Templates.Dynamic.Lazy_Tag with
-                                  Translations => Final_Translations);
+      LT  : aliased Lazy_Tags :=
+              (Templates.Dynamic.Lazy_Tag with
+               Translations => Final_Translations);
 
       -----------
       -- Value --
@@ -222,7 +239,9 @@ package body V2P.Web_Server is
               (Translations,
                Templates.Assoc (Template_Defs.Lazy.Login,
                  String'(Templates.Parse
-                   (Template_Defs.Block_Login.Template, Local_Translations))));
+                   (Template_Defs.Block_Login.Template,
+                      Local_Translations,
+                      Lazy_Tag => LT'Unchecked_Access))));
 
          elsif Var_Name = Template_Defs.Lazy.Forum_List then
             Templates.Insert (Local_Translations, Database.Get_Forums);
@@ -231,7 +250,8 @@ package body V2P.Web_Server is
                Templates.Assoc (Template_Defs.Lazy.Forum_List,
                  String'(Templates.Parse
                    (Template_Defs.Block_Forum_List.Template,
-                      Local_Translations))));
+                      Local_Translations,
+                      Lazy_Tag => LT'Unchecked_Access))));
 
          elsif Var_Name = Template_Defs.Lazy.Forum_List_Select then
             Templates.Insert (Local_Translations, Database.Get_Forums);
@@ -240,35 +260,52 @@ package body V2P.Web_Server is
                Templates.Assoc (Template_Defs.Lazy.Forum_List_Select,
                  String'(Templates.Parse
                    (Template_Defs.Block_Forum_Select.Template,
-                      Local_Translations))));
+                      Local_Translations,
+                      Lazy_Tag => LT'Unchecked_Access))));
 
          elsif Var_Name = Template_Defs.Lazy.User_Thread_List then
             if Session.Get (SID, "LOGIN") /= "" then
-               Templates.Insert (Local_Translations,
-                                 Database.Get_Threads
-                                   (User => Session.Get (SID, "LOGIN")));
+               Templates.Insert
+                 (Local_Translations,
+                  Database.Get_Threads (User => Session.Get (SID, "LOGIN")));
 
                Templates.Insert
                  (Translations,
                   Templates.Assoc (Template_Defs.Lazy.Forum_Threads,
                     String'(Templates.Parse
                       (Template_Defs.Block_Forum_Threads.Template,
-                         Local_Translations))));
+                         Local_Translations,
+                         Lazy_Tag => LT'Unchecked_Access))));
             end if;
 
          elsif Var_Name = Template_Defs.Lazy.Forum_Threads then
             if Session.Get (SID, "FID") /= "" then
                Templates.Insert
                  (Local_Translations,
-                  Database.Get_Threads (Fid => Session.Get (SID, "FID")));
+                  Database.Get_Threads
+                    (Fid    => Session.Get (SID, "FID"),
+                     Filter => Database.Filter_Mode'Value
+                       (Session.Get (SID, "FILTER"))));
 
                Templates.Insert
                  (Translations,
                   Templates.Assoc (Template_Defs.Lazy.Forum_Threads,
                     String'(Templates.Parse
                       (Template_Defs.Block_Forum_Threads.Template,
-                         Local_Translations))));
+                         Local_Translations,
+                         Lazy_Tag => LT'Unchecked_Access))));
             end if;
+
+--           elsif Var_Name = Template_Defs.Lazy.Forum_Navigate then
+--              Templates.Insert
+--                (Translations,
+--                 Templates.Assoc (Template_Defs.Lazy.Forum_Navigate,
+--                   String'(Templates.Parse
+--                     (Template_Defs.Block_Forum_Navigate.Template,
+--                        Local_Translations,
+--                        Lazy_Tag => LT'Unchecked_Access))));
+--  Commented out as the navigation will be added later,
+--  see block_forum_threads.thtml
 
          elsif Var_Name = Template_Defs.Lazy.Quick_Login then
             Templates.Insert
@@ -276,11 +313,11 @@ package body V2P.Web_Server is
                Templates.Assoc (Template_Defs.Lazy.Quick_Login,
                  String'(Templates.Parse
                    (Template_Defs.Block_Quick_Login.Template,
-                      Local_Translations))));
+                      Local_Translations,
+                      Lazy_Tag => LT'Unchecked_Access))));
 
          elsif Var_Name = Template_Defs.Lazy.New_Comment then
             if Session.Exist (SID, "FID") then
-
                Templates.Insert
                  (Local_Translations,
                   Database.Get_Categories (Session.Get (SID, "FID")));
@@ -301,12 +338,28 @@ package body V2P.Web_Server is
                    (Template_Defs.Block_New_Comment.Template,
                       Local_Translations,
                       Lazy_Tag => LT'Unchecked_Access))));
+
          elsif Var_Name = Template_Defs.Lazy.New_Post then
             Templates.Insert
               (Translations,
                Templates.Assoc (Template_Defs.Lazy.New_Post,
                  String'(Templates.Parse
                    (Template_Defs.Block_New_Post.Template,
+                      Local_Translations,
+                      Lazy_Tag => LT'Unchecked_Access))));
+
+         elsif Var_Name = Template_Defs.Lazy.Forum_Filter then
+            Templates.Insert
+              (Local_Translations,
+               Templates.Assoc
+                 (Template_Defs.Block_Forum_Filter.HTTP.Filter,
+                  String'(Session.Get (SID, "FILTER"))));
+
+            Templates.Insert
+              (Translations,
+               Templates.Assoc (Template_Defs.Lazy.Forum_Filter,
+                 String'(Templates.Parse
+                   (Template_Defs.Block_Forum_Filter.Template,
                       Local_Translations,
                       Lazy_Tag => LT'Unchecked_Access))));
          end if;
@@ -320,8 +373,8 @@ package body V2P.Web_Server is
       if Session.Get (SID, "FID") /= "" then
          Templates.Insert
            (Final_Translations,
-            Templates.Assoc ("Current_FID",
-              String'(Session.Get (SID, "FID"))));
+            Templates.Assoc
+              ("Current_FID", String'(Session.Get (SID, "FID"))));
       end if;
 
       --  Adds some URL
@@ -337,12 +390,21 @@ package body V2P.Web_Server is
         (Final_Translations,
          Templates.Assoc ("FORUM_ENTRY_URL", Template_Defs.Forum_Entry.URL));
 
+      return Templates.Parse
+        (Template_Filename,
+         Final_Translations,
+         Lazy_Tag => LT'Unchecked_Access);
+   end Final_Parse;
+
+   function Final_Parse
+     (Request           : in Status.Data;
+      Template_Filename : in String;
+      Translations      : in Templates.Translate_Set;
+      Filename_Type     : in String := MIME.Text_HTML) return Response.Data is
+   begin
       return Response.Build
         (Filename_Type,
-         String'(Templates.Parse
-           (Template_Filename,
-              Final_Translations,
-              Lazy_Tag => LT'Unchecked_Access)),
+         Final_Parse (Request, Template_Filename, Translations),
          Cache_Control => Messages.Prevent_Cache);
    end Final_Parse;
 
@@ -406,10 +468,11 @@ package body V2P.Web_Server is
    function Forum_Threads_Callback
      (Request : in Status.Data) return Response.Data
    is
-      SID : constant Session.Id := Status.Session (Request);
-      P   : constant Parameters.List := Status.Parameters (Request);
-      FID : constant String :=
-              Parameters.Get (P, Template_Defs.Forum_Threads.HTTP.Fid);
+      SID  : constant Session.Id := Status.Session (Request);
+      P    : constant Parameters.List := Status.Parameters (Request);
+      FID  : constant String :=
+               Parameters.Get (P, Template_Defs.Forum_Threads.HTTP.Fid);
+      From : Positive := 1;
    begin
       --  Set forum Id into the session
       Session.Set (SID, "FID", FID);
@@ -417,10 +480,17 @@ package body V2P.Web_Server is
          Session.Remove (SID, "TID");
       end if;
 
+      if Parameters.Exist
+        (P, Template_Defs.Block_Forum_Navigate.HTTP.From)
+      then
+         From := Positive'Value
+           (Parameters.Get (P, Template_Defs.Block_Forum_Navigate.HTTP.From));
+      end if;
+
       return Final_Parse
         (Request,
          Template_Defs.Forum_Threads.Template,
-         Database.Get_Threads (FID));
+         Database.Get_Threads (FID, From => From));
    end Forum_Threads_Callback;
 
    --------------------
@@ -439,12 +509,18 @@ package body V2P.Web_Server is
          Session.Set (SID, "LOGIN", Login);
          Session.Set (SID, "PASSWORD", Password);
 
-         Templates.Insert (Set, Templates.Assoc
-                             (Template_Defs.R_Block_Login.Login,
-                              String'(Session.Get (SID, "LOGIN"))));
+         --  Set user's filtering preference
+         --  ??? to be done when user's preferences are implemented
 
-         return Final_Parse (Request, Template_Defs.R_Block_Login.Template,
-                             Set, MIME.Text_XML);
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Template_Defs.R_Block_Login.Login,
+               String'(Session.Get (SID, "LOGIN"))));
+
+         return Final_Parse
+           (Request, Template_Defs.R_Block_Login.Template,
+            Set, MIME.Text_XML);
+
       else
          return Response.Build
            (MIME.Text_XML,
@@ -490,6 +566,13 @@ package body V2P.Web_Server is
          Session.Remove (SID, "FID");
       end if;
 
+      --  Set the default filter
+
+      if not Session.Exist (SID, "FILTER") then
+         Session.Set
+           (SID, "FILTER", Database.Filter_Mode'Image (Database.Today));
+      end if;
+
       return Final_Parse
         (Request,
          Template_Defs.Main_Page.Template,
@@ -505,20 +588,19 @@ package body V2P.Web_Server is
    is
       use Image.Data;
 
-      SID       : constant Session.Id := Status.Session (Request);
-      P         : constant Parameters.List := Status.Parameters (Request);
-      Login     : constant String := Session.Get (SID, "LOGIN");
-      TID       : constant String := Parameters.Get (P, "TID");
-      Anonymous : constant String := Parameters.Get (P, "ANONYMOUS_USER");
-      Name      : constant String := Parameters.Get (P, "NAME");
-      Comment   : constant String := Parameters.Get (P, "COMMENT");
-      Filename  : constant String := Parameters.Get (P, "FILENAME");
-      CID       : constant String := Parameters.Get (P, "CATEGORY");
-      Forum     : constant String := Parameters.Get (P, "FORUM");
+      SID          : constant Session.Id := Status.Session (Request);
+      P            : constant Parameters.List := Status.Parameters (Request);
+      Login        : constant String := Session.Get (SID, "LOGIN");
+      TID          : constant String := Parameters.Get (P, "TID");
+      Anonymous    : constant String := Parameters.Get (P, "ANONYMOUS_USER");
+      Name         : constant String := Parameters.Get (P, "NAME");
+      Comment      : constant String := Parameters.Get (P, "COMMENT");
+      Filename     : constant String := Parameters.Get (P, "FILENAME");
+      CID          : constant String := Parameters.Get (P, "CATEGORY");
+      Forum        : constant String := Parameters.Get (P, "FORUM");
+      Images_Path  : String renames Settings.Get_Images_Path;
 
-      Images_Path : constant String := Settings.Get_Images_Path;
-
-      New_Image : Image_Data;
+      New_Image    : Image_Data;
 
       Translations : Templates.Translate_Set;
 
@@ -581,6 +663,43 @@ package body V2P.Web_Server is
       end if;
    end New_Comment_Callback;
 
+   ---------------------------
+   -- Onchange_Filter_Forum --
+   ---------------------------
+
+   function Onchange_Filter_Forum
+     (Request : in Status.Data) return Response.Data
+   is
+      SID          : constant Session.Id := Status.Session (Request);
+      P            : constant Parameters.List := Status.Parameters (Request);
+      Filter       : constant String := Parameters.Get (P, "sel_filter_forum");
+      Translations : Templates.Translate_Set;
+   begin
+      --  Keep the sorting scheme into the session
+      --  ?? we need to add this into the user's preferences
+      Session.Set (SID, "FILTER", Filter);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.R_Block_Forum_Filter.Forum_Body,
+            Final_Parse
+              (Request,
+               Template_Defs.Block_Forum_Threads.Template,
+               Database.Get_Threads
+                 (Fid    => Session.Get (SID, "FID"),
+                  Filter => Database.Filter_Mode'Value
+                    (Session.Get (SID, "FILTER"))))));
+      --  ?? Note that the Get_Threads call is also on Final_Parse, this is
+      --  duplicate code. We really need to find a good and versatile framework
+      --  to solve this.
+
+      return Response.Build
+        (MIME.Text_XML,
+         String'(Templates.Parse
+           (Template_Defs.R_Block_Forum_Filter.Template, Translations)));
+   end Onchange_Filter_Forum;
+
    ----------------------------------
    -- Onchange_Forum_List_Callback --
    ----------------------------------
@@ -636,6 +755,11 @@ package body V2P.Web_Server is
         (Main_Dispatcher,
          Template_Defs.Block_Login.Ajax.Onclick_Logout_Enter,
          Action => Dispatchers.Callback.Create (Logout_Callback'Access));
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         Template_Defs.Forum_Threads.Ajax.Onchange_Sel_Filter_Forum,
+         Action => Dispatchers.Callback.Create (Onchange_Filter_Forum'Access));
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,

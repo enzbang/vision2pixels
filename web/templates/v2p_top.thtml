@@ -12,13 +12,13 @@
   @@INCLUDE@@ ../we_js/aws.tjs
 </head>
 
-<body class="@_$2_@ @_$3_@">
+<body class="@_$2_@ @_$3_@"> @@-- body is closed in v2p_end.thtml
   <p id="top_links">
     @_LAZY_QUICK_LOGIN_@
   </p>
 
   <div id="status_bar"></div>
-  <div id="content">
+  <div id="content"> @@-- This div is closed in v2p_end.thtml
     <h1>@_BABEL_V2P_WEBSITE_NAME_@</h1>
 
     <div class="forums">

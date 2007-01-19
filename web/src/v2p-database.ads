@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -25,6 +25,11 @@ package V2P.Database is
 
    use AWS;
 
+   type Filter_Mode is
+     (Today, Two_Days, Seven_Days, Fifty_Messages);
+   --  Kind of filter to apply when returning the list of posts, see
+   --  Get_Threads.
+
    function Get_Forums return Templates.Translate_Set;
    --  Returns the forum list
 
@@ -32,7 +37,10 @@ package V2P.Database is
    --  Returns the DB line for the given forum
 
    function Get_Threads
-     (Fid : in String := ""; User : in String := "")
+     (Fid    : in String := "";
+      User   : in String := "";
+      From   : in Positive := 1;
+      Filter : in Filter_Mode := Two_Days)
       return Templates.Translate_Set;
    --  Returns all threads for a given forum
 

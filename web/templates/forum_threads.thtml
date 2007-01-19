@@ -4,9 +4,10 @@
 @@--
 @@INCLUDE@@ v2p_top.thtml @_BABEL_THREAD_LIST_@ with_forum_list
 @@--
-@@--
-@_LAZY_FORUM_THREADS_@
 <div id="login">@_LAZY_LOGIN_@</div>
-@@--
+<div id="forum_filter">@_LAZY_FORUM_FILTER_@</div>
+<div id="forum_threads">@_LAZY_FORUM_THREADS_@</div>
 @@--
 @@INCLUDE@@ v2p_end.thtml
+@@--
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_filter_forum, 4 => sel_filter_forum)

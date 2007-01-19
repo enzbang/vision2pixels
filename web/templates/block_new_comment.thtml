@@ -29,5 +29,6 @@
     id="comment_input"/></textarea>
 </p>
   <p><input name="FILENAME" type="file"/><input name="ENTER" id="comment_form_enter" type="submit" value="OK"/></p>
+  </fieldset>
 </form>
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_forum_list, 4=>sel_forum_list)

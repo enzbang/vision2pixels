@@ -26,3 +26,5 @@
 @@SET@@ BABEL_LOGIN_REQUIRED="Vous devez être connecté pour poster un message"
 @@SET@@ BABEL_IS_ANONYMOUS="L'utilisateur anonyme "
 @@SET@@ BABEL_CLICK_TO_CLOSE="Fermer"
+@@SET@@ BABEL_PREVIOUS="Précédent"
+@@SET@@ BABEL_NEXT="Suivant"

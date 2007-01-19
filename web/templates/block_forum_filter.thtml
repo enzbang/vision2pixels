@@ -1,0 +1,29 @@
+<div id="forum_filter">
+  <p>
+    <select name="FILTER" id="sel_filter_forum">
+      <option value="TODAY"
+      @@IF@@ @_FILTER_@ = "TODAY"
+        selected
+      @@END_IF@@
+      >Aujourd'hui</option>
+
+      <option value="TWO_DAYS"
+      @@IF@@ @_FILTER_@ = "TWO_DAYS"
+        selected
+      @@END_IF@@
+      >2 derniers jours</option>
+
+      <option value="SEVEN_DAYS"
+      @@IF@@ @_FILTER_@ = "SEVEN_DAYS"
+        selected
+      @@END_IF@@
+      >7 derniers jours</option>
+
+      <option value="FIFTY_MESSAGES"
+      @@IF@@ @_FILTER_@ = "FIFTY_MESSAGES"
+        selected
+      @@END_IF@@
+      >50 dernières photos</option>
+    </select>
+  </p>
+</div>

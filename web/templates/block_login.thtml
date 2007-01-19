@@ -2,12 +2,12 @@
 @@--
 @@IF@@ @_LOGIN_@ = ""
 <form method="post" id="login_form" action="">
-<fieldset>
-<legend>@_BABEL_ASK_AUTHENTICATION_@</legend>
-<p>
-<label for="login_input">Login</label>
-<input id="login_input" name="LOGIN" type="text"
-value="@_BABEL_LOGIN_DEFAULT_VALUE_@" size="15"/></p>
+  <fieldset>
+    <legend>@_BABEL_ASK_AUTHENTICATION_@</legend>
+    <p>
+      <label for="login_input">Login</label>
+      <input id="login_input" name="LOGIN" type="text"
+      value="@_BABEL_LOGIN_DEFAULT_VALUE_@" size="15"/></p>
 <p><label for="password_input">Password</label>
 <input id="password_input" name="PASSWORD" type="password"
 value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/></p>

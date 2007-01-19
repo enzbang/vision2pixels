@@ -1,7 +1,7 @@
 ###########################################################################
 #                              Vision2Pixels
 #
-#                            Copyright (C) 2006
+#                          Copyright (C) 2006-2007
 #                       Pascal Obry - Olivier Ramonat
 #
 #   This library is free software; you can redistribute it and/or modify
@@ -26,7 +26,7 @@
 LOGFILE := ${shell pwd}/test/db_harness.log.${shell date +%Y%m%d-%H%M%S}
 
 all:
-	gnat make -XPRJ_Build=$(MODE) -Pdb_test
+	gnat make -XPRJ_BUILD=$(MODE) -Pdb_test
 
 setup install:
 

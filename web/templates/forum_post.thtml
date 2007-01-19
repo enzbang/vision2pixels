@@ -4,8 +4,8 @@
 @@--
 @@INCLUDE@@ v2p_top.thtml @_BABEL_FORUM_POST_@ forum_post_page
 @@IF@@ @_LOGIN_@ = ""
-@_BABEL_LOGIN_REQUIRED_@
+  @_BABEL_LOGIN_REQUIRED_@
 @@ELSE@@
-<div id="new_comment">@_LAZY_NEW_POST_@</div>
+  <div id="new_comment">@_LAZY_NEW_POST_@</div>
 @@END_IF@@
 @@INCLUDE@@ v2p_end.thtml

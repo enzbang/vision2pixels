@@ -32,6 +32,7 @@ with V2P.Web_Server;
 with V2P.DB_Handle;
 with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Block_Forum_Threads;
+with V2P.Template_Defs.Block_Forum_Navigate;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
@@ -386,7 +387,10 @@ package body V2P.Database is
    -----------------
 
    function Get_Threads
-     (Fid  : in String := ""; User : in String := "")
+     (Fid    : in String := "";
+      User   : in String := "";
+      From   : in Positive := 1;
+      Filter : in Filter_Mode := Two_Days)
       return Templates.Translate_Set
    is
       use type Templates.Tag;
@@ -399,6 +403,7 @@ package body V2P.Database is
       SQL_Where  : constant String := " where post.category_id = category.id "
         & " and ((photo_id NOTNULL and photo.id = post.photo_id) "
         & "or (photo_id ISNULL))";
+      Ordering   : constant String := " order by post.date_post DESC";
 
       Set             : Templates.Translate_Set;
       Iter            : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -409,35 +414,74 @@ package body V2P.Database is
       Comment_Counter : Templates.Tag;
       Visit_Counter   : Templates.Tag;
       Thumb           : Templates.Tag;
+      Select_Stmt     : Unbounded_String;
 
    begin
       Connect;
 
       if User /= "" and then Fid /= "" then
          --  ???
-         DBH.Prepare_Select
-           (Iter,
-            SQL_Select & SQL_From & ", user_post" & SQL_Where
-            & "and category.forum_id = " & Q (Fid)
-            & "and user_post.post_id = post.id"
-            & "and user_post.user_id = " & Q (User));
+
+         Select_Stmt := Select_Stmt & SQL_Select & SQL_From & ", user_post"
+           & SQL_Where
+           & "and category.forum_id = " & Q (Fid)
+           & "and user_post.post_id = post.id"
+           & "and user_post.user_id = " & Q (User);
 
       elsif User /= "" and then Fid = "" then
          --  ???
-         DBH.Prepare_Select
-           (Iter,
-            SQL_Select & SQL_From & ", user_post " & SQL_Where
-            & " and user_post.post_id = post.id "
-            & " and user_post.user_login = " & Q (User));
+
+         Select_Stmt := Select_Stmt & SQL_Select & SQL_From & ", user_post "
+           & SQL_Where
+           & " and user_post.post_id = post.id "
+           & " and user_post.user_login = " & Q (User);
 
       else
          --  Anonymous login
 
-         DBH.Prepare_Select
-           (Iter,
-            SQL_Select & SQL_From & SQL_Where
-            & " and category.forum_id = " & Q (Fid));
+         Select_Stmt := Select_Stmt & SQL_Select & SQL_From
+           & SQL_Where
+           & " and category.forum_id = " & Q (Fid);
       end if;
+
+      --  Add filtering into the select statement
+
+      case Filter is
+         when Today =>
+            Select_Stmt := Select_Stmt
+              & " and date(post.date_post) = date(current_date)"
+              & Ordering;
+
+         when Two_Days =>
+            Select_Stmt := Select_Stmt
+              & " and date(post.date_post) > date(current_date, '-2 days')"
+              & Ordering;
+
+         when Seven_Days =>
+            Select_Stmt := Select_Stmt
+              & " and date(post.date_post) > date(current_date, '-7 days')"
+              & Ordering;
+
+         when Fifty_Messages =>
+            Select_Stmt := Select_Stmt
+              & Ordering
+              & " limit 50 offset" & Positive'Image (From);
+
+            --  Add next and previous information into the translate set
+
+            if From /= 1 then
+               Templates.Insert
+                 (Set, Templates.Assoc
+                    (Block_Forum_Navigate.Previous, From - 50));
+            end if;
+
+            --  ??? need to check if there is more data !
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Block_Forum_Navigate.Next, From + 50));
+      end case;
+
+      DBH.Prepare_Select (Iter, To_String (Select_Stmt));
 
       while Iter.More loop
          Iter.Get_Line (Line);
