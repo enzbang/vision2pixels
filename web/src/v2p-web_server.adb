@@ -19,8 +19,6 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded;
-
 with AWS.Config.Set;
 with AWS.Dispatchers.Callback;
 with AWS.Messages;
@@ -60,10 +58,9 @@ with Settings;
 
 package body V2P.Web_Server is
 
-   use Ada.Strings.Unbounded;
    use AWS;
 
-   Null_Set : Templates.Translate_Set;
+   Null_Set        : Templates.Translate_Set;
 
    HTTP            : Server.HTTP;
    Configuration   : Config.Object;
@@ -133,13 +130,6 @@ package body V2P.Web_Server is
    function Final_Parse
      (Request           : in Status.Data;
       Template_Filename : in String;
-      Translations      : in Templates.Translate_Set) return Unbounded_String;
-   --  Parsing routines used for all V2P templates. This routine add supports
-   --  for lazy tags. Returns the resulting message body.
-
-   function Final_Parse
-     (Request           : in Status.Data;
-      Template_Filename : in String;
       Translations      : in Templates.Translate_Set;
       Filename_Type     : in String := MIME.Text_HTML) return Response.Data;
    --  Parsing routines used for all V2P templates. This routine add supports
@@ -199,7 +189,8 @@ package body V2P.Web_Server is
    function Final_Parse
      (Request           : in Status.Data;
       Template_Filename : in String;
-      Translations      : in Templates.Translate_Set) return Unbounded_String
+      Translations      : in Templates.Translate_Set;
+      Filename_Type     : in String := MIME.Text_HTML) return Response.Data
    is
       SID : constant Session.Id := Status.Session (Request);
 
@@ -390,21 +381,12 @@ package body V2P.Web_Server is
         (Final_Translations,
          Templates.Assoc ("FORUM_ENTRY_URL", Template_Defs.Forum_Entry.URL));
 
-      return Templates.Parse
-        (Template_Filename,
-         Final_Translations,
-         Lazy_Tag => LT'Unchecked_Access);
-   end Final_Parse;
-
-   function Final_Parse
-     (Request           : in Status.Data;
-      Template_Filename : in String;
-      Translations      : in Templates.Translate_Set;
-      Filename_Type     : in String := MIME.Text_HTML) return Response.Data is
-   begin
       return Response.Build
         (Filename_Type,
-         Final_Parse (Request, Template_Filename, Translations),
+         String'(Templates.Parse
+           (Template_Filename,
+              Final_Translations,
+              Lazy_Tag => LT'Unchecked_Access)),
          Cache_Control => Messages.Prevent_Cache);
    end Final_Parse;
 
@@ -679,25 +661,11 @@ package body V2P.Web_Server is
       --  ?? we need to add this into the user's preferences
       Session.Set (SID, "FILTER", Filter);
 
-      Templates.Insert
-        (Translations,
-         Templates.Assoc
-           (Template_Defs.R_Block_Forum_Filter.Forum_Body,
-            Final_Parse
-              (Request,
-               Template_Defs.Block_Forum_Threads.Template,
-               Database.Get_Threads
-                 (Fid    => Session.Get (SID, "FID"),
-                  Filter => Database.Filter_Mode'Value
-                    (Session.Get (SID, "FILTER"))))));
-      --  ?? Note that the Get_Threads call is also on Final_Parse, this is
-      --  duplicate code. We really need to find a good and versatile framework
-      --  to solve this.
-
-      return Response.Build
-        (MIME.Text_XML,
-         String'(Templates.Parse
-           (Template_Defs.R_Block_Forum_Filter.Template, Translations)));
+      return Final_Parse
+        (Request,
+         Template_Defs.R_Block_Forum_Filter.Template,
+         Translations,
+         MIME.Text_XML);
    end Onchange_Filter_Forum;
 
    ----------------------------------
