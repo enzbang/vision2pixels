@@ -1,7 +1,7 @@
 ###########################################################################
 #                              Vision2Pixels
 #
-#                            Copyright (C) 2006
+#                          Copyright (C) 2006-2007
 #                       Pascal Obry - Olivier Ramonat
 #
 #   This library is free software; you can redistribute it and/or modify
@@ -28,8 +28,8 @@ INSTALL_TESTS := $(PWD)/web/v2p-testdir
 LOGFILE := $(INSTALL_TESTS)/web_harness.log.${shell date +%Y%m%d-%H%M%S}
 
 all:
-	gnat make -XPRJ_Build=$(MODE) -Pweb
-	gnat make -XPRJ_Build=$(MODE) -Pweb_test
+	gnat make -XPRJ_BUILD=$(MODE) -Pweb
+	gnat make -XPRJ_BUILD=$(MODE) -Pweb_test
 
 setup:
 	-$(MKDIR) gen

@@ -2,12 +2,12 @@
 @@--
 <a href="/">@_BABEL_V2P_SMALL_WEBSITE_NAME_@</a>
 @@IF@@ @_$2_@ /= main
-<span id="show_login">
-@@IF@@ @_LOGIN_@ = ""
-<a href="#">@_BABEL_NOT_LOGGED_@</a>
-@@ELSE@@
-<a href="#">@_LOGIN_@</a>
-@@END_IF@@
-</span>
+  <span id="show_login">
+  @@IF@@ @_LOGIN_@ = ""
+    <a href="#">@_BABEL_NOT_LOGGED_@</a>
+  @@ELSE@@
+    <a href="#">@_LOGIN_@</a>
+  @@END_IF@@
+  </span>
 @@END_IF@@
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, show_login, 19=>/xml_show_login.xml)

@@ -1,7 +1,7 @@
 ###########################################################################
 #                              Vision2Pixels
 #
-#                            Copyright (C) 2006
+#                          Copyright (C) 2006-2007
 #                       Pascal Obry - Olivier Ramonat
 #
 #   This library is free software; you can redistribute it and/or modify
@@ -26,7 +26,7 @@
 LOGFILE := ${shell pwd}/test/image_harness.log.${shell date +%Y%m%d-%H%M%S}
 
 all:
-	gnat make -XPRJ_Build=$(MODE) -Pimage_test
+	gnat make -XPRJ_BUILD=$(MODE) -Pimage_test
 
 setup install:
 
@@ -38,6 +38,6 @@ run_tests:
 runtests: run_tests
 
 clean:
-	gnat clean -XPRJ_Build=$(MODE) -Pimage_test
+	gnat clean -XPRJ_BUILD=$(MODE) -Pimage_test
 	-$(RM) test/*.res test/image_harness.log.*
 	-$(RM) -r images

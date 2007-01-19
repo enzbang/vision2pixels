@@ -14,10 +14,10 @@ create table "comment" (
 "id" integer not null primary key autoincrement,
 "date" date default current_timestamp,
 "parent" integer null ,
-"user_login" varchar( 50 ) null ,
-"anonymous_user" vachar ( 50 ) null,
+"user_login" varchar(50) null ,
+"anonymous_user" vachar(50) null,
 "comment" longtext not null ,
-"filename" varchar( 512 ) null ,
+"filename" varchar(512) null ,
 foreign key ("user_login") references user("login"),
 foreign key ("parent") references comment("id")
 );
@@ -48,7 +48,7 @@ create table "post" (
 "photo_id" integer,
 "comment" longtext,
 "category_id" integer not null,
-"date_publication" date default current_timestamp,
+"date_post" date default current_timestamp,
 "last_comment_id" integer,
 "template_id" integer not null,
 "visit_counter" integer not null,
