@@ -26,7 +26,7 @@ package V2P.Database is
    use AWS;
 
    type Filter_Mode is
-     (Today, Two_Days, Seven_Days, Fifty_Messages);
+     (Today, Two_Days, Seven_Days, Fifty_Messages, All_Messages);
    --  Kind of filter to apply when returning the list of posts, see
    --  Get_Threads.
 
@@ -42,7 +42,7 @@ package V2P.Database is
      (Fid       : in String := "";
       User      : in String := "";
       From      : in Natural := 0;
-      Filter    : in Filter_Mode := Two_Days;
+      Filter    : in Filter_Mode := All_Messages;
       Order_Dir : in Order_Direction := DESC)
      return Templates.Translate_Set;
    --  Returns all threads for a given forum
@@ -52,7 +52,7 @@ package V2P.Database is
       Tid       : in String;
       User      : in String := "";
       From      : in Natural := 0;
-      Filter    : in Filter_Mode := Two_Days;
+      Filter    : in Filter_Mode := All_Messages;
       Order_Dir : in Order_Direction := DESC)
      return Templates.Translate_Set;
    --  Returns next and previous thread (id and thumbnail)
