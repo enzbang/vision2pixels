@@ -276,7 +276,9 @@ package body V2P.Web_Server is
                   Database.Get_Threads
                     (Fid    => Session.Get (SID, "FID"),
                      Filter => Database.Filter_Mode'Value
-                       (Session.Get (SID, "FILTER"))));
+                       (Session.Get (SID, "FILTER")),
+                     Order_Dir => Database.Order_Direction'Value
+                       (Session.Get (SID, "ORDER_DIR"))));
 
                Templates.Insert
                  (Translations,
@@ -374,12 +376,20 @@ package body V2P.Web_Server is
         (Final_Translations,
          Templates.Assoc
            ("FORUM_THREAD_URL", Template_Defs.Forum_Threads.URL));
+
       Templates.Insert
         (Final_Translations,
          Templates.Assoc ("FORUM_POST_URL", Template_Defs.Forum_Post.URL));
+
       Templates.Insert
         (Final_Translations,
          Templates.Assoc ("FORUM_ENTRY_URL", Template_Defs.Forum_Entry.URL));
+
+      --  Insert the thumb path
+
+      Templates.Insert
+        (Final_Translations, Templates.Assoc
+           ("THUMB_SOURCE_PREFIX", Thumbs_Source_Prefix));
 
       return Response.Build
         (Filename_Type,
@@ -400,9 +410,10 @@ package body V2P.Web_Server is
       SID         : constant Session.Id := Status.Session (Request);
       P           : constant Parameters.List := Status.Parameters (Request);
       TID         : constant String :=
-                      Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Tid);
+        Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Tid);
       Logged_User : constant String := Session.Get (SID, "LOGIN");
       Count_Visit : Boolean := True;
+      Set      : Templates.Translate_Set;
    begin
       --  Set thread Id into the session
       Session.Set (SID, "TID", TID);
@@ -426,10 +437,23 @@ package body V2P.Web_Server is
          Database.Increment_Visit_Counter (TID);
       end if;
 
+      --  Insert navigation links (previous and next post)
+      Templates.Insert
+        (Set, Database.Get_Thread_Navigation_Links
+           (Fid => Session.Get (SID, "FID"),
+            Tid => TID,
+            Filter => Database.Filter_Mode'Value
+              (Session.Get (SID, "FILTER")),
+            Order_Dir => Database.Order_Direction'Value
+              (Session.Get (SID, "ORDER_DIR"))));
+
+      Templates.Insert
+        (Set, Database.Get_Entry (TID));
+
       return Final_Parse
         (Request,
          Template_Defs.Forum_Entry.Template,
-         Database.Get_Entry (TID));
+         Set);
    end Forum_Entry_Callback;
 
    -------------------------
@@ -469,10 +493,25 @@ package body V2P.Web_Server is
            (Parameters.Get (P, Template_Defs.Block_Forum_Navigate.HTTP.From));
       end if;
 
+      if not Session.Exist (SID, "FILTER") then
+         Session.Set
+           (SID, "FILTER", Database.Filter_Mode'Image (Database.Today));
+         if Settings.Descending_Order then
+            Session.Set (SID, "ORDER_DIR",
+                         Database.Order_Direction'Image (Database.DESC));
+         else
+            Session.Set (SID, "ORDER_DIR",
+                         Database.Order_Direction'Image (Database.ASC));
+         end if;
+      end if;
+
       return Final_Parse
         (Request,
          Template_Defs.Forum_Threads.Template,
-         Database.Get_Threads (FID, From => From));
+         Database.Get_Threads
+           (FID, From => From,
+            Order_Dir => Database.Order_Direction'Value
+              (Session.Get (SID, "ORDER_DIR"))));
    end Forum_Threads_Callback;
 
    --------------------
@@ -553,6 +592,13 @@ package body V2P.Web_Server is
       if not Session.Exist (SID, "FILTER") then
          Session.Set
            (SID, "FILTER", Database.Filter_Mode'Image (Database.Today));
+         if Settings.Descending_Order then
+            Session.Set (SID, "ORDER_DIR",
+                         Database.Order_Direction'Image (Database.DESC));
+         else
+            Session.Set (SID, "ORDER_DIR",
+                         Database.Order_Direction'Image (Database.ASC));
+         end if;
       end if;
 
       return Final_Parse

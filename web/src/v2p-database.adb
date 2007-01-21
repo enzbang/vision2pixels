@@ -65,6 +65,17 @@ package body V2P.Database is
    pragma Inline (I);
    --  Returns Integer image
 
+   function Threads_Ordered_Select
+     (Fid        : in String := "";
+      User       : in String := "";
+      From       : in Natural := 0;
+      Filter     : in Filter_Mode := Two_Days;
+      Where_Cond : in String := "";
+      Order_Dir  : in Order_Direction := DESC;
+      Limit      : in Natural := 0)
+     return Unbounded_String;
+   --  Returns the select SQL query for listing threads with Filter
+
    -------------
    -- Connect --
    -------------
@@ -362,6 +373,10 @@ package body V2P.Database is
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
    begin
+      if Uid = "" then
+         return "";
+      end if;
+
       Connect;
 
       DBH.Prepare_Select
@@ -382,28 +397,118 @@ package body V2P.Database is
       end if;
    end Get_Password;
 
+   ---------------------------------
+   -- Get_Thread_Navigation_Links --
+   ---------------------------------
+
+   function Get_Thread_Navigation_Links
+     (Fid       : in String;
+      Tid       : in String;
+      User      : in String := "";
+      From      : in Natural := 0;
+      Filter    : in Filter_Mode := Two_Days;
+      Order_Dir : in Order_Direction := DESC)
+      return Templates.Translate_Set
+   is
+      Post_Date : constant String :=
+        "(select date_post from post where id = " & Tid & ") ";
+
+      And_Date_Post : constant String := " and date_post ";
+
+      Set            : Templates.Translate_Set;
+      Iter           : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line           : DB.String_Vectors.Vector;
+      Select_Stmt    : Unbounded_String;
+
+   begin
+
+      if Order_Dir = DESC then
+         --  Next is previous
+
+         Select_Stmt := Threads_Ordered_Select
+           (Fid, User, From, Filter,
+            And_Date_Post & " > " & Post_Date,
+            ASC, 1);
+      else
+         Select_Stmt := Threads_Ordered_Select
+           (Fid, User, From, Filter,
+            And_Date_Post & " < " & Post_Date,
+            DESC, 1);
+      end if;
+
+      Connect;
+
+      DBH.Prepare_Select (Iter, To_String (Select_Stmt));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Forum_Entry.Previous,
+               DB.String_Vectors.Element (Line, 1)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Forum_Entry.Previous_Thumb,
+               DB.String_Vectors.Element (Line, 3)));
+
+         Line.Clear;
+      end if;
+
+      Iter.End_Select;
+
+
+      if Order_Dir = DESC then
+         --  Previous is next
+
+         Select_Stmt := Threads_Ordered_Select
+           (Fid, User, From, Filter,
+            And_Date_Post & " < " & Post_Date,
+            DESC, 1);
+      else
+         Select_Stmt := Threads_Ordered_Select
+           (Fid, User, From, Filter,
+            And_Date_Post & " > " & Post_Date,
+            ASC, 1);
+      end if;
+
+      DBH.Prepare_Select (Iter, To_String (Select_Stmt));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Forum_Entry.Next,
+               DB.String_Vectors.Element (Line, 1)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Forum_Entry.Next_Thumb,
+               DB.String_Vectors.Element (Line, 3)));
+
+         Line.Clear;
+      end if;
+
+      Iter.End_Select;
+      return Set;
+
+   end Get_Thread_Navigation_Links;
+
    -----------------
    -- Get_Threads --
    -----------------
 
    function Get_Threads
-     (Fid    : in String := "";
-      User   : in String := "";
-      From   : in Positive := 1;
-      Filter : in Filter_Mode := Two_Days)
+     (Fid       : in String := "";
+      User      : in String := "";
+      From      : in Natural := 0;
+      Filter    : in Filter_Mode := Two_Days;
+      Order_Dir : in Order_Direction := DESC)
       return Templates.Translate_Set
    is
       use type Templates.Tag;
-
-      SQL_Select : constant String :=
-                     "select post.id, post.name, case post.photo_id is null "
-                       & "when 1 then NULL else photo.filename end, "
-                       & "category.name, comment_counter, visit_counter ";
-      SQL_From   : constant String := " from post, category, photo ";
-      SQL_Where  : constant String := " where post.category_id = category.id "
-        & " and ((photo_id NOTNULL and photo.id = post.photo_id) "
-        & "or (photo_id ISNULL))";
-      Ordering   : constant String := " order by post.date_post DESC";
 
       Set             : Templates.Translate_Set;
       Iter            : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -419,67 +524,29 @@ package body V2P.Database is
    begin
       Connect;
 
-      if User /= "" and then Fid /= "" then
+      Select_Stmt := Threads_Ordered_Select
+        (Fid => Fid,
+         User => User,
+         From => From,
+         Filter => Filter,
+         Order_Dir => Order_Dir);
+
+      if Filter = Fifty_Messages then
          --  ???
 
-         Select_Stmt := Select_Stmt & SQL_Select & SQL_From & ", user_post"
-           & SQL_Where
-           & "and category.forum_id = " & Q (Fid)
-           & "and user_post.post_id = post.id"
-           & "and user_post.user_id = " & Q (User);
+         --  Add next and previous information into the translate set
 
-      elsif User /= "" and then Fid = "" then
-         --  ???
-
-         Select_Stmt := Select_Stmt & SQL_Select & SQL_From & ", user_post "
-           & SQL_Where
-           & " and user_post.post_id = post.id "
-           & " and user_post.user_login = " & Q (User);
-
-      else
-         --  Anonymous login
-
-         Select_Stmt := Select_Stmt & SQL_Select & SQL_From
-           & SQL_Where
-           & " and category.forum_id = " & Q (Fid);
-      end if;
-
-      --  Add filtering into the select statement
-
-      case Filter is
-         when Today =>
-            Select_Stmt := Select_Stmt
-              & " and date(post.date_post) = date(current_date)"
-              & Ordering;
-
-         when Two_Days =>
-            Select_Stmt := Select_Stmt
-              & " and date(post.date_post) > date(current_date, '-2 days')"
-              & Ordering;
-
-         when Seven_Days =>
-            Select_Stmt := Select_Stmt
-              & " and date(post.date_post) > date(current_date, '-7 days')"
-              & Ordering;
-
-         when Fifty_Messages =>
-            Select_Stmt := Select_Stmt
-              & Ordering
-              & " limit 50 offset" & Positive'Image (From);
-
-            --  Add next and previous information into the translate set
-
-            if From /= 1 then
-               Templates.Insert
-                 (Set, Templates.Assoc
-                    (Block_Forum_Navigate.Previous, From - 50));
-            end if;
-
-            --  ??? need to check if there is more data !
+         if From /= 0 then
             Templates.Insert
               (Set, Templates.Assoc
-                 (Block_Forum_Navigate.Next, From + 50));
-      end case;
+                 (Block_Forum_Navigate.Previous, From - 50));
+         end if;
+
+         --  ??? need to check if there is more data !
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_Forum_Navigate.Next, From + 50));
+      end if;
 
       DBH.Prepare_Select (Iter, To_String (Select_Stmt));
 
@@ -499,13 +566,6 @@ package body V2P.Database is
       end loop;
 
       Iter.End_Select;
-
-      --  Insert the thumb path
-
-      Templates.Insert
-        (Set, Templates.Assoc
-           (Block_Forum_Threads.Thumb_Source_Prefix,
-            V2P.Web_Server.Thumbs_Source_Prefix));
 
       Templates.Insert
         (Set, Templates.Assoc
@@ -774,4 +834,88 @@ package body V2P.Database is
 
       return S (1 .. J);
    end Q;
+
+   function Threads_Ordered_Select
+     (Fid        : in String  := "";
+      User       : in String  := "";
+      From       : in Natural := 0;
+      Filter     : in Filter_Mode := Two_Days;
+      Where_Cond : in String  := "";
+      Order_Dir  : in Order_Direction := DESC;
+      Limit      : in Natural := 0)
+     return Unbounded_String
+   is
+      SQL_Select : constant String :=
+        "select post.id, post.name, case post.photo_id is null "
+        & "when 1 then NULL else photo.filename end, "
+                       & "category.name, comment_counter, visit_counter ";
+      SQL_From   : constant String := " from post, category, photo ";
+      SQL_Where  : constant String := " where post.category_id = category.id "
+        & " and ((photo_id NOTNULL and photo.id = post.photo_id) "
+        & "or (photo_id ISNULL)) " & Where_Cond;
+      Ordering   : constant String := " order by post.date_post " &
+        Order_Direction'Image (Order_Dir);
+
+      Select_Stmt : Unbounded_String := To_Unbounded_String ("");
+   begin
+      if User /= "" and then Fid /= "" then
+         --  ???
+
+         Select_Stmt := Select_Stmt & SQL_Select & SQL_From & ", user_post"
+           & SQL_Where
+           & "and category.forum_id = " & Q (Fid)
+           & "and user_post.post_id = post.id"
+           & "and user_post.user_id = " & Q (User);
+
+      elsif User /= "" and then Fid = "" then
+         --  ???
+
+         Select_Stmt := Select_Stmt & SQL_Select & SQL_From & ", user_post "
+           & SQL_Where
+           & " and user_post.post_id = post.id "
+           & " and user_post.user_login = " & Q (User);
+
+      else
+         --  Anonymous login
+
+         Select_Stmt := Select_Stmt & SQL_Select & SQL_From
+           & SQL_Where
+           & " and category.forum_id = " & Q (Fid);
+      end if;
+
+
+      --  Add filtering into the select statement
+
+      case Filter is
+         when Today =>
+            Select_Stmt := Select_Stmt
+              & " and date(post.date_post) = date(current_date)"
+              & Ordering;
+
+         when Two_Days =>
+            Select_Stmt := Select_Stmt
+              & " and date(post.date_post) > date(current_date, '-2 days')"
+              & Ordering;
+
+         when Seven_Days =>
+            Select_Stmt := Select_Stmt
+              & " and date(post.date_post) > date(current_date, '-7 days')"
+              & Ordering;
+
+         when Fifty_Messages =>
+            Select_Stmt := Select_Stmt
+              & Ordering;
+            if Limit = 0 then
+               Select_Stmt := Select_Stmt
+                 & " limit 50 offset" & Positive'Image (From);
+            end if;
+      end case;
+
+      if Limit /= 0 then
+         Select_Stmt := Select_Stmt & " limit " & Natural'Image (Limit);
+      end if;
+
+      return Select_Stmt;
+   end Threads_Ordered_Select;
+
 end V2P.Database;
