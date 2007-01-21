@@ -23,7 +23,14 @@
       @@IF@@ @_FILTER_@ = "FIFTY_MESSAGES"
         selected
       @@END_IF@@
-      >50 dernières photos</option>
+      >50 derniers posts</option>
+
+      <option value="ALL_MESSAGES"
+      @@IF@@ @_FILTER_@ = "ALL_MESSAGES"
+        selected
+      @@END_IF@@
+      >Tous les posts</option>
+
     </select>
   </p>
 </div>

@@ -495,7 +495,7 @@ package body V2P.Web_Server is
 
       if not Session.Exist (SID, "FILTER") then
          Session.Set
-           (SID, "FILTER", Database.Filter_Mode'Image (Database.Today));
+           (SID, "FILTER", Database.Filter_Mode'Image (Database.All_Messages));
          if Settings.Descending_Order then
             Session.Set (SID, "ORDER_DIR",
                          Database.Order_Direction'Image (Database.DESC));
@@ -591,7 +591,7 @@ package body V2P.Web_Server is
 
       if not Session.Exist (SID, "FILTER") then
          Session.Set
-           (SID, "FILTER", Database.Filter_Mode'Image (Database.Today));
+           (SID, "FILTER", Database.Filter_Mode'Image (Database.All_Messages));
          if Settings.Descending_Order then
             Session.Set (SID, "ORDER_DIR",
                          Database.Order_Direction'Image (Database.DESC));

@@ -69,7 +69,7 @@ package body V2P.Database is
      (Fid        : in String := "";
       User       : in String := "";
       From       : in Natural := 0;
-      Filter     : in Filter_Mode := Two_Days;
+      Filter     : in Filter_Mode := All_Messages;
       Where_Cond : in String := "";
       Order_Dir  : in Order_Direction := DESC;
       Limit      : in Natural := 0)
@@ -406,7 +406,7 @@ package body V2P.Database is
       Tid       : in String;
       User      : in String := "";
       From      : in Natural := 0;
-      Filter    : in Filter_Mode := Two_Days;
+      Filter    : in Filter_Mode := All_Messages;
       Order_Dir : in Order_Direction := DESC)
       return Templates.Translate_Set
    is
@@ -504,7 +504,7 @@ package body V2P.Database is
      (Fid       : in String := "";
       User      : in String := "";
       From      : in Natural := 0;
-      Filter    : in Filter_Mode := Two_Days;
+      Filter    : in Filter_Mode := All_Messages;
       Order_Dir : in Order_Direction := DESC)
       return Templates.Translate_Set
    is
@@ -839,7 +839,7 @@ package body V2P.Database is
      (Fid        : in String  := "";
       User       : in String  := "";
       From       : in Natural := 0;
-      Filter     : in Filter_Mode := Two_Days;
+      Filter     : in Filter_Mode := All_Messages;
       Where_Cond : in String  := "";
       Order_Dir  : in Order_Direction := DESC;
       Limit      : in Natural := 0)
@@ -909,6 +909,9 @@ package body V2P.Database is
                Select_Stmt := Select_Stmt
                  & " limit 50 offset" & Positive'Image (From);
             end if;
+         when All_Messages =>
+            Select_Stmt := Select_Stmt
+              & Ordering;
       end case;
 
       if Limit /= 0 then
