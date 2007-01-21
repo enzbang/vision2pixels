@@ -7,14 +7,16 @@
 @@--
 <div id="login">@_LAZY_LOGIN_@</div>
 
+<h2 id="post_name">@_NAME_@</h2>
+
 @@IF@@ @_PREVIOUS_@ /= ""
-<a href="@_FORUM_ENTRY_URL_@?TID=@_PREVIOUS_@&FID=@_Current_FID_@">
+<a id="previous_link" href="@_FORUM_ENTRY_URL_@?TID=@_PREVIOUS_@&FID=@_Current_FID_@">
 <img alt="previous" src="@_THUMB_SOURCE_PREFIX_@/@_PREVIOUS_THUMB_@" />
 </a>
 @@END_IF@@
 
 @@IF@@ @_NEXT_@ /= ""
-<a href="@_FORUM_ENTRY_URL_@?TID=@_NEXT_@&FID=@_Current_FID_@">
+<a id="next_link" href="@_FORUM_ENTRY_URL_@?TID=@_NEXT_@&FID=@_Current_FID_@">
 <img alt="next" src="@_THUMB_SOURCE_PREFIX_@/@_NEXT_THUMB_@" />
 </a>
 @@END_IF@@
@@ -24,7 +26,6 @@
   <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"/>
 </p>
 @@END_IF@@
-<h2>@_NAME_@</h2>
 <p id="main_image_comment">@_IMAGE_COMMENT_@</p>
 
 <h2 id="comments_section">Commentaires</h2>
