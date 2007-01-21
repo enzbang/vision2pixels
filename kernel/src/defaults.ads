@@ -53,4 +53,6 @@ package Defaults is
 
    Thumbnail_Maximum_Height : constant Integer := 150;
 
+   Descending_Order         : constant Boolean := True;
+
 end Defaults;

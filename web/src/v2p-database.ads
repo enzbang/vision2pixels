@@ -30,6 +30,8 @@ package V2P.Database is
    --  Kind of filter to apply when returning the list of posts, see
    --  Get_Threads.
 
+   type Order_Direction is (DESC, ASC);
+
    function Get_Forums return Templates.Translate_Set;
    --  Returns the forum list
 
@@ -37,12 +39,24 @@ package V2P.Database is
    --  Returns the DB line for the given forum
 
    function Get_Threads
-     (Fid    : in String := "";
-      User   : in String := "";
-      From   : in Positive := 1;
-      Filter : in Filter_Mode := Two_Days)
-      return Templates.Translate_Set;
+     (Fid       : in String := "";
+      User      : in String := "";
+      From      : in Natural := 0;
+      Filter    : in Filter_Mode := Two_Days;
+      Order_Dir : in Order_Direction := DESC)
+     return Templates.Translate_Set;
    --  Returns all threads for a given forum
+
+   function Get_Thread_Navigation_Links
+     (Fid       : in String;
+      Tid       : in String;
+      User      : in String := "";
+      From      : in Natural := 0;
+      Filter    : in Filter_Mode := Two_Days;
+      Order_Dir : in Order_Direction := DESC)
+     return Templates.Translate_Set;
+   --  Returns next and previous thread (id and thumbnail)
+
 
    function Get_Categories (Fid : in String) return Templates.Translate_Set;
    --  Returns all categories for the given forum

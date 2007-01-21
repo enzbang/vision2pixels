@@ -38,9 +38,10 @@ package body Settings is
 
    type Attributes is
      (DB, DB_Name, Images_Path, Thumbs_Path,
-      Anonymous_Visit_Counter, Anonymous_Comment, Ignore_Author_Click,
-      Limit_Image_Size, Image_Maximum_Width, Image_Maximum_Height,
-      Image_Maximum_Size, Thumbnail_Maximum_Width, Thumbnail_Maximum_Height);
+      Anonymous_Visit_Counter, Anonymous_Comment, Descending_Order,
+      Ignore_Author_Click, Limit_Image_Size, Image_Maximum_Width,
+      Image_Maximum_Height, Image_Maximum_Size, Thumbnail_Maximum_Width,
+      Thumbnail_Maximum_Height);
 
    package Conf is new Config (Attributes);
 
@@ -63,6 +64,15 @@ package body Settings is
    begin
       return Conf.Get_Value (Anonymous_Visit_Counter);
    end Anonymous_Visit_Counter;
+
+   ----------------------
+   -- Descending_Order --
+   ----------------------
+
+   function Descending_Order return Boolean is
+   begin
+      return Conf.Get_Value (Descending_Order);
+   end Descending_Order;
 
    ------------
    -- Get_DB --
@@ -172,6 +182,7 @@ begin
    Conf.Set_Value (Thumbs_Path, Defaults.Thumbs_Path);
    Conf.Set_Value (Anonymous_Visit_Counter, Defaults.Anonymous_Visit_Counter);
    Conf.Set_Value (Anonymous_Comment, Defaults.Anonymous_Comment);
+   Conf.Set_Value (Descending_Order, Defaults.Descending_Order);
    Conf.Set_Value (Ignore_Author_Click, Defaults.Ignore_Author_Click);
    Conf.Set_Value (Limit_Image_Size, Defaults.Limit_Image_Size);
    Conf.Set_Value (Image_Maximum_Height, Defaults.Image_Maximum_Height);

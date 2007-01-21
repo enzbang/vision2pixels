@@ -63,4 +63,7 @@ package Settings is
    function Thumbnail_Maximum_Height return Integer;
    --  Maximum height dimension of a thumbnail image
 
+   function Descending_Order return Boolean;
+   --  Returns true is the threads view must be sorted in descending order
+
 end Settings;
