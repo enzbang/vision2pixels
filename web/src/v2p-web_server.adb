@@ -411,12 +411,28 @@ package body V2P.Web_Server is
       P           : constant Parameters.List := Status.Parameters (Request);
       TID         : constant String :=
         Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Tid);
+      FID         : constant String :=
+        Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Fid);
       Logged_User : constant String := Session.Get (SID, "LOGIN");
       Count_Visit : Boolean := True;
       Set      : Templates.Translate_Set;
    begin
       --  Set thread Id into the session
       Session.Set (SID, "TID", TID);
+      Session.Set (SID, "FID", FID);
+
+      if not Session.Exist (SID, "FILTER") then
+         Session.Set
+           (SID, "FILTER", Database.Filter_Mode'Image (Database.All_Messages));
+         if Settings.Descending_Order then
+            Session.Set (SID, "ORDER_DIR",
+                         Database.Order_Direction'Image (Database.DESC));
+         else
+            Session.Set (SID, "ORDER_DIR",
+                         Database.Order_Direction'Image (Database.ASC));
+         end if;
+      end if;
+
 
       if not Settings.Anonymous_Visit_Counter then
          --  Do not count anonymous click
@@ -436,6 +452,7 @@ package body V2P.Web_Server is
       if Count_Visit then
          Database.Increment_Visit_Counter (TID);
       end if;
+
 
       --  Insert navigation links (previous and next post)
       Templates.Insert
