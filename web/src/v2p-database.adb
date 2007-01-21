@@ -619,6 +619,7 @@ package body V2P.Database is
               "update post set visit_counter = visit_counter + 1 where "
                 & "id = " & Q (Pid);
    begin
+      Connect;
       DBH.Execute (SQL);
    end Increment_Visit_Counter;
 
