@@ -637,6 +637,7 @@ package body V2P.Web_Server is
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String := Session.Get (SID, "LOGIN");
       TID          : constant String := Parameters.Get (P, "TID");
+      FID          : constant String := Parameters.Get (P, "FID");
       Anonymous    : constant String := Parameters.Get (P, "ANONYMOUS_USER");
       Name         : constant String := Parameters.Get (P, "NAME");
       Comment      : constant String := Parameters.Get (P, "COMMENT");
@@ -650,7 +651,6 @@ package body V2P.Web_Server is
       Translations : Templates.Translate_Set;
 
    begin
-
       if Filename /= "" then
 
          Init (New_Image, Filename, Database.Get_Category_Full_Name (CID));
@@ -704,7 +704,8 @@ package body V2P.Web_Server is
            (Login, Anonymous, TID, Name, Comment,
             Image.Data.Filename (New_Image));
          return Response.URL
-           (Location => Template_Defs.Forum_Entry.URL & "?TID=" & TID);
+           (Location => Template_Defs.Forum_Entry.URL & "?TID=" & TID
+              & "&FID=" & FID);
       end if;
    end New_Comment_Callback;
 
