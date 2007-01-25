@@ -56,7 +56,6 @@ project Shared is
      ("-O2", "-gnatn");
 
    package Compiler is
-
       case Build is
          when "Debug" =>
             for Default_Switches ("Ada") use Common_Options & Debug_Options;
@@ -64,7 +63,6 @@ project Shared is
          when "Release" =>
             for Default_Switches ("Ada") use Common_Options & Release_Options;
       end case;
-
    end Compiler;
 
    ------------
@@ -72,7 +70,13 @@ project Shared is
    ------------
 
    package Binder is
-      for Default_Switches ("Ada") use ("-E");
+      case Build is
+         when "Debug" =>
+            for Default_Switches ("Ada") use ("-E", "-g");
+
+         when "Release" =>
+            for Default_Switches ("Ada") use ("-E");
+      end case;
    end Binder;
 
    ------------
@@ -80,8 +84,15 @@ project Shared is
    ------------
 
    package Linker is
-      for Default_Switches ("Ada") use
-         ("-L" & ImageMagick_Lib, "-L" & Jpeg_Lib);
+      case Build is
+         when "Debug" =>
+            for Default_Switches ("Ada") use
+               ("-g", "-L" & ImageMagick_Lib, "-L" & Jpeg_Lib);
+
+         when "Release" =>
+            for Default_Switches ("Ada") use
+               ("-L" & ImageMagick_Lib, "-L" & Jpeg_Lib);
+      end case;
    end Linker;
 
 end Shared;

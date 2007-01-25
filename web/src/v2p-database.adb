@@ -20,6 +20,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Exceptions;
+with Ada.Task_Attributes;
 with Ada.Text_IO;
 with Ada.Strings.Unbounded;
 
@@ -46,14 +47,19 @@ package body V2P.Database is
 
    use V2P.Template_Defs;
 
-   procedure Connect;
+   DS : Character renames GNAT.OS_Lib.Directory_Separator;
+
+   type TLS_DBH is record
+      Handle    : access DB.Handle'Class;
+      Connected : Boolean;
+   end record;
+
+   Null_DBH : constant TLS_DBH := (null, False);
+
+   package DBH_TLS is new Task_Attributes (TLS_DBH, Null_DBH);
+
+   procedure Connect (DBH : in out TLS_DBH);
    --  Connect to the database if needed
-
-   DS        : Character renames GNAT.OS_Lib.Directory_Separator;
-
-   DBH       : DB.Handle'Class := DB_Handle.Get;
-
-   Connected : Boolean := False;
 
    function Q (Str : in String) return String;
    pragma Inline (Q);
@@ -73,18 +79,20 @@ package body V2P.Database is
       Where_Cond : in String := "";
       Order_Dir  : in Order_Direction := DESC;
       Limit      : in Natural := 0)
-     return Unbounded_String;
+      return Unbounded_String;
    --  Returns the select SQL query for listing threads with Filter
 
    -------------
    -- Connect --
    -------------
 
-   procedure Connect is
+   procedure Connect (DBH : in out TLS_DBH) is
    begin
-      if not Connected then
-         DBH.Connect (Settings.Get_DB_Name);
-         Connected := True;
+      if not DBH.Connected then
+         DBH.Handle := new DB.Handle'Class'(DB_Handle.Get);
+         DBH.Handle.Connect (Settings.Get_DB_Name);
+         DBH.Connected := True;
+         DBH_TLS.Set_Value (DBH);
       end if;
    end Connect;
 
@@ -94,15 +102,16 @@ package body V2P.Database is
 
    function Get_Categories (Fid : in String) return Templates.Translate_Set is
       use type Templates.Tag;
+      DBH  : TLS_DBH := DBH_TLS.Value;
       Set  : Templates.Translate_Set;
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
       Id   : Templates.Tag;
       Name : Templates.Tag;
    begin
-      Connect;
+      Connect (DBH);
 
-      DBH.Prepare_Select
+      DBH.Handle.Prepare_Select
         (Iter, "select id, name from category" & " where forum_id=" & Q (Fid));
 
       while Iter.More loop
@@ -130,15 +139,16 @@ package body V2P.Database is
 
    function Get_Category (Tid : in String) return Templates.Translate_Set is
       use type Templates.Tag;
+      DBH  : TLS_DBH := DBH_TLS.Value;
       Set  : Templates.Translate_Set;
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
       Id   : Templates.Tag;
       Name : Templates.Tag;
    begin
-      Connect;
+      Connect (DBH);
 
-      DBH.Prepare_Select
+      DBH.Handle.Prepare_Select
         (Iter, "select id, name from category"
            & " where post.category_id=category.id post.id=" & Q (Tid));
 
@@ -167,13 +177,14 @@ package body V2P.Database is
    ----------------------------
 
    function Get_Category_Full_Name (CID : in String) return String is
+      DBH  : TLS_DBH := DBH_TLS.Value;
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
       Name : Unbounded_String;
    begin
-      Connect;
+      Connect (DBH);
 
-      DBH.Prepare_Select
+      DBH.Handle.Prepare_Select
         (Iter, "select f.name, c.name from category c, "
            & "forum f where f.id = c.forum_id and c.id = " & Q (CID));
 
@@ -198,6 +209,7 @@ package body V2P.Database is
 
    function Get_Entry (Tid : in String) return Templates.Translate_Set is
       use type Templates.Tag;
+      DBH                : TLS_DBH := DBH_TLS.Value;
       Set                : Templates.Translate_Set;
       Iter               : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line               : DB.String_Vectors.Vector;
@@ -211,11 +223,11 @@ package body V2P.Database is
       Filename           : Templates.Tag;
 
    begin
-      Connect;
+      Connect (DBH);
 
       --  Get thread information
 
-      DBH.Prepare_Select
+      DBH.Handle.Prepare_Select
         (Iter, "select post.name, post.comment, "
          & "case post.photo_id is null "
          & "when 1 then NULL else photo.filename end "
@@ -254,7 +266,7 @@ package body V2P.Database is
 
       --  Get threads
 
-      DBH.Prepare_Select
+      DBH.Handle.Prepare_Select
         (Iter,
          "select comment.id, date, user_login, anonymous_user, "
          & "comment, filename"
@@ -304,12 +316,14 @@ package body V2P.Database is
    ---------------
 
    function Get_Forum (Fid : in String) return String is
+      DBH  : TLS_DBH := DBH_TLS.Value;
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
    begin
-      Connect;
+      Connect (DBH);
 
-      DBH.Prepare_Select (Iter, "select name from forum where id=" & Q (Fid));
+      DBH.Handle.Prepare_Select
+        (Iter, "select name from forum where id=" & Q (Fid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -335,15 +349,16 @@ package body V2P.Database is
    function Get_Forums return Templates.Translate_Set is
       use type Templates.Tag;
 
+      DBH  : TLS_DBH := DBH_TLS.Value;
       Set  : Templates.Translate_Set;
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
       Id   : Templates.Tag;
       Name : Templates.Tag;
    begin
-      Connect;
+      Connect (DBH);
 
-      DBH.Prepare_Select (Iter, "select id, name from forum");
+      DBH.Handle.Prepare_Select (Iter, "select id, name from forum");
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -370,6 +385,7 @@ package body V2P.Database is
    function Get_Password (Uid : in String) return String is
       use type Templates.Tag;
 
+      DBH  : TLS_DBH := DBH_TLS.Value;
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
    begin
@@ -377,9 +393,9 @@ package body V2P.Database is
          return "";
       end if;
 
-      Connect;
+      Connect (DBH);
 
-      DBH.Prepare_Select
+      DBH.Handle.Prepare_Select
         (Iter, "select password from user where login=" & Q (Uid));
 
       if Iter.More then
@@ -415,13 +431,13 @@ package body V2P.Database is
 
       And_Date_Post : constant String := " and date_post ";
 
-      Set            : Templates.Translate_Set;
-      Iter           : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line           : DB.String_Vectors.Vector;
-      Select_Stmt    : Unbounded_String;
+      DBH           : TLS_DBH := DBH_TLS.Value;
+      Set           : Templates.Translate_Set;
+      Iter          : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line          : DB.String_Vectors.Vector;
+      Select_Stmt   : Unbounded_String;
 
    begin
-
       if Order_Dir = DESC then
          --  Next is previous
 
@@ -436,9 +452,9 @@ package body V2P.Database is
             DESC, 1);
       end if;
 
-      Connect;
+      Connect (DBH);
 
-      DBH.Prepare_Select (Iter, To_String (Select_Stmt));
+      DBH.Handle.Prepare_Select (Iter, To_String (Select_Stmt));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -473,7 +489,7 @@ package body V2P.Database is
             ASC, 1);
       end if;
 
-      DBH.Prepare_Select (Iter, To_String (Select_Stmt));
+      DBH.Handle.Prepare_Select (Iter, To_String (Select_Stmt));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -492,8 +508,8 @@ package body V2P.Database is
       end if;
 
       Iter.End_Select;
-      return Set;
 
+      return Set;
    end Get_Thread_Navigation_Links;
 
    -----------------
@@ -510,6 +526,7 @@ package body V2P.Database is
    is
       use type Templates.Tag;
 
+      DBH             : TLS_DBH := DBH_TLS.Value;
       Set             : Templates.Translate_Set;
       Iter            : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line            : DB.String_Vectors.Vector;
@@ -522,7 +539,7 @@ package body V2P.Database is
       Select_Stmt     : Unbounded_String;
 
    begin
-      Connect;
+      Connect (DBH);
 
       Select_Stmt := Threads_Ordered_Select
         (Fid => Fid,
@@ -548,7 +565,7 @@ package body V2P.Database is
               (Block_Forum_Navigate.Next, From + 50));
       end if;
 
-      DBH.Prepare_Select (Iter, To_String (Select_Stmt));
+      DBH.Handle.Prepare_Select (Iter, To_String (Select_Stmt));
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -615,12 +632,13 @@ package body V2P.Database is
    -----------------------------
 
    procedure Increment_Visit_Counter (Pid : in String) is
+      DBH : TLS_DBH := DBH_TLS.Value;
       SQL : constant String :=
               "update post set visit_counter = visit_counter + 1 where "
                 & "id = " & Q (Pid);
    begin
-      Connect;
-      DBH.Execute (SQL);
+      Connect (DBH);
+      DBH.Handle.Execute (SQL);
    end Increment_Visit_Counter;
 
    --------------------
@@ -644,6 +662,8 @@ package body V2P.Database is
       procedure Insert_Table_post_Comment (post_Id, Comment_Id : in String);
       --  Insert row into post_Comment table
 
+      DBH : TLS_DBH := DBH_TLS.Value;
+
       --------------------------
       -- Insert_Table_Comment --
       --------------------------
@@ -658,7 +678,7 @@ package body V2P.Database is
                    & Q (User_Login) & ',' & Q (Anonymous) & ',' & Q (Comment)
                    & ',' & Q (Filename) & ')';
       begin
-         DBH.Execute (SQL);
+         DBH.Handle.Execute (SQL);
       end Insert_Table_Comment;
 
       --------------------------------
@@ -672,17 +692,18 @@ package body V2P.Database is
                  "insert into post_comment values ("
                    & post_Id & "," & Comment_Id & ')';
       begin
-         DBH.Execute (SQL);
+         DBH.Handle.Execute (SQL);
       end Insert_Table_post_Comment;
 
    begin
-      DBH.Begin_Transaction;
+      Connect (DBH);
+      DBH.Handle.Begin_Transaction;
       Insert_Table_Comment (Uid, Anonymous, Comment);
-      Insert_Table_post_Comment (Thread, DBH.Last_Insert_Rowid);
-      DBH.Commit;
+      Insert_Table_post_Comment (Thread, DBH.Handle.Last_Insert_Rowid);
+      DBH.Handle.Commit;
    exception
       when E : DB.DB_Error =>
-         DBH.Rollback;
+         DBH.Handle.Rollback;
          Text_IO.Put_Line (Exception_Message (E));
    end Insert_Comment;
 
@@ -715,6 +736,8 @@ package body V2P.Database is
       procedure Insert_Table_User_Post (Uid, Post_Id : in String);
       --  Insert row into the user_post table
 
+      DBH : TLS_DBH := DBH_TLS.Value;
+
       ------------------------
       -- Insert_Table_Photo --
       ------------------------
@@ -729,7 +752,7 @@ package body V2P.Database is
                    & "values (" & Q (Filename) & ',' & I (Height) & ','
                    & I (Width) & ',' & I (Size) & ')';
       begin
-         DBH.Execute (SQL);
+         DBH.Handle.Execute (SQL);
       end Insert_Table_Photo;
 
       ------------------------
@@ -745,7 +768,7 @@ package body V2P.Database is
                    & "'photo_id') values (" & Q (Name) &  ',' & Q (Comment)
                    & ',' & Category_Id & ", 1, 0, 0," & Photo_Id & ')';
       begin
-         DBH.Execute (SQL);
+         DBH.Handle.Execute (SQL);
       end Insert_Table_Post;
 
       -----------------------------
@@ -757,27 +780,30 @@ package body V2P.Database is
                  "insert into user_post values ("
                    & Q (Uid) & ',' & Post_Id & ")";
       begin
-         DBH.Execute (SQL);
+         DBH.Handle.Execute (SQL);
       end Insert_Table_User_Post;
 
    begin
-      DBH.Begin_Transaction;
+      Connect (DBH);
+
+      DBH.Handle.Begin_Transaction;
 
       if Filename /= "" then
          Insert_Table_Photo (Filename, Height, Width, Size);
-         Insert_Table_Post (Name, Category_Id, Comment, DBH.Last_Insert_Rowid);
+         Insert_Table_Post
+           (Name, Category_Id, Comment, DBH.Handle.Last_Insert_Rowid);
       else
          Insert_Table_Post (Name, Category_Id, Comment, "Null");
       end if;
 
-      Insert_Table_User_Post (Uid, DBH.Last_Insert_Rowid);
-      DBH.Commit;
+      Insert_Table_User_Post (Uid, DBH.Handle.Last_Insert_Rowid);
+      DBH.Handle.Commit;
    exception
       when E : DB.DB_Error =>
-         DBH.Rollback;
+         DBH.Handle.Rollback;
          Text_IO.Put_Line (Exception_Message (E));
       when E : others =>
-         DBH.Rollback;
+         DBH.Handle.Rollback;
          Text_IO.Put_Line (Exception_Message (E));
    end Insert_Post;
 
@@ -786,14 +812,15 @@ package body V2P.Database is
    ---------------
 
    function Is_Author (Uid, Pid : in String) return Boolean is
+      DBH    : TLS_DBH := DBH_TLS.Value;
       Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Result : Boolean := False;
    begin
-      Connect;
+      Connect (DBH);
 
       --  Get post Pid posted by user Uid
 
-      DBH.Prepare_Select
+      DBH.Handle.Prepare_Select
         (Iter,
          "select * from user_post where post_id  = "
            & Q (Pid) & " and user_login = " & Q (Uid));
@@ -835,6 +862,10 @@ package body V2P.Database is
 
       return S (1 .. J);
    end Q;
+
+   ----------------------------
+   -- Threads_Ordered_Select --
+   ----------------------------
 
    function Threads_Ordered_Select
      (Fid        : in String  := "";
