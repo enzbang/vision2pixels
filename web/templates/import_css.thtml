@@ -1,7 +1,11 @@
 <style type="text/css">
-  @import url(/css/base.css);
+  @import url(/css/reset-fonts-grids.css);
+
+  @@--  The foundational YUI Grids CSS file offers three preset page
+  @@--  widths, seven core templates, and the ability to nest
+  @@--  subdivided regions of one to four columns.
+
   @import url(/css/style.css);
-  @import url(/css/color.css);
 
   @@IF@@ @_LOGIN_@ = ""
     @import url(/css/visitor.css);
