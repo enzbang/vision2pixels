@@ -1,523 +1,443 @@
 body {
-
-  font:small Verdana,Sans-serif;
-
-  line-height:1.6em;
-
-  text-align: center;
-
+    background: #f5f5f5;
 }
 
-h1 {
-
-  font:180% "Gill Sans","Trebuchet MS",Verdana,Sans-serif;
-
-  line-height:1.2em;
-
-  text-align:center;
-
-  text-transform:uppercase;
-
-  letter-spacing:.15em;
-
-  padding-bottom: 1.4em;
-
-  border-bottom:1px solid #ddd;
-
-}
-
-#login {
-
-    display: none;
-
-}
-
-#status_bar {
-
-    display: none;
-
-}
-
-.with_forum_list .forums h2  {
-
-    display: none;
-
-}
-
-.with_forum_list h1 {
-
-    display: none;
-
-}
-
-.main h2 {
-
-           font-size:1.1em;
-
- }
-
-.main .forums h2 {
-
-    position:relative;
-
-    top:-10px;
-
-    margin-bottom:10px;
-
-                   font-size:1.4em;
-
-}
-
-.with_forum_list .forums
-
-{
-
-    clear: right;
-
-    margin: 0;
-
-    padding: 0 0 6px 10px;
-
-    height : 1.1em;
-
-    border-bottom:1px solid #ddd;
-
-}
-
-.with_forum_list .forums ul, li {
-
-    margin: 0;
-
-    padding: 0;
-
-    display: inline;
-
-}
-
-.forums ul, li {
-
-    list-style-type: none;
-
-}
-
-.forums li {
-
-             padding: 0px 28px;
-
-             width: 200px;
-
-             }
-
-.forums a
-
-{
-
-    font-weight: bold;
-
-    font-size: small;
-
-    margin: 0 10px 4px 10px;
-
-/*     text-decoration: none; */
-
-/*     color: #999; */
-
-}
-
-#forum_active a ,
-
-.forums a:hover
-
-{
-
-    border-bottom: 4px solid #ddd;
-
-    padding-bottom: 0px;
-
-    background: transparent;
-
-    color: white;
-
- }
-
-.main .forums ul {
-
-    float:left;
-
+#hd {
+    background: #424242;
     width:100%;
-
-    margin:0;
-
-    padding-left: 9px;
-
-    list-style:none;
-
-    text-align:left;
-
 }
 
-.forums ul li#menu_link a {
-
-    color:DimGray;
-
-    font-size:medium;
-
-    font-variant:small-caps;
-
-    font-weight:bold;
-
-    text-decoration:none;
-
+#hd h1 {
+    color:#DBDBDB;
+    font-size:xx-large;
+    padding:0.4em 0pt 0pt 4em
 }
 
-div.level_1 {
-
-    background-color: white;
-
-    border : thin solid silver;
-
-    margin: 0.4em;
-
+#ft {
+    text-align:center;
+    padding-top:4em;
+    padding-bottom:0.5em;
+    color:#DBDBDB;
 }
 
-div.type_0 {
-
-    background-color: WhiteSmoke;
-
+#ft a {
+    color:#DBDBDB;
 }
 
-.slides {
-
-  float:left;
-
-  width:800px;
-
-  list-style:none;
-
-  line-height: 1em;
-
-  margin-top:4em;
-
+#top_links {
+    text-align:right;
+    float:right;
+    height:40px;
+    width:200px;
+    margin-right:1em;
 }
 
-.slides li {
-
-    display:block;
-
-    float:left;
-
-    width:240px;
-
-    height:200px;
-
-    margin:0 10px 10px 0;
-
-    padding:0;
-
-}
-
-.slides li p {
-
-    margin: 0.5em;
-
-}
-
-.slides div {
-
-    display:block;
-
-    width: 200px;
-
-}
-
-#logged_box, fieldset
-
-{
-
-    position: absolute;
-
-    display: block;
-
-    border: 1px solid #781351;
-
-    width: 20em;
-
-    background-color: white;
-
-}
-
-.main #logged_box {
-
-    position: relative;
-
-}
-
-#logged_box {
-
-    padding: 1em;
-
-}
-
-#logged_box .logged_as {
-
-    font-style: oblique;
-
-}
-
-legend
-
-{
-
-    color: #fff;
-
-    background: #9999FF;
-
-    border: 1px solid #781351;
-
-    padding: 2px 6px;
-
-}
-
-label
-
-{
-
-    width: 8em;
-
-    float: left;
-
-}
-
-input
-
-{
-
-color: #434343;
-
-background: #D9D3FF;
-
-border: 1px solid #781351
-
-}
-
-input#login_form_enter {
-
-/*    display: none;*/
-
-/* It is not possible to use the display property here as IE7 will
-
-refuse to activate the form if the submit button is not displayed. For
-
-the record, using "visibility: hidden" does not work. So the trick is
-
-to make the button with a null size and move it outside of the
-
-display. */
-
-    width: 0;
-
-    heigh: 0;
-
-    position: absolute; left: -9000px;
-
-}
-
-#main_image_comment {
-
-    width: 500px;
-
-    margin-left: 110px;
-
-    font-size: 1.2em;
-
-}
-
-.comment_whois {
-
-    text-decoration: underline;
-
-    font-style: italic;
-
-    color: #a0a0a0;
-
-    width: 500px;
-
-    margin-left: 110px;
-
-}
-
-.comment_whois a{
-
-    color : #a0a0a0;
-
-    font-style: normal;
-
-    font-size: 1.2em;
-
-    font-weight: bold;
-
-}
-
-.comment_body {
-
-    width: 500px;
-
-    margin-left: 110px;
-
-}
-
-#new_comment {
-
-    position: relative;
-
-    margin-top: 2em;
-
-    padding-top:2em;
-
-    border-top: 1px solid white;
-
-    width: 500px;
-
-    margin-left: 110px;
-
-}
-
-#new_comment fieldset {
-
-    position: relative;
-
-    background-color: transparent;
-
-    width: 500px;
-
-}
-
-#new_comment input, #new_comment textarea {
-
-    width: 70%;
-
-    margin-left:5%;
-
-    background-color: transparent;
-
-    border: dashed 1px #781351;
-
-    padding: 0.2em;
-
-    color: #781351;
-
-}
-
-#new_comment label {
-
-    max-width: 30%;
-
-    color: DarkSlateBlue;
-
-}
-
-#new_comment input[type="file"] {
-
-    width: 75%;
-
-}
-
-#new_comment input[type="submit"] {
-
-    width: 10%;
-
-    border: solid 1px;
-
-}
-
-.thumbs img {
-
-    border : thin solid silver;
-
-    margin-bottom: 0.3em;
-
-}
-
-.thumbs {
-
-            text-align:center;
-
- }
-
-.main span#show_login a {
-
-    color: slateGray;
-
-    font-style : oblique;
-
-    text-decoration: none;
-
-}
-
-span#show_login a {
-
+#top_links #show_login {
     margin-left: 1em;
-
+    border-top:2px solid #F5F5F5;
+    border-bottom:2px solid #F5F5F5;
+    padding:3px;
 }
 
-#content {
-
-    border : thin solid silver;
-
+#top_links #show_login a {
+    text-decoration:none;
+    color:#F5F5F5;
 }
 
-.main #content {
+#navcontainer
+{
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:20px;
+    margin-bottom:10px;
+    padding-top:10px;
+}
 
-    border: none;
+#navcontainer li
+{
+    display:inline;
+    padding-bottom:14px;
+    padding-left:20px;
+    background-repeat:no-repeat;
+}
 
+#navcontainer li a
+{
+    padding-left:20px;
+    padding-bottom:14px;
+    font-weight:bold;
+    text-transform:uppercase;
+    text-decoration:none;
+}
+
+#navcontainer li a:link, #navcontainer li a:visited
+{
+    padding-left:20px;
+    color:#f5f5f5;
+    background:url(/css/img/go-next.gif);
+    background-position:0 -28px;
+    background-repeat:no-repeat;
+}
+
+hr#navcontainer_end {
+    visibility:hidden;
+}
+
+body.fc_1 #navcontainer li.fc_1 a,
+body.fc_2 #navcontainer li.fc_2 a,
+body.fc_3 #navcontainer li.fc_3 a
+{
+    color:#C2C2C2;
+    padding-left:20px;
+    background:url(/css/img/emblem-photos.gif);
+    background-repeat:no-repeat;
+    background-position:0 0;
+}
+
+#navcontainer li a:hover
+{
+    color:#292929;
+    padding-left:20px;
+    background:url(/css/img/go-next.gif);
+    background-repeat:no-repeat;
+    background-position:0 0;
+}
+
+h1, h2, #login, #status_bar {
+    display:none;
+}
+
+body.forum_entry h2 {
+    display:block;
+    font-size:1.8em;
+    text-align:center;
+    font-variant:small-caps;
+    padding-top:20px;
+    margin-bottom:20px;
+    color:#292929;
+}
+
+p.next_link {
+    text-align:right;
+    float:right;
+}
+
+p.prev_link, p.next_link {
+    width:50px;
+    height:50px;
+    overflow:hidden;
+}
+
+p.prev_link img, p.next_link img {
+    width:75px;
+}
+
+span.prev_link {
+    width:100%;
+}
+
+p#main_image {
+    text-align:center;
+}
+
+
+@@-- Slides
+.slides
+{
+    clear:both;
+    float:left;
+    width:100%;
+    list-style:none;
+    line-height:1em;
+    margin-top:4em;
+}
+
+.slides li
+{
+    display:block;
+    float:left;
+    width:300px;
+    height:200px;
+    margin:0 10px 10px 0;
+    padding:0;
+    text-align:center;
+}
+
+.slides li p
+{
+    margin:0.5em;
+}
+
+.slides div
+{
+    display:block;
+    width:200px;
+}
+
+.slides li p a {
+    color:#424242;
+    font-size:1.1em;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+ #main_image_comment {
+     font-size:1.4em;
+     font-style:italic;
+     text-align:center;
+     padding:1em;
+     color:#424242;
 }
 
 h2#comments_section {
-
-    color:DarkGray;
-
-    font-size:small;
-
     text-align:left;
-
-    margin-left:1em;
-
+    font-size:1.2em;
+    color:#A8A8A8;
+    border-top:thin solid #A8A8A8;
 }
 
-#top_links a {
-
-    color:DarkSlateGray;
-
-    font-family:fantasy;
-
-    text-decoration:none;
-
-}
-
-a#previous_link {
-    left:0px;
-}
-
-a#next_link {
-    right:0px;
-}
-
-a#previous_link, a#next_link {
+#logged_box, fieldset
+{
     position:absolute;
-    width: 50px;
-    height: 50px;
-    overflow:hidden;
-    border:1px solid black;
-    margin:10px;
+    display:block;
+    border:1px solid #292929;
+    width:20em;
+    background-color:white;
 }
 
-
-p#main_image {
-    margin-top:70px;
+.main #logged_box
+{
+    position:relative;
 }
 
-h2#post_name {
+#logged_box
+{
+    padding:1em;
+}
+
+#logged_box .logged_as
+{
+    font-style:oblique;
+}
+
+legend
+{
+    color:#fff;
+    background:#C2C2C2;
+    border:1px solid #292929;
+    padding:2px 6px;
+}
+
+label
+{
+    width:8em;
+    float:left;
+}
+
+input
+{
+    color:#424242;
+    background:#D9D3FF;
+    border:1px solid #292929;
+}
+
+input#login_form_enter {
+/*    display:none; */
+/* It is not possible to use the display property here as IE7 will
+refuse to activate the form if the submit button is not displayed. For
+the record, using "visibility:hidden" does not work. So the trick is
+to make the button with a null size and move it outside of the
+display. */
+    width:0;
+    heigh:0;
+    position:absolute;
+    left:-9000px;
+}
+
+.comment_whois
+{
+    text-decoration:underline;
+    font-style:italic;
+    color:#424242;
+    width:500px;
+    margin-left:110px;
+}
+
+.comment_whois a
+{
+    color:#424242;
+    font-style:normal;
+    font-size:1.2em;
+    font-weight:bold;
+}
+
+.comment_body
+{
+    width:500px;
+    margin-left:110px;
+}
+
+#new_comment
+{
+    position:relative;
+    margin-top:2em;
+    padding-top:2em;
+    border-top:1px solid white;
+    width:500px;
+    margin-left:110px;
+}
+
+#new_comment fieldset
+{
+    position:relative;
+    background-color:transparent;
+    width:500px;
+}
+
+#new_comment input, #new_comment textarea
+{
+    width:70%;
+    margin-left:5%;
+    background-color:transparent;
+    border:dashed 1px #292929;
+    padding:0.2em;
+    color:#292929;
+}
+
+#new_comment label
+{
+    max-width:30%;
+}
+
+#new_comment input[type="file"]
+{
+    width:75%;
+}
+
+#new_comment input[type="submit"]
+{
+    width:10%;
+    border:solid 1px;
+}
+
+.thumbs img
+{
+    border :thin solid silver;
+    margin-bottom:0.3em;
+}
+
+.thumbs
+{
     text-align:center;
-    width:100%;
-    position:absolute;
+}
+
+.main span#show_login a
+{
+    font-style:oblique;
+    text-decoration:none;
+}
+
+span#show_login a
+{
+    margin-left:1em;
+}
+
+body.main p#block_login_close, body.main span#show_login {
+    display:none;
+
+}
+
+fieldset {
+    padding:1em;
+}
+
+p {
+    line-height:140%;
+    margin:10px 0pt 20px;
+}
+
+div.comment p {
+    font-size:95%;
+    margin:0pt 0pt 0.5em;
+}
+
+div.comment {
+    padding:1em;
+
+}
+
+div.level_1
+{
+    background-color:#E6E6E6;
+    border :thin solid silver;
+    margin:0.4em;
+}
+
+div.type_0
+{
+    background-color:#FFFFFF;
+
+}
+
+body.forum_threads #login fieldset,
+body.forum_threads #logged_box,
+body.forum_entry  #login fieldset,
+body.forum_entry  #logged_box
+{
+    background-color:transparent;
+    padding:1em;
+}
+
+body.forum_entry #login fieldset,
+body.forum_entry #logged_box {
+    width:700px;
+    border:none;
+    padding:0px;
+}
+
+body.forum_threads #login legend, body.forum_entry #login legend {
+    display:none;
+}
+
+body.forum_threads #login p, body.forum_entry #login p {
+    display:inline;
+    margin-left:1em;
+    margin-bottom:1em;
+}
+
+body.forum_threads p#cd_user {
+    display:block;
+}
+
+body.forum_threads span#block_login_close {
+    padding-left:2em;
+}
+
+body.forum_threads #login form label, body.forum_entry #login form label {
+    display:none;
+}
+
+body.forum_threads #login p.logged_as,
+body.forum_entry #login p.logged_as
+{
+    display:none;
+}
+
+body.main p.logged_as {
+    display:block;
+}
+body.main #login, body.main h2, body.main h1 {
+    display:block;
+}
+
+.float_right {
+    float:right;
+}
+
+body.main #bd {
+    margin-top:2em;
+}
+
+body.main h2 {
+    font-size:1.4em;
 }
