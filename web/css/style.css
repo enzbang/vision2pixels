@@ -361,19 +361,20 @@ div.comment p {
     margin:0pt 0pt 0.5em;
 }
 
-div.comment {
+ol.comments {
     padding:1em;
 
 }
 
-div.level_1
+li.level_1
 {
     background-color:#E6E6E6;
     border :thin solid silver;
     margin:0.4em;
+    padding:1em 1em 0em;
 }
 
-div.type_0
+li.type_0
 {
     background-color:#FFFFFF;
 
@@ -441,3 +442,28 @@ body.main #bd {
 body.main h2 {
     font-size:1.4em;
 }
+
+cite {
+    font-size:1.2em;
+    font-weight:bold;
+}
+
+cite .anonymous {
+    color:#424242;
+}
+
+p.commentmetadata {
+    margin:0pt;
+    font-style:italic;
+    font-size:0.8em;
+}
+
+p.commentmetadata a {
+    text-decoration:none;
+    color:#424242;
+}
+
+p.commentmetadata a:hover {
+    text-decoration:underline;
+}
+

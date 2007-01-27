@@ -44,27 +44,31 @@
   <p id="main_image_comment">@_IMAGE_COMMENT_@</p>
   <h2 id="comments_section">Commentaires</h2>
 
-  @@TABLE@@
-  <div class="comment level_@_COMMENT_LEVEL_@ type_@_MOD(2):TABLE_LINE_@">
-    @@--        <h3 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h3>
-    @@-- Comment title line since it's not yet used
-    <p class="comment_whois">@_BABEL_ON_DATE_@ @_DATE_@,
-      @@IF@@ @_USER_@ /= ""
-      <a href="@_USER_PAGE_@" >
-        @_USER_@
-      </a>
-      @@ELSE@@
-      @_BABEL_IS_ANONYMOUS_@
-      @_ANONYMOUS_USER_@
-      @@END_IF@@
+  <ol id="comments">
+    @@TABLE@@
+    <a name="@_COMMENT_ID_@" />
+    <li class="level_@_COMMENT_LEVEL_@ type_@_MOD(2):TABLE_LINE_@">
+      @@--        <h3 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h3>
+      @@-- Comment title line since it's not yet used
+      <cite>
+        @@IF@@ @_USER_@ /= ""
+        <a href="@_USER_PAGE_@" >
+          @_USER_@
+        </a>
+        @@ELSE@@
+        <span class="anonymous">
+          @_ANONYMOUS_USER_@
+        </span>
+        @@END_IF@@
+      </cite>
       @_BABEL_HAS_WRITTEN_@
-    </p>
-    <p class="comment_body">@_COMMENT_@</p>
-
-    @@IF@@ @_NB_LEVELS_TO_CLOSE_@ > 0
-    @_REPEAT("</div>"):NB_LEVELS_TO_CLOSE_@
-  @@END_IF@@
-  @@END_TABLE@@
+      <p class="commentmetadata"><a href="#@_COMMENT_ID_@">@_DATE_@</a></p>
+      <p class="comment_body">@_COMMENT_@</p>
+      @@IF@@ @_NB_LEVELS_TO_CLOSE_@ > 0
+        @_REPEAT("</li>"):NB_LEVELS_TO_CLOSE_@
+      @@END_IF@@
+    @@END_TABLE@@
+  </ol>
 
   <div id="new_comment">@_LAZY_NEW_COMMENT_@</div>
 </div>
