@@ -42,19 +42,19 @@ package AWS.Services.Web_Block.Context is
    --  Returns Id given it's string representation
 
    function Create return Id;
-   --  Create a new context and returns the corresponding Id
+   --  Creates a new context and returns the corresponding Id
 
    function Exist (CID : in Id) return Boolean;
-   --  Returns Trus if CID context exists into the database
+   --  Returns True if CID context exists into the database
 
    function Get (CID : in Id) return Object;
    --  Returns the context object corresponding to CID
 
    procedure Set_Value (Context : in out Object; Name, Value : in String);
-   --  Add a new name/value pair
+   --  Adds a new name/value pair
 
    function Get_Value (Context : in Object; Name : in String) return String;
-   --  Get the value for the key Name
+   --  Gets the value for the key Name
 
 private
 

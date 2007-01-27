@@ -31,7 +31,6 @@ with AWS.Templates;
 
 with AWS.Services.Web_Block.Context;
 
-
 package AWS.Services.Web_Block.Registry is
 
    type Lazy_Handler is new Templates.Dynamic.Lazy_Tag with record
