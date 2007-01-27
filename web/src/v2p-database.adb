@@ -218,7 +218,9 @@ package body V2P.Database is
       Nb_Levels_To_Close : Templates.Tag;
       User               : Templates.Tag;
       Anonymous          : Templates.Tag;
+      Date_Iso_8601      : Templates.Tag;
       Date               : Templates.Tag;
+      Time               : Templates.Tag;
       Comment            : Templates.Tag;
       Filename           : Templates.Tag;
 
@@ -268,7 +270,9 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter,
-         "select comment.id, date, user_login, anonymous_user, "
+         "select comment.id, strftime('%Y-%m-%dT%H:%M:%SZ', date), "
+         & "date(date, 'localtime'), time(date, 'localtime'), "
+         & "user_login, anonymous_user, "
          & "comment, filename"
          & " from comment, post_comment"
          & " where post_id=" & Q (Tid)
@@ -277,12 +281,14 @@ package body V2P.Database is
       while Iter.More loop
          Iter.Get_Line (Line);
 
-         Comment_Id := Comment_Id & DB.String_Vectors.Element (Line, 1);
-         Date       := Date       & DB.String_Vectors.Element (Line, 2);
-         User       := User       & DB.String_Vectors.Element (Line, 3);
-         Anonymous  := Anonymous  & DB.String_Vectors.Element (Line, 4);
-         Comment    := Comment    & DB.String_Vectors.Element (Line, 5);
-         Filename   := Filename   & DB.String_Vectors.Element (Line, 6);
+         Comment_Id    := Comment_Id & DB.String_Vectors.Element (Line, 1);
+         Date_Iso_8601 := Date_Iso_8601 & DB.String_Vectors.Element (Line, 2);
+         Date          := Date &  DB.String_Vectors.Element (Line, 3);
+         Time          := Time   & DB.String_Vectors.Element (Line, 4);
+         User          := User       & DB.String_Vectors.Element (Line, 5);
+         Anonymous     := Anonymous  & DB.String_Vectors.Element (Line, 6);
+         Comment       := Comment & DB.String_Vectors.Element (Line, 7);
+         Filename      := Filename & DB.String_Vectors.Element (Line, 8);
 
          --  Unthreaded view
 
@@ -296,7 +302,11 @@ package body V2P.Database is
 
       Templates.Insert
         (Set, Templates.Assoc (Forum_Entry.Comment_Id, Comment_Id));
+      Templates.Insert
+        (Set, Templates.Assoc (Forum_Entry.Date_Iso_8601, Date_Iso_8601));
       Templates.Insert (Set, Templates.Assoc (Forum_Entry.Date, Date));
+      Templates.Insert (Set, Templates.Assoc (Forum_Entry.Time, Time));
+
       Templates.Insert (Set, Templates.Assoc (Forum_Entry.User, User));
       Templates.Insert
         (Set, Templates.Assoc (Forum_Entry.Anonymous_User, Anonymous));
