@@ -27,6 +27,7 @@ with AWS.Parameters;
 with AWS.Response;
 with AWS.Server.Log;
 with AWS.Services.Dispatchers.URI;
+with AWS.Services.Web_Block.Registry;
 with AWS.Session;
 with AWS.Status;
 with AWS.Templates;
@@ -39,13 +40,7 @@ with V2P.Template_Defs.Main_Page;
 with V2P.Template_Defs.Error;
 with V2P.Template_Defs.User;
 with V2P.Template_Defs.Block_Login;
-with V2P.Template_Defs.Block_Quick_Login;
 with V2P.Template_Defs.Block_New_Comment;
-with V2P.Template_Defs.Block_New_Post;
-with V2P.Template_Defs.Block_Forum_List;
-with V2P.Template_Defs.Block_Forum_Select;
-with V2P.Template_Defs.Block_Forum_Threads;
-with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Navigate;
 with V2P.Template_Defs.Block_User_Password_Change;
 with V2P.Template_Defs.R_Block_Login;
@@ -194,169 +189,10 @@ package body V2P.Web_Server is
    is
       SID : constant Session.Id := Status.Session (Request);
 
-      type Lazy_Tags is new Templates.Dynamic.Lazy_Tag with record
-         Translations : Templates.Translate_Set;
-      end record;
-
-      overriding procedure Value
-        (Lazy_Tag     : not null access Lazy_Tags;
-         Var_Name     : in String;
-         Translations : in out Templates.Translate_Set);
-      --  ??
-
       Final_Translations : Templates.Translate_Set := Translations;
 
-      LT  : aliased Lazy_Tags :=
-              (Templates.Dynamic.Lazy_Tag with
-               Translations => Final_Translations);
-
-      -----------
-      -- Value --
-      -----------
-
-      procedure Value
-        (Lazy_Tag     : not null access Lazy_Tags;
-         Var_Name     : in String;
-         Translations : in out Templates.Translate_Set)
-      is
-         Local_Translations : Templates.Translate_Set := Lazy_Tag.Translations;
-      begin
-         if Var_Name = Template_Defs.Lazy.Login then
-            Templates.Insert
-              (Local_Translations,
-               Database.Get_User (Session.Get (SID, "LOGIN")));
-
-            Templates.Insert
-              (Translations,
-               Templates.Assoc (Template_Defs.Lazy.Login,
-                 String'(Templates.Parse
-                   (Template_Defs.Block_Login.Template,
-                      Local_Translations,
-                      Lazy_Tag => LT'Unchecked_Access))));
-
-         elsif Var_Name = Template_Defs.Lazy.Forum_List then
-            Templates.Insert (Local_Translations, Database.Get_Forums);
-            Templates.Insert
-              (Translations,
-               Templates.Assoc (Template_Defs.Lazy.Forum_List,
-                 String'(Templates.Parse
-                   (Template_Defs.Block_Forum_List.Template,
-                      Local_Translations,
-                      Lazy_Tag => LT'Unchecked_Access))));
-
-         elsif Var_Name = Template_Defs.Lazy.Forum_List_Select then
-            Templates.Insert (Local_Translations, Database.Get_Forums);
-            Templates.Insert
-              (Translations,
-               Templates.Assoc (Template_Defs.Lazy.Forum_List_Select,
-                 String'(Templates.Parse
-                   (Template_Defs.Block_Forum_Select.Template,
-                      Local_Translations,
-                      Lazy_Tag => LT'Unchecked_Access))));
-
-         elsif Var_Name = Template_Defs.Lazy.User_Thread_List then
-            if Session.Get (SID, "LOGIN") /= "" then
-               Templates.Insert
-                 (Local_Translations,
-                  Database.Get_Threads (User => Session.Get (SID, "LOGIN")));
-
-               Templates.Insert
-                 (Translations,
-                  Templates.Assoc (Template_Defs.Lazy.Forum_Threads,
-                    String'(Templates.Parse
-                      (Template_Defs.Block_Forum_Threads.Template,
-                         Local_Translations,
-                         Lazy_Tag => LT'Unchecked_Access))));
-            end if;
-
-         elsif Var_Name = Template_Defs.Lazy.Forum_Threads then
-            if Session.Get (SID, "FID") /= "" then
-               Templates.Insert
-                 (Local_Translations,
-                  Database.Get_Threads
-                    (Fid    => Session.Get (SID, "FID"),
-                     Filter => Database.Filter_Mode'Value
-                       (Session.Get (SID, "FILTER")),
-                     Order_Dir => Database.Order_Direction'Value
-                       (Session.Get (SID, "ORDER_DIR"))));
-
-               Templates.Insert
-                 (Translations,
-                  Templates.Assoc (Template_Defs.Lazy.Forum_Threads,
-                    String'(Templates.Parse
-                      (Template_Defs.Block_Forum_Threads.Template,
-                         Local_Translations,
-                         Lazy_Tag => LT'Unchecked_Access))));
-            end if;
-
---           elsif Var_Name = Template_Defs.Lazy.Forum_Navigate then
---              Templates.Insert
---                (Translations,
---                 Templates.Assoc (Template_Defs.Lazy.Forum_Navigate,
---                   String'(Templates.Parse
---                     (Template_Defs.Block_Forum_Navigate.Template,
---                        Local_Translations,
---                        Lazy_Tag => LT'Unchecked_Access))));
---  Commented out as the navigation will be added later,
---  see block_forum_threads.thtml
-
-         elsif Var_Name = Template_Defs.Lazy.Quick_Login then
-            Templates.Insert
-              (Translations,
-               Templates.Assoc (Template_Defs.Lazy.Quick_Login,
-                 String'(Templates.Parse
-                   (Template_Defs.Block_Quick_Login.Template,
-                      Local_Translations,
-                      Lazy_Tag => LT'Unchecked_Access))));
-
-         elsif Var_Name = Template_Defs.Lazy.New_Comment then
-            if Session.Exist (SID, "FID") then
-               Templates.Insert
-                 (Local_Translations,
-                  Database.Get_Categories (Session.Get (SID, "FID")));
-            end if;
-
-            if Session.Exist (SID, "TID") then
-               Templates.Insert
-                 (Local_Translations,
-                  Templates.Assoc
-                    (Template_Defs.Block_New_Comment.Current_Tid,
-                     String'(Session.Get (SID, "TID"))));
-            end if;
-
-            Templates.Insert
-              (Translations,
-               Templates.Assoc (Template_Defs.Lazy.New_Comment,
-                 String'(Templates.Parse
-                   (Template_Defs.Block_New_Comment.Template,
-                      Local_Translations,
-                      Lazy_Tag => LT'Unchecked_Access))));
-
-         elsif Var_Name = Template_Defs.Lazy.New_Post then
-            Templates.Insert
-              (Translations,
-               Templates.Assoc (Template_Defs.Lazy.New_Post,
-                 String'(Templates.Parse
-                   (Template_Defs.Block_New_Post.Template,
-                      Local_Translations,
-                      Lazy_Tag => LT'Unchecked_Access))));
-
-         elsif Var_Name = Template_Defs.Lazy.Forum_Filter then
-            Templates.Insert
-              (Local_Translations,
-               Templates.Assoc
-                 (Template_Defs.Block_Forum_Filter.HTTP.Filter,
-                  String'(Session.Get (SID, "FILTER"))));
-
-            Templates.Insert
-              (Translations,
-               Templates.Assoc (Template_Defs.Lazy.Forum_Filter,
-                 String'(Templates.Parse
-                   (Template_Defs.Block_Forum_Filter.Template,
-                      Local_Translations,
-                      Lazy_Tag => LT'Unchecked_Access))));
-         end if;
-      end Value;
+      LT : aliased Services.Web_Block.Registry.Lazy_Handler :=
+             (Templates.Dynamic.Lazy_Tag with Request, Final_Translations);
 
    begin
       Templates.Insert
@@ -867,6 +703,10 @@ package body V2P.Web_Server is
          "/",
          Action => Dispatchers.Callback.Create (Error_Callback'Access),
          Prefix => True);
+
+      --  Register lazy tags
+
+      Template_Defs.Lazy.Register;
 
       --  Log control
 

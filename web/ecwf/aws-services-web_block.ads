@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------------
---                              Vision2Pixels                               --
+--                              Ada Web Server                              --
 --                                                                          --
---                           Copyright (C) 2006                             --
---                      Pascal Obry - Olivier Ramonat                       --
+--                            Copyright (C) 2007                            --
+--                                 AdaCore                                  --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -16,51 +16,18 @@
 --                                                                          --
 --  You should have received a copy of the GNU General Public License       --
 --  along with this library; if not, write to the Free Software Foundation, --
---  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
+--  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          --
+--                                                                          --
+--  As a special exception, if other files instantiate generics from this   --
+--  unit, or you link this unit with other files to produce an executable,  --
+--  this  unit  does not  by itself cause  the resulting executable to be   --
+--  covered by the GNU General Public License. This exception does not      --
+--  however invalidate any other reasons why the executable file  might be  --
+--  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with "aws_ssl";
+package AWS.Services.Web_Block is
 
-with "../shared";
-with "../db/db";
-with "../db/db_test";
-with "../image/image";
-with "../lib/gnade/gnade";
-with "../kernel/kernel";
+   pragma Pure;
 
-project Web is
-
-   for Languages use 
-     ("Ada", "HTML Template", "XML Template", "Ada Template",
-      "Javascript Template", "Javascript");
-
-   for Source_Dirs use ("src", "templates", "we_js", "ecwf");
-   for Object_Dir use "obj";
-   for Exec_Dir use "bin";
-   for Main use ("vision2pixels");
-
-   -------------
-   -- Builder --
-   -------------
-
-   package Builder renames Shared.Builder;
-
-   --------------
-   -- Compiler --
-   --------------
-
-   package Compiler renames Shared.Compiler;
-
-   ------------
-   -- Binder --
-   ------------
-
-   package Binder renames Shared.Binder;
-
-   ------------
-   -- Linker --
-   ------------
-
-   package Linker renames Shared.Linker;
-
-end Web;
+end AWS.Services.Web_Block;
