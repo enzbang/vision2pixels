@@ -135,6 +135,7 @@
 @@--       We could also use child packages to represent them
 @@--
 --  DO NOT EDIT, THIS FILE HAS BEEN GENERATED
+
 package @_PACKAGE_@ is
    pragma Style_Checks (Off);
 
@@ -144,6 +145,9 @@ package @_PACKAGE_@ is
       @_CAPITALIZE:REPLACE_ALL(LAZY_/):REPLACE_ALL(__/_):VARIABLE_LIST_@ : constant String := "@_VARIABLE_LIST_@";
      @@END_IF@@
   @@END_TABLE@@
+
+      procedure Register;
+      --  Register lazy tags into the AWS's Web Block framework
    end Lazy;
 
 @@IF@@ @_SINGLE_FILE_@ = True
@@ -209,6 +213,7 @@ end @_PACKAGE_@;
 @@--    @@END_IF@@
 @@--  @@END_TABLE@@
 --  DO NOT EDIT, THIS FILE HAS BEEN GENERATED
+
 package @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@ is
    pragma Style_Checks (Off);
 
@@ -260,3 +265,35 @@ package @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@ is
 end @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@;
 @@END_TABLE@@
 @@END_IF@@
+
+--  DO NOT EDIT, THIS FILE HAS BEEN GENERATED
+
+with AWS.Services.Web_Block.Registry;
+with V2P.Block_Callbacks;
+
+package body @_PACKAGE_@ is
+   pragma Style_Checks (Off);
+
+   package body Lazy is
+
+      --------------
+      -- Register --
+      --------------
+
+      procedure Register is
+         use AWS.Services.Web_Block;
+         use V2P;
+      begin
+  @@TABLE@@
+     @@IF@@ @_UPPER:SLICE(1..5):VARIABLE_LIST_@ = "LAZY_"
+         Registry.Register
+            ("@_VARIABLE_LIST_@",
+             "templates/block_@_LOWER:REPLACE_ALL(LAZY_/):VARIABLE_LIST_@.thtml",
+             Block_Callbacks.@_CAPITALIZE:REPLACE_ALL(LAZY_/):VARIABLE_LIST_@'Access);
+     @@END_IF@@
+  @@END_TABLE@@
+      end Register;
+
+   end Lazy;
+
+end @_PACKAGE_@;
