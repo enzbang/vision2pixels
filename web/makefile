@@ -58,6 +58,7 @@ install-dir:
 install: install-dir
 	$(CP) css/*.css $(INSTALL)/css
 	$(CP) css/img/*.jpg $(INSTALL)/css/img
+	$(CP) css/img/*.gif $(INSTALL)/css/img
 	$(CP) templates/*.*html $(INSTALL)/templates
 	$(CP) templates/*.txml $(INSTALL)/templates
 	$(CP) we_js/*js $(INSTALL)/we_js

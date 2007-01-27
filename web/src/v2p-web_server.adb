@@ -77,6 +77,9 @@ package body V2P.Web_Server is
      (Request : in Status.Data) return Response.Data;
    --  Forum threads callback
 
+   function Is_Valid_Comment (Comment : in String) return Boolean;
+   --  Check if the comment is valid
+
    function Login_Callback (Request : in Status.Data) return Response.Data;
    --  Login callback
 
@@ -367,6 +370,22 @@ package body V2P.Web_Server is
               (Session.Get (SID, "ORDER_DIR"))));
    end Forum_Threads_Callback;
 
+   ----------------------
+   -- Is_Valid_Comment --
+   ----------------------
+
+   function Is_Valid_Comment (Comment : in String) return Boolean is
+   begin
+      if Comment = "" then
+         --  Does not accept empty comment
+         return False;
+      end if;
+
+      --  ??? Checks if the same comment is already in user context
+
+      return True;
+   end Is_Valid_Comment;
+
    --------------------
    -- Login_Callback --
    --------------------
@@ -487,6 +506,13 @@ package body V2P.Web_Server is
       Translations : Templates.Translate_Set;
 
    begin
+      if (Login = "" and then Anonymous = "") or
+      not Is_Valid_Comment (Comment) then
+         return Response.URL
+           (Location => Template_Defs.Forum_Entry.URL & "?TID=" & TID
+            & "&FID=" & FID);
+      end if;
+
       if Filename /= "" then
 
          Init (New_Image, Filename, Database.Get_Category_Full_Name (CID));
@@ -541,7 +567,7 @@ package body V2P.Web_Server is
             Image.Data.Filename (New_Image));
          return Response.URL
            (Location => Template_Defs.Forum_Entry.URL & "?TID=" & TID
-              & "&FID=" & FID);
+            & "&FID=" & FID);
       end if;
    end New_Comment_Callback;
 
@@ -793,10 +819,13 @@ package body V2P.Web_Server is
    -------------------
 
    function WEJS_Callback (Request : in Status.Data) return Response.Data is
-      URI  : constant String := Status.URI (Request);
-      File : constant String := URI (URI'First + 1 .. URI'Last);
+      URI          : constant String := Status.URI (Request);
+      File         : constant String := URI (URI'First + 1 .. URI'Last);
+      Translations : Templates.Translate_Set;
    begin
-      return Response.File (MIME.Content_Type (File), File);
+      return Response.Build
+        (MIME.Content_Type (File),
+         String'(Templates.Parse (File, Translations)));
    end WEJS_Callback;
 
 end V2P.Web_Server;
