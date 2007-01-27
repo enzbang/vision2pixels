@@ -20,7 +20,11 @@ fc_@_Current_FID_@
 @@END_IF@@
 "> @@-- body is closed in v2p_end.thtml
 
-  <div id="doc2" class=" @_$3_@"> <!-- #doc2 = 950px width, centered -->
+  <div id="doc2"
+       @@IF@@ @_$3_@ /= ""
+       class="@_$3_@"
+       @@END_IF@@
+       > <!-- #doc2 = 950px width, centered -->
     <div id="hd"> <!-- header block -->
       <p id="top_links">
         @_LAZY_QUICK_LOGIN_@

@@ -979,10 +979,13 @@ package body V2P.Web_Server is
    -------------------
 
    function WEJS_Callback (Request : in Status.Data) return Response.Data is
-      URI  : constant String := Status.URI (Request);
-      File : constant String := URI (URI'First + 1 .. URI'Last);
+      URI          : constant String := Status.URI (Request);
+      File         : constant String := URI (URI'First + 1 .. URI'Last);
+      Translations : Templates.Translate_Set;
    begin
-      return Response.File (MIME.Content_Type (File), File);
+      return Response.Build
+        (MIME.Content_Type (File),
+         String'(Templates.Parse (File, Translations)));
    end WEJS_Callback;
 
 end V2P.Web_Server;
