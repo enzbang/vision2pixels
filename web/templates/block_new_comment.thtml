@@ -1,7 +1,7 @@
 @@INCLUDE@@ babel.thtml
 @@-- HTTP_URL(/comment_form_enter)
 <form enctype="multipart/form-data" id="comment_form"
-      action="/comment_form_enter" method="POST">
+      action="/comment_form_enter" method="post">
   <fieldset>
     <legend>
       @_BABEL_NEW_COMMENT_@
@@ -10,7 +10,7 @@
     <div id="comment_login"><p>
         @@IF@@ @_LOGIN_@ = ""
         <label for="anonymous_user">@_BABEL_YOUR_NAME_@</label>
-        <input name="ANONYMOUS_USER" id="anonymous_user" type="entry"/>
+        <input name="ANONYMOUS_USER" id="anonymous_user" type="text"/>
         @@END_IF@@
     </p></div>
     @@-- Is user in a specific forum
@@ -22,13 +22,14 @@
       <input name="TID" id="TID" type="hidden" value="@_Current_TID_@" />
       <input name="FID" id="FID" type="hidden" value="@_Current_FID_@" />
     </p>
-    <p id="title_name_input">
-      @@--  <input name="NAME" id="title_input" type="entry" value="@_NAME_@"/></p>
+    <!--     <p id="title_name_input">
+             <input name="NAME" id="title_input" type="entry"
+                    value="@_NAME_@"/>
+      </p> -->
     <p>
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
-      <textarea name="COMMENT" size="100"
-                id="comment_input">
-      </textarea>
+      <textarea name="COMMENT" rows="3" cols="40"
+                id="comment_input"></textarea>
     </p>
     <p><input name="FILENAME" type="file"/><input name="ENTER" id="comment_form_enter" type="submit" value="OK"/></p>
   </fieldset>

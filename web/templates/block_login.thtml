@@ -12,16 +12,37 @@
 <input id="password_input" name="PASSWORD" type="password"
 value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/></p>
 <p><input name="ENTER" id="login_form_enter" type="submit" value="OK"/></p>
-<p><a href="my">Créer/Modifier votre compte</a></p>
-<p id="block_login_close">@_BABEL_CLICK_TO_CLOSE_@</p>
+
+<p id="cd_user"><a href="my">Créer/Modifier votre compte</a>
+  <span id="block_login_close">
+    <img src="/css/img/close.gif"
+         alt="@_BABEL_CLICK_TO_CLOSE_@" />
+  </span>
+</p>
+
+
 </fieldset>
 </form>
 @@ELSE@@
 <div id="logged_box">
+<p id="block_login_close" class="float_right">
+    <img src="/css/img/close.gif"
+         alt="@_BABEL_CLICK_TO_CLOSE_@" />
+  </span>
+</p>
 <p class="logged_as">@_BABEL_LOGGED_AS_@ @_LOGIN_@ </p>
-<p><a href="@_FORUM_POST_URL_@">@_BABEL_NEW_POST_@</a></p>
-<p><a id="logout_enter" href="#">@_BABEL_LOGOUT_@</a></p>
-<p id="block_login_close">@_BABEL_CLICK_TO_CLOSE_@</p>
+<p>
+  <a href="@_FORUM_POST_URL_@">
+    <img src="/css/img/mail-message-new.gif" alt="@_BABEL_NEW_POST_@"
+         title="@_BABEL_NEW_POST_@" />
+  </a>
+</p>
+<p>
+  <a id="logout_enter" href="#">
+    <img src="/css/img/system-log-out.gif" alt="@_BABEL_LOGOUT_@"
+         title="@_BABEL_LOGOUT_@" />
+  </a>
+</p>
 </div>
 @@-- <input name="LOGOUT" id="logout_enter" type="submit" value="@_BABEL_LOGOUT_@"/>
 </p>

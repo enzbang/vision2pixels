@@ -1,13 +1,18 @@
 @@INCLUDE@@ babel.thtml
 @@--
-<a href="/">@_BABEL_V2P_SMALL_WEBSITE_NAME_@</a>
-@@IF@@ @_$2_@ /= main
-  <span id="show_login">
-  @@IF@@ @_LOGIN_@ = ""
-    <a href="#">@_BABEL_NOT_LOGGED_@</a>
-  @@ELSE@@
-    <a href="#">@_LOGIN_@</a>
-  @@END_IF@@
-  </span>
-@@END_IF@@
+<a href="/">
+  <img src="/css/img/go-home.gif"
+       alt="@_BABEL_V2P_SMALL_WEBSITE_NAME_@"
+       title="@_BABEL_V2P_SMALL_WEBSITE_NAME_@" />
+</a>
+<span id="show_login">
+  <a href="#">
+    @@IF@@ @_LOGIN_@ = ""
+    @_BABEL_NOT_LOGGED_@
+    @@ELSE@@
+    @_LOGIN_@
+    @@END_IF@@
+  </a>
+</span>
+
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, show_login, 19=>/xml_show_login.xml)

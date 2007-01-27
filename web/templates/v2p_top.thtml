@@ -1,28 +1,42 @@
 @@-- V2P top page
 @@-- $1 is the page title
-@@-- $2 $3 is the body class
+@@-- $2 is the body class
+@@-- $3 is the div doc2 class
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
           "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
+  <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
   <title>@_$1_@</title>
   @@INCLUDE@@ import_css.thtml
   @@INCLUDE@@ ../we_js/aws.tjs
 </head>
 
-<body class="@_$2_@ @_$3_@"> @@-- body is closed in v2p_end.thtml
-  <p id="top_links">
-    @_LAZY_QUICK_LOGIN_@
-  </p>
+<body class="@_$2_@
+@@IF@@ @_Current_FID_@ /= ""
+fc_@_Current_FID_@
+@@END_IF@@
+"> @@-- body is closed in v2p_end.thtml
 
-  <div id="status_bar"></div>
-  <div id="content"> @@-- This div is closed in v2p_end.thtml
-    <h1>@_BABEL_V2P_WEBSITE_NAME_@</h1>
+  <div id="doc2"
+       @@IF@@ @_$3_@ /= ""
+       class="@_$3_@"
+       @@END_IF@@
+       > <!-- #doc2 = 950px width, centered -->
+    <div id="hd"> <!-- header block -->
+      <p id="top_links">
+        @_LAZY_QUICK_LOGIN_@
+      </p>
+      <h1>@_BABEL_V2P_WEBSITE_NAME_@</h1>
+      <div id="status_bar"></div>
+
 
     <div class="forums">
-      <h2>Liste des forums</h2>
-
       @_LAZY_FORUM_LIST_@
     </div>
+
+    </div>          <!-- end of header block -->
+    <div id="bd">   <!-- db block -->
+      @@-- body div is closed in v2p_end.thtml
