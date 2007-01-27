@@ -27,8 +27,7 @@
     <p>
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
       <textarea name="COMMENT" size="100"
-                id="comment_input">
-      </textarea>
+                id="comment_input"></textarea>
     </p>
     <p><input name="FILENAME" type="file"/><input name="ENTER" id="comment_form_enter" type="submit" value="OK"/></p>
   </fieldset>
