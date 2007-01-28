@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                        Copyright (C) 2006-2007                           --
+--                           Copyright (C) 2007                             --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,15 +19,16 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AUnit.Test_Suites; use AUnit.Test_Suites;
+with AUnit.Test_Cases;
 
-with Web_Tests.User;
-with Web_Tests.Wiki;
+package Web_Tests.Wiki is
 
-function Web_Suite return Access_Test_Suite is
-   Result : Access_Test_Suite := new Test_Suite;
-begin
-   Add_Test (Result, new Web_Tests.Wiki.Test_Case);
-   Add_Test (Result, new Web_Tests.User.Test_Case);
-   return Result;
-end Web_Suite;
+   type Test_Case is new AUnit.Test_Cases.Test_Case with null record;
+
+   procedure Register_Tests (T : in out Test_Case);
+   --  Register routines to be run
+
+   function Name (T : in Test_Case) return String_Access;
+   --  Returns name identifying the test case
+
+end Web_Tests.Wiki;

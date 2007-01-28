@@ -48,6 +48,8 @@ with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Forum_List;
 with V2P.Template_Defs.R_Block_Forum_Filter;
 
+with V2P.Wiki;
+
 with Image.Data;
 with Settings;
 
@@ -499,15 +501,17 @@ package body V2P.Web_Server is
       Filename     : constant String := Parameters.Get (P, "FILENAME");
       CID          : constant String := Parameters.Get (P, "CATEGORY");
       Forum        : constant String := Parameters.Get (P, "FORUM");
+
+      Comment_Wiki : constant String := V2P.Wiki.Wiki_To_Html (Comment);
+
       Images_Path  : String renames Settings.Get_Images_Path;
 
       New_Image    : Image_Data;
 
       Translations : Templates.Translate_Set;
-
    begin
       if (Login = "" and then Anonymous = "") or
-      not Is_Valid_Comment (Comment) then
+      (TID = "" and not Is_Valid_Comment (Comment)) then
          return Response.URL
            (Location => Template_Defs.Forum_Entry.URL & "?TID=" & TID
             & "&FID=" & FID);
@@ -547,7 +551,7 @@ package body V2P.Web_Server is
       if TID = "" then
          if Filename /= "" then
             Database.Insert_Post
-              (Login, CID, Name, Comment,
+              (Login, CID, Name, Comment_Wiki,
                New_Image.Filename
                  ((Images_Path'Length + 2) .. New_Image.Filename'Last),
                New_Image.Width,
@@ -555,7 +559,7 @@ package body V2P.Web_Server is
                New_Image.Size);
 
          else
-            Database.Insert_Post (Login, CID, Name, Comment);
+            Database.Insert_Post (Login, CID, Name, Comment_Wiki);
          end if;
 
          return Response.URL
@@ -563,7 +567,7 @@ package body V2P.Web_Server is
 
       else
          Database.Insert_Comment
-           (Login, Anonymous, TID, Name, Comment,
+           (Login, Anonymous, TID, Name, Comment_Wiki,
             Image.Data.Filename (New_Image));
          return Response.URL
            (Location => Template_Defs.Forum_Entry.URL & "?TID=" & TID
