@@ -483,7 +483,6 @@ package body V2P.Database is
 
       Iter.End_Select;
 
-
       if Order_Dir = DESC then
          --  Previous is next
 
