@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                        Copyright (C) 2006-2007                           --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,18 +19,24 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Directories;
-
 with AUnit.Test_Cases.Registration;
 with AUnit.Assertions;
+
+with Ada.Calendar;
+with Ada.Directories;
+
+with GNAT.Calendar.Time_IO;
+with GNAT.OS_Lib;
 
 with G2F;
 with Image.Data;
 with Settings;
 
+
 package body Image_Tests.Thumbnails is
 
    use Ada;
+   use Ada.Directories;
 
    use AUnit.Test_Cases.Registration;
    use AUnit.Assertions;
@@ -45,13 +51,22 @@ package body Image_Tests.Thumbnails is
    procedure Create_Thumbnail (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
       use Image.Data;
-      In_Filename   : constant String := "adapowered.jpg";
-      Category      : constant String := "Test";
-      Out_Directory : constant String := Directories.Compose
-        (Settings.Get_Thumbs_Path, Category);
-      Out_Filename  : constant String := Directories.Compose
-        (Out_Directory, In_Filename);
+      DS              : Character renames GNAT.OS_Lib.Directory_Separator;
+      In_Filename     : constant String := "adapowered.jpg";
+      Category        : constant String := "Tests";
+      Now             : constant Calendar.Time := Calendar.Clock;
+      Year            : constant String :=
+                          GNAT.Calendar.Time_IO.Image (Now, "%Y");
+      Filename_Prefix : constant String :=
+                          GNAT.Calendar.Time_IO.Image (Now, "%Y%m%d%H%M-");
+      File_Pathname   : constant String :=
+                          Year & DS & Category & DS
+                            & Filename_Prefix & In_Filename;
+      Thumb_Filename  : constant String :=
+                          Settings.Get_Thumbs_Path & DS & File_Pathname;
+
       Test_Image    : Image.Data.Image_Data;
+
    begin
 
       --  Read image info and create thumbnail
@@ -62,8 +77,8 @@ package body Image_Tests.Thumbnails is
               "Error. Test_Image has not been created");
 
       Assert
-        (Ada.Directories.Exists (Out_Filename),
-         Out_Filename & "does not exist");
+        (Ada.Directories.Exists (Thumb_Filename),
+         Thumb_Filename & "does not exist");
    end Create_Thumbnail;
 
    ----------
