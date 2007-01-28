@@ -258,6 +258,12 @@ package body V2P.Web_Server is
       Count_Visit : Boolean := True;
       Set      : Templates.Translate_Set;
    begin
+
+      if FID = "" or TID = "" then
+         return Response.URL
+           (Location => Template_Defs.Main_Page.URL);
+      end if;
+
       --  Set thread Id into the session
       Session.Set (SID, "TID", TID);
       Session.Set (SID, "FID", FID);
@@ -510,11 +516,21 @@ package body V2P.Web_Server is
 
       Translations : Templates.Translate_Set;
    begin
-      if (Login = "" and then Anonymous = "") or
-      (TID = "" and not Is_Valid_Comment (Comment)) then
+      if Login = "" and then Anonymous = "" then
+         if TID /= "" and then FID /= "" then
+            return Response.URL
+              (Location => Template_Defs.Forum_Entry.URL & "?TID=" & TID
+               & "&FID=" & FID);
+            --  ??? Adds an error message
+         end if;
+         return Response.URL (Location => Template_Defs.Main_Page.URL);
+      end if;
+
+      if TID /= "" and not Is_Valid_Comment (Comment_Wiki) then
          return Response.URL
            (Location => Template_Defs.Forum_Entry.URL & "?TID=" & TID
             & "&FID=" & FID);
+         --  ??? Adds an error message
       end if;
 
       if Filename /= "" then
