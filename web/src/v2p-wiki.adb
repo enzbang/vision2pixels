@@ -1,4 +1,3 @@
-with Ada.Text_IO; use Ada.Text_IO;
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
@@ -177,7 +176,9 @@ package body V2P.Wiki is
       Extract : constant Pattern_Matcher
         := Compile ("\[(\w+) (.+?)\]",
                     Case_Insensitive);
-      --  Gets all [em string]
+      --  Gets all [keyword string]
+      --  where keyword is em, blockquote or strong
+
       Matches      : Match_Array (0 .. 2);
       Current      : Natural := S'First;
       Result       : Unbounded_String := To_Unbounded_String ("");
@@ -185,9 +186,6 @@ package body V2P.Wiki is
       loop
          Match (Extract, S, Matches, Current);
          exit when Matches (0) = No_Match;
-
-         Ada.Text_IO.Put_Line (S (Matches (1).First .. Matches (1).Last));
-         Ada.Text_IO.Put_Line (S (Matches (2).First .. Matches (2).Last));
 
          Result := Result & S (Current .. Matches (0).First - 1);
 
@@ -216,10 +214,8 @@ package body V2P.Wiki is
    function Wiki_To_Html (S : in String) return String is
       Without_Html  : constant String := Web_Encode (S);
       With_Links    : constant String := Extract_Links (Without_Html);
-      Final_Comment : constant String := Wiki_Format (With_Links);
    begin
-      Ada.Text_IO.Put_Line (Final_Comment);
-      return Final_Comment;
+      return Wiki_Format (With_Links);
    end Wiki_To_Html;
 
 end V2P.Wiki;
