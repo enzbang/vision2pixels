@@ -24,7 +24,6 @@ with Ada.Directories;
 with Ada.Text_IO;
 
 with GNAT.Calendar.Time_IO;
-with GNAT.OS_Lib;
 
 with G2F.Image_IO;
 with G2F.IO;
@@ -80,7 +79,6 @@ package body Image.Data is
       Filename : in     String;
       Category : in     String)
    is
-      DS              : Character renames GNAT.OS_Lib.Directory_Separator;
       Now             : constant Calendar.Time := Calendar.Clock;
       Year            : constant String :=
                           GNAT.Calendar.Time_IO.Image (Now, "%Y");
@@ -88,11 +86,12 @@ package body Image.Data is
                           GNAT.Calendar.Time_IO.Image (Now, "%Y%m%d%H%M-");
       S_Name          : constant String := Simple_Name (Filename);
       File_Pathname   : constant String :=
-                          Year & DS & Category & DS & Filename_Prefix & S_Name;
+                          Compose (Compose (Compose
+                            (Year, Category), Filename_Prefix), S_Name);
       Thumb_Name      : constant String :=
-                          Settings.Get_Thumbs_Path & DS & File_Pathname;
+                          Compose (Settings.Get_Thumbs_Path, File_Pathname);
       Image_Name      : constant String :=
-                          Settings.Get_Images_Path & DS & File_Pathname;
+                          Compose (Settings.Get_Images_Path, File_Pathname);
       Thumb_Size      : constant G2F.IO.Image_Size :=
                           (Image_Size_T (Settings.Thumbnail_Maximum_Width),
                            Image_Size_T (Settings.Thumbnail_Maximum_Height));
