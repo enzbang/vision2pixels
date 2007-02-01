@@ -78,18 +78,22 @@ package body Web_Tests.Wiki is
 
       Assert
         (V2P.Wiki.Wiki_To_Html
-           ("some text http://simple.url&param=url&param2=url2 some text") =
-           ("some text <a href='http://simple.url&param=url&param2=url2' "
-            & "rel='nofollow'>"
-            & "http://simple.url&param=url&param2=url2</a> some text"),
-         "Error with some text http://simple.url&param=url&param2=url2"
-         & " some text");
+           ("some text http://simple.url?param=url&param2=url2 some text") =
+           ("some text <a href='http://simple.url?param=url&#38;"
+            & "param2=url2' rel='nofollow'>"
+            & "http://simple.url?param=url&#38;param2=url2</a> some text"),
+         V2P.Wiki.Wiki_To_Html
+           ("some text http://simple.url?param=url&param2=url2 some text"));
+         --           "Error with some text
+         --  http://simple.url.param=url&param2=url2"
+         --           & " some text");
 
       Assert
         (V2P.Wiki.Wiki_To_Html
            ("some text for [[http://simple.url?param=val&param2=val2]"
             & "[this is a simple url]] well formatted") =
-           ("some text for <a href='http://simple.url?param=val&param2=val2' "
+           ("some text for <a href='http://simple.url?param=val&#38;"
+            & "param2=val2' "
             & "rel='nofollow'>this is a simple url</a> well formatted"),
          "Error with some text for [[http://simple.url?param=val&param2=val2]"
          &  "[this is a simple url]] well formatted");
@@ -98,7 +102,7 @@ package body Web_Tests.Wiki is
         (V2P.Wiki.Wiki_To_Html
            ("[[http://simple.url?param=val&param2=val2]"
             & "[this is a simple url]]") =
-           ("<a href='http://simple.url?param=val&param2=val2' "
+           ("<a href='http://simple.url?param=val&#38;param2=val2' "
             & "rel='nofollow'>this is a simple url</a>"),
          "Error with [[http://simple.url?param=val&param2=val2]"
          &  "[this is a simple url]]");
@@ -109,6 +113,21 @@ package body Web_Tests.Wiki is
             & "[this is a simple url malformatted") = "some text for ",
          "Error with some text for [[http://simple.url?param=val&param2=val2]"
          &  "[this is a simple url malformatted");
+
+      Assert
+        (V2P.Wiki.Wiki_To_Html ("[em Emphasized text]") =
+           "<em>Emphasized text</em>",
+         "Error with [em Emphasized text]");
+
+      Assert
+        (V2P.Wiki.Wiki_To_Html ("some text [blockquote some quote]") =
+           "some text <blockquote>some quote</blockquote>",
+         "Error with some text [blockquote some quote]");
+
+      Assert
+        (V2P.Wiki.Wiki_To_Html ("[strong strong text]") =
+           "<strong>strong text</strong>",
+         "Error with [strong strong text]");
 
    end Wiki_To_Html;
 

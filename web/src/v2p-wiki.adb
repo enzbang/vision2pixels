@@ -27,11 +27,17 @@ package body V2P.Wiki is
    use GNAT.Regpat;
    use Ada.Strings.Unbounded;
 
-   function Strip_HTML_Tag (S : in String) return String;
-   --  Strip all HTML tags <*>
-
    function Extract_Links (S : in String) return String;
    --  Extract all http:// links
+
+   function Image (N : in Integer) return String;
+   pragma Inline (Image);
+   --  Returns N image without leading blank
+
+   function Web_Encode (S : in String) return String;
+   --  Encode HTML special characters
+
+   function Wiki_Format (S : in String) return String;
 
    function Extract_Links (S : in String) return String is
       Link_Extract : constant Pattern_Matcher
@@ -89,37 +95,127 @@ package body V2P.Wiki is
       return To_String (Result);
    end Extract_Links;
 
-   function Strip_HTML_Tag (S : in String) return String is
-      Result : String (S'Range);
-      K      : Positive := Result'First;
-      J      : Positive := S'First;
-   begin
-      if S = "" then
-         return "";
-      end if;
+   -----------
+   -- Image --
+   -----------
 
-      loop
-         if S (J) = '<' then
-            while S (J) /= '>' and J /= S'Last loop
-               J := J + 1;
-            end loop;
-            J := J + 1;
+   function Image (N : in Integer) return String is
+      N_Img : constant String := Integer'Image (N);
+   begin
+      if N_Img (N_Img'First) = '-' then
+         return N_Img;
+      else
+         return N_Img (N_Img'First + 1 .. N_Img'Last);
+      end if;
+   end Image;
+
+   ----------------
+   -- Web_Encode --
+   ----------------
+
+   function Web_Encode (S : in String) return String
+   is
+      C_Inf  : constant Natural := Character'Pos ('<');
+      C_Sup  : constant Natural := Character'Pos ('>');
+      C_And  : constant Natural := Character'Pos ('&');
+      C_Quo  : constant Natural := Character'Pos ('"');
+
+      Result : Unbounded_String;
+      Last   : Integer := S'First;
+      Code   : Natural;
+
+      procedure Append_To_Result
+        (Str  : String;
+         From : Integer;
+         To   : Integer);
+      --  Append S (From .. To) to Result if not empty concatenated with Str
+      --  and update Last.
+
+      ----------------------
+      -- Append_To_Result --
+      ----------------------
+
+      procedure Append_To_Result
+        (Str  : String;
+         From : Integer;
+         To   : Integer) is
+      begin
+         if From <= To then
+            Append (Result, S (From .. To) & Str);
          else
-            Result (K) := S (J);
-            K := K + 1;
-            J := J + 1;
+            Append (Result, Str);
          end if;
-         exit when J > S'Last;
+
+         Last := To + 2;
+      end Append_To_Result;
+
+   begin
+      for K in S'Range loop
+         Code := Character'Pos (S (K));
+
+         if Code not in 32 .. 127
+           or else Code = C_Inf or else Code = C_Sup
+           or else Code = C_And or else Code = C_Quo
+         then
+            declare
+               I_Code : constant String := Image (Code);
+            begin
+               Append_To_Result ("&#" & I_Code & ";", Last, K - 1);
+            end;
+         end if;
       end loop;
 
-      return Result (Result'First .. K - 1);
-   end Strip_HTML_Tag;
+      if Last <= S'Last then
+         Append (Result, S (Last .. S'Last));
+      end if;
+
+      return To_String (Result);
+   end Web_Encode;
+
+   function Wiki_Format (S : in String) return String is
+      Extract : constant Pattern_Matcher
+        := Compile ("\[(\w+) (.+?)\]",
+                    Case_Insensitive);
+      --  Gets all [keyword string]
+      --  where keyword is em, blockquote or strong
+
+      Matches      : Match_Array (0 .. 2);
+      Current      : Natural := S'First;
+      Result       : Unbounded_String := To_Unbounded_String ("");
+   begin
+      loop
+         Match (Extract, S, Matches, Current);
+         exit when Matches (0) = No_Match;
+
+         Result := Result & S (Current .. Matches (0).First - 1);
+
+         declare
+            Keyword : constant String
+              := S (Matches (1).First .. Matches (1).Last);
+         begin
+            if Keyword = "em" then
+               Result := Result & "<em>"
+                 & S (Matches (2).First .. Matches (2).Last) & "</em>";
+            elsif Keyword = "blockquote" then
+               Result := Result & "<blockquote>"
+                 & S (Matches (2).First .. Matches (2).Last) & "</blockquote>";
+            elsif Keyword = "strong" then
+               Result := Result & "<strong>"
+                 & S (Matches (2).First .. Matches (2).Last) & "</strong>";
+            end if;
+         end;
+
+         Current := Matches (0).Last + 1;
+      end loop;
+      Result := Result & S (Current .. S'Last);
+      return To_String (Result);
+   end Wiki_Format;
 
    function Wiki_To_Html (S : in String) return String is
-      Without_Html : constant String := Strip_HTML_Tag (S);
-      With_Links   : constant String := Extract_Links (Without_Html);
+      Without_Html  : constant String := Web_Encode (S);
+      With_Links    : constant String := Extract_Links (Without_Html);
    begin
-      return With_Links;
+      return Wiki_Format (With_Links);
    end Wiki_To_Html;
 
 end V2P.Wiki;
