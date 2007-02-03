@@ -142,7 +142,7 @@ package @_PACKAGE_@ is
    package Lazy is
   @@TABLE@@
      @@IF@@ @_UPPER:SLICE(1..5):VARIABLE_LIST_@ = "LAZY_"
-      @_CAPITALIZE:REPLACE_ALL(LAZY_/):REPLACE_ALL(__/_):VARIABLE_LIST_@ : constant String := "@_VARIABLE_LIST_@";
+      @_REPLACE_ALL(LAZY_/):REPLACE_ALL(__/_):VARIABLE_LIST_@ : constant String := "@_VARIABLE_LIST_@";
      @@END_IF@@
   @@END_TABLE@@
 
@@ -166,7 +166,7 @@ package @_PACKAGE_@ is
 
    @@TABLE@@
      @@IF@@ not @_IS_EMPTY:VARIABLE_@ and @_UPPER:SLICE(1..5):VARIABLE_@ /= "LAZY_"
-      @_CAPITALIZE:REPLACE_ALL(__/_):VARIABLE_@ : constant String := "@_VARIABLE_@";
+      @_REPLACE_ALL(__/_):VARIABLE_@ : constant String := "@_VARIABLE_@";
      @@END_IF@@
    @@END_TABLE@@
 
@@ -175,7 +175,7 @@ package @_PACKAGE_@ is
        package HTTP is
    @@TABLE@@
       @@IF@@ not @_IS_EMPTY:HTTP_@
-         @_CAPITALIZE:REPLACE_ALL(__/_):HTTP_@ : constant String := "@_HTTP_@";
+         @_REPLACE_ALL(__/_):HTTP_@ : constant String := "@_HTTP_@";
       @@END_IF@@
    @@END_TABLE@@
        end HTTP;
@@ -184,7 +184,7 @@ package @_PACKAGE_@ is
 
        package Set is
    @@TABLE@@
-         @_CAPITALIZE:REPLACE_ALL(__/_):SET_VAR_@ : constant String := "@_SET_VAL_@";
+         @_REPLACE_ALL(__/_):SET_VAR_@ : constant String := "@_SET_VAL_@";
    @@END_TABLE@@
        end Set;
 @@END_IF@@
@@ -193,7 +193,7 @@ package @_PACKAGE_@ is
    package Ajax is
       @@TABLE@@
       @@IF@@ not @_IS_EMPTY:AJAX_EVENT_@
-      @_CAPITALIZE:AJAX_EVENT_@_@_CAPITALIZE:AJAX_ACTION_@ : constant String := "/@_AJAX_EVENT_@$@_AJAX_ACTION_@";
+      @_AJAX_EVENT_@_@_AJAX_ACTION_@ : constant String := "/@_AJAX_EVENT_@$@_AJAX_ACTION_@";
       @@END_IF@@
       @@END_TABLE@@
    end Ajax;
@@ -230,7 +230,7 @@ package @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@ is
 
    @@TABLE@@
        @@IF@@ not @_IS_EMPTY:VARIABLE_@ and @_UPPER:SLICE(1..5):VARIABLE_@ /= "LAZY_"
-   @_CAPITALIZE:REPLACE_ALL(__/_):VARIABLE_@ : constant String := "@_VARIABLE_@";
+   @_REPLACE_ALL(__/_):VARIABLE_@ : constant String := "@_VARIABLE_@";
        @@END_IF@@
    @@END_TABLE@@
 @@IF@@ @_EXIST:HTTP_@
@@ -238,7 +238,7 @@ package @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@ is
    package HTTP is
    @@TABLE@@
       @@IF@@ not @_IS_EMPTY:HTTP_@
-      @_CAPITALIZE:REPLACE_ALL(__/_):HTTP_@ : constant String := "@_HTTP_@";
+      @_REPLACE_ALL(__/_):HTTP_@ : constant String := "@_HTTP_@";
       @@END_IF@@
    @@END_TABLE@@
    end HTTP;
@@ -247,7 +247,7 @@ package @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@ is
 
    package Set is
    @@TABLE@@
-      @_CAPITALIZE:REPLACE_ALL(SET_/)REPLACE_ALL(__/_):SET_VAR_@ : constant String := "@_SET_VAL_@";
+      @_REPLACE_ALL(SET_/)REPLACE_ALL(__/_):SET_VAR_@ : constant String := "@_SET_VAL_@";
    @@END_TABLE@@
    end Set;
 @@END_IF@@
@@ -256,7 +256,7 @@ package @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@ is
    package Ajax is
       @@TABLE@@
       @@IF@@ not @_IS_EMPTY:AJAX_EVENT_@
-      @_CAPITALIZE:AJAX_EVENT_@_@_CAPITALIZE:AJAX_ACTION_@ : constant String := "/@_AJAX_EVENT_@$@_AJAX_ACTION_@";
+      @_AJAX_EVENT_@_@_AJAX_ACTION_@ : constant String := "/@_AJAX_EVENT_@$@_AJAX_ACTION_@";
       @@END_IF@@
       @@END_TABLE@@
    end Ajax;
@@ -268,8 +268,8 @@ end @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@;
 
 --  DO NOT EDIT, THIS FILE HAS BEEN GENERATED
 
-with AWS.Services.Web_Block.Registry;
-with V2P.Block_Callbacks;
+with AWS.Services.ECWF.Registry;
+with V2P.ECWF_Callbacks;
 
 package body @_PACKAGE_@ is
    pragma Style_Checks (Off);
@@ -281,15 +281,15 @@ package body @_PACKAGE_@ is
       --------------
 
       procedure Register is
-         use AWS.Services.Web_Block;
+         use AWS.Services;
          use V2P;
       begin
   @@TABLE@@
      @@IF@@ @_UPPER:SLICE(1..5):VARIABLE_LIST_@ = "LAZY_"
-         Registry.Register
+         ECWF.Registry.Register
             ("@_VARIABLE_LIST_@",
              "templates/block_@_LOWER:REPLACE_ALL(LAZY_/):VARIABLE_LIST_@.thtml",
-             Block_Callbacks.@_CAPITALIZE:REPLACE_ALL(LAZY_/):VARIABLE_LIST_@'Access);
+             ECWF_Callbacks.@_CAPITALIZE:REPLACE_ALL(LAZY_/):VARIABLE_LIST_@'Access);
      @@END_IF@@
   @@END_TABLE@@
       end Register;

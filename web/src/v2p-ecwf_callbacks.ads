@@ -21,56 +21,56 @@
 
 with AWS.Status;
 with AWS.Templates;
-with AWS.Services.Web_Block.Context;
+with AWS.Services.ECWF.Context;
 
-package V2P.Block_Callbacks is
+package V2P.ECWF_Callbacks is
 
    use AWS;
    use AWS.Services;
 
    procedure Forum_Filter
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set);
 
    procedure Forum_List
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set);
 
    procedure Forum_List_Select
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set);
 
    procedure Forum_Threads
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set);
 
    procedure Login
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set);
 
    procedure New_Comment
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set);
 
    procedure New_Post
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set);
 
    procedure Quick_Login
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set);
 
    procedure User_Thread_List
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set);
 
-end V2P.Block_Callbacks;
+end V2P.ECWF_Callbacks;
