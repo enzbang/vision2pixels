@@ -126,9 +126,9 @@ package body V2P.Database is
       Iter.End_Select;
 
       Templates.Insert
-        (Set, Templates.Assoc (R_Block_Forum_List.Category_Id, Id));
+        (Set, Templates.Assoc (R_Block_Forum_List.CATEGORY_ID, Id));
       Templates.Insert
-        (Set, Templates.Assoc (R_Block_Forum_List.Category, Name));
+        (Set, Templates.Assoc (R_Block_Forum_List.CATEGORY, Name));
 
       return Set;
    end Get_Categories;
@@ -167,7 +167,7 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc (Block_New_Comment.Category_Id, Id));
       Templates.Insert
-        (Set, Templates.Assoc (R_Block_Forum_List.Category, Name));
+        (Set, Templates.Assoc (R_Block_Forum_List.CATEGORY, Name));
 
       return Set;
    end Get_Category;
@@ -243,23 +243,23 @@ package body V2P.Database is
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.Name, DB.String_Vectors.Element (Line, 1)));
+              (Forum_Entry.NAME, DB.String_Vectors.Element (Line, 1)));
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.Image_Comment,
+              (Forum_Entry.IMAGE_COMMENT,
                DB.String_Vectors.Element (Line, 2)));
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.Image_Source_Prefix,
+              (Forum_Entry.IMAGE_SOURCE_PREFIX,
                V2P.Web_Server.Images_Source_Prefix));
 
          --  Insert the image path
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.Image_Source,
+              (Forum_Entry.IMAGE_SOURCE,
                DB.String_Vectors.Element (Line, 3)));
          Line.Clear;
       end if;
@@ -301,21 +301,21 @@ package body V2P.Database is
       Iter.End_Select;
 
       Templates.Insert
-        (Set, Templates.Assoc (Forum_Entry.Comment_Id, Comment_Id));
+        (Set, Templates.Assoc (Forum_Entry.COMMENT_ID, Comment_Id));
       Templates.Insert
-        (Set, Templates.Assoc (Forum_Entry.Date_Iso_8601, Date_Iso_8601));
-      Templates.Insert (Set, Templates.Assoc (Forum_Entry.Date, Date));
-      Templates.Insert (Set, Templates.Assoc (Forum_Entry.Time, Time));
+        (Set, Templates.Assoc (Forum_Entry.DATE_ISO_8601, Date_Iso_8601));
+      Templates.Insert (Set, Templates.Assoc (Forum_Entry.DATE, Date));
+      Templates.Insert (Set, Templates.Assoc (Forum_Entry.TIME, Time));
 
-      Templates.Insert (Set, Templates.Assoc (Forum_Entry.User, User));
+      Templates.Insert (Set, Templates.Assoc (Forum_Entry.USER, User));
       Templates.Insert
-        (Set, Templates.Assoc (Forum_Entry.Anonymous_User, Anonymous));
-      Templates.Insert (Set, Templates.Assoc (Forum_Entry.Comment, Comment));
+        (Set, Templates.Assoc (Forum_Entry.ANONYMOUS_USER, Anonymous));
+      Templates.Insert (Set, Templates.Assoc (Forum_Entry.COMMENT, Comment));
       Templates.Insert
-        (Set, Templates.Assoc (Forum_Entry.Comment_Level, Comment_Level));
+        (Set, Templates.Assoc (Forum_Entry.COMMENT_LEVEL, Comment_Level));
       Templates.Insert
         (Set,
-         Templates.Assoc (Forum_Entry.Nb_Levels_To_Close, Nb_Levels_To_Close));
+         Templates.Assoc (Forum_Entry.NB_LEVELS_TO_CLOSE, Nb_Levels_To_Close));
 
       return Set;
    end Get_Entry;
@@ -380,9 +380,9 @@ package body V2P.Database is
 
       Iter.End_Select;
 
-      Templates.Insert (Set, Templates.Assoc (Block_Forum_List.Fid, Id));
+      Templates.Insert (Set, Templates.Assoc (Block_Forum_List.FID, Id));
       Templates.Insert
-        (Set, Templates.Assoc (Block_Forum_List.Forum_Name, Name));
+        (Set, Templates.Assoc (Block_Forum_List.FORUM_NAME, Name));
 
       return Set;
    end Get_Forums;
@@ -470,12 +470,12 @@ package body V2P.Database is
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.Previous,
+              (Forum_Entry.PREVIOUS,
                DB.String_Vectors.Element (Line, 1)));
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.Previous_Thumb,
+              (Forum_Entry.PREVIOUS_THUMB,
                DB.String_Vectors.Element (Line, 3)));
 
          Line.Clear;
@@ -505,12 +505,12 @@ package body V2P.Database is
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.Next,
+              (Forum_Entry.NEXT,
                DB.String_Vectors.Element (Line, 1)));
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.Next_Thumb,
+              (Forum_Entry.NEXT_THUMB,
                DB.String_Vectors.Element (Line, 3)));
 
          Line.Clear;
@@ -565,13 +565,13 @@ package body V2P.Database is
          if From /= 0 then
             Templates.Insert
               (Set, Templates.Assoc
-                 (Block_Forum_Navigate.Previous, From - 50));
+                 (Block_Forum_Navigate.PREVIOUS, From - 50));
          end if;
 
          --  ??? need to check if there is more data !
          Templates.Insert
            (Set, Templates.Assoc
-              (Block_Forum_Navigate.Next, From + 50));
+              (Block_Forum_Navigate.NEXT, From + 50));
       end if;
 
       DBH.Handle.Prepare_Select (Iter, To_String (Select_Stmt));
@@ -595,18 +595,18 @@ package body V2P.Database is
 
       Templates.Insert
         (Set, Templates.Assoc
-           (Block_Forum_Threads.Thumb_Source, Thumb));
+           (Block_Forum_Threads.THUMB_SOURCE, Thumb));
 
-      Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.Tid, Id));
-      Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.Name, Name));
+      Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.TID, Id));
+      Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.NAME, Name));
       Templates.Insert
-        (Set, Templates.Assoc (Block_Forum_Threads.Category, Category));
-      Templates.Insert
-        (Set, Templates.Assoc
-           (Block_Forum_Threads.Comment_Counter, Comment_Counter));
+        (Set, Templates.Assoc (Block_Forum_Threads.CATEGORY, Category));
       Templates.Insert
         (Set, Templates.Assoc
-           (Block_Forum_Threads.Visit_Counter, Visit_Counter));
+           (Block_Forum_Threads.COMMENT_COUNTER, Comment_Counter));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Block_Forum_Threads.VISIT_COUNTER, Visit_Counter));
       return Set;
    end Get_Threads;
 
@@ -620,9 +620,9 @@ package body V2P.Database is
       Set : Templates.Translate_Set;
    begin
       Templates.Insert
-        (Set, Templates.Assoc (Block_Login.Login, Uid));
+        (Set, Templates.Assoc (Block_Login.LOGIN, Uid));
       Templates.Insert
-        (Set, Templates.Assoc (Block_Login.HTTP.Password, Get_Password (Uid)));
+        (Set, Templates.Assoc (Block_Login.HTTP.PASSWORD, Get_Password (Uid)));
 
       return Set;
    end Get_User;

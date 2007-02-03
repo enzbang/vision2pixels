@@ -26,69 +26,44 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-package body AWS.Services.Web_Block.Context is
+with AWS.Session;
 
-   ------------
-   -- Create --
-   ------------
+package AWS.Services.ECWF.Context is
 
-   function Create return Id is
-   begin
-      return Id (Session.Create);
-   end Create;
+   type Object is tagged private;
+   --  A context object, can be used to record key/name values
 
-   -----------
-   -- Exist --
-   -----------
+   type Id is private;
 
-   function Exist (CID : in Id) return Boolean is
-   begin
-      return Session.Exist (Session.Id (CID));
-   end Exist;
+   function Image (CID : in Id) return String;
+   --  Returns CID string representation
 
-   ---------
-   -- Get --
-   ---------
+   function Value (CID : in String) return Id;
+   --  Returns Id given it's string representation
 
-   function Get (CID : in Id) return Object is
-   begin
-      return Object'(SID => Session.Id (CID));
-   end Get;
+   function Create return Id;
+   --  Create a new context and returns the corresponding Id
 
-   ---------------
-   -- Get_Value --
-   ---------------
+   function Exist (CID : in Id) return Boolean;
+   --  Returns Trus if CID context exists into the database
 
-   function Get_Value (Context : in Object; Name : in String) return String is
-   begin
-      return Session.Get (Context.SID, Name);
-   end Get_Value;
+   function Get (CID : in Id) return Object;
+   --  Returns the context object corresponding to CID
 
-   -----------
-   -- Image --
-   -----------
+   procedure Set_Value (Context : in out Object; Name, Value : in String);
+   --  Add a new name/value pair
 
-   function Image (CID : in Id) return String is
-   begin
-      return Session.Image (Session.Id (CID));
-   end Image;
+   function Get_Value (Context : in Object; Name : in String) return String;
+   --  Get the value for the key Name
 
-   ---------------
-   -- Set_Value --
-   ---------------
+private
 
-   procedure Set_Value (Context : in out Object; Name, Value : in String) is
-   begin
-      Session.Set (Context.SID, Name, Value);
-   end Set_Value;
+   use AWS;
 
-   -----------
-   -- Value --
-   -----------
+   type Id is new Session.Id;
 
-   function Value (CID : in String) return Id is
-   begin
-      return Id (Session.Value (CID));
-   end Value;
+   type Object is tagged record
+      SID : Session.Id;
+   end record;
 
-end AWS.Services.Web_Block.Context;
+end AWS.Services.ECWF.Context;

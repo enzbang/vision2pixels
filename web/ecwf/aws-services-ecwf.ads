@@ -26,44 +26,10 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with AWS.Session;
+--  Enhanced Contextual Web Framework
 
-package AWS.Services.Web_Block.Context is
+package AWS.Services.ECWF is
 
-   type Object is tagged private;
-   --  A context object, can be used to record key/name values
+   pragma Pure;
 
-   type Id is private;
-
-   function Image (CID : in Id) return String;
-   --  Returns CID string representation
-
-   function Value (CID : in String) return Id;
-   --  Returns Id given it's string representation
-
-   function Create return Id;
-   --  Create a new context and returns the corresponding Id
-
-   function Exist (CID : in Id) return Boolean;
-   --  Returns Trus if CID context exists into the database
-
-   function Get (CID : in Id) return Object;
-   --  Returns the context object corresponding to CID
-
-   procedure Set_Value (Context : in out Object; Name, Value : in String);
-   --  Add a new name/value pair
-
-   function Get_Value (Context : in Object; Name : in String) return String;
-   --  Get the value for the key Name
-
-private
-
-   use AWS;
-
-   type Id is new Session.Id;
-
-   type Object is tagged record
-      SID : Session.Id;
-   end record;
-
-end AWS.Services.Web_Block.Context;
+end AWS.Services.ECWF;

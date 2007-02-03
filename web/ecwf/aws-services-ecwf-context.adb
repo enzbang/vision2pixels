@@ -26,35 +26,72 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with AWS.Status;
-with AWS.Templates;
+package body AWS.Services.ECWF.Context is
 
-with AWS.Services.Web_Block.Context;
+   ------------
+   -- Create --
+   ------------
 
+   function Create return Id is
+   begin
+      return Id (Session.Create);
+   end Create;
 
-package AWS.Services.Web_Block.Registry is
+   -----------
+   -- Exist --
+   -----------
 
-   type Lazy_Handler is new Templates.Dynamic.Lazy_Tag with record
-      Request      : Status.Data;
-      --  Current request made to the server
-      Translations : Templates.Translate_Set;
-      --  Global translations table
-   end record;
+   function Exist (CID : in Id) return Boolean is
+   begin
+      return Session.Exist (Session.Id (CID));
+   end Exist;
 
-   procedure Register
-     (Tag      : in String;
-      Template : in String;
-      Data_CB  : not null access procedure
-        (Request      : in Status.Data;
-         Context      : access Web_Block.Context.Object;
-         Translations : in out Templates.Translate_Set));
+   ---------
+   -- Get --
+   ---------
 
-private
+   function Get (CID : in Id) return Object is
+   begin
+      return Object'(SID => Session.Id (CID));
+   end Get;
 
-   overriding
-   procedure Value
-     (Lazy_Tag     : not null access Lazy_Handler;
-      Var_Name     : in              String;
-      Translations : in out          Templates.Translate_Set);
+   ---------------
+   -- Get_Value --
+   ---------------
 
-end AWS.Services.Web_Block.Registry;
+   function Get_Value (Context : in Object; Name : in String) return String is
+   begin
+      return Session.Get (Context.SID, Name);
+   end Get_Value;
+
+   -----------
+   -- Image --
+   -----------
+
+   function Image (CID : in Id) return String is
+   begin
+      return Session.Image (Session.Id (CID));
+   end Image;
+
+   ---------------
+   -- Set_Value --
+   ---------------
+
+   procedure Set_Value (Context : in out Object; Name, Value : in String) is
+   begin
+      Session.Set (Context.SID, Name, Value);
+   end Set_Value;
+
+   -----------
+   -- Value --
+   -----------
+
+   function Value (CID : in String) return Id is
+   begin
+      return Id (Session.Value (CID));
+   exception
+      when Constraint_Error =>
+         return Id (Session.No_Session);
+   end Value;
+
+end AWS.Services.ECWF.Context;
