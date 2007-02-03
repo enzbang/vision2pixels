@@ -78,8 +78,7 @@ package body V2P.Database is
       Filter     : in Filter_Mode := All_Messages;
       Where_Cond : in String := "";
       Order_Dir  : in Order_Direction := DESC;
-      Limit      : in Natural := 0)
-      return Unbounded_String;
+      Limit      : in Natural := 0) return Unbounded_String;
    --  Returns the select SQL query for listing threads with Filter
 
    -------------
@@ -191,8 +190,7 @@ package body V2P.Database is
       if Iter.More then
          Iter.Get_Line (Line);
 
-         Name := To_Unbounded_String (DB.String_Vectors.Element
-                                        (Line, 1));
+         Name := To_Unbounded_String (DB.String_Vectors.Element (Line, 1));
          Name := Name & DS & To_Unbounded_String
            (DB.String_Vectors.Element (Line, 2));
          Line.Clear;
@@ -281,14 +279,14 @@ package body V2P.Database is
       while Iter.More loop
          Iter.Get_Line (Line);
 
-         Comment_Id    := Comment_Id & DB.String_Vectors.Element (Line, 1);
+         Comment_Id    := Comment_Id    & DB.String_Vectors.Element (Line, 1);
          Date_Iso_8601 := Date_Iso_8601 & DB.String_Vectors.Element (Line, 2);
-         Date          := Date &  DB.String_Vectors.Element (Line, 3);
-         Time          := Time   & DB.String_Vectors.Element (Line, 4);
-         User          := User       & DB.String_Vectors.Element (Line, 5);
-         Anonymous     := Anonymous  & DB.String_Vectors.Element (Line, 6);
-         Comment       := Comment & DB.String_Vectors.Element (Line, 7);
-         Filename      := Filename & DB.String_Vectors.Element (Line, 8);
+         Date          := Date          & DB.String_Vectors.Element (Line, 3);
+         Time          := Time          & DB.String_Vectors.Element (Line, 4);
+         User          := User          & DB.String_Vectors.Element (Line, 5);
+         Anonymous     := Anonymous     & DB.String_Vectors.Element (Line, 6);
+         Comment       := Comment       & DB.String_Vectors.Element (Line, 7);
+         Filename      := Filename      & DB.String_Vectors.Element (Line, 8);
 
          --  Unthreaded view
 
