@@ -35,6 +35,24 @@
 
 
 @@-- --------------------------------
+@@-- Add Context parameter CTX_ECWF
+
+   function add_ecwf_context (pars)
+   {
+       var context = document.getElementById('CTX_ECWF');
+
+       if (context != null) {
+          if (pars == "")
+             pars = pars + "?";
+          else
+             pars = pars + "&";
+
+          pars = pars + 'CTX_ECWF=' + $(context).innerHTML;
+       }
+       return pars;
+   }
+
+@@-- --------------------------------
 @@-- Call url?pars and put result into placeholder
 
    function aws_replace (url, pars, placeholder, oncomplete)
@@ -46,7 +64,7 @@
          var O_ajax = new Ajax.Request
             (url,
              {method:     'get',
-              parameters: pars,
+              parameters: add_ecwf_context (pars),
               onFailure:  report_error,
               onComplete: function(req)
                             {rplaceholder.value = req.responseText;
@@ -56,7 +74,7 @@
             ({success: placeholder},
              url,
              {method:     'get',
-              parameters: pars,
+              parameters: add_ecwf_context (pars),
               onFailure:  report_error,
               onComplete: function(req)
                             {update_behaviour();
@@ -72,7 +90,7 @@
        var myAjax = new Ajax.Request
            (url,
             {method: 'get',
-             parameters: pars,
+             parameters: add_ecwf_context (pars),
              onFailure : report_error,
              onComplete : function(req)
                             {aws_xml_handler(req);

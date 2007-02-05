@@ -14,21 +14,21 @@ value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/></p>
 <p><input name="ENTER" id="login_form_enter" type="submit" value="OK"/></p>
 
 <p id="cd_user"><a href="my">Créer/Modifier votre compte</a>
-  <span id="block_login_close">
+  <a id="block_login_close" rel="login">
     <img src="/css/img/close.gif"
          alt="@_BABEL_CLICK_TO_CLOSE_@" />
-  </span>
+  </a>
 </p>
 
 </fieldset>
 </form>
 @@ELSE@@
 <div id="logged_box">
-<p id="block_login_close" class="float_right">
+<a id="block_login_close" class="float_right"  rel="login">
     <img src="/css/img/close.gif"
          alt="@_BABEL_CLICK_TO_CLOSE_@" />
   </span>
-</p>
+</a>
 <p class="logged_as">@_BABEL_LOGGED_AS_@ @_LOGIN_@ </p>
 <p>
   <a href="@_FORUM_POST_URL_@?CTX_ECWF=@_CTX_ECWF_@">
@@ -55,4 +55,4 @@ value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/></p>
 @@INCLUDE@@ ../we_js/aws_action_clear.tjs (onfocus, password_input, password_input)
 @@-- Logout
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, logout_enter)
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, block_login_close, 19=>/xml_close_login.xml)
+@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, block_login_close, hide_rel)
