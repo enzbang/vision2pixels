@@ -53,15 +53,13 @@ package body Image_Tests.Thumbnails is
       use Image.Data;
       DS              : Character renames GNAT.OS_Lib.Directory_Separator;
       In_Filename     : constant String := "adapowered.jpg";
-      Category        : constant String := "Tests";
       Now             : constant Calendar.Time := Calendar.Clock;
       Year            : constant String :=
                           GNAT.Calendar.Time_IO.Image (Now, "%Y");
       Filename_Prefix : constant String :=
                           GNAT.Calendar.Time_IO.Image (Now, "%Y%m%d%H%M-");
       File_Pathname   : constant String :=
-                          Year & DS & Category & DS
-                            & Filename_Prefix & In_Filename;
+                          Year & DS & Filename_Prefix & In_Filename;
       Thumb_Filename  : constant String :=
                           Settings.Get_Thumbs_Path & DS & File_Pathname;
 
@@ -71,7 +69,7 @@ package body Image_Tests.Thumbnails is
 
       --  Read image info and create thumbnail
 
-      Image.Data.Init (Test_Image, In_Filename, Category);
+      Image.Data.Init (Img => Test_Image, Filename => In_Filename);
 
       Assert (Test_Image.Init_Status = Image_Created,
               "Error. Test_Image has not been created");

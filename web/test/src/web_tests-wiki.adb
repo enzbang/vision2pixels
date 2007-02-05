@@ -79,9 +79,9 @@ package body Web_Tests.Wiki is
       Assert
         (V2P.Wiki.Wiki_To_Html
            ("some text http://simple.url?param=url&param2=url2 some text") =
-           ("some text <a href='http://simple.url?param=url&#38;"
+           ("some text <a href='http://simple.url?param=url&amp;"
             & "param2=url2' rel='nofollow'>"
-            & "http://simple.url?param=url&#38;param2=url2</a> some text"),
+            & "http://simple.url?param=url&amp;param2=url2</a> some text"),
          V2P.Wiki.Wiki_To_Html
            ("some text http://simple.url?param=url&param2=url2 some text"));
          --           "Error with some text
@@ -92,7 +92,7 @@ package body Web_Tests.Wiki is
         (V2P.Wiki.Wiki_To_Html
            ("some text for [[http://simple.url?param=val&param2=val2]"
             & "[this is a simple url]] well formatted") =
-           ("some text for <a href='http://simple.url?param=val&#38;"
+           ("some text for <a href='http://simple.url?param=val&amp;"
             & "param2=val2' "
             & "rel='nofollow'>this is a simple url</a> well formatted"),
          "Error with some text for [[http://simple.url?param=val&param2=val2]"
@@ -102,7 +102,7 @@ package body Web_Tests.Wiki is
         (V2P.Wiki.Wiki_To_Html
            ("[[http://simple.url?param=val&param2=val2]"
             & "[this is a simple url]]") =
-           ("<a href='http://simple.url?param=val&#38;param2=val2' "
+           ("<a href='http://simple.url?param=val&amp;param2=val2' "
             & "rel='nofollow'>this is a simple url</a>"),
          "Error with [[http://simple.url?param=val&param2=val2]"
          &  "[this is a simple url]]");
