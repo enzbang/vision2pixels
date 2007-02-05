@@ -1,8 +1,19 @@
 @@INCLUDE@@ babel.thtml
 @@--
 <?xml version="1.0" encoding="utf-8"?>
-@@IF@@ @_ERROR_@ = ""
 <response>
+  @@IF@@ @_ERROR_@ = "" and @_URL_@ /= ""
   <location url="@_URL_@" />
+  @@ELSE@@
+  <replace id="post_error">
+  <![CDATA[
+  @@IF@@ @_ERROR_@
+  @_ERROR_@
+  @@ELSE@@
+  @_BABEL_UNKNOWN_ERROR_@
+  @@END_IF@@
+  ]]>
+  </replace>
+  @@END_IF@@
 </response>
-@@END_IF@@
+

@@ -34,6 +34,7 @@
   <p>
     <input name="ENTER" id="post_form_enter" type="submit" value="OK"/>
   </p>
+  <div id="post_error"></div>
   </fieldset>
 </form>
 
