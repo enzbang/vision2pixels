@@ -32,6 +32,7 @@
   @_BABEL_ADD_NEW_PHOTO_@</a></p>
 
   <p>
+    <input name="CTX_ECWF" id="CTX_ECWF" type="hidden" value="@_CTX_ECWF_@"/>
     <input name="ENTER" id="post_form_enter" type="submit" value="OK"/>
   </p>
   <div id="post_error"></div>

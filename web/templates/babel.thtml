@@ -33,3 +33,4 @@
 @@SET@@ BABEL_UNKNOWN_ERROR="Une erreur s'est produite"
 @@SET@@ BABEL_NO_PHOTO_SELECTED=""
 @@SET@@ BABEL_ERROR_DUPLICATED="Commentaire déjà envoyé"
+@@SET@@ BABEL_ERROR_POST_DUPLICATED="Post déjà envoyé"

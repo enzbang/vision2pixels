@@ -647,7 +647,6 @@ package body V2P.Web_Server is
       Context      : access Services.ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String := Session.Get (SID, "LOGIN");
@@ -656,6 +655,7 @@ package body V2P.Web_Server is
       Pid          : constant String := Parameters.Get (P, "PID");
       CID          : constant String := Parameters.Get (P, "CATEGORY");
       Forum        : constant String := Parameters.Get (P, "FORUM");
+      Last_Name    : constant String := Context.Get_Value ("LAST_POST_NAME");
 
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_Html (Comment);
    begin
@@ -667,12 +667,20 @@ package body V2P.Web_Server is
                "ERROR"));
          --  ??? Adds an error message
          return;
+      elsif Last_Name = Name then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.R_Block_Post_Form_Enter.ERROR_DUPLICATED,
+               "ERROR_DUPLICATE_POST"));
       else
          declare
             Post_Id : constant String :=
               Database.Insert_Post (Login, CID, Name, Comment_Wiki, Pid);
          begin
             if Post_Id /= "" then
+               Context.Set_Value ("LAST_POST_NAME", Name);
+
                Templates.Insert
                  (Translations,
                   Templates.Assoc
