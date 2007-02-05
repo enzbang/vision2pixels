@@ -241,7 +241,7 @@ input
     border:1px solid #292929;
 }
 
-input#login_form_enter {
+input#login_form_enter, iframe {
 /*    display:none; */
 /* It is not possible to use the display property here as IE7 will
 refuse to activate the form if the submit button is not displayed. For
@@ -467,3 +467,28 @@ p.commentmetadata a:hover {
     text-decoration:underline;
 }
 
+li.new {
+   border: 3px solid #F6A03D;
+}
+
+.thumbselect {
+    background-position:left center;
+    background-repeat:no-repeat;
+    height:80px;
+    padding-left:90px;
+}
+
+.thumboption {
+    background-position:left center;
+    background-repeat:no-repeat;
+    height:40px;
+    margin-bottom:2px;
+    padding-left:90px;
+}
+
+#show_new_photo_post {
+    background:url(/css/img/list-add.gif);
+    background-position:right center;
+    background-repeat:no-repeat;
+    padding: 10px 40px 10px 10px;
+}

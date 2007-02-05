@@ -57,7 +57,6 @@ package V2P.Database is
      return Templates.Translate_Set;
    --  Returns next and previous thread (id and thumbnail)
 
-
    function Get_Categories (Fid : in String) return Templates.Translate_Set;
    --  Returns all categories for the given forum
 
@@ -70,6 +69,9 @@ package V2P.Database is
    function Get_Entry (Tid : in String) return Templates.Translate_Set;
    --  Returns the full content of the entry Id
 
+   function Get_Comment (Cid : in String) return Templates.Translate_Set;
+   --  Returns a comment for the given comment id
+
    function Get_User (Uid : in String) return Templates.Translate_Set;
    --  Returns user's Id information
 
@@ -77,25 +79,40 @@ package V2P.Database is
    --  Returns the password for the given user. Returns the empty string if
    --  User cannot be found into the database.
 
-   procedure Insert_Comment
+   function Get_User_Tmp_Photo
+     (Uid : in String) return Templates.Translate_Set;
+   --  Returns user's temporaries photos
+
+   function Insert_Comment
      (Uid       : in String;
       Anonymous : in String;
       Thread    : in String;
       Name      : in String;
       Comment   : in String;
-      Filename  : in String);
+      Pid       : in String)
+     return String;
    --  Insert comment Name/Comment into the given forum and thread
+   --  Returns Comment Id
 
-   procedure Insert_Post
+   function Insert_Photo
+     (Uid         : in String;
+      Filename    : in String;
+      Height      : in Integer;
+      Width       : in Integer;
+      Size        : in Integer)
+     return String;
+   --  Insert a new photo into the database
+   --  Returns photo id
+
+   function Insert_Post
      (Uid         : in String;
       Category_Id : in String;
       Name        : in String;
       Comment     : in String;
-      Filename    : in String  := "";
-      Height      : in Integer := 0;
-      Width       : in Integer := 0;
-      Size        : in Integer := 0);
+      Pid         : in String)
+     return String;
    --  Insert a new post into the database
+   --  Returns post id
 
    procedure Increment_Visit_Counter (Pid : in String);
    --  Increment a thread visit counter

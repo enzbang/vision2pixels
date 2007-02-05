@@ -1,0 +1,14 @@
+@@--  This iframe is the target of a photo post form
+@@--  When the photo is uploaded call the parent function to refresh
+@@--  the photo selection
+
+@@--  Adds error if @_NEW_PHOTO_ID_@ is null
+
+@_NEW_PHOTO_ID_@
+<img src="/thumbs/@_NEW_PHOTO_FILENAME_@" />
+
+<script language='javascript' type='text/javascript'>
+    parent.addToSelect ('block_user_tmp_photo_select', @_NEW_PHOTO_ID_@, ' ');
+    parent.selectChangeSelected('block_user_tmp_photo_select', @_NEW_PHOTO_ID_@, parent.changeBackgroundImage, "url(/thumbs/@_NEW_PHOTO_FILENAME_@)");
+    parent.updateThumbPreview('block_user_tmp_photo_select');
+</script>

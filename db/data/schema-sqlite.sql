@@ -13,11 +13,12 @@ create table "template" (
 create table "comment" (
 "id" integer not null primary key autoincrement,
 "date" date default current_timestamp,
-"parent" integer null ,
-"user_login" varchar(50) null ,
+"parent" integer null,
+"user_login" varchar(50) null,
 "anonymous_user" vachar(50) null,
-"comment" longtext not null ,
-"filename" varchar(512) null ,
+"comment" longtext not null,
+"photo_id" integer null,
+foreign key ("photo_id") references photo("id"),
 foreign key ("user_login") references user("login"),
 foreign key ("parent") references comment("id")
 );
@@ -72,3 +73,11 @@ create table "user_post" (
 foreign key ("post_id") references post("id"),
 foreign key ("user_login") references user("login")
 );
+
+create table "user_tmp_photo" (
+"user_login" varchar(50) not null,
+"photo_id" integer not null,
+foreign key ("photo_id") references photo("id"),
+foreign key ("user_login") references user("login")
+);
+

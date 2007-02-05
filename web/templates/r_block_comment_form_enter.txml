@@ -1,0 +1,33 @@
+@@INCLUDE@@ babel.thtml
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+@@IF@@ @_ERROR_@ = ""
+<response>
+  @@IF@@ @_PARENT_ID_@ /= ""
+  <insert_after id="@_PARENT_ID_@">
+    <![CDATA[
+    <!-- '@_PARENT_ID_@' -->
+    <li id="comment_@_COMMENT_ID_@" class="level_@_COMMENT_LEVEL_@ new">
+    @@INCLUDE@@ comment.thtml
+    </li>
+    ]]>
+  </insert_after>
+  @@ELSE@@
+  <replace id="comments">
+    <![CDATA[
+    <ol id="comments">
+      <li id="comment_@_COMMENT_ID_@" class="level_@_COMMENT_LEVEL_@ new">
+      @@INCLUDE@@ comment.thtml
+      </li>
+    </ol>
+    ]]>
+  </replace>
+  @@END_IF@@
+  <replace id="last_parent_id">
+    <![CDATA[
+    <input name="PARENT_ID" id="PARENT_ID" type="hidden"
+          value="comment_@_COMMENT_ID_@" />
+    ]]>
+  </replace>
+</response>
+@@END_IF@@

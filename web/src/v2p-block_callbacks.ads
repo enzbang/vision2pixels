@@ -58,6 +58,11 @@ package V2P.Block_Callbacks is
       Context      : access Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
 
+   procedure New_Photo
+     (Request      : in Status.Data;
+      Context      : access Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
    procedure New_Post
      (Request      : in Status.Data;
       Context      : access Web_Block.Context.Object;
@@ -69,6 +74,11 @@ package V2P.Block_Callbacks is
       Translations : in out Templates.Translate_Set);
 
    procedure User_Thread_List
+     (Request      : in Status.Data;
+      Context      : access Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
+   procedure User_Tmp_Photo_Select
      (Request      : in Status.Data;
       Context      : access Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);

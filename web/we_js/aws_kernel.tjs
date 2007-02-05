@@ -108,6 +108,8 @@
             aws_xml_handler_destroy_sortable (node);
          } else if (node.nodeName == 'apply_style') {
             aws_xml_handler_apply_style (node);
+         } else if (node.nodeName == 'insert_after') {
+            aws_xml_handler_insert_after (node);
          }
       }
    }
@@ -162,6 +164,22 @@
          var option_value = node.getAttribute("option_value");
          selectChangeSelected(select_id, option_value);
       }
+   }
+
+   // Action on list : add an element
+   function aws_xml_handler_insert_after (node)
+   {
+      var id = node.getAttribute('id');
+      var placeholder_content;
+
+      if (node.childNodes.length > 1) {
+         placeholder_content = node.childNodes[1].nodeValue;
+      } else {
+         placeholder_content = node.firstChild.nodeValue;
+      }
+
+      new Insertion.After (id, placeholder_content);
+      update_behaviour ();
    }
 
    // Action on radio
@@ -309,6 +327,7 @@
 
        // And add it to select
        $(select_id).appendChild(new_option);
+       return new_option;
    }
 
    // Clear select content
@@ -333,14 +352,18 @@
    }
 
    // Select the given option from the select
-   function selectChangeSelected (select_id, option)
+   function selectChangeSelected (select_id, option, hook_func, hook_func_param)
    {
-    var idx = 0;
+       var idx = 0;
        while (idx < $(select_id).length) {
            if ($(select_id).options[idx].value == option) {
                $(select_id).selectedIndex = idx;
+               if (hook_func != null && hook_func != "") {
+                   hook_func($(select_id).options[idx], hook_func_param);
+               }
                return;
            }
            idx = idx + 1;
        }
    }
+

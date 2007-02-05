@@ -39,15 +39,19 @@ with V2P.Template_Defs.Forum_Post;
 with V2P.Template_Defs.Main_Page;
 with V2P.Template_Defs.Error;
 with V2P.Template_Defs.User;
+with V2P.Template_Defs.Iframe_Photo_Post;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
+with V2P.Template_Defs.Block_New_Post;
+with V2P.Template_Defs.Block_New_Photo;
 with V2P.Template_Defs.Block_Forum_Navigate;
 with V2P.Template_Defs.Block_User_Password_Change;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Forum_List;
 with V2P.Template_Defs.R_Block_Forum_Filter;
-
+with V2P.Template_Defs.R_Block_Comment_Form_Enter;
+with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Wiki;
 
 with Image.Data;
@@ -115,6 +119,14 @@ package body V2P.Web_Server is
      (Request : in Status.Data) return Response.Data;
    --  Called when changing the forum sorting
 
+   function Onsubmit_Comment_Form_Enter_Callback
+     (Request : in Status.Data) return Response.Data;
+   --  Called when submitting a comment
+
+   function Onsubmit_Post_Form_Enter_Callback
+     (Request : in Status.Data) return Response.Data;
+   --  Called when submitting a new post
+
    function Main_Page_Callback
      (Request : in Status.Data) return Response.Data;
    --  Display v2p main page
@@ -123,9 +135,9 @@ package body V2P.Web_Server is
      (Request : in Status.Data) return Response.Data;
    --  Error callback
 
-   function New_Comment_Callback
+   function New_Photo_Callback
      (Request : in Status.Data) return Response.Data;
-   --  Enter a new comment into the database
+   --  Enter a new photo into the database
 
    function Final_Parse
      (Request           : in Status.Data;
@@ -487,11 +499,11 @@ package body V2P.Web_Server is
          Translations);
    end Main_Page_Callback;
 
-   --------------------------
-   -- New_Comment_Callback --
-   --------------------------
+   ------------------------
+   -- New_Photo_Callback --
+   ------------------------
 
-   function New_Comment_Callback
+   function New_Photo_Callback
      (Request : in Status.Data) return Response.Data
    is
       use Image.Data;
@@ -499,97 +511,76 @@ package body V2P.Web_Server is
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String := Session.Get (SID, "LOGIN");
-      TID          : constant String := Parameters.Get (P, "TID");
-      FID          : constant String := Parameters.Get (P, "FID");
-      Anonymous    : constant String := Parameters.Get (P, "ANONYMOUS_USER");
-      Name         : constant String := Parameters.Get (P, "NAME");
-      Comment      : constant String := Parameters.Get (P, "COMMENT");
       Filename     : constant String := Parameters.Get (P, "FILENAME");
-      CID          : constant String := Parameters.Get (P, "CATEGORY");
-      Forum        : constant String := Parameters.Get (P, "FORUM");
-
-      Comment_Wiki : constant String := V2P.Wiki.Wiki_To_Html (Comment);
 
       Images_Path  : String renames Settings.Get_Images_Path;
 
       New_Image    : Image_Data;
 
       Translations : Templates.Translate_Set;
+
    begin
-      if Login = "" and then Anonymous = "" then
-         if TID /= "" and then FID /= "" then
-            return Response.URL
-              (Location => Template_Defs.Forum_Entry.URL & "?TID=" & TID
-               & "&FID=" & FID);
-            --  ??? Adds an error message
-         end if;
-         return Response.URL (Location => Template_Defs.Main_Page.URL);
+      Init (Img => New_Image, Filename => Filename);
+
+      if New_Image.Init_Status /= Image_Created then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc (Template_Defs.Main_Page.V2p_Error,
+              Image_Init_Status'Image (New_Image.Init_Status)));
+
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.Main_Page.Exceed_Maximum_Image_Dimension,
+               Image_Init_Status'Image
+                 (Image.Data.Exceed_Max_Image_Dimension)));
+
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.Main_Page.Exceed_Maximum_Size,
+               Image_Init_Status'Image
+                 (Image.Data.Exceed_Max_Size)));
+
+         return Final_Parse
+           (Request,
+            Template_Defs.Main_Page.Template,
+            Translations);
       end if;
 
-      if TID /= "" and not Is_Valid_Comment (Comment_Wiki) then
-         return Response.URL
-           (Location => Template_Defs.Forum_Entry.URL & "?TID=" & TID
-            & "&FID=" & FID);
-         --  ??? Adds an error message
-      end if;
 
-      if Filename /= "" then
+      declare
+         New_Photo_Filename : constant String
+           := New_Image.Filename
+                ((Images_Path'Length + 2) .. New_Image.Filename'Last);
+         Pid : constant String
+           := Database.Insert_Photo
+             (Login,
+              New_Photo_Filename,
+              Natural (New_Image.Dimension.Width),
+              Natural (New_Image.Dimension.Height),
+              Natural (New_Image.Dimension.Size));
+      begin
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.Iframe_Photo_Post.New_Photo_Id,
+               Pid));
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.Iframe_Photo_Post.New_Photo_Filename,
+               New_Photo_Filename));
+      end;
 
-         Init (New_Image, Filename, Database.Get_Category_Full_Name (CID));
+      --  We should know the context to redirect the user to the corresponding
+      --  page. By default redirect to new_post
 
-         if New_Image.Init_Status /= Image_Created then
-            Templates.Insert
-              (Translations,
-               Templates.Assoc (Template_Defs.Main_Page.V2p_Error,
-                 Image_Init_Status'Image (New_Image.Init_Status)));
-
-            Templates.Insert
-              (Translations,
-               Templates.Assoc
-                 (Template_Defs.Main_Page.Exceed_Maximum_Image_Dimension,
-                  Image_Init_Status'Image
-                    (Image.Data.Exceed_Max_Image_Dimension)));
-
-               Templates.Insert
-                 (Translations,
-                  Templates.Assoc
-                    (Template_Defs.Main_Page.Exceed_Maximum_Size,
-                  Image_Init_Status'Image
-                    (Image.Data.Exceed_Max_Size)));
-
-            return Final_Parse
-              (Request,
-               Template_Defs.Main_Page.Template,
-               Translations);
-         end if;
-      end if;
-
-      if TID = "" then
-         if Filename /= "" then
-            Database.Insert_Post
-              (Login, CID, Name, Comment_Wiki,
-               New_Image.Filename
-                 ((Images_Path'Length + 2) .. New_Image.Filename'Last),
-               New_Image.Width,
-               New_Image.Height,
-               New_Image.Size);
-
-         else
-            Database.Insert_Post (Login, CID, Name, Comment_Wiki);
-         end if;
-
-         return Response.URL
-           (Location => Template_Defs.Forum_Threads.URL & "?FID=" & Forum);
-
-      else
-         Database.Insert_Comment
-           (Login, Anonymous, TID, Name, Comment_Wiki,
-            Image.Data.Filename (New_Image));
-         return Response.URL
-           (Location => Template_Defs.Forum_Entry.URL & "?TID=" & TID
-            & "&FID=" & FID);
-      end if;
-   end New_Comment_Callback;
+      return Final_Parse
+        (Request,
+         Template_Defs.Iframe_Photo_Post.Template,
+         Translations);
+   end New_Photo_Callback;
 
    ---------------------------
    -- Onchange_Filter_Forum --
@@ -631,6 +622,113 @@ package body V2P.Web_Server is
            (Template_Defs.R_Block_Forum_List.Template,
               Database.Get_Categories (Fid))));
    end Onchange_Forum_List_Callback;
+
+   ------------------------------------------
+   -- Onsubmit_Comment_Form_Enter_Callback --
+   ------------------------------------------
+
+   function Onsubmit_Comment_Form_Enter_Callback
+          (Request : in Status.Data) return Response.Data
+   is
+      SID          : constant Session.Id := Status.Session (Request);
+      P            : constant Parameters.List := Status.Parameters (Request);
+      Login        : constant String := Session.Get (SID, "LOGIN");
+      TID          : constant String := Parameters.Get (P, "TID");
+      --  FID          : constant String := Parameters.Get (P, "FID");
+      Parent_Id    : constant String := Parameters.Get (P, "PARENT_ID");
+      Anonymous    : constant String := Parameters.Get (P, "ANONYMOUS_USER");
+      Name         : constant String := Parameters.Get (P, "NAME");
+      Comment      : constant String := Parameters.Get (P, "COMMENT");
+      Pid          : constant String := Parameters.Get (P, "PID");
+      Comment_Wiki : constant String := V2P.Wiki.Wiki_To_Html (Comment);
+
+      Set          : Templates.Translate_Set;
+   begin
+      if Login = "" and then Anonymous = "" then
+         Templates.Insert
+           (Set,
+            Templates.Assoc
+              (Template_Defs.R_Block_Comment_Form_Enter.Error,
+               "ERROR_NO_LOGIN"));
+      elsif TID /= "" and not Is_Valid_Comment (Comment_Wiki) then
+         Templates.Insert
+           (Set,
+            Templates.Assoc
+              (Template_Defs.R_Block_Comment_Form_Enter.Error,
+               "ERROR"));
+            --  ??? Adds an error message
+      else
+         declare
+            Cid : constant String := Database.Insert_Comment
+              (Login, Anonymous, TID, Name, Comment_Wiki, Pid);
+         begin
+            Set := Database.Get_Comment (Cid);
+            Templates.Insert
+              (Set,
+               Templates.Assoc
+                 (Template_Defs.R_Block_Comment_Form_Enter.Parent_Id,
+                  Parent_Id));
+            Templates.Insert
+              (Set,
+               Templates.Assoc
+                 (Template_Defs.R_Block_Comment_Form_Enter.Comment_Level,
+                  "1"));
+            --  Does not support threaded view for now.
+         end;
+      end if;
+
+      return Final_Parse
+        (Request,
+         Template_Defs.R_Block_Comment_Form_Enter.Template,
+         Set,
+         MIME.Text_XML);
+   end Onsubmit_Comment_Form_Enter_Callback;
+
+   ---------------------------------------
+   -- Onsubmit_Post_Form_Enter_Callback --
+   ---------------------------------------
+
+   function Onsubmit_Post_Form_Enter_Callback
+     (Request : in Status.Data) return Response.Data
+   is
+      SID          : constant Session.Id := Status.Session (Request);
+      P            : constant Parameters.List := Status.Parameters (Request);
+      Login        : constant String := Session.Get (SID, "LOGIN");
+      Name         : constant String := Parameters.Get (P, "NAME");
+      Comment      : constant String := Parameters.Get (P, "COMMENT");
+      Pid          : constant String := Parameters.Get (P, "PID");
+      CID          : constant String := Parameters.Get (P, "CATEGORY");
+      Forum        : constant String := Parameters.Get (P, "FORUM");
+
+      Comment_Wiki : constant String := V2P.Wiki.Wiki_To_Html (Comment);
+      Set          : Templates.Translate_Set;
+   begin
+      if Login = "" and then CID = "" then
+         Templates.Insert
+           (Set,
+            Templates.Assoc
+              (Template_Defs.R_Block_Post_Form_Enter.Error,
+               "ERROR"));
+         --  ??? Adds an error message
+      else
+         declare
+            Post_Id : constant String :=
+              Database.Insert_Post (Login, CID, Name, Comment_Wiki, Pid);
+         begin
+            Templates.Insert
+              (Set,
+               Templates.Assoc
+                 (Template_Defs.R_Block_Post_Form_Enter.Url,
+                  Template_Defs.Forum_Entry.URL & "?FID=" & Forum
+                    & "&amp;TID=" & Post_Id));
+         end;
+      end if;
+      return Final_Parse
+        (Request,
+         Template_Defs.R_Block_Post_Form_Enter.Template,
+         Set,
+         MIME.Text_XML);
+   end Onsubmit_Post_Form_Enter_Callback;
 
    ---------------------
    -- Photos_Callback --
@@ -683,15 +781,39 @@ package body V2P.Web_Server is
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
+         Template_Defs.Block_New_Comment.Ajax.Onsubmit_Comment_Form,
+         Action => Dispatchers.Callback.Create
+           (Onsubmit_Comment_Form_Enter_Callback'Access));
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         Template_Defs.Block_New_Post.Ajax.Onsubmit_Post_Form,
+         Action => Dispatchers.Callback.Create
+           (Onsubmit_Post_Form_Enter_Callback'Access));
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
          Template_Defs.Block_User_Password_Change.
            Ajax.Onclick_User_Password_Change_Enter,
          Action => Dispatchers.Callback.Create
            (User_Password_Change_Callback'Access));
 
+      --        Services.Dispatchers.URI.Register
+      --          (Main_Dispatcher,
+      --           Template_Defs.Block_New_Comment.URL,
+      --           Action => Dispatchers.Callback.Create
+      --            (New_Comment_Callback'Access));
+      --
+      --        Services.Dispatchers.URI.Register
+      --          (Main_Dispatcher,
+      --           Template_Defs.Block_New_Comment.URL,
+      --           Action => Dispatchers.Callback.Create
+      --          (New_Post_Callback'Access));
+
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         Template_Defs.Block_New_Comment.URL,
-         Action => Dispatchers.Callback.Create (New_Comment_Callback'Access));
+         Template_Defs.Block_New_Photo.URL,
+         Action => Dispatchers.Callback.Create (New_Photo_Callback'Access));
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,

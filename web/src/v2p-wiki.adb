@@ -30,12 +30,8 @@ package body V2P.Wiki is
    function Extract_Links (S : in String) return String;
    --  Extract all http:// links
 
-   function Image (N : in Integer) return String;
-   pragma Inline (Image);
-   --  Returns N image without leading blank
-
-   function Web_Encode (S : in String) return String;
-   --  Encode HTML special characters
+   function Web_Escape (S : in String) return String;
+   --  Escape HTML special characters
 
    function Wiki_Format (S : in String) return String;
 
@@ -95,34 +91,13 @@ package body V2P.Wiki is
       return To_String (Result);
    end Extract_Links;
 
-   -----------
-   -- Image --
-   -----------
-
-   function Image (N : in Integer) return String is
-      N_Img : constant String := Integer'Image (N);
-   begin
-      if N_Img (N_Img'First) = '-' then
-         return N_Img;
-      else
-         return N_Img (N_Img'First + 1 .. N_Img'Last);
-      end if;
-   end Image;
-
    ----------------
-   -- Web_Encode --
+   -- Web_Escape --
    ----------------
 
-   function Web_Encode (S : in String) return String
-   is
-      C_Inf  : constant Natural := Character'Pos ('<');
-      C_Sup  : constant Natural := Character'Pos ('>');
-      C_And  : constant Natural := Character'Pos ('&');
-      C_Quo  : constant Natural := Character'Pos ('"');
-
+   function Web_Escape (S : in String) return String is
       Result : Unbounded_String;
       Last   : Integer := S'First;
-      Code   : Natural;
 
       procedure Append_To_Result
         (Str  : String;
@@ -150,19 +125,24 @@ package body V2P.Wiki is
       end Append_To_Result;
 
    begin
-      for K in S'Range loop
-         Code := Character'Pos (S (K));
 
-         if Code not in 32 .. 127
-           or else Code = C_Inf or else Code = C_Sup
-           or else Code = C_And or else Code = C_Quo
-         then
-            declare
-               I_Code : constant String := Image (Code);
-            begin
-               Append_To_Result ("&#" & I_Code & ";", Last, K - 1);
-            end;
-         end if;
+      for I in S'Range loop
+         case S (I) is
+            when '&' =>
+               Append_To_Result ("&amp;", Last, I - 1);
+
+            when '>' =>
+               Append_To_Result ("&gt;", Last, I - 1);
+
+            when '<' =>
+               Append_To_Result ("&lt;", Last, I - 1);
+
+            when '"' =>
+               Append_To_Result ("&quot;", Last, I - 1);
+
+            when others =>
+               null;
+         end case;
       end loop;
 
       if Last <= S'Last then
@@ -170,7 +150,7 @@ package body V2P.Wiki is
       end if;
 
       return To_String (Result);
-   end Web_Encode;
+   end Web_Escape;
 
    function Wiki_Format (S : in String) return String is
       Extract : constant Pattern_Matcher
@@ -212,7 +192,7 @@ package body V2P.Wiki is
    end Wiki_Format;
 
    function Wiki_To_Html (S : in String) return String is
-      Without_Html  : constant String := Web_Encode (S);
+      Without_Html  : constant String := Web_Escape (S);
       With_Links    : constant String := Extract_Links (Without_Html);
    begin
       return Wiki_Format (With_Links);

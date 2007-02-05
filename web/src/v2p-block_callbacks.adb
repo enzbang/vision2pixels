@@ -141,6 +141,19 @@ package body V2P.Block_Callbacks is
       end if;
    end New_Comment;
 
+   ---------------
+   -- New_Photo --
+   ---------------
+
+   procedure New_Photo
+     (Request      : in Status.Data;
+      Context      : access Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context, Translations);
+   begin
+      null;
+   end New_Photo;
    --------------
    -- New_Post --
    --------------
@@ -185,5 +198,22 @@ package body V2P.Block_Callbacks is
         (Translations,
          Database.Get_Threads (User => Session.Get (SID, "LOGIN")));
    end User_Thread_List;
+
+   ---------------------------
+   -- User_Tmp_Photo_Select --
+   ---------------------------
+
+   procedure User_Tmp_Photo_Select
+     (Request      : in Status.Data;
+      Context      : access Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      SID : constant Session.Id := Status.Session (Request);
+   begin
+      Templates.Insert
+        (Translations,
+         Database.Get_User_Tmp_Photo (Uid => Session.Get (SID, "LOGIN")));
+   end User_Tmp_Photo_Select;
 
 end V2P.Block_Callbacks;
