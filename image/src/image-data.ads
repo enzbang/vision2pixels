@@ -19,10 +19,11 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with G2F;
+with G2F.IO;
 
 with Ada.Finalization;
 with Ada.Strings.Unbounded;
+with Ada.Directories;
 
 package Image.Data is
 
@@ -34,6 +35,14 @@ package Image.Data is
 
    type Image_Data is tagged private;
 
+   type Image_Dimension is record
+      Width  : G2F.IO.Image_Size_T;
+      Height : G2F.IO.Image_Size_T;
+      Size   : Ada.Directories.File_Size;
+   end record;
+
+   Null_Dimension : constant Image_Dimension := (0, 0, 0);
+
    type Image_Init_Status is
      (Exceed_Max_Image_Dimension,
       Exceed_Max_Size,
@@ -41,23 +50,29 @@ package Image.Data is
 
    procedure Init
       (Img      : in out Image_Data;
-       Filename : in     String;
-       Category : in     String);
+       Filename : in     String);
+   --  Set image filename, read image info and create thumbnail
+   --  Generate image and thumb filename
+
+   procedure Init
+     (Img                    : in out Image_Data;
+      Original_Filename      : in String;
+      Out_Filename           : in String := "";
+      Out_Thumbnail_Filename : in String := "";
+      Out_Max_Dimension      : in Image_Dimension := Null_Dimension);
    --  Set image filename, read image info and create thumbnail
 
    function Filename (Img : in Image_Data) return String;
    --  Returns image filename
 
-   function Width (Img : in Image_Data) return Integer;
-   --  Returns image width
-
-   function Height (Img : in Image_Data) return Integer;
-   --  Returns image height
-
-   function Size (Img : in Image_Data) return Integer;
-   --  Returns image size
+   function Dimension (Img : in Image_Data) return Image_Dimension;
+   --  Returns image dimension
 
    function Init_Status (Img : in Image_Data) return Image_Init_Status;
+   --  Returns image init_status
+
+   function Default_Max_Dimension return Image_Dimension;
+   --  Returns default maximum dimension
 
 private
 
@@ -65,9 +80,7 @@ private
       Info_Ptr    : G2F.Image_Info_Ptr;
       Image_Ptr   : G2F.Image_Ptr;
       Category    : Unbounded_String;
-      Width       : Integer;
-      Height      : Integer;
-      Size        : Integer;
+      Dimension   : Image_Dimension;
       Init_Status : Image_Init_Status;
    end record;
 
