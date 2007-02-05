@@ -276,8 +276,6 @@ package body V2P.Web_Server is
       P           : constant Parameters.List := Status.Parameters (Request);
       TID         : constant String :=
                       Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.TID);
---        FID         : constant String :=
---                     Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.FID);
       FID         : constant String := Context.Get_Value ("FID");
       Login       : constant String := Session.Get (SID, "LOGIN");
       Count_Visit : Boolean := True;
@@ -459,8 +457,6 @@ package body V2P.Web_Server is
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String := Session.Get (SID, "LOGIN");
---        TID          : constant String := Parameters.Get (P, "TID");
---        FID          : constant String := Parameters.Get (P, "FID");
       Anonymous    : constant String := Parameters.Get (P, "ANONYMOUS_USER");
       Name         : constant String := Parameters.Get (P, "NAME");
       Comment      : constant String := Parameters.Get (P, "COMMENT");
