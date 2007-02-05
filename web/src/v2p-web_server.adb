@@ -27,7 +27,8 @@ with AWS.Parameters;
 with AWS.Response;
 with AWS.Server.Log;
 with AWS.Services.Dispatchers.URI;
-with AWS.Services.Web_Block.Registry;
+with AWS.Services.ECWF.Registry;
+with AWS.Services.ECWF.Context;
 with AWS.Session;
 with AWS.Status;
 with AWS.Templates;
@@ -38,14 +39,13 @@ with V2P.Template_Defs.Forum_Threads;
 with V2P.Template_Defs.Forum_Post;
 with V2P.Template_Defs.Main_Page;
 with V2P.Template_Defs.Error;
-with V2P.Template_Defs.User;
+with V2P.Template_Defs.Global;
 with V2P.Template_Defs.Iframe_Photo_Post;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Post;
 with V2P.Template_Defs.Block_New_Photo;
 with V2P.Template_Defs.Block_Forum_Navigate;
-with V2P.Template_Defs.Block_User_Password_Change;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Forum_List;
@@ -61,43 +61,21 @@ package body V2P.Web_Server is
 
    use AWS;
 
-   Null_Set        : Templates.Translate_Set;
-
    HTTP            : Server.HTTP;
    Configuration   : Config.Object;
    Main_Dispatcher : Services.Dispatchers.URI.Handler;
+
+   -------------------------
+   --  Standard Callbacks --
+   -------------------------
 
    function Default_Xml_Callback
      (Request : in Status.Data) return Response.Data;
    --  Default callback for xml action
 
-   function Forum_Entry_Callback
+   function Default_Callback
      (Request : in Status.Data) return Response.Data;
-   --  Forum entry callback
-
-   function Forum_Post_Callback
-     (Request : in Status.Data) return Response.Data;
-   --  Forum post callback
-
-   function Forum_Threads_Callback
-     (Request : in Status.Data) return Response.Data;
-   --  Forum threads callback
-
-   function Is_Valid_Comment (Comment : in String) return Boolean;
-   --  Check if the comment is valid
-
-   function Login_Callback (Request : in Status.Data) return Response.Data;
-   --  Login callback
-
-   function Logout_Callback (Request : in Status.Data) return Response.Data;
-   --  Logout callback
-
-   function User_Callback (Request : in Status.Data) return Response.Data;
-   --  User (homepage) callback
-
-   function User_Password_Change_Callback
-     (Request : in Status.Data) return Response.Data;
-   --  User password change callback
+   --  Default callback
 
    function WEJS_Callback (Request : in Status.Data) return Response.Data;
    --  Web Element JavaScript callback
@@ -111,41 +89,103 @@ package body V2P.Web_Server is
    function Thumbs_Callback (Request : in Status.Data) return Response.Data;
    --  Thumbs callback
 
-   function Onchange_Forum_List_Callback
-     (Request : in Status.Data) return Response.Data;
+   --------------------
+   -- ECWF Callbacks --
+   --------------------
+
+   procedure Forum_Entry_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Forum entry callback
+
+   procedure Forum_Threads_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Forum threads callback
+
+   procedure Login_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Login callback
+
+   procedure Logout_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Logout callback
+
+   procedure Onchange_Forum_List_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set);
    --  Called when a new forum is selected
 
-   function Onchange_Filter_Forum
-     (Request : in Status.Data) return Response.Data;
+   procedure Onchange_Filter_Forum
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set);
    --  Called when changing the forum sorting
 
-   function Onsubmit_Comment_Form_Enter_Callback
-     (Request : in Status.Data) return Response.Data;
-   --  Called when submitting a comment
+   procedure Onsubmit_Comment_Form_Enter_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Called when submitting a new comment
 
-   function Onsubmit_Post_Form_Enter_Callback
-     (Request : in Status.Data) return Response.Data;
+   procedure Onsubmit_Post_Form_Enter_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set);
    --  Called when submitting a new post
 
-   function Main_Page_Callback
-     (Request : in Status.Data) return Response.Data;
+   procedure New_Photo_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Adds a new photo in user tmp photo table
+
+
+   procedure Main_Page_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set);
    --  Display v2p main page
 
-   function Error_Callback
-     (Request : in Status.Data) return Response.Data;
-   --  Error callback
+   procedure Context_Filter (Context : access Services.ECWF.Context.Object);
+   --  Update the context filter
 
-   function New_Photo_Callback
-     (Request : in Status.Data) return Response.Data;
-   --  Enter a new photo into the database
+   --------------------------
+   -- Other local routines --
+   --------------------------
 
-   function Final_Parse
-     (Request           : in Status.Data;
-      Template_Filename : in String;
-      Translations      : in Templates.Translate_Set;
-      Filename_Type     : in String := MIME.Text_HTML) return Response.Data;
-   --  Parsing routines used for all V2P templates. This routine add supports
-   --  for lazy tags.
+   function Is_Valid_Comment (Comment : in String) return Boolean;
+   --  Check if the comment is valid
+
+   --------------------
+   -- Context_Filter --
+   --------------------
+
+   procedure Context_Filter (Context : access Services.ECWF.Context.Object) is
+   begin
+      if not Context.Exist (Template_Defs.Global.FILTER) then
+         Context.Set_Value
+           (Template_Defs.Global.FILTER,
+            Database.Filter_Mode'Image (Database.All_Messages));
+
+         if Settings.Descending_Order then
+            Context.Set_Value
+              (Template_Defs.Global.ORDER_DIR,
+               Database.Order_Direction'Image (Database.DESC));
+         else
+            Context.Set_Value
+              (Template_Defs.Global.ORDER_DIR,
+               Database.Order_Direction'Image (Database.ASC));
+         end if;
+      end if;
+   end Context_Filter;
 
    ------------------
    -- CSS_Callback --
@@ -165,6 +205,72 @@ package body V2P.Web_Server is
          String'(Templates.Parse (File, Translations)));
    end CSS_Callback;
 
+   ----------------------
+   -- Default_Callback --
+   ----------------------
+
+   function Default_Callback
+     (Request : in Status.Data) return Response.Data
+   is
+      use type Messages.Status_Code;
+      URI          : constant String := Status.URI (Request);
+      SID          : constant Session.Id := Status.Session (Request);
+      Translations : Templates.Translate_Set;
+      Web_Page     : Response.Data;
+   begin
+      if Session.Exist (SID, "LOGIN") then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc ("LOGIN", String'(Session.Get (SID, "LOGIN"))));
+      end if;
+
+      if Session.Get (SID, "FID") /= "" then
+         --  ??? needs to be put inside the right ECVW callback
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              ("Current_FID", String'(Session.Get (SID, "FID"))));
+      end if;
+
+      --  Adds some URL
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Global.FORUM_THREAD_URL,
+            Template_Defs.Forum_Threads.URL));
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Global.FORUM_POST_URL,
+            Template_Defs.Forum_Post.URL));
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Global.FORUM_ENTRY_URL,
+            Template_Defs.Forum_Entry.URL));
+
+      --  Insert the thumb path
+
+      Templates.Insert
+        (Translations, Templates.Assoc
+           (Template_Defs.Global.THUMB_SOURCE_PREFIX, Thumbs_Source_Prefix));
+
+      Web_Page := Services.ECWF.Registry.Build
+        (URI, Request, Translations, Cache_Control => Messages.Prevent_Cache);
+
+      if Response.Status_Code (Web_Page) = Messages.S404 then
+         --  Page not found
+         return Services.ECWF.Registry.Build
+           (Template_Defs.Error.URL, Request, Translations);
+
+      else
+         return Web_Page;
+      end if;
+   end Default_Callback;
+
    --------------------------
    -- Default_Xml_Callback --
    --------------------------
@@ -178,129 +284,39 @@ package body V2P.Web_Server is
       return Response.File (MIME.Text_XML, File);
    end Default_Xml_Callback;
 
-   --------------------
-   -- Error_Callback --
-   --------------------
-
-   function Error_Callback
-     (Request : in Status.Data) return Response.Data
-   is
-      Translations : Templates.Translate_Set;
-   begin
-      --  ??? Should return 404 Error
-      return Final_Parse
-        (Request,
-         Template_Defs.Error.Template,
-         Translations);
-   end Error_Callback;
-
-   -----------------
-   -- Final_Parse --
-   -----------------
-
-   function Final_Parse
-     (Request           : in Status.Data;
-      Template_Filename : in String;
-      Translations      : in Templates.Translate_Set;
-      Filename_Type     : in String := MIME.Text_HTML) return Response.Data
-   is
-      SID : constant Session.Id := Status.Session (Request);
-
-      Final_Translations : Templates.Translate_Set := Translations;
-
-      LT : aliased Services.Web_Block.Registry.Lazy_Handler :=
-             (Templates.Dynamic.Lazy_Tag with Request, Final_Translations);
-
-   begin
-      Templates.Insert
-        (Final_Translations,
-         Templates.Assoc ("LOGIN", String'(Session.Get (SID, "LOGIN"))));
-
-      if Session.Get (SID, "FID") /= "" then
-         Templates.Insert
-           (Final_Translations,
-            Templates.Assoc
-              ("Current_FID", String'(Session.Get (SID, "FID"))));
-      end if;
-
-      --  Adds some URL
-
-      Templates.Insert
-        (Final_Translations,
-         Templates.Assoc
-           ("FORUM_THREAD_URL", Template_Defs.Forum_Threads.URL));
-
-      Templates.Insert
-        (Final_Translations,
-         Templates.Assoc ("FORUM_POST_URL", Template_Defs.Forum_Post.URL));
-
-      Templates.Insert
-        (Final_Translations,
-         Templates.Assoc ("FORUM_ENTRY_URL", Template_Defs.Forum_Entry.URL));
-
-      --  Insert the thumb path
-
-      Templates.Insert
-        (Final_Translations, Templates.Assoc
-           ("THUMB_SOURCE_PREFIX", Thumbs_Source_Prefix));
-
-      return Response.Build
-        (Filename_Type,
-         String'(Templates.Parse
-           (Template_Filename,
-              Final_Translations,
-              Lazy_Tag => LT'Unchecked_Access)),
-         Cache_Control => Messages.Prevent_Cache);
-   end Final_Parse;
-
-   --------------------------
+      --------------------------
    -- Forum_Entry_Callback --
    --------------------------
 
-   function Forum_Entry_Callback
-     (Request : in Status.Data) return Response.Data
+   procedure Forum_Entry_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set)
    is
       SID         : constant Session.Id := Status.Session (Request);
       P           : constant Parameters.List := Status.Parameters (Request);
       TID         : constant String :=
-        Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Tid);
-      FID         : constant String :=
-        Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.Fid);
-      Logged_User : constant String := Session.Get (SID, "LOGIN");
+                      Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.TID);
+--        FID         : constant String :=
+--                     Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.FID);
+      FID         : constant String := Context.Get_Value ("FID");
+      Login       : constant String := Session.Get (SID, "LOGIN");
       Count_Visit : Boolean := True;
-      Set      : Templates.Translate_Set;
    begin
-
-      if FID = "" or TID = "" then
-         return Response.URL
-           (Location => Template_Defs.Main_Page.URL);
-      end if;
-
       --  Set thread Id into the session
-      Session.Set (SID, "TID", TID);
-      Session.Set (SID, "FID", FID);
+      Context.Set_Value ("TID", TID);
+      Context.Set_Value ("FID", FID);
 
-      if not Session.Exist (SID, "FILTER") then
-         Session.Set
-           (SID, "FILTER", Database.Filter_Mode'Image (Database.All_Messages));
-         if Settings.Descending_Order then
-            Session.Set (SID, "ORDER_DIR",
-                         Database.Order_Direction'Image (Database.DESC));
-         else
-            Session.Set (SID, "ORDER_DIR",
-                         Database.Order_Direction'Image (Database.ASC));
-         end if;
-      end if;
-
+      Context_Filter (Context);
 
       if not Settings.Anonymous_Visit_Counter then
          --  Do not count anonymous click
-         if Logged_User = "" then
+         if Login = "" then
             Count_Visit := False;
 
          else
             if Settings.Ignore_Author_Click
-              and then Database.Is_Author (Logged_User, TID)
+              and then Database.Is_Author (Login, TID)
             then
                --  Do not count author click
                Count_Visit := False;
@@ -312,82 +328,56 @@ package body V2P.Web_Server is
          Database.Increment_Visit_Counter (TID);
       end if;
 
-
       --  Insert navigation links (previous and next post)
+
       Templates.Insert
-        (Set, Database.Get_Thread_Navigation_Links
-           (Fid => Session.Get (SID, "FID"),
+        (Translations, Database.Get_Thread_Navigation_Links
+           (Fid => Context.Get_Value ("FID"),
             Tid => TID,
             Filter => Database.Filter_Mode'Value
-              (Session.Get (SID, "FILTER")),
+              (Context.Get_Value (Template_Defs.Global.FILTER)),
             Order_Dir => Database.Order_Direction'Value
-              (Session.Get (SID, "ORDER_DIR"))));
+              (Context.Get_Value (Template_Defs.Global.ORDER_DIR))));
 
-      Templates.Insert
-        (Set, Database.Get_Entry (TID));
-
-      return Final_Parse
-        (Request,
-         Template_Defs.Forum_Entry.Template,
-         Set);
+      Templates.Insert (Translations, Database.Get_Entry (TID));
    end Forum_Entry_Callback;
-
-   -------------------------
-   -- Forum_Post_Callback --
-   -------------------------
-
-   function Forum_Post_Callback
-     (Request : in Status.Data) return Response.Data is
-   begin
-      return Final_Parse
-        (Request, Template_Defs.Forum_Post.Template, Null_Set);
-   end Forum_Post_Callback;
 
    ----------------------------
    -- Forum_Threads_Callback --
    ----------------------------
 
-   function Forum_Threads_Callback
-     (Request : in Status.Data) return Response.Data
+   procedure Forum_Threads_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set)
    is
-      SID  : constant Session.Id := Status.Session (Request);
       P    : constant Parameters.List := Status.Parameters (Request);
       FID  : constant String :=
-               Parameters.Get (P, Template_Defs.Forum_Threads.HTTP.Fid);
+               Parameters.Get (P, Template_Defs.Forum_Threads.HTTP.FID);
       From : Positive := 1;
    begin
       --  Set forum Id into the session
-      Session.Set (SID, "FID", FID);
-      if Session.Exist (SID, "TID") then
-         Session.Remove (SID, "TID");
+      Context.Set_Value ("FID", FID);
+
+      if Context.Exist ("TID") then
+         Context.Remove ("TID");
       end if;
 
       if Parameters.Exist
-        (P, Template_Defs.Block_Forum_Navigate.HTTP.From)
+        (P, Template_Defs.Block_Forum_Navigate.HTTP.FROM)
       then
          From := Positive'Value
-           (Parameters.Get (P, Template_Defs.Block_Forum_Navigate.HTTP.From));
+           (Parameters.Get (P, Template_Defs.Block_Forum_Navigate.HTTP.FROM));
       end if;
 
-      if not Session.Exist (SID, "FILTER") then
-         Session.Set
-           (SID, "FILTER", Database.Filter_Mode'Image (Database.All_Messages));
-         if Settings.Descending_Order then
-            Session.Set (SID, "ORDER_DIR",
-                         Database.Order_Direction'Image (Database.DESC));
-         else
-            Session.Set (SID, "ORDER_DIR",
-                         Database.Order_Direction'Image (Database.ASC));
-         end if;
-      end if;
+      Context_Filter (Context);
 
-      return Final_Parse
-        (Request,
-         Template_Defs.Forum_Threads.Template,
+      Templates.Insert
+        (Translations,
          Database.Get_Threads
            (FID, From => From,
             Order_Dir => Database.Order_Direction'Value
-              (Session.Get (SID, "ORDER_DIR"))));
+              (Context.Get_Value (Template_Defs.Global.ORDER_DIR))));
    end Forum_Threads_Callback;
 
    ----------------------
@@ -410,13 +400,16 @@ package body V2P.Web_Server is
    -- Login_Callback --
    --------------------
 
-   function Login_Callback (Request : in Status.Data) return Response.Data is
+   procedure Login_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
       SID      : constant Session.Id := Status.Session (Request);
       P        : constant Parameters.List := Status.Parameters (Request);
       Login    : constant String := Parameters.Get (P, "LOGIN");
       Password : constant String := Database.Get_Password (Login);
-
-      Set      : Templates.Translate_Set;
    begin
       if Password = Parameters.Get (P, "PASSWORD") then
          Session.Set (SID, "LOGIN", Login);
@@ -426,18 +419,10 @@ package body V2P.Web_Server is
          --  ??? to be done when user's preferences are implemented
 
          Templates.Insert
-           (Set, Templates.Assoc
-              (Template_Defs.R_Block_Login.Login,
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.R_Block_Login.LOGIN,
                String'(Session.Get (SID, "LOGIN"))));
-
-         return Final_Parse
-           (Request, Template_Defs.R_Block_Login.Template,
-            Set, MIME.Text_XML);
-
-      else
-         return Response.Build
-           (MIME.Text_XML,
-            String'(Templates.Parse (Template_Defs.R_Block_Login.Template)));
       end if;
    end Login_Callback;
 
@@ -445,67 +430,54 @@ package body V2P.Web_Server is
    -- Logout_Callback --
    ---------------------
 
-   function Logout_Callback (Request : in Status.Data) return Response.Data is
+   procedure Logout_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
       SID : constant Session.Id := Status.Session (Request);
-      Set : Templates.Translate_Set;
    begin
       Session.Delete (SID);
 
       Templates.Insert
-        (Set, Templates.Assoc (Template_Defs.R_Block_Logout.Login_Form,
-         String'(Templates.Parse
-           (Template_Defs.Block_Login.Template))));
-
-      return Final_Parse
-        (Request, Template_Defs.R_Block_Logout.Template,
-         Set, MIME.Text_XML);
+        (Translations,
+         Templates.Assoc (Template_Defs.R_Block_Logout.LOGIN_FORM,
+           String'(Templates.Parse
+             (Template_Defs.Block_Login.Template))));
    end Logout_Callback;
 
-   -----------------------
+   ------------------------
    -- Main_Page_Callback --
-   -----------------------
+   ------------------------
 
-   function Main_Page_Callback
-     (Request : in Status.Data) return Response.Data
+   procedure Main_Page_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set)
    is
-      SID          : constant Session.Id := Status.Session (Request);
-      Translations : Templates.Translate_Set;
+      pragma Unreferenced (Request, Translations);
    begin
-      --  Main page, remove the current session status
-      if Session.Exist (SID, "TID") then
-         Session.Remove (SID, "TID");
+      if Context.Exist ("TID") then
+         Context.Remove ("TID");
       end if;
-      if Session.Exist (SID, "FID") then
-         Session.Remove (SID, "FID");
-      end if;
-
-      --  Set the default filter
-
-      if not Session.Exist (SID, "FILTER") then
-         Session.Set
-           (SID, "FILTER", Database.Filter_Mode'Image (Database.All_Messages));
-         if Settings.Descending_Order then
-            Session.Set (SID, "ORDER_DIR",
-                         Database.Order_Direction'Image (Database.DESC));
-         else
-            Session.Set (SID, "ORDER_DIR",
-                         Database.Order_Direction'Image (Database.ASC));
-         end if;
+      if Context.Exist ("FID") then
+         Context.Remove ("FID");
       end if;
 
-      return Final_Parse
-        (Request,
-         Template_Defs.Main_Page.Template,
-         Translations);
+      Context_Filter (Context);
    end Main_Page_Callback;
 
    ------------------------
    -- New_Photo_Callback --
    ------------------------
 
-   function New_Photo_Callback
-     (Request : in Status.Data) return Response.Data
+   procedure New_Photo_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set)
    is
+   pragma Unreferenced (Context);
       use Image.Data;
 
       SID          : constant Session.Id := Status.Session (Request);
@@ -517,180 +489,155 @@ package body V2P.Web_Server is
 
       New_Image    : Image_Data;
 
-      Translations : Templates.Translate_Set;
-
    begin
       Init (Img => New_Image, Filename => Filename);
 
       if New_Image.Init_Status /= Image_Created then
          Templates.Insert
            (Translations,
-            Templates.Assoc (Template_Defs.Main_Page.V2p_Error,
+            Templates.Assoc (Template_Defs.Main_Page.V2P_ERROR,
               Image_Init_Status'Image (New_Image.Init_Status)));
 
          Templates.Insert
            (Translations,
             Templates.Assoc
-              (Template_Defs.Main_Page.Exceed_Maximum_Image_Dimension,
+              (Template_Defs.Main_Page.EXCEED_MAXIMUM_IMAGE_DIMENSION,
                Image_Init_Status'Image
                  (Image.Data.Exceed_Max_Image_Dimension)));
 
          Templates.Insert
            (Translations,
             Templates.Assoc
-              (Template_Defs.Main_Page.Exceed_Maximum_Size,
+              (Template_Defs.Main_Page.EXCEED_MAXIMUM_SIZE,
                Image_Init_Status'Image
                  (Image.Data.Exceed_Max_Size)));
-
-         return Final_Parse
-           (Request,
-            Template_Defs.Main_Page.Template,
-            Translations);
-      end if;
-
-
-      declare
-         New_Photo_Filename : constant String
-           := New_Image.Filename
+      else
+         declare
+            New_Photo_Filename : constant String
+              := New_Image.Filename
                 ((Images_Path'Length + 2) .. New_Image.Filename'Last);
-         Pid : constant String
-           := Database.Insert_Photo
-             (Login,
-              New_Photo_Filename,
-              Natural (New_Image.Dimension.Width),
-              Natural (New_Image.Dimension.Height),
-              Natural (New_Image.Dimension.Size));
-      begin
-         Templates.Insert
-           (Translations,
-            Templates.Assoc
-              (Template_Defs.Iframe_Photo_Post.New_Photo_Id,
-               Pid));
-         Templates.Insert
-           (Translations,
-            Templates.Assoc
-              (Template_Defs.Iframe_Photo_Post.New_Photo_Filename,
-               New_Photo_Filename));
-      end;
-
-      --  We should know the context to redirect the user to the corresponding
-      --  page. By default redirect to new_post
-
-      return Final_Parse
-        (Request,
-         Template_Defs.Iframe_Photo_Post.Template,
-         Translations);
+            Pid                : constant String
+              := Database.Insert_Photo
+                (Login,
+                 New_Photo_Filename,
+                 Natural (New_Image.Dimension.Width),
+                 Natural (New_Image.Dimension.Height),
+                 Natural (New_Image.Dimension.Size));
+         begin
+            Templates.Insert
+              (Translations,
+               Templates.Assoc
+                 (Template_Defs.Iframe_Photo_Post.NEW_PHOTO_ID,
+                  Pid));
+            Templates.Insert
+              (Translations,
+               Templates.Assoc
+                 (Template_Defs.Iframe_Photo_Post.NEW_PHOTO_FILENAME,
+                  New_Photo_Filename));
+         end;
+      end if;
    end New_Photo_Callback;
 
    ---------------------------
    -- Onchange_Filter_Forum --
    ---------------------------
 
-   function Onchange_Filter_Forum
-     (Request : in Status.Data) return Response.Data
+   procedure Onchange_Filter_Forum
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set)
    is
-      SID          : constant Session.Id := Status.Session (Request);
-      P            : constant Parameters.List := Status.Parameters (Request);
-      Filter       : constant String := Parameters.Get (P, "sel_filter_forum");
-      Translations : Templates.Translate_Set;
+      pragma Unreferenced (Translations);
+      P      : constant Parameters.List := Status.Parameters (Request);
+      Filter : constant String := Parameters.Get (P, "sel_filter_forum");
    begin
       --  Keep the sorting scheme into the session
       --  ?? we need to add this into the user's preferences
-      Session.Set (SID, "FILTER", Filter);
-
-      return Final_Parse
-        (Request,
-         Template_Defs.R_Block_Forum_Filter.Template,
-         Translations,
-         MIME.Text_XML);
+      Context.Set_Value ("FILTER", Filter);
    end Onchange_Filter_Forum;
 
    ----------------------------------
    -- Onchange_Forum_List_Callback --
    ----------------------------------
 
-   function Onchange_Forum_List_Callback
-     (Request : in Status.Data) return Response.Data
+   procedure Onchange_Forum_List_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set)
    is
+      pragma Unreferenced (Context);
       P   : constant Parameters.List := Status.Parameters (Request);
       Fid : constant String := Parameters.Get (P, "sel_forum_list");
       --  ??
    begin
-      return Response.Build
-        (MIME.Text_XML,
-         String'(Templates.Parse
-           (Template_Defs.R_Block_Forum_List.Template,
-              Database.Get_Categories (Fid))));
+      Templates.Insert (Translations, Database.Get_Categories (Fid));
    end Onchange_Forum_List_Callback;
 
    ------------------------------------------
    -- Onsubmit_Comment_Form_Enter_Callback --
    ------------------------------------------
 
-   function Onsubmit_Comment_Form_Enter_Callback
-          (Request : in Status.Data) return Response.Data
+   procedure Onsubmit_Comment_Form_Enter_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set)
    is
+   pragma Unreferenced (Context);
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String := Session.Get (SID, "LOGIN");
-      TID          : constant String := Parameters.Get (P, "TID");
-      --  FID          : constant String := Parameters.Get (P, "FID");
       Parent_Id    : constant String := Parameters.Get (P, "PARENT_ID");
       Anonymous    : constant String := Parameters.Get (P, "ANONYMOUS_USER");
       Name         : constant String := Parameters.Get (P, "NAME");
       Comment      : constant String := Parameters.Get (P, "COMMENT");
       Pid          : constant String := Parameters.Get (P, "PID");
+      Tid          : constant String := Parameters.Get (P, "TID");
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_Html (Comment);
-
-      Set          : Templates.Translate_Set;
    begin
       if Login = "" and then Anonymous = "" then
          Templates.Insert
-           (Set,
+           (Translations,
             Templates.Assoc
-              (Template_Defs.R_Block_Comment_Form_Enter.Error,
+              (Template_Defs.R_Block_Comment_Form_Enter.ERROR,
                "ERROR_NO_LOGIN"));
-      elsif TID /= "" and not Is_Valid_Comment (Comment_Wiki) then
+      elsif Tid /= "" and not Is_Valid_Comment (Comment_Wiki) then
          Templates.Insert
-           (Set,
+           (Translations,
             Templates.Assoc
-              (Template_Defs.R_Block_Comment_Form_Enter.Error,
+              (Template_Defs.R_Block_Comment_Form_Enter.ERROR,
                "ERROR"));
             --  ??? Adds an error message
       else
          declare
             Cid : constant String := Database.Insert_Comment
-              (Login, Anonymous, TID, Name, Comment_Wiki, Pid);
+              (Login, Anonymous, Tid, Name, Comment_Wiki, Pid);
          begin
-            Set := Database.Get_Comment (Cid);
+            Templates.Insert (Translations, Database.Get_Comment (Cid));
             Templates.Insert
-              (Set,
+              (Translations,
                Templates.Assoc
-                 (Template_Defs.R_Block_Comment_Form_Enter.Parent_Id,
+                 (Template_Defs.R_Block_Comment_Form_Enter.PARENT_ID,
                   Parent_Id));
             Templates.Insert
-              (Set,
+              (Translations,
                Templates.Assoc
-                 (Template_Defs.R_Block_Comment_Form_Enter.Comment_Level,
+                 (Template_Defs.R_Block_Comment_Form_Enter.COMMENT_LEVEL,
                   "1"));
             --  Does not support threaded view for now.
          end;
       end if;
-
-      return Final_Parse
-        (Request,
-         Template_Defs.R_Block_Comment_Form_Enter.Template,
-         Set,
-         MIME.Text_XML);
    end Onsubmit_Comment_Form_Enter_Callback;
 
    ---------------------------------------
    -- Onsubmit_Post_Form_Enter_Callback --
    ---------------------------------------
 
-   function Onsubmit_Post_Form_Enter_Callback
-     (Request : in Status.Data) return Response.Data
+   procedure Onsubmit_Post_Form_Enter_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set)
    is
+      pragma Unreferenced (Context);
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String := Session.Get (SID, "LOGIN");
@@ -701,13 +648,12 @@ package body V2P.Web_Server is
       Forum        : constant String := Parameters.Get (P, "FORUM");
 
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_Html (Comment);
-      Set          : Templates.Translate_Set;
    begin
       if Login = "" and then CID = "" then
          Templates.Insert
-           (Set,
+           (Translations,
             Templates.Assoc
-              (Template_Defs.R_Block_Post_Form_Enter.Error,
+              (Template_Defs.R_Block_Post_Form_Enter.ERROR,
                "ERROR"));
          --  ??? Adds an error message
       else
@@ -716,18 +662,13 @@ package body V2P.Web_Server is
               Database.Insert_Post (Login, CID, Name, Comment_Wiki, Pid);
          begin
             Templates.Insert
-              (Set,
+              (Translations,
                Templates.Assoc
-                 (Template_Defs.R_Block_Post_Form_Enter.Url,
+                 (Template_Defs.R_Block_Post_Form_Enter.URL,
                   Template_Defs.Forum_Entry.URL & "?FID=" & Forum
                     & "&amp;TID=" & Post_Id));
          end;
       end if;
-      return Final_Parse
-        (Request,
-         Template_Defs.R_Block_Post_Form_Enter.Template,
-         Set,
-         MIME.Text_XML);
    end Onsubmit_Post_Form_Enter_Callback;
 
    ---------------------
@@ -758,86 +699,7 @@ package body V2P.Web_Server is
       --  All URLs starting with /xml_ are handled by a specific callback
       --  returning the corresponding file in the xml directory.
 
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         Template_Defs.Block_Login.Ajax.Onclick_Login_Form_Enter,
-         Action => Dispatchers.Callback.Create (Login_Callback'Access));
-
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         Template_Defs.Block_Login.Ajax.Onclick_Logout_Enter,
-         Action => Dispatchers.Callback.Create (Logout_Callback'Access));
-
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         Template_Defs.Forum_Threads.Ajax.Onchange_Sel_Filter_Forum,
-         Action => Dispatchers.Callback.Create (Onchange_Filter_Forum'Access));
-
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         Template_Defs.Block_New_Comment.Ajax.Onchange_Sel_Forum_List,
-         Action => Dispatchers.Callback.Create
-           (Onchange_Forum_List_Callback'Access));
-
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         Template_Defs.Block_New_Comment.Ajax.Onsubmit_Comment_Form,
-         Action => Dispatchers.Callback.Create
-           (Onsubmit_Comment_Form_Enter_Callback'Access));
-
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         Template_Defs.Block_New_Post.Ajax.Onsubmit_Post_Form,
-         Action => Dispatchers.Callback.Create
-           (Onsubmit_Post_Form_Enter_Callback'Access));
-
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         Template_Defs.Block_User_Password_Change.
-           Ajax.Onclick_User_Password_Change_Enter,
-         Action => Dispatchers.Callback.Create
-           (User_Password_Change_Callback'Access));
-
-      --        Services.Dispatchers.URI.Register
-      --          (Main_Dispatcher,
-      --           Template_Defs.Block_New_Comment.URL,
-      --           Action => Dispatchers.Callback.Create
-      --            (New_Comment_Callback'Access));
-      --
-      --        Services.Dispatchers.URI.Register
-      --          (Main_Dispatcher,
-      --           Template_Defs.Block_New_Comment.URL,
-      --           Action => Dispatchers.Callback.Create
-      --          (New_Post_Callback'Access));
-
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         Template_Defs.Block_New_Photo.URL,
-         Action => Dispatchers.Callback.Create (New_Photo_Callback'Access));
-
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         Template_Defs.Forum_Entry.URL,
-         Action => Dispatchers.Callback.Create (Forum_Entry_Callback'Access));
-
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         Template_Defs.Forum_Post.URL,
-         Action => Dispatchers.Callback.Create (Forum_Post_Callback'Access));
-
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         Template_Defs.Forum_Threads.URL,
-         Action => Dispatchers.Callback.Create
-           (Forum_Threads_Callback'Access));
-
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         Template_Defs.User.URL,
-         Action => Dispatchers.Callback.Create
-           (User_Callback'Access));
-
-      Services.Dispatchers.URI.Register
+            Services.Dispatchers.URI.Register
         (Main_Dispatcher,
          "/we_js",
          Action => Dispatchers.Callback.Create (WEJS_Callback'Access),
@@ -861,18 +723,80 @@ package body V2P.Web_Server is
          Action => Dispatchers.Callback.Create (Thumbs_Callback'Access),
          Prefix => True);
 
-      Services.Dispatchers.URI.Register
+      Services.Dispatchers.URI.Register_Default_Callback
         (Main_Dispatcher,
-         Template_Defs.Main_Page.URL,
-         Action => Dispatchers.Callback.Create (Main_Page_Callback'Access));
+         Dispatchers.Callback.Create (Default_Callback'Access));
+      --  This default callback will handle all ECWF callbacks
 
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         "/",
-         Action => Dispatchers.Callback.Create (Error_Callback'Access),
-         Prefix => True);
+      --  Register ECWF pages
 
-      --  Register lazy tags
+      Services.ECWF.Registry.Register
+        (Template_Defs.Block_Login.Ajax.onclick_login_form_enter,
+         Template_Defs.R_Block_Login.Template,
+         Login_Callback'Access,
+         MIME.Text_XML);
+
+      Services.ECWF.Registry.Register
+        (Template_Defs.Block_Login.Ajax.onclick_logout_enter,
+         Template_Defs.R_Block_Logout.Template,
+         Logout_Callback'Access,
+         MIME.Text_XML);
+
+      Services.ECWF.Registry.Register
+        (Template_Defs.Forum_Threads.Ajax.onchange_sel_filter_forum,
+         Template_Defs.R_Block_Forum_Filter.Template,
+         Onchange_Filter_Forum'Access,
+         MIME.Text_XML);
+
+      Services.ECWF.Registry.Register
+        (Template_Defs.Block_New_Comment.Ajax.onchange_sel_forum_list,
+         Template_Defs.R_Block_Forum_List.Template,
+         Onchange_Forum_List_Callback'Access,
+         MIME.Text_XML);
+
+      Services.ECWF.Registry.Register
+        (Template_Defs.Block_New_Comment.Ajax.onsubmit_comment_form,
+         Template_Defs.R_Block_Comment_Form_Enter.Template,
+         Onsubmit_Comment_Form_Enter_Callback'Access,
+         MIME.Text_XML);
+
+      Services.ECWF.Registry.Register
+        (Template_Defs.Block_New_Post.Ajax.onsubmit_post_form,
+         Template_Defs.R_Block_Post_Form_Enter.Template,
+         Onsubmit_Post_Form_Enter_Callback'Access,
+         MIME.Text_XML);
+
+      Services.ECWF.Registry.Register
+        (Template_Defs.Forum_Entry.URL,
+         Template_Defs.Forum_Entry.Template,
+         Forum_Entry_Callback'Access);
+
+      Services.ECWF.Registry.Register
+        (Template_Defs.Block_New_Photo.URL,
+         Template_Defs.Iframe_Photo_Post.Template,
+         New_Photo_Callback'Access);
+
+      Services.ECWF.Registry.Register
+        (Template_Defs.Forum_Threads.URL,
+         Template_Defs.Forum_Threads.Template,
+         Forum_Threads_Callback'Access);
+
+      Services.ECWF.Registry.Register
+        (Template_Defs.Main_Page.URL,
+         Template_Defs.Main_Page.Template,
+         Main_Page_Callback'Access);
+
+      Services.ECWF.Registry.Register
+        (Template_Defs.Error.URL,
+         Template_Defs.Error.Template,
+         null);
+
+      Services.ECWF.Registry.Register
+        (Template_Defs.Forum_Post.URL,
+         Template_Defs.Forum_Post.Template,
+         null);
+
+      --  Register ECWF lazy tags
 
       Template_Defs.Lazy.Register;
 
@@ -914,38 +838,6 @@ package body V2P.Web_Server is
    begin
       return Response.File (MIME.Content_Type (File), File);
    end Thumbs_Callback;
-
-   -------------------
-   -- User_Callback --
-   -------------------
-
-   function User_Callback (Request : in Status.Data) return Response.Data is
-      SID          : constant Session.Id := Status.Session (Request);
-      Translations : Templates.Translate_Set;
-   begin
-      --  User page, remove the current session status
-      if Session.Exist (SID, "TID") then
-         Session.Remove (SID, "TID");
-      end if;
-      if Session.Exist (SID, "FID") then
-         Session.Remove (SID, "FID");
-      end if;
-
-      return Final_Parse
-        (Request,
-         Template_Defs.User.Template, Translations);
-   end User_Callback;
-
-   -----------------------------------
-   -- User_Password_Change_Callback --
-   -----------------------------------
-
-   function User_Password_Change_Callback
-     (Request : in Status.Data) return Response.Data is
-   begin
-      pragma Unreferenced (Request);
-      return Response.Build (MIME.Text_XML, "");
-   end User_Password_Change_Callback;
 
    ----------
    -- Wait --

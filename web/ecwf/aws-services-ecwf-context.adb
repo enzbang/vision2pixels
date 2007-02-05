@@ -26,8 +26,86 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-package AWS.Services.Web_Block is
+package body AWS.Services.ECWF.Context is
 
-   pragma Pure;
+   ------------
+   -- Create --
+   ------------
 
-end AWS.Services.Web_Block;
+   function Create return Id is
+   begin
+      return Id (Session.Create);
+   end Create;
+
+   -----------
+   -- Exist --
+   -----------
+
+   function Exist (CID : in Id) return Boolean is
+   begin
+      return Session.Exist (Session.Id (CID));
+   end Exist;
+
+   function Exist (Context : in Object; Name : in String) return Boolean is
+   begin
+      return Session.Exist (Context.SID, Name);
+   end Exist;
+
+   ---------
+   -- Get --
+   ---------
+
+   function Get (CID : in Id) return Object is
+   begin
+      return Object'(SID => Session.Id (CID));
+   end Get;
+
+   ---------------
+   -- Get_Value --
+   ---------------
+
+   function Get_Value (Context : in Object; Name : in String) return String is
+   begin
+      return Session.Get (Context.SID, Name);
+   end Get_Value;
+
+   -----------
+   -- Image --
+   -----------
+
+   function Image (CID : in Id) return String is
+   begin
+      return Session.Image (Session.Id (CID));
+   end Image;
+
+   ------------
+   -- Remove --
+   ------------
+
+   procedure Remove (Context : in Object; Name : in String) is
+   begin
+      Session.Remove (Context.SID, Name);
+   end Remove;
+
+   ---------------
+   -- Set_Value --
+   ---------------
+
+   procedure Set_Value (Context : in out Object; Name, Value : in String) is
+   begin
+      Session.Set (Context.SID, Name, Value);
+   end Set_Value;
+
+   -----------
+   -- Value --
+   -----------
+
+   function Value (CID : in String) return Id is
+   begin
+      return Id (Session.Value (CID));
+   exception
+      when Constraint_Error =>
+         return Id (Session.No_Session);
+   end Value;
+
+end AWS.Services.ECWF.Context;

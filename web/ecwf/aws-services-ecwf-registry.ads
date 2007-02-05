@@ -26,12 +26,25 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;
+
+with AWS.Messages;
+with AWS.MIME;
+with AWS.Response;
 with AWS.Status;
 with AWS.Templates;
+with AWS.Services.ECWF.Context;
 
-with AWS.Services.Web_Block.Context;
+package AWS.Services.ECWF.Registry is
 
-package AWS.Services.Web_Block.Registry is
+   use Ada.Strings.Unbounded;
+
+   type Page is record
+      Content_Type : Unbounded_String;
+      Content      : Unbounded_String;
+   end record;
+
+   No_Page : constant Page;
 
    type Lazy_Handler is new Templates.Dynamic.Lazy_Tag with record
       Request      : Status.Data;
@@ -41,19 +54,40 @@ package AWS.Services.Web_Block.Registry is
    end record;
 
    procedure Register
-     (Tag      : in String;
-      Template : in String;
-      Data_CB  : not null access procedure
-        (Request      : in Status.Data;
-         Context      : access Web_Block.Context.Object;
-         Translations : in out Templates.Translate_Set));
+     (Key          : in String;
+      Template     : in String;
+      Data_CB      : access procedure
+        (Request      : in     Status.Data;
+         Context      : access ECWF.Context.Object;
+         Translations : in out Templates.Translate_Set);
+      Content_Type : in String := MIME.Text_HTML);
+   --  Key is a Lazy_Tag or template page name. Template is the corresponding
+   --  template file. Data_CB is the callback used to retrieve the translation
+   --  table to render the page.
+
+   function Parse
+     (Key          : in String;
+      Request      : in Status.Data;
+      Translations : in Templates.Translate_Set) return Page;
+   --  Parse the Web page registered under Key
+
+   function Build
+     (Key           : in String;
+      Request       : in Status.Data;
+      Translations  : in Templates.Translate_Set;
+      Status_Code   : in Messages.Status_Code := Messages.S200;
+      Cache_Control : in Messages.Cache_Option := Messages.Unspecified)
+      return Response.Data;
+   --  Save as above but returns a standard Web page
 
 private
 
-   overriding
-   procedure Value
+   overriding procedure Value
      (Lazy_Tag     : not null access Lazy_Handler;
       Var_Name     : in              String;
       Translations : in out          Templates.Translate_Set);
 
-end AWS.Services.Web_Block.Registry;
+   No_Page : constant Page :=
+               (Null_Unbounded_String, Null_Unbounded_String);
+
+end AWS.Services.ECWF.Registry;

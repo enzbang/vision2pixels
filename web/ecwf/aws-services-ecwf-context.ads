@@ -28,7 +28,7 @@
 
 with AWS.Session;
 
-package AWS.Services.Web_Block.Context is
+package AWS.Services.ECWF.Context is
 
    type Object is tagged private;
    --  A context object, can be used to record key/name values
@@ -42,19 +42,25 @@ package AWS.Services.Web_Block.Context is
    --  Returns Id given it's string representation
 
    function Create return Id;
-   --  Creates a new context and returns the corresponding Id
+   --  Create a new context and returns the corresponding Id
 
    function Exist (CID : in Id) return Boolean;
-   --  Returns True if CID context exists into the database
+   --  Returns Trus if CID context exists into the database
 
    function Get (CID : in Id) return Object;
    --  Returns the context object corresponding to CID
 
    procedure Set_Value (Context : in out Object; Name, Value : in String);
-   --  Adds a new name/value pair
+   --  Add a new name/value pair
 
    function Get_Value (Context : in Object; Name : in String) return String;
-   --  Gets the value for the key Name
+   --  Get the value for the key Name
+
+   function Exist (Context : in Object; Name : in String) return Boolean;
+   --  Returns true if the key Name exist in this context
+
+   procedure Remove (Context : in Object; Name : in String);
+   --  Remove the context for key Name
 
 private
 
@@ -66,4 +72,4 @@ private
       SID : Session.Id;
    end record;
 
-end AWS.Services.Web_Block.Context;
+end AWS.Services.ECWF.Context;

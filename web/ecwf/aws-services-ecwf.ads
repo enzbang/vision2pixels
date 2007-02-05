@@ -26,69 +26,10 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-package body AWS.Services.Web_Block.Context is
+--  Enhanced Contextual Web Framework
 
-   ------------
-   -- Create --
-   ------------
+package AWS.Services.ECWF is
 
-   function Create return Id is
-   begin
-      return Id (Session.Create);
-   end Create;
+   pragma Pure;
 
-   -----------
-   -- Exist --
-   -----------
-
-   function Exist (CID : in Id) return Boolean is
-   begin
-      return Session.Exist (Session.Id (CID));
-   end Exist;
-
-   ---------
-   -- Get --
-   ---------
-
-   function Get (CID : in Id) return Object is
-   begin
-      return Object'(SID => Session.Id (CID));
-   end Get;
-
-   ---------------
-   -- Get_Value --
-   ---------------
-
-   function Get_Value (Context : in Object; Name : in String) return String is
-   begin
-      return Session.Get (Context.SID, Name);
-   end Get_Value;
-
-   -----------
-   -- Image --
-   -----------
-
-   function Image (CID : in Id) return String is
-   begin
-      return Session.Image (Session.Id (CID));
-   end Image;
-
-   ---------------
-   -- Set_Value --
-   ---------------
-
-   procedure Set_Value (Context : in out Object; Name, Value : in String) is
-   begin
-      Session.Set (Context.SID, Name, Value);
-   end Set_Value;
-
-   -----------
-   -- Value --
-   -----------
-
-   function Value (CID : in String) return Id is
-   begin
-      return Id (Session.Value (CID));
-   end Value;
-
-end AWS.Services.Web_Block.Context;
+end AWS.Services.ECWF;

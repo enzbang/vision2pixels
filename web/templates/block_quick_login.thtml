@@ -1,6 +1,6 @@
 @@INCLUDE@@ babel.thtml
 @@--
-<a href="/">
+<a href="/?CTX_ECWF=@_CTX_ECWF_@">
   <img src="/css/img/go-home.gif"
        alt="@_BABEL_V2P_SMALL_WEBSITE_NAME_@"
        title="@_BABEL_V2P_SMALL_WEBSITE_NAME_@" />
