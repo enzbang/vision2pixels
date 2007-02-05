@@ -50,32 +50,25 @@
       @@TABLE@@
       <li id="comment_@_COMMENT_ID_@"
           class="level_@_COMMENT_LEVEL_@ type_@_MOD(2):TABLE_LINE_@">
-        @@--        <h3 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h3>
-        @@-- Comment title line since it's not yet used
-        <cite>
-          @@IF@@ @_USER_@ /= ""
-          <a href="@_USER_PAGE_@" >
-            @_USER_@
-          </a>
-          @@ELSE@@
-          <span class="anonymous">
-            @_ANONYMOUS_USER_@
-          </span>
-          @@END_IF@@
-        </cite>
-        @_BABEL_HAS_WRITTEN_@
-        <p class="commentmetadata">
-          <a href="#comment_@_COMMENT_ID_@">
-            <abbr class="comment_date"
-                  title="@_DATE_ISO_8601_@">@_DATE_@  @ @_TIME_@</abbr>
-          </a>
-        </p>
-        <div class="comment_body">@_COMMENT_@</div>
+        @@INCLUDE@@ comment.thtml
         @@IF@@ @_NB_LEVELS_TO_CLOSE_@ > 0
           @_REPEAT("</li>"):NB_LEVELS_TO_CLOSE_@
         @@END_IF@@
+
+        @@IF@@ @_TABLE_LINE_@ = @_COMMENT_ID'Length_@
+        <div id="last_parent_id" style="visibility:hidden">
+        <input name="PARENT_ID" id="PARENT_ID" type="hidden"
+        value="comment_@_COMMENT_ID_@" />
+        </div>
+        @@END_IF@@
       @@END_TABLE@@
     </ol>
+  @@ELSE@@
+  <div id="comments"></div>
+  <div id="last_parent_id" style="visibility:hidden">
+  <input name="PARENT_ID" id="PARENT_ID" type="hidden"
+  value="" />
+  </div>
   @@END_IF@@
   <div id="new_comment">@_LAZY_NEW_COMMENT_@</div>
 </div>

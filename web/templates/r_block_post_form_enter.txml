@@ -1,0 +1,8 @@
+@@INCLUDE@@ babel.thtml
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+@@IF@@ @_ERROR_@ = ""
+<response>
+  <location url="@_URL_@" />
+</response>
+@@END_IF@@

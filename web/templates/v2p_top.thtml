@@ -12,6 +12,7 @@
   <title>@_$1_@</title>
   @@INCLUDE@@ import_css.thtml
   @@INCLUDE@@ ../we_js/aws.tjs
+  <script src="/we_js/v2p.tjs" type="text/javascript"></script>
 </head>
 
 <body class="@_$2_@

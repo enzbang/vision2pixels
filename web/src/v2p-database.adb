@@ -32,11 +32,13 @@ with Settings;
 with V2P.Web_Server;
 with V2P.DB_Handle;
 with V2P.Template_Defs.Forum_Entry;
+with V2P.Template_Defs.Comment;
 with V2P.Template_Defs.Block_Forum_Threads;
 with V2P.Template_Defs.Block_Forum_Navigate;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
+with V2P.Template_Defs.Block_User_Tmp_Photo_Select;
 with V2P.Template_Defs.R_Block_Forum_List;
 
 package body V2P.Database is
@@ -203,6 +205,68 @@ package body V2P.Database is
       return To_String (Name);
    end Get_Category_Full_Name;
 
+   -----------------
+   -- Get_Comment --
+   -----------------
+
+   function Get_Comment (Cid : in String) return Templates.Translate_Set is
+      use type Templates.Tag;
+      DBH  : TLS_DBH := DBH_TLS.Value;
+      Set  : Templates.Translate_Set;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "select strftime('%Y-%m-%dT%H:%M:%SZ', date), "
+         & "date(date, 'localtime'), time(date, 'localtime'), "
+         & "user_login, anonymous_user, "
+         & "comment"
+         --  & "(select filename from photo where id=comment.photo_id) "
+         --  ??? Filename is not used for now
+         & " from comment where id=" & Cid);
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Templates.Insert
+           (Set, Templates.Assoc (Template_Defs.Comment.Comment_Id, Cid));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Template_Defs.Comment.Date_Iso_8601,
+               DB.String_Vectors.Element (Line, 1)));
+
+         Templates.Insert
+           (Set, Templates.Assoc (Template_Defs.Comment.Date,
+            DB.String_Vectors.Element (Line, 2)));
+
+         Templates.Insert
+           (Set, Templates.Assoc (Template_Defs.Comment.Time,
+            DB.String_Vectors.Element (Line, 3)));
+
+         Templates.Insert
+           (Set, Templates.Assoc (Template_Defs.Comment.User,
+            DB.String_Vectors.Element (Line, 4)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Template_Defs.Comment.Anonymous_User,
+               DB.String_Vectors.Element (Line, 5)));
+
+         Templates.Insert
+           (Set, Templates.Assoc (Template_Defs.Comment.Comment,
+            DB.String_Vectors.Element (Line, 6)));
+         Line.Clear;
+      end if;
+
+      Iter.End_Select;
+      return Set;
+   end Get_Comment;
+
    ---------------
    -- Get_Entry --
    ---------------
@@ -231,12 +295,9 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter, "select post.name, post.comment, "
-         & "case post.photo_id is null "
-         & "when 1 then NULL else photo.filename end "
-         & "from post, photo where "
-         & "((post.photo_id NOTNULL and photo.id = post.photo_id) "
-         & "or (post.photo_id ISNULL)) "
-         & "and post.id=" & Q (Tid));
+         & "(select filename from photo where id=post.photo_id)"
+         & "from post where "
+         & "post.id=" & Q (Tid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -273,7 +334,8 @@ package body V2P.Database is
          "select comment.id, strftime('%Y-%m-%dT%H:%M:%SZ', date), "
          & "date(date, 'localtime'), time(date, 'localtime'), "
          & "user_login, anonymous_user, "
-         & "comment, filename"
+         & "comment, "
+         & "(select filename from photo where id=comment.photo_id) "
          & " from comment, post_comment"
          & " where post_id=" & Q (Tid)
          & " and post_comment.comment_id=comment.id");
@@ -301,16 +363,21 @@ package body V2P.Database is
       Iter.End_Select;
 
       Templates.Insert
-        (Set, Templates.Assoc (Forum_Entry.Comment_Id, Comment_Id));
+        (Set, Templates.Assoc (Template_Defs.Comment.Comment_Id, Comment_Id));
       Templates.Insert
-        (Set, Templates.Assoc (Forum_Entry.Date_Iso_8601, Date_Iso_8601));
-      Templates.Insert (Set, Templates.Assoc (Forum_Entry.Date, Date));
-      Templates.Insert (Set, Templates.Assoc (Forum_Entry.Time, Time));
-
-      Templates.Insert (Set, Templates.Assoc (Forum_Entry.User, User));
+        (Set, Templates.Assoc
+           (Template_Defs.Comment.Date_Iso_8601, Date_Iso_8601));
       Templates.Insert
-        (Set, Templates.Assoc (Forum_Entry.Anonymous_User, Anonymous));
-      Templates.Insert (Set, Templates.Assoc (Forum_Entry.Comment, Comment));
+        (Set, Templates.Assoc (Template_Defs.Comment.Date, Date));
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Comment.Time, Time));
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Comment.User, User));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Comment.Anonymous_User, Anonymous));
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Comment.Comment, Comment));
       Templates.Insert
         (Set, Templates.Assoc (Forum_Entry.Comment_Level, Comment_Level));
       Templates.Insert
@@ -626,6 +693,46 @@ package body V2P.Database is
       return Set;
    end Get_User;
 
+   function Get_User_Tmp_Photo
+     (Uid : in String) return Templates.Translate_Set
+   is
+      use type Templates.Tag;
+
+      DBH          : TLS_DBH := DBH_TLS.Value;
+      Set          : Templates.Translate_Set;
+      Iter         : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line         : DB.String_Vectors.Vector;
+      Tmp_Id       : Templates.Tag;
+      Tmp_Filename : Templates.Tag;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select
+        (Iter, "select photo_id, filename from user_tmp_photo, photo "
+         & "where photo.id = photo_id and user_login=" & Q (Uid));
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+         Tmp_Id       := Tmp_Id       & DB.String_Vectors.Element (Line, 1);
+         Tmp_Filename := Tmp_Filename & DB.String_Vectors.Element (Line, 2);
+
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert
+        (Set, Templates.Assoc (Block_User_Tmp_Photo_Select.Tmp_Id, Tmp_Id));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Block_User_Tmp_Photo_Select.Tmp_Filename, Tmp_Filename));
+
+      return Set;
+
+   end Get_User_Tmp_Photo;
+
+
+
    -------
    -- I --
    -------
@@ -653,13 +760,14 @@ package body V2P.Database is
    -- Insert_Comment --
    --------------------
 
-   procedure Insert_Comment
+   function  Insert_Comment
      (Uid       : in String;
       Anonymous : in String;
       Thread    : in String;
       Name      : in String;
       Comment   : in String;
-      Filename  : in String)
+      Pid       : in String)
+      return String
    is
       pragma Unreferenced (Name);
 
@@ -667,7 +775,7 @@ package body V2P.Database is
         (User_Login, Anonymous, Comment : in String);
       --  Insert row into Comment table
 
-      procedure Insert_Table_post_Comment (post_Id, Comment_Id : in String);
+      procedure Insert_Table_Post_Comment (post_Id, Comment_Id : in String);
       --  Insert row into post_Comment table
 
       DBH : TLS_DBH := DBH_TLS.Value;
@@ -681,10 +789,10 @@ package body V2P.Database is
       is
          SQL : constant String :=
                  "insert into comment ('user_login', 'anonymous_user', "
-                   & "'comment', 'filename')"
+                   & "'comment', 'photo_id')"
                    & " values ("
                    & Q (User_Login) & ',' & Q (Anonymous) & ',' & Q (Comment)
-                   & ',' & Q (Filename) & ')';
+                   & ',' & Q (Pid) & ')';
       begin
          DBH.Handle.Execute (SQL);
       end Insert_Table_Comment;
@@ -693,7 +801,7 @@ package body V2P.Database is
       -- Insert_Table_post_Comment --
       --------------------------------
 
-      procedure Insert_Table_post_Comment
+      procedure Insert_Table_Post_Comment
         (post_Id, Comment_Id : in String)
       is
          SQL : constant String :=
@@ -701,33 +809,34 @@ package body V2P.Database is
                    & post_Id & "," & Comment_Id & ')';
       begin
          DBH.Handle.Execute (SQL);
-      end Insert_Table_post_Comment;
+      end Insert_Table_Post_Comment;
 
    begin
       Connect (DBH);
       DBH.Handle.Begin_Transaction;
       Insert_Table_Comment (Uid, Anonymous, Comment);
-      Insert_Table_post_Comment (Thread, DBH.Handle.Last_Insert_Rowid);
-      DBH.Handle.Commit;
+
+      declare
+         Cid : constant String := DBH.Handle.Last_Insert_Rowid;
+      begin
+         Insert_Table_Post_Comment (Thread, Cid);
+         DBH.Handle.Commit;
+         return Cid;
+      end;
    exception
       when E : DB.DB_Error =>
          DBH.Handle.Rollback;
          Text_IO.Put_Line (Exception_Message (E));
+         return "";
    end Insert_Comment;
 
-   -----------------
-   -- Insert_Post --
-   -----------------
-
-   procedure Insert_Post
+   function Insert_Photo
      (Uid         : in String;
-      Category_Id : in String;
-      Name        : in String;
-      Comment     : in String;
-      Filename    : in String  := "";
-      Height      : in Integer := 0;
-      Width       : in Integer := 0;
-      Size        : in Integer := 0)
+      Filename    : in String;
+      Height      : in Integer;
+      Width       : in Integer;
+      Size        : in Integer)
+      return String
    is
 
       procedure Insert_Table_Photo
@@ -737,12 +846,8 @@ package body V2P.Database is
          Size     : in Integer);
       --  Insert row into the photo table
 
-      procedure Insert_Table_Post
-        (Name, Category_Id, Comment, Photo_Id : in String);
-      --  Insert row into the post table
-
-      procedure Insert_Table_User_Post (Uid, Post_Id : in String);
-      --  Insert row into the user_post table
+      procedure Insert_Table_User_Tmp_Photo (Uid, Pid : in String);
+      --  Insert row into the user_tmp_photo table
 
       DBH : TLS_DBH := DBH_TLS.Value;
 
@@ -756,12 +861,63 @@ package body V2P.Database is
          Width    : in Integer;
          Size     : in Integer) is
          SQL : constant String :=
-                 "insert into photo ('filename', 'height', 'width', 'size') "
-                   & "values (" & Q (Filename) & ',' & I (Height) & ','
-                   & I (Width) & ',' & I (Size) & ')';
+           "insert into photo ('filename', 'height', 'width', 'size') "
+           & "values (" & Q (Filename) & ',' & I (Height) & ','
+           & I (Width) & ',' & I (Size) & ')';
       begin
          DBH.Handle.Execute (SQL);
       end Insert_Table_Photo;
+
+      procedure Insert_Table_User_Tmp_Photo (Uid, Pid : in String) is
+         SQL : constant String :=
+           "insert into user_tmp_photo values (" & Q (Uid) & ','
+           & Pid & ')';
+      begin
+         DBH.Handle.Execute (SQL);
+      end Insert_Table_User_Tmp_Photo;
+
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Begin_Transaction;
+
+      Insert_Table_Photo (Filename, Height, Width, Size);
+
+      --  ??? A limit should be added for user temporaries photos
+
+      declare
+         Pid : constant String := DBH.Handle.Last_Insert_Rowid;
+      begin
+         Insert_Table_User_Tmp_Photo (Uid, Pid);
+         DBH.Handle.Commit;
+         return Pid;
+      end;
+   exception
+      when others =>
+         DBH.Handle.Rollback;
+         return "";
+   end Insert_Photo;
+
+   -----------------
+   -- Insert_Post --
+   -----------------
+
+   function Insert_Post
+     (Uid         : in String;
+      Category_Id : in String;
+      Name        : in String;
+      Comment     : in String;
+      Pid         : in String)
+      return String
+   is
+      procedure Insert_Table_Post
+        (Name, Category_Id, Comment, Photo_Id : in String);
+      --  Insert row into the post table
+
+      procedure Insert_Table_User_Post (Uid, Post_Id : in String);
+      --  Insert row into the user_post table
+
+      DBH : TLS_DBH := DBH_TLS.Value;
 
       ------------------------
       -- Insert_Table_post --
@@ -796,23 +952,29 @@ package body V2P.Database is
 
       DBH.Handle.Begin_Transaction;
 
-      if Filename /= "" then
-         Insert_Table_Photo (Filename, Height, Width, Size);
-         Insert_Table_Post
-           (Name, Category_Id, Comment, DBH.Handle.Last_Insert_Rowid);
+      if Pid /= "" then
+         Insert_Table_Post (Name, Category_Id, Comment, Pid);
       else
          Insert_Table_Post (Name, Category_Id, Comment, "Null");
       end if;
 
-      Insert_Table_User_Post (Uid, DBH.Handle.Last_Insert_Rowid);
-      DBH.Handle.Commit;
+      declare
+         Post_Id : constant String :=
+           DBH.Handle.Last_Insert_Rowid;
+      begin
+         Insert_Table_User_Post (Uid, Post_Id);
+         DBH.Handle.Commit;
+         return Post_Id (Post_Id'First + 1 .. Post_Id'Last);
+      end;
    exception
       when E : DB.DB_Error =>
          DBH.Handle.Rollback;
          Text_IO.Put_Line (Exception_Message (E));
+         return "";
       when E : others =>
          DBH.Handle.Rollback;
          Text_IO.Put_Line (Exception_Message (E));
+         return "";
    end Insert_Post;
 
    ---------------
@@ -886,13 +1048,12 @@ package body V2P.Database is
      return Unbounded_String
    is
       SQL_Select : constant String :=
-        "select post.id, post.name, case post.photo_id is null "
-        & "when 1 then NULL else photo.filename end, "
-                       & "category.name, comment_counter, visit_counter ";
-      SQL_From   : constant String := " from post, category, photo ";
-      SQL_Where  : constant String := " where post.category_id = category.id "
-        & " and ((photo_id NOTNULL and photo.id = post.photo_id) "
-        & "or (photo_id ISNULL)) " & Where_Cond;
+          "select post.id, post.name, "
+          & "(select filename from photo where id=post.photo_id), "
+          & "category.name, comment_counter, visit_counter ";
+      SQL_From   : constant String := " from post, category";
+      SQL_Where  : constant String :=
+          " where post.category_id = category.id " & Where_Cond;
       Ordering   : constant String := " order by post.date_post " &
         Order_Direction'Image (Order_Dir);
 
