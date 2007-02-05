@@ -1,0 +1,39 @@
+@@-- --------------------------------
+@@--  Update Thumb Preview when selecting photo with <select> attribute
+
+    function updateThisThumbPreview () {
+        var thumb = this.options[this.selectedIndex].style.backgroundImage;
+        this.style.backgroundImage = thumb;
+    }
+
+@@-- --------------------------------
+@@--  Update Thumb Preview when inserting new photo
+
+    function updateThumbPreview(element_id) {
+        var element = $(element_id);
+        var thumb = element.options[element.selectedIndex].style.backgroundImage;
+        element.style.backgroundImage = thumb;
+    }
+
+@@-- --------------------------------
+@@--  Change background image of an element
+
+    function changeBackgroundImage(element, background) {
+        element.style.backgroundImage = background;
+    }
+
+@@-- --------------------------------
+@@--  Show element given in rel attribute
+
+    function show_rel() {
+        var element = this.rel;
+        Element.show(element);
+    }
+
+@@-- --------------------------------
+@@--  Hide element given in rel attribute
+
+    function hide_rel() {
+        var element = this.rel;
+        Element.hide(element);
+    }
