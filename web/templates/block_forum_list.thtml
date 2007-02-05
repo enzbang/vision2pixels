@@ -1,11 +1,12 @@
 <div id="navcontainer">
-<ul>
-  @@TABLE@@
-    <li class="fc_@_FID_@"><a
-    href="@_FORUM_THREAD_URL_@?FID=@_FID_@">
-@_FORUM_NAME_@
-</a></li>
-  @@END_TABLE@@
-</ul>
+  <ul>
+    @@TABLE@@
+      <li class="fc_@_FID_@">
+        <a href="@_FORUM_THREAD_URL_@?FID=@_FID_@&CTX_ECWF=@_CTX_ECWF_@">
+          @_FORUM_NAME_@
+        </a>
+      </li>
+    @@END_TABLE@@
+  </ul>
 </div>
 <hr id="navcontainer_end" />

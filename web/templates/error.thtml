@@ -1,6 +1,6 @@
 @@INCLUDE@@ babel.thtml
 @@--
-@@-- HTTP_URL(/): Website root
+@@-- HTTP_URL(/404): Website root
 @@--
 @@INCLUDE@@ v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ main
 

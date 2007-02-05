@@ -20,7 +20,6 @@ value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/></p>
   </span>
 </p>
 
-
 </fieldset>
 </form>
 @@ELSE@@
@@ -32,13 +31,13 @@ value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/></p>
 </p>
 <p class="logged_as">@_BABEL_LOGGED_AS_@ @_LOGIN_@ </p>
 <p>
-  <a href="@_FORUM_POST_URL_@">
+  <a href="@_FORUM_POST_URL_@?CTX_ECWF=@_CTX_ECWF_@">
     <img src="/css/img/mail-message-new.gif" alt="@_BABEL_NEW_POST_@"
          title="@_BABEL_NEW_POST_@" />
   </a>
 </p>
 <p>
-  <a id="logout_enter" href="#">
+  <a id="logout_enter" href="?CTX_ECWF=@_CTX_ECWF_@">
     <img src="/css/img/system-log-out.gif" alt="@_BABEL_LOGOUT_@"
          title="@_BABEL_LOGOUT_@" />
   </a>

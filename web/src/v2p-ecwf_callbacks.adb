@@ -24,26 +24,26 @@ with AWS.Session;
 with V2P.Database;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_New_Comment;
+with V2P.Template_Defs.Global;
 
-package body V2P.Block_Callbacks is
+package body V2P.ECWF_Callbacks is
 
    ------------------
    -- Forum_Filter --
    ------------------
 
    procedure Forum_Filter
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
-      SID : constant Session.Id := Status.Session (Request);
+      pragma Unreferenced (Request);
    begin
       Templates.Insert
         (Translations,
          Templates.Assoc
-           (Template_Defs.Block_Forum_Filter.HTTP.Filter,
-            String'(Session.Get (SID, "FILTER"))));
+           (Template_Defs.Block_Forum_Filter.HTTP.FILTER,
+            Context.Get_Value (Template_Defs.Global.FILTER)));
    end Forum_Filter;
 
    ----------------
@@ -51,8 +51,8 @@ package body V2P.Block_Callbacks is
    ----------------
 
    procedure Forum_List
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Context);
@@ -65,8 +65,8 @@ package body V2P.Block_Callbacks is
    -----------------------
 
    procedure Forum_List_Select
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Context);
@@ -79,22 +79,21 @@ package body V2P.Block_Callbacks is
    -------------------
 
    procedure Forum_Threads
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
-      SID : constant Session.Id := Status.Session (Request);
+      pragma Unreferenced (Request);
    begin
-      if Session.Get (SID, "FID") /= "" then
+      if Context.Exist ("FID") then
          Templates.Insert
            (Translations,
             Database.Get_Threads
-              (Fid    => Session.Get (SID, "FID"),
+              (Fid    => Context.Get_Value ("FID"),
                Filter => Database.Filter_Mode'Value
-                 (Session.Get (SID, "FILTER")),
+                 (Context.Get_Value (Template_Defs.Global.FILTER)),
                Order_Dir => Database.Order_Direction'Value
-                 (Session.Get (SID, "ORDER_DIR"))));
+                 (Context.Get_Value (Template_Defs.Global.ORDER_DIR))));
       end if;
    end Forum_Threads;
 
@@ -103,8 +102,8 @@ package body V2P.Block_Callbacks is
    -----------
 
    procedure Login
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
@@ -119,25 +118,24 @@ package body V2P.Block_Callbacks is
    -----------------
 
    procedure New_Comment
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
-      SID : constant Session.Id := Status.Session (Request);
+      pragma Unreferenced (Request);
    begin
-      if Session.Exist (SID, "FID") then
+      if Context.Exist ("FID") then
          Templates.Insert
            (Translations,
-            Database.Get_Categories (Session.Get (SID, "FID")));
+            Database.Get_Categories (Context.Get_Value ("FID")));
       end if;
 
-      if Session.Exist (SID, "TID") then
+      if Context.Exist ("TID") then
          Templates.Insert
            (Translations,
             Templates.Assoc
-              (Template_Defs.Block_New_Comment.Current_Tid,
-               String'(Session.Get (SID, "TID"))));
+              (Template_Defs.Block_New_Comment.Current_TID,
+               Context.Get_Value ("TID")));
       end if;
    end New_Comment;
 
@@ -147,20 +145,21 @@ package body V2P.Block_Callbacks is
 
    procedure New_Photo
      (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Context, Translations);
    begin
       null;
    end New_Photo;
+
    --------------
    -- New_Post --
    --------------
 
    procedure New_Post
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Context, Translations);
@@ -173,8 +172,8 @@ package body V2P.Block_Callbacks is
    -----------------
 
    procedure Quick_Login
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Context, Translations);
@@ -187,8 +186,8 @@ package body V2P.Block_Callbacks is
    ----------------------
 
    procedure User_Thread_List
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
@@ -205,7 +204,7 @@ package body V2P.Block_Callbacks is
 
    procedure User_Tmp_Photo_Select
      (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
@@ -216,4 +215,4 @@ package body V2P.Block_Callbacks is
          Database.Get_User_Tmp_Photo (Uid => Session.Get (SID, "LOGIN")));
    end User_Tmp_Photo_Select;
 
-end V2P.Block_Callbacks;
+end V2P.ECWF_Callbacks;
