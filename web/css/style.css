@@ -39,7 +39,7 @@ body {
     padding:3px;
 }
 
-#top_links #show_login a {
+#top_links a#show_login {
     text-decoration:none;
     color:#F5F5F5;
 }
@@ -342,7 +342,7 @@ span#show_login a
     margin-left:1em;
 }
 
-body.main p#block_login_close, body.main span#show_login {
+body.main a#block_login_close, body.main a#show_login {
     display:none;
 
 }
