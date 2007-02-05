@@ -32,3 +32,4 @@
 @@SET@@ BABEL_SELECT_PHOTO="Sélectionner une photo"
 @@SET@@ BABEL_UNKNOWN_ERROR="Une erreur s'est produite"
 @@SET@@ BABEL_NO_PHOTO_SELECTED=""
+@@SET@@ BABEL_ERROR_DUPLICATED="Commentaire déjà envoyé"

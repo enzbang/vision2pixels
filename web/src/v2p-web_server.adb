@@ -224,14 +224,6 @@ package body V2P.Web_Server is
             Templates.Assoc ("LOGIN", String'(Session.Get (SID, "LOGIN"))));
       end if;
 
-      if Session.Get (SID, "FID") /= "" then
-         --  ??? needs to be put inside the right ECVW callback
-         Templates.Insert
-           (Translations,
-            Templates.Assoc
-              ("Current_FID", String'(Session.Get (SID, "FID"))));
-      end if;
-
       --  Adds some URL
 
       Templates.Insert
@@ -297,15 +289,11 @@ package body V2P.Web_Server is
       P           : constant Parameters.List := Status.Parameters (Request);
       TID         : constant String :=
                       Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.TID);
---        FID         : constant String :=
---                     Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.FID);
-      FID         : constant String := Context.Get_Value ("FID");
       Login       : constant String := Session.Get (SID, "LOGIN");
       Count_Visit : Boolean := True;
    begin
       --  Set thread Id into the session
       Context.Set_Value ("TID", TID);
-      Context.Set_Value ("FID", FID);
 
       if TID = "" then
          --  Page does not exit
@@ -334,6 +322,7 @@ package body V2P.Web_Server is
       end if;
 
       --  Insert navigation links (previous and next post)
+      --  ??? We should use the context here
 
       Templates.Insert
         (Translations, Database.Get_Thread_Navigation_Links
@@ -361,7 +350,7 @@ package body V2P.Web_Server is
                Parameters.Get (P, Template_Defs.Forum_Threads.HTTP.FID);
       From : Positive := 1;
    begin
-      --  Set forum Id into the session
+      --  Set forum Id into the context
       Context.Set_Value ("FID", FID);
 
       if Context.Exist ("TID") then
@@ -444,6 +433,8 @@ package body V2P.Web_Server is
       SID : constant Session.Id := Status.Session (Request);
    begin
       Session.Delete (SID);
+
+      --  Override LOGIN previously set in Default_Callback ?
 
       Templates.Insert
         (Translations,
@@ -587,7 +578,6 @@ package body V2P.Web_Server is
       Context      : access Services.ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-   pragma Unreferenced (Context);
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String := Session.Get (SID, "LOGIN");
@@ -598,13 +588,23 @@ package body V2P.Web_Server is
       Pid          : constant String := Parameters.Get (P, "PID");
       Tid          : constant String := Parameters.Get (P, "TID");
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_Html (Comment);
+      Last_Comment : constant String := Context.Get_Value ("LAST_COMMENT");
    begin
+
       if Login = "" and then Anonymous = "" then
          Templates.Insert
            (Translations,
             Templates.Assoc
               (Template_Defs.R_Block_Comment_Form_Enter.ERROR,
                "ERROR_NO_LOGIN"));
+      elsif Last_Comment = Comment then
+         --   This is a duplicated post
+
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.R_Block_Comment_Form_Enter.ERROR_DUPLICATED,
+               "ERROR"));
       elsif Tid /= "" and not Is_Valid_Comment (Comment_Wiki) then
          Templates.Insert
            (Translations,
@@ -617,6 +617,11 @@ package body V2P.Web_Server is
             Cid : constant String := Database.Insert_Comment
               (Login, Anonymous, Tid, Name, Comment_Wiki, Pid);
          begin
+
+            --  Adds the new comment in context to prevent duplicated post
+
+            Context.Set_Value ("LAST_COMMENT", Comment);
+
             Templates.Insert (Translations, Database.Get_Comment (Cid));
             Templates.Insert
               (Translations,

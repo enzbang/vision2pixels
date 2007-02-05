@@ -1,8 +1,16 @@
 @@INCLUDE@@ babel.thtml
 @@--
 <?xml version="1.0" encoding="utf-8"?>
-@@IF@@ @_ERROR_@ = ""
 <response>
+@@IF@@ @_ERROR_@ /= ""
+  <replace id="new_comment_error">
+    <![CDATA[@_BABEL_UNKNOWN_ERROR_@]]>
+  </replace>
+@@ELSIF@@ @_ERROR_DUPLICATED_@ /= ""
+  <replace id="new_comment_error">
+    <![CDATA[@_BABEL_ERROR_DUPLICATED_@]]>
+  </replace>
+@@ELSE@@
   @@IF@@ @_PARENT_ID_@ /= ""
   <insert_after id="@_PARENT_ID_@">
     <![CDATA[
@@ -29,5 +37,5 @@
           value="comment_@_COMMENT_ID_@" />
     ]]>
   </replace>
-</response>
 @@END_IF@@
+</response>
