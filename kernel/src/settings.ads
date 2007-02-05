@@ -48,13 +48,13 @@ package Settings is
    function Limit_Image_Size return Boolean;
    --  If set, check image size on creation
 
-   function Image_Maximum_Width return Integer;
+   function Image_Maximum_Width return Natural;
    --  Maximum width dimension of an uploaded image
 
-   function Image_Maximum_Height return Integer;
+   function Image_Maximum_Height return Natural;
    --  Maximum height dimension of an uploaded image
 
-   function Image_Maximum_Size return Integer;
+   function Image_Maximum_Size return Natural;
    --  Limit, in bytes, of an uploaded image size
 
    function Thumbnail_Maximum_Width return Integer;

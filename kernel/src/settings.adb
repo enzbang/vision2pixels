@@ -123,7 +123,7 @@ package body Settings is
    -- Image_Maximum_Height --
    --------------------------
 
-   function Image_Maximum_Height return Integer is
+   function Image_Maximum_Height return Natural is
    begin
       return Conf.Get_Value (Image_Maximum_Height);
    end Image_Maximum_Height;
@@ -132,7 +132,7 @@ package body Settings is
    -- Image_Maximum_Size --
    ------------------------
 
-   function Image_Maximum_Size return Integer is
+   function Image_Maximum_Size return Natural is
    begin
       return Conf.Get_Value (Image_Maximum_Size);
    end Image_Maximum_Size;
@@ -141,7 +141,7 @@ package body Settings is
    -- Image_Maximum_Width --
    -------------------------
 
-   function Image_Maximum_Width return Integer is
+   function Image_Maximum_Width return Natural is
    begin
       return Conf.Get_Value (Image_Maximum_Width);
    end Image_Maximum_Width;

@@ -20,14 +20,12 @@
 ------------------------------------------------------------------------------
 
 with Ada.Calendar;
-with Ada.Directories;
 with Ada.Text_IO;
 
 with GNAT.Calendar.Time_IO;
 with GNAT.OS_Lib;
 
 with G2F.Image_IO;
-with G2F.IO;
 with Image.Magick;
 with Settings;
 
@@ -36,8 +34,28 @@ package body Image.Data is
    use Ada.Text_IO;
    use Ada.Directories;
    use G2F;
-   use G2F.IO;
    use G2F.Image_IO;
+   use G2F.IO;
+
+   ---------------------------
+   -- Default_Max_Dimension --
+   ---------------------------
+
+   function Default_Max_Dimension return Image_Dimension is
+   begin
+      return (Image_Size_T (Settings.Image_Maximum_Width),
+              Image_Size_T (Settings.Image_Maximum_Height),
+              File_Size (Settings.Image_Maximum_Size));
+   end Default_Max_Dimension;
+
+   function Dimension (Img : in Image_Data) return Image_Dimension is
+   begin
+      if Img.Init_Status /= Image_Created then
+         raise Image_Error
+           with "Get_Height : Error image not created";
+      end if;
+      return Img.Dimension;
+   end Dimension;
 
    --------------
    -- Filename --
@@ -45,7 +63,7 @@ package body Image.Data is
 
    function Filename (Img : in Image_Data) return String is
    begin
-      return Get_Filename (Img.Image_Ptr);
+      return G2F.IO.Get_Filename (Img.Image_Ptr);
    end Filename;
 
    ----------------
@@ -58,93 +76,81 @@ package body Image.Data is
       Destroy_Image_Info (Img.Info_Ptr);
    end Finalize;
 
-   ------------
-   -- Height --
-   ------------
-
-   function Height (Img : in Image_Data) return Integer is
-   begin
-      if Img.Init_Status /= Image_Created then
-         raise Image_Error
-           with "Get_Height : Error image not created";
-      end if;
-      return Img.Height;
-   end Height;
-
    ----------
    -- Init --
    ----------
 
    procedure Init
-     (Img      : in out Image_Data;
-      Filename : in     String;
-      Category : in     String)
+     (Img                    : in out Image_Data;
+      Original_Filename      : in String;
+      Out_Filename           : in String := "";
+      Out_Thumbnail_Filename : in String := "";
+      Out_Max_Dimension      : in Image_Dimension := Null_Dimension)
    is
-      DS              : Character renames GNAT.OS_Lib.Directory_Separator;
-      Now             : constant Calendar.Time := Calendar.Clock;
-      Year            : constant String :=
-                          GNAT.Calendar.Time_IO.Image (Now, "%Y");
-      Filename_Prefix : constant String :=
-                          GNAT.Calendar.Time_IO.Image (Now, "%Y%m%d%H%M-");
-      S_Name          : constant String := Simple_Name (Filename);
-      File_Pathname   : constant String :=
-                          Year & DS & Category & DS & Filename_Prefix & S_Name;
-      Thumb_Name      : constant String :=
-                          Settings.Get_Thumbs_Path & DS & File_Pathname;
-      Image_Name      : constant String :=
-                          Settings.Get_Images_Path & DS & File_Pathname;
-      Thumb_Size      : constant G2F.IO.Image_Size :=
-                          (Image_Size_T (Settings.Thumbnail_Maximum_Width),
-                           Image_Size_T (Settings.Thumbnail_Maximum_Height));
       Thumb           : Image_Ptr;
       Thumb_Info      : Image_Info_Ptr;
+      Thumb_Size      : constant G2F.IO.Image_Size :=
+          (Image_Size_T (Settings.Thumbnail_Maximum_Width),
+           Image_Size_T (Settings.Thumbnail_Maximum_Height));
    begin
-      if not Exists (Containing_Directory (Thumb_Name)) then
-         Create_Path (Containing_Directory (Thumb_Name));
-      end if;
-
-      if not Exists (Containing_Directory (Image_Name)) then
-         Create_Path (Containing_Directory (Image_Name));
-      end if;
-
       --  Read image info
 
-      Set_Filename (Img.Info_Ptr, Filename);
-      Img.Category := To_Unbounded_String (Category);
+      G2F.IO.Set_Filename (Img.Info_Ptr, Original_Filename);
       Img.Image_Ptr := Read_Image (Img.Info_Ptr);
 
-      if Settings.Limit_Image_Size then
+      if Settings.Limit_Image_Size
+        or else Out_Max_Dimension /= Null_Dimension
+      then
          declare
-            Dimension : constant Image_Size := Get_Image_Size (Img.Image_Ptr);
+            Dim : constant Image_Size := Get_Image_Size (Img.Image_Ptr);
          begin
-            Img.Width  := Integer (Dimension.X);
-            Img.Height := Integer (Dimension.Y);
-            Img.Size   := Integer (Size (Filename));
+            Img.Dimension := (Dim.X, Dim.Y, Size (Original_Filename));
 
-            if Img.Width > Settings.Image_Maximum_Width
-              or else Img.Height > Settings.Image_Maximum_Height
+            if Natural (Img.Dimension.Width) >  Settings.Image_Maximum_Width
+              or else
+                Natural (Img.Dimension.Height) > Settings.Image_Maximum_Height
             then
                Img.Init_Status := Image.Data.Exceed_Max_Image_Dimension;
                return;
             end if;
 
-            if Img.Size > Settings.Image_Maximum_Size then
+            if Natural (Img.Dimension.Size) > Settings.Image_Maximum_Size then
                Img.Init_Status := Image.Data.Exceed_Max_Size;
                return;
             end if;
          end;
       end if;
 
-      --  Save Image in Images_Path/Category
 
-      Set_Filename (Img.Image_Ptr, Image_Name);
-      Write_Image (Img.Info_Ptr, Img.Image_Ptr);
+      --  If Out_Filename is null, keep the current image
+
+      if Out_Filename /= "" then
+         --  Save Image in Images_Path/Category
+
+         Set_Filename (Img.Image_Ptr, Out_Filename);
+         Write_Image (Img.Info_Ptr, Img.Image_Ptr);
+      end if;
 
       --  Create thumbnail
 
       Thumb_Info := Clone_Image_Info (Img.Info_Ptr);
       Thumb := Read_Image (Thumb_Info);
-      Set_Filename (Thumb, Thumb_Name);
+
+      if Out_Thumbnail_Filename = "" then
+         --  Create thumbnail with original_filename name in thumb directory
+         declare
+            Thumbnail_Filename : constant String
+              := Settings.Get_Thumbs_Path
+                & GNAT.OS_Lib.Directory_Separator
+                & Simple_Name (Original_Filename);
+         begin
+            Set_Filename (Thumb, Thumbnail_Filename);
+         end;
+      else
+         Set_Filename (Thumb, Out_Thumbnail_Filename);
+      end if;
+
+
       Thumb := Magick.Thumbnail (Thumb, Thumb_Size);
       Write_Image (Thumb_Info, Thumb);
 
@@ -156,6 +162,41 @@ package body Image.Data is
    exception
       when G2F.Image_IO.Read_Image_Error =>
          Put_Line ("Read image error - Thumbnail has not been created");
+
+   end Init;
+
+   ----------
+   -- Init --
+   ----------
+
+   procedure Init
+     (Img      : in out Image_Data;
+      Filename : in     String)
+   is
+      DS              : Character renames GNAT.OS_Lib.Directory_Separator;
+      Now             : constant Calendar.Time := Calendar.Clock;
+      Year            : constant String :=
+                          GNAT.Calendar.Time_IO.Image (Now, "%Y");
+      Filename_Prefix : constant String :=
+                          GNAT.Calendar.Time_IO.Image (Now, "%Y%m%d%H%M-");
+      S_Name          : constant String := Simple_Name (Filename);
+      File_Pathname   : constant String :=
+                          Year & DS & Filename_Prefix & S_Name;
+      Thumb_Name      : constant String :=
+                          Settings.Get_Thumbs_Path & DS & File_Pathname;
+      Image_Name      : constant String :=
+                          Settings.Get_Images_Path & DS & File_Pathname;
+   begin
+      if not Exists (Containing_Directory (Thumb_Name)) then
+         Create_Path (Containing_Directory (Thumb_Name));
+      end if;
+
+      if not Exists (Containing_Directory (Image_Name)) then
+         Create_Path (Containing_Directory (Image_Name));
+      end if;
+
+      Init (Img, Filename, Image_Name, Thumb_Name);
+
    end Init;
 
    -----------------
@@ -175,33 +216,6 @@ package body Image.Data is
    begin
       Img.Info_Ptr := Clone_Image_Info (null);
    end Initialize;
-
-   ----------
-   -- Size --
-   ----------
-
-   function Size (Img : in Image_Data) return Integer is
-   begin
-      if Img.Init_Status /= Image_Created then
-         raise Image_Error
-           with "Get_Size : Error image not created";
-      end if;
-      return Img.Size;
-   end Size;
-
-   -----------
-   -- Width --
-   -----------
-
-   function Width (Img : in Image_Data) return Integer is
-   begin
-      if Img.Init_Status /= Image_Created then
-         raise Image_Error
-           with "Get_Width : Error image not created";
-      end if;
-      return Img.Width;
-   end Width;
-
 
 begin
    if not Exists (Settings.Get_Images_Path) then
