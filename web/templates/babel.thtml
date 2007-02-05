@@ -31,3 +31,4 @@
 @@SET@@ BABEL_ADD_NEW_PHOTO="Ajouter une nouvelle photo"
 @@SET@@ BABEL_SELECT_PHOTO="Sélectionner une photo"
 @@SET@@ BABEL_UNKNOWN_ERROR="Une erreur s'est produite"
+@@SET@@ BABEL_NO_PHOTO_SELECTED=""

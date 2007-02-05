@@ -3,18 +3,14 @@
 @@--  The select background-image is updated on selection change
 @@--  When posting a new photo, an option is added and the photo is selected
 @@INCLUDE@@ babel.thtml
-<p>@_BABEL_SELECT_PHOTO_@ :</p>
 
-<select id="block_user_tmp_photo_select" name="PID" class="thumbselect"
+<p>@_BABEL_SELECT_PHOTO_@ :</p>
+<select id="block_user_tmp_photo_select" name="PID" class="thumbselect">
+<option value="..." class="thumboption">@_BABEL_NO_PHOTO_SELECTED_@</option>
   @@TABLE@@
   @@IF@@ @_TABLE_LINE_@ = 1
-  style="background-image:url(/thumbs/@_TMP_FILENAME_@);"
   @@END_IF@@
-  >
   <option class="thumboption"
-  @@IF@@ @_TABLE_LINE_@ = 1
-    selected="selected"
-  @@END_IF@@
     value="@_TMP_ID_@"
     style="background-image:url(/thumbs/@_TMP_FILENAME_@);"
   ></option>
@@ -22,3 +18,4 @@
  </select>
 
  @@INCLUDE@@ ../we_js/aws_action_js.tjs (onchange, block_user_tmp_photo_select, updateThisThumbPreview)
+
