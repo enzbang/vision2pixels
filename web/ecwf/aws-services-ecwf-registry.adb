@@ -36,8 +36,8 @@ package body AWS.Services.ECWF.Registry is
 
    use Ada;
 
-   Internal_Context_Var : constant String := "=&= CONTEXT =&=";
-   Context_Var          : constant String := "CONTEXT";
+   Internal_Context_Var : constant String := "=&= CTX_ECWF =&=";
+   Context_Var          : constant String := "CTX_ECWF";
 
    type Web_Object is record
       Content_Type : Unbounded_String;

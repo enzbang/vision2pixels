@@ -20,6 +20,8 @@ fc_@_Current_FID_@
 @@END_IF@@
 "> @@-- body is closed in v2p_end.thtml
 
+  <div id="CTX_ECWF" display="none">@_CTX_ECWF_@</div>
+
   <div id="doc2"
        @@IF@@ @_$3_@ /= ""
        class="@_$3_@"
@@ -31,7 +33,6 @@ fc_@_Current_FID_@
       </p>
       <h1>@_BABEL_V2P_WEBSITE_NAME_@</h1>
       <div id="status_bar"></div>
-
 
     <div class="forums">
       @_LAZY_FORUM_LIST_@

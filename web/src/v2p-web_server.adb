@@ -133,12 +133,38 @@ package body V2P.Web_Server is
       Translations : in out Templates.Translate_Set);
    --  Display v2p main page
 
+   procedure Context_Filter (Context : access Services.ECWF.Context.Object);
+   --  Update the context filter
+
    --------------------------
    -- Other local routines --
    --------------------------
 
    function Is_Valid_Comment (Comment : in String) return Boolean;
    --  Check if the comment is valid
+
+   --------------------
+   -- Context_Filter --
+   --------------------
+
+   procedure Context_Filter (Context : access Services.ECWF.Context.Object) is
+   begin
+      if not Context.Exist (Template_Defs.Global.FILTER) then
+         Context.Set_Value
+           (Template_Defs.Global.FILTER,
+            Database.Filter_Mode'Image (Database.All_Messages));
+
+         if Settings.Descending_Order then
+            Context.Set_Value
+              (Template_Defs.Global.ORDER_DIR,
+               Database.Order_Direction'Image (Database.DESC));
+         else
+            Context.Set_Value
+              (Template_Defs.Global.ORDER_DIR,
+               Database.Order_Direction'Image (Database.ASC));
+         end if;
+      end if;
+   end Context_Filter;
 
    ------------------
    -- CSS_Callback --
@@ -178,6 +204,7 @@ package body V2P.Web_Server is
       end if;
 
       if Session.Get (SID, "FID") /= "" then
+         --  ??? needs to be put inside the right ECVW callback
          Templates.Insert
            (Translations,
             Templates.Assoc
@@ -245,44 +272,30 @@ package body V2P.Web_Server is
       Context      : access Services.ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
       SID         : constant Session.Id := Status.Session (Request);
       P           : constant Parameters.List := Status.Parameters (Request);
       TID         : constant String :=
                       Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.TID);
-      FID         : constant String :=
-                      Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.FID);
-      Logged_User : constant String := Session.Get (SID, "LOGIN");
+--        FID         : constant String :=
+--                     Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.FID);
+      FID         : constant String := Context.Get_Value ("FID");
+      Login       : constant String := Session.Get (SID, "LOGIN");
       Count_Visit : Boolean := True;
    begin
       --  Set thread Id into the session
-      Session.Set (SID, "TID", TID);
-      Session.Set (SID, "FID", FID);
+      Context.Set_Value ("TID", TID);
+      Context.Set_Value ("FID", FID);
 
-      if not Session.Exist (SID, Template_Defs.Global.FILTER) then
-         Session.Set
-           (SID, Template_Defs.Global.FILTER,
-            Database.Filter_Mode'Image (Database.All_Messages));
-
-         if Settings.Descending_Order then
-            Session.Set
-              (SID, Template_Defs.Global.ORDER_DIR,
-               Database.Order_Direction'Image (Database.DESC));
-         else
-            Session.Set
-              (SID, Template_Defs.Global.ORDER_DIR,
-               Database.Order_Direction'Image (Database.ASC));
-         end if;
-      end if;
+      Context_Filter (Context);
 
       if not Settings.Anonymous_Visit_Counter then
          --  Do not count anonymous click
-         if Logged_User = "" then
+         if Login = "" then
             Count_Visit := False;
 
          else
             if Settings.Ignore_Author_Click
-              and then Database.Is_Author (Logged_User, TID)
+              and then Database.Is_Author (Login, TID)
             then
                --  Do not count author click
                Count_Visit := False;
@@ -298,12 +311,12 @@ package body V2P.Web_Server is
 
       Templates.Insert
         (Translations, Database.Get_Thread_Navigation_Links
-           (Fid => Session.Get (SID, "FID"),
+           (Fid => Context.Get_Value ("FID"),
             Tid => TID,
             Filter => Database.Filter_Mode'Value
-              (Session.Get (SID, Template_Defs.Global.FILTER)),
+              (Context.Get_Value (Template_Defs.Global.FILTER)),
             Order_Dir => Database.Order_Direction'Value
-              (Session.Get (SID, Template_Defs.Global.ORDER_DIR))));
+              (Context.Get_Value (Template_Defs.Global.ORDER_DIR))));
 
       Templates.Insert (Translations, Database.Get_Entry (TID));
    end Forum_Entry_Callback;
@@ -317,17 +330,16 @@ package body V2P.Web_Server is
       Context      : access Services.ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
-      SID  : constant Session.Id := Status.Session (Request);
       P    : constant Parameters.List := Status.Parameters (Request);
       FID  : constant String :=
                Parameters.Get (P, Template_Defs.Forum_Threads.HTTP.FID);
       From : Positive := 1;
    begin
       --  Set forum Id into the session
-      Session.Set (SID, "FID", FID);
-      if Session.Exist (SID, "TID") then
-         Session.Remove (SID, "TID");
+      Context.Set_Value ("FID", FID);
+
+      if Context.Exist ("TID") then
+         Context.Remove ("TID");
       end if;
 
       if Parameters.Exist
@@ -337,28 +349,14 @@ package body V2P.Web_Server is
            (Parameters.Get (P, Template_Defs.Block_Forum_Navigate.HTTP.FROM));
       end if;
 
-      if not Session.Exist (SID, Template_Defs.Global.FILTER) then
-         Session.Set
-           (SID, Template_Defs.Global.FILTER,
-            Database.Filter_Mode'Image (Database.All_Messages));
-
-         if Settings.Descending_Order then
-            Session.Set
-              (SID, Template_Defs.Global.ORDER_DIR,
-               Database.Order_Direction'Image (Database.DESC));
-         else
-            Session.Set
-              (SID, Template_Defs.Global.ORDER_DIR,
-               Database.Order_Direction'Image (Database.ASC));
-         end if;
-      end if;
+      Context_Filter (Context);
 
       Templates.Insert
         (Translations,
          Database.Get_Threads
            (FID, From => From,
             Order_Dir => Database.Order_Direction'Value
-              (Session.Get (SID, Template_Defs.Global.ORDER_DIR))));
+              (Context.Get_Value (Template_Defs.Global.ORDER_DIR))));
    end Forum_Threads_Callback;
 
    ----------------------
@@ -437,33 +435,16 @@ package body V2P.Web_Server is
       Context      : access Services.ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context, Translations);
-      SID : constant Session.Id := Status.Session (Request);
+      pragma Unreferenced (Request, Translations);
    begin
-      if Session.Exist (SID, "TID") then
-         Session.Remove (SID, "TID");
+      if Context.Exist ("TID") then
+         Context.Remove ("TID");
       end if;
-      if Session.Exist (SID, "FID") then
-         Session.Remove (SID, "FID");
+      if Context.Exist ("FID") then
+         Context.Remove ("FID");
       end if;
 
-      --  Set the default filter
-
-      if not Session.Exist (SID, Template_Defs.Global.FILTER) then
-         Session.Set
-           (SID, Template_Defs.Global.FILTER,
-            Database.Filter_Mode'Image (Database.All_Messages));
-
-         if Settings.Descending_Order then
-            Session.Set
-              (SID, Template_Defs.Global.ORDER_DIR,
-               Database.Order_Direction'Image (Database.DESC));
-         else
-            Session.Set
-              (SID, Template_Defs.Global.ORDER_DIR,
-               Database.Order_Direction'Image (Database.ASC));
-         end if;
-      end if;
+      Context_Filter (Context);
    end Main_Page_Callback;
 
    --------------------------
@@ -478,17 +459,21 @@ package body V2P.Web_Server is
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String := Session.Get (SID, "LOGIN");
-      TID          : constant String := Parameters.Get (P, "TID");
-      FID          : constant String := Parameters.Get (P, "FID");
+--        TID          : constant String := Parameters.Get (P, "TID");
+--        FID          : constant String := Parameters.Get (P, "FID");
       Anonymous    : constant String := Parameters.Get (P, "ANONYMOUS_USER");
       Name         : constant String := Parameters.Get (P, "NAME");
       Comment      : constant String := Parameters.Get (P, "COMMENT");
       Filename     : constant String := Parameters.Get (P, "FILENAME");
       CID          : constant String := Parameters.Get (P, "CATEGORY");
       Forum        : constant String := Parameters.Get (P, "FORUM");
-      Context      : constant String := Parameters.Get (P, "CONTEXT");
+      Context      : constant String := Parameters.Get (P, "CTX_ECWF");
       Context_Id   : constant Services.ECWF.Context.Id :=
                        Services.ECWF.Context.Value (Context);
+      Ctx          : constant Services.ECWF.Context.Object :=
+                       Services.ECWF.Context.Get (Context_Id);
+      TID          : constant String := Ctx.Get_Value ("TID");
+      FID          : constant String := Ctx.Get_Value ("FID");
       pragma Unreferenced (Context_Id);
       Images_Path  : String renames Settings.Get_Images_Path;
 
@@ -570,14 +555,13 @@ package body V2P.Web_Server is
       Context      : access Services.ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context, Translations);
-      SID    : constant Session.Id := Status.Session (Request);
+      pragma Unreferenced (Translations);
       P      : constant Parameters.List := Status.Parameters (Request);
       Filter : constant String := Parameters.Get (P, "sel_filter_forum");
    begin
       --  Keep the sorting scheme into the session
       --  ?? we need to add this into the user's preferences
-      Session.Set (SID, "FILTER", Filter);
+      Context.Set_Value ("FILTER", Filter);
    end Onchange_Filter_Forum;
 
    ----------------------------------
