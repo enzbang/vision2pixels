@@ -20,6 +20,7 @@
              type="hidden" value="@_Category_Id_@"/>
       <input name="TID" id="TID" type="hidden" value="@_Current_TID_@" />
       <input name="FID" id="FID" type="hidden" value="@_Current_FID_@" />
+      <input name="CTX_ECWF" id="CTX_ECWF" type="hidden" value="@_CTX_ECWF_@"/>
 
     </p>
     <!--     <p id="title_name_input">
@@ -34,6 +35,7 @@
     <p>
       <input name="ENTER" id="comment_form_enter" type="submit" value="OK"/>
     </p>
+    <p id="new_comment_error"></p>
     @@--    <p><input name="FILENAME" type="file"/>
   </fieldset>
 </form>
