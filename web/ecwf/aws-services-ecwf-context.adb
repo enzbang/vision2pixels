@@ -46,6 +46,11 @@ package body AWS.Services.ECWF.Context is
       return Session.Exist (Session.Id (CID));
    end Exist;
 
+   function Exist (Context : in Object; Name : in String) return Boolean is
+   begin
+      return Session.Exist (Context.SID, Name);
+   end Exist;
+
    ---------
    -- Get --
    ---------
@@ -72,6 +77,15 @@ package body AWS.Services.ECWF.Context is
    begin
       return Session.Image (Session.Id (CID));
    end Image;
+
+   ------------
+   -- Remove --
+   ------------
+
+   procedure Remove (Context : in Object; Name : in String) is
+   begin
+      Session.Remove (Context.SID, Name);
+   end Remove;
 
    ---------------
    -- Set_Value --

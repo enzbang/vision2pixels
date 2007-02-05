@@ -13,7 +13,7 @@
     <div class="yui-u first">
       @@IF@@ @_PREVIOUS_@ /= ""
       <p class="prev_link">
-          <a href="@_FORUM_ENTRY_URL_@?TID=@_PREVIOUS_@&amp;FID=@_Current_FID_@">
+          <a href="@_FORUM_ENTRY_URL_@?TID=@_PREVIOUS_@&FID=@_Current_FID_@&CTX_ECWF=@_CTX_ECWF_@">
             <img alt="previous" src="@_THUMB_SOURCE_PREFIX_@/@_PREVIOUS_THUMB_@" />
           </a>
       </p>
@@ -27,7 +27,7 @@
     <div class="yui-u">
       @@IF@@ @_NEXT_@ /= ""
       <p class="next_link">
-        <a href="@_FORUM_ENTRY_URL_@?TID=@_NEXT_@&amp;FID=@_Current_FID_@">
+        <a href="@_FORUM_ENTRY_URL_@?TID=@_NEXT_@&FID=@_Current_FID_@&CTX_ECWF=@_CTX_ECWF_@">
           <img alt="next" src="@_THUMB_SOURCE_PREFIX_@/@_NEXT_THUMB_@" />
         </a>
       </p>

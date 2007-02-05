@@ -56,6 +56,12 @@ package AWS.Services.ECWF.Context is
    function Get_Value (Context : in Object; Name : in String) return String;
    --  Get the value for the key Name
 
+   function Exist (Context : in Object; Name : in String) return Boolean;
+   --  Returns true if the key Name exist in this context
+
+   procedure Remove (Context : in Object; Name : in String);
+   --  Remove the context for key Name
+
 private
 
    use AWS;

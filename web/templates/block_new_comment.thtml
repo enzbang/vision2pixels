@@ -3,33 +3,32 @@
 <form enctype="multipart/form-data" id="comment_form"
       action="/comment_form_enter" method="post">
   <fieldset>
-    <legend>
-      @_BABEL_NEW_COMMENT_@
-    </legend>
+    <legend>@_BABEL_NEW_COMMENT_@</legend>
     @@-- Is user logged
-    <div id="comment_login"><p>
+    <div id="comment_login">
+      <p>
         @@IF@@ @_LOGIN_@ = ""
-        <label for="anonymous_user">@_BABEL_YOUR_NAME_@</label>
-        <input name="ANONYMOUS_USER" id="anonymous_user" type="text"/>
+          <label for="anonymous_user">@_BABEL_YOUR_NAME_@</label>
+          <input name="ANONYMOUS_USER" id="anonymous_user" type="text"/>
         @@END_IF@@
-    </p></div>
+      </p>
+    </div>
     @@-- Is user in a specific forum
     <p>
-      <input name="FORUM" id="sel_forum_list"
-             type="hidden" value="@_Current_FID_@"/>
-      <input name="CATEGORY" id="sel_category"
-             type="hidden" value="@_Category_Id_@"/>
-      <input name="TID" id="TID" type="hidden" value="@_Current_TID_@" />
-      <input name="FID" id="FID" type="hidden" value="@_Current_FID_@" />
+      <input name="FORUM" id="sel_forum_list" type="hidden" value="@_Current_FID_@"/>
+      <input name="CATEGORY" id="sel_category" type="hidden" value="@_Category_Id_@"/>
+      <input name="TID" id="TID" type="hidden" value="@_Current_TID_@"/>
+      <input name="FID" id="FID" type="hidden" value="@_Current_FID_@"/>
+      <input name="CTX_ECWF" id="CTX_ECWF" type="hidden" value="@_CTX_ECWF_@"/>
     </p>
-    <!--     <p id="title_name_input">
-             <input name="NAME" id="title_input" type="entry"
-                    value="@_NAME_@"/>
-      </p> -->
+    <!--
+      <p id="title_name_input">
+        <input name="NAME" id="title_input" type="entry" value="@_NAME_@"/>
+      </p>
+    -->
     <p>
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
-      <textarea name="COMMENT" rows="3" cols="40"
-                id="comment_input"></textarea>
+      <textarea name="COMMENT" rows="3" cols="40" id="comment_input"></textarea>
     </p>
     <p><input name="FILENAME" type="file"/><input name="ENTER" id="comment_form_enter" type="submit" value="OK"/></p>
   </fieldset>
