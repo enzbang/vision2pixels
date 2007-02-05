@@ -307,6 +307,11 @@ package body V2P.Web_Server is
       Context.Set_Value ("TID", TID);
       Context.Set_Value ("FID", FID);
 
+      if TID = "" then
+         --  Page does not exit
+         return;
+      end if;
+
       Context_Filter (Context);
 
       if not Settings.Anonymous_Visit_Counter then
@@ -656,17 +661,20 @@ package body V2P.Web_Server is
               (Template_Defs.R_Block_Post_Form_Enter.ERROR,
                "ERROR"));
          --  ??? Adds an error message
+         return;
       else
          declare
             Post_Id : constant String :=
               Database.Insert_Post (Login, CID, Name, Comment_Wiki, Pid);
          begin
-            Templates.Insert
-              (Translations,
-               Templates.Assoc
-                 (Template_Defs.R_Block_Post_Form_Enter.URL,
-                  Template_Defs.Forum_Entry.URL & "?FID=" & Forum
-                    & "&amp;TID=" & Post_Id));
+            if Post_Id /= "" then
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc
+                    (Template_Defs.R_Block_Post_Form_Enter.URL,
+                     Template_Defs.Forum_Entry.URL & "?FID=" & Forum
+                     & "&amp;TID=" & Post_Id));
+            end if;
          end;
       end if;
    end Onsubmit_Post_Form_Enter_Callback;
