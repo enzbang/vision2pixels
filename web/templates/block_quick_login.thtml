@@ -1,16 +1,16 @@
 @@INCLUDE@@ babel.thtml
 @@--
-<a href="/?CTX_ECWF=@_CTX_ECWF_@">
+<a href="/">
   <img src="/css/img/go-home.gif"
        alt="@_BABEL_V2P_SMALL_WEBSITE_NAME_@"
-       title="@_BABEL_V2P_SMALL_WEBSITE_NAME_@" />
+       title="@_BABEL_V2P_SMALL_WEBSITE_NAME_@"/>
 </a>
 <span >
   <a id="show_login" rel="login" href="#">
     @@IF@@ @_LOGIN_@ = ""
-    @_BABEL_NOT_LOGGED_@
+      @_BABEL_NOT_LOGGED_@
     @@ELSE@@
-    @_LOGIN_@
+      @_LOGIN_@
     @@END_IF@@
   </a>
 </span>

@@ -21,7 +21,7 @@ fc_@_Current_FID_@
 @@END_IF@@
 "> @@-- body is closed in v2p_end.thtml
 
-  <div id="CTX_ECWF" display="none">@_CTX_ECWF_@</div>
+  <div id="CTX_ECWF" style="display:none">@_CTX_ECWF_@</div>
 
   <div id="doc2"
     @@IF@@ @_$3_@ /= ""
