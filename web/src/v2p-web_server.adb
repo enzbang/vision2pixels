@@ -587,7 +587,7 @@ package body V2P.Web_Server is
       Comment      : constant String := Parameters.Get (P, "COMMENT");
       Pid          : constant String := Parameters.Get (P, "PID");
       Tid          : constant String := Parameters.Get (P, "TID");
-      Comment_Wiki : constant String := V2P.Wiki.Wiki_To_Html (Comment);
+      Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
       Last_Comment : constant String := Context.Get_Value ("LAST_COMMENT");
    begin
 
@@ -657,7 +657,7 @@ package body V2P.Web_Server is
       Forum        : constant String := Parameters.Get (P, "FORUM");
       Last_Name    : constant String := Context.Get_Value ("LAST_POST_NAME");
 
-      Comment_Wiki : constant String := V2P.Wiki.Wiki_To_Html (Comment);
+      Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
    begin
       if Login = "" and then CID = "" then
          Templates.Insert
