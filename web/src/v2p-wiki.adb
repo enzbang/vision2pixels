@@ -34,10 +34,15 @@ package body V2P.Wiki is
    --  Escape HTML special characters
 
    function Wiki_Format (S : in String) return String;
+   --  ???
+
+   -------------------
+   -- Extract_Links --
+   -------------------
 
    function Extract_Links (S : in String) return String is
-      Link_Extract : constant Pattern_Matcher
-        := Compile ("(http://([^ \s\[\]]+))",
+      Link_Extract : constant Pattern_Matcher :=
+                       Compile ("(http://([^ \s\[\]]+))",
                     Case_Insensitive);
       --  Gets all http:// links that do not contain white space
       --  or '[' and ']' characters
@@ -87,6 +92,7 @@ package body V2P.Wiki is
             Current := Matches (1).Last + 1;
          end if;
       end loop;
+
       Result := Result & S (Current .. S'Last);
       return To_String (Result);
    end Extract_Links;
@@ -125,23 +131,13 @@ package body V2P.Wiki is
       end Append_To_Result;
 
    begin
-
       for I in S'Range loop
          case S (I) is
-            when '&' =>
-               Append_To_Result ("&amp;", Last, I - 1);
-
-            when '>' =>
-               Append_To_Result ("&gt;", Last, I - 1);
-
-            when '<' =>
-               Append_To_Result ("&lt;", Last, I - 1);
-
-            when '"' =>
-               Append_To_Result ("&quot;", Last, I - 1);
-
-            when others =>
-               null;
+            when '&'    => Append_To_Result ("&amp;", Last, I - 1);
+            when '>'    => Append_To_Result ("&gt;", Last, I - 1);
+            when '<'    => Append_To_Result ("&lt;", Last, I - 1);
+            when '"'    => Append_To_Result ("&quot;", Last, I - 1);
+            when others => null;
          end case;
       end loop;
 
@@ -152,16 +148,19 @@ package body V2P.Wiki is
       return To_String (Result);
    end Web_Escape;
 
+   -----------------
+   -- Wiki_Format --
+   -----------------
+
    function Wiki_Format (S : in String) return String is
-      Extract : constant Pattern_Matcher
-        := Compile ("\[(\w+) (.+?)\]",
+      Extract : constant Pattern_Matcher := Compile ("\[(\w+) (.+?)\]",
                     Case_Insensitive);
       --  Gets all [keyword string]
       --  where keyword is em, blockquote or strong
 
-      Matches      : Match_Array (0 .. 2);
-      Current      : Natural := S'First;
-      Result       : Unbounded_String := To_Unbounded_String ("");
+      Matches : Match_Array (0 .. 2);
+      Current : Natural := S'First;
+      Result  : Unbounded_String := To_Unbounded_String ("");
    begin
       loop
          Match (Extract, S, Matches, Current);
@@ -170,8 +169,8 @@ package body V2P.Wiki is
          Result := Result & S (Current .. Matches (0).First - 1);
 
          declare
-            Keyword : constant String
-              := S (Matches (1).First .. Matches (1).Last);
+            Keyword : constant String :=
+                        S (Matches (1).First .. Matches (1).Last);
          begin
             if Keyword = "em" then
                Result := Result & "<em>"
@@ -187,13 +186,18 @@ package body V2P.Wiki is
 
          Current := Matches (0).Last + 1;
       end loop;
+
       Result := Result & S (Current .. S'Last);
       return To_String (Result);
    end Wiki_Format;
 
-   function Wiki_To_Html (S : in String) return String is
-      Without_Html  : constant String := Web_Escape (S);
-      With_Links    : constant String := Extract_Links (Without_Html);
+   ------------------
+   -- Wiki_To_HTML --
+   ------------------
+
+   function Wiki_To_HTML (S : in String) return String is
+      Without_Html : constant String := Web_Escape (S);
+      With_Links   : constant String := Extract_Links (Without_Html);
    begin
       return Wiki_Format (With_Links);
    end Wiki_To_Html;
