@@ -42,8 +42,7 @@ package body V2P.Wiki is
 
    function Extract_Links (S : in String) return String is
       Link_Extract : constant Pattern_Matcher :=
-                       Compile ("(http://([^ \s\[\]]+))",
-                    Case_Insensitive);
+                       Compile ("(http://([^ \s\[\]]+))", Case_Insensitive);
       --  Gets all http:// links that do not contain white space
       --  or '[' and ']' characters
       Matches      : Match_Array (0 .. 6);
@@ -57,7 +56,8 @@ package body V2P.Wiki is
          --  Search if it is a formatted link
          --  [[http://link.to.website][website name]]
 
-         if Matches (1).First > 2 and then Matches (1).Last < S'Last - 4
+         if Matches (1).First > 2
+           and then Matches (1).Last < S'Last - 4
            and then S (Matches (1).First - 2 .. Matches (1).First - 1) = "[["
            and then S (Matches (1).Last + 1 .. Matches (1).Last + 2) = "]["
          then
@@ -72,6 +72,7 @@ package body V2P.Wiki is
                   Current := K + 2;
                   exit;
                end if;
+
                if K = S'Last - 1 then
                   --  End of String and link malformatted. Skip it.
                   Result := Result & S (Current .. Matches (1).First - 3);
@@ -102,13 +103,12 @@ package body V2P.Wiki is
    ----------------
 
    function Web_Escape (S : in String) return String is
+
       Result : Unbounded_String;
       Last   : Integer := S'First;
 
       procedure Append_To_Result
-        (Str  : String;
-         From : Integer;
-         To   : Integer);
+        (Str : in String; From : in Integer; To : in Integer);
       --  Append S (From .. To) to Result if not empty concatenated with Str
       --  and update Last.
 
@@ -117,9 +117,7 @@ package body V2P.Wiki is
       ----------------------
 
       procedure Append_To_Result
-        (Str  : String;
-         From : Integer;
-         To   : Integer) is
+        (Str : in String; From : in Integer; To : in Integer) is
       begin
          if From <= To then
             Append (Result, S (From .. To) & Str);
@@ -153,8 +151,8 @@ package body V2P.Wiki is
    -----------------
 
    function Wiki_Format (S : in String) return String is
-      Extract : constant Pattern_Matcher := Compile ("\[(\w+) (.+?)\]",
-                    Case_Insensitive);
+      Extract : constant Pattern_Matcher :=
+                  Compile ("\[(\w+) (.+?)\]", Case_Insensitive);
       --  Gets all [keyword string]
       --  where keyword is em, blockquote or strong
 
@@ -200,6 +198,6 @@ package body V2P.Wiki is
       With_Links   : constant String := Extract_Links (Without_Html);
    begin
       return Wiki_Format (With_Links);
-   end Wiki_To_Html;
+   end Wiki_To_HTML;
 
 end V2P.Wiki;
