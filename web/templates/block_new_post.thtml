@@ -20,7 +20,7 @@
     </p>
     <p>
       <label for id="comment_input">@_BABEL_ENTER_COMMENT_@</label>
-     <textarea name="COMMENT" size="100" id="comment_input"/></textarea>
+      <textarea name="COMMENT" size="100" id="comment_input"/></textarea>
     </p>
 
     @_LAZY_USER_TMP_PHOTO_SELECT_@
@@ -29,7 +29,6 @@
       <a href="#" id="show_new_photo_post" rel="post_new_photo_form">@_BABEL_ADD_NEW_PHOTO_@</a>
     </p>
     <p>
-      <input name="CTX_ECWF" id="CTX_ECWF" type="hidden" value="@_CTX_ECWF_@"/>
       <input name="ENTER" id="post_form_enter" type="submit" value="OK"/>
     </p>
     <div id="post_error"></div>
