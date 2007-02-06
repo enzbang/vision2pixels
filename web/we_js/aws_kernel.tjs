@@ -16,6 +16,23 @@
    }
 
 @@-- --------------------------------
+@@-- Update the AWS Ehanced Contextual Framework
+
+   function update_ecwf ()
+   {
+      @@-- anchors
+
+      var elems = document.getElementsBySelector('a');
+
+      for (k=0; k<elems.length; k++) {
+	 var href = elems[k].getAttribute('href');
+         if (href != null)
+            if (href.indexOf("http",0) != 0 && href.indexOf("mailto:",0) != 0)
+               elems[k].setAttribute('onclick', 'aws_anchor_context(this);');
+      }
+   }
+
+@@-- --------------------------------
 @@-- Serialize a tag or all fields in a form
 
    function serialize (elm)
@@ -35,9 +52,9 @@
 
 
 @@-- --------------------------------
-@@-- Add Context parameter CTX_ECWF
+@@-- Add Context parameter CTX_ECWF for Ajax
 
-   function add_ecwf_context (pars)
+   function add_ajax_context (pars)
    {
        var context = document.getElementById('CTX_ECWF');
 
@@ -53,6 +70,21 @@
    }
 
 @@-- --------------------------------
+@@-- Add context parameter CTX_ECWF for anchors
+
+   function aws_anchor_context(a)
+   {
+       var context = document.getElementById('CTX_ECWF');
+
+       if (a.href.indexOf('?',0) == -1)
+          a.href = a.href + '?';
+       else
+          a.href = a.href + '&';
+
+       a.href = a.href + 'CTX_ECWF=' + $(context).innerHTML;
+   }
+
+@@-- --------------------------------
 @@-- Call url?pars and put result into placeholder
 
    function aws_replace (url, pars, placeholder, oncomplete)
@@ -64,7 +96,7 @@
          var O_ajax = new Ajax.Request
             (url,
              {method:     'get',
-              parameters: add_ecwf_context (pars),
+              parameters: add_ajax_context (pars),
               onFailure:  report_error,
               onComplete: function(req)
                             {rplaceholder.value = req.responseText;
@@ -74,7 +106,7 @@
             ({success: placeholder},
              url,
              {method:     'get',
-              parameters: add_ecwf_context (pars),
+              parameters: add_ajax_context (pars),
               onFailure:  report_error,
               onComplete: function(req)
                             {update_behaviour();
@@ -90,7 +122,7 @@
        var myAjax = new Ajax.Request
            (url,
             {method: 'get',
-             parameters: add_ecwf_context (pars),
+             parameters: add_ajax_context (pars),
              onFailure : report_error,
              onComplete : function(req)
                             {aws_xml_handler(req);
@@ -385,3 +417,19 @@
        }
    }
 
+
+@@-- --------------------------------
+@@-- onload event to update ECWF
+
+   function addLoadEvent (func)
+   {
+      var oldonload = window.onload;
+		
+      if (typeof window.onload != 'function') {
+         window.onload = func;
+      } else {
+         window.onload = function() { oldonload(); func(); }
+      }
+   }
+
+addLoadEvent (update_ecwf);
