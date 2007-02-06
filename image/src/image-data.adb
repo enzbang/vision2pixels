@@ -23,7 +23,6 @@ with Ada.Calendar;
 with Ada.Text_IO;
 
 with GNAT.Calendar.Time_IO;
-with GNAT.OS_Lib;
 
 with G2F.Image_IO;
 with Image.Magick;
@@ -121,7 +120,6 @@ package body Image.Data is
          end;
       end if;
 
-
       --  If Out_Filename is null, keep the current image
 
       if Out_Filename /= "" then
@@ -139,17 +137,14 @@ package body Image.Data is
       if Out_Thumbnail_Filename = "" then
          --  Create thumbnail with original_filename name in thumb directory
          declare
-            Thumbnail_Filename : constant String
-              := Settings.Get_Thumbs_Path
-                & GNAT.OS_Lib.Directory_Separator
-                & Simple_Name (Original_Filename);
+            Thumbnail_Filename : constant String := Compose
+                (Settings.Get_Thumbs_Path, Simple_Name (Original_Filename));
          begin
             Set_Filename (Thumb, Thumbnail_Filename);
          end;
       else
          Set_Filename (Thumb, Out_Thumbnail_Filename);
       end if;
-
 
       Thumb := Magick.Thumbnail (Thumb, Thumb_Size);
       Write_Image (Thumb_Info, Thumb);
@@ -162,7 +157,6 @@ package body Image.Data is
    exception
       when G2F.Image_IO.Read_Image_Error =>
          Put_Line ("Read image error - Thumbnail has not been created");
-
    end Init;
 
    ----------
@@ -173,7 +167,6 @@ package body Image.Data is
      (Img      : in out Image_Data;
       Filename : in     String)
    is
-      DS              : Character renames GNAT.OS_Lib.Directory_Separator;
       Now             : constant Calendar.Time := Calendar.Clock;
       Year            : constant String :=
                           GNAT.Calendar.Time_IO.Image (Now, "%Y");
@@ -181,11 +174,11 @@ package body Image.Data is
                           GNAT.Calendar.Time_IO.Image (Now, "%Y%m%d%H%M-");
       S_Name          : constant String := Simple_Name (Filename);
       File_Pathname   : constant String :=
-                          Year & DS & Filename_Prefix & S_Name;
+                          Compose (Compose (Year, Filename_Prefix), S_Name);
       Thumb_Name      : constant String :=
-                          Settings.Get_Thumbs_Path & DS & File_Pathname;
+                          Compose (Settings.Get_Thumbs_Path, File_Pathname);
       Image_Name      : constant String :=
-                          Settings.Get_Images_Path & DS & File_Pathname;
+                          Compose (Settings.Get_Images_Path, File_Pathname);
    begin
       if not Exists (Containing_Directory (Thumb_Name)) then
          Create_Path (Containing_Directory (Thumb_Name));
@@ -196,7 +189,6 @@ package body Image.Data is
       end if;
 
       Init (Img, Filename, Image_Name, Thumb_Name);
-
    end Init;
 
    -----------------

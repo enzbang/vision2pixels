@@ -32,7 +32,7 @@ package body Web_Tests.Wiki is
    use AUnit.Test_Cases.Registration;
    use AUnit.Assertions;
 
-   procedure Wiki_To_Html (T : in out AUnit.Test_Cases.Test_Case'Class);
+   procedure Wiki_To_HTML (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  Checks html rendering of wiki comments
 
    ----------
@@ -54,42 +54,42 @@ package body Web_Tests.Wiki is
    end Register_Tests;
 
    ------------------
-   -- Wiki_To_Html --
+   -- Wiki_To_HTML --
    ------------------
 
-   procedure Wiki_To_Html (T : in out AUnit.Test_Cases.Test_Case'Class) is
+   procedure Wiki_To_HTML (T : in out AUnit.Test_Cases.Test_Case'Class) is
    begin
       Assert
-        (V2P.Wiki.Wiki_To_Html ("http://simple.url") =
+        (V2P.Wiki.Wiki_To_HTML ("http://simple.url") =
            "<a href='http://simple.url' rel='nofollow'>http://simple.url</a>",
          "Error with http://simple.url");
 
       Assert
-        (V2P.Wiki.Wiki_To_Html ("some text http://simple.url") =
+        (V2P.Wiki.Wiki_To_HTML ("some text http://simple.url") =
          ("some text <a href='http://simple.url' rel='nofollow'>"
             & "http://simple.url</a>"),
          "Error with some text http://simple.url");
 
       Assert
-        (V2P.Wiki.Wiki_To_Html ("http://simple.url some text") =
+        (V2P.Wiki.Wiki_To_HTML ("http://simple.url some text") =
          ("<a href='http://simple.url' rel='nofollow'>"
             & "http://simple.url</a> some text"),
          "Error with http://simple.url some text");
 
       Assert
-        (V2P.Wiki.Wiki_To_Html
+        (V2P.Wiki.Wiki_To_HTML
            ("some text http://simple.url?param=url&param2=url2 some text") =
            ("some text <a href='http://simple.url?param=url&amp;"
             & "param2=url2' rel='nofollow'>"
             & "http://simple.url?param=url&amp;param2=url2</a> some text"),
-         V2P.Wiki.Wiki_To_Html
+         V2P.Wiki.Wiki_To_HTML
            ("some text http://simple.url?param=url&param2=url2 some text"));
          --           "Error with some text
          --  http://simple.url.param=url&param2=url2"
          --           & " some text");
 
       Assert
-        (V2P.Wiki.Wiki_To_Html
+        (V2P.Wiki.Wiki_To_HTML
            ("some text for [[http://simple.url?param=val&param2=val2]"
             & "[this is a simple url]] well formatted") =
            ("some text for <a href='http://simple.url?param=val&amp;"
@@ -99,7 +99,7 @@ package body Web_Tests.Wiki is
          &  "[this is a simple url]] well formatted");
 
       Assert
-        (V2P.Wiki.Wiki_To_Html
+        (V2P.Wiki.Wiki_To_HTML
            ("[[http://simple.url?param=val&param2=val2]"
             & "[this is a simple url]]") =
            ("<a href='http://simple.url?param=val&amp;param2=val2' "
@@ -108,27 +108,26 @@ package body Web_Tests.Wiki is
          &  "[this is a simple url]]");
 
       Assert
-        (V2P.Wiki.Wiki_To_Html
+        (V2P.Wiki.Wiki_To_HTML
            ("some text for [[http://simple.url?param=val&param2=val2]"
             & "[this is a simple url malformatted") = "some text for ",
          "Error with some text for [[http://simple.url?param=val&param2=val2]"
          &  "[this is a simple url malformatted");
 
       Assert
-        (V2P.Wiki.Wiki_To_Html ("[em Emphasized text]") =
+        (V2P.Wiki.Wiki_To_HTML ("[em Emphasized text]") =
            "<em>Emphasized text</em>",
          "Error with [em Emphasized text]");
 
       Assert
-        (V2P.Wiki.Wiki_To_Html ("some text [blockquote some quote]") =
+        (V2P.Wiki.Wiki_To_HTML ("some text [blockquote some quote]") =
            "some text <blockquote>some quote</blockquote>",
          "Error with some text [blockquote some quote]");
 
       Assert
-        (V2P.Wiki.Wiki_To_Html ("[strong strong text]") =
+        (V2P.Wiki.Wiki_To_HTML ("[strong strong text]") =
            "<strong>strong text</strong>",
          "Error with [strong strong text]");
-
    end Wiki_To_Html;
 
 end Web_Tests.Wiki;
