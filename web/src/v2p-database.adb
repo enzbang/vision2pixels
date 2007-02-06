@@ -19,12 +19,11 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Directories;
 with Ada.Exceptions;
 with Ada.Task_Attributes;
 with Ada.Text_IO;
 with Ada.Strings.Unbounded;
-
-with GNAT.OS_Lib;
 
 with DB;
 with Settings;
@@ -48,8 +47,6 @@ package body V2P.Database is
    use Ada.Strings.Unbounded;
 
    use V2P.Template_Defs;
-
-   DS : Character renames GNAT.OS_Lib.Directory_Separator;
 
    type TLS_DBH is record
       Handle    : access DB.Handle'Class;
@@ -193,10 +190,10 @@ package body V2P.Database is
       if Iter.More then
          Iter.Get_Line (Line);
 
-         Name := To_Unbounded_String (DB.String_Vectors.Element
-                                        (Line, 1));
-         Name := Name & DS & To_Unbounded_String
-           (DB.String_Vectors.Element (Line, 2));
+         Name := To_Unbounded_String
+           (Directories.Compose
+              (DB.String_Vectors.Element (Line, 1),
+               DB.String_Vectors.Element (Line, 2)));
          Line.Clear;
       end if;
 
