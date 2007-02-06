@@ -23,6 +23,7 @@ with Ada.Calendar;
 with Ada.Text_IO;
 
 with GNAT.Calendar.Time_IO;
+with GNAT.OS_Lib;
 
 with G2F.Image_IO;
 with Image.Magick;
@@ -86,22 +87,6 @@ package body Image.Data is
       Out_Thumbnail_Filename : in String := "";
       Out_Max_Dimension      : in Image_Dimension := Null_Dimension)
    is
-      Now             : constant Calendar.Time := Calendar.Clock;
-      Year            : constant String :=
-                          GNAT.Calendar.Time_IO.Image (Now, "%Y");
-      Filename_Prefix : constant String :=
-                          GNAT.Calendar.Time_IO.Image (Now, "%Y%m%d%H%M-");
-      S_Name          : constant String := Simple_Name (Filename);
-      File_Pathname   : constant String :=
-                          Compose (Compose (Compose
-                            (Year, Category), Filename_Prefix), S_Name);
-      Thumb_Name      : constant String :=
-                          Compose (Settings.Get_Thumbs_Path, File_Pathname);
-      Image_Name      : constant String :=
-                          Compose (Settings.Get_Images_Path, File_Pathname);
-      Thumb_Size      : constant G2F.IO.Image_Size :=
-                          (Image_Size_T (Settings.Thumbnail_Maximum_Width),
-                           Image_Size_T (Settings.Thumbnail_Maximum_Height));
       Thumb           : Image_Ptr;
       Thumb_Info      : Image_Info_Ptr;
       Thumb_Size      : constant G2F.IO.Image_Size :=
