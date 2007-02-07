@@ -8,8 +8,6 @@
 <select id="block_user_tmp_photo_select" name="PID" class="thumbselect">
   <option value="" class="thumboption">@_BABEL_NO_PHOTO_SELECTED_@</option>
   @@TABLE@@
-    @@IF@@ @_TABLE_LINE_@ = 1
-    @@END_IF@@
     <option class="thumboption" value="@_TMP_ID_@"
             style="background-image:url(/thumbs/@_TMP_FILENAME_@);"
     ></option>
