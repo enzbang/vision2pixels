@@ -1,0 +1,16 @@
+@@INCLUDE@@ babel.thtml
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+@@IF@@ @_ERROR_@ /= ""
+  <replace id="new_metadata_error">
+    <![CDATA[@_BABEL_UNKNOWN_ERROR_@]]>
+  </replace>
+@@ELSE@@
+  <replace id="image_metadata">
+    <![CDATA[
+    @_LAZY_METADATA_@
+    ]]>
+  </replace>
+@@END_IF@@
+</response>
