@@ -27,51 +27,51 @@ package DB.SQLite is
 
    --  Open / Close
 
-   procedure Connect
+   overriding procedure Connect
      (DB       : in out Handle;
-      Name     : in String;
-      User     : in String := "";
-      Password : in String := "");
+      Name     : in     String;
+      User     : in     String := "";
+      Password : in     String := "");
    --  Open the database named Name
 
-   procedure Close (DB : in out Handle);
+   overriding procedure Close (DB : in out Handle);
    --  Close the current database
 
    --  Transaction
 
-   procedure Begin_Transaction (DB : in Handle);
+   overriding procedure Begin_Transaction (DB : in Handle);
    --  Start a new transaction, do not support embedded transactions
 
-   procedure Commit (DB : in Handle);
+   overriding procedure Commit (DB : in Handle);
    --  Commit the current transaction
 
-   procedure Rollback (DB : in Handle);
+   overriding procedure Rollback (DB : in Handle);
    --  Rollback the current transaction
 
    --  Statement
 
    type Iterator is new DB.Iterator with private;
 
-   procedure Prepare_Select
+   overriding procedure Prepare_Select
      (DB   : in     Handle;
       Iter : in out Standard.DB.Iterator'Class;
       SQL  : in     String);
    --  Prepare a select statement (SQL must be a select command)
 
-   procedure Get_Line
+   overriding procedure Get_Line
      (Iter   : in out Iterator;
       Result :    out String_Vectors.Vector);
    --  Returns the current row and move to the next one
 
-   function More (Iter : in Iterator) return Boolean;
+   overriding function More (Iter : in Iterator) return Boolean;
    --  Returns True if there is more data (row) to fetch
 
-   procedure End_Select (Iter : in out Iterator);
+   overriding procedure End_Select (Iter : in out Iterator);
 
-   procedure Execute (DB : in Handle; SQL : in String);
+   overriding procedure Execute (DB : in Handle; SQL : in String);
    --  Execute SQL request into DB
 
-   function Last_Insert_Rowid (DB : in Handle) return String;
+   overriding function Last_Insert_Rowid (DB : in Handle) return String;
    --  Returns the Id of the last inserted row id
 
 private

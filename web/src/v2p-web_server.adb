@@ -657,13 +657,30 @@ package body V2P.Web_Server is
       Translations : in out Templates.Translate_Set)
    is
       use Image.Metadata;
-      P   : constant Parameters.List := Status.Parameters (Request);
 
-      Latitude_Coord  : constant Geo_Coordinate
-        := Geo_Coordinate'Value (Parameters.Get (P, "latitude"));
-      Longitude_Coord : constant Geo_Coordinate
-        := Geo_Coordinate'Value (Parameters.Get (P, "longitude"));
+      function Get (Parameter_Name : in String) return Geo_Coordinate;
+      --  Returns the given parameter or zero if not found
 
+      P : constant Parameters.List := Status.Parameters (Request);
+
+      ---------
+      -- Get --
+      ---------
+
+      function Get (Parameter_Name : in String) return Geo_Coordinate is
+         Param : constant String := Parameters.Get (P, Parameter_Name);
+      begin
+         if Param = "" then
+            return 0.0;
+         else
+            return Geo_Coordinate'Value (Param);
+         end if;
+      end Get;
+
+      Latitude_Coord      : constant Geo_Coordinate := Get
+        (Template_Defs.Block_Metadata.HTTP.latitude);
+      Longitude_Coord     : constant Geo_Coordinate := Get
+        (Template_Defs.Block_Metadata.HTTP.longitude);
       Latitude_Position   : Latitude;
       Longitude_Postition : Longitude;
 
@@ -674,8 +691,7 @@ package body V2P.Web_Server is
          Templates.Insert
            (Translations,
             Templates.Assoc
-              (Template_Defs.R_Block_Metadata_Form_Enter.ERROR,
-               "ERROR"));
+              (Template_Defs.R_Block_Metadata_Form_Enter.ERROR, "ERROR"));
          --  ??? Adds an error message
          return;
       end if;
@@ -683,12 +699,12 @@ package body V2P.Web_Server is
       Latitude_Position.Format (Latitude_Coord);
       Longitude_Postition.Format (Longitude_Coord);
 
-      Database.Insert_Metadata (Context.Get_Value ("TID"),
-                                Float (Latitude_Coord),
-                                Float (Longitude_Coord),
-                                Image.Metadata.Image (Latitude_Position),
-                                Image.Metadata.Image (Longitude_Postition));
-
+      Database.Insert_Metadata
+        (Context.Get_Value ("TID"),
+         Float (Latitude_Coord),
+         Float (Longitude_Coord),
+         Image.Metadata.Image (Latitude_Position),
+         Image.Metadata.Image (Longitude_Postition));
    end Onsubmit_Metadata_Form_Enter_Callback;
    ---------------------------------------
    -- Onsubmit_Post_Form_Enter_Callback --
