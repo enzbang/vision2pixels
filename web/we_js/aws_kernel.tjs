@@ -16,6 +16,64 @@
    }
 
 @@-- --------------------------------
+@@-- Update the AWS Ehanced Contextual Framework
+
+   function get_context ()
+   {
+       var context = document.getElementById('CTX_ECWF');
+       return $(context).innerHTML;
+   }
+
+   function no_context (items)
+   {
+      var k = 0;
+      for (k=0; k<items.length; k++) {
+         if (items[k].tagName == "INPUT"
+             && items[k].getAttribute('NAME') == 'CTX_ECWF')
+           return false;
+      }
+      return true;
+   }
+
+   function update_ecwf ()
+   {
+      var k = 0;
+      @@-- anchors
+
+      var anchors = document.getElementsBySelector('a');
+
+      for (k=0; k<anchors.length; k++) {
+	 var href = anchors[k].getAttribute('href');
+         if (href != null)
+            if (href.indexOf("http",0) != 0 
+                && href.indexOf("mailto:",0) != 0
+                && anchors[k].getAttribute('onclick') == null)
+               anchors[k].setAttribute('onclick', 'aws_anchor_context(this);');
+      }
+
+      @@-- forms
+
+      var forms = document.getElementsBySelector('form');
+
+      for (k=0; k<forms.length; k++) {
+	 var action = forms[k].getAttribute('action');
+         if (action != null) {
+            if (action != "" 
+                && action.indexOf("http",0) != 0
+                && forms[k].getAttribute('onsubmit') == null) {
+               if (no_context (forms[k].elements) == true) {
+                  hi = document.createElement('input');
+                  hi.setAttribute('type', 'hidden');
+                  hi.setAttribute('name', 'CTX_ECWF');
+                  hi.setAttribute('value', get_context());
+                  forms[k].appendChild(hi);
+               }
+            }
+         }
+      }
+   }
+
+@@-- --------------------------------
 @@-- Serialize a tag or all fields in a form
 
    function serialize (elm)
@@ -35,21 +93,32 @@
 
 
 @@-- --------------------------------
-@@-- Add Context parameter CTX_ECWF
+@@-- Add Context parameter CTX_ECWF for Ajax
 
-   function add_ecwf_context (pars)
+   function add_ajax_context (pars)
    {
-       var context = document.getElementById('CTX_ECWF');
-
        if (context != null) {
           if (pars == "")
              pars = pars + "?";
           else
              pars = pars + "&";
 
-          pars = pars + 'CTX_ECWF=' + $(context).innerHTML;
+          pars = pars + 'CTX_ECWF=' + get_context();
        }
        return pars;
+   }
+
+@@-- --------------------------------
+@@-- Add context parameter CTX_ECWF for anchors
+
+   function aws_anchor_context(a)
+   {
+       if (a.href.indexOf('?',0) == -1)
+          a.href = a.href + '?';
+       else
+          a.href = a.href + '&';
+
+       a.href = a.href + 'CTX_ECWF=' + get_context();
    }
 
 @@-- --------------------------------
@@ -64,7 +133,7 @@
          var O_ajax = new Ajax.Request
             (url,
              {method:     'get',
-              parameters: add_ecwf_context (pars),
+              parameters: add_ajax_context (pars),
               onFailure:  report_error,
               onComplete: function(req)
                             {rplaceholder.value = req.responseText;
@@ -74,7 +143,7 @@
             ({success: placeholder},
              url,
              {method:     'get',
-              parameters: add_ecwf_context (pars),
+              parameters: add_ajax_context (pars),
               onFailure:  report_error,
               onComplete: function(req)
                             {update_behaviour();
@@ -90,7 +159,7 @@
        var myAjax = new Ajax.Request
            (url,
             {method: 'get',
-             parameters: add_ecwf_context (pars),
+             parameters: add_ajax_context (pars),
              onFailure : report_error,
              onComplete : function(req)
                             {aws_xml_handler(req);
@@ -385,3 +454,19 @@
        }
    }
 
+
+@@-- --------------------------------
+@@-- onload event to update ECWF
+
+   function addLoadEvent (func)
+   {
+      var oldonload = window.onload;
+		
+      if (typeof window.onload != 'function') {
+         window.onload = func;
+      } else {
+         window.onload = function() { oldonload(); func(); }
+      }
+   }
+
+addLoadEvent (update_ecwf);
