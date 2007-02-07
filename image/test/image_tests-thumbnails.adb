@@ -26,7 +26,6 @@ with Ada.Calendar;
 with Ada.Directories;
 
 with GNAT.Calendar.Time_IO;
-with GNAT.OS_Lib;
 
 with G2F;
 with Image.Data;
@@ -51,32 +50,31 @@ package body Image_Tests.Thumbnails is
    procedure Create_Thumbnail (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
       use Image.Data;
-      DS              : Character renames GNAT.OS_Lib.Directory_Separator;
-      In_Filename     : constant String := "adapowered.jpg";
+      S_Name          : constant String := "adapowered.jpg";
       Now             : constant Calendar.Time := Calendar.Clock;
       Year            : constant String :=
                           GNAT.Calendar.Time_IO.Image (Now, "%Y");
       Filename_Prefix : constant String :=
                           GNAT.Calendar.Time_IO.Image (Now, "%Y%m%d%H%M-");
-      File_Pathname   : constant String :=
-                          Year & DS & Filename_Prefix & In_Filename;
-      Thumb_Filename  : constant String :=
-                          Settings.Get_Thumbs_Path & DS & File_Pathname;
-
+      Thumb_Name      : constant String :=
+                          Compose
+                            (Compose (Compose (Settings.Get_Thumbs_Path, Year),
+                             Filename_Prefix),
+                             S_Name);
       Test_Image    : Image.Data.Image_Data;
 
    begin
 
       --  Read image info and create thumbnail
 
-      Image.Data.Init (Img => Test_Image, Filename => In_Filename);
+      Image.Data.Init (Img => Test_Image, Filename => S_Name);
 
       Assert (Test_Image.Init_Status = Image_Created,
               "Error. Test_Image has not been created");
 
       Assert
-        (Ada.Directories.Exists (Thumb_Filename),
-         Thumb_Filename & "does not exist");
+        (Ada.Directories.Exists (Thumb_Name),
+         Thumb_Name & "does not exist");
    end Create_Thumbnail;
 
    ----------
