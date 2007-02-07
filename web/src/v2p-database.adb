@@ -61,15 +61,19 @@ package body V2P.Database is
    procedure Connect (DBH : in out TLS_DBH);
    --  Connect to the database if needed
 
+   function F (F : in Float) return String;
+   pragma Inline (F);
+   --  Returns float image
+
+   function I (Int : in Integer) return String;
+   pragma Inline (I);
+   --  Returns Integer image
+
    function Q (Str : in String) return String;
    pragma Inline (Q);
    --  Quote the string and double all single quote in Str to be able to insert
    --  a quote into the database.
    --  Returns Null if empty string
-
-   function I (Int : in Integer) return String;
-   pragma Inline (I);
-   --  Returns Integer image
 
    function Threads_Ordered_Select
      (Fid        : in String := "";
@@ -95,6 +99,15 @@ package body V2P.Database is
          DBH_TLS.Set_Value (DBH);
       end if;
    end Connect;
+
+   -------
+   -- F --
+   -------
+
+   function F (F : in Float) return String is
+   begin
+      return Float'Image (F);
+   end F;
 
    --------------------
    -- Get_Categories --
@@ -472,7 +485,9 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "select geo_latitude, geo_longitude from photo_metadata "
+        (Iter, "select geo_latitude, geo_longitude, "
+         & "geo_latitude_formatted, geo_longitude_formatted "
+         & "from photo_metadata "
          & "where photo_id = (select photo_id from post where id=" & Pid
          & ')');
 
@@ -488,6 +503,16 @@ package body V2P.Database is
            (Set, Templates.Assoc
               (Block_Metadata.METADATA_LONGITUDE,
                DB.String_Vectors.Element (Line, 2)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_Metadata.METADATA_LATITUDE_FORMATTED,
+               DB.String_Vectors.Element (Line, 3)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_Metadata.METADATA_LONGITUDE_FORMATTED,
+               DB.String_Vectors.Element (Line, 4)));
 
          Line.Clear;
       end if;
@@ -868,6 +893,37 @@ package body V2P.Database is
          Text_IO.Put_Line (Exception_Message (E));
          return "";
    end Insert_Comment;
+
+   ---------------------
+   -- Insert_Metadata --
+   ---------------------
+
+   procedure Insert_Metadata
+     (Pid                     : in String;
+      Geo_Latitude            : in Float;
+      Geo_Longitude           : in Float;
+      Geo_Latitude_Formatted  : in String;
+      Geo_Longitude_Formatted : in String)
+   is
+      DBH : TLS_DBH := DBH_TLS.Value;
+
+      SQL : constant String := "insert into photo_metadata (photo_id, "
+        & "geo_latitude, geo_longitude, geo_latitude_formatted, "
+        & "geo_longitude_formatted) values ("
+        & "(select photo_id from post where id=" & Pid & "), "
+        & F (Geo_Latitude) & ", " & F (Geo_Longitude) & ", "
+        & Q (Geo_Latitude_Formatted) & ", "
+        & Q (Geo_Longitude_Formatted) & ")";
+   begin
+      Text_IO.Put_Line (SQL);
+      Connect (DBH);
+      DBH.Handle.Execute (SQL);
+   exception
+      when E : DB.DB_Error =>
+         Text_IO.Put_Line (Exception_Message (E));
+   end Insert_Metadata;
+
+
 
    ------------------
    -- Insert_Photo --

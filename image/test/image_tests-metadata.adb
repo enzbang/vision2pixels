@@ -70,7 +70,13 @@ package body Image_Tests.Metadata is
       Get_Long := To_Geo_Coordinate (Pos_Long);
 
       Assert (Get_Long = Get_Lat,
-              "To_Geo_Coordinate error for 2° 23' 52'' E");
+              "To_Geo_Coordinate error for 2° 23' 53'' E");
+
+      Assert (Image.Metadata.Image (Pos_Lat) = "N 48° 51' 51",
+              "Error with " & Image.Metadata.Image (Pos_Lat));
+
+      Assert (Image.Metadata.Image (Pos_Long) = "E 2° 23' 53",
+              "Error with " & Image.Metadata.Image (Pos_Long));
 
       --  -87.728055, -40.4461110
 
@@ -90,13 +96,19 @@ package body Image_Tests.Metadata is
       Get_Long := To_Geo_Coordinate (Pos_Long);
 
       Assert (Get_Lat = Geo_Lat,
-              "To_Geo_Coordinate error for 40° 26' 46'' N");
+              "To_Geo_Coordinate error for 40° 26' 46'' S");
 
       Assert (Get_Long = Geo_Long,
               "To_Geo_Coordinate error for 87° 43' 41'' W");
 
-   end Geo_Format;
+      Assert (Image.Metadata.Image (Pos_Lat) = "S 40° 26' 46",
+              "Error with " & Image.Metadata.Image (Pos_Lat));
 
+      Assert (Image.Metadata.Image (Pos_Long) = "W 87° 43' 41",
+              "Error with " & Image.Metadata.Image (Pos_Long));
+
+
+   end Geo_Format;
 
    ----------
    -- Name --

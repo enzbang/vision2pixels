@@ -45,6 +45,7 @@ with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Post;
 with V2P.Template_Defs.Block_New_Photo;
+with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Navigate;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Logout;
@@ -52,9 +53,11 @@ with V2P.Template_Defs.R_Block_Forum_List;
 with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
+with V2P.Template_Defs.R_Block_Metadata_Form_Enter;
 with V2P.Wiki;
 
 with Image.Data;
+with Image.Metadata;
 with Settings;
 
 package body V2P.Web_Server is
@@ -134,6 +137,12 @@ package body V2P.Web_Server is
       Context      : access Services.ECWF.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Called when submitting a new comment
+
+   procedure Onsubmit_Metadata_Form_Enter_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Called when submitting new metadata
 
    procedure Onsubmit_Post_Form_Enter_Callback
      (Request      : in     Status.Data;
@@ -638,6 +647,49 @@ package body V2P.Web_Server is
       end if;
    end Onsubmit_Comment_Form_Enter_Callback;
 
+   -------------------------------------------
+   -- Onsubmit_Metadata_Form_Enter_Callback --
+   -------------------------------------------
+
+   procedure Onsubmit_Metadata_Form_Enter_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      use Image.Metadata;
+      P   : constant Parameters.List := Status.Parameters (Request);
+
+      Latitude_Coord  : constant Geo_Coordinate
+        := Geo_Coordinate'Value (Parameters.Get (P, "latitude"));
+      Longitude_Coord : constant Geo_Coordinate
+        := Geo_Coordinate'Value (Parameters.Get (P, "longitude"));
+
+      Latitude_Position   : Latitude;
+      Longitude_Postition : Longitude;
+
+   begin
+      if Latitude_Coord = 0.0 or else Longitude_Coord = 0.0
+        or else not Context.Exist ("TID")
+      then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.R_Block_Metadata_Form_Enter.ERROR,
+               "ERROR"));
+         --  ??? Adds an error message
+         return;
+      end if;
+
+      Latitude_Position.Format (Latitude_Coord);
+      Longitude_Postition.Format (Longitude_Coord);
+
+      Database.Insert_Metadata (Context.Get_Value ("TID"),
+                                Float (Latitude_Coord),
+                                Float (Longitude_Coord),
+                                Image.Metadata.Image (Latitude_Position),
+                                Image.Metadata.Image (Longitude_Postition));
+
+   end Onsubmit_Metadata_Form_Enter_Callback;
    ---------------------------------------
    -- Onsubmit_Post_Form_Enter_Callback --
    ---------------------------------------
@@ -720,7 +772,7 @@ package body V2P.Web_Server is
       --  All URLs starting with /xml_ are handled by a specific callback
       --  returning the corresponding file in the xml directory.
 
-            Services.Dispatchers.URI.Register
+      Services.Dispatchers.URI.Register
         (Main_Dispatcher,
          "/we_js",
          Action => Dispatchers.Callback.Create (WEJS_Callback'Access),
@@ -785,6 +837,12 @@ package body V2P.Web_Server is
         (Template_Defs.Block_New_Post.Ajax.onsubmit_post_form,
          Template_Defs.R_Block_Post_Form_Enter.Template,
          Onsubmit_Post_Form_Enter_Callback'Access,
+         MIME.Text_XML);
+
+      Services.ECWF.Registry.Register
+        (Template_Defs.Block_Metadata.Ajax.onsubmit_metadata_post,
+         Template_Defs.R_Block_Metadata_Form_Enter.Template,
+         Onsubmit_Metadata_Form_Enter_Callback'Access,
          MIME.Text_XML);
 
       Services.ECWF.Registry.Register

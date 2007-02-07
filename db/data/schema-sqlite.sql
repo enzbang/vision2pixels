@@ -85,5 +85,7 @@ create table "photo_metadata" (
 "photo_id" integer not null,
 "geo_latitude" real not null,
 "geo_longitude" real not null,
+"geo_latitude_formatted" varchar(20) not null,
+"geo_longitude_formatted" varchar(2) not null,
 foreign key ("photo_id") references photo("id")
 );
