@@ -1,10 +1,7 @@
 @@INCLUDE@@ babel.thtml
-<form enctype="multipart/form-data" id="comment_form"
-      action="#" method="post">
+<form enctype="multipart/form-data" id="comment_form" action="#" method="post">
   <fieldset>
-    <legend>
-      @_BABEL_NEW_COMMENT_@
-    </legend>
+    <legend>@_BABEL_NEW_COMMENT_@</legend>
     @@-- Is user logged
     <div id="comment_login"><p>
         @@IF@@ @_LOGIN_@ = ""
@@ -21,13 +18,12 @@
       <input name="TID" id="TID" type="hidden" value="@_Current_TID_@" />
       <input name="FID" id="FID" type="hidden" value="@_Current_FID_@" />
     </p>
-    <!--     <p id="title_name_input">
-             <input name="NAME" id="title_input" type="entry"
-                    value="@_NAME_@"/>
-      </p> -->
+    <!-- <p id="title_name_input">
+           <input name="NAME" id="title_input" type="entry" value="@_NAME_@"/>
+         </p> -->
     <p>
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
-      <textarea name="COMMENT" rows="3" cols="40"
+      <textarea name="COMMENT" rows="3" cols="40" 
                 id="comment_input"></textarea>
     </p>
     <p>
@@ -37,5 +33,6 @@
     @@--    <p><input name="FILENAME" type="file"/>
   </fieldset>
 </form>
+@@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_forum_list, 4=>sel_forum_list)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, comment_form, 4=>comment_form, 5=>PARENT_ID)
