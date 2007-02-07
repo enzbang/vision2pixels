@@ -113,6 +113,24 @@ package body V2P.ECWF_Callbacks is
         (Translations, Database.Get_User (Session.Get (SID, "LOGIN")));
    end Login;
 
+   --------------
+   -- Metadata --
+   --------------
+
+   procedure Metadata
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+   pragma Unreferenced (Request);
+   begin
+      if Context.Exist ("TID") then
+         Templates.Insert
+           (Translations,
+            Database.Get_Metadata (Context.Get_Value ("TID")));
+      end if;
+   end Metadata;
+
    -----------------
    -- New_Comment --
    -----------------
