@@ -5,9 +5,9 @@
     <legend>@_BABEL_NEW_POST_@</legend>
     @@-- Is user logged
     <div id="comment_login"><p>
-    @@IF@@ @_LOGIN_@ = ""
-      <input name="ANONYMOUS_USER" id="anonymous_user" type="entry"/>
-    @@END_IF@@
+      @@IF@@ @_LOGIN_@ = ""
+        <input name="ANONYMOUS_USER" id="anonymous_user" type="entry"/>
+      @@END_IF@@
     </p></div>
     @@-- Is user in a specific forum
     <p>@_LAZY_FORUM_LIST_SELECT_@
@@ -26,19 +26,16 @@
     @_LAZY_USER_TMP_PHOTO_SELECT_@
 
     <p>
-      <a href="#" id="show_new_photo_post" rel="post_new_photo_form">@_BABEL_ADD_NEW_PHOTO_@</a>
+      <a href="#" id="show_new_photo_post"
+         rel="post_new_photo_form">@_BABEL_ADD_NEW_PHOTO_@</a>
     </p>
-    <p>
-      <input name="ENTER" id="post_form_enter" type="submit" value="OK"/>
-    </p>
+    <p><input name="ENTER" id="post_form_enter" type="submit" value="OK"/></p>
     <div id="post_error"></div>
   </fieldset>
 </form>
 
-<div id="post_new_photo_form" style="display:none">
-  @_LAZY_NEW_PHOTO_@
-</div>
-
+<div id="post_new_photo_form" style="display:none">@_LAZY_NEW_PHOTO_@</div>
+@@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_forum_list, 4=>sel_forum_list)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, post_form, 4=>post_form)
 @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_new_photo_post, show_rel)

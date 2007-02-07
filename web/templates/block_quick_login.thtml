@@ -14,5 +14,5 @@
     @@END_IF@@
   </a>
 </span>
-
+@@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, show_login, 19=>/xml_show_login.xml)
