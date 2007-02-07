@@ -3,16 +3,7 @@
 
    function report_error (request)
    {
-      alert ('Sorry. There was an error.');
-   }
-
-@@-- --------------------------------
-@@-- Update the behavior rules, needed when loading new section
-@@-- containing JavaScript code.
-
-   function update_behaviour ()
-   {
-      Behaviour.apply ();
+      alert ('There was an error on this Ajax request.');
    }
 
 @@-- --------------------------------
@@ -21,7 +12,11 @@
    function get_context ()
    {
        var context = document.getElementById('CTX_ECWF');
-       return $(context).innerHTML;
+
+       if (context == null)
+          return "";
+       else
+          return $(context).innerHTML;
    }
 
    function no_context (items)
@@ -74,6 +69,16 @@
    }
 
 @@-- --------------------------------
+@@-- Update the behavior rules, needed when loading new section
+@@-- containing JavaScript code. Also update the ECWF.
+
+   function update_aws_framework()
+   {
+      Behaviour.apply ();
+      update_ecwf();      
+   }
+
+@@-- --------------------------------
 @@-- Serialize a tag or all fields in a form
 
    function serialize (elm)
@@ -97,14 +102,13 @@
 
    function add_ajax_context (pars)
    {
-       if (context != null) {
-          if (pars == "")
-             pars = pars + "?";
-          else
-             pars = pars + "&";
+       if (pars == "")
+          pars = pars + "?";
+       else
+          pars = pars + "&";
 
-          pars = pars + 'CTX_ECWF=' + get_context();
-       }
+       pars = pars + 'CTX_ECWF=' + get_context();
+
        return pars;
    }
 
@@ -146,7 +150,7 @@
               parameters: add_ajax_context (pars),
               onFailure:  report_error,
               onComplete: function(req)
-                            {update_behaviour();
+                            {update_aws_framework();
                              if (oncomplete != "") oncomplete();}});
    }
 
@@ -163,7 +167,7 @@
              onFailure : report_error,
              onComplete : function(req)
                             {aws_xml_handler(req);
-                             update_behaviour();
+                             update_aws_framework();
                              if (oncomplete != "") oncomplete();}});
    }
 
@@ -218,7 +222,7 @@
       } else {
          $(placeholder_id).innerHTML = placeholder_content;
       }
-      update_behaviour ();
+      update_aws_framework();
    }
 
    // Clear a node
@@ -266,7 +270,7 @@
       }
 
       new Insertion.After (id, placeholder_content);
-      update_behaviour ();
+      update_aws_framework();
    }
 
    // Action on radio
@@ -313,7 +317,7 @@
             pars = pars + serialize (id);
          }
       }
-      update_behaviour (); /* Update behaviour before request url */
+      update_aws_framework(); /* Update behaviour before request url */
       aws_xml_request (url, pars, '');
    }
 
