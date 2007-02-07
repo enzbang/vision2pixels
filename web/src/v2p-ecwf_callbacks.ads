@@ -53,6 +53,11 @@ package V2P.ECWF_Callbacks is
       Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set);
 
+   procedure Metadata
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
    procedure New_Comment
      (Request      : in     Status.Data;
       Context      : access ECWF.Context.Object;

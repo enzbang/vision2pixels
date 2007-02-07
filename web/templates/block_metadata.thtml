@@ -1,0 +1,13 @@
+<dl class="geo">
+  <dt><strong>@_BABEL_METADATA_LATITUDE_@</strong></dt>
+  <dd>
+    <abbr class="latitude" title="@_METADATA_LATITUDE_@">
+    @_METADATA_LATITUDE_FORMATTED_@
+    </abbr>
+  </dd>
+  <dt><strong>@_BABEL_METADATA_LONGITUDE_@</strong></dt>
+  <dd><abbr class="longitude" title="@_METADATA_LONGITUDE_@">
+    @_METADATA_LONGITUDE_FORMATTED_@
+    </abbr>
+  </dd>
+</dl>

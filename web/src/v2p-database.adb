@@ -38,6 +38,7 @@ with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_User_Tmp_Photo_Select;
+with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.R_Block_Forum_List;
 
 package body V2P.Database is
@@ -452,6 +453,50 @@ package body V2P.Database is
    end Get_Forums;
 
    ------------------
+   -- Get_Metadata --
+   ------------------
+
+   function Get_Metadata (Pid : in String) return Templates.Translate_Set is
+      use type Templates.Tag;
+
+      DBH  : TLS_DBH := DBH_TLS.Value;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+      Set           : Templates.Translate_Set;
+
+   begin
+      if Pid = "" then
+         return Set;
+      end if;
+
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select
+        (Iter, "select geo_latitude, geo_longitude from photo_metadata "
+         & "where photo_id = (select photo_id from post where id=" & Pid
+         & ')');
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_Metadata.METADATA_LATITUDE,
+               DB.String_Vectors.Element (Line, 1)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_Metadata.METADATA_LONGITUDE,
+               DB.String_Vectors.Element (Line, 2)));
+
+         Line.Clear;
+      end if;
+
+      Iter.End_Select;
+      return Set;
+   end Get_Metadata;
+
+   ------------------
    -- Get_Password --
    ------------------
 
@@ -727,8 +772,6 @@ package body V2P.Database is
       return Set;
 
    end Get_User_Tmp_Photo;
-
-
 
    -------
    -- I --
