@@ -34,9 +34,9 @@ package DB is
 
    procedure Connect
      (DB       : in out Handle;
-      Name     : in String;
-      User     : in String := "";
-      Password : in String := "") is abstract;
+      Name     : in     String;
+      User     : in     String := "";
+      Password : in     String := "") is abstract;
    --  Open the database named Name
 
    procedure Close (DB : in out Handle) is abstract;

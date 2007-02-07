@@ -56,6 +56,7 @@
          if (action != null) {
             if (action != ""
                 && action.indexOf("http",0) != 0
+                && action.indexOf("#", 0) != 0
                 && forms[k].getAttribute('onsubmit') == null) {
                if (no_context (forms[k].elements) == true) {
                   hi = document.createElement('input');

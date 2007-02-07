@@ -41,7 +41,7 @@ package body DB.SQLite is
    -- Begin_Transaction --
    -----------------------
 
-   procedure Begin_Transaction (DB : in Handle) is
+   overriding procedure Begin_Transaction (DB : in Handle) is
    begin
       Execute (DB, "begin");
    end Begin_Transaction;
@@ -67,7 +67,7 @@ package body DB.SQLite is
    -- Close --
    -----------
 
-   procedure Close (DB : in out Handle) is
+   overriding procedure Close (DB : in out Handle) is
    begin
       Check_Result ("close", SQLite3.Close (DB.H));
       Unchecked_Free (DB.H);
@@ -77,7 +77,7 @@ package body DB.SQLite is
    -- Commit --
    ------------
 
-   procedure Commit (DB : in Handle) is
+   overriding procedure Commit (DB : in Handle) is
    begin
       Execute (DB, "commit");
    end Commit;
@@ -86,11 +86,11 @@ package body DB.SQLite is
    -- Connect --
    -------------
 
-   procedure Connect
+   overriding procedure Connect
      (DB       : in out Handle;
-      Name     : in String;
-      User     : in String := "";
-      Password : in String := "")
+      Name     : in     String;
+      User     : in     String := "";
+      Password : in     String := "")
    is
       pragma Unreferenced (User, Password);
       use type GNU.DB.SQLite3.Handle;
@@ -105,7 +105,7 @@ package body DB.SQLite is
    -- End_Select --
    ----------------
 
-   procedure End_Select (Iter : in out Iterator) is
+   overriding procedure End_Select (Iter : in out Iterator) is
    begin
       Check_Result ("end_select", SQLite3.finalize (Iter.S'Unchecked_Access));
    end End_Select;
@@ -114,7 +114,7 @@ package body DB.SQLite is
    -- Execute --
    -------------
 
-   procedure Execute (DB : in Handle; SQL : in String) is
+   overriding procedure Execute (DB : in Handle; SQL : in String) is
    begin
       Check_Result ("execute", SQLite3.Exec (DB.H, SQL));
    exception
@@ -126,7 +126,7 @@ package body DB.SQLite is
    -- Get_Line --
    --------------
 
-   procedure Get_Line
+   overriding procedure Get_Line
      (Iter   : in out Iterator;
       Result :    out String_Vectors.Vector)
    is
@@ -144,7 +144,7 @@ package body DB.SQLite is
    -- Last_Insert_Rowid --
    -----------------------
 
-   function Last_Insert_Rowid (DB : in Handle) return String is
+   overriding function Last_Insert_Rowid (DB : in Handle) return String is
    begin
       return SQLite3.uint64'Image (SQLite3.Last_Insert_Rowid (DB.H));
    end Last_Insert_Rowid;
@@ -153,7 +153,7 @@ package body DB.SQLite is
    -- More --
    ----------
 
-   function More (Iter : in Iterator) return Boolean is
+   overriding function More (Iter : in Iterator) return Boolean is
    begin
       return Iter.More;
    end More;
@@ -162,7 +162,7 @@ package body DB.SQLite is
    -- Prepare_Select --
    --------------------
 
-   procedure Prepare_Select
+   overriding procedure Prepare_Select
      (DB   : in     Handle;
       Iter : in out Standard.DB.Iterator'Class;
       SQL  : in     String)
@@ -188,7 +188,7 @@ package body DB.SQLite is
    -- Rollback --
    --------------
 
-   procedure Rollback (DB : in Handle) is
+   overriding procedure Rollback (DB : in Handle) is
    begin
       Execute (DB, "rollback");
    end Rollback;

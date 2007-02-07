@@ -249,7 +249,7 @@ the record, using "visibility:hidden" does not work. So the trick is
 to make the button with a null size and move it outside of the
 display. */
     width:0;
-    heigh:0;
+    height:0;
     position:absolute;
     left:-9000px;
 }
