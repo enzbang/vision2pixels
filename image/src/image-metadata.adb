@@ -21,6 +21,10 @@
 
 package body Image.Metadata is
 
+   ---------
+   -- "=" --
+   ---------
+
    function "=" (I, J : in Geo_Coordinate) return Boolean is
    begin
       if I - J < 0.0001 then
@@ -35,10 +39,10 @@ package body Image.Metadata is
    ------------
 
    procedure Format
-     (C         : in Geo_Coordinate;
+     (C         : in     Geo_Coordinate;
       Formatted : in out Geo_Position'Class)
    is
-      Diff      : Geo_Coordinate;
+      Diff : Geo_Coordinate;
    begin
       Format_Direction (C, Formatted);
 
@@ -65,11 +69,9 @@ package body Image.Metadata is
    -- Format_Direction --
    ----------------------
 
-   overriding
-   procedure Format_Direction
-     (C         : in Geo_Coordinate;
-      Formatted : in out Latitude)
-   is
+   overriding procedure Format_Direction
+     (C         : in     Geo_Coordinate;
+      Formatted : in out Latitude) is
    begin
       if C > Geo_Coordinate (0) then
          Formatted.C_Direction := N;
@@ -79,15 +81,9 @@ package body Image.Metadata is
    end Format_Direction;
 
 
-   ----------------------
-   -- Format_Direction --
-   ----------------------
-
-   overriding
-   procedure Format_Direction
-     (C         : in Geo_Coordinate;
-      Formatted : in out Longitude)
-   is
+   overriding procedure Format_Direction
+     (C         : in     Geo_Coordinate;
+      Formatted : in out Longitude) is
    begin
       if C > Geo_Coordinate (0) then
          Formatted.C_Direction := E;
@@ -100,20 +96,16 @@ package body Image.Metadata is
    -- Set_Sign --
    --------------
 
-   overriding
-   procedure Set_Sign (C : in out Geo_Coordinate; L : in Latitude) is
+   overriding procedure Set_Sign
+     (C : in out Geo_Coordinate; L : in Latitude) is
    begin
       if L.C_Direction = S then
          C := -C;
       end if;
    end Set_Sign;
 
-   --------------
-   -- Set_Sign --
-   --------------
-
-   overriding
-   procedure Set_Sign (C : in out Geo_Coordinate; L : in Longitude) is
+   overriding procedure Set_Sign
+     (C : in out Geo_Coordinate; L : in Longitude) is
    begin
       if L.C_Direction = W then
          C := -C;
@@ -125,8 +117,7 @@ package body Image.Metadata is
    -----------------------
 
    function To_Geo_Coordinate
-     (Formatted : in Geo_Position'Class)
-      return Geo_Coordinate
+     (Formatted : in Geo_Position'Class) return Geo_Coordinate
    is
       Result : Geo_Coordinate;
    begin
@@ -137,4 +128,5 @@ package body Image.Metadata is
       Set_Sign (Result, Formatted);
       return Result;
    end To_Geo_Coordinate;
+
 end Image.Metadata;

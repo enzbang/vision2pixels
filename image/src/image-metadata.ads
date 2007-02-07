@@ -31,27 +31,25 @@ package Image.Metadata is
    type Longitude_Direction is (E, W);
 
    type Geo_Position is tagged record
-      C_Degree  : Degree;
-      C_Minute  : Minute;
-      C_Second  : Second;
+      C_Degree : Degree;
+      C_Minute : Minute;
+      C_Second : Second;
    end record;
    --  Human readable geoposition
 
    function "=" (I, J : in Geo_Coordinate) return Boolean;
 
    procedure Format
-     (C         : in Geo_Coordinate;
-      Formatted : in out Geo_Position'class);
+     (C         : in     Geo_Coordinate;
+      Formatted : in out Geo_Position'Class);
    --  Format a geo coordinate into human readable Geo_Position
 
    function To_Geo_Coordinate
-     (Formatted : in Geo_Position'Class)
-      return Geo_Coordinate;
+     (Formatted : in Geo_Position'Class) return Geo_Coordinate;
    --  Convert a Geo_Position to Geo_Coordinate
 
-
    procedure Format_Direction
-     (C         : in Geo_Coordinate;
+     (C         : in     Geo_Coordinate;
       Formatted : in out Geo_Position) is null;
    --  Adds direction to Geo_Position
 
@@ -64,13 +62,11 @@ package Image.Metadata is
       C_Direction : Latitude_Direction;
    end record;
 
-   overriding
-   procedure Format_Direction
-     (C         : in Geo_Coordinate;
+   overriding procedure Format_Direction
+     (C         : in     Geo_Coordinate;
       Formatted : in out Latitude);
 
-   overriding
-   procedure Set_Sign (C : in out Geo_Coordinate; L : in Latitude);
+   overriding procedure Set_Sign (C : in out Geo_Coordinate; L : in Latitude);
 
    --  Longitude
 
@@ -78,12 +74,10 @@ package Image.Metadata is
       C_Direction : Longitude_Direction;
    end record;
 
-   overriding
-   procedure Format_Direction
-     (C         : in Geo_Coordinate;
+   overriding procedure Format_Direction
+     (C         : in     Geo_Coordinate;
       Formatted : in out Longitude);
 
-   overriding
-   procedure Set_Sign (C : in out Geo_Coordinate; L : in Longitude);
+   overriding procedure Set_Sign (C : in out Geo_Coordinate; L : in Longitude);
 
 end Image.Metadata;
