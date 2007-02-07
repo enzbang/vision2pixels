@@ -462,7 +462,7 @@ package body V2P.Database is
       DBH  : TLS_DBH := DBH_TLS.Value;
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
-      Set           : Templates.Translate_Set;
+      Set  : Templates.Translate_Set;
 
    begin
       if Pid = "" then
@@ -541,12 +541,10 @@ package body V2P.Database is
       User      : in String := "";
       From      : in Natural := 0;
       Filter    : in Filter_Mode := All_Messages;
-      Order_Dir : in Order_Direction := DESC)
-      return Templates.Translate_Set
+      Order_Dir : in Order_Direction := DESC) return Templates.Translate_Set
    is
-      Post_Date : constant String :=
-        "(select date_post from post where id = " & Tid & ") ";
-
+      Post_Date     : constant String :=
+                        "(select date_post from post where id = " & Tid & ") ";
       And_Date_Post : constant String := " and date_post ";
 
       DBH           : TLS_DBH := DBH_TLS.Value;
@@ -806,8 +804,7 @@ package body V2P.Database is
       Thread    : in String;
       Name      : in String;
       Comment   : in String;
-      Pid       : in String)
-      return String
+      Pid       : in String) return String
    is
       pragma Unreferenced (Name);
 
@@ -872,13 +869,16 @@ package body V2P.Database is
          return "";
    end Insert_Comment;
 
+   ------------------
+   -- Insert_Photo --
+   ------------------
+
    function Insert_Photo
      (Uid         : in String;
       Filename    : in String;
       Height      : in Integer;
       Width       : in Integer;
-      Size        : in Integer)
-      return String
+      Size        : in Integer) return String
    is
 
       procedure Insert_Table_Photo
@@ -949,8 +949,7 @@ package body V2P.Database is
       Category_Id : in String;
       Name        : in String;
       Comment     : in String;
-      Pid         : in String)
-      return String
+      Pid         : in String) return String
    is
       procedure Insert_Table_Post
         (Name, Category_Id, Comment, Photo_Id : in String);
@@ -1008,6 +1007,7 @@ package body V2P.Database is
          DBH.Handle.Commit;
          return Post_Id (Post_Id'First + 1 .. Post_Id'Last);
       end;
+
    exception
       when E : DB.DB_Error =>
          DBH.Handle.Rollback;
@@ -1086,18 +1086,18 @@ package body V2P.Database is
       Filter     : in Filter_Mode := All_Messages;
       Where_Cond : in String  := "";
       Order_Dir  : in Order_Direction := DESC;
-      Limit      : in Natural := 0)
-     return Unbounded_String
+      Limit      : in Natural := 0) return Unbounded_String
    is
-      SQL_Select : constant String :=
-          "select post.id, post.name, "
-          & "(select filename from photo where id=post.photo_id), "
-          & "category.name, comment_counter, visit_counter ";
-      SQL_From   : constant String := " from post, category";
-      SQL_Where  : constant String :=
-          " where post.category_id = category.id " & Where_Cond;
-      Ordering   : constant String := " order by post.date_post " &
-        Order_Direction'Image (Order_Dir);
+      SQL_Select  : constant String :=
+                      "select post.id, post.name, "
+                        & "(select filename from photo where id=post.photo_id)"
+                        & ", category.name, comment_counter, visit_counter ";
+      SQL_From    : constant String := " from post, category";
+      SQL_Where   : constant String :=
+                      " where post.category_id = category.id " & Where_Cond;
+      Ordering    : constant String :=
+                      " order by post.date_post "
+                      & Order_Direction'Image (Order_Dir);
 
       Select_Stmt : Unbounded_String := To_Unbounded_String ("");
    begin
@@ -1125,7 +1125,6 @@ package body V2P.Database is
            & SQL_Where
            & " and category.forum_id = " & Q (Fid);
       end if;
-
 
       --  Add filtering into the select statement
 

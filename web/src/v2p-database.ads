@@ -43,8 +43,7 @@ package V2P.Database is
       User      : in String := "";
       From      : in Natural := 0;
       Filter    : in Filter_Mode := All_Messages;
-      Order_Dir : in Order_Direction := DESC)
-     return Templates.Translate_Set;
+      Order_Dir : in Order_Direction := DESC) return Templates.Translate_Set;
    --  Returns all threads for a given forum
 
    function Get_Thread_Navigation_Links
@@ -53,8 +52,7 @@ package V2P.Database is
       User      : in String := "";
       From      : in Natural := 0;
       Filter    : in Filter_Mode := All_Messages;
-      Order_Dir : in Order_Direction := DESC)
-     return Templates.Translate_Set;
+      Order_Dir : in Order_Direction := DESC) return Templates.Translate_Set;
    --  Returns next and previous thread (id and thumbnail)
 
    function Get_Categories (Fid : in String) return Templates.Translate_Set;
@@ -86,15 +84,13 @@ package V2P.Database is
    function Get_Metadata (Pid : in String) return Templates.Translate_Set;
    --  Returns photo metadata
 
-
    function Insert_Comment
      (Uid       : in String;
       Anonymous : in String;
       Thread    : in String;
       Name      : in String;
       Comment   : in String;
-      Pid       : in String)
-     return String;
+      Pid       : in String) return String;
    --  Insert comment Name/Comment into the given forum and thread
    --  Returns Comment Id
 
@@ -103,8 +99,7 @@ package V2P.Database is
       Filename    : in String;
       Height      : in Integer;
       Width       : in Integer;
-      Size        : in Integer)
-     return String;
+      Size        : in Integer) return String;
    --  Insert a new photo into the database
    --  Returns photo id
 
@@ -113,8 +108,7 @@ package V2P.Database is
       Category_Id : in String;
       Name        : in String;
       Comment     : in String;
-      Pid         : in String)
-     return String;
+      Pid         : in String) return String;
    --  Insert a new post into the database
    --  Returns post id
 

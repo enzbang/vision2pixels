@@ -19,12 +19,10 @@
             </a>
         </p>
         @@ELSE@@
-        &nbsp; @@--  Workaround to avoid breaking style
+          &nbsp; @@--  Workaround to avoid breaking style
         @@END_IF@@
       </div>
-      <div class="yui-u">
-        <h2>@_NAME_@</h2>
-      </div>
+      <div class="yui-u"><h2>@_NAME_@</h2></div>
       <div class="yui-u">
         @@IF@@ @_NEXT_@ /= ""
         <p class="next_link">
@@ -49,9 +47,7 @@
       @_BABEL_SHOW_METADATA_@</a>
     </p>
 
-    <div id="image_metadata" style="display:none">
-    @_LAZY_METADATA_@
-    </div>
+    <div id="image_metadata" style="display:none">@_LAZY_METADATA_@</div>
 
     <h2 id="comments_section">Commentaires</h2>
 
@@ -68,8 +64,8 @@
 
           @@IF@@ @_TABLE_LINE_@ = @_COMMENT_ID'Length_@
           <div id="last_parent_id" style="visibility:hidden">
-          <input name="PARENT_ID" id="PARENT_ID" type="hidden"
-          value="comment_@_COMMENT_ID_@" />
+            <input name="PARENT_ID" id="PARENT_ID" type="hidden"
+	      value="comment_@_COMMENT_ID_@" />
           </div>
           @@END_IF@@
         @@END_TABLE@@
@@ -77,8 +73,7 @@
     @@ELSE@@
     <div id="comments"></div>
     <div id="last_parent_id" style="visibility:hidden">
-    <input name="PARENT_ID" id="PARENT_ID" type="hidden"
-    value="" />
+      <input name="PARENT_ID" id="PARENT_ID" type="hidden" value=""/>
     </div>
     @@END_IF@@
     <div id="new_comment">@_LAZY_NEW_COMMENT_@</div>
@@ -87,5 +82,5 @@
   @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_image_metadata, show_rel)
   @@INCLUDE@@ v2p_end.thtml
 @@ELSE@@
-@_BABEL_DOES_NOT_EXIST_@
+  @_BABEL_DOES_NOT_EXIST_@
 @@END_IF@@
