@@ -23,7 +23,6 @@ package Image.Metadata is
 
    type Degree is range -180 .. 180;
    type Minute is mod 60;
-   --   type Second is delta 10.0 ** (-2) range 0.00 .. 59.99;
    type Second is mod 60;
    type Geo_Coordinate is delta 10.0 ** (-6) range -180.0 .. 180.0;
 
@@ -37,24 +36,25 @@ package Image.Metadata is
    end record;
    --  Human readable geoposition
 
-   function "=" (I, J : in Geo_Coordinate) return Boolean;
+   function "=" (Left, Right : in Geo_Coordinate) return Boolean;
 
    procedure Format
-     (C         : in     Geo_Coordinate;
-      Formatted : in out Geo_Position'Class);
+     (Position   : in out Geo_Position'Class;
+      Coordinate : in     Geo_Coordinate);
    --  Format a geo coordinate into human readable Geo_Position
 
    function To_Geo_Coordinate
-     (Formatted : in Geo_Position'Class) return Geo_Coordinate;
+     (Position : in Geo_Position'Class) return Geo_Coordinate;
    --  Convert a Geo_Position to Geo_Coordinate
 
    procedure Format_Direction
-     (C         : in     Geo_Coordinate;
-      Formatted : in out Geo_Position) is null;
+     (Position   : in out Geo_Position;
+      Coordinate : in     Geo_Coordinate) is null;
    --  Adds direction to Geo_Position
 
-   procedure Set_Sign (C : in out Geo_Coordinate; G : in Geo_Position) is null;
-   --  Set Geo_Coordinate sign according to G direction
+   procedure Set_Sign
+     (Coordinate : in out Geo_Coordinate; Position : in Geo_Position) is null;
+   --  Set Geo_Coordinate sign according to Position direction
 
    --  Latitude
 
@@ -63,10 +63,11 @@ package Image.Metadata is
    end record;
 
    overriding procedure Format_Direction
-     (C         : in     Geo_Coordinate;
-      Formatted : in out Latitude);
+     (Position   : in out Latitude;
+      Coordinate : in     Geo_Coordinate);
 
-   overriding procedure Set_Sign (C : in out Geo_Coordinate; L : in Latitude);
+   overriding procedure Set_Sign
+     (Coordinate : in out Geo_Coordinate; Position : in Latitude);
 
    --  Longitude
 
@@ -75,9 +76,10 @@ package Image.Metadata is
    end record;
 
    overriding procedure Format_Direction
-     (C         : in     Geo_Coordinate;
-      Formatted : in out Longitude);
+     (Position   : in out Longitude;
+      Coordinate : in     Geo_Coordinate);
 
-   overriding procedure Set_Sign (C : in out Geo_Coordinate; L : in Longitude);
+   overriding procedure Set_Sign
+     (Coordinate : in out Geo_Coordinate; Position : in Longitude);
 
 end Image.Metadata;

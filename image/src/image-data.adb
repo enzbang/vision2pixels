@@ -173,12 +173,16 @@ package body Image.Data is
       Filename_Prefix : constant String :=
                           GNAT.Calendar.Time_IO.Image (Now, "%Y%m%d%H%M-");
       S_Name          : constant String := Simple_Name (Filename);
-      File_Pathname   : constant String :=
-                          Compose (Compose (Year, Filename_Prefix), S_Name);
       Thumb_Name      : constant String :=
-                          Compose (Settings.Get_Thumbs_Path, File_Pathname);
+                          Compose
+                            (Compose (Compose (Settings.Get_Thumbs_Path, Year),
+                             Filename_Prefix),
+                             S_Name);
       Image_Name      : constant String :=
-                          Compose (Settings.Get_Images_Path, File_Pathname);
+                          Compose
+                            (Compose (Compose (Settings.Get_Images_Path, Year),
+                             Filename_Prefix),
+                             S_Name);
    begin
       if not Exists (Containing_Directory (Thumb_Name)) then
          Create_Path (Containing_Directory (Thumb_Name));

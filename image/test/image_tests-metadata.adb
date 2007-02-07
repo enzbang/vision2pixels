@@ -44,10 +44,8 @@ package body Image_Tests.Metadata is
       Geo_Lat   : Geo_Coordinate := 48.864263;
       Geo_Long  : Geo_Coordinate := 2.397927;
 
-      Formatted_Latitude  : Latitude
-        := (Degree (0), Minute (0), Second (0), S);
-      Formatted_Longitude : Longitude
-        := (Degree (0), Minute (0), Second (0), W);
+      Pos_Lat  : Latitude;
+      Pos_Long : Longitude;
 
       Get_Lat  : Geo_Coordinate;
       Get_Long : Geo_Coordinate;
@@ -55,21 +53,21 @@ package body Image_Tests.Metadata is
 
       --  48.864263, 2.397927
 
-      Format (Geo_Lat, Formatted_Latitude);
-      Format (Geo_Long, Formatted_Longitude);
+      Pos_Lat.Format (Geo_Lat);
+      Pos_Long.Format (Geo_Long);
 
-      Assert (Formatted_Latitude = (48, 51, 51, N),
+      Assert (Pos_Lat = (48, 51, 51, N),
               "Error in latitude format for (48, 51, 51, N)");
 
-      Get_Lat := To_Geo_Coordinate (Formatted_Latitude);
+      Get_Lat := To_Geo_Coordinate (Pos_Lat);
 
       Assert (Get_Lat = Geo_Lat,
               "To_Geo_Coordinate error for 48° 51' 51'' N");
 
-      Assert (Formatted_Longitude = (2, 23, 53, E),
+      Assert (Pos_Long = (2, 23, 53, E),
               "Error in longitude format (2, 23, 53, E)");
 
-      Get_Long := To_Geo_Coordinate (Formatted_Longitude);
+      Get_Long := To_Geo_Coordinate (Pos_Long);
 
       Assert (Get_Long = Get_Lat,
               "To_Geo_Coordinate error for 2° 23' 52'' E");
@@ -79,17 +77,17 @@ package body Image_Tests.Metadata is
       Geo_Long  := -87.728055;
       Geo_Lat   := -40.4461110;
 
-      Format (Geo_Lat, Formatted_Latitude);
-      Format (Geo_Long, Formatted_Longitude);
+      Pos_Lat.Format (Geo_Lat);
+      Pos_Long.Format (Geo_Long);
 
-      Assert (Formatted_Latitude = (40, 26, 46, S),
+      Assert (Pos_Lat = (40, 26, 46, S),
               "Error in latitude format for (40, 26, 46, S)");
 
-      Assert (Formatted_Longitude = (87, 43, 41, W),
+      Assert (Pos_Long = (87, 43, 41, W),
               "Error in longitude format for (87, 43, 41, W)");
 
-      Get_Lat  := To_Geo_Coordinate (Formatted_Latitude);
-      Get_Long := To_Geo_Coordinate (Formatted_Longitude);
+      Get_Lat  := To_Geo_Coordinate (Pos_Lat);
+      Get_Long := To_Geo_Coordinate (Pos_Long);
 
       Assert (Get_Lat = Geo_Lat,
               "To_Geo_Coordinate error for 40° 26' 46'' N");
