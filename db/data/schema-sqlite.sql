@@ -81,3 +81,9 @@ foreign key ("photo_id") references photo("id"),
 foreign key ("user_login") references user("login")
 );
 
+create table "photo_metadata" (
+"photo_id" integer not null,
+"geo_latitude" real not null,
+"geo_longitude" real not null,
+foreign key ("photo_id") references photo("id")
+);
