@@ -2,13 +2,9 @@
 @@-- Comment title line since it's not yet used
 <cite>
   @@IF@@ @_USER_@ /= ""
-  <a href="@_USER_PAGE_@" >
-    @_USER_@
-  </a>
+    <a href="@_USER_PAGE_@" >@_USER_@</a>
   @@ELSE@@
-  <span class="anonymous">
-    @_ANONYMOUS_USER_@
-  </span>
+    <span class="anonymous">@_ANONYMOUS_USER_@</span>
   @@END_IF@@
 </cite>
 @_BABEL_HAS_WRITTEN_@

@@ -4,16 +4,14 @@
 @@--
 @@INCLUDE@@ v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ main
 <div class="yui-g">
-     <div class="yui-u first">
-       <div id="login">@_LAZY_LOGIN_@</div>
-     </div>
-     <div class="yui-u">
-       <h2>This is a demo site !</h2>
-       <p>Made with
-         <a href="https://savannah.nongnu.org/projects/v2p"
-            title="Vision2Pixels">v2p</a></p>
-       <address>Written by <a href="mailto:pascal@obry.net">Pascal Obry</a> and <a href="mailto:v2p@ramonat.fr">Olivier Ramonat</a></address>
-     </div>
+  <div class="yui-u first"><div id="login">@_LAZY_LOGIN_@</div></div>
+  <div class="yui-u">
+    <h2>This is a demo site !</h2>
+    <p>Made with
+      <a href="https://savannah.nongnu.org/projects/v2p"
+         title="Vision2Pixels">v2p</a></p>
+    <address>Written by <a href="mailto:pascal@obry.net">Pascal Obry</a> and <a href="mailto:v2p@ramonat.fr">Olivier Ramonat</a></address>
+  </div>
 </div>
 
 @@IF@@ @_V2P_ERROR_@ /= ""

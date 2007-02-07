@@ -6,18 +6,16 @@
 @@IF@@ @_NAME_@ /=""
   @@INCLUDE@@ v2p_top.thtml @_NAME_@ forum_entry yui-t7
   @@--
-  <div class="yui-g">
-    <div id="login">@_LAZY_LOGIN_@</div>
-  </div>
+  <div class="yui-g"><div id="login">@_LAZY_LOGIN_@</div></div>
   <div class="yui-g">
     <div style="width:100%" class="yui-gb first"> <!-- special grid 1/3 1/3 1/3 -->
       <div class="yui-u first">
         @@IF@@ @_PREVIOUS_@ /= ""
-        <p class="prev_link">
+          <p class="prev_link">
             <a href="@_FORUM_ENTRY_URL_@?TID=@_PREVIOUS_@&amp;FID=@_Current_FID_@">
               <img alt="previous" src="@_THUMB_SOURCE_PREFIX_@/@_PREVIOUS_THUMB_@" />
             </a>
-        </p>
+          </p>
         @@ELSE@@
           &nbsp; @@--  Workaround to avoid breaking style
         @@END_IF@@
@@ -25,20 +23,20 @@
       <div class="yui-u"><h2>@_NAME_@</h2></div>
       <div class="yui-u">
         @@IF@@ @_NEXT_@ /= ""
-        <p class="next_link">
-          <a href="@_FORUM_ENTRY_URL_@?TID=@_NEXT_@&amp;FID=@_Current_FID_@">
-            <img alt="next" src="@_THUMB_SOURCE_PREFIX_@/@_NEXT_THUMB_@" />
-          </a>
-        </p>
+          <p class="next_link">
+            <a href="@_FORUM_ENTRY_URL_@?TID=@_NEXT_@&amp;FID=@_Current_FID_@">
+              <img alt="next" src="@_THUMB_SOURCE_PREFIX_@/@_NEXT_THUMB_@" />
+            </a>
+          </p>
         @@END_IF@@
       </div>
     </div>
   </div>
   <div class="yui-g">
     @@IF@@ @_IMAGE_SOURCE_@ /= ""
-    <p id="main_image">
-      <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"/>
-    </p>
+      <p id="main_image">
+        <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"/>
+      </p>
     @@END_IF@@
     <p id="main_image_comment">@_IMAGE_COMMENT_@</p>
 
@@ -51,30 +49,29 @@
 
     <h2 id="comments_section">Commentaires</h2>
 
-
     @@IF@@ @_COMMENT_ID_@ /= "" @@--  at least one comment
       <ol id="comments">
         @@TABLE@@
-        <li id="comment_@_COMMENT_ID_@"
-            class="level_@_COMMENT_LEVEL_@ type_@_MOD(2):TABLE_LINE_@">
-          @@INCLUDE@@ comment.thtml
-          @@IF@@ @_NB_LEVELS_TO_CLOSE_@ > 0
-            @_REPEAT("</li>"):NB_LEVELS_TO_CLOSE_@
-          @@END_IF@@
+          <li id="comment_@_COMMENT_ID_@"
+              class="level_@_COMMENT_LEVEL_@ type_@_MOD(2):TABLE_LINE_@">
+            @@INCLUDE@@ comment.thtml
+            @@IF@@ @_NB_LEVELS_TO_CLOSE_@ > 0
+              @_REPEAT("</li>"):NB_LEVELS_TO_CLOSE_@
+            @@END_IF@@
 
-          @@IF@@ @_TABLE_LINE_@ = @_COMMENT_ID'Length_@
-          <div id="last_parent_id" style="visibility:hidden">
-            <input name="PARENT_ID" id="PARENT_ID" type="hidden"
-	      value="comment_@_COMMENT_ID_@" />
-          </div>
+            @@IF@@ @_TABLE_LINE_@ = @_COMMENT_ID'Length_@
+            <div id="last_parent_id" style="visibility:hidden">
+              <input name="PARENT_ID" id="PARENT_ID" type="hidden"
+	        value="comment_@_COMMENT_ID_@" />
+            </div>
           @@END_IF@@
         @@END_TABLE@@
       </ol>
     @@ELSE@@
-    <div id="comments"></div>
-    <div id="last_parent_id" style="visibility:hidden">
-      <input name="PARENT_ID" id="PARENT_ID" type="hidden" value=""/>
-    </div>
+      <div id="comments"></div>
+      <div id="last_parent_id" style="visibility:hidden">
+        <input name="PARENT_ID" id="PARENT_ID" type="hidden" value=""/>
+      </div>
     @@END_IF@@
     <div id="new_comment">@_LAZY_NEW_COMMENT_@</div>
   </div>
