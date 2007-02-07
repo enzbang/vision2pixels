@@ -587,39 +587,45 @@ package body V2P.Web_Server is
       Context      : access Services.ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
+      use Template_Defs;
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String := Session.Get (SID, "LOGIN");
+      Anonymous    : constant String :=
+                       Parameters.Get
+                         (P, Block_New_Comment.HTTP.ANONYMOUS_USER);
+      Name         : constant String :=
+                       Parameters.Get (P, Block_New_Comment.HTTP.NAME);
+      Comment      : constant String :=
+                       Parameters.Get (P, Block_New_Comment.HTTP.COMMENT);
       Parent_Id    : constant String := Parameters.Get (P, "PARENT_ID");
-      Anonymous    : constant String := Parameters.Get (P, "ANONYMOUS_USER");
-      Name         : constant String := Parameters.Get (P, "NAME");
-      Comment      : constant String := Parameters.Get (P, "COMMENT");
+      --  ??? no ref in template
       Pid          : constant String := Parameters.Get (P, "PID");
-      Tid          : constant String := Parameters.Get (P, "TID");
+      --  ??? no ref in template
+      Tid          : constant String :=
+                       Parameters.Get (P, Block_New_Comment.HTTP.TID);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
       Last_Comment : constant String := Context.Get_Value ("LAST_COMMENT");
    begin
-
       if Login = "" and then Anonymous = "" then
          Templates.Insert
            (Translations,
             Templates.Assoc
-              (Template_Defs.R_Block_Comment_Form_Enter.ERROR,
-               "ERROR_NO_LOGIN"));
+              (R_Block_Comment_Form_Enter.ERROR, "ERROR_NO_LOGIN"));
+
       elsif Last_Comment = Comment then
          --   This is a duplicated post
 
          Templates.Insert
            (Translations,
             Templates.Assoc
-              (Template_Defs.R_Block_Comment_Form_Enter.ERROR_DUPLICATED,
-               "ERROR"));
+              (R_Block_Comment_Form_Enter.ERROR_DUPLICATED, "ERROR"));
+
       elsif Tid /= "" and not Is_Valid_Comment (Comment_Wiki) then
          Templates.Insert
            (Translations,
             Templates.Assoc
-              (Template_Defs.R_Block_Comment_Form_Enter.ERROR,
-               "ERROR"));
+              (R_Block_Comment_Form_Enter.ERROR, "ERROR"));
             --  ??? Adds an error message
       else
          declare
@@ -635,14 +641,12 @@ package body V2P.Web_Server is
             Templates.Insert
               (Translations,
                Templates.Assoc
-                 (Template_Defs.R_Block_Comment_Form_Enter.PARENT_ID,
-                  Parent_Id));
+                 (R_Block_Comment_Form_Enter.PARENT_ID, Parent_Id));
             Templates.Insert
               (Translations,
                Templates.Assoc
-                 (Template_Defs.R_Block_Comment_Form_Enter.COMMENT_LEVEL,
-                  "1"));
-            --  Does not support threaded view for now.
+                 (R_Block_Comment_Form_Enter.COMMENT_LEVEL, "1"));
+            --  Does not support threaded view for now
          end;
       end if;
    end Onsubmit_Comment_Form_Enter_Callback;
