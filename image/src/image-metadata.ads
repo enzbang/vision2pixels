@@ -56,6 +56,9 @@ package Image.Metadata is
      (Coordinate : in out Geo_Coordinate; Position : in Geo_Position) is null;
    --  Set Geo_Coordinate sign according to Position direction
 
+   function Image (Position : in Geo_Position) return String;
+   --  Returns the image of a geo_position
+
    --  Latitude
 
    type Latitude is new Geo_Position with record
@@ -65,6 +68,9 @@ package Image.Metadata is
    overriding procedure Format_Direction
      (Position   : in out Latitude;
       Coordinate : in     Geo_Coordinate);
+
+   function Image (Position : in Latitude) return String;
+   --  Returns latitude image
 
    overriding procedure Set_Sign
      (Coordinate : in out Geo_Coordinate; Position : in Latitude);
@@ -78,6 +84,9 @@ package Image.Metadata is
    overriding procedure Format_Direction
      (Position   : in out Longitude;
       Coordinate : in     Geo_Coordinate);
+
+   function Image (Position : in Longitude) return String;
+   --  Returns Longitude image
 
    overriding procedure Set_Sign
      (Coordinate : in out Geo_Coordinate; Position : in Longitude);

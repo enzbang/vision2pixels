@@ -1,3 +1,4 @@
+@@IF@@ @_METADATA_LATITUDE_@ /= ""
 <dl class="geo">
   <dt><strong>@_BABEL_METADATA_LATITUDE_@</strong></dt>
   <dd>
@@ -11,3 +12,22 @@
     </abbr>
   </dd>
 </dl>
+@@ELSE@@
+@@--  IF@@ @_IS_POST_AUTHOR_@
+  <form enctype="multipart/form-data" id="metadata_post"
+        action="#" method="POST">
+    <fieldset>
+      <legend>
+        @_BABEL_NEW_PHOTO_@
+      </legend>
+      <p>
+        <input type="hidden" name="PID" value="@_PID_@" />
+        <input type="entry" name="latitude" id="insert_latitude" />
+        <input type="entry" name="longitude" id="insert_longitude" />
+        <input name="ENTER" id="metadata_form_enter" type="submit"
+        value="OK"/>
+      </p>
+    </fieldset>
+  </form>
+  @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, metadata_post, 4=>metadata_post)
+@@END_IF@@

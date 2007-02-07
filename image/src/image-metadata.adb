@@ -92,6 +92,37 @@ package body Image.Metadata is
       end if;
    end Format_Direction;
 
+   -----------
+   -- Image --
+   -----------
+
+   function Image (Position : in Geo_Position) return String is
+   begin
+      return Degree'Image (Position.C_Degree) & "°"
+        & Minute'Image (Position.C_Minute) & "'"
+        & Second'Image (Position.C_Second);
+   end Image;
+
+   -----------
+   -- Image --
+   -----------
+
+   function Image (Position : in Latitude) return String is
+   begin
+      return Latitude_Direction'Image (Position.C_Direction)
+        & Image (Geo_Position (Position));
+   end Image;
+
+   -----------
+   -- Image --
+   -----------
+
+   function Image (Position : in Longitude) return String is
+   begin
+      return Longitude_Direction'Image (Position.C_Direction)
+        & Image (Geo_Position (Position));
+   end Image;
+
    --------------
    -- Set_Sign --
    --------------

@@ -40,8 +40,9 @@
       for (k=0; k<anchors.length; k++) {
 	 var href = anchors[k].getAttribute('href');
          if (href != null)
-            if (href.indexOf("http",0) != 0 
+            if (href.indexOf("http",0) != 0
                 && href.indexOf("mailto:",0) != 0
+                && href.indexOf("#", 0) != 0
                 && anchors[k].getAttribute('onclick') == null)
                anchors[k].setAttribute('onclick', 'aws_anchor_context(this);');
       }
@@ -53,7 +54,7 @@
       for (k=0; k<forms.length; k++) {
 	 var action = forms[k].getAttribute('action');
          if (action != null) {
-            if (action != "" 
+            if (action != ""
                 && action.indexOf("http",0) != 0
                 && forms[k].getAttribute('onsubmit') == null) {
                if (no_context (forms[k].elements) == true) {
@@ -75,7 +76,7 @@
    function update_aws_framework()
    {
       Behaviour.apply ();
-      update_ecwf();      
+      update_ecwf();
    }
 
 @@-- --------------------------------
@@ -465,7 +466,7 @@
    function addLoadEvent (func)
    {
       var oldonload = window.onload;
-		
+
       if (typeof window.onload != 'function') {
          window.onload = func;
       } else {

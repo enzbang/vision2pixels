@@ -103,6 +103,14 @@ package V2P.Database is
    --  Insert a new photo into the database
    --  Returns photo id
 
+   procedure Insert_Metadata
+     (Pid                     : in String;
+      Geo_Latitude            : in Float;
+      Geo_Longitude           : in Float;
+      Geo_Latitude_Formatted  : in String;
+      Geo_Longitude_Formatted : in String);
+   --  Insert a new metadata into the database
+
    function Insert_Post
      (Uid         : in String;
       Category_Id : in String;
