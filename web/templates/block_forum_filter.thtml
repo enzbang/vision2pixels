@@ -28,5 +28,4 @@
     selected="selected"
   @@END_IF@@
   >Tous les posts</option>
-
 </select>
