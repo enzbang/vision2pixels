@@ -21,23 +21,20 @@ fc_@_Current_FID_@
 @@END_IF@@
 "> @@-- body is closed in v2p_end.thtml
 
+  <div id="CTX_ECWF" style="display:none">@_CTX_ECWF_@</div>
+
   <div id="doc2"
-       @@IF@@ @_$3_@ /= ""
-       class="@_$3_@"
-       @@END_IF@@
-       > <!-- #doc2 = 950px width, centered -->
+    @@IF@@ @_$3_@ /= ""
+      class="@_$3_@"
+     @@END_IF@@
+  > <!-- #doc2 = 950px width, centered -->
     <div id="hd"> <!-- header block -->
-      <p id="top_links">
-        @_LAZY_QUICK_LOGIN_@
-      </p>
+      <p id="top_links">@_LAZY_QUICK_LOGIN_@</p>
       <h1>@_BABEL_V2P_WEBSITE_NAME_@</h1>
       <div id="status_bar"></div>
 
-
-    <div class="forums">
-      @_LAZY_FORUM_LIST_@
-    </div>
-
+      <div class="forums">@_LAZY_FORUM_LIST_@</div>
     </div>          <!-- end of header block -->
+
     <div id="bd">   <!-- db block -->
       @@-- body div is closed in v2p_end.thtml

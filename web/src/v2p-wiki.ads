@@ -21,7 +21,7 @@
 
 package V2P.Wiki is
 
-   function Wiki_To_Html (S : in String) return String;
+   function Wiki_To_HTML (S : in String) return String;
    --  Convert a wiki syntax to valid xhtml
 
 end V2P.Wiki;
