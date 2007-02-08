@@ -632,7 +632,6 @@ package body V2P.Web_Server is
             Cid : constant String := Database.Insert_Comment
               (Login, Anonymous, Tid, Name, Comment_Wiki, Pid);
          begin
-
             --  Adds the new comment in context to prevent duplicated post
 
             Context.Set_Value ("LAST_COMMENT", Comment);
@@ -710,6 +709,7 @@ package body V2P.Web_Server is
          Image.Metadata.Image (Latitude_Position),
          Image.Metadata.Image (Longitude_Postition));
    end Onsubmit_Metadata_Form_Enter_Callback;
+
    ---------------------------------------
    -- Onsubmit_Post_Form_Enter_Callback --
    ---------------------------------------
@@ -728,7 +728,6 @@ package body V2P.Web_Server is
       CID          : constant String := Parameters.Get (P, "CATEGORY");
       Forum        : constant String := Parameters.Get (P, "FORUM");
       Last_Name    : constant String := Context.Get_Value ("LAST_POST_NAME");
-
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
    begin
       if Login = "" and then CID = "" then
@@ -739,12 +738,14 @@ package body V2P.Web_Server is
                "ERROR"));
          --  ??? Adds an error message
          return;
+
       elsif Last_Name = Name then
          Templates.Insert
            (Translations,
             Templates.Assoc
               (Template_Defs.R_Block_Post_Form_Enter.ERROR_DUPLICATED,
                "ERROR_DUPLICATE_POST"));
+
       else
          declare
             Post_Id : constant String :=
