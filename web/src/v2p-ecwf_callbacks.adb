@@ -122,7 +122,7 @@ package body V2P.ECWF_Callbacks is
       Context      : access ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-   pragma Unreferenced (Request);
+      pragma Unreferenced (Request);
    begin
       if Context.Exist ("TID") then
          Templates.Insert
@@ -156,48 +156,6 @@ package body V2P.ECWF_Callbacks is
                Context.Get_Value ("TID")));
       end if;
    end New_Comment;
-
-   ---------------
-   -- New_Photo --
-   ---------------
-
-   procedure New_Photo
-     (Request      : in Status.Data;
-      Context      : access ECWF.Context.Object;
-      Translations : in out Templates.Translate_Set)
-   is
-      pragma Unreferenced (Request, Context, Translations);
-   begin
-      null;
-   end New_Photo;
-
-   --------------
-   -- New_Post --
-   --------------
-
-   procedure New_Post
-     (Request      : in     Status.Data;
-      Context      : access ECWF.Context.Object;
-      Translations : in out Templates.Translate_Set)
-   is
-      pragma Unreferenced (Request, Context, Translations);
-   begin
-      null;
-   end New_Post;
-
-   -----------------
-   -- Quick_Login --
-   -----------------
-
-   procedure Quick_Login
-     (Request      : in     Status.Data;
-      Context      : access ECWF.Context.Object;
-      Translations : in out Templates.Translate_Set)
-   is
-      pragma Unreferenced (Request, Context, Translations);
-   begin
-      null;
-   end Quick_Login;
 
    ----------------------
    -- User_Thread_List --
