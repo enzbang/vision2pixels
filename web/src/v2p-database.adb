@@ -23,6 +23,7 @@ with Ada.Directories;
 with Ada.Exceptions;
 with Ada.Task_Attributes;
 with Ada.Strings.Unbounded;
+with Ada.Text_IO;
 
 with DB;
 with Settings;
@@ -681,10 +682,10 @@ package body V2P.Database is
       Connect (DBH);
 
       Select_Stmt := Threads_Ordered_Select
-        (Fid => Fid,
-         User => User,
-         From => From,
-         Filter => Filter,
+        (Fid       => Fid,
+         User      => User,
+         From      => From,
+         Filter    => Filter,
          Order_Dir => Order_Dir);
 
       if Filter = Fifty_Messages then
@@ -724,8 +725,7 @@ package body V2P.Database is
       Iter.End_Select;
 
       Templates.Insert
-        (Set, Templates.Assoc
-           (Block_Forum_Threads.THUMB_SOURCE, Thumb));
+        (Set, Templates.Assoc (Block_Forum_Threads.THUMB_SOURCE, Thumb));
 
       Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.TID, Id));
       Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.NAME, Name));
@@ -1175,8 +1175,7 @@ package body V2P.Database is
          --  Anonymous login
 
          Select_Stmt := Select_Stmt & SQL_Select & SQL_From
-           & SQL_Where
-           & " and category.forum_id = " & Q (Fid);
+           & SQL_Where & " and category.forum_id = " & Q (Fid);
       end if;
 
       --  Add filtering into the select statement
@@ -1198,15 +1197,15 @@ package body V2P.Database is
               & Ordering;
 
          when Fifty_Messages =>
-            Select_Stmt := Select_Stmt
-              & Ordering;
+            Select_Stmt := Select_Stmt & Ordering;
+
             if Limit = 0 then
                Select_Stmt := Select_Stmt
                  & " limit 50 offset" & Positive'Image (From);
             end if;
+
          when All_Messages =>
-            Select_Stmt := Select_Stmt
-              & Ordering;
+            Select_Stmt := Select_Stmt & Ordering;
       end case;
 
       if Limit /= 0 then

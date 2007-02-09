@@ -1,7 +1,7 @@
 ###########################################################################
 #                              Vision2Pixels
 #
-#                            Copyright (C) 2006
+#                         Copyright (C) 2006-2007
 #                       Pascal Obry - Olivier Ramonat
 #
 #   This library is free software; you can redistribute it and/or modify
@@ -70,6 +70,9 @@ check_tests:
 	if [ `grep 0 $(LOG) | wc -l` != 6 ]; then \
 		echo "NOk, some tests have failed"; \
 		false; \
+	else \
+		echo "Ok, all tests have passed"; \
+		true; \
 	fi;
 
 runtests: init_tests $(MODULES_RUNTESTS) check_tests

@@ -66,17 +66,17 @@ package V2P.ECWF_Callbacks is
    procedure New_Photo
      (Request      : in Status.Data;
       Context      : access ECWF.Context.Object;
-      Translations : in out Templates.Translate_Set);
+      Translations : in out Templates.Translate_Set) is null;
 
    procedure New_Post
      (Request      : in     Status.Data;
       Context      : access ECWF.Context.Object;
-      Translations : in out Templates.Translate_Set);
+      Translations : in out Templates.Translate_Set) is null;
 
    procedure Quick_Login
      (Request      : in     Status.Data;
       Context      : access ECWF.Context.Object;
-      Translations : in out Templates.Translate_Set);
+      Translations : in out Templates.Translate_Set) is null;
 
    procedure User_Thread_List
      (Request      : in     Status.Data;
