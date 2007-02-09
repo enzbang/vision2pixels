@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                             --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -21,6 +21,8 @@
 
 with Ada.Strings.Fixed;
 with Ada.Text_IO;
+
+with GNAT.Regpat;
 
 with AUnit.Assertions; use AUnit.Assertions;
 with AWS.Utils;
@@ -99,7 +101,7 @@ package body Web_Tests is
 
       for K in Word'Range loop
          declare
-            W : constant String := Encode (Get (Word, K));
+            W : constant String := Get (Word, K);
          begin
             Tmp := Index (Slice (E_Page, P, Len), W);
 
@@ -133,44 +135,6 @@ package body Web_Tests is
       Assert (Status, Message);
    end Check;
 
-   ------------
-   -- Encode --
-   ------------
-
-   function Encode (Str : in String) return String is
-      C_Inf  : constant Natural := Character'Pos ('<');
-      C_Sup  : constant Natural := Character'Pos ('>');
-      C_And  : constant Natural := Character'Pos ('&');
-
-      Result : String (1 .. Str'Length * 6);
-      N      : Natural := 0;
-      Code   : Natural;
-   begin
-      for K in Str'Range loop
-         Code := Character'Pos (Str (K));
-
-         if Code in 32 .. 127
-           and then Code /= C_Inf and then Code /= C_Sup and then Code /= C_And
-         then
-            N := N + 1;
-            Result (N) := Str (K);
-
-         else
-            declare
-               I_Code : constant String := AWS.Utils.Image (Code);
-            begin
-               N := N + 1;
-               Result (N .. N + 1) := "&#";
-               Result (N + 2 .. N + I_Code'Length + 1) := I_Code;
-               Result (N + I_Code'Length + 2) := ';';
-               N := N + I_Code'Length + 2;
-            end;
-         end if;
-      end loop;
-
-      return Result (1 .. N);
-   end Encode;
-
    ---------
    -- Get --
    ---------
@@ -182,6 +146,22 @@ package body Web_Tests is
          return W (W'First + 5 .. W'Last);
       else
          return W;
+      end if;
+   end Get;
+
+   function Get
+     (Page, Regpat : in String; Index : in Positive) return String
+   is
+      use GNAT.Regpat;
+      R_Context : constant Pattern_Matcher := Compile (Regpat);
+      Matches   : Match_Array (0 .. 10);
+   begin
+      Match (R_Context, Page, Matches);
+
+      if Matches (Index) = No_Match then
+         return "";
+      else
+         return Page (Matches (Index).First .. Matches (Index).Last);
       end if;
    end Get;
 
@@ -214,41 +194,41 @@ package body Web_Tests is
 
 begin
    Coding_Rules :=
-     ((+"&eacute;", +Encode ("é")),
-      (+"&egrave;", +Encode ("è")),
-      (+"&ecirc;", +Encode ("ê")),
-      (+"&euml;", +Encode ("ë")),
+     ((+"&eacute;", +"é"),
+      (+"&egrave;", +"è"),
+      (+"&ecirc;", +"ê"),
+      (+"&euml;", +"ë"),
 
       (+"&aacute;", +"&#225;"),
-      (+"&agrave;", +Encode ("à")),
-      (+"&acirc;", +Encode ("â")),
+      (+"&agrave;", +"à"),
+      (+"&acirc;", +"â"),
       (+"&atilde;", +"&#227;"),
-      (+"&auml;", +Encode ("ä")),
+      (+"&auml;", +"ä"),
 
       (+"&iacute;", +"&#237;"),
       (+"&igrave;", +"&#236;"),
-      (+"&icirc;", +Encode ("î")),
-      (+"&iuml;", +Encode ("ï")),
+      (+"&icirc;", +"î"),
+      (+"&iuml;", +"ï"),
 
       (+"&oacute;", +"&#243;"),
       (+"&ograve;", +"&#242;"),
-      (+"&ocirc;", +Encode ("ô")),
+      (+"&ocirc;", +"ô"),
       (+"&otilde;", +"&#245;"),
-      (+"&ouml;", +Encode ("ö")),
+      (+"&ouml;", +"ö"),
 
       (+"&uacute;", +"&#250;"),
-      (+"&ugrave;", +Encode ("ù")),
-      (+"&ucirc;", +Encode ("û")),
-      (+"&uuml;", +Encode ("ü")),
+      (+"&ugrave;", +"ù"),
+      (+"&ucirc;", +"û"),
+      (+"&uuml;", +"ü"),
 
-      (+"&ccedil;", +Encode ("ç")),
+      (+"&ccedil;", +"ç"),
       (+"&ntilde;", +"&#241;"),
       (+"&aelig;", +"&#230;"),
-      (+"&lt;", +Encode ("<")),
-      (+"&gt;", +Encode (">")),
-      (+"&amp;", +Encode ("&")),
-      (+"&apos;", +Encode ("'")),
-      (+"&quot;", +Encode ("""")));
+      (+"&lt;", +"<"),
+      (+"&gt;", +">"),
+      (+"&amp;", +"&"),
+      (+"&apos;", +"'"),
+      (+"&quot;", +""""));
 
    Text_IO.Create (Log_File, Text_IO.Out_File, "web_tests.log");
 end Web_Tests;

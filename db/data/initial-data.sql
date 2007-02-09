@@ -33,131 +33,130 @@ create trigger update_comment_counter insert on comment
 --  Post comments
 
 INSERT INTO post
-    VALUES(54, 'un camion', 1, 'commentaire du camion', 2, datetime(current_timestamp, '-2 days'), NULL, 1, 0, 0);
+    VALUES(54, 'un camion', 1, 'commentaire du camion', 2, datetime(current_timestamp, '-2.0010 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(55, 'Cheminées', 2, 'commentaire pour cheminées', 2, datetime(current_timestamp, '-2 days'), NULL, 1, 0, 0);
+   VALUES(55, 'Cheminées', 2, 'commentaire pour cheminées', 2, datetime(current_timestamp, '-2.0009 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(56, 'Manger une fraise', 3, 'commentaire pour manger une fraise', 1, datetime(current_timestamp, '-2 days'), NULL, 1, 0, 0);
+   VALUES(56, 'Manger une fraise', 3, 'commentaire pour manger une fraise', 1, datetime(current_timestamp, '-2.0008 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(57, 'Ponton', 4, 'commentaire pour ponton', 2, datetime(current_timestamp, '-2 days'), NULL, 1, 0, 0);
+   VALUES(57, 'Ponton', 4, 'commentaire pour ponton', 2, datetime(current_timestamp, '-2.0007 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(58, 'By night', 5, 'commentaire pour by night', 2, datetime(current_timestamp, '-2 days'), NULL, 1, 0, 0);
+   VALUES(58, 'By night', 5, 'commentaire pour by night', 2, datetime(current_timestamp, '-2.0006 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(59, 'Blé', 6, 'commentaire pour blé', 2, datetime(current_timestamp, '-2 days'), NULL, 1, 0, 0);
+   VALUES(59, 'Blé', 6, 'commentaire pour blé', 2, datetime(current_timestamp, '-2.0005 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(60, 'Ribik', 7, 'commentaire pour rubik', 4, datetime(current_timestamp, '-2 days'), NULL, 1, 0, 0);
+   VALUES(60, 'Ribik', 7, 'commentaire pour rubik', 4, datetime(current_timestamp, '-2.0004 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(61, 'Stylo', 8, 'commentaire pour stylo', 4, datetime(current_timestamp, '-2 days'), NULL, 1, 0, 0);
+   VALUES(61, 'Stylo', 8, 'commentaire pour stylo', 4, datetime(current_timestamp, '-2.0003 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(62, 'Fire', 9, 'commentaire pour fire', 4, datetime(current_timestamp, '-2 days'), NULL, 1, 0, 0);
+   VALUES(62, 'Fire', 9, 'commentaire pour fire', 4, datetime(current_timestamp, '-2.0002 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(63, 'Fleurs', 10, 'commentaire pour fleurs', 3, datetime(current_timestamp, '-2 days'), NULL, 1, 0, 0);
+   VALUES(63, 'Fleurs', 10, 'commentaire pour fleurs', 3, datetime(current_timestamp, '-2.0001 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(64, 'Chaises', 11, 'commentaire pour chaises', 4, datetime(current_timestamp, '-5 days'), NULL, 1, 0, 0);
+   VALUES(64, 'Chaises', 11, 'commentaire pour chaises', 4, datetime(current_timestamp, '-5.0010 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(65, 'Kiwi', 12, 'commentaire pour kiwi', 4, datetime(current_timestamp, '-5 days'), NULL, 1, 0, 0);
+   VALUES(65, 'Kiwi', 12, 'commentaire pour kiwi', 4, datetime(current_timestamp, '-5.0009 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(66, 'La Grande Roue', 13, 'commentaire la grande roue', 5, datetime(current_timestamp, '-5 days'), NULL, 1, 0, 0);
+   VALUES(66, 'La Grande Roue', 13, 'commentaire la grande roue', 5, datetime(current_timestamp, '-5.0008 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(67, 'Un soleil ?', 14, 'commentaire un soleil ?', 5, datetime(current_timestamp, '-5 days'), NULL, 1, 0, 0);
+   VALUES(67, 'Un soleil ?', 14, 'commentaire un soleil ?', 5, datetime(current_timestamp, '-5.0007 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(68, 'Eglise', 15, 'commentaire pour église', 2, datetime(current_timestamp, '-7 days'), NULL, 1, 0, 0);
+   VALUES(68, 'Eglise', 15, 'commentaire pour église', 2, datetime(current_timestamp, '-7.0050 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(69, '4', 16, 'commentaire pour 4', 5, datetime(current_timestamp, '-7 days'), NULL, 1, 0, 0);
+   VALUES(69, '4', 16, 'commentaire pour 4', 5, datetime(current_timestamp, '-7.0049 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(70, 'Livre', 17, 'commentaire pour livre', 4, datetime(current_timestamp, '-7 days'), NULL, 1, 0, 0);
+   VALUES(70, 'Livre', 17, 'commentaire pour livre', 4, datetime(current_timestamp, '-7.0048 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(71, 'Figée', 18, 'commentaire pour figée', 4, datetime(current_timestamp, '-7 days'), NULL, 1, 0, 0);
+   VALUES(71, 'Figée', 18, 'commentaire pour figée', 4, datetime(current_timestamp, '-7.0047 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(72, 'Lock', 19, 'commentaire pour lock', 4, datetime(current_timestamp, '-7 days'), NULL, 1, 0, 0);
+   VALUES(72, 'Lock', 19, 'commentaire pour lock', 4, datetime(current_timestamp, '-7.0046 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(73, 'Manque d''eau', 20, 'commentaire pour manque d''eau', 2, datetime(current_timestamp, '-7 days'), NULL, 1, 0, 0);
+   VALUES(73, 'Manque d''eau', 20, 'commentaire pour manque d''eau', 2, datetime(current_timestamp, '-7.0045 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(74, 'Violon', 21, 'commentaire pour violon', 4, datetime(current_timestamp, '-7 days'), NULL, 1, 0, 0);
+   VALUES(74, 'Violon', 21, 'commentaire pour violon', 4, datetime(current_timestamp, '-7.0044 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(75, 'Parlons ensemble', 22, 'commentaire pour parlons ensemble', 4, datetime(current_timestamp, '-7 days'), NULL, 1, 0, 0);
+   VALUES(75, 'Parlons ensemble', 22, 'commentaire pour parlons ensemble', 4, datetime(current_timestamp, '-7.0043 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(76, 'Couché de soleil', 23, 'commentaire pour couché de soleil', 2, datetime(current_timestamp, '-8 days'), NULL, 1, 0, 0);
+   VALUES(76, 'Couché de soleil', 23, 'commentaire pour couché de soleil', 2, datetime(current_timestamp, '-8.0050 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(77, 'Oeuf', 24, 'commentaire pour un oeuf', 4, datetime(current_timestamp, '-8 days'), NULL, 1, 0, 0);
+   VALUES(77, 'Oeuf', 24, 'commentaire pour un oeuf', 4, datetime(current_timestamp, '-8.0049 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(78, 'Envie de sport', 25, 'commentaire pour envie de sport', 2, datetime(current_timestamp, '-8 days'), NULL, 1, 0, 0);
+   VALUES(78, 'Envie de sport', 25, 'commentaire pour envie de sport', 2, datetime(current_timestamp, '-8.0048 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(79, 'Entre deux eaux', 26, 'commentaire pour entre deux eaux', 3, datetime(current_timestamp, '-8 days'), NULL, 1, 0, 0);
+   VALUES(79, 'Entre deux eaux', 26, 'commentaire pour entre deux eaux', 3, datetime(current_timestamp, '-8.0047 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(80, 'Ca passe par là', 27, 'commentaire pour ça passe par là', 5, datetime(current_timestamp, '-8 days'), NULL, 1, 0, 0);
+   VALUES(80, 'Ca passe par là', 27, 'commentaire pour ça passe par là', 5, datetime(current_timestamp, '-8.0046 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(81, 'Liens', 28, 'commentaire pour liens', 4, datetime(current_timestamp, '-8 days'), NULL, 1, 0, 0);
+   VALUES(81, 'Liens', 28, 'commentaire pour liens', 4, datetime(current_timestamp, '-8.0045 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(82, 'Même pas dans mes cauchemars', 29, 'commentaire pour même pas dans mes cauchemars', 3, datetime(current_timestamp, '-8 days'), NULL, 1, 0, 0);
+   VALUES(82, 'Même pas dans mes cauchemars', 29, 'commentaire pour même pas dans mes cauchemars', 3, datetime(current_timestamp, '-8.0044 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(83, 'Belles dents', 30, 'commentaire pour belles dents', 3, datetime(current_timestamp, '-8 days'), NULL, 1, 0, 0);
+   VALUES(83, 'Belles dents', 30, 'commentaire pour belles dents', 3, datetime(current_timestamp, '-8.0043 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(84, 'Perdu ?', 31, 'commentaire pour perdu', 3, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
+   VALUES(84, 'Perdu ?', 31, 'commentaire pour perdu', 3, datetime(current_timestamp, '-1.0060 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(85, 'Port', 32, 'commentaire pour port', 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
+   VALUES(85, 'Port', 32, 'commentaire pour port', 2, datetime(current_timestamp, '-1.0059 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(86, 'Notre guide', 33, 'commentaire pour notre guide', 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
+   VALUES(86, 'Notre guide', 33, 'commentaire pour notre guide', 2, datetime(current_timestamp, '-1.0058 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(87, 'Désséché', 34, 'commentaire pour désséché', 5, datetime(current_timestamp), NULL, 1, 0, 0);
+   VALUES(87, 'Désséché', 34, 'commentaire pour désséché', 5, datetime(current_timestamp, '-0.0050 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(88, 'On ne pousse pas', 35, 'commentaire pour on ne pousse pas', 2, datetime(current_timestamp), NULL, 1, 0, 0);
+   VALUES(88, 'On ne pousse pas', 35, 'commentaire pour on ne pousse pas', 2, datetime(current_timestamp, '-0.0049 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(89, 'Invasion', 36, 'commentaire pour invasion', 1, datetime(current_timestamp), NULL, 1, 0, 0);
+   VALUES(89, 'Invasion', 36, 'commentaire pour invasion', 1, datetime(current_timestamp, '-0.0048 days'), NULL, 1, 0, 0);
 INSERT INTO post
-   VALUES(90, 'Haut en couleurs', 37, 'commentaire pour haut en couleurs', 1, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(91, 'Bus', 38, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 1, 0);
-INSERT INTO "post" VALUES(92, 'Tour E', 39, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(93, 'Mine de rien', 40, NULL, 3, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(94, 'Cabane ', 41, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(95, 'Saturne', 42, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(96, 'Changement de direction', 43, NULL, 5, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(97, 'Home sweet home', 44, NULL, 5, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(98, 'Feuille', 45, NULL, 3, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(99, 'United color of', 46, NULL, 3, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(100, 'Abstract', 47, NULL, 5, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(101, 'Batracien', 48, NULL, 3, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(102, 'Campagne', 49, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(103, 'Rouages', 50, NULL, 3, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(104, 'Without you I''m nothing', 51, NULL, 3, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(105, 'Le train en marche', 52, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(106, 'A quai', 53, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(107, 'L''Europe', 54, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(108, 'Motif', 55, NULL, 5, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(109, 'Balle', 56, NULL, 3, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(110, 'Neige', 57, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(111, 'Espagne', 58, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(112, 'Quel ciel !', 59, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(113, 'Pas à pas', 60, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(114, 'H2O', 61, NULL, 5, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(115, 'Touches', 62, NULL, 5, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(116, 'GDF', 63, NULL, 5, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(117, 'Gourmandises', 64, NULL, 5, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(118, 'London', 65, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(119, 'On the road, zooming again', 66, NULL, 5, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(120, 'Quel gland  !', 67, NULL, 4, datetime(current_timestamp, '-1 days'), NULL, 1, 1, 0);
-INSERT INTO "post" VALUES(121, 'Cascades', 68, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(122, 'Ecologie ?', 69, NULL, 5, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(123, 'While My Guitar Gently Weeps', 70, NULL, 3, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(124, 'Parapentiste', 71, NULL, 1, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(125, 'En chemin', 72, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(126, 'Smoking... No smoking', 73, NULL, 3, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(127, 'Vert', 74, NULL, 4, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(128, 'Spip', 75, NULL, 3, datetime(current_timestamp, '-1 days'), NULL, 1, 1, 0);
-INSERT INTO "post" VALUES(129, 'This way', 76, NULL, 5, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(130, 'Bridge', 77, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(131, 'Road', 78, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(132, 'En troupeau', 79, NULL, 3, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(133, 'Arc en ciel', 80, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(134, 'Yoda', 81, NULL, 1, datetime(current_timestamp, '-1 days'), NULL, 1, 1, 0);
-INSERT INTO "post" VALUES(135, 'Côtes', 82, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(136, 'Keys', 83, NULL, 5, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(137, 'Un éléphant ça trompe...', 84, NULL, 3, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(138, 'Ah Parisssse', 85, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(139, 'Coucher de soleil', 86, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(140, 'Rides', 87, NULL, 4, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-INSERT INTO "post" VALUES(141, 'Hissez haut...', 88, NULL, 2, datetime(current_timestamp, '-1 days'), NULL, 1, 0, 0);
-
+   VALUES(90, 'Haut en couleurs', 37, 'commentaire pour haut en couleurs', 1, datetime(current_timestamp, '-1.0050 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(91, 'Bus', 38, NULL, 2, datetime(current_timestamp, '-1.0049 days'), NULL, 1, 1, 0);
+INSERT INTO "post" VALUES(92, 'Tour E', 39, NULL, 2, datetime(current_timestamp, '-1.0048 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(93, 'Mine de rien', 40, NULL, 3, datetime(current_timestamp, '-1.0047 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(94, 'Cabane ', 41, NULL, 2, datetime(current_timestamp, '-1.0046 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(95, 'Saturne', 42, NULL, 2, datetime(current_timestamp, '-1.0045 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(96, 'Changement de direction', 43, NULL, 5, datetime(current_timestamp, '-1.0044 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(97, 'Home sweet home', 44, NULL, 5, datetime(current_timestamp, '-1.0043 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(98, 'Feuille', 45, NULL, 3, datetime(current_timestamp, '-1.0042 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(99, 'United color of', 46, NULL, 3, datetime(current_timestamp, '-1.0041 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(100, 'Abstract', 47, NULL, 5, datetime(current_timestamp, '-1.0040 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(101, 'Batracien', 48, NULL, 3, datetime(current_timestamp, '-1.0039 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(102, 'Campagne', 49, NULL, 2, datetime(current_timestamp, '-1.0038 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(103, 'Rouages', 50, NULL, 3, datetime(current_timestamp, '-1.0037 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(104, 'Without you I''m nothing', 51, NULL, 3, datetime(current_timestamp, '-1.0036 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(105, 'Le train en marche', 52, NULL, 2, datetime(current_timestamp, '-1.0035 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(106, 'A quai', 53, NULL, 2, datetime(current_timestamp, '-1.0034 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(107, 'L''Europe', 54, NULL, 2, datetime(current_timestamp, '-1.0033 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(108, 'Motif', 55, NULL, 5, datetime(current_timestamp, '-1.0032 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(109, 'Balle', 56, NULL, 3, datetime(current_timestamp, '-1.0031 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(110, 'Neige', 57, NULL, 2, datetime(current_timestamp, '-1.0030 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(111, 'Espagne', 58, NULL, 2, datetime(current_timestamp, '-1.0029 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(112, 'Quel ciel !', 59, NULL, 2, datetime(current_timestamp, '-1.0028 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(113, 'Pas à pas', 60, NULL, 2, datetime(current_timestamp, '-1.0027 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(114, 'H2O', 61, NULL, 5, datetime(current_timestamp, '-1.0026 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(115, 'Touches', 62, NULL, 5, datetime(current_timestamp, '-1.0025 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(116, 'GDF', 63, NULL, 5, datetime(current_timestamp, '-1.0024 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(117, 'Gourmandises', 64, NULL, 5, datetime(current_timestamp, '-1.0023 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(118, 'London', 65, NULL, 2, datetime(current_timestamp, '-1.0022 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(119, 'On the road, zooming again', 66, NULL, 5, datetime(current_timestamp, '-1.0021 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(120, 'Quel gland  !', 67, NULL, 4, datetime(current_timestamp, '-1.0020 days'), NULL, 1, 1, 0);
+INSERT INTO "post" VALUES(121, 'Cascades', 68, NULL, 2, datetime(current_timestamp, '-1.0019 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(122, 'Ecologie ?', 69, NULL, 5, datetime(current_timestamp, '-1.0018 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(123, 'While My Guitar Gently Weeps', 70, NULL, 3, datetime(current_timestamp, '-1.0017 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(124, 'Parapentiste', 71, NULL, 1, datetime(current_timestamp, '-1.0016 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(125, 'En chemin', 72, NULL, 2, datetime(current_timestamp, '-1.0015 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(126, 'Smoking... No smoking', 73, NULL, 3, datetime(current_timestamp, '-1.0014 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(127, 'Vert', 74, NULL, 4, datetime(current_timestamp, '-1.0013 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(128, 'Spip', 75, NULL, 3, datetime(current_timestamp, '-1.0012 days'), NULL, 1, 1, 0);
+INSERT INTO "post" VALUES(129, 'This way', 76, NULL, 5, datetime(current_timestamp, '-1.0011 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(130, 'Bridge', 77, NULL, 2, datetime(current_timestamp, '-1.0010 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(131, 'Road', 78, NULL, 2, datetime(current_timestamp, '-1.0009 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(132, 'En troupeau', 79, NULL, 3, datetime(current_timestamp, '-1.0008 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(133, 'Arc en ciel', 80, NULL, 2, datetime(current_timestamp, '-1.0007 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(134, 'Yoda', 81, NULL, 1, datetime(current_timestamp, '-1.0006 days'), NULL, 1, 1, 0);
+INSERT INTO "post" VALUES(135, 'Côtes', 82, NULL, 2, datetime(current_timestamp, '-1.0005 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(136, 'Keys', 83, NULL, 5, datetime(current_timestamp, '-1.0004 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(137, 'Un éléphant ça trompe...', 84, NULL, 3, datetime(current_timestamp, '-1.0003 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(138, 'Ah Parisssse', 85, NULL, 2, datetime(current_timestamp, '-1.0002 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(139, 'Coucher de soleil', 86, NULL, 2, datetime(current_timestamp, '-1.0001 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(140, 'Rides', 87, NULL, 4, datetime(current_timestamp, '-1.0000 days'), NULL, 1, 0, 0);
+INSERT INTO "post" VALUES(141, 'Hissez haut...', 88, NULL, 2, datetime(current_timestamp, '-1.0100 days'), NULL, 1, 0, 0);
 
 --  User post
 
@@ -377,7 +376,6 @@ INSERT INTO "photo" VALUES(85, '2007/Forum photographies/Paysage/200702012202-47
 INSERT INTO "photo" VALUES(86, '2007/Forum photographies/Paysage/200702012202-48.conv_SPTLS046.jpg', 529, 800, 49362);
 INSERT INTO "photo" VALUES(87, '2007/Forum photographies/Nature morte/200702012202-49.conv_TEX009.jpg', 800, 533, 78529);
 INSERT INTO "photo" VALUES(88, '2007/Forum photographies/Paysage/200702012203-50.conv_TRSPT066.jpg', 641, 800, 54089);
-
 
 --  Comments
 

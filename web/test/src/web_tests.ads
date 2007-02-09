@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                             --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -31,15 +31,15 @@ package Web_Tests is
    Port : constant := 8080;
    --  v2p web server port
 
-   function Encode (Str : in String) return String;
-   --  Encodes Str using HTML &xx; encoding. This is required for all strings
-   --  for proper display with any browser encoding.
-
    type Word_Set is array (Positive range <>) of Unbounded_String;
 
    procedure Check (Page : in String; Word : in Word_Set; Message : in String);
    --  Does nothing if the set of Word appears (in the right order) in Page.
    --  Otherwise it raises an AUnit assertion and log the web page.
+
+   function Get (Page, Regpat : in String; Index : in Positive) return String;
+   --  Returns the Index-th match for regpat in Page or the null string if not
+   --  found.
 
    function "+"
      (Str : in String)
