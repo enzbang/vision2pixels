@@ -35,3 +35,4 @@
 @@SET@@ BABEL_ERROR_DUPLICATED="Commentaire déjà envoyé"
 @@SET@@ BABEL_ERROR_POST_DUPLICATED="Post déjà envoyé"
 @@SET@@ BABEL_SHOW_METADATA="Voir les metadonnées"
+@@SET@@ BABEL_EDIT_METADATA="Éditer les metadonnées"

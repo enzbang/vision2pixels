@@ -22,7 +22,6 @@
 with Ada.Directories;
 with Ada.Exceptions;
 with Ada.Task_Attributes;
-with Ada.Text_IO;
 with Ada.Strings.Unbounded;
 
 with DB;
@@ -856,7 +855,6 @@ package body V2P.Database is
                    & Q (User_Login) & ',' & Q (Anonymous) & ',' & Q (Comment)
                    & ',' & Q (Pid) & ')';
       begin
-         Ada.Text_IO.Put_Line (SQL);
          DBH.Handle.Execute (SQL);
       end Insert_Table_Comment;
 
@@ -871,7 +869,6 @@ package body V2P.Database is
                  "insert into post_comment values ("
                    & post_Id & "," & Comment_Id & ')';
       begin
-         Ada.Text_IO.Put_Line (SQL);
          DBH.Handle.Execute (SQL);
       end Insert_Table_Post_Comment;
 
@@ -1052,7 +1049,7 @@ package body V2P.Database is
       if Pid /= "" then
          Insert_Table_Post (Name, Category_Id, Comment, Pid);
       else
-         Insert_Table_Post (Name, Category_Id, Comment, "Null");
+         Insert_Table_Post (Name, Category_Id, Comment, "NULL");
       end if;
 
       declare

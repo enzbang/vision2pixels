@@ -17,11 +17,15 @@
   <form enctype="multipart/form-data" id="metadata_post"
          action="#" method="POST">
     <fieldset>
-      <legend>@_BABEL_NEW_PHOTO_@</legend>
-      <p>
-        <input type="hidden" name="PID" value="@_PID_@"/>
-        <input type="entry" name="latitude" id="insert_latitude"/>
-        <input type="entry" name="longitude" id="insert_longitude"/>
+      <legend>@_BABEL_METADATA_@</legend>
+        <p>
+          <label for="latitude">latitude</label>
+          <input id="latitude" name="latitude" type="entry"/>
+        </p>
+        <p>
+          <label for="longitude">longitude</label>
+          <input id="longitude" name="longitude" type="entry"/>
+        </p>
         <input name="ENTER" id="metadata_form_enter" type="submit" value="OK"/>
       </p>
     </fieldset>
