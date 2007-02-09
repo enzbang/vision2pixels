@@ -410,11 +410,12 @@
    }
 
    // Add option_value/option_content into the given select
-   function addToSelect (select_id, option_value, option_content)
+   function addToSelect (select_id, option_value, option_content, option_class)
    {
        // Create a new option
        var new_option = document.createElement("option");
        new_option.value = option_value;
+       new_option.className = option_class;
        var content = document.createTextNode(option_content);
        new_option.appendChild(content);
 

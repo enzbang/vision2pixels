@@ -736,7 +736,7 @@ package body V2P.Web_Server is
            (Translations,
             Templates.Assoc
               (Template_Defs.R_Block_Post_Form_Enter.ERROR,
-               "ERROR"));
+               "POST SUBMIT ERROR"));
          --  ??? Adds an error message
          return;
       elsif Last_Name = Name then
@@ -751,6 +751,11 @@ package body V2P.Web_Server is
               Database.Insert_Post (Login, CID, Name, Comment_Wiki, Pid);
          begin
             if Post_Id /= "" then
+
+               --  Set new context TID (needed by
+               --  Onsubmit_Metadata_Form_Enter_Callback)
+
+               Context.Set_Value ("TID", Post_Id);
                Context.Set_Value ("LAST_POST_NAME", Name);
 
                Templates.Insert
@@ -759,8 +764,18 @@ package body V2P.Web_Server is
                     (Template_Defs.R_Block_Post_Form_Enter.URL,
                      Template_Defs.Forum_Entry.URL & "?FID=" & Forum
                      & "&amp;TID=" & Post_Id));
+            else
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc
+                    (Template_Defs.R_Block_Post_Form_Enter.ERROR,
+                     "DATABASE INSERT FAILED"));
             end if;
          end;
+      end if;
+      if Pid /= "" then
+         Onsubmit_Metadata_Form_Enter_Callback (Request, Context,
+                                                Translations);
       end if;
    end Onsubmit_Post_Form_Enter_Callback;
 

@@ -488,7 +488,47 @@ li.new {
 
 #show_new_photo_post {
     background:url(/css/img/list-add.gif);
-    background-position:right center;
+    background-position:left center;
     background-repeat:no-repeat;
-    padding: 10px 40px 10px 10px;
+    padding: 10px 10px 10px 40px;
+}
+
+body.forum_post_page fieldset {
+    position:relative;
+    width:100%;
+    padding:0;
+    background-color:transparent;
+    border:none;
+}
+
+body.forum_post_page legend {
+    display:none;
+}
+
+body.forum_post_page fieldset legend,
+body.forum_post_page fieldset p,
+body.forum_post_page fieldset select {
+    margin-left: 2em;
+}
+
+fieldset#new_post select#sel_forum_list {
+    margin-left:0pt;
+}
+
+input#post_form_enter {
+    float:right;
+    margin:10px;
+}
+body.forum_post_page h2 {
+    display:block;
+}
+
+body.forum_post_page input#metadata_form_enter
+{
+    display:none;
+}
+
+body.forum_post_page #form_container {
+    border:1px solid #292929;
+    background-color:white;
 }

@@ -6,6 +6,6 @@
 @@IF@@ @_LOGIN_@ = ""
   @_BABEL_LOGIN_REQUIRED_@
 @@ELSE@@
-  <div id="new_comment">@_LAZY_NEW_POST_@</div>
+  @_LAZY_NEW_POST_@
 @@END_IF@@
 @@INCLUDE@@ v2p_end.thtml

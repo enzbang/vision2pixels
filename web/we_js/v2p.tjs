@@ -4,6 +4,12 @@
     function updateThisThumbPreview () {
         var thumb = this.options[this.selectedIndex].style.backgroundImage;
         this.style.backgroundImage = thumb;
+        /* If a photo is selected, show photo metadata creation link */
+        if (this.selectedIndex != 0) {
+            Element.show($('new_post_add_metadata'));
+        } else {
+            Element.hide($('new_post_add_metadata'));
+        }
     }
 
 @@-- --------------------------------
@@ -13,6 +19,11 @@
         var element = $(element_id);
         var thumb = element.options[element.selectedIndex].style.backgroundImage;
         element.style.backgroundImage = thumb;
+        if (element.selectedIndex != 0) {
+            Element.show($('new_post_add_metadata'));
+        } else {
+            Element.hide($('new_post_add_metadata'));
+        }
     }
 
 @@-- --------------------------------
@@ -37,3 +48,60 @@
         var element = this.rel;
         Element.hide(element);
     }
+
+@@-- --------------------------------
+@@--  Gmaps
+
+     var map = null;
+     var geocoder = null;
+
+     function gmap_load() {
+         if (GBrowserIsCompatible()) {
+             map = new GMap2(document.getElementById("map"));
+             map.addControl(new GLargeMapControl());
+             map.addControl(new GScaleControl(),
+             new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(50, 50)));
+             map.addControl(new GOverviewMapControl());
+             map.addControl(new GMapTypeControl(),
+             new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(5, 5)));
+             map.enableDoubleClickZoom();
+             map.setCenter(new GLatLng(48.864236, 2.39791), 13);
+             geocoder = new GClientGeocoder();
+         }
+     }
+
+     function showAddress(address) {
+         if (geocoder) {
+             geocoder.getLatLng(
+             address,
+             function(point) {
+                 if (!point) {
+                     $('gmap_error').innerHTML = address + " not found";
+                 } else {
+                     map.setCenter(point, 13);
+                     $('latitude').value  = point.lat();
+                     $('longitude').value = point.lng();
+
+                     var marker = new GMarker(point,
+                                              {draggable: true,
+                                               title: "Drag me please"});
+                     GEvent.addListener(marker, "dragstart", function() {
+                         map.closeInfoWindow();
+                     });
+
+                     GEvent.addListener(marker, "dragend", function() {
+                         var thisPoint = marker.getPoint();
+                         map.setCenter(thisPoint);
+                         $('latitude').value  = thisPoint.lat();
+                         $('longitude').value = thisPoint.lng();
+                     });
+                     map.addOverlay(marker);
+                     map.addControl(new GLargeMapControl());
+                     marker.openInfoWindowHtml(address);
+                 }
+             }
+             );
+         }
+     }
+
+

@@ -1,42 +1,65 @@
 @@INCLUDE@@ babel.thtml
 @@-- HTTP_URL(/post_form_enter)
-<form enctype="multipart/form-data" id="post_form" action="#" method="POST">
-  <fieldset>
-    <legend>@_BABEL_NEW_POST_@</legend>
-    @@-- Is user logged
-    <div id="comment_login"><p>
-      @@IF@@ @_LOGIN_@ = ""
-        <input name="ANONYMOUS_USER" id="anonymous_user" type="entry"/>
-      @@END_IF@@
-    </p></div>
-    @@-- Is user in a specific forum
-    <p>@_LAZY_FORUM_LIST_SELECT_@
-      <select name="CATEGORY" id="sel_category"></select>
-      <input name="TID" id="TID" type="hidden" value="" />
-    </p>
-    <p id="title_name_input">
-      <label for="title_input">@_BABEL_POST_NAME_@</label>
-      <input name="NAME" id="title_input" type="entry" value=""/>
-    </p>
-    <p>
-      <label for id="comment_input">@_BABEL_ENTER_COMMENT_@</label>
-      <textarea name="COMMENT" size="100" id="comment_input"/></textarea>
-    </p>
 
-    @_LAZY_USER_TMP_PHOTO_SELECT_@
+<div id="form_container">
 
-    <p>
-      <a href="#" id="show_new_photo_post"
-         rel="post_new_photo_form">@_BABEL_ADD_NEW_PHOTO_@</a>
-    </p>
-    <p><input name="ENTER" id="post_form_enter" type="submit" value="OK"/></p>
-    <div id="post_error"></div>
-  </fieldset>
-</form>
+  <form enctype="multipart/form-data" id="basic_post_form" action="#"
+        method="POST" class="yui-gd">
+    <fieldset id="new_post">
+      <legend>@_BABEL_NEW_POST_@</legend>
+      @@-- Is user in a specific forum
 
-<div id="post_new_photo_form" style="display:none">@_LAZY_NEW_PHOTO_@</div>
+      <div class="yui-u first">
+        <h2>@_LAZY_USER_TMP_PHOTO_SELECT_@</h2>
+        <p id="new_post_add_metadata" style="display:none">
+          <a href="#" id="show_metadata_edition">@_BABEL_EDIT_METADATA_@</a>
+        </p>
+      </div>
+      <div class="yui-u">
+        <h2>@_BABEL_NEW_POST_@</h2>
+
+        <p>@_LAZY_FORUM_LIST_SELECT_@
+          <select name="CATEGORY" id="sel_category"></select>
+          <input name="TID" id="TID" type="hidden" value="" />
+        </p>
+        <p id="title_name_input">
+          <label for="title_input">@_BABEL_POST_NAME_@</label>
+          <input name="NAME" id="title_input" type="entry" value=""/>
+        </p>
+        <p>
+          <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
+          <textarea name="COMMENT" rows="3" cols="40" id="comment_input"></textarea>
+        </p>
+        <div id="post_error"></div>
+      </div>
+    </fieldset>
+  </form>
+
+  <div class="yui-gd">
+    <div class="yui-u first">
+      <p><a href="#" id="show_new_photo_post"
+            rel="post_new_photo_form">@_BABEL_ADD_NEW_PHOTO_@</a>
+      </p>
+      <div id="post_new_photo_form"
+           style="display:none">@_LAZY_NEW_PHOTO_@</div>
+    </div>
+    <div class="yui-u">
+      @_LAZY_METADATA_@
+
+      @@--  One form to rule them all
+
+      <form enctype="multipart/form-data" id="post_form" action="#"
+            method="POST">
+        <p><input name="ENTER" id="post_form_enter" type="submit"
+                  value="OK"/></p>
+      </form>
+      <p id="metadata_edition"></p>
+    </div>
+  </div>
+</div>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_forum_list, 4=>sel_forum_list)
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, post_form, 4=>post_form)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, post_form, 4=>basic_post_form, 5=>metadata_post)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, show_metadata_edition, 19=>/xml_show_metadata_edition.xml, 20=>gmap_load)
 @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_new_photo_post, show_rel)
 
