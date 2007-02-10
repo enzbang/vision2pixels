@@ -148,6 +148,7 @@ package @_PACKAGE_@ is
 
       procedure Register;
       --  Register lazy tags into the AWS's Web Block framework
+
    end Lazy;
 
 @@IF@@ @_SINGLE_FILE_@ = True

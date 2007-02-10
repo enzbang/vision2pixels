@@ -39,6 +39,18 @@ package body AWS.Services.ECWF.Registry is
    Internal_Context_Var : constant String := "=&= CTX_ECWF =&=";
    Context_Var          : constant String := "CTX_ECWF";
 
+   type Lazy_Handler is new Templates.Dynamic.Lazy_Tag with record
+      Request      : Status.Data;
+      --  Current request made to the server
+      Translations : Templates.Translate_Set;
+      --  Global translations table
+   end record;
+
+   overriding procedure Value
+     (Lazy_Tag     : not null access Lazy_Handler;
+      Var_Name     : in              String;
+      Translations : in out          Templates.Translate_Set);
+
    type Web_Object is record
       Content_Type : Unbounded_String;
       Template     : Unbounded_String;
@@ -55,7 +67,7 @@ package body AWS.Services.ECWF.Registry is
    WO_Map : Map;
 
    function Get_Context_Id
-     (Lazy_Tag : not null access Lazy_Handler) return Context.Id;
+     (Lazy_Tag : not null access Lazy_Handler'Class) return Context.Id;
    --  Get the proper context id for this request
 
    -----------
@@ -90,7 +102,7 @@ package body AWS.Services.ECWF.Registry is
    --------------------
 
    function Get_Context_Id
-     (Lazy_Tag : not null access Lazy_Handler) return Context.Id
+     (Lazy_Tag : not null access Lazy_Handler'Class) return Context.Id
    is
       use type Context.Id;
 
@@ -197,7 +209,8 @@ package body AWS.Services.ECWF.Registry is
             return (Element (Position).Content_Type,
                     Templates.Parse
                       (To_String (Element (Position).Template), T,
-                 Lazy_Tag => LT'Unchecked_Access));
+                 Lazy_Tag => LT'Unchecked_Access),
+              Templates.Null_Set);
          end;
       end if;
    end Parse;
@@ -233,7 +246,7 @@ package body AWS.Services.ECWF.Registry is
    -- Value --
    -----------
 
-   procedure Value
+   overriding procedure Value
      (Lazy_Tag     : not null access Lazy_Handler;
       Var_Name     : in              String;
       Translations : in out          Templates.Translate_Set)
