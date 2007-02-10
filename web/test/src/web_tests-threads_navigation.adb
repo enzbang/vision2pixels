@@ -411,6 +411,25 @@ package body Web_Tests.Threads_Navigation is
           +"TID=94", +"Cabane ", +"Paysage",
           not ("TID=93"), +"</ul>]]", +"</response>"),
          "wrong set of images in thread FID=1 (fifty messages)");
+
+      --  Check that the filter is kept into the context
+
+      Client.Get
+        (Connection,
+         Result,
+         URI => Forum_Threads.Ajax.onchange_sel_filter_forum &
+         "?sel_filter_forum=TODAY&" & URL_Context);
+
+      Client.Get
+        (Connection, Result, URI => "/forum/threads?FID=1&" & URL_Context);
+
+      Check
+        (Response.Message_Body (Result),
+         (+"TID=89", +"Invasion", +"Portrait",
+          +"TID=88", +"On ne pousse pas", +"Paysage",
+          +"TID=87", +"Désséché", +"Abstrait",
+          not ("TID=140"), +"</ul></div></div>"),
+         "Filter context not properly restored");
    end List_Forum_Threads;
 
    ---------------

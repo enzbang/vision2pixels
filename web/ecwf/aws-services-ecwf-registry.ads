@@ -40,18 +40,15 @@ package AWS.Services.ECWF.Registry is
    use Ada.Strings.Unbounded;
 
    type Page is record
-      Content_Type : Unbounded_String;
       Content      : Unbounded_String;
+      --  Rendered page
+      Content_Type : Unbounded_String;
+      --  The page's content type
+      Set          : Templates.Translate_Set;
+      --  The translate set used to render the page
    end record;
 
    No_Page : constant Page;
-
-   type Lazy_Handler is new Templates.Dynamic.Lazy_Tag with record
-      Request      : Status.Data;
-      --  Current request made to the server
-      Translations : Templates.Translate_Set;
-      --  Global translations table
-   end record;
 
    procedure Register
      (Key          : in String;
@@ -82,12 +79,9 @@ package AWS.Services.ECWF.Registry is
 
 private
 
-   overriding procedure Value
-     (Lazy_Tag     : not null access Lazy_Handler;
-      Var_Name     : in              String;
-      Translations : in out          Templates.Translate_Set);
-
    No_Page : constant Page :=
-               (Null_Unbounded_String, Null_Unbounded_String);
+               (Null_Unbounded_String,
+                Null_Unbounded_String,
+                Templates.Null_Set);
 
 end AWS.Services.ECWF.Registry;
