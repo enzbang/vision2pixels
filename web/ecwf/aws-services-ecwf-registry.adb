@@ -206,11 +206,11 @@ package body AWS.Services.ECWF.Registry is
 
             Templates.Insert (T, Translations);
 
-            return (Element (Position).Content_Type,
-                    Templates.Parse
+            return (Content_Type => Element (Position).Content_Type,
+                    Content      => Templates.Parse
                       (To_String (Element (Position).Template), T,
-                 Lazy_Tag => LT'Unchecked_Access),
-              Templates.Null_Set);
+                       Lazy_Tag => LT'Unchecked_Access),
+                    Set          => Templates.Null_Set);
          end;
       end if;
    end Parse;
