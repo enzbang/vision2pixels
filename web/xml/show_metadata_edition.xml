@@ -8,11 +8,11 @@
         value="11, avenue du Père Lachaise, Paris, France" />
         <input type="submit" value="Go!" />
       </p>
+      <a href="#" onclick="centerMarker(); return false">Center marker</a>
       <p id="gmap_error"></p>
       <div id="map" style="width: 500px; height: 300px"></div>
       <div id="message"></div>
       <div id="message2"></div>
-      <span id="distance"></span> m from Paris, France (center)
     </form>
     ]]>
   </replace>

@@ -52,8 +52,10 @@
 @@-- --------------------------------
 @@--  Gmaps
 
-     var map = null;
-     var geocoder = null;
+     var map        = null;
+     var geocoder   = null;
+     var v2p_marker = null;
+     var v2p_point  = null;
 
      function gmap_load() {
          if (GBrowserIsCompatible()) {
@@ -64,11 +66,55 @@
              map.addControl(new GOverviewMapControl());
              map.addControl(new GMapTypeControl(),
              new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(5, 5)));
-             map.enableDoubleClickZoom();
-             map.setCenter(new GLatLng(48.864236, 2.39791), 13);
+             @@--  map.enableDoubleClickZoom();
+
+	     v2p_point = new GLatLng(48.864236, 2.39791),
+             map.setCenter(v2p_point, 13);
+	     v2p_marker = new GMarker(v2p_point,
+				      {draggable: true,
+				       title: "Drag me please"});
+	     @@--  Adds listener
+
+	     @@--  Close info window when starting to drag the marker
+
+	     GEvent.addListener(v2p_marker, "dragstart", function() {
+		     map.closeInfoWindow();
+		 });
+
+	     @@--  Update (or create) latitude and longitude input data
+             @@--  on drag end or on double click
+
+	     GEvent.addListener(v2p_marker, "dragend", function() {
+		     var point = v2p_marker.getPoint();
+		     map.setCenter(point);
+		     updateV2PCoordinate(point);
+		 });
+
+	     GEvent.addListener(map, "dblclick", function(marker,point) {
+		     map.setCenter(point);
+		     v2p_marker.setPoint(point);
+		     updateV2PCoordinate(point);
+		 });
+
+
+	     map.addOverlay(v2p_marker);
+	     map.addControl(new GLargeMapControl());
+
              geocoder = new GClientGeocoder();
          }
      }
+
+     function updateV2PCoordinate(point) {
+	 $('latitude').value  = point.lat();
+	 $('longitude').value = point.lng();
+     }
+
+     function centerMarker() {
+	 var point = map.getCenter();
+	 v2p_marker.setPoint(point);
+	 updateV2PCoordinate(point);
+     }
+
 
      function showAddress(address) {
          if (geocoder) {
@@ -81,23 +127,12 @@
                      map.setCenter(point, 13);
                      $('latitude').value  = point.lat();
                      $('longitude').value = point.lng();
+		     v2p_marker.setPoint(point);
 
-                     var marker = new GMarker(point,
-                                              {draggable: true,
-                                               title: "Drag me please"});
-                     GEvent.addListener(marker, "dragstart", function() {
-                         map.closeInfoWindow();
-                     });
-
-                     GEvent.addListener(marker, "dragend", function() {
-                         var thisPoint = marker.getPoint();
-                         map.setCenter(thisPoint);
-                         $('latitude').value  = thisPoint.lat();
-                         $('longitude').value = thisPoint.lng();
-                     });
-                     map.addOverlay(marker);
-                     map.addControl(new GLargeMapControl());
-                     marker.openInfoWindowHtml(address);
+//                      var marker = new GMarker(point,
+//                                               {draggable: true,
+//                                                title: "Drag me please"});
+                     v2p_marker.openInfoWindowHtml(address);
                  }
              }
              );
