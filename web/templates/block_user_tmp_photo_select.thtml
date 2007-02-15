@@ -14,4 +14,4 @@
   @@END_TABLE@@
 </select>
 @@--
-@@INCLUDE@@ ../we_js/aws_action_js.tjs (onchange, block_user_tmp_photo_select, updateThisThumbPreview)
+@@INCLUDE@@ ../we_js/aws_action_js.tjs (onchange, block_user_tmp_photo_select, V2P.ThumbPreview.update)

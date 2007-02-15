@@ -35,32 +35,32 @@
 @@IF@@ @_XML_F1_@ /= ""
       if (rpars != "")
          rpars = rpars + "&";
-      rpars = rpars + serialize('@_XML_F1_@');
+      rpars = rpars + AWS.serialize('@_XML_F1_@');
 @@END_IF@@
 @@IF@@ @_XML_F2_@ /= ""
       if (rpars != "")
          rpars = rpars + "&";
-      rpars = rpars + serialize('@_XML_F2_@');
+      rpars = rpars + AWS.serialize('@_XML_F2_@');
 @@END_IF@@
 @@IF@@ @_XML_F3_@ /= ""
       if (rpars != "")
          rpars = rpars + "&";
-      rpars = rpars + serialize('@_XML_F3_@');
+      rpars = rpars + AWS.serialize('@_XML_F3_@');
 @@END_IF@@
 @@IF@@ @_XML_F4_@ /= ""
       if (rpars != "")
          rpars = rpars + "&";
-      rpars = rpars + serialize('@_XML_F4_@');
+      rpars = rpars + AWS.serialize('@_XML_F4_@');
 @@END_IF@@
 @@IF@@ @_XML_F5_@ /= ""
       if (rpars != "")
          rpars = rpars + "&";
-      rpars = rpars + serialize('@_XML_F5_@');
+      rpars = rpars + AWS.serialize('@_XML_F5_@');
 @@END_IF@@
 
 @@IF@@ @_XML_ONCOMPLETE_@ /= ""
       roncomplete = @_XML_ONCOMPLETE_@
 @@END_IF@@
-      aws_xml_request (rurl, rpars, roncomplete);
+      AWS.aws_xml_request (rurl, rpars, roncomplete);
       return (false);
    }

@@ -52,4 +52,4 @@
 @@INCLUDE@@ ../we_js/aws_action_clear.tjs (onfocus, password_input, password_input)
 @@-- Logout
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, logout_enter)
-@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, block_login_close, hide_rel)
+@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, block_login_close, V2P.Tools.hide_rel)
