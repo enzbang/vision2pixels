@@ -2,7 +2,6 @@
 @@-- HTTP_URL(/post_form_enter)
 
 <div id="form_container">
-
   <form enctype="multipart/form-data" id="basic_post_form" action="#"
         method="POST" class="yui-gd">
     <fieldset id="new_post">
@@ -11,7 +10,8 @@
 
       <div class="yui-u first">
         <h2>@_LAZY_USER_TMP_PHOTO_SELECT_@</h2>
-        <p id="new_post_add_metadata" style="display:none">
+        <p id="new_post_add_metadata">
+	  @@--style="display:none">
           <a href="#" id="show_metadata_edition">@_BABEL_EDIT_METADATA_@</a>
         </p>
       </div>
@@ -58,8 +58,10 @@
   </div>
 </div>
 @@--
+<script language="javascript">
+</script>
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_forum_list, 4=>sel_forum_list)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, post_form, 4=>basic_post_form, 5=>metadata_post)
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, show_metadata_edition, 19=>/xml_show_metadata_edition.xml, 20=>gmap_load)
-@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_new_photo_post, show_rel)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, show_metadata_edition, 19=>/xml_show_metadata_edition.xml, 20=>V2P.Map.geolocate)
+@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_new_photo_post, V2P.Tools.show_rel)
 

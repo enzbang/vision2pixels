@@ -1,142 +1,144 @@
-@@-- --------------------------------
-@@--  Update Thumb Preview when selecting photo with <select> attribute
+var V2P = {
+      'version': 0.1,
+      'Map' : {},
+      'ThumbPreview' : {},
+      'Tools': {}
+}
 
-    function updateThisThumbPreview () {
-        var thumb = this.options[this.selectedIndex].style.backgroundImage;
-        this.style.backgroundImage = thumb;
-        /* If a photo is selected, show photo metadata creation link */
-        if (this.selectedIndex != 0) {
-            Element.show($('new_post_add_metadata'));
-        } else {
-            Element.hide($('new_post_add_metadata'));
-        }
-    }
+V2P.Tools = function() {
+   return {
+	    /* Change background image of an element */
 
-@@-- --------------------------------
-@@--  Update Thumb Preview when inserting new photo
+      changeBackgroundImage: function(element, image) {
+	 element.style.backgroundImage = image;
+      },
 
-    function updateThumbPreview(element_id) {
-        var element = $(element_id);
-        var thumb = element.options[element.selectedIndex].style.backgroundImage;
-        element.style.backgroundImage = thumb;
-        if (element.selectedIndex != 0) {
-            Element.show($('new_post_add_metadata'));
-        } else {
-            Element.hide($('new_post_add_metadata'));
-        }
-    }
+   /* Show element given in rel attribute */
 
-@@-- --------------------------------
-@@--  Change background image of an element
+      show_rel: function() {
+	 Element.show(this.rel);
+      },
 
-    function changeBackgroundImage(element, background) {
-        element.style.backgroundImage = background;
-    }
+   /* Hide element given in rel attribute */
 
-@@-- --------------------------------
-@@--  Show element given in rel attribute
+      hide_rel: function() {
+	 Element.hide(this.rel);
+      }
+   }
+}();
 
-    function show_rel() {
-        var element = this.rel;
-        Element.show(element);
-    }
+V2P.ThumbPreview = function() {
+   return {
+      update: function() {
+	 var thumb = this.options[this.selectedIndex].style.backgroundImage;
+	 V2P.Tools.changeBackgroundImage(this, thumb);
+	 if (this.selectedIndex != 0) {
+	    Element.show($('new_post_add_metadata'));
+	 } else {
+	    Element.hide($('new_post_add_metadata'));
+	 }
+      },
 
-@@-- --------------------------------
-@@--  Hide element given in rel attribute
+   /* Update Thumb Preview when inserting new photo */
 
-    function hide_rel() {
-        var element = this.rel;
-        Element.hide(element);
-    }
+      insert_hook: function(element_id) {
+	 var element = $(element_id);
+	 var thumb = element.options[element.selectedIndex].style.backgroundImage;
+	 V2P.Tools.changeBackgroundImage(element, thumb);
+	 if (element.selectedIndex != 0) {
+	    Element.show($('new_post_add_metadata'));
+	 } else {
+	    Element.hide($('new_post_add_metadata'));
+	 }
+      }
+   }
+}();
 
-@@-- --------------------------------
-@@--  Gmaps
+V2P.Map =  function () {
+    // Private part
 
-     var map        = null;
-     var geocoder   = null;
-     var v2p_marker = null;
-     var v2p_point  = null;
+   return {
+      GeoMap : function (id, zoom, lat, lng, setPointHook) {
+	 this.setPointHook = setPointHook;
+	 this.map = new GMap2(document.getElementById(id));
+	 this.zoom = zoom;
+	 this.setPoint(new GLatLng(lat, lng));
+	 this.geocoder = new GClientGeocoder();
+	 this.marker = new GMarker(this.point,
+				   {draggable:true, title:"Drag Me"});
+	 this.map.addOverlay(this.marker);
+      },
 
-     function gmap_load() {
-         if (GBrowserIsCompatible()) {
-             map = new GMap2(document.getElementById("map"));
-             map.addControl(new GLargeMapControl());
-             map.addControl(new GScaleControl(),
-             new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(50, 50)));
-             map.addControl(new GOverviewMapControl());
-             map.addControl(new GMapTypeControl(),
-             new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(5, 5)));
-             @@--  map.enableDoubleClickZoom();
+      writeGeoloc : function (point) {
+	    $('latitude').value  = point.lat();
+	    $('longitude').value = point.lng();
+      },
 
-	     v2p_point = new GLatLng(48.864236, 2.39791),
-             map.setCenter(v2p_point, 13);
-	     v2p_marker = new GMarker(v2p_point,
-				      {draggable: true,
-				       title: "Drag me please"});
-	     @@--  Adds listener
+      geolocate : function () {
+	 var inst = null;
+	 if (GBrowserIsCompatible()) {
+	    inst = new V2P.Map.GeoMap("map", 13, 48.864236, 2.39791, V2P.Map.writeGeoloc);
+	    inst.addControls();
+	    inst.addEvents();
+	 }
+      },
+   }
+}();
 
-	     @@--  Close info window when starting to drag the marker
+V2P.Map.GeoMap.prototype.setPoint = function(pt) {
+   this.point = pt;
+   this.map.setCenter(pt, this.zoom);
+   this.setPointHook(pt);
+}
 
-	     GEvent.addListener(v2p_marker, "dragstart", function() {
-		     map.closeInfoWindow();
-		 });
+V2P.Map.GeoMap.prototype.centerMap = function() {
+   this.setPoint(this.map.getCenter());
+   this.marker.setPoint(this.point);
+}
 
-	     @@--  Update (or create) latitude and longitude input data
-             @@--  on drag end or on double click
+V2P.Map.GeoMap.prototype.addControls = function() {
+      this.map.addControl(new GLargeMapControl());
+      this.map.addControl(new GScaleControl(),
+			  new GControlPosition(G_ANCHOR_BOTTOM_LEFT,
+					       new GSize(50, 50)));
+      this.map.addControl(new GOverviewMapControl());
+      this.map.addControl(new GMapTypeControl(),
+			  new GControlPosition(G_ANCHOR_BOTTOM_LEFT,
+					       new GSize(5, 5)));
+}
 
-	     GEvent.addListener(v2p_marker, "dragend", function() {
-		     var point = v2p_marker.getPoint();
-		     map.setCenter(point);
-		     updateV2PCoordinate(point);
-		 });
+V2P.Map.GeoMap.prototype.onMarkerDragStart = function() {
+   this.map.closeInfoWindow();
+}
 
-	     GEvent.addListener(map, "dblclick", function(marker,point) {
-		     map.setCenter(point);
-		     v2p_marker.setPoint(point);
-		     updateV2PCoordinate(point);
-		 });
+V2P.Map.GeoMap.prototype.onMarkerDragEnd = function() {
+      this.setPoint(this.marker.getPoint());
+}
 
+V2P.Map.GeoMap.prototype.onMapDblClick = function(marker, point) {
+   this.setPoint(point);
+   this.marker.setPoint(point);
+}
 
-	     map.addOverlay(v2p_marker);
-	     map.addControl(new GLargeMapControl());
+V2P.Map.GeoMap.prototype.geolocateResult = function() {
+   var address = $('address').value;
+   if (this.geocoder) {
+      this.geocoder.getLatLng(address,
+			      function(point) {
+				 if (!point) {
+				       $('gmap_error').innerHTML = address + ' not found';
+				 } else {
+				     V2P.Map.writeGeoloc(point);
+				 }
+			      });
 
-             geocoder = new GClientGeocoder();
-         }
-     }
+   }
+}
 
-     function updateV2PCoordinate(point) {
-	 $('latitude').value  = point.lat();
-	 $('longitude').value = point.lng();
-     }
-
-     function centerMarker() {
-	 var point = map.getCenter();
-	 v2p_marker.setPoint(point);
-	 updateV2PCoordinate(point);
-     }
-
-
-     function showAddress(address) {
-         if (geocoder) {
-             geocoder.getLatLng(
-             address,
-             function(point) {
-                 if (!point) {
-                     $('gmap_error').innerHTML = address + " not found";
-                 } else {
-                     map.setCenter(point, 13);
-                     $('latitude').value  = point.lat();
-                     $('longitude').value = point.lng();
-		     v2p_marker.setPoint(point);
-
-//                      var marker = new GMarker(point,
-//                                               {draggable: true,
-//                                                title: "Drag me please"});
-                     v2p_marker.openInfoWindowHtml(address);
-                 }
-             }
-             );
-         }
-     }
-
-
+V2P.Map.GeoMap.prototype.addEvents = function() {
+   GEvent.bindDom(document.getElementById("centermarker"), "click", this, this.centerMap);
+   GEvent.bindDom(document.getElementById("metadata_edition_form_go"), "click", this, this.geolocateResult);
+   GEvent.bind(this.marker, "dragstart", this, this.onMarkerDragStart);
+   GEvent.bind(this.marker, "dragend", this, this.onMarkerDragEnd);
+   GEvent.bind(this.map, "dblclick", this, this.onMapDblClick);
+}
