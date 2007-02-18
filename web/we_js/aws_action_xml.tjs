@@ -4,8 +4,11 @@
 @@-- $3    a set of parameters to pass to the URL
 @@-- $4-$8 are linked fields id to this request, all fields are passed as
 @@--       parameters to the request.
+@@-- $19   URL to call instead of the generated one
+@@-- $20   the name of a function to call when this routine terminate
 @@--
-@@-- The finale request is : /$2?$3&$4=value($4)&$5=value($5)
+@@-- The final request is : /$1$$$2?$3&$4=value($4)&$5=value($5)
+@@-- or                   : $19?$3&$4=value($4)&$5=value($5)
 @@-- with value(name) being the value for the field named "name".
 
 @@SET@@ ACTION = $1

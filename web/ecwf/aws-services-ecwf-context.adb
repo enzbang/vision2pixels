@@ -26,15 +26,34 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Vectors;
+with Ada.Strings.Unbounded;
+
 package body AWS.Services.ECWF.Context is
+
+   use Ada;
+   use Ada.Strings.Unbounded;
 
    ----------
    -- Copy --
    ----------
 
    function Copy (CID : in Id) return Id is
+
+      --   Note that we first copy the context into a vector and set the new
+      --   context from it. This is because it is not possible to call
+      --   Set_Value from inside the For_Every_Session_Data callback.
+
+      type Context_Data is record
+         Key, Value : Unbounded_String;
+      end record;
+
+      package CD_Vector is new Containers.Vectors (Positive, Context_Data);
+      use CD_Vector;
+
       New_CID : constant Id := Create;
       O       : Object := Get (New_CID);
+      Data    : Vector;
 
       procedure Insert
         (N          : in     Positive;
@@ -53,7 +72,8 @@ package body AWS.Services.ECWF.Context is
       is
          pragma Unreferenced (N, Quit);
       begin
-         Set_Value (O, Key, Value);
+         Append
+           (Data, (To_Unbounded_String (Key), To_Unbounded_String (Value)));
       end Insert;
 
       ------------------
@@ -64,6 +84,17 @@ package body AWS.Services.ECWF.Context is
 
    begin
       Copy_Context (Session.Id (CID));
+
+      --  Now create the new context
+
+      for K in Positive range 1 .. Positive (Length (Data)) loop
+         declare
+            D : constant Context_Data := Element (Data, K);
+         begin
+            Set_Value (O, To_String (D.Key), To_String (D.Value));
+         end;
+      end loop;
+
       return New_CID;
    end Copy;
 

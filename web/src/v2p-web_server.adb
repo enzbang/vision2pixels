@@ -911,10 +911,6 @@ package body V2P.Web_Server is
          Template_Defs.Forum_Post.Template,
          null);
 
-      --  Register ECWF lazy tags
-
-      Template_Defs.Lazy.Register;
-
       --  Log control
 
       Server.Log.Start (HTTP, Auto_Flush => True);
