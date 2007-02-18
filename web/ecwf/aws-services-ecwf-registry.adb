@@ -320,7 +320,6 @@ package body AWS.Services.ECWF.Registry is
    is
       WO : Web_Object (True);
    begin
-
       WO.Content_Type := To_Unbounded_String (Content_Type);
       WO.Template_CB  := Template_CB;
       WO.Data_CB      := Data_CB;
@@ -329,8 +328,8 @@ package body AWS.Services.ECWF.Registry is
 
       WO_Map.Include (Key, WO);
       Prefix_URI.Append (Prefix_URI_Vector, To_Unbounded_String (Key));
-
    end Register;
+
    -----------
    -- Value --
    -----------

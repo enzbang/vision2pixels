@@ -67,14 +67,13 @@ package AWS.Services.ECWF.Registry is
       Template_CB  :  not null access function
         (Request : Status.Data) return String;
       Data_CB      : access procedure
-        (Request      : in Status.Data;
+        (Request      : in     Status.Data;
          Context      : access ECWF.Context.Object;
          Translations : in out Templates.Translate_Set);
       Content_Type : in String := MIME.Text_HTML);
-   --  Key is a Lazy_Tag or template page name. Template_CB is the
-   --  callback used to retrieve is the corresponding template
-   --  file. Data_CB is the callback used to retrieve the translation
-   --  table to render the page.
+   --  Key is a Lazy_Tag or template page name. Template_CB is the callback
+   --  used to retrieve the corresponding template file name. Data_CB is the
+   --  callback used to retrieve the translation table to render the page.
 
    function Parse
      (Key          : in String;
