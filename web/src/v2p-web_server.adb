@@ -72,8 +72,8 @@ package body V2P.Web_Server is
    --  Standard Callbacks --
    -------------------------
 
-   function Default_Xml_Callback
-     (Request : in Status.Data) return Response.Data;
+   function Default_XML_Callback
+     (Request : in Status.Data) return String;
    --  Default callback for xml action
 
    function Default_Callback
@@ -273,17 +273,15 @@ package body V2P.Web_Server is
    end Default_Callback;
 
    --------------------------
-   -- Default_Xml_Callback --
+   -- Default_XML_Callback --
    --------------------------
 
-   function Default_Xml_Callback
-     (Request : in Status.Data) return Response.Data
-   is
+   function Default_XML_Callback (Request : in Status.Data) return String is
       URI  : constant String := Status.URI (Request);
       File : constant String := "xml" & '/' & URI (URI'First + 5 .. URI'Last);
    begin
-      return Response.File (MIME.Text_XML, File);
-   end Default_Xml_Callback;
+      return File;
+   end Default_XML_Callback;
 
       --------------------------
    -- Forum_Entry_Callback --
@@ -802,14 +800,6 @@ package body V2P.Web_Server is
    begin
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         "/xml_",
-         Action => Dispatchers.Callback.Create (Default_Xml_Callback'Access),
-         Prefix => True);
-      --  All URLs starting with /xml_ are handled by a specific callback
-      --  returning the corresponding file in the xml directory.
-
-      Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
          "/we_js",
          Action => Dispatchers.Callback.Create (WEJS_Callback'Access),
          Prefix => True);
@@ -910,6 +900,14 @@ package body V2P.Web_Server is
         (Template_Defs.Forum_Post.URL,
          Template_Defs.Forum_Post.Template,
          null);
+
+      Services.ECWF.Registry.Register
+        ("/xml",
+         Default_XML_Callback'Access,
+         null,
+         MIME.Text_XML);
+      --  All URLs starting with /xml_ are handled by a specific callback
+      --  returning the corresponding file in the xml directory.
 
       --  Log control
 
