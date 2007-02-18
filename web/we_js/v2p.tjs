@@ -1,107 +1,262 @@
-@@-- --------------------------------
-@@--  Update Thumb Preview when selecting photo with <select> attribute
+var V2P = {
+   'Map' : null,
+   'ThumbPreview' : null,
+   'Tools': null,
+   'Objects' : null
+}
 
-    function updateThisThumbPreview () {
-        var thumb = this.options[this.selectedIndex].style.backgroundImage;
-        this.style.backgroundImage = thumb;
-        /* If a photo is selected, show photo metadata creation link */
-        if (this.selectedIndex != 0) {
-            Element.show($('new_post_add_metadata'));
-        } else {
-            Element.hide($('new_post_add_metadata'));
-        }
-    }
+@@---------------------------------------------------------------- OBJECTS
 
-@@-- --------------------------------
-@@--  Update Thumb Preview when inserting new photo
+V2P.Objects = {
+   'geo_map' : null
+}
 
-    function updateThumbPreview(element_id) {
-        var element = $(element_id);
-        var thumb = element.options[element.selectedIndex].style.backgroundImage;
-        element.style.backgroundImage = thumb;
-        if (element.selectedIndex != 0) {
-            Element.show($('new_post_add_metadata'));
-        } else {
-            Element.hide($('new_post_add_metadata'));
-        }
-    }
+@@---------------------------------------------------------------- TOOLS
 
-@@-- --------------------------------
-@@--  Change background image of an element
+V2P.Tools = new function () {
 
-    function changeBackgroundImage(element, background) {
-        element.style.backgroundImage = background;
-    }
+   @@-----------
+   @@-- PUBLIC
+   @@-----------
 
-@@-- --------------------------------
-@@--  Show element given in rel attribute
+   @@-- --------------------------------
+   @@--  Change background image of an element
 
-    function show_rel() {
-        var element = this.rel;
-        Element.show(element);
-    }
+   this.changeBackgroundImage = function (element, image)
+   {
+      element.style.backgroundImage = image;
+   }
 
-@@-- --------------------------------
-@@--  Hide element given in rel attribute
+   @@-- --------------------------------
+   @@--  Show element given in rel attribute
 
-    function hide_rel() {
-        var element = this.rel;
-        Element.hide(element);
-    }
+   this.show_rel = function ()
+   {
+      Element.show(this.rel);
+   }
 
-@@-- --------------------------------
-@@--  Gmaps
+   @@-- --------------------------------
+   @@--  Hide element given in rel attribute
 
-     var map = null;
-     var geocoder = null;
+   this.hide_rel = function ()
+   {
+      Element.hide(this.rel);
+   }
+}
 
-     function gmap_load() {
-         if (GBrowserIsCompatible()) {
-             map = new GMap2(document.getElementById("map"));
-             map.addControl(new GLargeMapControl());
-             map.addControl(new GScaleControl(),
-             new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(50, 50)));
-             map.addControl(new GOverviewMapControl());
-             map.addControl(new GMapTypeControl(),
-             new GControlPosition(G_ANCHOR_BOTTOM_LEFT, new GSize(5, 5)));
-             map.enableDoubleClickZoom();
-             map.setCenter(new GLatLng(48.864236, 2.39791), 13);
-             geocoder = new GClientGeocoder();
+@@---------------------------------------------------------------- THUMBPREVIEW
+
+V2P.ThumbPreview = new function() {
+
+   @@-----------
+   @@-- PUBLIC
+   @@-----------
+
+   @@-- --------------------------------
+   @@--  Update thumb preview when selecting a photo
+
+   this.update = function ()
+   {
+      var thumb = this.options[this.selectedIndex].style.backgroundImage;
+      V2P.Tools.changeBackgroundImage(this, thumb);
+      if (this.selectedIndex != 0) {
+         Element.show($('new_post_add_metadata'));
+      } else {
+         Element.hide($('new_post_add_metadata'));
+      }
+   }
+
+   @@-- --------------------------------
+   @@--  Update Thumb Preview when inserting new photo
+
+   this.insert_hook = function (element_id)
+   {
+      var element = $(element_id);
+      var thumb = element.options[element.selectedIndex].style.backgroundImage;
+      V2P.Tools.changeBackgroundImage(element, thumb);
+      if (element.selectedIndex != 0) {
+         Element.show($('new_post_add_metadata'));
+      } else {
+         Element.hide($('new_post_add_metadata'));
+      }
+   }
+}
+
+@@---------------------------------------------------------------- MAP
+
+V2P.Map = new function () {
+
+   @@-----------
+   @@-- PUBLIC
+   @@-----------
+
+   @@-- --------------------------------
+   @@--  Create a new Map (based on GMaps API)
+
+   this.MapObject = function (mo_id, mo_zoom, mo_lat, mo_lng, mo_setPointHook)
+   {
+      @@-----------
+      @@-- PUBLIC
+      @@-----------
+
+      @@-- --------------------------------
+      @@--  Set point and center map
+      @@--  Run set_point_hook
+
+      this.setPoint = function (pt)
+      {
+         point = pt;
+         map.setCenter(pt, zoom);
+         set_point_hook(pt);
+      }
+
+      @@-- --------------------------------
+      @@--  Set point to map center and move marker to this point
+
+      this.centerMap = function ()
+      {
+         this.setPoint(map.getCenter());
+         marker.setPoint(point);
+      }
+
+      @@-- --------------------------------
+      @@--  Move the marker to the given point
+
+      this.moveMarker = function (pt)
+      {
+         marker.setPoint(pt);
+      }
+
+      @@-- --------------------------------
+      @@--  Hooks : on marker drag start action
+
+      this.onMarkerDragStart = function()
+      {
+         map.closeInfoWindow();
+      }
+
+      @@-- --------------------------------
+      @@--  Hooks : on marker drag end action
+
+      this.onMarkerDragEnd = function()
+      {
+         this.setPoint(marker.getPoint());
+      }
+
+      @@-- --------------------------------
+      @@--  Hooks : on map double click
+
+      this.onMapDblClick = function (dbl_click_marker, dbl_click_pt)
+      {
+         this.setPoint(dbl_click_pt);
+         marker.setPoint(dbl_click_pt);
+      }
+
+      @@------------
+      @@-- PRIVATE
+      @@------------
+
+      @@-- --------------------------------
+      @@--  Adds Map controls
+
+      addControls = function ()
+      {
+         map.addControl(new GLargeMapControl());
+         map.addControl(new GScaleControl(),
+                        new GControlPosition(G_ANCHOR_BOTTOM_LEFT,
+                                             new GSize(50, 50)));
+         map.addControl(new GOverviewMapControl());
+         map.addControl(new GMapTypeControl(),
+                        new GControlPosition(G_ANCHOR_BOTTOM_LEFT,
+                                             new GSize(5, 5)));
+      }
+
+      @@--  Init map
+
+      var point = null;
+      var zoom  = mo_zoom;
+      var set_point_hook = mo_setPointHook;
+
+      var map = new GMap2(document.getElementById(mo_id));
+
+      this.setPoint(new GLatLng(mo_lat, mo_lng));
+
+      var marker = new GMarker(point,{draggable:true, title:"Drag Me"});
+      map.addOverlay(marker);
+
+      addControls();
+
+      GEvent.bind(marker, "dragstart", this, this.onMarkerDragStart);
+      GEvent.bind(marker, "dragend", this, this.onMarkerDragEnd);
+      GEvent.bind(map, "dblclick", this, this.onMapDblClick);
+
+   }
+
+   @@-- --------------------------------
+   @@-- Creates a Map to geolocate photos
+
+   this.geolocate = new function ()
+   {
+
+      @@-- --------------------------------
+      @@--  Error
+
+      this.error = function (addr)
+      {
+         $('gmap_error').innerHTML = addr + 'not found';
+      }
+
+      @@-- --------------------------------
+      @@--  Write geolocation
+
+      this.write = function (pt)
+      {
+         $('latitude').value  = pt.lat();
+         $('longitude').value = pt.lng();
+      }
+
+      @@-- --------------------------------
+      @@--  Get the result of geoloc query
+
+      this.get_result_hook = function (pt)
+      {
+         if (!pt) {
+            V2P.Map.geolocate.error ("");
+         } else {
+            V2P.Map.geolocate.write(pt);
+            V2P.Objects.geo_map.setPoint(pt);
+            V2P.Objects.geo_map.moveMarker(pt);
          }
-     }
+      }
 
-     function showAddress(address) {
+      @@-- --------------------------------
+      @@--  Query google to geolocate the given address
+
+      this.get_result = function (object)
+      {
+         var address = $('address').value;
          if (geocoder) {
-             geocoder.getLatLng(
-             address,
-             function(point) {
-                 if (!point) {
-                     $('gmap_error').innerHTML = address + " not found";
-                 } else {
-                     map.setCenter(point, 13);
-                     $('latitude').value  = point.lat();
-                     $('longitude').value = point.lng();
-
-                     var marker = new GMarker(point,
-                                              {draggable: true,
-                                               title: "Drag me please"});
-                     GEvent.addListener(marker, "dragstart", function() {
-                         map.closeInfoWindow();
-                     });
-
-                     GEvent.addListener(marker, "dragend", function() {
-                         var thisPoint = marker.getPoint();
-                         map.setCenter(thisPoint);
-                         $('latitude').value  = thisPoint.lat();
-                         $('longitude').value = thisPoint.lng();
-                     });
-                     map.addOverlay(marker);
-                     map.addControl(new GLargeMapControl());
-                     marker.openInfoWindowHtml(address);
-                 }
-             }
-             );
+            geocoder.getLatLng(address, V2P.Map.geolocate.get_result_hook);
          }
-     }
+      }
 
+      @@-- --------------------------------
+      @@--  Build the map
 
+      this.init = function ()
+      {
+         V2P.Objects.geo_map = new V2P.Map.MapObject
+            ('map', 13, 48.864236, 2.39791, V2P.Map.geolocate.write);
+         geocoder = new GClientGeocoder();
+
+         GEvent.bindDom(document.getElementById("centermarker"), "click", V2P.Objects.geo_map, V2P.Objects.geo_map.centerMap);
+         GEvent.bindDom(document.getElementById("metadata_edition_form_go"), "click", V2P.Map.geolocate, V2P.Map.geolocate.get_result);
+      }
+
+      @@------------
+      @@-- PRIVATE
+      @@------------
+
+      var geocoder = null;
+   }
+}

@@ -27,6 +27,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Hashed_Maps;
+with Ada.Containers.Vectors;
 with Ada.Strings.Hash;
 
 with AWS.Parameters;
@@ -51,13 +52,19 @@ package body AWS.Services.ECWF.Registry is
       Var_Name     : in              String;
       Translations : in out          Templates.Translate_Set);
 
-   type Web_Object is record
+   type Web_Object (Callback_Template : Boolean := False) is record
       Content_Type : Unbounded_String;
-      Template     : Unbounded_String;
       Data_CB      : access procedure
         (Request      : in Status.Data;
          Context      : access ECWF.Context.Object;
          Translations : in out Templates.Translate_Set);
+      case Callback_Template is
+         when False =>
+            Template     : Unbounded_String;
+         when True =>
+            Template_CB : access function
+              (Request : in Status.Data) return String;
+      end case;
    end record;
 
    package Web_Object_Maps is new Containers.Indefinite_Hashed_Maps
@@ -65,6 +72,11 @@ package body AWS.Services.ECWF.Registry is
    use Web_Object_Maps;
 
    WO_Map : Map;
+
+   package Prefix_URI is
+      new Ada.Containers.Vectors (Positive, Unbounded_String);
+
+   Prefix_URI_Vector : Prefix_URI.Vector;
 
    function Get_Context_Id
      (Lazy_Tag : not null access Lazy_Handler'Class) return Context.Id;
@@ -184,20 +196,63 @@ package body AWS.Services.ECWF.Registry is
       LT       : aliased Lazy_Handler :=
                    (Templates.Dynamic.Lazy_Tag with Request, Translations);
       Position : Web_Object_Maps.Cursor;
+
+      function Get_Matching_Key (Search_Key : String) return String;
+      --  Get the Prefix Key matching Search_Key in Prefix_URI_Vector
+
+      ----------------------
+      -- Get_Matching_Key --
+      ----------------------
+
+      function Get_Matching_Key (Search_Key : String) return String
+      is
+         use Prefix_URI;
+         Cursor : Prefix_URI.Cursor := Prefix_URI.First (Prefix_URI_Vector);
+      begin
+         while Cursor /= Prefix_URI.No_Element loop
+            declare
+               K : constant String := To_String (Prefix_URI.Element (Cursor));
+            begin
+               if K'Length <= Search_Key'Length and then
+                 Search_Key
+                 (Search_Key'First .. Search_Key'First + K'Length - 1) = K then
+                  return K;
+               end if;
+            end;
+            Prefix_URI.Next (Cursor);
+         end loop;
+         return "";
+      end Get_Matching_Key;
+
    begin
       --  Get Web Object
 
       Position := WO_Map.Find (Key);
 
       if Position = No_Element then
+
+         --  Search key in Prefix_URI_Vector
+
+         declare
+            Matching_Key : constant String := Get_Matching_Key (Key);
+         begin
+            if Matching_Key /= "" then
+               Position := WO_Map.Find (Matching_Key);
+            end if;
+         end;
+      end if;
+
+      if Position = No_Element then
          return No_Page;
 
       else
          declare
-            Context : aliased ECWF.Context.Object :=
-                        ECWF.Context.Get (Get_Context_Id (LT'Access));
-            T       : Templates.Translate_Set;
+            Context       : aliased ECWF.Context.Object :=
+                              ECWF.Context.Get (Get_Context_Id (LT'Access));
+            T             : Templates.Translate_Set;
+            Template_Name : Unbounded_String;
          begin
+
             --  Get translation set for this tag
 
             if Element (Position).Data_CB /= null then
@@ -206,11 +261,18 @@ package body AWS.Services.ECWF.Registry is
 
             Templates.Insert (T, Translations);
 
-            return (Element (Position).Content_Type,
-                    Templates.Parse
-                      (To_String (Element (Position).Template), T,
-                 Lazy_Tag => LT'Unchecked_Access),
-              Templates.Null_Set);
+            if Element (Position).Callback_Template then
+               Template_Name := To_Unbounded_String
+                 (Element (Position).Template_CB (Request));
+            else
+               Template_Name := Element (Position).Template;
+            end if;
+
+            return (Content_Type => Element (Position).Content_Type,
+                    Content      => Templates.Parse
+                      (To_String (Template_Name), T,
+                       Lazy_Tag => LT'Unchecked_Access),
+                    Set          => Templates.Null_Set);
          end;
       end if;
    end Parse;
@@ -242,6 +304,33 @@ package body AWS.Services.ECWF.Registry is
       WO_Map.Include (Key, WO);
    end Register;
 
+   --------------
+   -- Register --
+   --------------
+
+   procedure Register
+     (Key          : in String;
+      Template_CB :  not null access function
+        (Request : Status.Data) return String;
+      Data_CB      : access procedure
+        (Request      : in Status.Data;
+         Context      : access ECWF.Context.Object;
+         Translations : in out Templates.Translate_Set);
+      Content_Type : in String := MIME.Text_HTML)
+   is
+      WO : Web_Object (True);
+   begin
+
+      WO.Content_Type := To_Unbounded_String (Content_Type);
+      WO.Template_CB  := Template_CB;
+      WO.Data_CB      := Data_CB;
+
+      --  Register Tag
+
+      WO_Map.Include (Key, WO);
+      Prefix_URI.Append (Prefix_URI_Vector, To_Unbounded_String (Key));
+
+   end Register;
    -----------
    -- Value --
    -----------
