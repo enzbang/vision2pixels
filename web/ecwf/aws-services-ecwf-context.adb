@@ -28,6 +28,45 @@
 
 package body AWS.Services.ECWF.Context is
 
+   ----------
+   -- Copy --
+   ----------
+
+   function Copy (CID : in Id) return Id is
+      New_CID : constant Id := Create;
+      O       : Object := Get (New_CID);
+
+      procedure Insert
+        (N          : in     Positive;
+         Key, Value : in     String;
+         Quit       : in out Boolean);
+      --  Insert key/value into O
+
+      ------------
+      -- Insert --
+      ------------
+
+      procedure Insert
+        (N          : in     Positive;
+         Key, Value : in     String;
+         Quit       : in out Boolean)
+      is
+         pragma Unreferenced (N, Quit);
+      begin
+         Set_Value (O, Key, Value);
+      end Insert;
+
+      ------------------
+      -- Copy_Context --
+      ------------------
+
+      procedure Copy_Context is new Session.For_Every_Session_Data (Insert);
+
+   begin
+      Copy_Context (Session.Id (CID));
+      return New_CID;
+   end Copy;
+
    ------------
    -- Create --
    ------------

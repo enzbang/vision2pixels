@@ -44,6 +44,9 @@ package AWS.Services.ECWF.Context is
    function Create return Id;
    --  Create a new context and returns the corresponding Id
 
+   function Copy (CID : in Id) return Id;
+   --  Returns a new context which is a copy of CID
+
    function Exist (CID : in Id) return Boolean;
    --  Returns Trus if CID context exists into the database
 
