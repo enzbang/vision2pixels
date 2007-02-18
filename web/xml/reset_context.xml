@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+  <replace id="CTX_ECWF">
+    <![CDATA[@_CTX_ECWF_@]]>
+  </replace>
+</response>
