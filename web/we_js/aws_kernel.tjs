@@ -1,30 +1,33 @@
 @@----------------------------------------------------------------------------
-@@--                              Ada Web Server                              
-@@--                                                                          
-@@--                            Copyright (C) 2007                            
-@@--                                 AdaCore                                  
-@@--                                                                          
-@@--  This library is free software; you can redistribute it and/or modify    
-@@--  it under the terms of the GNU General Public License as published by    
-@@--  the Free Software Foundation; either version 2 of the License, or (at   
-@@--  your option) any later version.                                         
-@@--                                                                          
-@@--  This library is distributed in the hope that it will be useful, but     
-@@--  WITHOUT ANY WARRANTY; without even the implied warranty of              
-@@--  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU       
-@@--  General Public License for more details.                                
-@@--                                                                          
-@@--  You should have received a copy of the GNU General Public License       
-@@--  along with this library; if not, write to the Free Software Foundation, 
-@@--  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.          
-@@--                                                                          
-@@--  As a special exception, if other files instantiate generics from this   
-@@--  unit, or you link this unit with other files to produce an executable,  
-@@--  this  unit  does not  by itself cause  the resulting executable to be   
-@@--  covered by the GNU General Public License. This exception does not      
-@@--  however invalidate any other reasons why the executable file  might be  
-@@--  covered by the  GNU Public License.                                     
+@@--                              Ada Web Server
+@@--
+@@--                            Copyright (C) 2007
+@@--                                 AdaCore
+@@--
+@@--  This library is free software; you can redistribute it and/or modify
+@@--  it under the terms of the GNU General Public License as published by
+@@--  the Free Software Foundation; either version 2 of the License, or (at
+@@--  your option) any later version.
+@@--
+@@--  This library is distributed in the hope that it will be useful, but
+@@--  WITHOUT ANY WARRANTY; without even the implied warranty of
+@@--  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+@@--  General Public License for more details.
+@@--
+@@--  You should have received a copy of the GNU General Public License
+@@--  along with this library; if not, write to the Free Software Foundation,
+@@--  Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+@@--
+@@--  As a special exception, if other files instantiate generics from this
+@@--  unit, or you link this unit with other files to produce an executable,
+@@--  this  unit  does not  by itself cause  the resulting executable to be
+@@--  covered by the GNU General Public License. This exception does not
+@@--  however invalidate any other reasons why the executable file  might be
+@@--  covered by the  GNU Public License.
 @@----------------------------------------------------------------------------
+
+@@SET@@ AWS_CONTEXT_PER_WINDOW = true
+@@--  If the context should be renew on a new window (or tab) creation
 
 @@---------------------------------------------------------------- AWS
 
@@ -89,7 +92,7 @@ AWS.Tools = new function() {
 
    @@-- Add option_value/option_content into the given select
 
-   this.addToSelect = 
+   this.addToSelect =
       function (select_id, option_value, option_content, option_class)
    {
       // Create a new option
@@ -149,6 +152,21 @@ AWS.Context = new function() {
 
    this.update = function ()
    {
+
+      @@IF@@ @_AWS_CONTEXT_PER_WINDOW_@ = true
+      @@--  Check if context has to be renew
+
+      if (!is_new_context && history.length == 1) {
+	 @@--  This is a new page in the browser
+	 @@--  Renew the context
+
+	 document.getElementById('CTX_ECWF').innerHTML = "";
+	 is_new_context = true;
+	 AWS.Ajax.XML.request("/xml_reset_context.xml", "", AWS.Context.update);
+      }
+      @@END_IF@@
+
+
       var k = 0;
 
       @@-- anchors
@@ -233,6 +251,10 @@ AWS.Context = new function() {
       }
       return true;
    }
+
+   @@--
+
+   var is_new_context = false;
 }
 
 @@---------------------------------------------------------------- AJAX

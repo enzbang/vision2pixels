@@ -12,12 +12,12 @@
   <title>@_$1_@</title>
   @@INCLUDE@@ import_css.thtml
   @@INCLUDE@@ ../we_js/aws.tjs
-  <script src="/we_js/v2p.tjs" type="text/javascript"></script>
   @@IF@@ @_$2_@ = "forum_post_page"
   @@--  This google key works only for http://localhost:8080
      <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAbXnh4fBA_Kpf2wc2hparDhTwM0brOpm-All5BF6PoaKBxRWWERRHyTAsPEdNO7iQYYi_d1dpblL7jw"
       type="text/javascript"></script>
   @@END_IF@@
+  <script src="/we_js/v2p.tjs" type="text/javascript"></script>
 </head>
 
 <body class="@_$2_@

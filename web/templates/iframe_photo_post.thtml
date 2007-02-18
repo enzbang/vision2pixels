@@ -7,12 +7,12 @@
 <img src="/thumbs/@_NEW_PHOTO_FILENAME_@" />
 
 <script language='javascript' type='text/javascript'>
-    parent.addToSelect ('block_user_tmp_photo_select',
+    parent.AWS.addToSelect ('block_user_tmp_photo_select',
                         @_NEW_PHOTO_ID_@, ' ', 'thumboption');
-    parent.selectChangeSelected('block_user_tmp_photo_select',
+    parent.AWS.selectChangeSelected('block_user_tmp_photo_select',
                                 @_NEW_PHOTO_ID_@,
                                 parent.changeBackgroundImage,
                                 "url(/thumbs/@_NEW_PHOTO_FILENAME_@)");
-    parent.updateThumbPreview('block_user_tmp_photo_select');
+    parent.V2P.ThumbPreview.insert_hook('block_user_tmp_photo_select');
     parent.Element.hide('form_photo_post');
 </script>
