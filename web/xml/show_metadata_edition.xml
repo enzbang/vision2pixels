@@ -6,9 +6,9 @@
       <p>
         <input type="text" size="60" name="address" id="address"
         value="11, avenue du Père Lachaise, Paris, France" />
-	<a href="#map" id="metadata_edition_form_go">Go!</a>
+	<a href="#" id="metadata_edition_form_go" onclick="return false;">Go!</a>
       </p>
-      <a href="#map" id="centermarker">Center marker</a>
+      <a href="#" onclick="return false;" id="centermarker">Center marker</a>
       <p id="gmap_error"></p>
       <div id="map" style="width: 500px; height: 300px"></div>
       <div id="message"></div>
