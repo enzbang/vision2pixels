@@ -1,11 +1,13 @@
 
-@@-- $1    the tag node ID to handle in the DOM tree
-@@-- $2    a set of parameters to pass to the URL
-@@-- $3-$7 are linked fields id to this request, all fields are passed as
-@@--       parameters to the request.
+@@-- $1    action name onclick, onfocus
+@@-- $2    the tag node ID to handle in the DOM tree
+@@-- $3    a set of parameters to pass to the URL
+@@-- $4-$8 are linked fields id to this request, all fields are passed as
+@@-- $19   URL to call instead of the generated one
 @@-- $20   the name of a function to call when this routine terminate
 @@--
-@@-- The final request is : /$1?$4&$5=value($5)&$6=value($6)
+@@-- The final request is : /$1$$$2?$3&$4=value($4)&$5=value($5)
+@@-- or                   : $19?$3&$4=value($4)&$5=value($5)
 @@-- with value(name) being the value for the field named "name".
 
 @@SET@@ XML_ACTION = $1
@@ -35,32 +37,32 @@
 @@IF@@ @_XML_F1_@ /= ""
       if (rpars != "")
          rpars = rpars + "&";
-      rpars = rpars + serialize('@_XML_F1_@');
+      rpars = rpars + AWS.Ajax.serialize('@_XML_F1_@');
 @@END_IF@@
 @@IF@@ @_XML_F2_@ /= ""
       if (rpars != "")
          rpars = rpars + "&";
-      rpars = rpars + serialize('@_XML_F2_@');
+      rpars = rpars + AWS.Ajax.serialize('@_XML_F2_@');
 @@END_IF@@
 @@IF@@ @_XML_F3_@ /= ""
       if (rpars != "")
          rpars = rpars + "&";
-      rpars = rpars + serialize('@_XML_F3_@');
+      rpars = rpars + AWS.Ajax.serialize('@_XML_F3_@');
 @@END_IF@@
 @@IF@@ @_XML_F4_@ /= ""
       if (rpars != "")
          rpars = rpars + "&";
-      rpars = rpars + serialize('@_XML_F4_@');
+      rpars = rpars + AWS.Ajax.serialize('@_XML_F4_@');
 @@END_IF@@
 @@IF@@ @_XML_F5_@ /= ""
       if (rpars != "")
          rpars = rpars + "&";
-      rpars = rpars + serialize('@_XML_F5_@');
+      rpars = rpars + AWS.Ajax.serialize('@_XML_F5_@');
 @@END_IF@@
 
 @@IF@@ @_XML_ONCOMPLETE_@ /= ""
       roncomplete = @_XML_ONCOMPLETE_@
 @@END_IF@@
-      aws_xml_request (rurl, rpars, roncomplete);
+      AWS.Ajax.XML.request (rurl, rpars, roncomplete);
       return (false);
    }

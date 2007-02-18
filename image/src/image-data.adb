@@ -47,6 +47,10 @@ package body Image.Data is
               File_Size (Settings.Image_Maximum_Size));
    end Default_Max_Dimension;
 
+   ---------------
+   -- Dimension --
+   ---------------
+
    function Dimension (Img : in Image_Data) return Image_Dimension is
    begin
       if Img.Init_Status /= Image_Created then
@@ -81,10 +85,10 @@ package body Image.Data is
 
    procedure Init
      (Img                    : in out Image_Data;
-      Original_Filename      : in String;
-      Out_Filename           : in String := "";
-      Out_Thumbnail_Filename : in String := "";
-      Out_Max_Dimension      : in Image_Dimension := Null_Dimension)
+      Original_Filename      : in     String;
+      Out_Filename           : in     String := "";
+      Out_Thumbnail_Filename : in     String := "";
+      Out_Max_Dimension      : in     Image_Dimension := Null_Dimension)
    is
       Thumb           : Image_Ptr;
       Thumb_Info      : Image_Info_Ptr;

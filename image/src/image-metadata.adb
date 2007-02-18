@@ -73,7 +73,7 @@ package body Image.Metadata is
      (Position   : in out Latitude;
       Coordinate : in     Geo_Coordinate) is
    begin
-      if Coordinate > Geo_Coordinate (0) then
+      if Coordinate > 0.0 then
          Position.C_Direction := N;
       else
          Position.C_Direction := S;
@@ -85,7 +85,7 @@ package body Image.Metadata is
      (Position   : in out Longitude;
       Coordinate : in     Geo_Coordinate) is
    begin
-      if Coordinate > Geo_Coordinate (0) then
+      if Coordinate > 0.0 then
          Position.C_Direction := E;
       else
          Position.C_Direction := W;
