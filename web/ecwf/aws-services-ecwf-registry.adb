@@ -60,7 +60,7 @@ package body AWS.Services.ECWF.Registry is
          Translations : in out Templates.Translate_Set);
       case Callback_Template is
          when False =>
-            Template     : Unbounded_String;
+            Template    : Unbounded_String;
          when True =>
             Template_CB : access function
               (Request : in Status.Data) return String;
@@ -74,7 +74,7 @@ package body AWS.Services.ECWF.Registry is
    WO_Map : Map;
 
    package Prefix_URI is
-      new Ada.Containers.Vectors (Positive, Unbounded_String);
+     new Ada.Containers.Vectors (Positive, Unbounded_String);
 
    Prefix_URI_Vector : Prefix_URI.Vector;
 
