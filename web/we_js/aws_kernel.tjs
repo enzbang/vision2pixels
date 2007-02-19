@@ -160,9 +160,8 @@ AWS.Context = new function() {
 	 @@--  This is a new page in the browser
 	 @@--  Renew the context
 
-	 document.getElementById('CTX_ECWF').innerHTML = "";
 	 is_new_context = true;
-	 AWS.Ajax.XML.request("/xml_reset_context.xml", "", AWS.Context.update);
+	 AWS.Ajax.XML.request("/xml_reset_context.xml?CTX_ECWF_COPY=true", "", AWS.Context.update);
       }
       @@END_IF@@
 

@@ -39,6 +39,7 @@ package body AWS.Services.ECWF.Registry is
 
    Internal_Context_Var : constant String := "=&= CTX_ECWF =&=";
    Context_Var          : constant String := "CTX_ECWF";
+   Context_Var_To_Copy  : constant String := "CTX_ECWF_COPY";
 
    type Lazy_Handler is new Templates.Dynamic.Lazy_Tag with record
       Request      : Status.Data;
@@ -155,7 +156,7 @@ package body AWS.Services.ECWF.Registry is
                          Parameters.Get
                            (Status.Parameters
                               (Lazy_Tag.Request), Context_Var);
-               CID   : constant Context.Id := Context.Value (C_Str);
+               CID   : Context.Id := Context.Value (C_Str);
             begin
                --  First check that it is a know context (i.e. still a valid
                --  context recorded in the context database).
@@ -164,8 +165,21 @@ package body AWS.Services.ECWF.Registry is
                   --  This context is known, record it as the current
                   --  working context.
 
-                  Status.Set.Add_Parameter
-                    (Lazy_Tag.Request, Internal_Context_Var, C_Str);
+                  if Parameters.Get
+                    (Status.Parameters (Lazy_Tag.Request),
+                     Context_Var_To_Copy) /= "" then
+                     --  This context must be copied
+
+                     CID := Context.Copy (CID);
+
+                     Status.Set.Add_Parameter
+                       (Lazy_Tag.Request, Internal_Context_Var,
+                        Context.Image (CID));
+                  else
+                     Status.Set.Add_Parameter
+                       (Lazy_Tag.Request, Internal_Context_Var, C_Str);
+                  end if;
+
                   return CID;
 
                else
