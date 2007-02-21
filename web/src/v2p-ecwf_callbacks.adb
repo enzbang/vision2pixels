@@ -42,7 +42,7 @@ package body V2P.ECWF_Callbacks is
       Templates.Insert
         (Translations,
          Templates.Assoc
-           (Template_Defs.Block_Forum_Filter.HTTP.FILTER,
+           (Template_Defs.Block_Forum_Filter.HTTP.forum_filter_set,
             Context.Get_Value (Template_Defs.Global.FILTER)));
    end Forum_Filter;
 

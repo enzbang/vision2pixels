@@ -1,7 +1,14 @@
 @@-- This template is used to register all the globals Web tag
+@_LOGIN_@
+@_PASSWORD_@
 @_FILTER_@
 @_ORDER_DIR_@
 @_FORUM_THREAD_URL_@
 @_FORUM_POST_URL_@
 @_FORUM_ENTRY_URL_@
 @_THUMB_SOURCE_PREFIX_@
+@_TID_@
+@_PID_@
+@_FID_@
+@_CONTEXT_LAST_POST_NAME_@
+@_CONTEXT_LAST_COMMENT_@

@@ -125,7 +125,8 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "select id, name from category" & " where forum_id=" & Q (Fid));
+        (Iter, "select id, name from category"
+         & " where forum_id=" & Q (Fid));
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -165,15 +166,14 @@ package body V2P.Database is
         (Iter, "select id, name from category"
            & " where post.category_id=category.id post.id=" & Q (Tid));
 
-      while Iter.More loop
-         --  ?? only one
+      if Iter.More then
          Iter.Get_Line (Line);
 
          Id   := Id & DB.String_Vectors.Element (Line, 1);
          Name := Name & DB.String_Vectors.Element (Line, 2);
 
          Line.Clear;
-      end loop;
+      end if;
 
       Iter.End_Select;
 
@@ -479,6 +479,7 @@ package body V2P.Database is
 
    begin
       if Pid = "" then
+         --  ???
          return Set;
       end if;
 
@@ -569,7 +570,8 @@ package body V2P.Database is
       Order_Dir : in Order_Direction := DESC) return Templates.Translate_Set
    is
       Post_Date     : constant String :=
-                        "(select date_post from post where id = " & Tid & ") ";
+                        "(select date_post from post where id = "
+                          & Tid & ") ";
       And_Date_Post : constant String := " and date_post ";
 
       DBH           : TLS_DBH := DBH_TLS.Value;
@@ -725,7 +727,7 @@ package body V2P.Database is
       Iter.End_Select;
 
       Templates.Insert
-        (Set, Templates.Assoc (Block_Forum_Threads.THUMB_SOURCE, Thumb));
+        (Set, Templates.Assoc ("THUMB_SOURCE", Thumb));
 
       Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.TID, Id));
       Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.NAME, Name));
@@ -912,7 +914,6 @@ package body V2P.Database is
         & Q (Geo_Latitude_Formatted) & ", "
         & Q (Geo_Longitude_Formatted) & ")";
    begin
-      Text_IO.Put_Line (SQL);
       Connect (DBH);
       DBH.Handle.Execute (SQL);
    exception
@@ -1143,8 +1144,10 @@ package body V2P.Database is
    is
       SQL_Select  : constant String :=
                       "select post.id, post.name, "
-                        & "(select filename from photo where id=post.photo_id)"
-                        & ", category.name, comment_counter, visit_counter ";
+                        & "(select filename from photo "
+                        & "Where Id = Post.Photo_Id)"
+                        & ", category.name, comment_counter,"
+                        & "visit_counter ";
       SQL_From    : constant String := " from post, category";
       SQL_Where   : constant String :=
                       " where post.category_id = category.id " & Where_Cond;

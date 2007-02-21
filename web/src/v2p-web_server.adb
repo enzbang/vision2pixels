@@ -47,6 +47,8 @@ with V2P.Template_Defs.Block_New_Post;
 with V2P.Template_Defs.Block_New_Photo;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Navigate;
+with V2P.Template_Defs.Block_User_Tmp_Photo_Select;
+with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Forum_List;
@@ -67,6 +69,15 @@ package body V2P.Web_Server is
    HTTP            : Server.HTTP;
    Configuration   : Config.Object;
    Main_Dispatcher : Services.Dispatchers.URI.Handler;
+
+   XML_Path         : constant String := "xml";
+   XML_Prefix_URI   : constant String := "/xml_";
+   CSS_URI          : constant String := "/css";
+   Web_JS_URI       : constant String := "/we_js";
+
+   Admin_URI        : constant String := "/admin";
+   Upload_Directory : constant String := "./uploads/";
+
 
    -------------------------
    --  Standard Callbacks --
@@ -208,7 +219,8 @@ package body V2P.Web_Server is
    begin
       Templates.Insert
         (Translations,
-         Templates.Assoc ("LOGIN", String'(Session.Get (SID, "LOGIN"))));
+         Templates.Assoc (Template_Defs.Global.LOGIN,
+           String'(Session.Get (SID, Template_Defs.Global.LOGIN))));
       return Response.Build
         (MIME.Content_Type (File),
          String'(Templates.Parse (File, Translations)));
@@ -227,10 +239,12 @@ package body V2P.Web_Server is
       Translations : Templates.Translate_Set;
       Web_Page     : Response.Data;
    begin
-      if Session.Exist (SID, "LOGIN") then
+      if Session.Exist (SID, Template_Defs.Global.LOGIN) then
          Templates.Insert
            (Translations,
-            Templates.Assoc ("LOGIN", String'(Session.Get (SID, "LOGIN"))));
+            Templates.Assoc
+              (Template_Defs.Global.LOGIN,
+               String'(Session.Get (SID, Template_Defs.Global.LOGIN))));
       end if;
 
       --  Adds some URL
@@ -278,7 +292,8 @@ package body V2P.Web_Server is
 
    function Default_XML_Callback (Request : in Status.Data) return String is
       URI  : constant String := Status.URI (Request);
-      File : constant String := "xml" & '/' & URI (URI'First + 5 .. URI'Last);
+      File : constant String :=
+               XML_Path & '/' &  URI (URI'First + 5 .. URI'Last);
    begin
       return File;
    end Default_XML_Callback;
@@ -296,11 +311,13 @@ package body V2P.Web_Server is
       P           : constant Parameters.List := Status.Parameters (Request);
       TID         : constant String :=
                       Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.TID);
-      Login       : constant String := Session.Get (SID, "LOGIN");
+      Login       : constant String :=
+                      Session.Get (SID, Template_Defs.Global.LOGIN);
       Count_Visit : Boolean := True;
    begin
-      --  Set thread Id into the session
-      Context.Set_Value ("TID", TID);
+      --  Set thread Id into the context
+
+      Context.Set_Value (Template_Defs.Global.TID, TID);
 
       if TID = "" then
          --  Page does not exit
@@ -333,7 +350,7 @@ package body V2P.Web_Server is
 
       Templates.Insert
         (Translations, Database.Get_Thread_Navigation_Links
-           (Fid => Context.Get_Value ("FID"),
+           (Fid => Context.Get_Value (Template_Defs.Global.FID),
             Tid => TID,
             Filter => Database.Filter_Mode'Value
               (Context.Get_Value (Template_Defs.Global.FILTER)),
@@ -358,10 +375,10 @@ package body V2P.Web_Server is
       From : Positive := 1;
    begin
       --  Set forum Id into the context
-      Context.Set_Value ("FID", FID);
+      Context.Set_Value (Template_Defs.Global.FID, FID);
 
-      if Context.Exist ("TID") then
-         Context.Remove ("TID");
+      if Context.Exist (Template_Defs.Global.TID) then
+         Context.Remove (Template_Defs.Global.TID);
       end if;
 
       if Parameters.Exist
@@ -409,12 +426,13 @@ package body V2P.Web_Server is
       pragma Unreferenced (Context);
       SID      : constant Session.Id := Status.Session (Request);
       P        : constant Parameters.List := Status.Parameters (Request);
-      Login    : constant String := Parameters.Get (P, "LOGIN");
+      Login    : constant String :=
+                   Parameters.Get (P, Template_Defs.Global.LOGIN);
       Password : constant String := Database.Get_Password (Login);
    begin
-      if Password = Parameters.Get (P, "PASSWORD") then
-         Session.Set (SID, "LOGIN", Login);
-         Session.Set (SID, "PASSWORD", Password);
+      if Password = Parameters.Get (P, Template_Defs.Global.PASSWORD) then
+         Session.Set (SID, Template_Defs.Global.LOGIN, Login);
+         Session.Set (SID, Template_Defs.Global.PASSWORD, Password);
 
          --  Set user's filtering preference
          --  ??? to be done when user's preferences are implemented
@@ -423,7 +441,7 @@ package body V2P.Web_Server is
            (Translations,
             Templates.Assoc
               (Template_Defs.R_Block_Login.LOGIN,
-               String'(Session.Get (SID, "LOGIN"))));
+               String'(Session.Get (SID, Template_Defs.Global.LOGIN))));
       end if;
    end Login_Callback;
 
@@ -461,11 +479,11 @@ package body V2P.Web_Server is
    is
       pragma Unreferenced (Request, Translations);
    begin
-      if Context.Exist ("TID") then
-         Context.Remove ("TID");
+      if Context.Exist (Template_Defs.Global.TID) then
+         Context.Remove (Template_Defs.Global.TID);
       end if;
-      if Context.Exist ("FID") then
-         Context.Remove ("FID");
+      if Context.Exist (Template_Defs.Global.FID) then
+         Context.Remove (Template_Defs.Global.FID);
       end if;
 
       Context_Filter (Context);
@@ -485,8 +503,11 @@ package body V2P.Web_Server is
 
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
-      Login        : constant String := Session.Get (SID, "LOGIN");
-      Filename     : constant String := Parameters.Get (P, "FILENAME");
+      Login        : constant String :=
+                       Session.Get (SID, Template_Defs.Global.LOGIN);
+      Filename     : constant String :=
+                       Parameters.Get
+                         (P, Template_Defs.Block_New_Photo.HTTP.FILENAME);
 
       Images_Path  : String renames Settings.Get_Images_Path;
 
@@ -552,11 +573,13 @@ package body V2P.Web_Server is
    is
       pragma Unreferenced (Translations);
       P      : constant Parameters.List := Status.Parameters (Request);
-      Filter : constant String := Parameters.Get (P, "sel_filter_forum");
+      Filter : constant String :=
+                 Parameters.Get
+                   (P, Template_Defs.Block_Forum_Filter.HTTP.forum_filter_set);
    begin
       --  Keep the sorting scheme into the session
       --  ?? we need to add this into the user's preferences
-      Context.Set_Value ("FILTER", Filter);
+      Context.Set_Value (Template_Defs.Global.FILTER, Filter);
    end Onchange_Filter_Forum;
 
    ----------------------------------
@@ -570,7 +593,9 @@ package body V2P.Web_Server is
    is
       pragma Unreferenced (Context);
       P   : constant Parameters.List := Status.Parameters (Request);
-      Fid : constant String := Parameters.Get (P, "sel_forum_list");
+      Fid : constant String :=
+              Parameters.Get
+                (P, Template_Defs.Block_Forum_Filter.HTTP.forum_filter_set);
       --  ??
    begin
       Templates.Insert (Translations, Database.Get_Categories (Fid));
@@ -588,7 +613,8 @@ package body V2P.Web_Server is
       use Template_Defs;
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
-      Login        : constant String := Session.Get (SID, "LOGIN");
+      Login        : constant String :=
+                       Session.Get (SID, Template_Defs.Global.LOGIN);
       Anonymous    : constant String :=
                        Parameters.Get
                          (P, Block_New_Comment.HTTP.ANONYMOUS_USER);
@@ -596,14 +622,16 @@ package body V2P.Web_Server is
                        Parameters.Get (P, Block_New_Comment.HTTP.NAME);
       Comment      : constant String :=
                        Parameters.Get (P, Block_New_Comment.HTTP.COMMENT);
-      Parent_Id    : constant String := Parameters.Get (P, "PARENT_ID");
-      --  ??? no ref in template
-      Pid          : constant String := Parameters.Get (P, "PID");
-      --  ??? no ref in template
+      Parent_Id    : constant String :=
+                       Parameters.Get (P, Forum_Entry.HTTP.PARENT_ID);
+      Pid          : constant String :=
+                       Parameters.Get
+                         (P, Block_User_Tmp_Photo_Select.HTTP.PID);
       Tid          : constant String :=
                        Parameters.Get (P, Block_New_Comment.HTTP.TID);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
-      Last_Comment : constant String := Context.Get_Value ("LAST_COMMENT");
+      Last_Comment : constant String :=
+                       Context.Get_Value (Global.CONTEXT_LAST_COMMENT);
    begin
       if Login = "" and then Anonymous = "" then
          Templates.Insert
@@ -632,7 +660,7 @@ package body V2P.Web_Server is
          begin
             --  Adds the new comment in context to prevent duplicated post
 
-            Context.Set_Value ("LAST_COMMENT", Comment);
+            Context.Set_Value (Global.CONTEXT_LAST_COMMENT, Comment);
 
             Templates.Insert (Translations, Database.Get_Comment (Cid));
             Templates.Insert
@@ -687,7 +715,7 @@ package body V2P.Web_Server is
 
    begin
       if Latitude_Coord = 0.0 or else Longitude_Coord = 0.0
-        or else not Context.Exist ("TID")
+        or else not Context.Exist (Template_Defs.Global.TID)
       then
          Templates.Insert
            (Translations,
@@ -701,7 +729,7 @@ package body V2P.Web_Server is
       Longitude_Postition.Format (Longitude_Coord);
 
       Database.Insert_Metadata
-        (Context.Get_Value ("TID"),
+        (Context.Get_Value (Template_Defs.Global.TID),
          Float (Latitude_Coord),
          Float (Longitude_Coord),
          Image.Metadata.Image (Latitude_Position),
@@ -717,15 +745,23 @@ package body V2P.Web_Server is
       Context      : access Services.ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
+      use Template_Defs;
+
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
-      Login        : constant String := Session.Get (SID, "LOGIN");
-      Name         : constant String := Parameters.Get (P, "NAME");
-      Comment      : constant String := Parameters.Get (P, "COMMENT");
-      Pid          : constant String := Parameters.Get (P, "PID");
-      CID          : constant String := Parameters.Get (P, "CATEGORY");
-      Forum        : constant String := Parameters.Get (P, "FORUM");
-      Last_Name    : constant String := Context.Get_Value ("LAST_POST_NAME");
+      Login        : constant String :=
+                       Session.Get (SID, Template_Defs.Global.LOGIN);
+      Name         : constant String :=
+                       Parameters.Get (P, Block_New_Post.HTTP.NAME);
+      Comment      : constant String :=
+                       Parameters.Get (P, Block_New_Post.HTTP.COMMENT);
+      Pid          : constant String :=
+                       Parameters.Get
+                         (P, Block_User_Tmp_Photo_Select.HTTP.PID);
+      CID          : constant String :=
+                       Parameters.Get (P, Block_New_Post.HTTP.CATEGORY);
+      Last_Name    : constant String :=
+                       Context.Get_Value (Global.CONTEXT_LAST_POST_NAME);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
    begin
       if Login = "" and then CID = "" then
@@ -754,21 +790,18 @@ package body V2P.Web_Server is
                --  Set new context TID (needed by
                --  Onsubmit_Metadata_Form_Enter_Callback)
 
-               Context.Set_Value ("TID", Post_Id);
-               Context.Set_Value ("LAST_POST_NAME", Name);
+               Context.Set_Value (Global.TID, Post_Id);
+               Context.Set_Value (Global.CONTEXT_LAST_POST_NAME, Name);
 
                Templates.Insert
                  (Translations,
                   Templates.Assoc
-                    (Template_Defs.R_Block_Post_Form_Enter.URL,
-                     Template_Defs.Forum_Entry.URL & "?FID=" & Forum
-                     & "&amp;TID=" & Post_Id));
+                    (R_Block_Post_Form_Enter.URL, Forum_Entry.URL));
             else
                Templates.Insert
                  (Translations,
                   Templates.Assoc
-                    (Template_Defs.R_Block_Post_Form_Enter.ERROR,
-                     "DATABASE INSERT FAILED"));
+                    (R_Block_Post_Form_Enter.ERROR, "DATABASE INSERT FAILED"));
             end if;
          end;
       end if;
@@ -800,13 +833,13 @@ package body V2P.Web_Server is
    begin
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         "/we_js",
+         Web_JS_URI,
          Action => Dispatchers.Callback.Create (WEJS_Callback'Access),
          Prefix => True);
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         "/css",
+         CSS_URI,
          Action => Dispatchers.Callback.Create (CSS_Callback'Access),
          Prefix => True);
 
@@ -842,7 +875,7 @@ package body V2P.Web_Server is
          MIME.Text_XML);
 
       Services.ECWF.Registry.Register
-        (Template_Defs.Forum_Threads.Ajax.onchange_sel_filter_forum,
+        (Template_Defs.Block_Forum_Filter.Ajax.onchange_forum_filter_set,
          Template_Defs.R_Block_Forum_Filter.Template,
          Onchange_Filter_Forum'Access,
          MIME.Text_XML);
@@ -902,12 +935,12 @@ package body V2P.Web_Server is
          null);
 
       Services.ECWF.Registry.Register
-        ("/xml",
+        (XML_Prefix_URI,
          Default_XML_Callback'Access,
          null,
          MIME.Text_XML);
-      --  All URLs starting with /xml_ are handled by a specific callback
-      --  returning the corresponding file in the xml directory.
+      --  All URLs starting with XML_Prefix_URI are handled by a specific
+      --  callback returning the corresponding file in the xml directory.
 
       --  Log control
 
@@ -917,8 +950,8 @@ package body V2P.Web_Server is
       --  Server configuration
 
       Config.Set.Session (Configuration, True);
-      Config.Set.Upload_Directory (Configuration, "./uploads/");
-      Config.Set.Admin_URI (Configuration, "/admin");
+      Config.Set.Upload_Directory (Configuration, Upload_Directory);
+      Config.Set.Admin_URI (Configuration, Admin_URI);
 
       --  Starting server
 

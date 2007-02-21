@@ -249,8 +249,11 @@ V2P.Map = new function () {
             ('map', 13, 48.864236, 2.39791, V2P.Map.geolocate.write);
          geocoder = new GClientGeocoder();
 
-         GEvent.bindDom(document.getElementById("centermarker"), "click", V2P.Objects.geo_map, V2P.Objects.geo_map.centerMap);
-         GEvent.bindDom(document.getElementById("metadata_edition_form_go"), "click", V2P.Map.geolocate, V2P.Map.geolocate.get_result);
+         GEvent.bindDom(document.getElementById("centermarker"), "click",
+                        V2P.Objects.geo_map, V2P.Objects.geo_map.centerMap);
+         GEvent.bindDom(document.getElementById("metadata_edition_form_go"),
+                        "click", V2P.Map.geolocate,
+                        V2P.Map.geolocate.get_result);
       }
 
       @@------------
