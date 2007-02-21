@@ -34,7 +34,7 @@ package body V2P.Wiki is
    --  Escape HTML special characters
 
    function Wiki_Format (S : in String) return String;
-   --  ???
+   --  Transforms Wiki syntax into XHTML
 
    -------------------
    -- Extract_Links --

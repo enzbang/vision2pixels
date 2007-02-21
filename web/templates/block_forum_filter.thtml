@@ -1,4 +1,4 @@
-<select name="FILTER" id="sel_filter_forum">
+<select name="forum_filter_set" id="forum_filter_set">
   <option value="TODAY"
   @@IF@@ @_FILTER_@ = "TODAY"
     selected="selected"
@@ -29,3 +29,6 @@
   @@END_IF@@
   >Tous les posts</option>
 </select>
+
+@@--
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, forum_filter_set, 4=>forum_filter_set)

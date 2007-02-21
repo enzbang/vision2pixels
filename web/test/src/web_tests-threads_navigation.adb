@@ -29,6 +29,7 @@ with AWS.Response;
 with AWS.Utils;
 
 with V2P.Template_Defs.Forum_Threads;
+with V2P.Template_Defs.Block_Forum_Filter;
 
 package body Web_Tests.Threads_Navigation is
 
@@ -178,7 +179,7 @@ package body Web_Tests.Threads_Navigation is
       Client.Get
         (Connection,
          Result,
-         URI => Forum_Threads.Ajax.onchange_sel_filter_forum &
+         URI => Block_Forum_Filter.Ajax.onchange_forum_filter_set &
            "?sel_filter_forum=TODAY&" & URL_Context);
 
       Check
@@ -195,7 +196,7 @@ package body Web_Tests.Threads_Navigation is
       Client.Get
         (Connection,
          Result,
-         URI => Forum_Threads.Ajax.onchange_sel_filter_forum &
+         URI => Block_Forum_Filter.Ajax.onchange_forum_filter_set &
            "?sel_filter_forum=TWO_DAYS&" & URL_Context);
 
       Check
@@ -267,7 +268,7 @@ package body Web_Tests.Threads_Navigation is
       Client.Get
         (Connection,
          Result,
-         URI => Forum_Threads.Ajax.onchange_sel_filter_forum &
+         URI => Block_Forum_Filter.Ajax.onchange_forum_filter_set &
            "?sel_filter_forum=SEVEN_DAYS&" & URL_Context);
 
       Check
@@ -353,7 +354,7 @@ package body Web_Tests.Threads_Navigation is
       Client.Get
         (Connection,
          Result,
-         URI => Forum_Threads.Ajax.onchange_sel_filter_forum &
+         URI => Block_Forum_Filter.Ajax.onchange_forum_filter_set &
            "?sel_filter_forum=FIFTY_MESSAGES&" & URL_Context);
 
       Check
@@ -417,7 +418,7 @@ package body Web_Tests.Threads_Navigation is
       Client.Get
         (Connection,
          Result,
-         URI => Forum_Threads.Ajax.onchange_sel_filter_forum &
+         URI => Block_Forum_Filter.Ajax.onchange_forum_filter_set &
          "?sel_filter_forum=TODAY&" & URL_Context);
 
       Client.Get
