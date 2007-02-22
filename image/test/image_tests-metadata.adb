@@ -22,12 +22,11 @@
 with AUnit.Test_Cases.Registration;
 with AUnit.Assertions;
 
-with Image.Metadata;
+with Image.Metadata.Geographic;
 
 package body Image_Tests.Metadata is
 
-   use Ada;
-   use Image.Metadata;
+   use Image.Metadata.Geographic;
    use AUnit.Test_Cases.Registration;
    use AUnit.Assertions;
 
@@ -72,11 +71,11 @@ package body Image_Tests.Metadata is
       Assert (Get_Long = Get_Lat,
               "To_Geo_Coordinate error for 2° 23' 53'' E");
 
-      Assert (Image.Metadata.Image (Pos_Lat) = "N 48° 51' 51",
-              "Error with " & Image.Metadata.Image (Pos_Lat));
+      Assert (Image.Metadata.Geographic.Image (Pos_Lat) = "N 48° 51' 51",
+              "Error with " & Image.Metadata.Geographic.Image (Pos_Lat));
 
-      Assert (Image.Metadata.Image (Pos_Long) = "E 2° 23' 53",
-              "Error with " & Image.Metadata.Image (Pos_Long));
+      Assert (Image.Metadata.Geographic.Image (Pos_Long) = "E 2° 23' 53",
+              "Error with " & Image.Metadata.Geographic.Image (Pos_Long));
 
       --  -87.728055, -40.4461110
 
@@ -101,11 +100,11 @@ package body Image_Tests.Metadata is
       Assert (Get_Long = Geo_Long,
               "To_Geo_Coordinate error for 87° 43' 41'' W");
 
-      Assert (Image.Metadata.Image (Pos_Lat) = "S 40° 26' 46",
-              "Error with " & Image.Metadata.Image (Pos_Lat));
+      Assert (Image.Metadata.Geographic.Image (Pos_Lat) = "S 40° 26' 46",
+              "Error with " & Image.Metadata.Geographic.Image (Pos_Lat));
 
-      Assert (Image.Metadata.Image (Pos_Long) = "W 87° 43' 41",
-              "Error with " & Image.Metadata.Image (Pos_Long));
+      Assert (Image.Metadata.Geographic.Image (Pos_Long) = "W 87° 43' 41",
+              "Error with " & Image.Metadata.Geographic.Image (Pos_Long));
 
 
    end Geo_Format;
@@ -115,7 +114,7 @@ package body Image_Tests.Metadata is
    ----------
 
    function Name (T : Test_Case) return String_Access is
-   pragma Unreferenced (T);
+      pragma Unreferenced (T);
    begin
       return new String'("Check image metadata functions");
    end Name;

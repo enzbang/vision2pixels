@@ -25,7 +25,7 @@ project Shared is
    --  No sources for this project
 
    type Build_Type is ("Debug", "Release");
-   Build : Build_Type := external ("PRJ_BUILD", "Release");
+   Build : Build_Type := external ("PRJ_BUILD", "Debug");
 
    type OS_Type is ("UNIX", "Windows_NT");
    OS : OS_Type := external ("OS", "UNIX");

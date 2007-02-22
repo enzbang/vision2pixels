@@ -52,6 +52,7 @@ package body AWS.Services.ECWF.Registry is
      (Lazy_Tag     : not null access Lazy_Handler;
       Var_Name     : in              String;
       Translations : in out          Templates.Translate_Set);
+   --  Handle lazy tags
 
    type Web_Object (Callback_Template : Boolean := False) is record
       Content_Type : Unbounded_String;
@@ -59,6 +60,7 @@ package body AWS.Services.ECWF.Registry is
         (Request      : in Status.Data;
          Context      : access ECWF.Context.Object;
          Translations : in out Templates.Translate_Set);
+
       case Callback_Template is
          when False =>
             Template    : Unbounded_String;
@@ -74,8 +76,7 @@ package body AWS.Services.ECWF.Registry is
 
    WO_Map : Map;
 
-   package Prefix_URI is
-     new Ada.Containers.Vectors (Positive, Unbounded_String);
+   package Prefix_URI is new Containers.Vectors (Positive, Unbounded_String);
 
    Prefix_URI_Vector : Prefix_URI.Vector;
 
@@ -324,7 +325,7 @@ package body AWS.Services.ECWF.Registry is
 
    procedure Register
      (Key          : in String;
-      Template_CB :  not null access function
+      Template_CB  :  not null access function
         (Request : Status.Data) return String;
       Data_CB      : access procedure
         (Request      : in Status.Data;

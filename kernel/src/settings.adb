@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -24,10 +24,6 @@ with Ada.Text_IO;
 
 with Config;
 with Defaults;
-
---------------
--- Settings --
---------------
 
 package body Settings is
 
@@ -196,6 +192,7 @@ begin
 
    Conf.IO.Open (Config_Filename);
    Conf.IO.Close;
+
 exception
    when Conf.IO.Uncomplete_Config =>
       Conf.IO.Close;

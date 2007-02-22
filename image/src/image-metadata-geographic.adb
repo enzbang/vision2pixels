@@ -19,7 +19,7 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-package body Image.Metadata is
+package body Image.Metadata.Geographic is
 
    ---------
    -- "=" --
@@ -160,4 +160,4 @@ package body Image.Metadata is
       return Result;
    end To_Geo_Coordinate;
 
-end Image.Metadata;
+end Image.Metadata.Geographic;

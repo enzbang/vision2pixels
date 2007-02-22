@@ -93,8 +93,8 @@ package body Image.Data is
       Thumb           : Image_Ptr;
       Thumb_Info      : Image_Info_Ptr;
       Thumb_Size      : constant G2F.IO.Image_Size :=
-          (Image_Size_T (Settings.Thumbnail_Maximum_Width),
-           Image_Size_T (Settings.Thumbnail_Maximum_Height));
+                          (Image_Size_T (Settings.Thumbnail_Maximum_Width),
+                           Image_Size_T (Settings.Thumbnail_Maximum_Height));
    begin
       --  Read image info
 

@@ -59,7 +59,7 @@ with V2P.Template_Defs.R_Block_Metadata_Form_Enter;
 with V2P.Wiki;
 
 with Image.Data;
-with Image.Metadata;
+with Image.Metadata.Geographic;
 with Settings;
 
 package body V2P.Web_Server is
@@ -685,7 +685,7 @@ package body V2P.Web_Server is
       Context      : access Services.ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      use Image.Metadata;
+      use Image.Metadata.Geographic;
 
       function Get (Parameter_Name : in String) return Geo_Coordinate;
       --  Returns the given parameter or zero if not found
@@ -732,8 +732,8 @@ package body V2P.Web_Server is
         (Context.Get_Value (Template_Defs.Global.TID),
          Float (Latitude_Coord),
          Float (Longitude_Coord),
-         Image.Metadata.Image (Latitude_Position),
-         Image.Metadata.Image (Longitude_Postition));
+         Image.Metadata.Geographic.Image (Latitude_Position),
+         Image.Metadata.Geographic.Image (Longitude_Postition));
    end Onsubmit_Metadata_Form_Enter_Callback;
 
    ---------------------------------------
