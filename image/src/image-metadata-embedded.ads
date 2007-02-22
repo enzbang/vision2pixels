@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                           Copyright (C) 2007                             --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,20 +19,29 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AUnit.Test_Suites; use AUnit.Test_Suites;
+--  This package provided API to retreive embedded metadata in images. These
+--  are also known as EXIF, IPTC, XMP metadata.
 
-with Image_Tests.Thumbnails;
-with Image_Tests.Metadata;
-with Image_Tests.Embedded_Metadata;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
-pragma Style_Checks (Off);
+package Image.Metadata.Embedded is
 
-function Image_Suite return Access_Test_Suite is
-   Result : Access_Test_Suite := new Test_Suite;
-   pragma Warnings (Off, Result);
-begin
-   Add_Test (Result, new Image_Tests.Thumbnails.Test_Case);
-   Add_Test (Result, new Image_Tests.Metadata.Test_Case);
-   Add_Test (Result, new Image_Tests.Embedded_Metadata.Test_Case);
-   return Result;
-end Image_Suite;
+   type Data is record
+      Make                : Unbounded_String;
+      Camera_Model_Name   : Unbounded_String;
+      Shutter_Speed_Value : Unbounded_String;
+      Aperture_Value      : Unbounded_String;
+   end record;
+
+   No_Data : constant Data;
+
+   function Get (Filename : in String) return Data;
+   --  Returns the metadata as read from filename
+
+private
+
+   No_Data : constant Data :=
+               (Null_Unbounded_String, Null_Unbounded_String,
+                Null_Unbounded_String, Null_Unbounded_String);
+
+end Image.Metadata.Embedded;

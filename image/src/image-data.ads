@@ -19,11 +19,11 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with G2F.IO;
-
 with Ada.Finalization;
 with Ada.Strings.Unbounded;
 with Ada.Directories;
+
+with G2F.IO;
 
 package Image.Data is
 
@@ -38,15 +38,13 @@ package Image.Data is
    type Image_Dimension is record
       Width  : G2F.IO.Image_Size_T;
       Height : G2F.IO.Image_Size_T;
-      Size   : Ada.Directories.File_Size;
+      Size   : Directories.File_Size;
    end record;
 
-   Null_Dimension : constant Image_Dimension := (0, 0, 0);
+   Null_Dimension : constant Image_Dimension;
 
    type Image_Init_Status is
-     (Exceed_Max_Image_Dimension,
-      Exceed_Max_Size,
-      Image_Created);
+     (Exceed_Max_Image_Dimension, Exceed_Max_Size, Image_Created);
 
    procedure Init
       (Img      : in out Image_Data;
@@ -75,6 +73,8 @@ package Image.Data is
    --  Returns default maximum dimension
 
 private
+
+   Null_Dimension : constant Image_Dimension := (0, 0, 0);
 
    type Image_Data is new Finalization.Controlled with record
       Info_Ptr    : G2F.Image_Info_Ptr;

@@ -35,4 +35,3 @@ project Image is
    package Compiler renames Shared.Compiler;
 
 end Image;
-

@@ -19,20 +19,13 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AUnit.Test_Suites; use AUnit.Test_Suites;
+with Ada.Environment_Variables;
 
-with Image_Tests.Thumbnails;
-with Image_Tests.Metadata;
-with Image_Tests.Embedded_Metadata;
+package OS is
 
-pragma Style_Checks (Off);
+   use Ada;
 
-function Image_Suite return Access_Test_Suite is
-   Result : Access_Test_Suite := new Test_Suite;
-   pragma Warnings (Off, Result);
-begin
-   Add_Test (Result, new Image_Tests.Thumbnails.Test_Case);
-   Add_Test (Result, new Image_Tests.Metadata.Test_Case);
-   Add_Test (Result, new Image_Tests.Embedded_Metadata.Test_Case);
-   return Result;
-end Image_Suite;
+   Is_Windows : constant Boolean :=
+                  Environment_Variables.Value ("OS") = "Windows_NT";
+
+end OS;
