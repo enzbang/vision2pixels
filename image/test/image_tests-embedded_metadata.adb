@@ -51,8 +51,7 @@ package body Image_Tests.Embedded_Metadata is
       pragma Unreferenced (T);
       Data : Metadata.Embedded.Data;
    begin
-      Data := Metadata.Embedded.Get
-        ("/home/obry/Projets/work/v2p/v2p-amr/image/test/chat.jpg");
+      Data := Metadata.Embedded.Get ("chat.jpg");
 
       Assert
         (Data.Make = "NIKON CORPORATION",
