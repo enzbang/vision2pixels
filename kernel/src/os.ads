@@ -25,7 +25,17 @@ package OS is
 
    use Ada;
 
-   Is_Windows : constant Boolean :=
-                  Environment_Variables.Value ("OS") = "Windows_NT";
+   Is_Windows          : constant Boolean :=
+                           Environment_Variables.Value ("OS") = "Windows_NT";
+
+   Directory_Separator : constant Character;
+
+private
+
+   subtype Windows_Host is Boolean;
+
+   DS : array (Windows_Host) of Character := (True => '\', False => '/');
+
+   Directory_Separator : constant Character := DS (Is_Windows);
 
 end OS;
