@@ -61,6 +61,7 @@ with V2P.Wiki;
 with Image.Data;
 with Image.Metadata.Geographic;
 with Settings;
+with OS;
 
 package body V2P.Web_Server is
 
@@ -818,7 +819,7 @@ package body V2P.Web_Server is
    function Photos_Callback (Request : in Status.Data) return Response.Data is
       URI  : constant String := Status.URI (Request);
       File : constant String :=
-               Settings.Get_Images_Path & "/"
+               Settings.Get_Images_Path & OS.Directory_Separator
                  & URI (URI'First +
                           Images_Source_Prefix'Length + 1 .. URI'Last);
    begin
@@ -974,7 +975,7 @@ package body V2P.Web_Server is
    function Thumbs_Callback (Request : in Status.Data) return Response.Data is
       URI  : constant String := Status.URI (Request);
       File : constant String :=
-               Settings.Get_Thumbs_Path & "/"
+               Settings.Get_Thumbs_Path & OS.Directory_Separator
                  & URI (URI'First +
                           Thumbs_Source_Prefix'Length + 1 .. URI'Last);
    begin
