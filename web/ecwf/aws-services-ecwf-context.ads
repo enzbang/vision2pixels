@@ -59,6 +59,25 @@ package AWS.Services.ECWF.Context is
    function Get_Value (Context : in Object; Name : in String) return String;
    --  Get the value for the key Name
 
+   generic
+      type Data is private;
+      Null_Data : Data;
+   package Generic_Data is
+
+      procedure Set_Value
+        (Context : in out Object;
+         Name    : in String;
+         Value   : in Data);
+      --  Set key/pair value for the SID
+
+      function Get_Value (Context : in Object; Name : in String) return Data;
+      pragma Inline (Get_Value);
+      --  Returns the Value for Key in the session SID or Null_Data if
+      --  key does not exist.
+
+   end Generic_Data;
+
+
    function Exist (Context : in Object; Name : in String) return Boolean;
    --  Returns true if the key Name exist in this context
 

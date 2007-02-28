@@ -178,4 +178,37 @@ package body AWS.Services.ECWF.Context is
          return Id (Session.No_Session);
    end Value;
 
+   ------------------
+   -- Generic_Data --
+   ------------------
+
+   package body Generic_Data is
+
+      package Context_Generic_Data is
+        new Session.Generic_Data (Data, Null_Data);
+      use Context_Generic_Data;
+
+      ---------------
+      -- Get_Value --
+      ---------------
+
+      function Get_Value (Context : in Object; Name : in String) return Data is
+      begin
+         return Get (Context.SID, Name);
+      end Get_Value;
+
+      ---------------
+      -- Set_Value --
+      ---------------
+
+      procedure Set_Value
+        (Context : in out Object;
+         Name    : in String;
+         Value   : in Data) is
+      begin
+         Set (Context.SID, Name, Value);
+      end Set_Value;
+
+   end Generic_Data;
+
 end AWS.Services.ECWF.Context;
