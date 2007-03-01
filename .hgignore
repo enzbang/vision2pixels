@@ -6,6 +6,10 @@ syntax: glob
 *.dll
 *.exe
 *.so
+.gpsrcs
+v2p-template_defs*
+b~*
+image/test
 
 syntax: regexp
 (.*/)?\#[^/]*\#$
