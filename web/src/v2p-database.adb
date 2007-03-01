@@ -50,6 +50,7 @@ package body V2P.Database is
    use Ada.Exceptions;
    use Ada.Strings.Unbounded;
 
+   use V2P.Context;
    use V2P.Template_Defs;
 
    type TLS_DBH is record
@@ -677,118 +678,23 @@ package body V2P.Database is
       end if;
    end Get_Password;
 
-   ---------------------------------
-   -- Get_Thread_Navigation_Links --
-   ---------------------------------
-
-   function Get_Thread_Navigation_Links
-     (Fid       : in String;
-      Tid       : in String;
-      User      : in String := "";
-      From      : in Natural := 0;
-      Filter    : in Filter_Mode := All_Messages;
-      Order_Dir : in Order_Direction := DESC) return Templates.Translate_Set
-   is
-      Post_Date     : constant String :=
-                        "(select date_post from post where id = "
-                          & Tid & ") ";
-      And_Date_Post : constant String := " and date_post ";
-
-      DBH           : TLS_DBH := DBH_TLS.Value;
-      Set           : Templates.Translate_Set;
-      Iter          : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line          : DB.String_Vectors.Vector;
-      Select_Stmt   : Unbounded_String;
-
-   begin
-      if Order_Dir = DESC then
-         --  Next is previous
-
-         Select_Stmt := Threads_Ordered_Select
-           (Fid, User, From, Filter,
-            And_Date_Post & " > " & Post_Date,
-            ASC, 1);
-      else
-         Select_Stmt := Threads_Ordered_Select
-           (Fid, User, From, Filter,
-            And_Date_Post & " < " & Post_Date,
-            DESC, 1);
-      end if;
-
-      Connect (DBH);
-
-      DBH.Handle.Prepare_Select (Iter, To_String (Select_Stmt));
-
-      if Iter.More then
-         Iter.Get_Line (Line);
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Forum_Entry.PREVIOUS,
-               DB.String_Vectors.Element (Line, 1)));
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Forum_Entry.PREVIOUS_THUMB,
-               DB.String_Vectors.Element (Line, 3)));
-
-         Line.Clear;
-      end if;
-
-      Iter.End_Select;
-
-      if Order_Dir = DESC then
-         --  Previous is next
-
-         Select_Stmt := Threads_Ordered_Select
-           (Fid, User, From, Filter,
-            And_Date_Post & " < " & Post_Date,
-            DESC, 1);
-      else
-         Select_Stmt := Threads_Ordered_Select
-           (Fid, User, From, Filter,
-            And_Date_Post & " > " & Post_Date,
-            ASC, 1);
-      end if;
-
-      DBH.Handle.Prepare_Select (Iter, To_String (Select_Stmt));
-
-      if Iter.More then
-         Iter.Get_Line (Line);
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Forum_Entry.NEXT,
-               DB.String_Vectors.Element (Line, 1)));
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Forum_Entry.NEXT_THUMB,
-               DB.String_Vectors.Element (Line, 3)));
-
-         Line.Clear;
-      end if;
-
-      Iter.End_Select;
-
-      return Set;
-   end Get_Thread_Navigation_Links;
-
    -----------------
    -- Get_Threads --
    -----------------
 
-   function Get_Threads
-     (Fid       : in String := "";
-      User      : in String := "";
-      From      : in Natural := 0;
-      Filter    : in Filter_Mode := All_Messages;
-      Order_Dir : in Order_Direction := DESC) return Templates.Translate_Set
+   procedure Get_Threads
+     (Fid        : in String := "";
+      User       : in String := "";
+      From       : in Natural := 0;
+      Filter     : in Filter_Mode := All_Messages;
+      Order_Dir  : in Order_Direction := DESC;
+      Navigation : out Post_Ids.Vector;
+      Set        : out Templates.Translate_Set)
    is
       use type Templates.Tag;
+      use Post_Ids;
 
       DBH             : TLS_DBH := DBH_TLS.Value;
-      Set             : Templates.Translate_Set;
       Iter            : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line            : DB.String_Vectors.Vector;
       Id              : Templates.Tag;
@@ -800,6 +706,8 @@ package body V2P.Database is
       Select_Stmt     : Unbounded_String;
 
    begin
+      Navigation := Post_Ids.Empty_Vector;
+
       Connect (DBH);
 
       Select_Stmt := Threads_Ordered_Select
@@ -840,6 +748,11 @@ package body V2P.Database is
          Visit_Counter   := Visit_Counter
            & DB.String_Vectors.Element (Line, 6);
 
+         --  Insert this post id in navigation links
+
+         Navigation := Navigation
+           & To_Unbounded_String (DB.String_Vectors.Element (Line, 1));
+
          Line.Clear;
       end loop;
 
@@ -858,8 +771,36 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc
            (Block_Forum_Threads.VISIT_COUNTER, Visit_Counter));
-      return Set;
    end Get_Threads;
+
+   -------------------
+   -- Get_Thumbnail --
+   -------------------
+
+   function Get_Thumbnail (Post : in String) return String is
+      DBH      : TLS_DBH := DBH_TLS.Value;
+      Iter     : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line     : DB.String_Vectors.Vector;
+      Filename : Unbounded_String;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select
+        (Iter, "select filename from photo, post "
+         & "where photo.id = post.photo_id and post.id = " & Post);
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Filename := To_Unbounded_String (DB.String_Vectors.Element (Line, 1));
+
+         Line.Clear;
+      end if;
+
+      Iter.End_Select;
+
+      return To_String (Filename);
+   end Get_Thumbnail;
 
    --------------
    -- Get_User --
