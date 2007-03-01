@@ -1,3 +1,5 @@
+@@INCLUDE@@ babel.thtml
+@@--
 @@IF@@ @_METADATA_LATITUDE_@ /= ""
 <dl class="geo">
   <dt><strong>@_BABEL_METADATA_LATITUDE_@</strong></dt>
@@ -19,11 +21,11 @@
     <fieldset>
       <legend>@_BABEL_METADATA_@</legend>
         <p>
-          <label for="latitude">latitude</label>
+          <label for="latitude">@_BABEL_LATITUDE_@</label>
           <input id="latitude" name="latitude" type="entry"/>
         </p>
         <p>
-          <label for="longitude">longitude</label>
+          <label for="longitude">@_BABEL_LONGITUDE_@</label>
           <input id="longitude" name="longitude" type="entry"/>
         </p>
         <input name="ENTER" id="metadata_form_enter" type="submit" value="OK"/>

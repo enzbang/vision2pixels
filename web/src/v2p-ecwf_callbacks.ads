@@ -28,6 +28,11 @@ package V2P.ECWF_Callbacks is
    use AWS;
    use AWS.Services;
 
+   procedure Exif
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
    procedure Forum_Filter
      (Request      : in     Status.Data;
       Context      : access ECWF.Context.Object;

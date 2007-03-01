@@ -89,3 +89,20 @@ create table "photo_metadata" (
 "geo_longitude_formatted" varchar(2) not null,
 foreign key ("photo_id") references photo("id")
 );
+
+create table "photo_exif" (
+"photo_id" integer not null,
+"create_date" varchar(19),
+"make" varchar(50),
+"camera_model_name" varchar(20),
+"shutter_speed_value" varchar(10),
+"aperture_value" varchar(10),
+"flash" varchar(20),
+"focal_length" varchar(10),
+"exposure_mode" varchar(10),
+"exposure_program" varchar(20),
+"white_balance" varchar(10),
+"metering_mode" varchar(20),
+"iso" integer,
+foreign key ("photo_id") references photo("id")
+);

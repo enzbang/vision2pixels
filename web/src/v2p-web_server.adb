@@ -805,9 +805,10 @@ package body V2P.Web_Server is
             end if;
          end;
       end if;
+
       if Pid /= "" then
-         Onsubmit_Metadata_Form_Enter_Callback (Request, Context,
-                                                Translations);
+         Onsubmit_Metadata_Form_Enter_Callback
+           (Request, Context, Translations);
       end if;
    end Onsubmit_Post_Form_Enter_Callback;
 

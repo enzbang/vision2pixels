@@ -31,39 +31,71 @@ package body Image.Metadata.Embedded is
 
    use Ada;
    use GNAT;
-   pragma Warnings (Off);
 
-   Exiftool   : aliased String := "exiftool";
-   Cmd        : constant String := "cmd.exe";
-   Cmd_Option : aliased String := "/c";
-   Sh_Option  : aliased String := "sh";
+   Exiftool     : aliased String := "exiftool";
+   Exiftool_Opt : aliased String := "-e";
+   Cmd          : constant String := "cmd.exe";
+   Cmd_Option   : aliased String := "/c";
+   Sh_Option    : aliased String := "sh";
 
-   Make                : aliased String := "\nMake[^:]*: (.+)";
-   Camera_Model_Name   : aliased String := "\nCamera Model Name[^:]*: (.+)";
-   Shutter_Speed_Value : aliased String := "\nShutter Speed Value[^:]*: (.+)";
-   Aperture_Value      : aliased String := "\nAperture Value[^:]*: (.+)";
+   Suffix              : constant String := "  [^:]*: (.+)";
+
+   Make                : aliased String := "\nMake" & Suffix;
+   Camera_Model_Name   : aliased String := "\nCamera Model Name" & Suffix;
+   Shutter_Speed_Value : aliased String := "\nShutter Speed Value" & Suffix;
+   Aperture_Value      : aliased String := "\nAperture Value" & Suffix;
+   Exposure_Program    : aliased String := "\nExposure Program" & Suffix;
+   ISO                 : aliased String := "\nISO" & Suffix;
+   Create_Date         : aliased String := "\nCreate Date" & Suffix;
+   Metering_Mode       : aliased String := "\nMetering Mode" & Suffix;
+   Flash               : aliased String := "\nFlash" & Suffix;
+   Focal_Length        : aliased String := "\nFocal Length " & Suffix;
+   Exposure_Mode       : aliased String := "\nExposure Mode" & Suffix;
+   White_Balance       : aliased String := "\nWhite Balance" & Suffix;
+
+   --  Note that the pattern order in Regpat_Array is important as it must
+   --  match the output of the exiftool.
 
    Regpat_Array        : constant Expect.Regexp_Array :=
                            (Make'Access,
                             Camera_Model_Name'Access,
                             Shutter_Speed_Value'Access,
-                            Aperture_Value'Access);
-
-   function "+"
-     (Str : in String) return Unbounded_String renames To_Unbounded_String;
+                            Aperture_Value'Access,
+                            Exposure_Program'Access,
+                            ISO'Access,
+                            Create_Date'Access,
+                            Metering_Mode'Access,
+                            Flash'Access,
+                            Focal_Length'Access,
+                            Exposure_Mode'Access,
+                            White_Balance'Access);
 
    ---------
    -- Get --
    ---------
 
    function Get (Filename : in String) return Data is
+
+      function First return Unbounded_String;
+      --  Returns first matching string
+
       Five_Secs : constant := 5_000;
       File      : aliased String := Filename;
       Pd        : Expect.Process_Descriptor;
       Matched   : Regpat.Match_Array (0 .. 3);
       Result    : Expect.Expect_Match;
       Metadata  : Data;
-      use type Regpat.Match_Location;
+
+      -----------
+      -- First --
+      -----------
+
+      function First return Unbounded_String is
+      begin
+         return To_Unbounded_String
+           (Expect.Expect_Out (Pd) (Matched (1).First .. Matched (1).Last));
+      end First;
+
    begin
       if OS.Is_Windows then
          Expect.Non_Blocking_Spawn
@@ -71,10 +103,12 @@ package body Image.Metadata.Embedded is
             (1 => Cmd_Option'Access,
              2 => Sh_Option'Access,
              3 => Exiftool'Access,
-             4 => File'Unchecked_Access));
+             4 => Exiftool_Opt'Access,
+             5 => File'Unchecked_Access));
       else
          Expect.Non_Blocking_Spawn
-           (Pd, Exiftool, (1 => File'Unchecked_Access));
+           (Pd, Exiftool,
+            (1 => Exiftool_Opt'Access, 2 => File'Unchecked_Access));
       end if;
 
       Read_Metadata : loop
@@ -86,21 +120,18 @@ package body Image.Metadata.Embedded is
          end;
 
          case Result is
-            when 1 =>
-               Metadata.Make := +Expect.Expect_Out (Pd)
-                 (Matched (1).First .. Matched (1).Last);
-
-            when 2 =>
-               Metadata.Camera_Model_Name := +Expect.Expect_Out (Pd)
-                 (Matched (1).First .. Matched (1).Last);
-
-            when 3 =>
-               Metadata.Shutter_Speed_Value := +Expect.Expect_Out (Pd)
-                 (Matched (1).First .. Matched (1).Last);
-
-            when 4 =>
-               Metadata.Aperture_Value := +Expect.Expect_Out (Pd)
-                 (Matched (1).First .. Matched (1).Last);
+            when  1 => Metadata.Make := First;
+            when  2 => Metadata.Camera_Model_Name := First;
+            when  3 => Metadata.Shutter_Speed_Value := First;
+            when  4 => Metadata.Aperture_Value := First;
+            when  5 => Metadata.Exposure_Program := First;
+            when  6 => Metadata.ISO := First;
+            when  7 => Metadata.Create_Date := First;
+            when  8 => Metadata.Metering_Mode := First;
+            when  9 => Metadata.Flash := First;
+            when 10 => Metadata.Focal_Length := First;
+            when 11 => Metadata.Exposure_Mode := First;
+            when 12 => Metadata.White_Balance := First;
 
             when Expect.Expect_Timeout =>
                exit Read_Metadata;

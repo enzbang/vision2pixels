@@ -47,6 +47,8 @@
 
     <div id="image_metadata" style="display:none">@_LAZY_METADATA_@</div>
 
+    <div id="image_exif" style="display:block">@_LAZY_EXIF_@</div>
+
     <h2 id="comments_section">Commentaires</h2>
 
     @@IF@@ @_COMMENT_ID_@ /= "" @@--  at least one comment

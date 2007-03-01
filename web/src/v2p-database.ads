@@ -82,7 +82,11 @@ package V2P.Database is
    --  Returns user's temporaries photos
 
    function Get_Metadata (Pid : in String) return Templates.Translate_Set;
-   --  Returns photo metadata
+   --  Returns photo geographic metadata
+
+   function Get_Exif (Pid : in String) return Templates.Translate_Set;
+   --  Returns photo exif metadata, get them from the image if needed and
+   --  update the database.
 
    function Insert_Comment
      (Uid       : in String;
