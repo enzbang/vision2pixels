@@ -19,6 +19,8 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;
+
 with AWS.Config.Set;
 with AWS.Dispatchers.Callback;
 with AWS.Messages;
@@ -34,6 +36,7 @@ with AWS.Status;
 with AWS.Templates;
 
 with V2P.Database;
+with V2P.Context;
 with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Forum_Threads;
 with V2P.Template_Defs.Forum_Post;
@@ -61,10 +64,12 @@ with V2P.Wiki;
 with Image.Data;
 with Image.Metadata.Geographic;
 with Settings;
+with OS;
 
 package body V2P.Web_Server is
 
    use AWS;
+   use Ada.Strings.Unbounded;
 
    HTTP            : Server.HTTP;
    Configuration   : Config.Object;
@@ -346,17 +351,40 @@ package body V2P.Web_Server is
       end if;
 
       --  Insert navigation links (previous and next post)
-      --  ??? We should use the context here
 
-      Templates.Insert
-        (Translations, Database.Get_Thread_Navigation_Links
-           (Fid => Context.Get_Value (Template_Defs.Global.FID),
-            Tid => TID,
-            Filter => Database.Filter_Mode'Value
-              (Context.Get_Value (Template_Defs.Global.FILTER)),
-            Order_Dir => Database.Order_Direction'Value
-              (Context.Get_Value (Template_Defs.Global.ORDER_DIR))));
+      declare
+         Selected_Post : V2P.Context.Post_Ids.Vector :=
+                           V2P.Context.Navigation_Links.Get_Value
+                             (Context.all, "Navigation_Links");
 
+         Current_Id    : Unbounded_String := To_Unbounded_String (TID);
+         Previous_Id   : Unbounded_String := V2P.Context.Previous
+           (Selected_Post, Current_Id);
+         Next_Id       : Unbounded_String := V2P.Context.Next
+           (Selected_Post, Current_Id);
+      begin
+         Templates.Insert
+           (Translations, Templates.Assoc
+              (V2P.Template_Defs.Forum_Entry.PREVIOUS, Previous_Id));
+
+         if Previous_Id /= To_Unbounded_String ("") then
+            Templates.Insert
+              (Translations, Templates.Assoc
+                 (V2P.Template_Defs.Forum_Entry.PREVIOUS_THUMB,
+                  Database.Get_Thumbnail (To_String (Previous_Id))));
+         end if;
+
+         Templates.Insert
+           (Translations, Templates.Assoc
+              (V2P.Template_Defs.Forum_Entry.NEXT, Next_Id));
+
+         if Next_Id /= To_Unbounded_String ("") then
+            Templates.Insert
+              (Translations, Templates.Assoc
+                 (V2P.Template_Defs.Forum_Entry.NEXT_THUMB,
+                  Database.Get_Thumbnail (To_String (Next_Id))));
+         end if;
+      end;
       Templates.Insert (Translations, Database.Get_Entry (TID));
    end Forum_Entry_Callback;
 
@@ -369,12 +397,15 @@ package body V2P.Web_Server is
       Context      : access Services.ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
+      pragma Unreferenced (Translations);
+
       P    : constant Parameters.List := Status.Parameters (Request);
       FID  : constant String :=
                Parameters.Get (P, Template_Defs.Forum_Threads.HTTP.FID);
       From : Positive := 1;
    begin
       --  Set forum Id into the context
+
       Context.Set_Value (Template_Defs.Global.FID, FID);
 
       if Context.Exist (Template_Defs.Global.TID) then
@@ -388,14 +419,10 @@ package body V2P.Web_Server is
            (Parameters.Get (P, Template_Defs.Block_Forum_Navigate.HTTP.FROM));
       end if;
 
-      Context_Filter (Context);
+      V2P.Context.Navigation_From.Set_Value
+        (Context.all, Template_Defs.Global.FROM, From);
 
-      Templates.Insert
-        (Translations,
-         Database.Get_Threads
-           (FID, From => From,
-            Order_Dir => Database.Order_Direction'Value
-              (Context.Get_Value (Template_Defs.Global.ORDER_DIR))));
+      Context_Filter (Context);
    end Forum_Threads_Callback;
 
    ----------------------
@@ -408,8 +435,6 @@ package body V2P.Web_Server is
          --  Does not accept empty comment
          return False;
       end if;
-
-      --  ??? Checks if the same comment is already in user context
 
       return True;
    end Is_Valid_Comment;
@@ -819,7 +844,7 @@ package body V2P.Web_Server is
    function Photos_Callback (Request : in Status.Data) return Response.Data is
       URI  : constant String := Status.URI (Request);
       File : constant String :=
-               Settings.Get_Images_Path & "/"
+               Settings.Get_Images_Path & OS.Directory_Separator
                  & URI (URI'First +
                           Images_Source_Prefix'Length + 1 .. URI'Last);
    begin
@@ -975,7 +1000,7 @@ package body V2P.Web_Server is
    function Thumbs_Callback (Request : in Status.Data) return Response.Data is
       URI  : constant String := Status.URI (Request);
       File : constant String :=
-               Settings.Get_Thumbs_Path & "/"
+               Settings.Get_Thumbs_Path & OS.Directory_Separator
                  & URI (URI'First +
                           Thumbs_Source_Prefix'Length + 1 .. URI'Last);
    begin

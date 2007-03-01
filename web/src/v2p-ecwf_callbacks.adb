@@ -22,6 +22,7 @@
 with AWS.Session;
 
 with V2P.Database;
+with V2P.Context;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Global;
@@ -102,17 +103,25 @@ package body V2P.ECWF_Callbacks is
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
+      use V2P.Context;
+
+      Set       : Templates.Translate_Set;
+      Nav_Links : V2P.Context.Post_Ids.Vector;
    begin
-      if Context.Exist ("FID") then
-         Templates.Insert
-           (Translations,
-            Database.Get_Threads
-              (Fid    => Context.Get_Value ("FID"),
-               Filter => Database.Filter_Mode'Value
-                 (Context.Get_Value (Template_Defs.Global.FILTER)),
-               Order_Dir => Database.Order_Direction'Value
-                 (Context.Get_Value (Template_Defs.Global.ORDER_DIR))));
-      end if;
+
+      Database.Get_Threads
+        (FID        => Context.Get_Value (Template_Defs.Global.FID),
+         From       => Navigation_From.Get_Value
+           (Context.all, Template_Defs.Global.FROM),
+         Order_Dir  => Database.Order_Direction'Value
+           (Context.Get_Value (Template_Defs.Global.ORDER_DIR)),
+         Navigation => Nav_Links,
+         Set        => Set);
+
+      V2P.Context.Navigation_Links.Set_Value
+        (Context.all, "Navigation_Links", Nav_Links);
+
+      Templates.Insert (Translations, Set);
    end Forum_Threads;
 
    -----------
@@ -186,10 +195,14 @@ package body V2P.ECWF_Callbacks is
    is
       pragma Unreferenced (Context);
       SID : constant Session.Id := Status.Session (Request);
+      Set : Templates.Translate_Set;
+      Navigation : V2P.Context.Post_Ids.Vector;
    begin
-      Templates.Insert
-        (Translations,
-         Database.Get_Threads (User => Session.Get (SID, "LOGIN")));
+      Database.Get_Threads (User       => Session.Get (SID, "LOGIN"),
+                            Navigation => Navigation,
+                            Set        => Set);
+
+      Templates.Insert (Translations, Set);
    end User_Thread_List;
 
    ---------------------------

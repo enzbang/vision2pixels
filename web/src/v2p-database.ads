@@ -20,6 +20,7 @@
 ------------------------------------------------------------------------------
 
 with AWS.Templates;
+with V2P.Context;
 
 package V2P.Database is
 
@@ -38,22 +39,20 @@ package V2P.Database is
    function Get_Forum (Fid : in String) return String;
    --  Returns the DB line for the given forum
 
-   function Get_Threads
-     (Fid       : in String := "";
-      User      : in String := "";
-      From      : in Natural := 0;
-      Filter    : in Filter_Mode := All_Messages;
-      Order_Dir : in Order_Direction := DESC) return Templates.Translate_Set;
+   procedure Get_Threads
+     (Fid        : in String := "";
+      User       : in String := "";
+      From       : in Natural := 0;
+      Filter     : in Filter_Mode := All_Messages;
+      Order_Dir  : in Order_Direction := DESC;
+      Navigation : out V2P.Context.Post_Ids.Vector;
+      Set        : out Templates.Translate_Set);
    --  Returns all threads for a given forum
+   --  Returns navigation links to store in context
 
-   function Get_Thread_Navigation_Links
-     (Fid       : in String;
-      Tid       : in String;
-      User      : in String := "";
-      From      : in Natural := 0;
-      Filter    : in Filter_Mode := All_Messages;
-      Order_Dir : in Order_Direction := DESC) return Templates.Translate_Set;
-   --  Returns next and previous thread (id and thumbnail)
+   function Get_Thumbnail (Post : in String) return String;
+   --  Returns the thumbnail filename of the photo
+   --  associated with the given post
 
    function Get_Categories (Fid : in String) return Templates.Translate_Set;
    --  Returns all categories for the given forum
