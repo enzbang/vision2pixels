@@ -31,6 +31,14 @@ package Image.Metadata.Embedded is
       Camera_Model_Name   : Unbounded_String;
       Shutter_Speed_Value : Unbounded_String;
       Aperture_Value      : Unbounded_String;
+      Exposure_Program    : Unbounded_String;
+      ISO                 : Unbounded_String;
+      Create_Date         : Unbounded_String;
+      Metering_Mode       : Unbounded_String;
+      Flash               : Unbounded_String;
+      Focal_Length        : Unbounded_String;
+      Exposure_Mode       : Unbounded_String;
+      White_Balance       : Unbounded_String;
    end record;
 
    No_Data : constant Data;
@@ -40,8 +48,6 @@ package Image.Metadata.Embedded is
 
 private
 
-   No_Data : constant Data :=
-               (Null_Unbounded_String, Null_Unbounded_String,
-                Null_Unbounded_String, Null_Unbounded_String);
+   No_Data : constant Data := (others => Null_Unbounded_String);
 
 end Image.Metadata.Embedded;

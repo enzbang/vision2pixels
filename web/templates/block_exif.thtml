@@ -1,0 +1,98 @@
+@@INCLUDE@@ babel.thtml
+@@--
+<dl class="exif">
+  @@IF@@ @_EXIST:EXIF_ISO_@
+    <dt><strong>@_BABEL_EXIF_ISO_@</strong></dt>
+    <dd>
+      <abbr class="iso" title="@_EXIF_ISO_@">
+        @_EXIF_ISO_@
+      </abbr>
+    </dd>
+  @@END_IF@@
+  @@IF@@ @_EXIST:EXIF_CREATE_DATE_@
+    <dt><strong>@_BABEL_EXIF_CREATE_DATE_@</strong></dt>
+    <dd>
+      <abbr class="create_date" title="@_EXIF_CREATE_DATE_@">
+        @_EXIF_CREATE_DATE_@
+      </abbr>
+    </dd>
+  @@END_IF@@
+  @@IF@@ @_EXIST:EXIF_MAKE_@
+    <dt><strong>@_BABEL_EXIF_MAKE_@</strong></dt>
+    <dd>
+      <abbr class="make" title="@_EXIF_MAKE_@">@_EXIF_MAKE_@</abbr>
+    </dd>
+  @@END_IF@@
+  @@IF@@ @_EXIST:EXIF_CAMERA_MODEL_NAME_@
+    <dt><strong>@_BABEL_EXIF_CAMERA_MODEL_NAME_@</strong></dt>
+    <dd>
+      <abbr class="camera_model_name" title="@_EXIF_CAMERA_MODEL_NAME_@">
+        @_EXIF_CAMERA_MODEL_NAME_@
+      </abbr>
+    </dd>
+  @@END_IF@@
+  @@IF@@ @_EXIST:EXIF_SHUTTER_SPEED_VALUE_@
+    <dt><strong>@_BABEL_EXIF_SHUTTER_SPEED_VALUE_@</strong></dt>
+    <dd>
+      <abbr class="shutter_speed_value" title="@_EXIF_SHUTTER_SPEED_VALUE_@">
+        @_EXIF_SHUTTER_SPEED_VALUE_@
+      </abbr>
+    </dd>
+  @@END_IF@@
+  @@IF@@ @_EXIST:EXIF_APERTURE_VALUE_@
+    <dt><strong>@_BABEL_EXIF_APERTURE_VALUE_@</strong></dt>
+    <dd>
+      <abbr class="aperture_value" title="@_EXIF_APERTURE_VALUE_@">
+        @_EXIF_APERTURE_VALUE_@
+      </abbr>
+    </dd>
+  @@END_IF@@
+  @@IF@@ @_EXIST:EXIF_FLASH_@
+    <dt><strong>@_BABEL_EXIF_FLASH_@</strong></dt>
+    <dd>
+      <abbr class="flash" title="@_EXIF_FLASH_@">
+        @_EXIF_FLASH_@
+      </abbr>
+    </dd>
+  @@END_IF@@
+  @@IF@@ @_EXIST:EXIF_FOCAL_LENGTH_@
+    <dt><strong>@_BABEL_EXIF_FOCAL_LENGTH_@</strong></dt>
+    <dd>
+      <abbr class="focal_length" title="@_EXIF_FOCAL_LENGTH_@">
+        @_EXIF_FOCAL_LENGTH_@
+      </abbr>
+    </dd>
+  @@END_IF@@
+  @@IF@@ @_EXIST:EXIF_EXPOSURE_MODE_@
+    <dt><strong>@_BABEL_EXIF_EXPOSURE_MODE_@</strong></dt>
+    <dd>
+      <abbr class="exposure_mode" title="@_EXIF_EXPOSURE_MODE_@">
+        @_EXIF_EXPOSURE_MODE_@
+      </abbr>
+    </dd>
+  @@END_IF@@
+  @@IF@@ @_EXIST:EXIF_EXPOSURE_PROGRAM_@
+    <dt><strong>@_BABEL_EXIF_EXPOSURE_PROGRAM_@</strong></dt>
+    <dd>
+      <abbr class="exposure_program" title="@_EXIF_EXPOSURE_PROGRAM_@">
+        @_EXIF_EXPOSURE_PROGRAM_@
+      </abbr>
+    </dd>
+  @@END_IF@@
+  @@IF@@ @_EXIST:EXIF_WHITE_BALANCE_@
+    <dt><strong>@_BABEL_EXIF_WHITE_BALANCE_@</strong></dt>
+    <dd>
+      <abbr class="white_balance" title="@_EXIF_WHITE_BALANCE_@">
+        @_EXIF_WHITE_BALANCE_@
+      </abbr>
+    </dd>
+  @@END_IF@@
+  @@IF@@ @_EXIST:EXIF_METERING_MODE_@
+    <dt><strong>@_BABEL_EXIF_METERING_MODE_@</strong></dt>
+    <dd>
+      <abbr class="metering_mode" title="@_EXIF_METERING_MODE_@">
+        @_EXIF_METERING_MODE_@
+      </abbr>
+    </dd>
+  @@END_IF@@
+</dl>

@@ -65,6 +65,30 @@ package body Image_Tests.Embedded_Metadata is
       Assert
         (Data.Aperture_Value = "5.6",
          "Wrong aperture : " & To_String (Data.Aperture_Value));
+      Assert
+        (Data.Exposure_Program = "Program AE",
+         "Wrong exposure program : " & To_String (Data.Exposure_Program));
+      Assert
+        (Data.ISO = "800",
+         "Wrong ISO : " & To_String (Data.ISO));
+      Assert
+        (Data.Create_Date = "2007:01:27 16:42:34",
+         "Wrong create date : " & To_String (Data.Create_Date));
+      Assert
+        (Data.Metering_Mode = "Multi-segment",
+         "Wrong metering mode : " & To_String (Data.Metering_Mode));
+      Assert
+        (Data.Flash = "No Flash",
+         "Wrong flash : " & To_String (Data.Flash));
+      Assert
+        (Data.Focal_Length = "260.0mm",
+         "Wrong focal length : " & To_String (Data.Focal_Length));
+      Assert
+        (Data.Exposure_Mode = "Auto",
+         "Wrong exposure mode : " & To_String (Data.Exposure_Mode));
+      Assert
+        (Data.White_Balance = "Auto",
+         "Wrong white balance : " & To_String (Data.White_Balance));
    end Read;
 
    --------------------

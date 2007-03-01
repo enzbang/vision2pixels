@@ -26,19 +26,22 @@ with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with DB;
+with Image.Metadata.Embedded;
+with OS;
 with Settings;
 
 with V2P.Web_Server;
 with V2P.DB_Handle;
 with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Comment;
+with V2P.Template_Defs.Block_Exif;
 with V2P.Template_Defs.Block_Forum_Threads;
 with V2P.Template_Defs.Block_Forum_Navigate;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Login;
+with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_User_Tmp_Photo_Select;
-with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.R_Block_Forum_List;
 
 package body V2P.Database is
@@ -74,6 +77,10 @@ package body V2P.Database is
    --  Quote the string and double all single quote in Str to be able to insert
    --  a quote into the database.
    --  Returns Null if empty string
+
+   function Q (Str : in Unbounded_String) return String;
+   pragma Inline (Q);
+   --  As above but from an Unbounded_String
 
    function Threads_Ordered_Select
      (Fid        : in String := "";
@@ -307,8 +314,7 @@ package body V2P.Database is
       DBH.Handle.Prepare_Select
         (Iter, "select post.name, post.comment, "
          & "(select filename from photo where id=post.photo_id)"
-         & "from post where "
-         & "post.id=" & Q (Tid));
+         & "from post where post.id=" & Q (Tid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -397,6 +403,120 @@ package body V2P.Database is
 
       return Set;
    end Get_Entry;
+
+   --------------
+   -- Get_Exif --
+   --------------
+
+   function Get_Exif (Pid : in String) return Templates.Translate_Set is
+
+      function "+"
+        (Str : in String) return Unbounded_String renames To_Unbounded_String;
+
+      DBH  : TLS_DBH := DBH_TLS.Value;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+      Set  : Templates.Translate_Set;
+
+      Exif : Image.Metadata.Embedded.Data;
+
+   begin
+      if Pid = "" then
+         --  ???
+         return Set;
+      end if;
+
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select
+        (Iter, "select create_date, make, camera_model_name, "
+         & "shutter_speed_value, aperture_value, flash, focal_length, "
+         & "exposure_mode, exposure_program, white_balance, metering_mode, "
+         & "iso from photo_exif "
+         & "where photo_id = " & Q (Pid));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Exif :=
+           (Create_Date         => +DB.String_Vectors.Element (Line, 1),
+            Make                => +DB.String_Vectors.Element (Line, 2),
+            Camera_Model_Name   => +DB.String_Vectors.Element (Line, 3),
+            Shutter_Speed_Value => +DB.String_Vectors.Element (Line, 4),
+            Aperture_Value      => +DB.String_Vectors.Element (Line, 5),
+            Flash               => +DB.String_Vectors.Element (Line, 6),
+            Focal_Length        => +DB.String_Vectors.Element (Line, 7),
+            Exposure_Mode       => +DB.String_Vectors.Element (Line, 8),
+            Exposure_Program    => +DB.String_Vectors.Element (Line, 9),
+            White_Balance       => +DB.String_Vectors.Element (Line, 10),
+            Metering_Mode       => +DB.String_Vectors.Element (Line, 11),
+            ISO                 => +DB.String_Vectors.Element (Line, 12));
+
+         Iter.End_Select;
+
+      else
+         --  No exif metadata recorded for this photo, get them now
+         DBH.Handle.Prepare_Select
+           (Iter, "select filename from photo where id=" & Q (Pid));
+
+         if Iter.More then
+            Iter.Get_Line (Line);
+         end if;
+
+         Exif := Image.Metadata.Embedded.Get
+           (Settings.Get_Images_Path & OS.Directory_Separator
+            & DB.String_Vectors.Element (Line, 1));
+
+         DBH.Handle.Execute
+           ("insert into photo_exif " &
+            "('photo_id', 'create_date', 'make', 'camera_model_name', "
+            & "'shutter_speed_value', 'aperture_value', 'flash', "
+            & "'focal_length', 'exposure_mode', 'exposure_program', "
+            & "'white_balance', 'metering_mode', 'iso')"
+            & "values ("
+            & Q (Pid) & ',' & Q (Exif.Create_Date) & ',' & Q (Exif.Make) & ','
+            & Q (Exif.Camera_Model_Name) & ',' & Q (Exif.Shutter_Speed_Value)
+            & ',' & Q (Exif.Aperture_Value) & ',' & Q (Exif.Flash) & ','
+            & Q (Exif.Focal_Length) & ',' & Q (Exif.Exposure_Mode) & ','
+            & Q (Exif.Exposure_Program) & ',' & Q (Exif.White_Balance) & ','
+            & Q (Exif.Metering_Mode) & ',' & Q (Exif.ISO) & ')');
+      end if;
+
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Exif.EXIF_ISO, Exif.ISO));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Exif.EXIF_CREATE_DATE, Exif.Create_Date));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Exif.EXIF_MAKE, Exif.Make));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Block_Exif.EXIF_CAMERA_MODEL_NAME, Exif.Camera_Model_Name));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Block_Exif.EXIF_SHUTTER_SPEED_VALUE, Exif.Shutter_Speed_Value));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Block_Exif.EXIF_APERTURE_VALUE, Exif.Aperture_Value));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Exif.EXIF_FLASH, Exif.Flash));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Block_Exif.EXIF_FOCAL_LENGTH, Exif.Focal_Length));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Block_Exif.EXIF_EXPOSURE_MODE, Exif.Exposure_Mode));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Block_Exif.EXIF_EXPOSURE_PROGRAM, Exif.Exposure_Program));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Block_Exif.EXIF_WHITE_BALANCE, Exif.White_Balance));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Block_Exif.EXIF_METERING_MODE, Exif.Metering_Mode));
+
+      return Set;
+   end Get_Exif;
 
    ---------------
    -- Get_Forum --
@@ -663,8 +783,7 @@ package body V2P.Database is
       User      : in String := "";
       From      : in Natural := 0;
       Filter    : in Filter_Mode := All_Messages;
-      Order_Dir : in Order_Direction := DESC)
-      return Templates.Translate_Set
+      Order_Dir : in Order_Direction := DESC) return Templates.Translate_Set
    is
       use type Templates.Tag;
 
@@ -759,6 +878,10 @@ package body V2P.Database is
       return Set;
    end Get_User;
 
+   ------------------------
+   -- Get_User_Tmp_Photo --
+   ------------------------
+
    function Get_User_Tmp_Photo
      (Uid : in String) return Templates.Translate_Set
    is
@@ -794,7 +917,6 @@ package body V2P.Database is
            (Block_User_Tmp_Photo_Select.TMP_FILENAME, Tmp_Filename));
 
       return Set;
-
    end Get_User_Tmp_Photo;
 
    -------
@@ -920,8 +1042,6 @@ package body V2P.Database is
       when E : DB.DB_Error =>
          Text_IO.Put_Line (Exception_Message (E));
    end Insert_Metadata;
-
-
 
    ------------------
    -- Insert_Photo --
@@ -1054,8 +1174,7 @@ package body V2P.Database is
       end if;
 
       declare
-         Post_Id : constant String :=
-           DBH.Handle.Last_Insert_Rowid;
+         Post_Id : constant String := DBH.Handle.Last_Insert_Rowid;
       begin
          Insert_Table_User_Post (Uid, Post_Id);
          DBH.Handle.Commit;
@@ -1127,6 +1246,11 @@ package body V2P.Database is
       S (J) := ''';
 
       return S (1 .. J);
+   end Q;
+
+   function Q (Str : in Unbounded_String) return String is
+   begin
+      return Q (To_String (Str));
    end Q;
 
    ----------------------------
