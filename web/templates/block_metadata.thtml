@@ -1,7 +1,7 @@
 @@INCLUDE@@ babel.thtml
 @@--
 <p>
-<div id="geo_metadata">
+<span id="geo_metadata">
 @@IF@@ @_METADATA_LATITUDE_@ /= ""
 <dl class="geo">
   <dt><strong>@_BABEL_GEO_LATITUDE_@</strong></dt>
@@ -37,7 +37,8 @@
   </form>
   @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, metadata_post, 4=>metadata_post)
 @@END_IF@@
-</div>
+</span>
 @@--
-<div id="exif_metadata" style="display:block">@_LAZY_EXIF_@</div>
+<span id="exif_metadata" style="display:block">@_LAZY_EXIF_@</span>
+<span id="spacer">&nbsp;</div>
 </p>
