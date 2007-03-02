@@ -3,20 +3,20 @@
 <p>
 <span id="geo_metadata">
 @@IF@@ @_METADATA_LATITUDE_@ /= ""
-<dl class="geo">
-  <dt><strong>@_BABEL_GEO_LATITUDE_@</strong></dt>
-  <dd>
-    <abbr class="latitude" title="@_METADATA_LATITUDE_@">
-      @_METADATA_LATITUDE_FORMATTED_@
-    </abbr>
-  </dd>
-  <dt><strong>@_BABEL_GEO_LONGITUDE_@</strong></dt>
-  <dd>
-    <abbr class="longitude" title="@_METADATA_LONGITUDE_@">
-      @_METADATA_LONGITUDE_FORMATTED_@
-    </abbr>
-  </dd>
-</dl>
+  <dl class="geo">
+    <dt><strong>@_BABEL_GEO_LATITUDE_@</strong></dt>
+    <dd>
+      <abbr class="latitude" title="@_METADATA_LATITUDE_@">
+        @_METADATA_LATITUDE_FORMATTED_@
+      </abbr>
+    </dd>
+    <dt><strong>@_BABEL_GEO_LONGITUDE_@</strong></dt>
+    <dd>
+      <abbr class="longitude" title="@_METADATA_LONGITUDE_@">
+        @_METADATA_LONGITUDE_FORMATTED_@
+      </abbr>
+    </dd>
+  </dl>
 @@ELSE@@
 @@--  IF@@ @_IS_POST_AUTHOR_@
   <form enctype="multipart/form-data" id="metadata_post"
