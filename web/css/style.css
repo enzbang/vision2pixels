@@ -512,6 +512,11 @@ body.forum_post_page #form_container {
     background-color: white;
 }
 
+#metadata_post fieldset {
+    position: relative;
+    padding: 10px;
+}
+
 #image_metadata {
     width: 80%;
     margin-left: 10%;
