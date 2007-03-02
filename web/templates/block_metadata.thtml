@@ -1,16 +1,19 @@
 @@INCLUDE@@ babel.thtml
 @@--
+<p>
+<div id="geo_metadata">
 @@IF@@ @_METADATA_LATITUDE_@ /= ""
 <dl class="geo">
-  <dt><strong>@_BABEL_METADATA_LATITUDE_@</strong></dt>
+  <dt><strong>@_BABEL_GEO_LATITUDE_@</strong></dt>
   <dd>
     <abbr class="latitude" title="@_METADATA_LATITUDE_@">
-    @_METADATA_LATITUDE_FORMATTED_@
+      @_METADATA_LATITUDE_FORMATTED_@
     </abbr>
   </dd>
-  <dt><strong>@_BABEL_METADATA_LONGITUDE_@</strong></dt>
-  <dd><abbr class="longitude" title="@_METADATA_LONGITUDE_@">
-    @_METADATA_LONGITUDE_FORMATTED_@
+  <dt><strong>@_BABEL_GEO_LONGITUDE_@</strong></dt>
+  <dd>
+    <abbr class="longitude" title="@_METADATA_LONGITUDE_@">
+      @_METADATA_LONGITUDE_FORMATTED_@
     </abbr>
   </dd>
 </dl>
@@ -21,11 +24,11 @@
     <fieldset>
       <legend>@_BABEL_METADATA_@</legend>
         <p>
-          <label for="latitude">@_BABEL_LATITUDE_@</label>
+          <label for="latitude">@_BABEL_GEO_LATITUDE_@</label>
           <input id="latitude" name="latitude" type="entry"/>
         </p>
         <p>
-          <label for="longitude">@_BABEL_LONGITUDE_@</label>
+          <label for="longitude">@_BABEL_GEO_LONGITUDE_@</label>
           <input id="longitude" name="longitude" type="entry"/>
         </p>
         <input name="ENTER" id="metadata_form_enter" type="submit" value="OK"/>
@@ -34,3 +37,7 @@
   </form>
   @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, metadata_post, 4=>metadata_post)
 @@END_IF@@
+</div>
+@@--
+<div id="exif_metadata" style="display:block">@_LAZY_EXIF_@</div>
+</p>

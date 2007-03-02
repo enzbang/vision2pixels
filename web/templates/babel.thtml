@@ -37,8 +37,8 @@
 @@SET@@ BABEL_SHOW_METADATA="Voir les metadonnées"
 @@SET@@ BABEL_EDIT_METADATA="éditer les metadonnées"
 
-@@SET@@ BABEL_LATITUDE="Latitude"
-@@SET@@ BABEL_LONGITUDE="Longitude"
+@@SET@@ BABEL_GEO_LATITUDE="Latitude"
+@@SET@@ BABEL_GEO_LONGITUDE="Longitude"
 @@SET@@ BABEL_EXIF_ISO="ISO"
 @@SET@@ BABEL_EXIF_CREATE_DATE="Date de création"
 @@SET@@ BABEL_EXIF_MAKE="Marque"
