@@ -35,13 +35,13 @@ setup:
 	-$(MKDIR) gen
 	templates2ada -d templates -o gen/templates.cds \
 		-t templates/templates.tads
-	gnat chop -wpq gen/templates.cds src/
+	gnat chop -wpq gen/templates.cds tsrc/
 	$(RM) gen/templates.cds
 	templates2ada -d templates -o gen/templates.cds -e .txml \
 		-t templates/templates.tads
 	gnat chop -wpq gen/templates.cds gen/
 	$(RM) gen/templates.cds
-	$(CP) gen/v2p-template_defs-* src/
+	$(CP) gen/v2p-template_defs-* tsrc/
 	$(RM) -r gen
 
 install-dir:
