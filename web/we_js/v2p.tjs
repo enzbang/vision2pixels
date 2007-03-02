@@ -42,6 +42,17 @@ V2P.Tools = new function () {
    {
       Element.hide(this.rel);
    }
+
+   @@-- --------------------------------
+   @@--  Show/Hide element given in rel attribute
+
+   this.toggle_show_hide_rel = function ()
+   {
+      if ($(this.rel).style.display == "none")
+         Element.show(this.rel);
+      else
+         Element.hide(this.rel);
+   }
 }
 
 @@---------------------------------------------------------------- THUMBPREVIEW

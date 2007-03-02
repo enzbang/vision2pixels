@@ -40,5 +40,5 @@
 </span>
 @@--
 <span id="exif_metadata" style="display:block">@_LAZY_EXIF_@</span>
-<span id="spacer">&nbsp;</div>
+<span id="spacer">&nbsp;</span>
 </p>

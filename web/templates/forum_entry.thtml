@@ -42,7 +42,7 @@
 
     <p>
       <a href="#image_metadata" id="show_image_metadata" rel="image_metadata">
-      @_BABEL_SHOW_METADATA_@</a>
+      @_BABEL_METADATA_@</a>
     </p>
 
     <div id="image_metadata" style="display:none">@_LAZY_METADATA_@</div>
@@ -76,7 +76,7 @@
     <div id="new_comment">@_LAZY_NEW_COMMENT_@</div>
   </div>
   @@--
-  @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_image_metadata, V2P.Tools.show_rel)
+  @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_image_metadata, V2P.Tools.toggle_show_hide_rel)
   @@INCLUDE@@ v2p_end.thtml
 @@ELSE@@
   @_BABEL_DOES_NOT_EXIST_@
