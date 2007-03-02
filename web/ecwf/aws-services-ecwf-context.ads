@@ -77,7 +77,6 @@ package AWS.Services.ECWF.Context is
 
    end Generic_Data;
 
-
    function Exist (Context : in Object; Name : in String) return Boolean;
    --  Returns true if the key Name exist in this context
 
