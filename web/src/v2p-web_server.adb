@@ -523,7 +523,7 @@ package body V2P.Web_Server is
       Context      : access Services.ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-   pragma Unreferenced (Context);
+      pragma Unreferenced (Context);
       use Image.Data;
 
       SID          : constant Session.Id := Status.Session (Request);

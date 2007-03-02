@@ -362,7 +362,7 @@ package body AWS.Services.ECWF.Registry is
          Templates.Insert
            (Translations,
             Templates.Assoc
-              (Context_Var,  Context.Image (Get_Context_Id (Lazy_Tag))));
+              (Context_Var, Context.Image (Get_Context_Id (Lazy_Tag))));
          return;
       end if;
 
