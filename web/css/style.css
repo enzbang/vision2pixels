@@ -65,6 +65,7 @@ body {
     font-weight: bold;
     text-transform: uppercase;
     text-decoration: none;
+    color: #F5F5F5;
 }
 
 #navcontainer li a: link, #navcontainer li a: visited {
