@@ -41,13 +41,11 @@
     <p id="main_image_comment">@_IMAGE_COMMENT_@</p>
 
     <p>
-      <a href="#image_metadata" id="show_image_metadata" rel="image_metadata"/>
+      <a href="#image_metadata" id="show_image_metadata" rel="image_metadata">
       @_BABEL_SHOW_METADATA_@</a>
     </p>
 
     <div id="image_metadata" style="display:none">@_LAZY_METADATA_@</div>
-
-    <div id="image_exif" style="display:block">@_LAZY_EXIF_@</div>
 
     <h2 id="comments_section">Commentaires</h2>
 
