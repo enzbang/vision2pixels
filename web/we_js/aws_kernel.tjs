@@ -174,12 +174,13 @@ AWS.Context = new function() {
 
       for (k=0; k<anchors.length; k++) {
          var href = anchors[k].getAttribute('href');
-         if (href != null)
+         if (href != null) {
             if (href.indexOf("http",0) != 0
                 && href.indexOf("mailto:",0) != 0
-                && href.indexOf("#", 0) != 0
-                && anchors[k].getAttribute('onclick') == null)
-         anchors[k].setAttribute('onclick', 'AWS.Context.add_anchor(this);');
+                && href.indexOf("#", 0) != 0) {
+               anchors[k].setAttribute('href', AWS.Context.href_add_anchor(href));
+            }
+         }
       }
 
       @@-- forms
@@ -225,12 +226,18 @@ AWS.Context = new function() {
 
    this.add_anchor = function (a)
    {
-      if (a.href.indexOf('?',0) == -1)
-          a.href = a.href + '?';
-      else
-          a.href = a.href + '&';
+      a.href = this.href_add_anchor(a.href);
+   }
 
-      a.href = a.href + 'CTX_ECWF=' + this.get();
+   this.href_add_anchor = function (href)
+   {
+      if (href.indexOf('?',0) == -1)
+          href = href + '?';
+      else
+          href = href + '&';
+
+      href = href + 'CTX_ECWF=' + this.get();
+      return (href);
    }
 
    @@------------
