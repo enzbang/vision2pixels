@@ -353,15 +353,15 @@ package body V2P.Web_Server is
       --  Insert navigation links (previous and next post)
 
       declare
-         Selected_Post : V2P.Context.Post_Ids.Vector :=
+         Selected_Post : constant V2P.Context.Post_Ids.Vector :=
                            V2P.Context.Navigation_Links.Get_Value
                              (Context.all, "Navigation_Links");
-
-         Current_Id    : Unbounded_String := To_Unbounded_String (TID);
-         Previous_Id   : Unbounded_String := V2P.Context.Previous
-           (Selected_Post, Current_Id);
-         Next_Id       : Unbounded_String := V2P.Context.Next
-           (Selected_Post, Current_Id);
+         Current_Id    : constant Unbounded_String :=
+                           To_Unbounded_String (TID);
+         Previous_Id   : constant Unbounded_String :=
+                           V2P.Context.Previous (Selected_Post, Current_Id);
+         Next_Id       : constant Unbounded_String :=
+                           V2P.Context.Next (Selected_Post, Current_Id);
       begin
          Templates.Insert
            (Translations, Templates.Assoc
