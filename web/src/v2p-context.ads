@@ -44,11 +44,13 @@ package V2P.Context is
    --  Adds positive to context value data
 
    function Previous
-     (Posts : Post_Ids.Vector; Id : Unbounded_String) return Unbounded_String;
+     (Posts : in Post_Ids.Vector;
+      Id    : in Unbounded_String) return Unbounded_String;
    --  Returns previous post stored in Post_Ids.Vector
 
    function Next
-     (Posts : Post_Ids.Vector; Id : Unbounded_String) return Unbounded_String;
+     (Posts : in Post_Ids.Vector;
+      Id    : in Unbounded_String) return Unbounded_String;
    --  Returns next post stored in Post_Ids.Vector
 
 end V2P.Context;
