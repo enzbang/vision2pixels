@@ -97,19 +97,25 @@ package body Image.Metadata.Embedded is
       end First;
 
    begin
-      if OS.Is_Windows then
-         Expect.Non_Blocking_Spawn
-           (Pd, Cmd,
-            (1 => Cmd_Option'Access,
-             2 => Sh_Option'Access,
-             3 => Exiftool'Access,
-             4 => Exiftool_Opt'Access,
-             5 => File'Unchecked_Access));
-      else
-         Expect.Non_Blocking_Spawn
-           (Pd, Exiftool,
-            (1 => Exiftool_Opt'Access, 2 => File'Unchecked_Access));
-      end if;
+      begin
+         if OS.Is_Windows then
+            Expect.Non_Blocking_Spawn
+              (Pd, Cmd,
+               (1 => Cmd_Option'Access,
+                2 => Sh_Option'Access,
+                3 => Exiftool'Access,
+                4 => Exiftool_Opt'Access,
+                5 => File'Unchecked_Access));
+         else
+            Expect.Non_Blocking_Spawn
+              (Pd, Exiftool,
+               (1 => Exiftool_Opt'Access, 2 => File'Unchecked_Access));
+         end if;
+      exception
+         when Expect.Invalid_Process =>
+            --  Exiftool not installed, ignore
+            return Metadata;
+      end;
 
       Read_Metadata : loop
          begin
