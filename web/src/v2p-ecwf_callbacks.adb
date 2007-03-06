@@ -194,8 +194,8 @@ package body V2P.ECWF_Callbacks is
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
-      SID : constant Session.Id := Status.Session (Request);
-      Set : Templates.Translate_Set;
+      SID        : constant Session.Id := Status.Session (Request);
+      Set        : Templates.Translate_Set;
       Navigation : V2P.Context.Post_Ids.Vector;
    begin
       Database.Get_Threads (User       => Session.Get (SID, "LOGIN"),
