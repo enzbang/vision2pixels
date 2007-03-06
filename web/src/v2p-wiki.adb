@@ -19,8 +19,8 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with GNAT.Regpat;
 with Ada.Strings.Unbounded;
+with GNAT.Regpat;
 
 package body V2P.Wiki is
 

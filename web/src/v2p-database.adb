@@ -462,11 +462,11 @@ package body V2P.Database is
 
          if Iter.More then
             Iter.Get_Line (Line);
-         end if;
 
-         Exif := Image.Metadata.Embedded.Get
-           (Settings.Get_Images_Path & OS.Directory_Separator
-            & DB.String_Vectors.Element (Line, 1));
+            Exif := Image.Metadata.Embedded.Get
+              (Settings.Get_Images_Path & OS.Directory_Separator
+               & DB.String_Vectors.Element (Line, 1));
+         end if;
 
          DBH.Handle.Execute
            ("insert into photo_exif " &
