@@ -26,6 +26,7 @@ package OS is
    use Ada;
 
    Is_Windows          : constant Boolean :=
+                           Environment_Variables.Exists ("OS") and then
                            Environment_Variables.Value ("OS") = "Windows_NT";
 
    Directory_Separator : constant Character;
