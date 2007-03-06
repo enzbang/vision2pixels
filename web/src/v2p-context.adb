@@ -29,8 +29,7 @@ package body V2P.Context is
 
    function Next
      (Posts : in Post_Ids.Vector;
-      Id    : in Unbounded_String)
-      return Unbounded_String
+      Id    : in Unbounded_String) return Unbounded_String
    is
       Current : Cursor := Find (Posts, Id);
    begin
@@ -53,8 +52,7 @@ package body V2P.Context is
 
    function Previous
      (Posts : in Post_Ids.Vector;
-      Id    : in Unbounded_String)
-      return Unbounded_String
+      Id    : in Unbounded_String) return Unbounded_String
    is
       Current : Cursor := Find (Posts, Id);
    begin
