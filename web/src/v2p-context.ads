@@ -31,7 +31,7 @@ package V2P.Context is
 
    package Post_Ids is
      new Containers.Vectors (Positive, Unbounded_String);
-   --  Post_Ids stores all post ids visible in forum threads page
+   --  Post_Ids stores all visible post ids in forum threads page
 
    package Navigation_Links is
      new Generic_Data (Data      => Post_Ids.Vector,

@@ -1220,7 +1220,7 @@ package body V2P.Database is
                       " order by post.date_post "
                       & Order_Direction'Image (Order_Dir);
 
-      Select_Stmt : Unbounded_String := To_Unbounded_String ("");
+      Select_Stmt : Unbounded_String := Null_Unbounded_String;
    begin
       if User /= "" and then Fid /= "" then
          --  ???
