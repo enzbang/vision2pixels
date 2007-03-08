@@ -34,7 +34,7 @@ package body V2P.Context is
       Current : Cursor := Find (Posts, Id);
    begin
       if Current = No_Element then
-         return To_Unbounded_String ("");
+         return Null_Unbounded_String;
       end if;
 
       Next (Current);
@@ -42,7 +42,7 @@ package body V2P.Context is
       if Current /= No_Element then
          return Element (Current);
       else
-         return To_Unbounded_String ("");
+         return Null_Unbounded_String;
       end if;
    end Next;
 
@@ -57,7 +57,7 @@ package body V2P.Context is
       Current : Cursor := Find (Posts, Id);
    begin
       if Current = No_Element then
-         return To_Unbounded_String ("");
+         return Null_Unbounded_String;
       end if;
 
       Previous (Current);
@@ -65,7 +65,7 @@ package body V2P.Context is
       if Current /= No_Element then
          return Element (Current);
       else
-         return To_Unbounded_String ("");
+         return Null_Unbounded_String;
       end if;
    end Previous;
 

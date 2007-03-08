@@ -47,7 +47,7 @@ package body V2P.Wiki is
       --  or '[' and ']' characters
       Matches      : Match_Array (0 .. 6);
       Current      : Natural := S'First;
-      Result       : Unbounded_String := To_Unbounded_String ("");
+      Result       : Unbounded_String := Null_Unbounded_String;
    begin
       loop
          Match (Link_Extract, S, Matches, Current);
@@ -158,7 +158,7 @@ package body V2P.Wiki is
 
       Matches : Match_Array (0 .. 2);
       Current : Natural := S'First;
-      Result  : Unbounded_String := To_Unbounded_String ("");
+      Result  : Unbounded_String := Null_Unbounded_String;
    begin
       loop
          Match (Extract, S, Matches, Current);

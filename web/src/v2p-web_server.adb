@@ -367,7 +367,7 @@ package body V2P.Web_Server is
            (Translations, Templates.Assoc
               (V2P.Template_Defs.Forum_Entry.PREVIOUS, Previous_Id));
 
-         if Previous_Id /= To_Unbounded_String ("") then
+         if Previous_Id /= Null_Unbounded_String then
             Templates.Insert
               (Translations, Templates.Assoc
                  (V2P.Template_Defs.Forum_Entry.PREVIOUS_THUMB,
@@ -378,7 +378,7 @@ package body V2P.Web_Server is
            (Translations, Templates.Assoc
               (V2P.Template_Defs.Forum_Entry.NEXT, Next_Id));
 
-         if Next_Id /= To_Unbounded_String ("") then
+         if Next_Id /= Null_Unbounded_String then
             Templates.Insert
               (Translations, Templates.Assoc
                  (V2P.Template_Defs.Forum_Entry.NEXT_THUMB,
