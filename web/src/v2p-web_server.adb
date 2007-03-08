@@ -484,7 +484,10 @@ package body V2P.Web_Server is
    begin
       Session.Delete (SID);
 
-      --  Override LOGIN previously set in Default_Callback ?
+      --  Remove the login information from the translate table
+
+      Templates.Insert
+        (Translations, Templates.Assoc (Template_Defs.Global.LOGIN, ""));
 
       Templates.Insert
         (Translations,

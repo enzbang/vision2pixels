@@ -168,7 +168,8 @@ package body AWS.Services.ECWF.Registry is
 
                   if Parameters.Get
                     (Status.Parameters (Lazy_Tag.Request),
-                     Context_Var_To_Copy) /= "" then
+                     Context_Var_To_Copy) /= ""
+                  then
                      --  This context must be copied
 
                      CID := Context.Copy (CID);
@@ -208,19 +209,19 @@ package body AWS.Services.ECWF.Registry is
       Request      : in Status.Data;
       Translations : in Templates.Translate_Set) return Page
    is
+      Final_T  : Templates.Translate_Set;
       LT       : aliased Lazy_Handler :=
-                   (Templates.Dynamic.Lazy_Tag with Request, Translations);
+                   (Templates.Dynamic.Lazy_Tag with Request, Final_T);
       Position : Web_Object_Maps.Cursor;
 
-      function Get_Matching_Key (Search_Key : String) return String;
+      function Get_Matching_Key (Search_Key : in String) return String;
       --  Get the Prefix Key matching Search_Key in Prefix_URI_Vector
 
       ----------------------
       -- Get_Matching_Key --
       ----------------------
 
-      function Get_Matching_Key (Search_Key : String) return String
-      is
+      function Get_Matching_Key (Search_Key : in String) return String is
          use Prefix_URI;
          Cursor : Prefix_URI.Cursor := Prefix_URI.First (Prefix_URI_Vector);
       begin
@@ -228,14 +229,17 @@ package body AWS.Services.ECWF.Registry is
             declare
                K : constant String := To_String (Prefix_URI.Element (Cursor));
             begin
-               if K'Length <= Search_Key'Length and then
-                 Search_Key
-                 (Search_Key'First .. Search_Key'First + K'Length - 1) = K then
+               if K'Length <= Search_Key'Length
+                 and then
+                   Search_Key
+                     (Search_Key'First .. Search_Key'First + K'Length - 1) = K
+               then
                   return K;
                end if;
             end;
             Prefix_URI.Next (Cursor);
          end loop;
+
          return "";
       end Get_Matching_Key;
 
@@ -245,7 +249,6 @@ package body AWS.Services.ECWF.Registry is
       Position := WO_Map.Find (Key);
 
       if Position = No_Element then
-
          --  Search key in Prefix_URI_Vector
 
          declare
@@ -267,14 +270,18 @@ package body AWS.Services.ECWF.Registry is
             T             : Templates.Translate_Set;
             Template_Name : Unbounded_String;
          begin
-
             --  Get translation set for this tag
+
+            Templates.Insert (Final_T, Translations);
 
             if Element (Position).Data_CB /= null then
                Element (Position).Data_CB (LT.Request, Context'Access, T);
             end if;
 
-            Templates.Insert (T, Translations);
+            --  Add translations into Final_T, note that values in Final_T can
+            --  overriden.
+
+            Templates.Insert (Final_T, T);
 
             if Element (Position).Callback_Template then
                Template_Name := To_Unbounded_String
@@ -285,7 +292,7 @@ package body AWS.Services.ECWF.Registry is
 
             return (Content_Type => Element (Position).Content_Type,
                     Content      => Templates.Parse
-                      (To_String (Template_Name), T,
+                      (To_String (Template_Name), Final_T,
                        Lazy_Tag => LT'Unchecked_Access),
                     Set          => Templates.Null_Set);
          end;
@@ -372,9 +379,9 @@ package body AWS.Services.ECWF.Registry is
 
       if Position /= No_Element then
          declare
-            Context : aliased ECWF.Context.Object :=
-                        ECWF.Context.Get (Get_Context_Id (Lazy_Tag));
-            T       : Templates.Translate_Set;
+            Context    : aliased ECWF.Context.Object :=
+                           ECWF.Context.Get (Get_Context_Id (Lazy_Tag));
+            T, Final_T : Templates.Translate_Set;
          begin
             --  Get translation set for this tag
 
@@ -383,15 +390,16 @@ package body AWS.Services.ECWF.Registry is
                  (Lazy_Tag.Request, Context'Access, T);
             end if;
 
-            Templates.Insert (T, Translations);
-            Templates.Insert (T, Lazy_Tag.Translations);
+            Templates.Insert (Final_T, Translations);
+            Templates.Insert (Final_T, Lazy_Tag.Translations);
+            Templates.Insert (Final_T, T);
 
             Templates.Insert
               (Translations,
                Templates.Assoc
                  (Var_Name,
                   Unbounded_String'(Templates.Parse
-                    (To_String (Element (Position).Template), T,
+                    (To_String (Element (Position).Template), Final_T,
                        Lazy_Tag =>
                          Templates.Dynamic.Lazy_Tag_Access (Lazy_Tag)))));
          end;
