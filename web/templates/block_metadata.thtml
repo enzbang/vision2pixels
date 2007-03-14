@@ -30,12 +30,13 @@
         <label for="longitude">@_BABEL_GEO_LONGITUDE_@</label>
         <input id="longitude" name="longitude" type="entry"/>
       </p>
-      <input name="ENTER" id="metadata_form_enter" type="submit" value="OK"/>
-    </p>
-  </fieldset>
-</form>
-</div>
+      <p>
+        <input name="ENTER" id="metadata_form_enter" type="submit" value="OK"/>
+      </p>
+    </fieldset>
+  </form>
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, metadata_post, 4=>metadata_post)
 @@END_IF@@
+</div>
 @@--
 <div id="exif_metadata" class="yui-u">@_LAZY_EXIF_@</div>
