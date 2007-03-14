@@ -38,6 +38,7 @@
 @@SET@@ BABEL_ERROR_POST_DUPLICATED="Post déjà  envoyé"
 @@SET@@ BABEL_METADATA="Metadonnées"
 @@SET@@ BABEL_EDIT_METADATA="éditer les metadonnées"
+@@SET@@ BABEL_ERROR_METADATA="Métadonnées incorrectes"
 @@--
 @@SET@@ BABEL_GEO_LATITUDE="Latitude"
 @@SET@@ BABEL_GEO_LONGITUDE="Longitude"

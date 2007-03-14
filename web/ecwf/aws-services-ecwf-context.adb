@@ -148,6 +148,15 @@ package body AWS.Services.ECWF.Context is
       return Session.Image (Session.Id (CID));
    end Image;
 
+   -----------
+   -- Image --
+   -----------
+
+   function Image (O : in Object) return String is
+   begin
+      return Session.Image (Session.Id (O.SID));
+   end Image;
+
    ------------
    -- Remove --
    ------------

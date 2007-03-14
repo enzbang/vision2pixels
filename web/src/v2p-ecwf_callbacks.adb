@@ -152,6 +152,31 @@ package body V2P.ECWF_Callbacks is
       pragma Unreferenced (Request);
    begin
       if Context.Exist ("TID") then
+
+         if Context.Exist
+           (V2P.Template_Defs.Global.ERROR_METADATA_NULL_METADATA) then
+            Templates.Insert
+              (Translations,
+               Templates.Assoc
+                 (V2P.Template_Defs.Global.ERROR_METADATA_NULL_METADATA,
+                  "ERROR"));
+            Context.Remove
+              (V2P.Template_Defs.Global.ERROR_METADATA_NULL_METADATA);
+            return;
+         end if;
+
+         if Context.Exist
+           (V2P.Template_Defs.Global.ERROR_METADATA_UNKNOWN_PHOTO) then
+            Templates.Insert
+              (Translations,
+               Templates.Assoc
+                 (V2P.Template_Defs.Global.ERROR_METADATA_UNKNOWN_PHOTO,
+                  "ERROR"));
+            Context.Remove
+              (V2P.Template_Defs.Global.ERROR_METADATA_UNKNOWN_PHOTO);
+            return;
+         end if;
+
          Templates.Insert
            (Translations,
             Database.Get_Metadata (Context.Get_Value ("TID")));

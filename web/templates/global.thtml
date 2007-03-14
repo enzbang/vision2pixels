@@ -13,3 +13,10 @@
 @_FROM_@
 @_CONTEXT_LAST_POST_NAME_@
 @_CONTEXT_LAST_COMMENT_@
+@@--
+@@--
+@@--  Register globals errors
+@@--
+@_ERROR_METADATA_NULL_METADATA_@
+@_ERROR_METADATA_UNKNOWN_PHOTO_@
+@@--

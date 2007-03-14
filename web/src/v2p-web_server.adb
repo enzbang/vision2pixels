@@ -66,6 +66,7 @@ with Image.Data;
 with Image.Metadata.Geographic;
 with Settings;
 with OS;
+use AWS.Services.ECWF.Registry;
 
 package body V2P.Web_Server is
 
@@ -714,6 +715,7 @@ package body V2P.Web_Server is
       Context      : access Services.ECWF.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
+      pragma Unreferenced (Translations);
       use Image.Metadata.Geographic;
 
       function Get (Parameter_Name : in String) return Geo_Coordinate;
@@ -743,14 +745,13 @@ package body V2P.Web_Server is
       Longitude_Postition : Longitude;
 
    begin
-      if Latitude_Coord = 0.0 or else Longitude_Coord = 0.0
-        or else not Context.Exist (Template_Defs.Global.TID)
-      then
-         Templates.Insert
-           (Translations,
-            Templates.Assoc
-              (Template_Defs.R_Block_Metadata_Form_Enter.ERROR, "ERROR"));
-         --  ??? Adds an error message
+      if Latitude_Coord = 0.0 or else Longitude_Coord = 0.0 then
+         Context.Set_Value
+           (V2P.Template_Defs.Global.ERROR_METADATA_NULL_METADATA, "ERROR");
+         return;
+      elsif not Context.Exist (Template_Defs.Global.TID) then
+         Context.Set_Value
+           (V2P.Template_Defs.Global.ERROR_METADATA_UNKNOWN_PHOTO, "ERROR");
          return;
       end if;
 
@@ -825,7 +826,12 @@ package body V2P.Web_Server is
                Templates.Insert
                  (Translations,
                   Templates.Assoc
-                    (R_Block_Post_Form_Enter.URL, Forum_Entry.URL));
+                    (R_Block_Post_Form_Enter.URL,
+                     Forum_Entry.URL & '?' &
+                     Forum_Entry.HTTP.TID & '=' & Post_Id & '&' &
+                     Get_Context_URL_Param & '=' &
+                     AWS.Services.ECWF.Context.Image (Context.all)));
+
             else
                Templates.Insert
                  (Translations,
@@ -835,7 +841,7 @@ package body V2P.Web_Server is
          end;
       end if;
 
-      if Pid /= "" then
+      if Pid /= "" and then Context.Exist (Global.TID) then
          Onsubmit_Metadata_Form_Enter_Callback
            (Request, Context, Translations);
       end if;
