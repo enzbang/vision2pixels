@@ -44,9 +44,10 @@
       <a href="#image_metadata" id="show_image_metadata" rel="image_metadata">
       @_BABEL_METADATA_@</a>
     </p>
+  </div>
 
-    <div id="image_metadata" style="display:none">@_LAZY_METADATA_@</div>
-
+  <div class="yui-g" id="image_metadata" style="display:none">@_LAZY_METADATA_@</div>
+  <div class="yui-g">
     <h2 id="comments_section">Commentaires</h2>
 
     @@IF@@ @_COMMENT_ID_@ /= "" @@--  at least one comment
