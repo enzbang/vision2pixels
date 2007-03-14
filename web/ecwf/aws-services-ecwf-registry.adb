@@ -200,6 +200,15 @@ package body AWS.Services.ECWF.Registry is
       end if;
    end Get_Context_Id;
 
+   ---------------------------
+   -- Get_Context_URL_Param --
+   ---------------------------
+
+   function Get_Context_URL_Param return String is
+   begin
+      return Context_Var;
+   end Get_Context_URL_Param;
+
    -----------
    -- Parse --
    -----------
