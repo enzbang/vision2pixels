@@ -525,16 +525,6 @@ body.forum_post_page #form_container {
     border: 1px dashed #292929;
 }
 
-#geo_metadata {
-    width: 50%;
-    float: left;
-}
-
-#exif_metadata {
-    width: 50%;
-    float: left;
-}
-
 dl {
     font-size: 0.8em;
 }
@@ -549,8 +539,4 @@ dt {
 dd {
     width: 50%;
     float: left;
-}
-
-spacer {
-    clear: both;
 }
