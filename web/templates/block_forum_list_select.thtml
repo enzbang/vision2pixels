@@ -1,7 +1,7 @@
 @@IF@@ @_FID'LENGTH_@ = 1
   @_FORUM_NAME_@
 @@ELSE@@
-  <select name="FORUM" id="sel_forum_list">
+  <select name="sel_forum_list" id="sel_forum_list">
     <option value="x">@_BABEL_SELECT_FORUM_@</option>
   @@TABLE@@
     <option value="@_FID_@">@_FORUM_NAME_@</option>
