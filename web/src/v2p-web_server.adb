@@ -667,7 +667,7 @@ package body V2P.Web_Server is
             Templates.Assoc
               (R_Block_Comment_Form_Enter.ERROR, "ERROR_NO_LOGIN"));
 
-      elsif Last_Comment = Comment then
+      elsif Last_Comment = Comment & '@' & Tid then
          --   This is a duplicated post
 
          Templates.Insert
@@ -688,7 +688,8 @@ package body V2P.Web_Server is
          begin
             --  Adds the new comment in context to prevent duplicated post
 
-            Context.Set_Value (Global.CONTEXT_LAST_COMMENT, Comment);
+            Context.Set_Value
+              (Global.CONTEXT_LAST_COMMENT, Comment & '@' & Tid);
 
             Templates.Insert (Translations, Database.Get_Comment (Cid));
             Templates.Insert
