@@ -52,6 +52,7 @@ with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Navigate;
 with V2P.Template_Defs.Block_User_Tmp_Photo_Select;
 with V2P.Template_Defs.Block_Forum_Filter;
+with V2P.Template_Defs.Block_Forum_List_Select;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Forum_List;
@@ -140,7 +141,7 @@ package body V2P.Web_Server is
      (Request      : in     Status.Data;
       Context      : access Services.ECWF.Context.Object;
       Translations : in out Templates.Translate_Set);
-   --  Called when a new forum is selected
+   --  Called when a new forum is selected on post page
 
    procedure Onchange_Filter_Forum
      (Request      : in     Status.Data;
@@ -623,8 +624,7 @@ package body V2P.Web_Server is
       P   : constant Parameters.List := Status.Parameters (Request);
       Fid : constant String :=
               Parameters.Get
-                (P, Template_Defs.Block_Forum_Filter.HTTP.forum_filter_set);
-      --  ??
+                (P, Template_Defs.Block_Forum_List_Select.HTTP.sel_forum_list);
    begin
       Templates.Insert (Translations, Database.Get_Categories (Fid));
    end Onchange_Forum_List_Callback;
