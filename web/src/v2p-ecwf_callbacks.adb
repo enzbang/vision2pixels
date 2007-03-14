@@ -184,6 +184,22 @@ package body V2P.ECWF_Callbacks is
       end if;
    end New_Comment;
 
+   --------------
+   -- New_Post --
+   --------------
+
+   procedure New_Post
+     (Request      : in     Status.Data;
+      Context      : access ECWF.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Translations);
+   begin
+      if Context.Exist ("TID") then
+         Context.Remove ("TID");
+      end if;
+   end New_Post;
+
    ----------------------
    -- User_Thread_List --
    ----------------------

@@ -76,7 +76,7 @@ package V2P.ECWF_Callbacks is
    procedure New_Post
      (Request      : in     Status.Data;
       Context      : access ECWF.Context.Object;
-      Translations : in out Templates.Translate_Set) is null;
+      Translations : in out Templates.Translate_Set);
 
    procedure Quick_Login
      (Request      : in     Status.Data;
