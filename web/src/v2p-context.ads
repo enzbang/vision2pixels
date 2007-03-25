@@ -39,6 +39,9 @@ package V2P.Context is
    package Navigation_From is
      new Generic_Data (Data => Integer, Null_Data => 1);
    --  Adds positive to context value data
+   --  ??? Integer used here instead of Positive to work around a GNAT GPL 2006
+   --  bug, should be changed when GNAT GPL 2007 is out and if it contains the
+   --  fix as this bug is not present on recent GNAT versions.
 
    function Previous
      (Posts : in Post_Ids.Vector;
