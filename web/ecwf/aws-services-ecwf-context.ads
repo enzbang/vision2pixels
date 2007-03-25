@@ -35,8 +35,8 @@ package AWS.Services.ECWF.Context is
 
    type Id is private;
 
-   function Image (O : in Object) return String;
-   --  Returns Object string representation
+   function Get_Id (O : in Object) return Id;
+   --  Returns Object Id
 
    function Image (CID : in Id) return String;
    --  Returns CID string representation

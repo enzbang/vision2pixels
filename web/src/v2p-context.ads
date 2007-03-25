@@ -19,18 +19,16 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Vectors;
-with Ada.Strings.Unbounded;
+with Ada.Containers.Indefinite_Vectors;
 with AWS.Services.ECWF.Context;
 
 package V2P.Context is
 
    use Ada;
-   use Ada.Strings.Unbounded;
    use AWS.Services.ECWF.Context;
 
    package Post_Ids is
-     new Containers.Vectors (Positive, Unbounded_String);
+     new Containers.Indefinite_Vectors (Positive, String);
    --  Post_Ids stores all visible post ids in forum threads page
 
    package Navigation_Links is
@@ -39,18 +37,17 @@ package V2P.Context is
    --  Adds Post_Ids.Vector to context value data
 
    package Navigation_From is
-     new Generic_Data (Data      => Positive,
-                       Null_Data => 1);
+     new Generic_Data (Data => Integer, Null_Data => 1);
    --  Adds positive to context value data
 
    function Previous
      (Posts : in Post_Ids.Vector;
-      Id    : in Unbounded_String) return Unbounded_String;
+      Id    : in String) return String;
    --  Returns previous post stored in Post_Ids.Vector
 
    function Next
      (Posts : in Post_Ids.Vector;
-      Id    : in Unbounded_String) return Unbounded_String;
+      Id    : in String) return String;
    --  Returns next post stored in Post_Ids.Vector
 
 end V2P.Context;

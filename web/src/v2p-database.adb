@@ -750,8 +750,7 @@ package body V2P.Database is
 
          --  Insert this post id in navigation links
 
-         Navigation := Navigation
-           & To_Unbounded_String (DB.String_Vectors.Element (Line, 1));
+         Navigation := Navigation & DB.String_Vectors.Element (Line, 1);
 
          Line.Clear;
       end loop;

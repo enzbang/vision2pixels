@@ -108,11 +108,10 @@ package body V2P.ECWF_Callbacks is
       Set       : Templates.Translate_Set;
       Nav_Links : V2P.Context.Post_Ids.Vector;
    begin
-
       Database.Get_Threads
         (FID        => Context.Get_Value (Template_Defs.Global.FID),
          From       => Navigation_From.Get_Value
-           (Context.all, Template_Defs.Global.FROM),
+           (Context.all, Template_Defs.Global.NAV_FROM),
          Order_Dir  => Database.Order_Direction'Value
            (Context.Get_Value (Template_Defs.Global.ORDER_DIR)),
          Navigation => Nav_Links,

@@ -29,6 +29,9 @@
 @@SET@@ AWS_CONTEXT_PER_WINDOW = true
 @@--  If the context should be renew on a new window (or tab) creation
 
+@@SET@@ CTX_ECWF = "CTX_ECWF"
+@@--  The context parameter name
+
 @@---------------------------------------------------------------- AWS
 
 var AWS = {
@@ -139,7 +142,7 @@ AWS.Context = new function() {
 
    this.get = function ()
    {
-      var context = document.getElementById('CTX_ECWF');
+      var context = document.getElementById('@_CTX_ECWF_@');
 
       if (context == null)
           return "";
@@ -161,7 +164,8 @@ AWS.Context = new function() {
 	 @@--  Renew the context
 
 	 is_new_context = true;
-	 AWS.Ajax.XML.request("/xml_reset_context.xml?CTX_ECWF_COPY=true", "", AWS.Context.update);
+	 AWS.Ajax.XML.request
+           ("/xml_reset_context.xml?CTX_ECWF_COPY=true", "", AWS.Context.update);
       }
       @@END_IF@@
 
@@ -177,7 +181,8 @@ AWS.Context = new function() {
          if (href != null) {
             if (href.indexOf("http",0) != 0
                 && href.indexOf("mailto:",0) != 0
-                && href.indexOf("#", 0) != 0) {
+                && href.indexOf("#",0) != 0
+                && href.indexOf("@_CTX_ECWF_@",0) == -1) {
                anchors[k].setAttribute('href', AWS.Context.href_add_anchor(href));
             }
          }
@@ -197,7 +202,7 @@ AWS.Context = new function() {
                    if (no_context (forms[k].elements) == true) {
                       hi = document.createElement('input');
                       hi.setAttribute('type', 'hidden');
-                      hi.setAttribute('name', 'CTX_ECWF');
+                      hi.setAttribute('name', '@_CTX_ECWF_@');
                       hi.setAttribute('value', AWS.Context.get());
                       forms[k].appendChild(hi);
                    }
@@ -216,7 +221,7 @@ AWS.Context = new function() {
       else
           pars = pars + "&";
 
-      pars = pars + 'CTX_ECWF=' + this.get();
+      pars = pars + "@_CTX_ECWF_@=" + this.get();
 
       return pars;
    }
@@ -236,7 +241,7 @@ AWS.Context = new function() {
       else
           href = href + '&';
 
-      href = href + 'CTX_ECWF=' + this.get();
+      href = href + "@_CTX_ECWF_@=" + this.get();
       return (href);
    }
 
@@ -252,7 +257,7 @@ AWS.Context = new function() {
       var k = 0;
       for (k=0; k<items.length; k++) {
          if (items[k].tagName == "INPUT"
-             && items[k].getAttribute('NAME') == 'CTX_ECWF')
+             && items[k].getAttribute('NAME') == '@_CTX_ECWF_@')
             return false;
       }
       return true;
@@ -512,6 +517,16 @@ AWS.Ajax.XML = new function() {
    function handler_location (node)
    {
       var url = node.getAttribute('url');
+
+      if (url.indexOf('http',0) == -1 && url.indexOf('@_CTX_ECWF_@') == -1) {
+         @@--  pointing inside server and no context
+         if (url.indexOf("?",0) == -1)
+            url = url + '?';
+         else
+            url = url + '&';
+
+         url = url + "@_CTX_ECWF_@=" & AWS.Context.get();
+      }
 
       /* Redirect to url */
       document.location.href = url;

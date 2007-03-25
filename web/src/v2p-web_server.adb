@@ -19,8 +19,6 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded;
-
 with AWS.Config.Set;
 with AWS.Dispatchers.Callback;
 with AWS.Messages;
@@ -71,7 +69,6 @@ use AWS.Services.ECWF.Registry;
 package body V2P.Web_Server is
 
    use AWS;
-   use Ada.Strings.Unbounded;
 
    HTTP            : Server.HTTP;
    Configuration   : Config.Object;
@@ -358,33 +355,31 @@ package body V2P.Web_Server is
          Selected_Post : constant V2P.Context.Post_Ids.Vector :=
                            V2P.Context.Navigation_Links.Get_Value
                              (Context.all, "Navigation_Links");
-         Current_Id    : constant Unbounded_String :=
-                           To_Unbounded_String (TID);
-         Previous_Id   : constant Unbounded_String :=
-                           V2P.Context.Previous (Selected_Post, Current_Id);
-         Next_Id       : constant Unbounded_String :=
-                           V2P.Context.Next (Selected_Post, Current_Id);
+         Previous_Id   : constant String :=
+                           V2P.Context.Previous (Selected_Post, TID);
+         Next_Id       : constant String :=
+                           V2P.Context.Next (Selected_Post, TID);
       begin
          Templates.Insert
            (Translations, Templates.Assoc
               (V2P.Template_Defs.Forum_Entry.PREVIOUS, Previous_Id));
 
-         if Previous_Id /= Null_Unbounded_String then
+         if Previous_Id /= "" then
             Templates.Insert
               (Translations, Templates.Assoc
                  (V2P.Template_Defs.Forum_Entry.PREVIOUS_THUMB,
-                  Database.Get_Thumbnail (To_String (Previous_Id))));
+                  Database.Get_Thumbnail (Previous_Id)));
          end if;
 
          Templates.Insert
            (Translations, Templates.Assoc
               (V2P.Template_Defs.Forum_Entry.NEXT, Next_Id));
 
-         if Next_Id /= Null_Unbounded_String then
+         if Next_Id /= "" then
             Templates.Insert
               (Translations, Templates.Assoc
                  (V2P.Template_Defs.Forum_Entry.NEXT_THUMB,
-                  Database.Get_Thumbnail (To_String (Next_Id))));
+                  Database.Get_Thumbnail (Next_Id)));
          end if;
       end;
       Templates.Insert (Translations, Database.Get_Entry (TID));
@@ -422,7 +417,7 @@ package body V2P.Web_Server is
       end if;
 
       V2P.Context.Navigation_From.Set_Value
-        (Context.all, Template_Defs.Global.FROM, From);
+        (Context.all, Template_Defs.Global.NAV_FROM, From);
 
       Context_Filter (Context);
    end Forum_Threads_Callback;
@@ -749,6 +744,7 @@ package body V2P.Web_Server is
          Context.Set_Value
            (V2P.Template_Defs.Global.ERROR_METADATA_NULL_METADATA, "ERROR");
          return;
+
       elsif not Context.Exist (Template_Defs.Global.TID) then
          Context.Set_Value
            (V2P.Template_Defs.Global.ERROR_METADATA_UNKNOWN_PHOTO, "ERROR");
@@ -813,10 +809,10 @@ package body V2P.Web_Server is
       else
          declare
             Post_Id : constant String :=
-              Database.Insert_Post (Login, CID, Name, Comment_Wiki, Pid);
+                        Database.Insert_Post
+                          (Login, CID, Name, Comment_Wiki, Pid);
          begin
             if Post_Id /= "" then
-
                --  Set new context TID (needed by
                --  Onsubmit_Metadata_Form_Enter_Callback)
 
@@ -828,9 +824,7 @@ package body V2P.Web_Server is
                   Templates.Assoc
                     (R_Block_Post_Form_Enter.URL,
                      Forum_Entry.URL & '?' &
-                     Forum_Entry.HTTP.TID & '=' & Post_Id & '&' &
-                     Get_Context_URL_Param & '=' &
-                     AWS.Services.ECWF.Context.Image (Context.all)));
+                     Forum_Entry.HTTP.TID & '=' & Post_Id));
 
             else
                Templates.Insert
