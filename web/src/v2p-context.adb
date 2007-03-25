@@ -29,12 +29,12 @@ package body V2P.Context is
 
    function Next
      (Posts : in Post_Ids.Vector;
-      Id    : in Unbounded_String) return Unbounded_String
+      Id    : in String) return String
    is
       Current : Cursor := Find (Posts, Id);
    begin
       if Current = No_Element then
-         return Null_Unbounded_String;
+         return "";
       end if;
 
       Next (Current);
@@ -42,7 +42,7 @@ package body V2P.Context is
       if Current /= No_Element then
          return Element (Current);
       else
-         return Null_Unbounded_String;
+         return "";
       end if;
    end Next;
 
@@ -52,12 +52,12 @@ package body V2P.Context is
 
    function Previous
      (Posts : in Post_Ids.Vector;
-      Id    : in Unbounded_String) return Unbounded_String
+      Id    : in String) return String
    is
       Current : Cursor := Find (Posts, Id);
    begin
       if Current = No_Element then
-         return Null_Unbounded_String;
+         return "";
       end if;
 
       Previous (Current);
@@ -65,7 +65,7 @@ package body V2P.Context is
       if Current /= No_Element then
          return Element (Current);
       else
-         return Null_Unbounded_String;
+         return "";
       end if;
    end Previous;
 

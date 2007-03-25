@@ -111,6 +111,15 @@ package body AWS.Services.ECWF.Registry is
       end if;
    end Build;
 
+   ----------------------------
+   -- Context_Parameter_Name --
+   ----------------------------
+
+   function Context_Parameter_Name return String is
+   begin
+      return Context_Var;
+   end Context_Parameter_Name;
+
    --------------------
    -- Get_Context_Id --
    --------------------
@@ -199,15 +208,6 @@ package body AWS.Services.ECWF.Registry is
               (Status.Parameters (Lazy_Tag.Request), Internal_Context_Var));
       end if;
    end Get_Context_Id;
-
-   ---------------------------
-   -- Get_Context_URL_Param --
-   ---------------------------
-
-   function Get_Context_URL_Param return String is
-   begin
-      return Context_Var;
-   end Get_Context_URL_Param;
 
    -----------
    -- Parse --

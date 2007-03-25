@@ -90,8 +90,10 @@ package AWS.Services.ECWF.Registry is
       return Response.Data;
    --  Save as above but returns a standard Web page
 
-   function Get_Context_URL_Param return String;
-   --  Returns context URL parameter
+   function Context_Parameter_Name return String;
+   pragma Inline (Context_Parameter_Name);
+   --  Returns context URL parameter name. This is the name of the URL
+   --  parameter containing the context id.
 
 private
 

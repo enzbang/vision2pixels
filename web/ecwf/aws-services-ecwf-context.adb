@@ -130,6 +130,15 @@ package body AWS.Services.ECWF.Context is
       return Object'(SID => Session.Id (CID));
    end Get;
 
+   ------------
+   -- Get_Id --
+   ------------
+
+   function Get_Id (O : in Object) return Id is
+   begin
+      return Id (O.SID);
+   end Get_Id;
+
    ---------------
    -- Get_Value --
    ---------------
@@ -146,15 +155,6 @@ package body AWS.Services.ECWF.Context is
    function Image (CID : in Id) return String is
    begin
       return Session.Image (Session.Id (CID));
-   end Image;
-
-   -----------
-   -- Image --
-   -----------
-
-   function Image (O : in Object) return String is
-   begin
-      return Session.Image (Session.Id (O.SID));
    end Image;
 
    ------------
