@@ -25,9 +25,9 @@ insert into template values (1, 'mytemplate', 'V2P Template');
 
 --  Comment counter
 
-create trigger update_comment_counter insert on comment
+create trigger update_comment_counter insert on post_comment
    begin
-      update post set comment_counter=comment_counter + 1;
+      update post set comment_counter=comment_counter + 1 where id = new.post_id;
    end;
 
 --  Post comments
