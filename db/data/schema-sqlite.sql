@@ -67,6 +67,13 @@ foreign key ("post_id") references post("id"),
 foreign key ("comment_id") references comment("id")
 );
 
+--  Comment counter
+
+create trigger update_comment_counter insert on post_comment
+   begin
+      update post set comment_counter=comment_counter + 1 where id = new.post_id;
+   end;
+
 create table "user_post" (
 "user_login" varchar(50) not null,
 "post_id" integer not null,
@@ -74,12 +81,28 @@ foreign key ("post_id") references post("id"),
 foreign key ("user_login") references user("login")
 );
 
-create table "user_tmp_photo" (
+create table "user_photos_queue" (
+"id" integer not null primary key autoincrement,
 "user_login" varchar(50) not null,
+"counter" integer default 0
+);
+
+create trigger update_user after insert on user
+   begin
+      insert into user_photos_queue (user_login) values (new.login);
+   end;
+
+create table "photos_queue" (
+"queue_id" integer not null,
 "photo_id" integer not null,
 foreign key ("photo_id") references photo("id"),
-foreign key ("user_login") references user("login")
+foreign key ("queue_id") references user_photos_queue("id")
 );
+
+create trigger update_user_photos_queue_counter after insert on photos_queue
+   begin
+      update user_photos_queue set counter=counter + 1 where id=new.queue_id;
+   end;
 
 create table "photo_metadata" (
 "photo_id" integer not null,

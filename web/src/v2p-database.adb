@@ -837,8 +837,11 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "select photo_id, filename from user_tmp_photo, photo "
-         & "where photo.id = photo_id and user_login=" & Q (Uid));
+        (Iter, "select photo_id, filename from "
+           & "user_photos_queue, photos_queue, photo "
+           & "where user_photos_queue.id = photos_queue.queue_id "
+           & "and photo.id = photo_id and user_photos_queue.user_login="
+           & Q (Uid));
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -1026,8 +1029,9 @@ package body V2P.Database is
 
       procedure Insert_Table_User_Tmp_Photo (Uid, Pid : in String) is
          SQL : constant String :=
-           "insert into user_tmp_photo values (" & Q (Uid) & ','
-           & Pid & ')';
+           "insert into photos_queue values "
+           & "((select id from user_photos_queue where user_login = " & Q (Uid)
+           & "), " & Pid & ')';
       begin
          DBH.Handle.Execute (SQL);
       end Insert_Table_User_Tmp_Photo;
