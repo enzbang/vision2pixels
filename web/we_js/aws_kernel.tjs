@@ -525,7 +525,7 @@ AWS.Ajax.XML = new function() {
          else
             url = url + '&';
 
-         url = url + "@_CTX_WB_@=" & AWS.Context.get();
+         url = url + "@_CTX_WB_@=" + AWS.Context.get();
       }
 
       /* Redirect to url */
