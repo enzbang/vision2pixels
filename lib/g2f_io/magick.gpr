@@ -23,10 +23,12 @@ with "jpeg";
 with "gdi";
 
 project Magick is
+
    for Source_Files use ();
 
-   for Library_Dir use "lib";
+   for Library_Dir use "lib_ext";
    for Library_Name use "Magick";
    for Library_Kind use "static";
    for Externally_Built use "true";
+
 end Magick;

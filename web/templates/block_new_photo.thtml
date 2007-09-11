@@ -7,9 +7,8 @@
       <legend>
         @_BABEL_NEW_PHOTO_@
       </legend>
-      <p><input name="FILENAME" type="file"/></p>
-      <p><input name="ENTER" id="photo_form_enter"
-                type="submit" value="OK"/></p>
+      <p><input name="FILENAME" type="file"/><input name="ENTER" id="photo_form_enter"
+                type="submit" value="Ajouter"/></p>
     </fieldset>
   </form>
 

@@ -25,10 +25,10 @@ package Web_Tests is
 
    use Ada.Strings.Unbounded;
 
-   Host : constant String := "localhost";
+   Host : constant String := "127.0.0.10";
    --  v2p web server host
 
-   Port : constant := 8080;
+   Port : constant := 8042;
    --  v2p web server port
 
    type Word_Set is array (Positive range <>) of Unbounded_String;

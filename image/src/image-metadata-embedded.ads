@@ -48,6 +48,6 @@ package Image.Metadata.Embedded is
 
 private
 
-   No_Data : constant Data := (others => Null_Unbounded_String);
+   No_Data : constant Data := Data'(others => Null_Unbounded_String);
 
 end Image.Metadata.Embedded;

@@ -24,6 +24,7 @@ with Ada.Text_IO;
 
 with GNAT.Calendar.Time_IO;
 
+with Morzhol.OS;
 with G2F.Image_IO;
 with Image.Magick;
 with Settings;
@@ -42,9 +43,10 @@ package body Image.Data is
 
    function Default_Max_Dimension return Image_Dimension is
    begin
-      return (Image_Size_T (Settings.Image_Maximum_Width),
-              Image_Size_T (Settings.Image_Maximum_Height),
-              File_Size (Settings.Image_Maximum_Size));
+      return Image_Dimension'
+        (Width  => Image_Size_T (Settings.Image_Maximum_Width),
+         Height => Image_Size_T (Settings.Image_Maximum_Height),
+         Size   => File_Size (Settings.Image_Maximum_Size));
    end Default_Max_Dimension;
 
    ---------------
@@ -90,24 +92,28 @@ package body Image.Data is
       Out_Thumbnail_Filename : in     String := "";
       Out_Max_Dimension      : in     Image_Dimension := Null_Dimension)
    is
+      Thumb_Size      : constant G2F.IO.Image_Size
+        := Image_Size'(X => Image_Size_T (Settings.Thumbnail_Maximum_Width),
+                       Y => Image_Size_T (Settings.Thumbnail_Maximum_Height));
       Thumb           : Image_Ptr;
       Thumb_Info      : Image_Info_Ptr;
-      Thumb_Size      : constant G2F.IO.Image_Size :=
-                          (Image_Size_T (Settings.Thumbnail_Maximum_Width),
-                           Image_Size_T (Settings.Thumbnail_Maximum_Height));
    begin
       --  Read image info
 
       G2F.IO.Set_Filename (Img.Info_Ptr, Original_Filename);
+
       Img.Image_Ptr := Read_Image (Img.Info_Ptr);
 
       if Settings.Limit_Image_Size
         or else Out_Max_Dimension /= Null_Dimension
       then
-         declare
+         Check_Size : declare
             Dim : constant Image_Size := Get_Image_Size (Img.Image_Ptr);
          begin
-            Img.Dimension := (Dim.X, Dim.Y, Size (Original_Filename));
+            Img.Dimension := Image_Dimension'
+              (Width  => Dim.X,
+               Height => Dim.Y,
+               Size   => Size (Original_Filename));
 
             if Natural (Img.Dimension.Width) >  Settings.Image_Maximum_Width
               or else
@@ -121,7 +127,7 @@ package body Image.Data is
                Img.Init_Status := Image.Data.Exceed_Max_Size;
                return;
             end if;
-         end;
+         end Check_Size;
       end if;
 
       --  If Out_Filename is null, keep the current image
@@ -140,12 +146,14 @@ package body Image.Data is
 
       if Out_Thumbnail_Filename = "" then
          --  Create thumbnail with original_filename name in thumb directory
-         declare
+         Thumb_Name : declare
             Thumbnail_Filename : constant String := Compose
-                (Settings.Get_Thumbs_Path, Simple_Name (Original_Filename));
+              (Containing_Directory => Settings.Get_Thumbs_Path,
+               Name                 => Simple_Name (Original_Filename));
          begin
             Set_Filename (Thumb, Thumbnail_Filename);
-         end;
+         end Thumb_Name;
+
       else
          Set_Filename (Thumb, Out_Thumbnail_Filename);
       end if;
@@ -169,6 +177,7 @@ package body Image.Data is
 
    procedure Init
      (Img      : in out Image_Data;
+      Root_Dir : in     String;
       Filename : in     String)
    is
       Now             : constant Calendar.Time := Calendar.Clock;
@@ -177,16 +186,18 @@ package body Image.Data is
       Filename_Prefix : constant String :=
                           GNAT.Calendar.Time_IO.Image (Now, "%Y%m%d%H%M-");
       S_Name          : constant String := Simple_Name (Filename);
-      Thumb_Name      : constant String :=
-                          Compose
-                            (Compose (Compose (Settings.Get_Thumbs_Path, Year),
-                             Filename_Prefix),
-                             S_Name);
-      Image_Name      : constant String :=
-                          Compose
-                            (Compose (Compose (Settings.Get_Images_Path, Year),
-                             Filename_Prefix),
-                             S_Name);
+      Thumb_Name      : constant String := Compose
+        (Containing_Directory => Compose
+           (Containing_Directory => Root_Dir & Morzhol.OS.Directory_Separator
+                                      & Settings.Get_Thumbs_Path,
+            Name                 => Year),
+         Name                 => Filename_Prefix & S_Name);
+      Image_Name      : constant String := Compose
+        (Containing_Directory => Compose
+           (Containing_Directory => Root_Dir & Morzhol.OS.Directory_Separator
+                                      & Settings.Get_Images_Path,
+            Name                 => Year),
+         Name                 => Filename_Prefix & S_Name);
    begin
       if not Exists (Containing_Directory (Thumb_Name)) then
          Create_Path (Containing_Directory (Thumb_Name));
@@ -196,7 +207,11 @@ package body Image.Data is
          Create_Path (Containing_Directory (Image_Name));
       end if;
 
-      Init (Img, Filename, Image_Name, Thumb_Name);
+      Init
+        (Img,
+         Original_Filename      => Filename,
+         Out_Filename           => Image_Name,
+         Out_Thumbnail_Filename => Thumb_Name);
    end Init;
 
    -----------------
@@ -217,12 +232,4 @@ package body Image.Data is
       Img.Info_Ptr := Clone_Image_Info (null);
    end Initialize;
 
-begin
-   if not Exists (Settings.Get_Images_Path) then
-      Create_Path (Settings.Get_Images_Path);
-   end if;
-
-   if not Exists (Settings.Get_Thumbs_Path) then
-      Create_Path (Settings.Get_Thumbs_Path);
-   end if;
 end Image.Data;

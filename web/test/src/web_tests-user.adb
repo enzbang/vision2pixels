@@ -21,9 +21,6 @@
 
 with Ada.Text_IO;
 
-with AUnit.Test_Cases.Registration;
-with AUnit.Assertions;
-
 with AWS.Client;
 with AWS.Response;
 with AWS.Utils;
@@ -32,11 +29,7 @@ with V2P.Template_Defs.Block_Login;
 
 package body Web_Tests.User is
 
-   use Ada;
-   use AUnit.Test_Cases.Registration;
-   use AUnit.Assertions;
    use AWS;
-   use V2P.Template_Defs;
 
    procedure Main_Page (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  The very first thing to do is to get the main page
@@ -65,6 +58,8 @@ package body Web_Tests.User is
    -----------
 
    procedure Login (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      use V2P.Template_Defs;
+
       Result : Response.Data;
 
       function Login_Parameters (Login, Password : in String) return String;
@@ -76,35 +71,35 @@ package body Web_Tests.User is
 
       function Login_Parameters (Login, Password : in String) return String is
       begin
-         return Block_Login.HTTP.Login & '=' & Login &
-           '&' & Block_Login.HTTP.Password & '=' & Password;
+         return Block_Login.HTTP.LOGIN & '=' & Login &
+           '&' & Block_Login.HTTP.PASSWORD & '=' & Password;
       end Login_Parameters;
 
    begin
       Client.Get
         (Connection, Result,
-         URI => Block_Login.Ajax.Onclick_Login_Form_Enter &
+         URI => Block_Login.Ajax.onclick_login_form_enter &
          '?' & Login_Parameters ("turbo", "password"));
 
       Check
         (Response.Message_Body (Result),
-         (+"apply_style", +"status_bar", +"display", +"block",
-          +"apply_style", +"forum_post", +"display", +"none",
-          +"apply_style", +"new_comment", +"display", +"none"),
+         Word_Set'(+"apply_style", +"status_bar", +"display", +"block",
+           +"apply_style", +"forum_post", +"display", +"none",
+           +"apply_style", +"new_comment", +"display", +"none"),
          "login should have failed for turbo");
 
       Client.Get
         (Connection, Result,
-         URI => Block_Login.Ajax.Onclick_Login_Form_Enter &
+         URI => Block_Login.Ajax.onclick_login_form_enter &
          '?' & Login_Parameters ("turbo", "turbopass"));
 
       Check
         (Response.Message_Body (Result),
-         (+"apply_style", +"status_bar", +"display", +"none",
-          +"apply_style", +"forum_post", +"display", +"block",
-          +"replace", +"login",
-          +"replace", +"comment_login",
-          +"apply_style", +"new_comment", +"display", +"block"),
+         Word_Set'(+"apply_style", +"status_bar", +"display", +"none",
+           +"apply_style", +"forum_post", +"display", +"block",
+           +"replace", +"login",
+           +"replace", +"comment_login",
+           +"apply_style", +"new_comment", +"display", +"block"),
          "login failed for turbo");
    end Login;
 
@@ -121,7 +116,7 @@ package body Web_Tests.User is
 
       Check
         (Response.Message_Body (Result),
-         (+"Forum photographies", +"Forum mat"),
+         Word_Set'(+"Forum photographies", +"Forum mat"),
          "cannot get the first page");
    end Main_Page;
 
@@ -129,9 +124,9 @@ package body Web_Tests.User is
    -- Name --
    ----------
 
-   function Name (T : in Test_Case) return String_Access is
+   function Name (T : in Test_Case) return Message_Strings.Message_String is
    begin
-      return new String'("Web_Tests.User");
+      return Message_Strings.New_String ("Web_Tests.User");
    end Name;
 
    --------------------
@@ -139,6 +134,7 @@ package body Web_Tests.User is
    --------------------
 
    procedure Register_Tests (T : in out Test_Case) is
+      use AUnit.Test_Cases.Registration;
    begin
       Register_Routine (T, Main_Page'Access, "main page");
       Register_Routine (T, Login'Access, "user login");

@@ -1,12 +1,13 @@
-<div id="navcontainer">
-  <ul>
-    @@TABLE@@
-      <li class="fc_@_FID_@">
-        <a href="@_FORUM_THREAD_URL_@?FID=@_FID_@">
-          @_FORUM_NAME_@
-        </a>
-      </li>
-    @@END_TABLE@@
-  </ul>
-</div>
-<hr id="navcontainer_end" />
+@@INCLUDE@@ babel.thtml
+<ul id="navcontainer">
+  <li class="index">
+    <a href="/">@_BABEL_V2P_WEBSITE_NAME_@</a>
+  </li>
+  @@TABLE@@
+  <li class="fc_@_FID_@">
+    <a href="@_FORUM_THREAD_URL_@?FID=@_FID_@">
+      @_FORUM_NAME_@
+    </a>
+  </li>
+  @@END_TABLE@@
+</ul>

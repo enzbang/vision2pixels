@@ -19,9 +19,6 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AUnit.Test_Cases.Registration;
-with AUnit.Assertions;
-
 with Image.Metadata.Geographic;
 
 package body Image_Tests.Metadata is
@@ -49,13 +46,12 @@ package body Image_Tests.Metadata is
       Get_Lat  : Geo_Coordinate;
       Get_Long : Geo_Coordinate;
    begin
-
       --  48.864263, 2.397927
 
       Pos_Lat.Format (Geo_Lat);
       Pos_Long.Format (Geo_Long);
 
-      Assert (Pos_Lat = (48, 51, 51, N),
+      Assert (Pos_Lat = Latitude'(48, 51, 51, N),
               "Error in latitude format for (48, 51, 51, N)");
 
       Get_Lat := To_Geo_Coordinate (Pos_Lat);
@@ -63,7 +59,7 @@ package body Image_Tests.Metadata is
       Assert (Get_Lat = Geo_Lat,
               "To_Geo_Coordinate error for 48° 51' 51'' N");
 
-      Assert (Pos_Long = (2, 23, 53, E),
+      Assert (Pos_Long = Longitude'(2, 23, 53, E),
               "Error in longitude format (2, 23, 53, E)");
 
       Get_Long := To_Geo_Coordinate (Pos_Long);
@@ -85,10 +81,10 @@ package body Image_Tests.Metadata is
       Pos_Lat.Format (Geo_Lat);
       Pos_Long.Format (Geo_Long);
 
-      Assert (Pos_Lat = (40, 26, 46, S),
+      Assert (Pos_Lat = Latitude'(40, 26, 46, S),
               "Error in latitude format for (40, 26, 46, S)");
 
-      Assert (Pos_Long = (87, 43, 41, W),
+      Assert (Pos_Long = Longitude'(87, 43, 41, W),
               "Error in longitude format for (87, 43, 41, W)");
 
       Get_Lat  := To_Geo_Coordinate (Pos_Lat);
@@ -105,18 +101,16 @@ package body Image_Tests.Metadata is
 
       Assert (Image.Metadata.Geographic.Image (Pos_Long) = "W 87° 43' 41",
               "Error with " & Image.Metadata.Geographic.Image (Pos_Long));
-
-
    end Geo_Format;
 
    ----------
    -- Name --
    ----------
 
-   function Name (T : Test_Case) return String_Access is
+   function Name (T : in Test_Case) return Message_String is
       pragma Unreferenced (T);
    begin
-      return new String'("Check image metadata functions");
+      return New_String ("Check image metadata functions");
    end Name;
 
    --------------------

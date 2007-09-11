@@ -25,15 +25,19 @@
 
 LOGFILE := ${shell pwd}/test/image_harness.log.${shell date +%Y%m%d-%H%M%S}
 
-all:
+build:
 	gnat make -XPRJ_BUILD=$(MODE) -Pimage_test
+
+check:
+	gnat check -dd -Pimage -rules -from=../v2p.check
+	gnat check -dd -Pimage_test -rules -from=../v2p.check
 
 setup install:
 
 run_tests:
 	(cd test; ./image_harness > $(LOGFILE))
-	grep "Failed Tests" $(LOGFILE) >> $(LOG)
-	grep "Unexpected Errors" $(LOGFILE) >> $(LOG)
+	-grep "Failed Tests" $(LOGFILE) >> $(LOG)
+	-grep "Unexpected Errors" $(LOGFILE) >> $(LOG)
 
 runtests: run_tests
 

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,6 +19,7 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with "morzhol";
 with "../shared";
 with "../kernel/kernel";
 with "../lib/g2f_io/g2f";
@@ -30,8 +31,18 @@ project Image is
 
    for Library_Dir use "lib";
    for Library_Name use "v2p_image";
-   for Library_Kind use "static";
+   for Library_Kind use "dynamic";
+
+   --------------
+   -- Compiler --
+   --------------
 
    package Compiler renames Shared.Compiler;
+
+   ---------
+   -- Ide --
+   ---------
+
+   package Ide renames Shared.Ide;
 
 end Image;

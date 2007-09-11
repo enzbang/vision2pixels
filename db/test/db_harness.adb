@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,12 +19,13 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AUnit.Test_Runner;
+with AUnit;
+
 with DB_Suite;
 
 procedure DB_Harness is
 
-   procedure Run is new AUnit.Test_Runner (DB_Suite);
+   procedure Run is new AUnit.Test_Runner (Suite => DB_Suite);
 
 begin
    Run;

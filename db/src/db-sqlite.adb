@@ -25,8 +25,8 @@ package body DB.SQLite is
 
    use GNU.DB;
 
-   procedure Unchecked_Free is
-     new Unchecked_Deallocation (SQLite3.Object, SQLite3.Handle);
+   procedure Unchecked_Free is new Unchecked_Deallocation
+     (Object => SQLite3.Object, Name => SQLite3.Handle);
 
    procedure Check_Result
      (Routine : in String;

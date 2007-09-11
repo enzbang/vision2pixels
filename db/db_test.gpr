@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,8 +19,8 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with "aunit";
 with "../shared";
+with "../lib/aunit/v2p_aunit";
 with "db";
 
 project DB_Test is
@@ -29,8 +29,43 @@ project DB_Test is
    for Object_Dir use "test";
    for Main use ("db_harness");
 
+   --------------
+   -- Compiler --
+   --------------
+
    package Compiler renames Shared.Compiler;
 
+   ------------
+   -- Binder --
+   ------------
+
    package Binder renames Shared.Binder;
+
+   ------------
+   -- Linker --
+   ------------
+
+   package Linker is
+
+      case Shared.OS is
+         when "Windows_NT" =>
+            null;
+         when others =>
+            for Default_Switches ("Ada") use ("-lodbc");
+      end case;
+
+      case Shared.Build is
+         when "Debug" =>
+            for Default_Switches ("Ada") use
+              Linker'Default_Switches ("Ada") & ("-g");
+
+         when "Profile" =>
+            for Default_Switches ("Ada") use
+              Linker'Default_Switches ("Ada") & ("-g", "-lgmem");
+
+         when "Release" =>
+            null;
+      end case;
+   end Linker;
 
 end DB_Test;

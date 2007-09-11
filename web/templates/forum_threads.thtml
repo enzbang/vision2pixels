@@ -4,18 +4,8 @@
 @@--
 @@INCLUDE@@ v2p_top.thtml @_BABEL_THREAD_LIST_@ forum_threads yui-t7
 @@--
-<div id="yui-main">
-  <div class="yui-g">
-    <div style="width:100%" class="yui-gc first"> <!-- special grid -->
-      <div class="yui-u first">
-        <div id="forum_filter">@_LAZY_FORUM_FILTER_@</div>
-      </div>
-      <div class="yui-u">
-        <div id="login">@_LAZY_LOGIN_@</div>
-      </div>
-    </div>
-  </div>
-</div>
-<div class="yui-g"><div id="forum_threads">@_LAZY_FORUM_THREADS_@</div></div>
+<div class="forums">@_LAZY_FORUM_LIST_@</div>
+<div id="forum_filter">@_LAZY_FORUM_FILTER_@</div>
+<div id="forum_threads">@_LAZY_FORUM_THREADS_@</div>
 @@--
 @@INCLUDE@@ v2p_end.thtml

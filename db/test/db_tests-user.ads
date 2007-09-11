@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,18 +19,20 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
-
-with AUnit.Test_Cases;      use AUnit.Test_Cases;
+with AUnit;
 
 package DB_Tests.User is
+
+   use AUnit;
+   use AUnit.Test_Cases;
+   use AUnit.Message_Strings;
 
    type Test_Case is new AUnit.Test_Cases.Test_Case with null record;
 
    procedure Register_Tests (T : in out Test_Case);
    --  Register routines to be run
 
-   function Name (T : in Test_Case) return String_Access;
+   function Name (T : in Test_Case) return Message_String;
    --  Returns name identifying the test case
 
 end DB_Tests.User;

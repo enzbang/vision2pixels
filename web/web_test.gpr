@@ -19,7 +19,7 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with "aunit";
+with "../lib/aunit/v2p_aunit";
 
 with "../shared";
 with "../image/image_test";
@@ -59,6 +59,35 @@ project Web_Test is
    -- Linker --
    ------------
 
-   package Linker renames Shared.Linker;
+   Lib_Paths := ("-L" & Shared.ImageMagick_Lib, "-L" & Shared.Jpeg_Lib);
+
+   package Linker is
+
+      case Shared.OS is
+         when "Windows_NT" =>
+            for Default_Switches ("Ada") use Lib_Paths;
+         when others =>
+            for Default_Switches ("Ada") use Lib_Paths & ("-lodbc");
+      end case;
+
+      case Shared.Build is
+         when "Debug" =>
+            for Default_Switches ("Ada") use
+              Linker'Default_Switches ("Ada") & ("-g");
+
+         when "Profile" =>
+            for Default_Switches ("Ada") use
+              Linker'Default_Switches ("Ada") & ("-g", "-lgmem");
+
+         when "Release" =>
+            null;
+      end case;
+   end Linker;
+
+   ---------
+   -- Ide --
+   ---------
+
+   package Ide renames Shared.Ide;
 
 end Web_Test;

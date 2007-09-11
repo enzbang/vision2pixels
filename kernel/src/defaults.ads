@@ -29,11 +29,19 @@ package Defaults is
 
    DB                       : Settings.DB_Kind := Settings.SQLite3;
 
-   DB_Name                  : constant String := "v2p";
+   DB_Name                  : constant String := "v2p.db";
 
    Images_Path              : constant String := "images";
 
    Thumbs_Path              : constant String := "thumbs";
+
+   Website_Data_Path        : constant String := "web_data";
+
+   Images_Source_Prefix     : constant String := "/photos";
+
+   Thumbs_Source_Prefix     : constant String := "/thumbs";
+
+   Website_Data_Prefix      : constant String := "/web";
 
    Anonymous_Visit_Counter  : constant Boolean := False;
 
@@ -54,5 +62,9 @@ package Defaults is
    Thumbnail_Maximum_Height : constant Integer := 150;
 
    Descending_Order         : constant Boolean := True;
+
+   Wiki_Service_Name        : constant String  := "wiki_service";
+
+   Virtual_Host             : constant String  := "127.0.0.10";
 
 end Defaults;

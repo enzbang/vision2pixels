@@ -1,0 +1,16 @@
+@@INCLUDE@@ babel.thtml
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+@@IF@@ @_ERROR_@ /= ""
+  <replace id="user_page_edit_error">
+    <![CDATA[@_BABEL_UNKNOWN_ERROR_@]]>
+  </replace>
+@@ELSE@@
+  <replace id="user_page_content">
+    <![CDATA[
+    @_USER_PAGE_HTML_CONTENT_@
+    ]]>
+  </replace>
+@@END_IF@@
+</response>

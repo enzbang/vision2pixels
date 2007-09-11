@@ -19,17 +19,25 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AUnit.Test_Suites; use AUnit.Test_Suites;
+with AUnit; use AUnit; use AUnit.Test_Suites;
 
 with Web_Tests.Threads_Navigation;
 with Web_Tests.User;
 with Web_Tests.Wiki;
 
-function Web_Suite return Access_Test_Suite is
-   Result : Access_Test_Suite := new Test_Suite;
-begin
-   Add_Test (Result, new Web_Tests.Wiki.Test_Case);
-   Add_Test (Result, new Web_Tests.User.Test_Case);
-   Add_Test (Result, new Web_Tests.Threads_Navigation.Test_Case);
-   return Result;
+package body Web_Suite is
+   Web_Suite_Test : Access_Test_Suite;
+
+   function Web_Suite_Access return Access_Test_Suite is
+   begin
+      return Web_Suite_Test;
+   end Web_Suite_Access;
+
+begin --  Web_Suite : Initialize the web_suite test
+
+   Web_Suite_Test := new Test_Suite;
+   Add_Test (Web_Suite_Test, new Web_Tests.Wiki.Test_Case);
+   Add_Test (Web_Suite_Test, new Web_Tests.User.Test_Case);
+   Add_Test (Web_Suite_Test, new Web_Tests.Threads_Navigation.Test_Case);
 end Web_Suite;
+

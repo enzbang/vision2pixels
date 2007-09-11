@@ -152,7 +152,7 @@ package @_PACKAGE_@ is
 @@IF@@ @_SINGLE_FILE_@ = True
 @@TABLE@@
    package @_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@ is
-      Template : constant String := "@_FILENAME_@";
+      Template : constant String := "plugins/vision2pixels/@_FILENAME_@";
    @@TABLE@@@
      @@IF@@ not @_IS_EMPTY:URL_@
        @@IF@@ @_TABLE_LINE_@ = 1
@@ -216,7 +216,7 @@ end @_PACKAGE_@;
 package @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@ is
    pragma Style_Checks (Off);
 
-   Template : constant String := "@_FILENAME_@";
+   Template : constant String := "plugins/vision2pixels/@_FILENAME_@";
    @@TABLE@@@
       @@IF@@ not @_IS_EMPTY:URL_@
         @@IF@@ @_TABLE_LINE_@ = 1
@@ -267,8 +267,8 @@ end @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@;
 
 --  DO NOT EDIT, THIS FILE HAS BEEN GENERATED
 
-with AWS.Services.ECWF.Registry;
-with V2P.ECWF_Callbacks;
+with AWS.Services.Web_Block.Registry;
+with V2P.Web_Block_Callbacks;
 
 package body @_PACKAGE_@ is
    pragma Style_Checks (Off);
@@ -288,10 +288,10 @@ package body @_PACKAGE_@ is
       begin
   @@TABLE@@
      @@IF@@ @_UPPER:SLICE(1..5):VARIABLE_LIST_@ = "LAZY_"
-         ECWF.Registry.Register
+         Web_Block.Registry.Register
             ("@_VARIABLE_LIST_@",
-             "templates/block_@_LOWER:REPLACE_ALL(LAZY_/):VARIABLE_LIST_@.thtml",
-             ECWF_Callbacks.@_CAPITALIZE:REPLACE_ALL(LAZY_/):VARIABLE_LIST_@'Access);
+            "plugins/vision2pixels/templates/block_@_LOWER:REPLACE_ALL(LAZY_/):VARIABLE_LIST_@.thtml",
+             Web_Block_Callbacks.@_CAPITALIZE:REPLACE_ALL(LAZY_/):VARIABLE_LIST_@'Access);
      @@END_IF@@
   @@END_TABLE@@
       end Register;

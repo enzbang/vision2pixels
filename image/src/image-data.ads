@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -47,17 +47,18 @@ package Image.Data is
      (Exceed_Max_Image_Dimension, Exceed_Max_Size, Image_Created);
 
    procedure Init
-      (Img      : in out Image_Data;
-       Filename : in     String);
+     (Img      : in out Image_Data;
+      Root_Dir : in     String;
+      Filename : in     String);
    --  Set image filename, read image info and create thumbnail
-   --  Generate image and thumb filename
+   --  Generate image and thumb filename under Root_Dir.
 
    procedure Init
      (Img                    : in out Image_Data;
-      Original_Filename      : in String;
-      Out_Filename           : in String := "";
-      Out_Thumbnail_Filename : in String := "";
-      Out_Max_Dimension      : in Image_Dimension := Null_Dimension);
+      Original_Filename      : in     String;
+      Out_Filename           : in     String := "";
+      Out_Thumbnail_Filename : in     String := "";
+      Out_Max_Dimension      : in     Image_Dimension := Null_Dimension);
    --  Set image filename, read image info and create thumbnail
 
    function Filename (Img : in Image_Data) return String;
@@ -74,7 +75,8 @@ package Image.Data is
 
 private
 
-   Null_Dimension : constant Image_Dimension := (0, 0, 0);
+   Null_Dimension : constant Image_Dimension :=
+                      Image_Dimension'(Width => 0, Height => 0, Size => 0);
 
    type Image_Data is new Finalization.Controlled with record
       Info_Ptr    : G2F.Image_Info_Ptr;

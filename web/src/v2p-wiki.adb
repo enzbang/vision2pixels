@@ -19,185 +19,101 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Strings.Unbounded;
-with GNAT.Regpat;
+with Ada.Text_IO;
+with Ada.Exceptions;
+
+with Settings;
+
+with Wiki_Interface;
+with Gwiad.Plugins.Services.Cache;
+with Gwiad.Plugins.Services.Registry;
 
 package body V2P.Wiki is
 
-   use GNAT.Regpat;
-   use Ada.Strings.Unbounded;
+   use Ada;
+   use Gwiad.Plugins.Services.Cache;
+   use Gwiad.Plugins.Services.Registry;
 
-   function Extract_Links (S : in String) return String;
-   --  Extract all http:// links
+   Wiki_Id : Service_Id;
+   Has_Service : Boolean := False;
 
-   function Web_Escape (S : in String) return String;
-   --  Escape HTML special characters
+   function Get return Wiki_Interface.GW_Service'Class;
+   --  Returns the service
 
-   function Wiki_Format (S : in String) return String;
-   --  Transforms Wiki syntax into XHTML
+   function Wiki_Service_Name return Service_Name;
+   --  Returns the service name that provide wiki service
 
-   -------------------
-   -- Extract_Links --
-   -------------------
+   ---------
+   -- Get --
+   ---------
 
-   function Extract_Links (S : in String) return String is
-      Link_Extract : constant Pattern_Matcher :=
-                       Compile ("(http://([^ \s\[\]]+))", Case_Insensitive);
-      --  Gets all http:// links that do not contain white space
-      --  or '[' and ']' characters
-      Matches      : Match_Array (0 .. 6);
-      Current      : Natural := S'First;
-      Result       : Unbounded_String := Null_Unbounded_String;
+   function Get return Wiki_Interface.GW_Service'Class is
+      use Wiki_Interface;
    begin
-      loop
-         Match (Link_Extract, S, Matches, Current);
-         exit when Matches (0) = No_Match;
+      if not Has_Service then
+         Initialize_Wiki : declare
+            Wiki_World_Service_Access : constant not null GW_Service_Access
+              := GW_Service_Access (Get (Wiki_Service_Name));
+            Get_Service               : constant GW_Service'Class :=
+                                          Wiki_World_Service_Access.all;
+         begin
+            Initialize
+              (S              =>
+                 GW_Service'Class (Wiki_World_Service_Access.all),
+               Base_URL       => "/",
+               Img_Base_URL   => Settings.Images_Source_Prefix,
+               Text_Directory => "");
 
-         --  Search if it is a formatted link
-         --  [[http://link.to.website][website name]]
+            Wiki_Id := Set (Wiki_Service_Name,
+                            Gwiad.Plugins.Services.Service_Access
+                              (Wiki_World_Service_Access));
 
-         if Matches (1).First > 2
-           and then Matches (1).Last < S'Last - 4
-           and then S (Matches (1).First - 2 .. Matches (1).First - 1) = "[["
-           and then S (Matches (1).Last + 1 .. Matches (1).Last + 2) = "]["
-         then
-            --  Search for ']]'
-            for K in Matches (1).Last + 2 .. S'Last - 1 loop
-               if S (K .. K + 1) = "]]" then
-                  Result := Result & S (Current .. Matches (1).First - 3)
-                    & "<a href='" & S (Matches (1).First .. Matches (1).Last)
-                    & "' rel='nofollow'>"
-                    & S (Matches (1).Last + 3 .. K - 1)
-                    & "</a>";
-                  Current := K + 2;
-                  exit;
-               end if;
+            Has_Service := True;
+            return Get_Service;
+         end Initialize_Wiki;
 
-               if K = S'Last - 1 then
-                  --  End of String and link malformatted. Skip it.
-                  Result := Result & S (Current .. Matches (1).First - 3);
-                  return To_String (Result);
-               end if;
-            end loop;
-         end if;
-
-         if Current <= Matches (1).First then
-            --  Non formatted url http://...
-
-            Result := Result & S (Current .. Matches (1).First - 1)
-              & "<a href='" & S (Matches (1).First .. Matches (1).Last)
-              & "' rel='nofollow'>"
-              & S (Matches (1).First .. Matches (1).Last)
-              & "</a>";
-
-            Current := Matches (1).Last + 1;
-         end if;
-      end loop;
-
-      Result := Result & S (Current .. S'Last);
-      return To_String (Result);
-   end Extract_Links;
-
-   ----------------
-   -- Web_Escape --
-   ----------------
-
-   function Web_Escape (S : in String) return String is
-
-      Result : Unbounded_String;
-      Last   : Integer := S'First;
-
-      procedure Append_To_Result
-        (Str : in String; From : in Integer; To : in Integer);
-      --  Append S (From .. To) to Result if not empty concatenated with Str
-      --  and update Last.
-
-      ----------------------
-      -- Append_To_Result --
-      ----------------------
-
-      procedure Append_To_Result
-        (Str : in String; From : in Integer; To : in Integer) is
-      begin
-         if From <= To then
-            Append (Result, S (From .. To) & Str);
-         else
-            Append (Result, Str);
-         end if;
-
-         Last := To + 2;
-      end Append_To_Result;
-
-   begin
-      for I in S'Range loop
-         case S (I) is
-            when '&'    => Append_To_Result ("&amp;", Last, I - 1);
-            when '>'    => Append_To_Result ("&gt;", Last, I - 1);
-            when '<'    => Append_To_Result ("&lt;", Last, I - 1);
-            when '"'    => Append_To_Result ("&quot;", Last, I - 1);
-            when others => null;
-         end case;
-      end loop;
-
-      if Last <= S'Last then
-         Append (Result, S (Last .. S'Last));
+      else
+         Return_Service : declare
+            Wiki_World_Service_Access : constant not null GW_Service_Access :=
+                                          GW_Service_Access (Get (Wiki_Id));
+            Get_Service               : constant GW_Service'Class :=
+                                          Wiki_World_Service_Access.all;
+         begin
+            return Get_Service;
+         end Return_Service;
       end if;
 
-      return To_String (Result);
-   end Web_Escape;
+   exception
+      when E : others =>
+         Text_IO.Put_Line (Exceptions.Exception_Information (E));
+         raise;
+   end Get;
 
-   -----------------
-   -- Wiki_Format --
-   -----------------
+   -----------------------
+   -- Wiki_Service_Name --
+   -----------------------
 
-   function Wiki_Format (S : in String) return String is
-      Extract : constant Pattern_Matcher :=
-                  Compile ("\[(\w+) (.+?)\]", Case_Insensitive);
-      --  Gets all [keyword string]
-      --  where keyword is em, blockquote or strong
-
-      Matches : Match_Array (0 .. 2);
-      Current : Natural := S'First;
-      Result  : Unbounded_String := Null_Unbounded_String;
+   function Wiki_Service_Name return Service_Name is
    begin
-      loop
-         Match (Extract, S, Matches, Current);
-         exit when Matches (0) = No_Match;
-
-         Result := Result & S (Current .. Matches (0).First - 1);
-
-         declare
-            Keyword : constant String :=
-                        S (Matches (1).First .. Matches (1).Last);
-         begin
-            if Keyword = "em" then
-               Result := Result & "<em>"
-                 & S (Matches (2).First .. Matches (2).Last) & "</em>";
-            elsif Keyword = "blockquote" then
-               Result := Result & "<blockquote>"
-                 & S (Matches (2).First .. Matches (2).Last) & "</blockquote>";
-            elsif Keyword = "strong" then
-               Result := Result & "<strong>"
-                 & S (Matches (2).First .. Matches (2).Last) & "</strong>";
-            end if;
-         end;
-
-         Current := Matches (0).Last + 1;
-      end loop;
-
-      Result := Result & S (Current .. S'Last);
-      return To_String (Result);
-   end Wiki_Format;
+      return Service_Name (Settings.Wiki_Service_Name);
+   end Wiki_Service_Name;
 
    ------------------
    -- Wiki_To_HTML --
    ------------------
 
    function Wiki_To_HTML (S : in String) return String is
-      Without_Html : constant String := Web_Escape (S);
-      With_Links   : constant String := Extract_Links (Without_Html);
    begin
-      return Wiki_Format (With_Links);
+      if not Exists (Wiki_Service_Name) then
+         return "";
+      end if;
+
+      Render : declare
+         Get_Service : constant Wiki_Interface.GW_Service'Class := Get;
+      begin
+         return Wiki_Interface.HTML_Preview (Get_Service, S);
+      end Render;
    end Wiki_To_HTML;
+
 
 end V2P.Wiki;

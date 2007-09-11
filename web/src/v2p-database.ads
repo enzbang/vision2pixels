@@ -26,6 +26,12 @@ package V2P.Database is
 
    use AWS;
 
+   No_Database : exception;
+
+   procedure Disconnect_All;
+   --  Disconnects all database connections
+   --  This has to be called on plugin unregister callback
+
    type Filter_Mode is
      (Today, Two_Days, Seven_Days, Fifty_Messages, All_Messages);
    --  Kind of filter to apply when returning the list of posts, see
@@ -40,13 +46,13 @@ package V2P.Database is
    --  Returns the DB line for the given forum
 
    procedure Get_Threads
-     (Fid        : in String := "";
-      User       : in String := "";
-      From       : in Natural := 0;
-      Filter     : in Filter_Mode := All_Messages;
-      Order_Dir  : in Order_Direction := DESC;
-      Navigation : out V2P.Context.Post_Ids.Vector;
-      Set        : out Templates.Translate_Set);
+     (Fid        : in     String := "";
+      User       : in     String := "";
+      From       : in     Positive := 1;
+      Filter     : in     Filter_Mode := All_Messages;
+      Order_Dir  : in     Order_Direction := DESC;
+      Navigation :    out V2P.Context.Post_Ids.Vector;
+      Set        :    out Templates.Translate_Set);
    --  Returns all threads for a given forum
    --  Returns navigation links to store in context
 
@@ -94,15 +100,15 @@ package V2P.Database is
       Name      : in String;
       Comment   : in String;
       Pid       : in String) return String;
-   --  Insert comment Name/Comment into the given forum and thread
-   --  Returns Comment Id
+   --  Insert comment Name/Comment into the given forum and thread,
+   --  Returns Comment Id.
 
    function Insert_Photo
-     (Uid         : in String;
-      Filename    : in String;
-      Height      : in Integer;
-      Width       : in Integer;
-      Size        : in Integer) return String;
+     (Uid      : in String;
+      Filename : in String;
+      Height   : in Integer;
+      Width    : in Integer;
+      Size     : in Integer) return String;
    --  Insert a new photo into the database
    --  Returns photo id
 
@@ -120,13 +126,19 @@ package V2P.Database is
       Name        : in String;
       Comment     : in String;
       Pid         : in String) return String;
-   --  Insert a new post into the database
-   --  Returns post id
+   --  Insert a new post into the database and  returns post id
 
    procedure Increment_Visit_Counter (Pid : in String);
    --  Increment a thread visit counter
 
    function Is_Author (Uid, Pid : in String) return Boolean;
    --  Returns true whether the user of the post Pid is Uid
+
+   function Get_User_Page (Uid : in String) return Templates.Translate_Set;
+   --  Returns user page
+
+   procedure Update_Page
+     (Uid : in String; Content : in String; Content_HTML : in String);
+   --  Update a user page
 
 end V2P.Database;

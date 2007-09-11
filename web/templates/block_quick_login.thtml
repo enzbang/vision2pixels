@@ -1,18 +1,11 @@
 @@INCLUDE@@ babel.thtml
 @@--
-<a href="/">
-  <img src="/css/img/go-home.gif"
-       alt="@_BABEL_V2P_SMALL_WEBSITE_NAME_@"
-       title="@_BABEL_V2P_SMALL_WEBSITE_NAME_@"/>
+<a href="#" id="show_rel_login" rel="login">
+  @@IF@@ @_LOGIN_@ = ""
+  @_BABEL_NOT_LOGGED_@
+  @@ELSE@@
+  @_LOGIN_@
+  @@END_IF@@
 </a>
-<span >
-  <a id="show_login" rel="login" href="#">
-    @@IF@@ @_LOGIN_@ = ""
-      @_BABEL_NOT_LOGGED_@
-    @@ELSE@@
-      @_LOGIN_@
-    @@END_IF@@
-  </a>
-</span>
 @@--
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, show_login, 19=>/xml_show_login.xml)
+@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_rel_login, V2P.Tools.toggle_show_hide_rel)
