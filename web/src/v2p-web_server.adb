@@ -686,6 +686,8 @@ package body V2P.Web_Server is
       Translations : in out Templates.Translate_Set)
    is
       use Template_Defs;
+      use Template_Defs.Block_User_Tmp_Photo_Select;
+
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String :=
@@ -701,7 +703,7 @@ package body V2P.Web_Server is
                        Parameters.Get (P, Forum_Entry.HTTP.PARENT_ID);
       Pid          : constant String :=
                        Parameters.Get
-                         (P, Block_User_Tmp_Photo_Select.HTTP.PID);
+                         (P, HTTP.block_user_tmp_photo_select);
       Tid          : constant String :=
                        Parameters.Get (P, Block_New_Comment.HTTP.TID);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
@@ -820,6 +822,7 @@ package body V2P.Web_Server is
       Translations : in out Templates.Translate_Set)
    is
       use Template_Defs;
+      use Template_Defs.Block_User_Tmp_Photo_Select;
 
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
@@ -831,7 +834,7 @@ package body V2P.Web_Server is
                        Parameters.Get (P, Block_New_Post.HTTP.COMMENT);
       Pid          : constant String :=
                        Parameters.Get
-                         (P, Block_User_Tmp_Photo_Select.HTTP.PID);
+                         (P, HTTP.block_user_tmp_photo_select);
       CID          : constant String :=
                        Parameters.Get (P, Block_New_Post.HTTP.CATEGORY);
       Last_Name    : constant String :=

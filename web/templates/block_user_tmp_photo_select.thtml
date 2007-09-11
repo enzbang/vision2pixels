@@ -4,9 +4,9 @@
 @@--  When posting a new photo, an option is added and the photo is selected
 @@INCLUDE@@ babel.thtml
 @@--
-<p>@_BABEL_SELECT_PHOTO_@ :</p>
+<h1>@_BABEL_SELECT_PHOTO_@ :</h1>
 <p>
-  <select id="block_user_tmp_photo_select" name="PID" class="thumbselect">
+  <select id="block_user_tmp_photo_select" name="block_user_tmp_photo_select" class="thumbselect">
     <option value="" class="thumboption">@_BABEL_NO_PHOTO_SELECTED_@</option>
     @@TABLE@@
     <option class="thumboption" value="@_TMP_ID_@"

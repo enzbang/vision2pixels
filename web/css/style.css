@@ -521,3 +521,20 @@ body.user_page form#user_page_edit_form textarea#content_input {
    font-weight: bold;
    margin: 2.33em 0;
 }
+
+hr#step_1, hr#step_2, hr#step_3, hr#step_4 {
+    padding:0;
+    margin:1em 0 0 0;
+    width:40%;
+    border-left:thin solid white;
+}
+
+hr#step_2, hr#step_4 {
+    left:20%;
+    position:relative;
+}
+
+body.forum_post_page h1 {
+    margin:0.5em;
+    font-size:2em;
+}
