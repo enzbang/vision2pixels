@@ -26,8 +26,6 @@
 INSTALL=$(HOME)/opt/v2p
 
 GWIAD_ROOT=$(HOME)/opt/gwiad
-GWIAD_UNREGISTER_SCRIPT=$(GWIAD_ROOT)/scripts/unregister
-GWIAD_HOST=127.0.0.1:8080
 MODE=Debug
 
 GNAT_ROOT=$(dir $(shell which gnatls))
@@ -103,8 +101,6 @@ check_tests:
 runtests: init_tests runtests-default check_tests
 
 install_gwiad_plugin:
-	-$(GWIAD_UNREGISTER_SCRIPT) $(GWIAD_HOST) website \
-		$(GWIAD_ROOT)/lib/websites/libvision2pixels$(SOEXT)
 	mkdir -p $(GWIAD_ROOT)/plugins/vision2pixels/templates/
 	mkdir -p $(GWIAD_ROOT)/plugins/vision2pixels/xml
 	mkdir -p $(GWIAD_ROOT)/plugins/vision2pixels/web_data
