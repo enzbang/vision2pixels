@@ -23,7 +23,7 @@
          </p> -->
     <p>
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
-      <textarea name="COMMENT" rows="3" cols="40" 
+      <textarea name="COMMENT" rows="3" cols="40"
                 id="comment_input"></textarea>
     </p>
     <p>

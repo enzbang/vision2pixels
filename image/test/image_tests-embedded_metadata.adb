@@ -19,13 +19,13 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AUnit.Test_Cases.Registration;
-with AUnit.Assertions;
+with Ada.Strings.Unbounded;
 
 with Image.Metadata.Embedded;
 
 package body Image_Tests.Embedded_Metadata is
 
+   use Ada.Strings.Unbounded;
    use Image;
    use AUnit.Test_Cases.Registration;
    use AUnit.Assertions;
@@ -37,10 +37,10 @@ package body Image_Tests.Embedded_Metadata is
    -- Name --
    ----------
 
-   function Name (T : in Test_Case) return String_Access is
+   function Name (T : in Test_Case) return Message_String is
       pragma Unreferenced (T);
    begin
-      return new String'("Check image embedded metadata (exif/iptc)");
+      return New_String ("Check image embedded metadata (exif/iptc)");
    end Name;
 
    ----------

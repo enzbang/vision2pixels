@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
---                      Olivier Ramonat - Pascal Obry                       --
+--                         Copyright (C) 2006-2007                          --
+--                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -20,6 +20,7 @@
 ------------------------------------------------------------------------------
 
 with "../../shared";
+with "sqlite3";
 
 project GNADE is
 
@@ -28,7 +29,14 @@ project GNADE is
 
    for Library_Dir use "lib";
    for Library_Name use "v2p_gnade";
-   for Library_Kind use "static";
+   for Library_Kind use "dynamic";
+
+   case Shared.OS is
+      when "Windows_NT" =>
+         for Library_Options use ("-lodbc32");
+      when others =>
+         null;
+   end case;
 
    Common_Options  :=
      ("-Wall", "-fno-strict-aliasing");
@@ -40,10 +48,14 @@ project GNADE is
    Release_Options :=
      ("-O2");
 
+   --------------
+   -- Compiler --
+   --------------
+
    package Compiler is
 
       case Shared.Build is
-         when "Debug" =>
+         when "Debug" | "Profile" =>
             for Default_Switches ("Ada") use Common_Options & Debug_Options;
 
          when "Release" =>
@@ -51,5 +63,11 @@ project GNADE is
       end case;
 
    end Compiler;
+
+   ---------
+   -- Ide --
+   ---------
+
+   package Ide renames Shared.Ide;
 
 end GNADE;

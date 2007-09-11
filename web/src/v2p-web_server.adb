@@ -19,25 +19,28 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AWS.Config.Set;
 with AWS.Dispatchers.Callback;
 with AWS.Messages;
 with AWS.MIME;
 with AWS.Parameters;
 with AWS.Response;
-with AWS.Server.Log;
 with AWS.Services.Dispatchers.URI;
-with AWS.Services.ECWF.Registry;
-with AWS.Services.ECWF.Context;
+with AWS.Services.Web_Block.Registry;
+with AWS.Services.Web_Block.Context;
 with AWS.Session;
 with AWS.Status;
 with AWS.Templates;
+
+with Gwiad.Web.Virtual_Host;
+with Gwiad.Plugins.Websites.Registry;
+with Morzhol.OS;
 
 with V2P.Database;
 with V2P.Context;
 with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Forum_Threads;
 with V2P.Template_Defs.Forum_Post;
+with V2P.Template_Defs.User_Page;
 with V2P.Template_Defs.Main_Page;
 with V2P.Template_Defs.Error;
 with V2P.Template_Defs.Global;
@@ -51,6 +54,8 @@ with V2P.Template_Defs.Block_Forum_Navigate;
 with V2P.Template_Defs.Block_User_Tmp_Photo_Select;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_List_Select;
+with V2P.Template_Defs.Block_User_Page;
+with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Forum_List;
@@ -63,25 +68,31 @@ with V2P.Wiki;
 with Image.Data;
 with Image.Metadata.Geographic;
 with Settings;
-with OS;
-use AWS.Services.ECWF.Registry;
+
+with Gwiad.Plugins.Websites;
 
 package body V2P.Web_Server is
 
+   use Ada;
    use AWS;
 
-   HTTP            : Server.HTTP;
-   Configuration   : Config.Object;
+   use Morzhol.OS;
+
+   use AWS.Services.Web_Block.Registry;
+   use Gwiad.Plugins.Websites;
+
    Main_Dispatcher : Services.Dispatchers.URI.Handler;
 
-   XML_Path         : constant String := "xml";
+   XML_Path         : constant String :=
+                        Directories.Compose
+                          (Containing_Directory => Gwiad_Plugin_Path,
+                           Name                 => "xml");
    XML_Prefix_URI   : constant String := "/xml_";
    CSS_URI          : constant String := "/css";
    Web_JS_URI       : constant String := "/we_js";
 
-   Admin_URI        : constant String := "/admin";
-   Upload_Directory : constant String := "./uploads/";
-
+   V2p_Lib_Path     : constant String :=
+                        Gwiad.Plugins.Get_Last_Library_Path;
 
    -------------------------
    --  Standard Callbacks --
@@ -94,6 +105,9 @@ package body V2P.Web_Server is
    function Default_Callback
      (Request : in Status.Data) return Response.Data;
    --  Default callback
+
+   function Website_Data (Request : in Status.Data) return Response.Data;
+   --  Website data (images, ...) callback
 
    function WEJS_Callback (Request : in Status.Data) return Response.Data;
    --  Web Element JavaScript callback
@@ -108,78 +122,91 @@ package body V2P.Web_Server is
    --  Thumbs callback
 
    --------------------
-   -- ECWF Callbacks --
+   -- Web_Block Callbacks --
    --------------------
 
    procedure Forum_Entry_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Forum entry callback
 
    procedure Forum_Threads_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Forum threads callback
 
    procedure Login_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Login callback
 
    procedure Logout_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Logout callback
 
    procedure Onchange_Forum_List_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Called when a new forum is selected on post page
 
    procedure Onchange_Filter_Forum
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Called when changing the forum sorting
 
    procedure Onsubmit_Comment_Form_Enter_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Called when submitting a new comment
 
    procedure Onsubmit_Metadata_Form_Enter_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Called when submitting new metadata
 
    procedure Onsubmit_Post_Form_Enter_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Called when submitting a new post
 
+   procedure Onsubmit_User_Page_Edit_Form_Enter_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Called when submitting new user page content
+
    procedure New_Photo_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Adds a new photo in user tmp photo table
 
-
    procedure Main_Page_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Display v2p main page
 
-   procedure Context_Filter (Context : access Services.ECWF.Context.Object);
+   procedure Context_Filter
+     (Context : access Services.Web_Block.Context.Object);
    --  Update the context filter
+
+   -------------
+   --  Gwiad  --
+   -------------
+
+   procedure Unregister (Name : in Website_Name);
+   --  Unregister website
 
    --------------------------
    -- Other local routines --
@@ -188,11 +215,15 @@ package body V2P.Web_Server is
    function Is_Valid_Comment (Comment : in String) return Boolean;
    --  Check if the comment is valid
 
+   function Get_Images_Path return String;
+   --  Returns the current image path for the running plugin
+
    --------------------
    -- Context_Filter --
    --------------------
 
-   procedure Context_Filter (Context : access Services.ECWF.Context.Object) is
+   procedure Context_Filter
+     (Context : access Services.Web_Block.Context.Object) is
    begin
       if not Context.Exist (Template_Defs.Global.FILTER) then
          Context.Set_Value
@@ -218,7 +249,9 @@ package body V2P.Web_Server is
    function CSS_Callback (Request : in Status.Data) return Response.Data is
       SID          : constant Session.Id := Status.Session (Request);
       URI          : constant String := Status.URI (Request);
-      File         : constant String := URI (URI'First + 1 .. URI'Last);
+      File         : constant String :=
+                      Gwiad_Plugin_Path & Directory_Separator
+                         & URI (URI'First + 1 .. URI'Last);
       Translations : Templates.Translate_Set;
    begin
       Templates.Insert
@@ -251,6 +284,14 @@ package body V2P.Web_Server is
                String'(Session.Get (SID, Template_Defs.Global.LOGIN))));
       end if;
 
+      --  Adds Version number
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Global.V2P_VERSION,
+            V2P.Version));
+
       --  Adds some URL
 
       Templates.Insert
@@ -275,19 +316,19 @@ package body V2P.Web_Server is
 
       Templates.Insert
         (Translations, Templates.Assoc
-           (Template_Defs.Global.THUMB_SOURCE_PREFIX, Thumbs_Source_Prefix));
+           (Template_Defs.Global.THUMB_SOURCE_PREFIX,
+            Settings.Thumbs_Source_Prefix));
 
-      Web_Page := Services.ECWF.Registry.Build
+      Web_Page := Services.Web_Block.Registry.Build
         (URI, Request, Translations, Cache_Control => Messages.Prevent_Cache);
 
       if Response.Status_Code (Web_Page) = Messages.S404 then
          --  Page not found
-         return Services.ECWF.Registry.Build
+         Web_Page := Services.Web_Block.Registry.Build
            (Template_Defs.Error.URL, Request, Translations);
-
-      else
-         return Web_Page;
       end if;
+
+      return Web_Page;
    end Default_Callback;
 
    --------------------------
@@ -308,7 +349,7 @@ package body V2P.Web_Server is
 
    procedure Forum_Entry_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       SID         : constant Session.Id := Status.Session (Request);
@@ -323,66 +364,63 @@ package body V2P.Web_Server is
 
       Context.Set_Value (Template_Defs.Global.TID, TID);
 
-      if TID = "" then
-         --  Page does not exit
-         return;
-      end if;
+      if TID /= "" then
+         Context_Filter (Context);
 
-      Context_Filter (Context);
-
-      if not Settings.Anonymous_Visit_Counter then
-         --  Do not count anonymous click
-         if Login = "" then
-            Count_Visit := False;
-
-         else
-            if Settings.Ignore_Author_Click
-              and then Database.Is_Author (Login, TID)
-            then
-               --  Do not count author click
+         if not Settings.Anonymous_Visit_Counter then
+            --  Do not count anonymous click
+            if Login = "" then
                Count_Visit := False;
+
+            else
+               if Settings.Ignore_Author_Click
+                 and then Database.Is_Author (Login, TID)
+               then
+                  --  Do not count author click
+                  Count_Visit := False;
+               end if;
             end if;
          end if;
-      end if;
 
-      if Count_Visit then
-         Database.Increment_Visit_Counter (TID);
-      end if;
-
-      --  Insert navigation links (previous and next post)
-
-      declare
-         Selected_Post : constant V2P.Context.Post_Ids.Vector :=
-                           V2P.Context.Navigation_Links.Get_Value
-                             (Context.all, "Navigation_Links");
-         Previous_Id   : constant String :=
-                           V2P.Context.Previous (Selected_Post, TID);
-         Next_Id       : constant String :=
-                           V2P.Context.Next (Selected_Post, TID);
-      begin
-         Templates.Insert
-           (Translations, Templates.Assoc
-              (V2P.Template_Defs.Forum_Entry.PREVIOUS, Previous_Id));
-
-         if Previous_Id /= "" then
-            Templates.Insert
-              (Translations, Templates.Assoc
-                 (V2P.Template_Defs.Forum_Entry.PREVIOUS_THUMB,
-                  Database.Get_Thumbnail (Previous_Id)));
+         if Count_Visit then
+            Database.Increment_Visit_Counter (TID);
          end if;
 
-         Templates.Insert
-           (Translations, Templates.Assoc
-              (V2P.Template_Defs.Forum_Entry.NEXT, Next_Id));
+         --  Insert navigation links (previous and next post)
 
-         if Next_Id /= "" then
+         Insert_Links : declare
+            Selected_Post : constant V2P.Context.Post_Ids.Vector :=
+                              V2P.Context.Navigation_Links.Get_Value
+                                (Context.all, "Navigation_Links");
+            Previous_Id   : constant String :=
+                              V2P.Context.Previous (Selected_Post, TID);
+            Next_Id       : constant String :=
+                              V2P.Context.Next (Selected_Post, TID);
+         begin
             Templates.Insert
               (Translations, Templates.Assoc
-                 (V2P.Template_Defs.Forum_Entry.NEXT_THUMB,
-                  Database.Get_Thumbnail (Next_Id)));
-         end if;
-      end;
-      Templates.Insert (Translations, Database.Get_Entry (TID));
+                 (V2P.Template_Defs.Forum_Entry.PREVIOUS, Previous_Id));
+
+            if Previous_Id /= "" then
+               Templates.Insert
+                 (Translations, Templates.Assoc
+                    (V2P.Template_Defs.Forum_Entry.PREVIOUS_THUMB,
+                     Database.Get_Thumbnail (Previous_Id)));
+            end if;
+
+            Templates.Insert
+              (Translations, Templates.Assoc
+                 (V2P.Template_Defs.Forum_Entry.NEXT, Next_Id));
+
+            if Next_Id /= "" then
+               Templates.Insert
+                 (Translations, Templates.Assoc
+                    (V2P.Template_Defs.Forum_Entry.NEXT_THUMB,
+                     Database.Get_Thumbnail (Next_Id)));
+            end if;
+         end Insert_Links;
+         Templates.Insert (Translations, Database.Get_Entry (TID));
+      end if;
    end Forum_Entry_Callback;
 
    ----------------------------
@@ -391,7 +429,7 @@ package body V2P.Web_Server is
 
    procedure Forum_Threads_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Translations);
@@ -422,18 +460,29 @@ package body V2P.Web_Server is
       Context_Filter (Context);
    end Forum_Threads_Callback;
 
+   ---------------------
+   -- Get_Images_Path --
+   ---------------------
+
+   function Get_Images_Path return String is
+   begin
+      return Gwiad_Plugin_Path
+        & Morzhol.OS.Directory_Separator & Settings.Get_Images_Path;
+   end Get_Images_Path;
+
    ----------------------
    -- Is_Valid_Comment --
    ----------------------
 
    function Is_Valid_Comment (Comment : in String) return Boolean is
+      Is_Valid : Boolean := True;
    begin
       if Comment = "" then
          --  Does not accept empty comment
-         return False;
+         Is_Valid := False;
       end if;
 
-      return True;
+      return Is_Valid;
    end Is_Valid_Comment;
 
    --------------------
@@ -442,7 +491,7 @@ package body V2P.Web_Server is
 
    procedure Login_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
@@ -473,7 +522,7 @@ package body V2P.Web_Server is
 
    procedure Logout_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
@@ -499,7 +548,7 @@ package body V2P.Web_Server is
 
    procedure Main_Page_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Translations);
@@ -520,7 +569,7 @@ package body V2P.Web_Server is
 
    procedure New_Photo_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
@@ -534,12 +583,15 @@ package body V2P.Web_Server is
                        Parameters.Get
                          (P, Template_Defs.Block_New_Photo.HTTP.FILENAME);
 
-      Images_Path  : String renames Settings.Get_Images_Path;
+      Images_Path  : String renames Get_Images_Path;
 
       New_Image    : Image_Data;
 
    begin
-      Init (Img => New_Image, Filename => Filename);
+      Init
+        (Img      => New_Image,
+         Root_Dir => Gwiad_Plugin_Path,
+         Filename => Filename);
 
       if New_Image.Init_Status /= Image_Created then
          Templates.Insert
@@ -560,18 +612,17 @@ package body V2P.Web_Server is
               (Template_Defs.Main_Page.EXCEED_MAXIMUM_SIZE,
                Image_Init_Status'Image
                  (Image.Data.Exceed_Max_Size)));
+
       else
-         declare
-            New_Photo_Filename : constant String
-              := New_Image.Filename
-                ((Images_Path'Length + 2) .. New_Image.Filename'Last);
-            Pid                : constant String
-              := Database.Insert_Photo
-                (Login,
-                 New_Photo_Filename,
-                 Natural (New_Image.Dimension.Width),
-                 Natural (New_Image.Dimension.Height),
-                 Natural (New_Image.Dimension.Size));
+         Insert_Photo : declare
+            New_Photo_Filename : constant String := New_Image.Filename
+              (Images_Path'Length + 1 .. New_Image.Filename'Last);
+            Pid                : constant String := Database.Insert_Photo
+              (Login,
+               New_Photo_Filename,
+               Natural (New_Image.Dimension.Width),
+               Natural (New_Image.Dimension.Height),
+               Natural (New_Image.Dimension.Size));
          begin
             Templates.Insert
               (Translations,
@@ -583,7 +634,7 @@ package body V2P.Web_Server is
                Templates.Assoc
                  (Template_Defs.Iframe_Photo_Post.NEW_PHOTO_FILENAME,
                   New_Photo_Filename));
-         end;
+         end Insert_Photo;
       end if;
    end New_Photo_Callback;
 
@@ -593,7 +644,7 @@ package body V2P.Web_Server is
 
    procedure Onchange_Filter_Forum
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Translations);
@@ -613,7 +664,7 @@ package body V2P.Web_Server is
 
    procedure Onchange_Forum_List_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
@@ -631,7 +682,7 @@ package body V2P.Web_Server is
 
    procedure Onsubmit_Comment_Form_Enter_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       use Template_Defs;
@@ -671,14 +722,14 @@ package body V2P.Web_Server is
             Templates.Assoc
               (R_Block_Comment_Form_Enter.ERROR_DUPLICATED, "ERROR"));
 
-      elsif Tid /= "" and not Is_Valid_Comment (Comment_Wiki) then
+      elsif Tid /= "" and then not Is_Valid_Comment (Comment_Wiki) then
          Templates.Insert
            (Translations,
             Templates.Assoc
               (R_Block_Comment_Form_Enter.ERROR, "ERROR"));
             --  ??? Adds an error message
       else
-         declare
+         Insert_Comment : declare
             Cid : constant String := Database.Insert_Comment
               (Login, Anonymous, Tid, Name, Comment_Wiki, Pid);
          begin
@@ -697,7 +748,7 @@ package body V2P.Web_Server is
                Templates.Assoc
                  (R_Block_Comment_Form_Enter.COMMENT_LEVEL, "1"));
             --  Does not support threaded view for now
-         end;
+         end Insert_Comment;
       end if;
    end Onsubmit_Comment_Form_Enter_Callback;
 
@@ -707,7 +758,7 @@ package body V2P.Web_Server is
 
    procedure Onsubmit_Metadata_Form_Enter_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Translations);
@@ -724,12 +775,12 @@ package body V2P.Web_Server is
 
       function Get (Parameter_Name : in String) return Geo_Coordinate is
          Param : constant String := Parameters.Get (P, Parameter_Name);
+         Coordinate : Geo_Coordinate := 0.0;
       begin
-         if Param = "" then
-            return 0.0;
-         else
-            return Geo_Coordinate'Value (Param);
+         if Param /= "" then
+            Coordinate := Geo_Coordinate'Value (Param);
          end if;
+         return Coordinate;
       end Get;
 
       Latitude_Coord      : constant Geo_Coordinate := Get
@@ -743,23 +794,20 @@ package body V2P.Web_Server is
       if Latitude_Coord = 0.0 or else Longitude_Coord = 0.0 then
          Context.Set_Value
            (V2P.Template_Defs.Global.ERROR_METADATA_NULL_METADATA, "ERROR");
-         return;
-
       elsif not Context.Exist (Template_Defs.Global.TID) then
          Context.Set_Value
            (V2P.Template_Defs.Global.ERROR_METADATA_UNKNOWN_PHOTO, "ERROR");
-         return;
+      else
+         Latitude_Position.Format (Latitude_Coord);
+         Longitude_Postition.Format (Longitude_Coord);
+
+         Database.Insert_Metadata
+           (Context.Get_Value (Template_Defs.Global.TID),
+            Float (Latitude_Coord),
+            Float (Longitude_Coord),
+            Image.Metadata.Geographic.Image (Latitude_Position),
+            Image.Metadata.Geographic.Image (Longitude_Postition));
       end if;
-
-      Latitude_Position.Format (Latitude_Coord);
-      Longitude_Postition.Format (Longitude_Coord);
-
-      Database.Insert_Metadata
-        (Context.Get_Value (Template_Defs.Global.TID),
-         Float (Latitude_Coord),
-         Float (Longitude_Coord),
-         Image.Metadata.Geographic.Image (Latitude_Position),
-         Image.Metadata.Geographic.Image (Longitude_Postition));
    end Onsubmit_Metadata_Form_Enter_Callback;
 
    ---------------------------------------
@@ -768,7 +816,7 @@ package body V2P.Web_Server is
 
    procedure Onsubmit_Post_Form_Enter_Callback
      (Request      : in     Status.Data;
-      Context      : access Services.ECWF.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       use Template_Defs;
@@ -797,49 +845,84 @@ package body V2P.Web_Server is
               (Template_Defs.R_Block_Post_Form_Enter.ERROR,
                "POST SUBMIT ERROR"));
          --  ??? Adds an error message
-         return;
-
-      elsif Last_Name = Name then
-         Templates.Insert
-           (Translations,
-            Templates.Assoc
-              (Template_Defs.R_Block_Post_Form_Enter.ERROR_DUPLICATED,
-               "ERROR_DUPLICATE_POST"));
-
       else
-         declare
-            Post_Id : constant String :=
-                        Database.Insert_Post
-                          (Login, CID, Name, Comment_Wiki, Pid);
-         begin
-            if Post_Id /= "" then
-               --  Set new context TID (needed by
-               --  Onsubmit_Metadata_Form_Enter_Callback)
 
-               Context.Set_Value (Global.TID, Post_Id);
-               Context.Set_Value (Global.CONTEXT_LAST_POST_NAME, Name);
+         if Last_Name = Name then
+            Templates.Insert
+              (Translations,
+               Templates.Assoc
+                 (Template_Defs.R_Block_Post_Form_Enter.ERROR_DUPLICATED,
+                  "ERROR_DUPLICATE_POST"));
 
-               Templates.Insert
-                 (Translations,
-                  Templates.Assoc
-                    (R_Block_Post_Form_Enter.URL,
-                     Forum_Entry.URL & '?' &
-                     Forum_Entry.HTTP.TID & '=' & Post_Id));
+         else
+            Insert_Post : declare
+               Post_Id : constant String :=
+                           Database.Insert_Post
+                             (Login, CID, Name, Comment_Wiki, Pid);
+            begin
+               if Post_Id /= "" then
+                  --  Set new context TID (needed by
+                  --  Onsubmit_Metadata_Form_Enter_Callback)
 
-            else
-               Templates.Insert
-                 (Translations,
-                  Templates.Assoc
-                    (R_Block_Post_Form_Enter.ERROR, "DATABASE INSERT FAILED"));
-            end if;
-         end;
-      end if;
+                  Context.Set_Value (Global.TID, Post_Id);
+                  Context.Set_Value (Global.CONTEXT_LAST_POST_NAME, Name);
 
-      if Pid /= "" and then Context.Exist (Global.TID) then
-         Onsubmit_Metadata_Form_Enter_Callback
-           (Request, Context, Translations);
+                  Templates.Insert
+                    (Translations,
+                     Templates.Assoc
+                       (R_Block_Post_Form_Enter.URL,
+                        Forum_Entry.URL & '?' &
+                        Forum_Entry.HTTP.TID & '=' & Post_Id));
+
+               else
+                  Templates.Insert
+                    (Translations,
+                     Templates.Assoc
+                       (R_Block_Post_Form_Enter.ERROR,
+                        "DATABASE INSERT FAILED"));
+               end if;
+            end Insert_Post;
+         end if;
+
+         if Pid /= "" and then Context.Exist (Global.TID) then
+            Onsubmit_Metadata_Form_Enter_Callback
+              (Request, Context, Translations);
+         end if;
       end if;
    end Onsubmit_Post_Form_Enter_Callback;
+
+   -------------------------------------------------
+   -- Onsubmit_User_Page_Edit_Form_Enter_Callback --
+   -------------------------------------------------
+
+   procedure Onsubmit_User_Page_Edit_Form_Enter_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      use Template_Defs;
+
+      SID          : constant Session.Id := Status.Session (Request);
+      P            : constant Parameters.List := Status.Parameters (Request);
+      Login        : constant String :=
+                       Session.Get (SID, Template_Defs.Global.LOGIN);
+      Content      : constant String :=
+                       Parameters.Get (P, Block_User_Page.HTTP.CONTENT);
+      Content_HTML : constant String := V2P.Wiki.Wiki_To_HTML (Content);
+
+   begin
+      Database.Update_Page
+        (Uid          => Login,
+         Content      => Content,
+         Content_HTML => Content_HTML);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (R_Block_User_Page_Edit_Form_Enter.USER_PAGE_HTML_CONTENT,
+            Content_HTML));
+   end Onsubmit_User_Page_Edit_Form_Enter_Callback;
 
    ---------------------
    -- Photos_Callback --
@@ -848,9 +931,11 @@ package body V2P.Web_Server is
    function Photos_Callback (Request : in Status.Data) return Response.Data is
       URI  : constant String := Status.URI (Request);
       File : constant String :=
-               Settings.Get_Images_Path & OS.Directory_Separator
-                 & URI (URI'First +
-                          Images_Source_Prefix'Length + 1 .. URI'Last);
+               Gwiad_Plugin_Path & Directory_Separator &
+                 Settings.Get_Images_Path & Directory_Separator
+                   & URI
+                      (URI'First +
+                         Settings.Images_Source_Prefix'Length + 1 .. URI'Last);
    begin
       return Response.File (MIME.Content_Type (File), File);
    end Photos_Callback;
@@ -875,127 +960,121 @@ package body V2P.Web_Server is
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         Images_Source_Prefix,
+         Settings.Images_Source_Prefix,
          Action => Dispatchers.Callback.Create (Photos_Callback'Access),
          Prefix => True);
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         Thumbs_Source_Prefix,
+         Settings.Thumbs_Source_Prefix,
          Action => Dispatchers.Callback.Create (Thumbs_Callback'Access),
          Prefix => True);
+
+      Services.Dispatchers.URI.Register
+        (Dispatcher => Main_Dispatcher,
+         URI        => Settings.Website_Data_Prefix,
+         Action     => Dispatchers.Callback.Create (Website_Data'Access),
+         Prefix     => True);
 
       Services.Dispatchers.URI.Register_Default_Callback
         (Main_Dispatcher,
          Dispatchers.Callback.Create (Default_Callback'Access));
-      --  This default callback will handle all ECWF callbacks
+      --  This default callback will handle all Web_Block callbacks
 
-      --  Register ECWF pages
+      --  Register Web_Block pages
 
-      Services.ECWF.Registry.Register
+      Services.Web_Block.Registry.Register
+        (Key          => Template_Defs.User_Page.URL,
+         Template     => Template_Defs.User_Page.Template,
+         Data_CB      => null,
+         Prefix       => True);
+
+      Services.Web_Block.Registry.Register
         (Template_Defs.Block_Login.Ajax.onclick_login_form_enter,
          Template_Defs.R_Block_Login.Template,
          Login_Callback'Access,
-         MIME.Text_XML);
+         Content_Type => MIME.Text_XML);
 
-      Services.ECWF.Registry.Register
+      Services.Web_Block.Registry.Register
         (Template_Defs.Block_Login.Ajax.onclick_logout_enter,
          Template_Defs.R_Block_Logout.Template,
          Logout_Callback'Access,
-         MIME.Text_XML);
+         Content_Type => MIME.Text_XML);
 
-      Services.ECWF.Registry.Register
+      Services.Web_Block.Registry.Register
         (Template_Defs.Block_Forum_Filter.Ajax.onchange_forum_filter_set,
          Template_Defs.R_Block_Forum_Filter.Template,
          Onchange_Filter_Forum'Access,
-         MIME.Text_XML);
+         Content_Type => MIME.Text_XML);
 
-      Services.ECWF.Registry.Register
+      Services.Web_Block.Registry.Register
         (Template_Defs.Block_New_Comment.Ajax.onchange_sel_forum_list,
          Template_Defs.R_Block_Forum_List.Template,
          Onchange_Forum_List_Callback'Access,
-         MIME.Text_XML);
+         Content_Type => MIME.Text_XML);
 
-      Services.ECWF.Registry.Register
+      Services.Web_Block.Registry.Register
         (Template_Defs.Block_New_Comment.Ajax.onsubmit_comment_form,
          Template_Defs.R_Block_Comment_Form_Enter.Template,
          Onsubmit_Comment_Form_Enter_Callback'Access,
-         MIME.Text_XML);
+         Content_Type => MIME.Text_XML);
 
-      Services.ECWF.Registry.Register
+      Services.Web_Block.Registry.Register
         (Template_Defs.Block_New_Post.Ajax.onsubmit_post_form,
          Template_Defs.R_Block_Post_Form_Enter.Template,
          Onsubmit_Post_Form_Enter_Callback'Access,
-         MIME.Text_XML);
+         Content_Type => MIME.Text_XML);
 
-      Services.ECWF.Registry.Register
+      Services.Web_Block.Registry.Register
         (Template_Defs.Block_Metadata.Ajax.onsubmit_metadata_post,
          Template_Defs.R_Block_Metadata_Form_Enter.Template,
          Onsubmit_Metadata_Form_Enter_Callback'Access,
-         MIME.Text_XML);
+         Content_Type => MIME.Text_XML);
 
-      Services.ECWF.Registry.Register
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_User_Page.Ajax.onsubmit_user_page_edit_form,
+         Template_Defs.R_Block_User_Page_Edit_Form_Enter.Template,
+         Onsubmit_User_Page_Edit_Form_Enter_Callback'Access,
+         Content_Type => MIME.Text_XML);
+
+      Services.Web_Block.Registry.Register
         (Template_Defs.Forum_Entry.URL,
          Template_Defs.Forum_Entry.Template,
          Forum_Entry_Callback'Access);
 
-      Services.ECWF.Registry.Register
+      Services.Web_Block.Registry.Register
         (Template_Defs.Block_New_Photo.URL,
          Template_Defs.Iframe_Photo_Post.Template,
          New_Photo_Callback'Access);
 
-      Services.ECWF.Registry.Register
+      Services.Web_Block.Registry.Register
         (Template_Defs.Forum_Threads.URL,
          Template_Defs.Forum_Threads.Template,
          Forum_Threads_Callback'Access);
 
-      Services.ECWF.Registry.Register
+      Services.Web_Block.Registry.Register
         (Template_Defs.Main_Page.URL,
          Template_Defs.Main_Page.Template,
          Main_Page_Callback'Access);
 
-      Services.ECWF.Registry.Register
+      Services.Web_Block.Registry.Register
         (Template_Defs.Error.URL,
          Template_Defs.Error.Template,
          null);
 
-      Services.ECWF.Registry.Register
+      Services.Web_Block.Registry.Register
         (Template_Defs.Forum_Post.URL,
          Template_Defs.Forum_Post.Template,
          null);
 
-      Services.ECWF.Registry.Register
+      Services.Web_Block.Registry.Register
         (XML_Prefix_URI,
          Default_XML_Callback'Access,
          null,
-         MIME.Text_XML);
+         Content_Type => MIME.Text_XML);
       --  All URLs starting with XML_Prefix_URI are handled by a specific
       --  callback returning the corresponding file in the xml directory.
-
-      --  Log control
-
-      Server.Log.Start (HTTP, Auto_Flush => True);
-      Server.Log.Start_Error (HTTP);
-
-      --  Server configuration
-
-      Config.Set.Session (Configuration, True);
-      Config.Set.Upload_Directory (Configuration, Upload_Directory);
-      Config.Set.Admin_URI (Configuration, Admin_URI);
-
-      --  Starting server
-
-      Server.Start (HTTP, Main_Dispatcher, Configuration);
    end Start;
-
-   ----------
-   -- Stop --
-   ----------
-
-   procedure Stop is
-   begin
-      Server.Shutdown (HTTP);
-   end Stop;
 
    ---------------------
    -- Thumbs_Callback --
@@ -1004,21 +1083,42 @@ package body V2P.Web_Server is
    function Thumbs_Callback (Request : in Status.Data) return Response.Data is
       URI  : constant String := Status.URI (Request);
       File : constant String :=
-               Settings.Get_Thumbs_Path & OS.Directory_Separator
-                 & URI (URI'First +
-                          Thumbs_Source_Prefix'Length + 1 .. URI'Last);
+               Gwiad_Plugin_Path & Directory_Separator &
+                 Settings.Get_Thumbs_Path & Directory_Separator
+                   & URI
+                      (URI'First +
+                         Settings.Thumbs_Source_Prefix'Length + 1 .. URI'Last);
    begin
       return Response.File (MIME.Content_Type (File), File);
    end Thumbs_Callback;
 
-   ----------
-   -- Wait --
-   ----------
+   ----------------
+   -- Unregister --
+   ----------------
 
-   procedure Wait is
+   procedure Unregister (Name : in Website_Name) is
+      pragma Unreferenced (Name);
    begin
-      Server.Wait (Server.Forever);
-   end Wait;
+      Gwiad.Web.Virtual_Host.Unregister (Settings.Virtual_Host);
+      V2P.Database.Disconnect_All;
+   end Unregister;
+
+   ------------------
+   -- Website_Data --
+   ------------------
+
+   function Website_Data (Request : in Status.Data) return Response.Data is
+      URI  : constant String := Status.URI (Request);
+      File : constant String :=
+               Gwiad_Plugin_Path & Directory_Separator &
+                 Settings.Website_Data_Path & Directory_Separator
+                   & URI
+                      (URI'First +
+                         Settings.Website_Data_Prefix'Length + 1 .. URI'Last);
+   begin
+      return Response.File
+        (Content_Type => MIME.Content_Type (File), Filename => File);
+   end Website_Data;
 
    -------------------
    -- WEJS_Callback --
@@ -1026,7 +1126,8 @@ package body V2P.Web_Server is
 
    function WEJS_Callback (Request : in Status.Data) return Response.Data is
       URI          : constant String := Status.URI (Request);
-      File         : constant String := URI (URI'First + 1 .. URI'Last);
+      File         : constant String := Gwiad_Plugin_Path
+        & Directory_Separator & URI (URI'First + 1 .. URI'Last);
       Translations : Templates.Translate_Set;
    begin
       return Response.Build
@@ -1034,4 +1135,16 @@ package body V2P.Web_Server is
          String'(Templates.Parse (File, Translations)));
    end WEJS_Callback;
 
+begin  -- V2P.Web_Server : register vision2pixels website
+   Start;
+
+   Gwiad.Web.Virtual_Host.Register
+     (Hostname => Settings.Virtual_Host,
+      Action   => Main_Dispatcher);
+
+   Gwiad.Plugins.Websites.Registry.Register
+     (Name         => "vision2pixels",
+      Description  => "a Web space engine to comment user's photos",
+      Unregister   => Unregister'Access,
+      Library_Path => V2p_Lib_Path);
 end V2P.Web_Server;

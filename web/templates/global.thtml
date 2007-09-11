@@ -1,4 +1,5 @@
 @@-- This template is used to register all the globals Web tag
+@_V2P_VERSION_@
 @_LOGIN_@
 @_PASSWORD_@
 @_FILTER_@

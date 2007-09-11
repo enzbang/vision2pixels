@@ -40,9 +40,7 @@ package G2F is
    package C renames Interfaces.C;
    package C_Ext renames Interfaces.C.Extensions;
 
-   pragma Linker_Options ("-lMagick");
    pragma Linker_Options ("-lm");
-   pragma Linker_Options ("-L/usr/X11R6/lib/");
 
    type Image is private;
    type Image_Info is private;

@@ -24,6 +24,50 @@ Building
    $ cd v2p
    $ make
 
+Installing with Gwiad
+---------------------
+
+   $ make install_gwiad_plugin
+
+Setting the testing environment
+-------------------------------
+
+The first time you run Vision2Pixels you'll need a database and a set of
+images/thumbs that goes with it.
+
+To create the database:
+
+   $ cd db/data
+   $ ./create_database.sh 
+
+This will create the demo database named "testing.db".
+
+To install the demo images grab the v2p-data.tar.bz2 from the Download area
+on http://code.google.com/p/vision2pixels.
+
+   $ cd db/data
+   $ tar xfj v2p-data.tar.bz2
+
+Running with Gwiad
+------------------
+
+   $ cd ~/opt/gwiad
+   $ bin/argwiad
+
+Then point the browser to :  http://127.0.0.10:8080/
+
+Note that it is possible to change the defaults Vision2Pixels setting
+by editing ~/opt/gwiad/plugins/vision2pixels/v2p.ini.
+
+The PATH in v2p.ini are relatives to the .ini directory. For example, here
+is the v2p.ini to use with the demo environment:
+
+   db_name db/testing.db
+   images_path db/images/
+   thumbs_path db//thumbs/
+
+Means that the database can be found in
+~/opt/gwiad/plugins/vision2pixels/db/testing.db.
 
 Building libraries
 ------------------

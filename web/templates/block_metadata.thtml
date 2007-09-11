@@ -1,6 +1,6 @@
 @@INCLUDE@@ babel.thtml
 @@--
-<div id="geo_metadata" class="yui-u first">
+<div id="geo_metadata">
   @@IF@@ @_METADATA_LATITUDE_@ /= ""
   <dl class="geo">
     <dt><strong>@_BABEL_GEO_LATITUDE_@</strong></dt>
@@ -21,7 +21,6 @@
   <form enctype="multipart/form-data" id="metadata_post"
         action="#" method="POST">
     <fieldset>
-      <legend>@_BABEL_METADATA_@</legend>
       <p>
         <label for="latitude">@_BABEL_GEO_LATITUDE_@</label>
         <input id="latitude" name="latitude" type="entry"/>

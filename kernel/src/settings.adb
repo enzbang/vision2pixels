@@ -22,7 +22,7 @@
 with Ada.Exceptions;
 with Ada.Text_IO;
 
-with Config;
+with Morzhol.Iniparser;
 with Defaults;
 
 package body Settings is
@@ -30,18 +30,20 @@ package body Settings is
    use Ada;
    use Ada.Exceptions;
 
-   Config_Filename : constant String := "v2p.ini";
+   Config_Filename : constant String := "plugins/vision2pixels/v2p.ini";
 
    type Attributes is
      (DB, DB_Name, Images_Path, Thumbs_Path,
+      Images_Source_Prefix, Thumbs_Source_Prefix,
       Anonymous_Visit_Counter, Anonymous_Comment, Descending_Order,
       Ignore_Author_Click, Limit_Image_Size, Image_Maximum_Width,
       Image_Maximum_Height, Image_Maximum_Size, Thumbnail_Maximum_Width,
-      Thumbnail_Maximum_Height);
+      Thumbnail_Maximum_Height, Virtual_Host, Website_Data_Path,
+      Website_Data_Prefix, Wiki_Service_Name);
 
-   package Conf is new Config (Attributes);
+   package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
-   package DB_Conf is new Conf.Enum_Values (DB_Kind);
+   package DB_Conf is new Conf.Enum_Values (Enum => DB_Kind);
 
    -----------------------
    -- Anonymous_Comment --
@@ -142,6 +144,15 @@ package body Settings is
       return Conf.Get_Value (Image_Maximum_Width);
    end Image_Maximum_Width;
 
+   -------------------------
+   -- Image_Source_Prefix --
+   -------------------------
+
+   function Images_Source_Prefix return String is
+   begin
+      return Conf.Get_Value (Images_Source_Prefix);
+   end Images_Source_Prefix;
+
    ----------------------
    -- Limit_Image_Size --
    ----------------------
@@ -169,13 +180,59 @@ package body Settings is
       return Conf.Get_Value (Thumbnail_Maximum_Width);
    end Thumbnail_Maximum_Width;
 
-begin
-   --  Set default values
+   --------------------------
+   -- Thumbs_Source_Prefix --
+   --------------------------
+
+   function Thumbs_Source_Prefix return String is
+   begin
+      return Conf.Get_Value (Thumbs_Source_Prefix);
+   end Thumbs_Source_Prefix;
+
+   ------------------
+   -- Virtual_Host --
+   ------------------
+
+   function Virtual_Host return String is
+   begin
+      return Conf.Get_Value (Virtual_Host);
+   end Virtual_Host;
+
+   -----------------------
+   -- Website_Data_Path --
+   -----------------------
+
+   function Website_Data_Path return String is
+   begin
+      return Conf.Get_Value (Website_Data_Path);
+   end Website_Data_Path;
+
+   -------------------------
+   -- Website_Data_Prefix --
+   -------------------------
+
+   function Website_Data_Prefix return String is
+   begin
+      return Conf.Get_Value (Website_Data_Prefix);
+   end Website_Data_Prefix;
+
+   -----------------------
+   -- Wiki_Service_Name --
+   -----------------------
+
+   function Wiki_Service_Name return String is
+   begin
+      return Conf.Get_Value (Wiki_Service_Name);
+   end Wiki_Service_Name;
+
+begin --  Settings : Set default values
 
    DB_Conf.Set_Value (DB, Defaults.DB);
    Conf.Set_Value (DB_Name, Defaults.DB_Name);
    Conf.Set_Value (Images_Path, Defaults.Images_Path);
    Conf.Set_Value (Thumbs_Path, Defaults.Thumbs_Path);
+   Conf.Set_Value (Images_Source_Prefix, Defaults.Images_Source_Prefix);
+   Conf.Set_Value (Thumbs_Source_Prefix, Defaults.Thumbs_Source_Prefix);
    Conf.Set_Value (Anonymous_Visit_Counter, Defaults.Anonymous_Visit_Counter);
    Conf.Set_Value (Anonymous_Comment, Defaults.Anonymous_Comment);
    Conf.Set_Value (Descending_Order, Defaults.Descending_Order);
@@ -187,6 +244,10 @@ begin
    Conf.Set_Value (Thumbnail_Maximum_Width, Defaults.Thumbnail_Maximum_Width);
    Conf.Set_Value (Thumbnail_Maximum_Height,
                    Defaults.Thumbnail_Maximum_Height);
+   Conf.Set_Value (Virtual_Host, Defaults.Virtual_Host);
+   Conf.Set_Value (Website_Data_Path, Defaults.Website_Data_Path);
+   Conf.Set_Value (Website_Data_Prefix, Defaults.Website_Data_Prefix);
+   Conf.Set_Value (Wiki_Service_Name, Defaults.Wiki_Service_Name);
 
    --  Now read the config file if any
 

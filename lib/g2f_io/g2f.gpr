@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -29,7 +29,7 @@ project G2F is
 
    for Library_Dir use "lib";
    for Library_Name use "v2p_g2f";
-   for Library_Kind use "static";
+   for Library_Kind use "dynamic";
 
    Common_Options  :=
      ("-Wall");
@@ -48,7 +48,7 @@ project G2F is
    package Compiler is
 
       case Shared.Build is
-         when "Debug" =>
+         when "Debug" | "Profile" =>
             for Default_Switches ("Ada") use Common_Options & Debug_Options;
 
          when "Release" =>
@@ -56,5 +56,11 @@ project G2F is
       end case;
 
    end Compiler;
+
+   ---------
+   -- Ide --
+   ---------
+
+   package Ide renames Shared.Ide;
 
 end G2F;

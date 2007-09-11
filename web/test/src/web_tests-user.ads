@@ -19,16 +19,19 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AUnit.Test_Cases;
+with AUnit;
 
 package Web_Tests.User is
+
+   use AUnit;
+   use AUnit.Test_Cases;
 
    type Test_Case is new AUnit.Test_Cases.Test_Case with null record;
 
    procedure Register_Tests (T : in out Test_Case);
    --  Register routines to be run
 
-   function Name (T : in Test_Case) return String_Access;
+   function Name (T : in Test_Case) return Message_Strings.Message_String;
    --  Returns name identifying the test case
 
 end Web_Tests.User;

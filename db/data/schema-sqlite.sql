@@ -4,6 +4,19 @@ create table "user" (
 "email" varchar(50) not null unique
 );
 
+create trigger add_user_page after insert on user
+   begin
+      insert into user_page (user_login) values (new.login);
+   end;
+
+
+create table "user_page" (
+"user_login" varchar(50) not null,
+"content" longtext,
+"content_html" longtext,
+foreign key ("user_login") references user("login")
+);
+
 create table "template" (
 "id" integer not null primary key autoincrement,
 "filename" varchar(512) not null unique,

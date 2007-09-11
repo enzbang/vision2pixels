@@ -23,6 +23,8 @@ with GNU.DB.SQLite3;
 
 package DB.SQLite is
 
+   DB_Error : exception renames DB.DB_Error;
+
    type Handle is new DB.Handle with private;
 
    --  Open / Close

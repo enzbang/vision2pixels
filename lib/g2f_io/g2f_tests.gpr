@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -34,17 +34,10 @@ project G2F_Tests is
 
    package Compiler renames Shared.Compiler;
 
-   ------------
-   -- Linker --
-   ------------
+   ---------
+   -- Ide --
+   ---------
 
-   package Linker is
-      case Shared.OS is
-         when "Windows_NT" =>
-            for Default_Switches ("Ada") use ("-lMagick", "-lgdi32");
-         when others =>
-            null;
-      end case;
-   end Linker;
+   package Ide renames Shared.Ide;
 
 end G2F_Tests;

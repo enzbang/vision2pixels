@@ -22,8 +22,10 @@
 --  This is the main driver for the test suite(s)
 
 with Ada.Text_IO;
-with AUnit.Test_Runner;
+with AUnit;
 
+with Gwiad.Web;
+with Gwiad.Dynamic_Libraries.Manager;
 with V2P.Web_Server;
 
 with Web_Suite;
@@ -31,40 +33,30 @@ with Web_Suite;
 procedure Web_Harness is
 
    use Ada;
+   use Gwiad;
+   use Gwiad.Dynamic_Libraries.Manager;
 
-   procedure Run is new AUnit.Test_Runner (Web_Suite);
-
-   task Server is
-      entry Started;
-   end Server;
-
-   ------------
-   -- Server --
-   ------------
-
-   task body Server is
-   begin
-      V2P.Web_Server.Start;
-      accept Started;
-   exception
-      when E : others =>
-         Text_IO.Put_Line ("Server failed to start...");
-   end Server;
+   procedure Run is
+     new AUnit.Test_Runner (Suite => Web_Suite.Web_Suite_Access);
 
 begin
    Text_IO.Put_Line ("(web_harness): Begin");
 
+   Manager.Discover_Libraries;
+
    Text_IO.Put_Line ("(web_harness): Start server");
-   Server.Started;
+
+   Web.Start;
 
    --  Run tests
 
    Text_IO.Put_Line ("(web_harness): run tests");
    Run;
 
-   --  Stop server
+   --  Exit now
 
-   V2P.Web_Server.Stop;
+   Web.Stop;
+   Manager.Unregister_All;
 
    Text_IO.Put_Line ("(web_harness): End");
 end Web_Harness;

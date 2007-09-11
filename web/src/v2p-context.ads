@@ -20,15 +20,16 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Vectors;
-with AWS.Services.ECWF.Context;
+with AWS.Services.Web_Block.Context;
 
 package V2P.Context is
 
    use Ada;
-   use AWS.Services.ECWF.Context;
+   use AWS.Services.Web_Block.Context;
 
    package Post_Ids is
-     new Containers.Indefinite_Vectors (Positive, String);
+     new Containers.Indefinite_Vectors
+       (Index_Type => Positive, Element_Type => String);
    --  Post_Ids stores all visible post ids in forum threads page
 
    package Navigation_Links is

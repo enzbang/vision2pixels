@@ -29,7 +29,7 @@
 @@SET@@ AWS_CONTEXT_PER_WINDOW = true
 @@--  If the context should be renew on a new window (or tab) creation
 
-@@SET@@ CTX_ECWF = "CTX_ECWF"
+@@SET@@ CTX_WB = "CTX_WB"
 @@--  The context parameter name
 
 @@---------------------------------------------------------------- AWS
@@ -142,7 +142,7 @@ AWS.Context = new function() {
 
    this.get = function ()
    {
-      var context = document.getElementById('@_CTX_ECWF_@');
+      var context = document.getElementById('@_CTX_WB_@');
 
       if (context == null)
           return "";
@@ -165,7 +165,7 @@ AWS.Context = new function() {
 
 	 is_new_context = true;
 	 AWS.Ajax.XML.request
-           ("/xml_reset_context.xml?CTX_ECWF_COPY=true", "", AWS.Context.update);
+           ("/xml_reset_context.xml?CTX_WB_COPY=true", "", AWS.Context.update);
       }
       @@END_IF@@
 
@@ -182,7 +182,7 @@ AWS.Context = new function() {
             if (href.indexOf("http",0) != 0
                 && href.indexOf("mailto:",0) != 0
                 && href.indexOf("#",0) != 0
-                && href.indexOf("@_CTX_ECWF_@",0) == -1) {
+                && href.indexOf("@_CTX_WB_@",0) == -1) {
                anchors[k].setAttribute('href', AWS.Context.href_add_anchor(href));
             }
          }
@@ -202,7 +202,7 @@ AWS.Context = new function() {
                    if (no_context (forms[k].elements) == true) {
                       hi = document.createElement('input');
                       hi.setAttribute('type', 'hidden');
-                      hi.setAttribute('name', '@_CTX_ECWF_@');
+                      hi.setAttribute('name', '@_CTX_WB_@');
                       hi.setAttribute('value', AWS.Context.get());
                       forms[k].appendChild(hi);
                    }
@@ -212,7 +212,7 @@ AWS.Context = new function() {
    }
 
    @@-- --------------------------------
-   @@-- Add Context parameter CTX_ECWF for Ajax
+   @@-- Add Context parameter CTX_WB for Ajax
 
    this.add_ajax = function (pars)
    {
@@ -221,13 +221,13 @@ AWS.Context = new function() {
       else
           pars = pars + "&";
 
-      pars = pars + "@_CTX_ECWF_@=" + this.get();
+      pars = pars + "@_CTX_WB_@=" + this.get();
 
       return pars;
    }
 
    @@-- --------------------------------
-   @@-- Add context parameter CTX_ECWF for anchors
+   @@-- Add context parameter CTX_WB for anchors
 
    this.add_anchor = function (a)
    {
@@ -241,7 +241,7 @@ AWS.Context = new function() {
       else
           href = href + '&';
 
-      href = href + "@_CTX_ECWF_@=" + this.get();
+      href = href + "@_CTX_WB_@=" + this.get();
       return (href);
    }
 
@@ -257,7 +257,7 @@ AWS.Context = new function() {
       var k = 0;
       for (k=0; k<items.length; k++) {
          if (items[k].tagName == "INPUT"
-             && items[k].getAttribute('NAME') == '@_CTX_ECWF_@')
+             && items[k].getAttribute('NAME') == '@_CTX_WB_@')
             return false;
       }
       return true;
@@ -518,14 +518,14 @@ AWS.Ajax.XML = new function() {
    {
       var url = node.getAttribute('url');
 
-      if (url.indexOf('http',0) == -1 && url.indexOf('@_CTX_ECWF_@') == -1) {
+      if (url.indexOf('http',0) == -1 && url.indexOf('@_CTX_WB_@') == -1) {
          @@--  pointing inside server and no context
          if (url.indexOf("?",0) == -1)
             url = url + '?';
          else
             url = url + '&';
 
-         url = url + "@_CTX_ECWF_@=" & AWS.Context.get();
+         url = url + "@_CTX_WB_@=" & AWS.Context.get();
       }
 
       /* Redirect to url */

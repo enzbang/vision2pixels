@@ -20,6 +20,13 @@
 ------------------------------------------------------------------------------
 
 with "aws";
+with "morzhol";
+
+with "gwiad-plugins-services";
+with "gwiad-plugins-websites";
+with "gwiad-web";
+
+with "wiki_interface";
 
 with "../shared";
 with "../db/db";
@@ -33,10 +40,24 @@ project Web is
      ("Ada", "HTML Template", "XML Template", "Ada Template",
       "Javascript Template", "Javascript");
 
-   for Source_Dirs use ("src", "templates", "we_js", "ecwf", "tsrc");
+   for Source_Dirs use ("src", "templates", "we_js", "tsrc");
    for Object_Dir use "obj";
-   for Exec_Dir use "bin";
-   for Main use ("vision2pixels");
+   for Library_Ali_Dir use "lib_ali";
+   for Library_Dir use "lib";
+   for Library_Name use "vision2pixels";
+   for Library_Interface use
+     ("v2p", "v2p.web_server", "v2p.wiki", "v2p.template_defs",
+      "v2p.template_defs.block_login", "v2p.template_defs.block_forum_filter",
+      "v2p.template_defs.forum_threads");
+   for Library_Kind use "dynamic";
+   for Library_Auto_Init use "false";
+
+   case Shared.Build is
+      when "Profile" =>
+         for Library_Options use ("-fprofile-arcs");
+      when "Debug" | "Release" =>
+         null;
+   end case;
 
    -------------
    -- Builder --
@@ -61,5 +82,11 @@ project Web is
    ------------
 
    package Linker renames Shared.Linker;
+
+   ---------
+   -- Ide --
+   ---------
+
+   package Ide renames Shared.Ide;
 
 end Web;

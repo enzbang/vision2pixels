@@ -28,23 +28,29 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with G2F;  use G2F;
-with G2F.IO; use G2F.IO;
-with G2F.Image_IO; use G2F.Image_IO;
+with Ada.Text_IO;
+
+with G2F;
+with G2F.IO;
+with G2F.Image_IO;
 with G2F.Image_Enhance;
 with G2F.Image_Resize;
 with G2F.Image_Text_Attribute;
-with Ada.Text_IO;
 
 procedure G2F_Test is
 
-   Info : Image_Info_Ptr;
-   Test_Image : Image_Ptr;
-   My_Size, Lite_Size : Image_Size;
-   In_Filename : constant String := "adapowered.jpg";
-   Out_Filename : constant String := "magick.png";
-begin
+   use G2F;
+   use G2F.IO;
+   use G2F.Image_IO;
 
+   In_Filename        : constant String := "adapowered.jpg";
+   Out_Filename       : constant String := "magick.png";
+
+   Info               : Image_Info_Ptr;
+   Test_Image         : Image_Ptr;
+   My_Size, Lite_Size : Image_Size;
+
+begin
    Info := Clone_Image_Info (Info);
 
    --  Image Filename

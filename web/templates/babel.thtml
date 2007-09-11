@@ -20,6 +20,7 @@
 @@SET@@ BABEL_COMMENT_TITLE="Titre"
 @@SET@@ BABEL_COMMENT_CONTENT="Commentaire : "
 @@SET@@ BABEL_YOUR_NAME="Votre nom : "
+@@SET@@ BABEL_YOUR_PAGE="Votre page personnelle"
 @@SET@@ BABEL_SELECT_FORUM="Choisir un forum"
 @@SET@@ BABEL_LOGGED_AS="Connecté en tant que "
 @@SET@@ BABEL_DOES_NOT_EXIST="La page que vous avez demandé n'existe pas."
@@ -39,6 +40,10 @@
 @@SET@@ BABEL_METADATA="Metadonnées"
 @@SET@@ BABEL_EDIT_METADATA="éditer les metadonnées"
 @@SET@@ BABEL_ERROR_METADATA="Métadonnées incorrectes"
+@@--  User page
+@@SET@@ BABEL_USER_EDIT_YOUR_PAGE="Éditer votre page"
+@@SET@@ BABEL_USER_PAGE="Page utilisateur"
+@@SET@@ BABEL_USER_PAGE_OF="Page d'"
 @@--
 @@SET@@ BABEL_GEO_LATITUDE="Latitude"
 @@SET@@ BABEL_GEO_LONGITUDE="Longitude"
