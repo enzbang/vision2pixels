@@ -88,6 +88,11 @@ package V2P.Web_Block_Callbacks is
       Context      : access Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
 
+   procedure User_Comment_List
+     (Request      : in     Status.Data;
+      Context      : access Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
    procedure User_Thread_List
      (Request      : in     Status.Data;
       Context      : access Web_Block.Context.Object;

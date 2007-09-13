@@ -86,6 +86,10 @@ package V2P.Database is
      (Uid : in String) return Templates.Translate_Set;
    --  Returns user's temporaries photos
 
+   function Get_User_Comment
+     (Uid : in String) return Templates.Translate_Set;
+   --  Returns user's comments
+
    function Get_Metadata (Pid : in String) return Templates.Translate_Set;
    --  Returns photo geographic metadata
 
