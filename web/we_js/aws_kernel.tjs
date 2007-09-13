@@ -181,9 +181,10 @@ AWS.Context = new function() {
          if (href != null) {
             if (href.indexOf("http",0) != 0
                 && href.indexOf("mailto:",0) != 0
-                && href.indexOf("#",0) != 0
-                && href.indexOf("@_CTX_WB_@",0) == -1) {
-               anchors[k].setAttribute('href', AWS.Context.href_add_anchor(href));
+                && href.indexOf("#",0) != 0) {
+
+                anchors[k].setAttribute('href',
+                                        AWS.Context.href_add_anchor(href));
             }
          }
       }
@@ -199,14 +200,8 @@ AWS.Context = new function() {
                 && action.indexOf("http",0) != 0
                 && action.indexOf("#", 0) != 0
                 && forms[k].getAttribute('onsubmit') == null) {
-                   if (no_context (forms[k].elements) == true) {
-                      hi = document.createElement('input');
-                      hi.setAttribute('type', 'hidden');
-                      hi.setAttribute('name', '@_CTX_WB_@');
-                      hi.setAttribute('value', AWS.Context.get());
-                      forms[k].appendChild(hi);
-                   }
-                }
+                add_context_to_form (forms[k]);
+            }
          }
       }
    }
@@ -236,17 +231,26 @@ AWS.Context = new function() {
 
    this.href_add_anchor = function (href)
    {
-      var href_last = "";
+      var href_last = "";       // Contains fragment
 
       if (href.indexOf('#', 0) != -1) {
-         var all_href = href.split('#');
-         href = all_href[0];
-         href_last = all_href[1];
+         var splitted_href = href.split('#');
+         href = splitted_href[0];
+         href_last = splitted_href[1];
       }
-      if (href.indexOf('?',0) == -1)
+
+      // Remove CTX_WB if exists
+
+      if (href.indexOf("@_CTX_WB_@", 0) != -1) {
+         href = href.split("@_CTX_WB_@")[0];
+         href = href.substr(0, href.length - 1); // Remove & or ?
+      }
+
+      if (href.indexOf('?',0) == -1) {
           href = href + '?';
-      else
+      } else {
           href = href + '&';
+      }
 
       href = href + "@_CTX_WB_@=" + this.get();
 
@@ -261,17 +265,33 @@ AWS.Context = new function() {
    @@------------
 
    @@-- --------------------------------
-   @@-- Returns true if there is no context into the items list
+   @@-- Append or update context into form
 
-   function no_context (items)
+   function add_context_to_form (form)
    {
       var k = 0;
+      var items = form.elements;
+
       for (k=0; k<items.length; k++) {
          if (items[k].tagName == "INPUT"
-             && items[k].getAttribute('NAME') == '@_CTX_WB_@')
-            return false;
+             && items[k].getAttribute('NAME') == '@_CTX_WB_@') {
+
+            // Update context if needed
+
+            if (items[k].getAttribute('VALUE') != AWS.Context.get()) {
+               items[k].setAttribute ('VALUE', AWS.Context.get());
+            }
+            return;
+         }
       }
-      return true;
+
+      //  Insert new context field
+
+      hi = document.createElement('input');
+      hi.setAttribute('type', 'hidden');
+      hi.setAttribute('name', '@_CTX_WB_@');
+      hi.setAttribute('value', AWS.Context.get());
+      form.appendChild(hi);
    }
 
    @@--
