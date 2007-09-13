@@ -26,6 +26,9 @@
 </form>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, user_page_edit_form, 4=>user_page_edit_form)
-
 @@END_IF@@
+
+@_LAZY_USER_THREAD_LIST_@
+
+@_LAZY_USER_COMMENT_LIST_@
 @@END_IF@@

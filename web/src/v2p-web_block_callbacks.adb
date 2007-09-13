@@ -224,6 +224,20 @@ package body V2P.Web_Block_Callbacks is
       end if;
    end New_Post;
 
+   procedure User_Comment_List
+     (Request      : in     Status.Data;
+      Context      : access Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      URI       : constant String := Status.URI (Request);
+      User_Name : constant String :=
+                    URI (URI'First
+                         + Template_Defs.User_Page.URL'Length .. URI'Last);
+   begin
+      Templates.Insert
+        (Translations, Database.Get_User_Comment (Uid => User_Name));
+   end User_Comment_List;
    ---------------
    -- User_Page --
    ---------------
@@ -257,12 +271,17 @@ package body V2P.Web_Block_Callbacks is
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
-      SID        : constant Session.Id := Status.Session (Request);
+
+      URI        : constant String     := Status.URI (Request);
+      User_Name  : constant String     :=
+                     URI (URI'First
+                          + Template_Defs.User_Page.URL'Length .. URI'Last);
       Set        : Templates.Translate_Set;
       Navigation : V2P.Context.Post_Ids.Vector;
+
    begin
       Database.Get_Threads
-        (User       => Session.Get (SID, "LOGIN"),
+        (User       => User_Name,
          Navigation => Navigation,
          Set        => Set);
 

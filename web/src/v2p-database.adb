@@ -41,6 +41,7 @@ with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_User_Page;
+with V2P.Template_Defs.Block_User_Comment;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_User_Tmp_Photo_Select;
 with V2P.Template_Defs.R_Block_Forum_List;
@@ -867,6 +868,50 @@ package body V2P.Database is
 
       return Set;
    end Get_User;
+
+   function Get_User_Comment
+     (Uid : in String) return Templates.Translate_Set
+   is
+      SQL : constant String :=
+              "select p.post_id, c.id, comment "
+                & "from comment as c, post_comment as p "
+        & "where user_login = " & Q (Uid)
+        & " and p.comment_id = c.id";
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Set          : Templates.Translate_Set;
+      Iter         : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line         : DB.String_Vectors.Vector;
+
+      Post_Id      : Templates.Tag;
+      Comment_Id   : Templates.Tag;
+      Comment      : Templates.Tag;
+
+      use type Templates.Tag;
+
+   begin
+      Connect (DBH);
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+         Post_Id    := Post_Id & DB.String_Vectors.Element (Line, 1);
+         Comment_Id := Comment_Id & DB.String_Vectors.Element (Line, 2);
+         Comment    := Comment & DB.String_Vectors.Element (Line, 3);
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert
+        (Set, Templates.Assoc (Block_User_Comment.COMMENT_TID, Post_Id));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_User_Comment.COMMENT_ID, Comment_Id));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_User_Comment.COMMENT, Comment));
+
+      return Set;
+
+   end Get_User_Comment;
 
    -------------------
    -- Get_User_Page --
