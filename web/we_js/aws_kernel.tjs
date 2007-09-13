@@ -236,12 +236,23 @@ AWS.Context = new function() {
 
    this.href_add_anchor = function (href)
    {
+      var href_last = "";
+
+      if (href.indexOf('#', 0) != -1) {
+         var all_href = href.split('#');
+         href = all_href[0];
+         href_last = all_href[1];
+      }
       if (href.indexOf('?',0) == -1)
           href = href + '?';
       else
           href = href + '&';
 
       href = href + "@_CTX_WB_@=" + this.get();
+
+      if (href_last != "") {
+         href = href + "#" + href_last;
+      }
       return (href);
    }
 
