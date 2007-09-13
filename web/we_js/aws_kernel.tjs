@@ -49,7 +49,7 @@ AWS.Tools = new function() {
    @@-----------
 
    @@-- --------------------------------
-   @@-- onload event to update ECWF
+   @@-- onload event to update CTX_WB
 
    this.addLoadEvent = function (func)
    {
@@ -291,7 +291,7 @@ AWS.Ajax = new function() {
 
    @@-- --------------------------------
    @@-- Update the behavior rules, needed when loading new section
-   @@-- containing JavaScript code. Also update the ECWF.
+   @@-- containing JavaScript code. Also update the CTX_WB.
 
    this.update_framework = function()
    {
@@ -418,6 +418,7 @@ AWS.Ajax.XML = new function() {
       } else {
          $(placeholder_id).innerHTML = placeholder_content;
       }
+
       AWS.Ajax.update_framework();
    }
 
