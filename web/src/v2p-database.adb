@@ -41,7 +41,7 @@ with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_User_Page;
-with V2P.Template_Defs.Block_User_Comment;
+with V2P.Template_Defs.Block_User_Comment_List;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_User_Tmp_Photo_Select;
 with V2P.Template_Defs.R_Block_Forum_List;
@@ -903,11 +903,12 @@ package body V2P.Database is
       Iter.End_Select;
 
       Templates.Insert
-        (Set, Templates.Assoc (Block_User_Comment.COMMENT_TID, Post_Id));
+        (Set, Templates.Assoc (Block_User_Comment_List.COMMENT_TID, Post_Id));
       Templates.Insert
-        (Set, Templates.Assoc (Block_User_Comment.COMMENT_ID, Comment_Id));
+        (Set,
+         Templates.Assoc (Block_User_Comment_List.COMMENT_ID, Comment_Id));
       Templates.Insert
-        (Set, Templates.Assoc (Block_User_Comment.COMMENT, Comment));
+        (Set, Templates.Assoc (Block_User_Comment_List.COMMENT, Comment));
 
       return Set;
 
