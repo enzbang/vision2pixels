@@ -71,7 +71,7 @@ Project Check_Mem is
       end case;
 
       case Shared.Build is
-         when "Debug" =>
+         when "Debug" | "Profile" =>
             for Default_Switches ("Ada") use
               Linker'Default_Switches ("Ada") & ("-g", "-lgmem");
 
