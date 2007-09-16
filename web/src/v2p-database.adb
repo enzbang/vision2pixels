@@ -20,7 +20,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Directories;
-with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Exceptions;
 with Ada.Task_Attributes;
 with Ada.Strings.Unbounded;
@@ -70,11 +69,6 @@ package body V2P.Database is
    package DBH_TLS is
      new Task_Attributes (Attribute => TLS_DBH, Initial_Value => Null_DBH);
 
-   package Handle_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => TLS_DBH_Access, "=" => "=");
-
-   Current_Handle_List : Handle_Lists.List := Handle_Lists.Empty_List;
-
    procedure Connect (DBH : in TLS_DBH_Access);
    --  Connect to the database if needed
 
@@ -121,7 +115,6 @@ package body V2P.Database is
             DBH.Handle.Connect (DB_Path);
             DBH.Connected := True;
             DBH_TLS.Set_Value (DBH.all);
-            Current_Handle_List.Append (DBH);
          else
             Ada.Text_IO.Put_Line
               ("ERROR : No database found : " & DB_Path);
@@ -129,34 +122,6 @@ package body V2P.Database is
          end if;
       end if;
    end Connect;
-
-   procedure Disconnect_All is
-      use Handle_Lists;
-      Position : Cursor := First (Current_Handle_List);
-
-      procedure Disconnect (Position : in Cursor);
-      --  Disconnect database handle at position
-
-      ----------------
-      -- Disconnect --
-      ----------------
-
-      procedure Disconnect (Position : in Cursor) is
-         DBH : constant TLS_DBH_Access := Element (Position);
-      begin
-         DBH.Handle.Close;
-         DBH.Handle := null;
-         DBH.Connected := False;
-      end Disconnect;
-
-   begin
-      while Has_Element (Position) loop
-         Disconnect (Position);
-         Delete (Container => Current_Handle_List, Position => Position);
-         Position := Handle_Lists.First (Current_Handle_List);
-      end loop;
-
-   end Disconnect_All;
 
    -------
    -- F --

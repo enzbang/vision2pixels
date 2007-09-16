@@ -28,10 +28,6 @@ package V2P.Database is
 
    No_Database : exception;
 
-   procedure Disconnect_All;
-   --  Disconnects all database connections
-   --  This has to be called on plugin unregister callback
-
    type Filter_Mode is
      (Today, Two_Days, Seven_Days, Fifty_Messages, All_Messages);
    --  Kind of filter to apply when returning the list of posts, see
