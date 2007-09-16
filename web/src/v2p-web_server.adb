@@ -1103,7 +1103,6 @@ package body V2P.Web_Server is
       pragma Unreferenced (Name);
    begin
       Gwiad.Web.Virtual_Host.Unregister (Settings.Virtual_Host);
-      V2P.Database.Disconnect_All;
    end Unregister;
 
    ------------------
