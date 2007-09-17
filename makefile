@@ -50,7 +50,7 @@ LOG := ${shell pwd}/log.${shell date +%Y%m%d-%H%M%S}
 OPTIONS = INSTALL="$(INSTALL)" EXEXT="$(EXEXT)" MODE="$(MODE)" \
 	CP="$(CP)" MKDIR="$(MKDIR)" RM="$(RM)" MAKE="$(MAKE)" \
 	LOG="$(LOG)" SOEXT="$(SOEXT)" GNATMAKE="$(GNATMAKE)" \
-	DIFF=$(DIFF)
+	DIFF=$(DIFF) GWIAD_ROOT="$(GWIAD_ROOT)"
 
 all: setup-default build-default
 
@@ -100,7 +100,10 @@ check_tests:
 
 runtests: init_tests runtests-default check_tests
 
-install_gwiad_plugin:
+install_db:
+	$(MAKE) -C db install $(OPTIONS)
+
+install_gwiad_plugin: install_db
 	mkdir -p $(GWIAD_ROOT)/plugins/vision2pixels/templates/
 	mkdir -p $(GWIAD_ROOT)/plugins/vision2pixels/xml
 	mkdir -p $(GWIAD_ROOT)/plugins/vision2pixels/web_data

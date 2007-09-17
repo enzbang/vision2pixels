@@ -103,9 +103,12 @@ package body V2P.Web_Block_Callbacks is
       Context      : access Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Request);
       use V2P.Context;
 
+      SID       : constant Session.Id := Status.Session (Request);
+      Admin     : constant Boolean :=
+                    Session.Exist (SID, Template_Defs.Global.ADMIN)
+                  and then Session.Get (SID, Template_Defs.Global.ADMIN);
       Set       : Templates.Translate_Set;
       Nav_Links : V2P.Context.Post_Ids.Vector;
    begin
@@ -113,6 +116,7 @@ package body V2P.Web_Block_Callbacks is
         (FID        => Context.Get_Value (Template_Defs.Global.FID),
          From       => Navigation_From.Get_Value
            (Context.all, Template_Defs.Global.NAV_FROM),
+         Admin      => Admin,
          Filter     => Database.Filter_Mode'Value (Context.Get_Value
            (Template_Defs.Global.FILTER)),
          Order_Dir  => Database.Order_Direction'Value
@@ -272,6 +276,10 @@ package body V2P.Web_Block_Callbacks is
    is
       pragma Unreferenced (Context);
 
+      SID       : constant Session.Id := Status.Session (Request);
+      Admin     : constant Boolean :=
+                    Session.Exist (SID, Template_Defs.Global.ADMIN)
+                    and then Session.Get (SID, Template_Defs.Global.ADMIN);
       URI        : constant String     := Status.URI (Request);
       User_Name  : constant String     :=
                      URI (URI'First
@@ -283,7 +291,8 @@ package body V2P.Web_Block_Callbacks is
       Database.Get_Threads
         (User       => User_Name,
          Navigation => Navigation,
-         Set        => Set);
+         Set        => Set,
+         Admin      => Admin);
 
       Templates.Insert (Translations, Set);
    end User_Thread_List;
