@@ -22,7 +22,6 @@
 with Ada.Directories;
 with Ada.Exceptions;
 with Ada.Task_Attributes;
-with Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with DB;
@@ -43,13 +42,13 @@ with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Comment_List;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_User_Tmp_Photo_Select;
+with V2P.Template_Defs.Global;
 with V2P.Template_Defs.R_Block_Forum_List;
 
 package body V2P.Database is
 
    use Ada;
    use Ada.Exceptions;
-   use Ada.Strings.Unbounded;
 
    use Morzhol.OS;
 
@@ -90,15 +89,23 @@ package body V2P.Database is
    pragma Inline (Q);
    --  As above but from an Unbounded_String
 
+   function Q (Bool : in Boolean) return String;
+   pragma Inline (Q);
+   --  As above but for a boolean
+
    function Threads_Ordered_Select
      (Fid        : in String := "";
       User       : in String := "";
+      Admin      : in     Boolean;
       From       : in Positive := 1;
       Filter     : in Filter_Mode := All_Messages;
       Where_Cond : in String := "";
       Order_Dir  : in Order_Direction := DESC;
       Limit      : in Natural := 0) return Unbounded_String;
    --  Returns the select SQL query for listing threads with Filter
+
+   function "+"
+     (Str : in String) return Unbounded_String renames To_Unbounded_String;
 
    -------------
    -- Connect --
@@ -328,7 +335,7 @@ package body V2P.Database is
       --  Get thread information
 
       DBH.Handle.Prepare_Select
-        (Iter, "select post.name, post.comment, "
+        (Iter, "select post.name, post.comment, post.hidden, "
          & "(select filename from photo where id=post.photo_id)"
          & "from post where post.id=" & Q (Tid));
 
@@ -349,12 +356,16 @@ package body V2P.Database is
               (Forum_Entry.IMAGE_SOURCE_PREFIX,
                Settings.Images_Source_Prefix));
 
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Forum_Entry.HIDDEN, DB.String_Vectors.Element (Line, 3)));
+
          --  Insert the image path
 
          Templates.Insert
            (Set, Templates.Assoc
               (Forum_Entry.IMAGE_SOURCE,
-               DB.String_Vectors.Element (Line, 3)));
+               DB.String_Vectors.Element (Line, 4)));
          Line.Clear;
       end if;
 
@@ -658,41 +669,6 @@ package body V2P.Database is
       return Set;
    end Get_Metadata;
 
-   ------------------
-   -- Get_Password --
-   ------------------
-
-   function Get_Password (Uid : in String) return String is
-      use type Templates.Tag;
-
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line : DB.String_Vectors.Vector;
-   begin
-      if Uid = "" then
-         return "";
-      end if;
-
-      Connect (DBH);
-
-      DBH.Handle.Prepare_Select
-        (Iter, "select password from user where login=" & Q (Uid));
-
-      if Iter.More then
-         Iter.Get_Line (Line);
-
-         Password_Value : declare
-            Password : constant String := DB.String_Vectors.Element (Line, 1);
-         begin
-            Line.Clear;
-            return Password;
-         end Password_Value;
-
-      else
-         return "";
-      end if;
-   end Get_Password;
-
    -----------------
    -- Get_Threads --
    -----------------
@@ -700,6 +676,7 @@ package body V2P.Database is
    procedure Get_Threads
      (Fid        : in     String := "";
       User       : in     String := "";
+      Admin      : in     Boolean;
       From       : in     Positive := 1;
       Filter     : in     Filter_Mode := All_Messages;
       Order_Dir  : in     Order_Direction := DESC;
@@ -719,6 +696,7 @@ package body V2P.Database is
       Comment_Counter : Templates.Tag;
       Visit_Counter   : Templates.Tag;
       Thumb           : Templates.Tag;
+      Hidden          : Templates.Tag;
       Select_Stmt     : Unbounded_String;
 
    begin
@@ -729,6 +707,7 @@ package body V2P.Database is
       Select_Stmt := Threads_Ordered_Select
         (Fid       => Fid,
          User      => User,
+         Admin     => Admin,
          From      => From,
          Filter    => Filter,
          Order_Dir => Order_Dir);
@@ -763,6 +742,7 @@ package body V2P.Database is
            & DB.String_Vectors.Element (Line, 5);
          Visit_Counter   := Visit_Counter
            & DB.String_Vectors.Element (Line, 6);
+         Hidden          := Hidden & DB.String_Vectors.Element (Line, 7);
 
          --  Insert this post id in navigation links
 
@@ -786,6 +766,8 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc
            (Block_Forum_Threads.VISIT_COUNTER, Visit_Counter));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Forum_Threads.HIDDEN, Hidden));
    end Get_Threads;
 
    -------------------
@@ -793,7 +775,8 @@ package body V2P.Database is
    -------------------
 
    function Get_Thumbnail (Post : in String) return String is
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      DBH      : constant TLS_DBH_Access :=
+                   TLS_DBH_Access (DBH_TLS.Reference);
       Iter     : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line     : DB.String_Vectors.Vector;
       Filename : Unbounded_String;
@@ -824,32 +807,39 @@ package body V2P.Database is
    function Get_User (Uid : in String) return Templates.Translate_Set is
       use type Templates.Tag;
 
-      Set : Templates.Translate_Set;
+      U_Data : constant User_Data := Get_User_Data (Uid);
+      Set    : Templates.Translate_Set;
    begin
       Templates.Insert
-        (Set, Templates.Assoc (Block_Login.LOGIN, Uid));
+        (Set, Templates.Assoc (Block_Login.HTTP.PASSWORD, U_Data.Password));
       Templates.Insert
-        (Set, Templates.Assoc (Block_Login.HTTP.PASSWORD, Get_Password (Uid)));
-
+        (Set, Templates.Assoc (Global.ADMIN, U_Data.Admin));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Login.LOGIN, Uid));
       return Set;
    end Get_User;
+
+   ----------------------
+   -- Get_User_Comment --
+   ----------------------
 
    function Get_User_Comment
      (Uid : in String) return Templates.Translate_Set
    is
-      SQL : constant String :=
-              "select p.post_id, c.id, comment "
-                & "from comment as c, post_comment as p "
-        & "where user_login = " & Q (Uid)
-        & " and p.comment_id = c.id";
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Set          : Templates.Translate_Set;
-      Iter         : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line         : DB.String_Vectors.Vector;
+      SQL        : constant String :=
+                     "select p.post_id, c.id, comment "
+                       & "from comment as c, post_comment as p "
+                       & "where user_login = " & Q (Uid)
+                       & " and p.comment_id = c.id";
+      DBH        : constant TLS_DBH_Access :=
+                     TLS_DBH_Access (DBH_TLS.Reference);
+      Set        : Templates.Translate_Set;
+      Iter       : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line       : DB.String_Vectors.Vector;
 
-      Post_Id      : Templates.Tag;
-      Comment_Id   : Templates.Tag;
-      Comment      : Templates.Tag;
+      Post_Id    : Templates.Tag;
+      Comment_Id : Templates.Tag;
+      Comment    : Templates.Tag;
 
       use type Templates.Tag;
 
@@ -876,8 +866,45 @@ package body V2P.Database is
         (Set, Templates.Assoc (Block_User_Comment_List.COMMENT, Comment));
 
       return Set;
-
    end Get_User_Comment;
+
+   -------------------
+   -- Get_User_Data --
+   -------------------
+
+   function Get_User_Data (Uid : in String) return User_Data is
+      use type Templates.Tag;
+
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+   begin
+      if Uid = "" then
+         return No_User_Data;
+      end if;
+
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select
+        (Iter, "select password, admin from user where login=" & Q (Uid));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Password_Value : declare
+            Password : constant String := DB.String_Vectors.Element (Line, 1);
+            Admin    : constant String := DB.String_Vectors.Element (Line, 2);
+         begin
+            Line.Clear;
+            return (Uid      => +Uid,
+                    Password => +Password,
+                    Admin    => Boolean'Value (Admin));
+         end Password_Value;
+
+      else
+         return No_User_Data;
+      end if;
+   end Get_User_Data;
 
    -------------------
    -- Get_User_Page --
@@ -887,7 +914,8 @@ package body V2P.Database is
       SQL          : constant String :=
                        "select content, content_html from user_page "
                          & "where user_login=" & Q (Uid);
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      DBH          : constant TLS_DBH_Access :=
+                       TLS_DBH_Access (DBH_TLS.Reference);
       Set          : Templates.Translate_Set;
       Iter         : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line         : DB.String_Vectors.Vector;
@@ -928,7 +956,8 @@ package body V2P.Database is
    is
       use type Templates.Tag;
 
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      DBH          : constant TLS_DBH_Access :=
+                       TLS_DBH_Access (DBH_TLS.Reference);
       Set          : Templates.Translate_Set;
       Iter         : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line         : DB.String_Vectors.Vector;
@@ -977,7 +1006,7 @@ package body V2P.Database is
    -----------------------------
 
    procedure Increment_Visit_Counter (Pid : in String) is
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       SQL : constant String :=
               "update post set visit_counter = visit_counter + 1 where "
                 & "id = " & Q (Pid);
@@ -1295,6 +1324,11 @@ package body V2P.Database is
       return Q (To_String (Str));
    end Q;
 
+   function Q (Bool : in Boolean) return String is
+   begin
+      return Q (Boolean'Image (Bool));
+   end Q;
+
    ----------------------------
    -- Threads_Ordered_Select --
    ----------------------------
@@ -1302,6 +1336,7 @@ package body V2P.Database is
    function Threads_Ordered_Select
      (Fid        : in String  := "";
       User       : in String  := "";
+      Admin      : in     Boolean;
       From       : in Positive := 1;
       Filter     : in Filter_Mode := All_Messages;
       Where_Cond : in String  := "";
@@ -1313,7 +1348,7 @@ package body V2P.Database is
                         & "(select filename from photo "
                         & "Where Id = Post.Photo_Id)"
                         & ", category.name, comment_counter,"
-                        & "visit_counter ";
+                        & "visit_counter, post.hidden ";
       SQL_From    : constant String := " from post, category";
       SQL_Where   : constant String :=
                       " where post.category_id = category.id " & Where_Cond;
@@ -1345,6 +1380,10 @@ package body V2P.Database is
 
          Select_Stmt := Select_Stmt & SQL_Select & SQL_From
            & SQL_Where & " and category.forum_id = " & Q (Fid);
+      end if;
+
+      if not Admin then
+         Select_Stmt := Select_Stmt & " and post.hidden='FALSE'";
       end if;
 
       --  Add filtering into the select statement
@@ -1385,6 +1424,52 @@ package body V2P.Database is
 
       return Select_Stmt;
    end Threads_Ordered_Select;
+
+   --------------------------
+   -- Toggle_Hidden_Status --
+   --------------------------
+
+   function Toggle_Hidden_Status
+     (Tid : in String) return Templates.Translate_Set
+   is
+      DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line         : DB.String_Vectors.Vector;
+      Hidden : Boolean := True;
+      Set    : Templates.Translate_Set;
+   begin
+      Connect (DBH);
+
+      --  Get current hidden status
+
+      DBH.Handle.Prepare_Select
+        (Iter, "select hidden from post where post.id=" & Q (Tid));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+         Hidden := Boolean'Value (DB.String_Vectors.Element (Line, 1));
+         Line.Clear;
+      end if;
+
+      Iter.End_Select;
+
+      --  Toggle and store new status
+
+      Hidden := not Hidden;
+
+      DBH.Handle.Execute
+        ("update post set hidden=" & Q (Hidden) & " where id=" & Q (Tid));
+
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Forum_Entry.HIDDEN, Boolean'Image (Hidden)));
+      return Set;
+
+   exception
+      when E : DB.DB_Error =>
+         Text_IO.Put_Line (Exception_Message (E));
+         return Set;
+   end Toggle_Hidden_Status;
 
    -----------------
    -- Update_Page --

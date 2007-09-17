@@ -19,12 +19,15 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;
+
 with AWS.Templates;
 with V2P.Context;
 
 package V2P.Database is
 
    use AWS;
+   use Ada.Strings.Unbounded;
 
    No_Database : exception;
 
@@ -32,6 +35,14 @@ package V2P.Database is
      (Today, Two_Days, Seven_Days, Fifty_Messages, All_Messages);
    --  Kind of filter to apply when returning the list of posts, see
    --  Get_Threads.
+
+   type User_Data is record
+      UID      : Unbounded_String;
+      Password : Unbounded_String;
+      Admin    : Boolean;
+   end record;
+
+   No_User_Data : constant User_Data;
 
    type Order_Direction is (DESC, ASC);
 
@@ -44,6 +55,7 @@ package V2P.Database is
    procedure Get_Threads
      (Fid        : in     String := "";
       User       : in     String := "";
+      Admin      : in     Boolean;
       From       : in     Positive := 1;
       Filter     : in     Filter_Mode := All_Messages;
       Order_Dir  : in     Order_Direction := DESC;
@@ -74,9 +86,9 @@ package V2P.Database is
    function Get_User (Uid : in String) return Templates.Translate_Set;
    --  Returns user's Id information
 
-   function Get_Password (Uid : in String) return String;
-   --  Returns the password for the given user. Returns the empty string if
-   --  User cannot be found into the database.
+   function Get_User_Data (Uid : in String) return User_Data;
+   --  Returns the user's data. Returns the No_User_Data if User cannot be
+   --  found into the database.
 
    function Get_User_Tmp_Photo
      (Uid : in String) return Templates.Translate_Set;
@@ -92,6 +104,10 @@ package V2P.Database is
    function Get_Exif (Pid : in String) return Templates.Translate_Set;
    --  Returns photo exif metadata, get them from the image if needed and
    --  update the database.
+
+   function Toggle_Hidden_Status
+     (Tid : in String) return Templates.Translate_Set;
+   --  Toggle Tid hidden status and returns the new status
 
    function Insert_Comment
      (Uid       : in String;
@@ -126,7 +142,7 @@ package V2P.Database is
       Name        : in String;
       Comment     : in String;
       Pid         : in String) return String;
-   --  Insert a new post into the database and  returns post id
+   --  Insert a new post into the database and returns post id
 
    procedure Increment_Visit_Counter (Pid : in String);
    --  Increment a thread visit counter
@@ -140,5 +156,10 @@ package V2P.Database is
    procedure Update_Page
      (Uid : in String; Content : in String; Content_HTML : in String);
    --  Update a user page
+
+private
+
+   No_User_Data : constant User_Data :=
+                    (Null_Unbounded_String, Null_Unbounded_String, False);
 
 end V2P.Database;

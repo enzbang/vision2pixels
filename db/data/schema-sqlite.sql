@@ -1,14 +1,16 @@
 create table "user" (
 "login" varchar(50) not null primary key,
 "password" varchar(20) not null,
-"email" varchar(50) not null unique
+"email" varchar(50) not null unique,
+"admin" boolean,
+"created" date default current_timestamp,
+"last_logged" date default current_timestamp
 );
 
 create trigger add_user_page after insert on user
    begin
       insert into user_page (user_login) values (new.login);
    end;
-
 
 create table "user_page" (
 "user_login" varchar(50) not null,
@@ -67,6 +69,7 @@ create table "post" (
 "template_id" integer not null,
 "visit_counter" integer not null,
 "comment_counter" integer not null,
+"hidden" boolean default FALSE,
 foreign key ("category_id") references category("id"),
 foreign key ("last_comment_id") references comment("id"),
 foreign key ("template_id") references template_id("id"),

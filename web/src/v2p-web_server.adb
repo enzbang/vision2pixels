@@ -19,6 +19,8 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;
+
 with AWS.Dispatchers.Callback;
 with AWS.Messages;
 with AWS.MIME;
@@ -55,7 +57,7 @@ with V2P.Template_Defs.Block_User_Tmp_Photo_Select;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_List_Select;
 with V2P.Template_Defs.Block_User_Page;
-with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
+with V2P.Template_Defs.R_Block_Hidden_Status;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Forum_List;
@@ -63,6 +65,7 @@ with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_Metadata_Form_Enter;
+with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 with V2P.Wiki;
 
 with Image.Data;
@@ -74,6 +77,7 @@ with Gwiad.Plugins.Websites;
 package body V2P.Web_Server is
 
    use Ada;
+   use Ada.Strings.Unbounded;
    use AWS;
 
    use Morzhol.OS;
@@ -156,6 +160,12 @@ package body V2P.Web_Server is
    --  Called when a new forum is selected on post page
 
    procedure Onchange_Filter_Forum
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Called when changing the forum sorting
+
+   procedure Onclick_Hidden_Status_Toggle
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
@@ -282,6 +292,14 @@ package body V2P.Web_Server is
             Templates.Assoc
               (Template_Defs.Global.LOGIN,
                String'(Session.Get (SID, Template_Defs.Global.LOGIN))));
+      end if;
+
+      if Session.Exist (SID, Template_Defs.Global.ADMIN) then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.Global.ADMIN,
+               String'(Session.Get (SID, Template_Defs.Global.ADMIN))));
       end if;
 
       --  Adds Version number
@@ -419,6 +437,9 @@ package body V2P.Web_Server is
                      Database.Get_Thumbnail (Next_Id)));
             end if;
          end Insert_Links;
+
+         --  Insert the entry information
+
          Templates.Insert (Translations, Database.Get_Entry (TID));
       end if;
    end Forum_Entry_Callback;
@@ -495,15 +516,21 @@ package body V2P.Web_Server is
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
-      SID      : constant Session.Id := Status.Session (Request);
-      P        : constant Parameters.List := Status.Parameters (Request);
-      Login    : constant String :=
-                   Parameters.Get (P, Template_Defs.Global.LOGIN);
-      Password : constant String := Database.Get_Password (Login);
+      SID       : constant Session.Id := Status.Session (Request);
+      P         : constant Parameters.List := Status.Parameters (Request);
+      Login     : constant String :=
+                    Parameters.Get (P, Template_Defs.Global.LOGIN);
+      User_Data : constant Database.User_Data :=
+                    Database.Get_User_Data (Login);
    begin
-      if Password = Parameters.Get (P, Template_Defs.Global.PASSWORD) then
+      if To_String (User_Data.Password) =
+        Parameters.Get (P, Template_Defs.Global.PASSWORD)
+      then
          Session.Set (SID, Template_Defs.Global.LOGIN, Login);
-         Session.Set (SID, Template_Defs.Global.PASSWORD, Password);
+         Session.Set
+           (SID,
+            Template_Defs.Global.PASSWORD, To_String (User_Data.Password));
+         Session.Set (SID, Template_Defs.Global.ADMIN, User_Data.Admin);
 
          --  Set user's filtering preference
          --  ??? to be done when user's preferences are implemented
@@ -575,17 +602,17 @@ package body V2P.Web_Server is
       pragma Unreferenced (Context);
       use Image.Data;
 
-      SID          : constant Session.Id := Status.Session (Request);
-      P            : constant Parameters.List := Status.Parameters (Request);
-      Login        : constant String :=
-                       Session.Get (SID, Template_Defs.Global.LOGIN);
-      Filename     : constant String :=
-                       Parameters.Get
-                         (P, Template_Defs.Block_New_Photo.HTTP.FILENAME);
+      SID         : constant Session.Id := Status.Session (Request);
+      P           : constant Parameters.List := Status.Parameters (Request);
+      Login       : constant String :=
+                      Session.Get (SID, Template_Defs.Global.LOGIN);
+      Filename    : constant String :=
+                      Parameters.Get
+                        (P, Template_Defs.Block_New_Photo.HTTP.FILENAME);
 
-      Images_Path  : String renames Get_Images_Path;
+      Images_Path : String renames Get_Images_Path;
 
-      New_Image    : Image_Data;
+      New_Image   : Image_Data;
 
    begin
       Init
@@ -675,6 +702,21 @@ package body V2P.Web_Server is
    begin
       Templates.Insert (Translations, Database.Get_Categories (Fid));
    end Onchange_Forum_List_Callback;
+
+   ----------------------------------
+   -- Onclick_Hidden_Status_Toggle --
+   ----------------------------------
+
+   procedure Onclick_Hidden_Status_Toggle
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      TID : constant String := Context.Get_Value (Template_Defs.Global.TID);
+   begin
+      Templates.Insert (Translations, Database.Toggle_Hidden_Status (TID));
+   end Onclick_Hidden_Status_Toggle;
 
    ------------------------------------------
    -- Onsubmit_Comment_Form_Enter_Callback --
@@ -1008,6 +1050,12 @@ package body V2P.Web_Server is
         (Template_Defs.Block_Forum_Filter.Ajax.onchange_forum_filter_set,
          Template_Defs.R_Block_Forum_Filter.Template,
          Onchange_Filter_Forum'Access,
+         Content_Type => MIME.Text_XML);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Forum_Entry.Ajax.onclick_hidden_status_toggle,
+         Template_Defs.R_Block_Hidden_Status.Template,
+         Onclick_Hidden_Status_Toggle'Access,
          Content_Type => MIME.Text_XML);
 
       Services.Web_Block.Registry.Register

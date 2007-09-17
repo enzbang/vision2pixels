@@ -40,6 +40,8 @@
 @@SET@@ BABEL_METADATA="Metadonnées"
 @@SET@@ BABEL_EDIT_METADATA="éditer les metadonnées"
 @@SET@@ BABEL_ERROR_METADATA="Métadonnées incorrectes"
+@@SET@@ BABEL_HIDDEN_STATUS="Image cachée"
+@@SET@@ BABEL_HIDDEN="cachée"
 @@--  User page
 @@SET@@ BABEL_USER_EDIT_YOUR_PAGE="Éditer votre page"
 @@SET@@ BABEL_USER_PAGE="Page utilisateur"

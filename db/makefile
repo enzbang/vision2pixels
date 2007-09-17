@@ -25,17 +25,19 @@
 
 LOGFILE := ${shell pwd}/test/db_harness.log.${shell date +%Y%m%d-%H%M%S}
 
-build:
+build: create_db
 	gnat make -XPRJ_BUILD=$(MODE) -Pdb_test
 
 check:
 	gnat check -dd -Pdb -rules -from=../v2p.check
 	gnat check -dd -Pdb_test -rules -from=../v2p.check
 
+setup:
 
-setup install:
+install:
+	(cd data; $(CP) testing.db $(GWIAD_ROOT)/plugins/vision2pixels/db)
 
-setup_tests:
+create_db:
 	(cd data; rm -f testing.db; ./create_database.sh)
 
 run_tests:
@@ -43,7 +45,7 @@ run_tests:
 	-grep "Failed Tests" $(LOGFILE) >> $(LOG)
 	-grep "Unexpected Errors" $(LOGFILE) >> $(LOG)
 
-runtests: setup_tests run_tests
+runtests: create_db run_tests
 
 clean:
 	gnat clean -XPRJ_Build=$(MODE) -Pdb_test
