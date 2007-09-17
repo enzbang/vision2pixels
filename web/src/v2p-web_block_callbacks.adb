@@ -276,9 +276,9 @@ package body V2P.Web_Block_Callbacks is
    is
       pragma Unreferenced (Context);
 
-      SID       : constant Session.Id := Status.Session (Request);
-      Admin     : constant Boolean :=
-                    Session.Exist (SID, Template_Defs.Global.ADMIN)
+      SID        : constant Session.Id := Status.Session (Request);
+      Admin      : constant Boolean :=
+                     Session.Exist (SID, Template_Defs.Global.ADMIN)
                     and then Session.Get (SID, Template_Defs.Global.ADMIN);
       URI        : constant String     := Status.URI (Request);
       User_Name  : constant String     :=
