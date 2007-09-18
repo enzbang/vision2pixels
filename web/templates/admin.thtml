@@ -1,0 +1,22 @@
+@@INCLUDE@@ babel.thtml
+@@-- HTTP_URL(/admin): Forum Post URL
+@@--
+@@INCLUDE@@ v2p_top.thtml (1=>@_BABEL_ADMIN_@, 2=>admin_page, 4=>"notebook")
+<div id="admin_page">
+@@IF@@ @_ADMIN_@
+<ul id="Tabs">
+  <li id="page1" class="currentPage">
+    <a href="#" onclick="switchTabPage_Tabs('page1')">@_BABEL_USERS_@</a>
+  </li>
+</ul>
+
+@@-- Create user page
+<div class="TabContents" id="page1">
+<p>Cette page est pour le moment vide.</p>
+</div>
+<script language="javascript">setCurrentPage_Tabs()</script>
+@@ELSE@@
+  <p>@_BABEL_DOES_NOT_EXIST_@</p>
+@@END_IF@@
+@@INCLUDE@@ v2p_end.thtml
+</div>

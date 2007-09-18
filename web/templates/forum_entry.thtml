@@ -33,7 +33,7 @@
   @@END_IF@@
   <h2>@_NAME_@</h2>
   @@-- Hidden
-  @@IF@@ @_ADMIN_@ = "T"
+  @@IF@@ @_ADMIN_@
   <p>@_BABEL_HIDDEN_STATUS_@:
     <a href="#" id="hidden_status_toggle">
       <span id="image_hidden_status">@_OUI_NON:HIDDEN_@</span>

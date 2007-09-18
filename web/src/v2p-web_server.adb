@@ -39,6 +39,7 @@ with Morzhol.OS;
 
 with V2P.Database;
 with V2P.Context;
+with V2P.Template_Defs.Admin;
 with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Forum_Threads;
 with V2P.Template_Defs.Forum_Post;
@@ -329,6 +330,12 @@ package body V2P.Web_Server is
          Templates.Assoc
            (Template_Defs.Global.FORUM_ENTRY_URL,
             Template_Defs.Forum_Entry.URL));
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Global.ADMIN_URL,
+            Template_Defs.Admin.URL));
 
       --  Insert the thumb path
 
@@ -1116,6 +1123,11 @@ package body V2P.Web_Server is
       Services.Web_Block.Registry.Register
         (Template_Defs.Forum_Post.URL,
          Template_Defs.Forum_Post.Template,
+         null);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Admin.URL,
+         Template_Defs.Admin.Template,
          null);
 
       Services.Web_Block.Registry.Register
