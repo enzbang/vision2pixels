@@ -25,7 +25,7 @@
 
 LOGFILE := ${shell pwd}/test/db_harness.log.${shell date +%Y%m%d-%H%M%S}
 
-build: create_db
+build:
 	gnat make -XPRJ_BUILD=$(MODE) -Pdb_test
 
 check:
@@ -34,7 +34,7 @@ check:
 
 setup:
 
-install:
+install: create_db
 	(cd data; $(CP) testing.db $(GWIAD_ROOT)/plugins/vision2pixels/db)
 
 create_db:
