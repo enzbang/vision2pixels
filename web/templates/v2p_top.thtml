@@ -1,7 +1,8 @@
 @@-- V2P top page
-@@-- $1 is the page title
-@@-- $2 is the body class
-@@-- $3 is the div doc2 class
+@@-- $1  is the page title
+@@-- $2  is the body class
+@@-- $3  is the div doc2 class
+@@-- $4  set to notebook to enable notebook on the web page
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
@@ -13,9 +14,12 @@
     @@INCLUDE@@ import_css.thtml
     @@INCLUDE@@ ../we_js/aws.tjs
     @@IF@@ @_$2_@ = "forum_post_page"
-    @@--  This google key works only for http://127.0.0.10:8080
-    <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAbXnh4fBA_Kpf2wc2hparDhR4WN9nhhC3FDZFKFfdWmUUvCh7cRSW8b0ArdMGZxnSR74CYHIbQ1SXxA"
+      @@--  This google key works only for http://127.0.0.10:8080
+      <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAbXnh4fBA_Kpf2wc2hparDhR4WN9nhhC3FDZFKFfdWmUUvCh7cRSW8b0ArdMGZxnSR74CYHIbQ1SXxA"
             type="text/javascript"></script>
+    @@END_IF@@
+    @@IF@@ @_$4_@ = "notebook"
+      @@INCLUDE@@ notebook.thtml (1=>Tabs, 2=>currentPage, 3=>TabContents, 4=>page1)
     @@END_IF@@
     <script src="/we_js/v2p.tjs" type="text/javascript"></script>
   </head>

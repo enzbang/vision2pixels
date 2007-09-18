@@ -1,0 +1,178 @@
+@@-- This templates provides support for implementing notebook tabs in
+@@-- an HTML page, ie something that looks like:
+@@--
+@@--     +-------+-------+-------+
+@@--     | Page1 | Page2 | Page3 |
+@@--  +--+-------+       +-------+---------------------------------+
+@@--  | The content of the second page                             |
+@@--  |                                                            |
+@@--  +------------------------------------------------------------+
+@@--
+@@-- This implements depends on browsers supporting CSS 2.0 and javascript,
+@@-- and was tested on IExplorer 6.0, Firefox 1.0, Opera 7.0.
+@@-- They degrade correctly if javascript is disabled, except the user will
+@@-- then see all pages at the same time.
+@@-- They also preserve the currently displayed page when the page is reloaded.
+@@--
+@@-- To use this template, you must do the following in your HTML file:
+@@--   * Include this template in the header (between <head> and </head>)
+@@--     This is done with an instruction like:
+@@--
+@@--         @@INCLUDE@@ notebook.thtml (1=>Tabs, 2=>currentPage,
+@@--              3=>TabContents, 4=>initialPageName,
+@@--              5=>activePageColor, 6=>inactivePageColor)
+@@--
+@@--     Where the six parameters will be explained below, but should appear
+@@--     on the same line.
+@@--     The first parameter mustn't contain spaces
+@@--
+@@--  * Optional parameters:
+@@--
+@@--    $5  - The active page color
+@@--    $6  - The standard page color
+@@--    $7  - The tab active text color
+@@--    $8  - The tab standard text color
+@@--    $9  - The tab selected text color
+@@--    $10 - Height offset for the tab, 0 by default. It needs to be adjusted
+@@--          if the font used is too big.
+@@--
+@@--  * Create a <ul> list that contains the text for the tabs. This
+@@--    should look like the following, where the id and class attributes
+@@--    should match the corresponding parameters in the @@INCLUDE@@ statement
+@@--    above.
+@@--    The idea for each of the <li> elements is left to your choice, but
+@@--    should be the same everywhere the same page is referenced
+@@--
+@@--       <ul id="Tabs" >
+@@--          <li id="page1" class="currentPage">
+@@--              <a href=""
+@@--                 onclick="return !switchTabPage_Tabs('page1')">
+@@--                 Title of page 1
+@@--              </a>
+@@--          </li>
+@@--          <li id="page2"><a href=""
+@@--                          onclick="return !switchTabPage_Tabs('page2')">...
+@@--          </li>
+@@--          ...  same for other pages
+@@--       </ul>
+@@--
+@@--    One of the pages should have the name given in the initialPageName, and
+@@--    will be selected initially.
+@@--    The name of the javascript function is made from the prefix
+@@--    "switchTabPage_", followed by the name of the first parameter above.
+@@--    This is so that multiple notebooks can be created on the same page.
+@@--    The goal of the call to "return" is to prevent the browser from
+@@--    interpreting the href attribute, which would force a reload of the page
+@@--
+@@--    Note the empty URL associated with the links. If you use "#" instead,
+@@--    you will encounter some refresh problems in some cases.
+@@--
+@@--  * Create the contents of each pages. In this implementation, all notebook
+@@--    pages are loaded at the same time, and no further access to the server
+@@--    is done when the user switches pages. Your style sheet should be such
+@@--    that the background color of the page is activePageColor, since it
+@@--    gives better results.
+@@--
+@@--       <div class="TabContents" id="page1">
+@@--          Content of page 1
+@@--       </div>
+@@--
+@@--       <div class="TabContents" id="page2">
+@@--          Content of page 2
+@@--       </div>
+@@--
+@@--       <script language="javascript">setCurrentPage_Tabs()</script>
+@@--
+@@--   The last call makes sure the current page after a refresh of the page
+@@--   remains the same that it was before. This requires cookies, but so does
+@@--   AWS to support sessions.
+@@--
+@@--  $Id: notebook.thtml 9435 2006-09-13 09:20:27Z obry $
+
+@@SET@@ ACTIVE_PAGE_COLOR       = $5  | #333
+@@SET@@ PAGE_COLOR              = $6  | black
+@@SET@@ TAB_ACTIVE_TEXT_COLOR   = $7  | white
+@@SET@@ TAB_TEXT_COLOR          = $8  | #999
+@@SET@@ TAB_SELECTED_TEXT_COLOR = $9  | #f00
+@@SET@@ TAB_HEIGHT              = $10 | 0
+
+<style type="text/css">
+#@_$1_@           { border-bottom: 1px solid @_PAGE_COLOR_@;
+                    margin: 15px 10px 0px 0px;
+                    position: relative;
+                    height: @_"+"(19):TAB_HEIGHT_@px;
+                    padding-left: 10px; }
+#@_$1_@ li        { display: inline;
+                    list-style-type: none;
+                    padding: 0;
+                    margin: 0px 20px 0px 20px; }
+#@_$1_@ a:link,
+#@_$1_@ a:active,
+#@_$1_@ a:visited { background: @_PAGE_COLOR_@;
+                    border: 1px solid @_PAGE_COLOR_@;
+                    color:  @_TAB_TEXT_COLOR_@;
+                    position: relative;    /* Required for IE6 */
+                    float: left;
+                    font-weight: normal;
+                    line-height: @_"+"(14):TAB_HEIGHT_@px;
+                    margin-right: 8px;
+                    padding: 2px 10px 2px 10px;
+                    text-decoration: none; }
+#@_$1_@ a:hover   { color: @_TAB_SELECTED_TEXT_COLOR_@; }
+#@_$1_@ li.@_$2_@ a:link,
+#@_$1_@ li.@_$2_@ a:active,
+#@_$1_@ li.@_$2_@ a:visited
+                  { background: @_ACTIVE_PAGE_COLOR_@;
+                    border-bottom: 1px solid @_ACTIVE_PAGE_COLOR_@;
+                    color: @_TAB_ACTIVE_TEXT_COLOR_@; }
+div.@_$3_@        { border: 1px solid #ccc;
+                    border-top: none;
+                    display: none;
+                    background-color: @_ACTIVE_PAGE_COLOR_@;
+                    padding: 1px 5px 10px 5px;
+                    margin: 0px 10px 30px 0px; }
+div#@_$4_@        { display: block; }
+</style>
+
+<script src="/we_js/cookies.js" type="text/javascript"></script>
+<script language="javascript">
+
+@@--  Select a new tab, return True if it could change the page
+
+function switchTabPage_@_$1_@ (pageName) {
+   var ul = document.getElementById ('@_$1_@');
+   var children = ul.getElementsByTagName ('li');
+   for (var i=0; i < children.length; i++) {
+      if (children[i].id == pageName) {
+         children[i].className = "@_$2_@";
+      } else {
+         children[i].className = "";
+      }
+   }
+
+   var children = document.getElementsByTagName ('div');
+   for (var i=0; i < children.length; i++) {
+     if (children[i].className == '@_$3_@') {
+        if (children[i].id == pageName) {
+           children[i].style.display = 'block';
+        } else {
+           children[i].style.display = 'none';
+        }
+     }
+   }
+   createCookie ("currentPage_@_$1_@", pageName, 0, "/");
+   return true;
+}
+
+@@--  Set the current page given the one previously set by the user (from the
+@@--  cookie), or using the default one.
+
+function setCurrentPage_@_$1_@ () {
+   var value = readCookie ("currentPage_@_$1_@");
+   if (value) {
+        switchTabPage_@_$1_@ (value);
+   } else {
+        switchTabPage_@_$1_@ ("@_$4_@");
+   }
+}
+</script>

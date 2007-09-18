@@ -42,6 +42,8 @@
 @@SET@@ BABEL_ERROR_METADATA="Métadonnées incorrectes"
 @@SET@@ BABEL_HIDDEN_STATUS="Image cachée"
 @@SET@@ BABEL_HIDDEN="cachée"
+@@SET@@ BABEL_ADMIN="Administration"
+@@SET@@ BABEL_USERS="Utilisateurs"
 @@--  User page
 @@SET@@ BABEL_USER_EDIT_YOUR_PAGE="Éditer votre page"
 @@SET@@ BABEL_USER_PAGE="Page utilisateur"
