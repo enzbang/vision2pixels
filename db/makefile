@@ -33,6 +33,7 @@ check:
 	gnat check -dd -Pdb_test -rules -from=../v2p.check
 
 setup:
+	$(MKDIR) lib obj
 
 install: create_db
 	(cd data; $(CP) testing.db $(GWIAD_ROOT)/plugins/vision2pixels/db)

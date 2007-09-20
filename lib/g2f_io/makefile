@@ -29,5 +29,6 @@ build: build-default
 clean: clean-default
 
 setup: setup-default
+	$(MKDIR) obj lib
 
 runtests: runtests-default

@@ -32,7 +32,10 @@ check:
 	gnat check -dd -Pimage -rules -from=../v2p.check
 	gnat check -dd -Pimage_test -rules -from=../v2p.check
 
-setup install:
+setup:
+	$(MKDIR) obj lib ../kernel/obj ../kernel/lib
+
+install:
 
 run_tests:
 	(cd test; ./image_harness > $(LOGFILE))
