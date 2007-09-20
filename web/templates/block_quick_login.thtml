@@ -1,10 +1,10 @@
 @@INCLUDE@@ babel.thtml
 @@--
-<a href="#" id="show_rel_login" rel="login">
+<a href="#" id="show_rel_login" rel="lazy_login">
   @@IF@@ @_LOGIN_@ = ""
-  @_BABEL_NOT_LOGGED_@
+    @_BABEL_NOT_LOGGED_@
   @@ELSE@@
-  @_LOGIN_@
+    @_LOGIN_@
   @@END_IF@@
 </a>
 @@--

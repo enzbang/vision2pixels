@@ -42,11 +42,11 @@
   @@END_IF@@
   <p id="main_image_comment">@_IMAGE_COMMENT_@</p>
   <p>
-    <a href="#image_metadata" id="show_image_metadata" rel="image_metadata">
+    <a href="#image_metadata" id="show_image_metadata" rel="lazy_metadata">
     @_BABEL_METADATA_@</a>
   </p>
 
-  <div id="image_metadata" style="display:none">@_LAZY_METADATA_@</div>
+  <div id="lazy_metadata" style="display:none">@_LAZY_METADATA_@</div>
   <h2 id="comments_section">Commentaires</h2>
   @@--  Comments
   @@IF@@ @_COMMENT_ID_@ /= "" @@--  at least one comment
@@ -74,7 +74,7 @@
   </div>
   @@END_IF@@
 
-  <div id="new_comment">@_LAZY_NEW_COMMENT_@</div>
+  <div id="lazy_new_comment">@_LAZY_NEW_COMMENT_@</div>
   <div class="forums">@_LAZY_FORUM_LIST_@</div>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_image_metadata, V2P.Tools.toggle_show_hide_rel)

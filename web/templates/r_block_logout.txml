@@ -2,12 +2,12 @@
 @@--
 <?xml version="1.0" encoding="utf-8"?>
 <response>
-  <replace id="login"><![CDATA[@_LOGIN_FORM_@]]></replace>
+  <replace id="lazy_login"><![CDATA[@_LOGIN_FORM_@]]></replace>
    <apply_style id="forum_post">
      <attribute id="display" value="none"/>
    </apply_style>
   <apply_style id="new_comment">
     <attribute id="display" value="none"/>
   </apply_style>
-  <replace id="top_links"><![CDATA[@_LAZY_QUICK_LOGIN_@]]></replace>
+   <replace id="lazy_quick_login"><![CDATA[@_LAZY_QUICK_LOGIN_@]]></replace>
 </response>
