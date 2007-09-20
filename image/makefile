@@ -39,7 +39,7 @@ install:
 
 run_tests:
 	(cd test; ./image_harness > $(LOGFILE))
-	-grep "Failed Tests" $(LOGFILE) >> $(LOG)
+	-grep "Failed Assertions" $(LOGFILE) >> $(LOG)
 	-grep "Unexpected Errors" $(LOGFILE) >> $(LOG)
 
 runtests: run_tests

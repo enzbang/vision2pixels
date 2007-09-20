@@ -75,9 +75,12 @@ install-dir:
 	-$(MKDIR) $(INSTALL_MAIN)/lib/websites
 	-$(MKDIR) $(INSTALL_MAIN)/lib/services
 
-install: install-dir
+install-test-lib: install-dir
 	$(RM) $(INSTALL_MAIN)/lib/websites/*vision2pixels$(SOEXT)
+	$(RM) $(INSTALL_MAIN)/lib/services/*
 	$(CP) lib/*vision2pixels$(SOEXT) $(INSTALL_MAIN)/lib/websites
+	$(CP) $(DIOUZHTU_DYNAMIC_LIB)/libwiki_service$(SOEXT) \
+		$(INSTALL_MAIN)/lib/services
 
 clean:
 	-$(RM) -r gen src/v2p-template_defs*
@@ -86,11 +89,12 @@ clean:
 	gnat clean -Pweb_test
 
 setup_tests:
-	-$(MKDIR) -p $(INSTALL_PLUGIN)/db
+	-$(MKDIR) $(INSTALL_PLUGIN)/db
+
 	echo "server_port 8042" > $(INSTALL_MAIN)/aws.ini
 	echo "db_name db/testing.db" > $(INSTALL_PLUGIN)/v2p.ini
 
-install_tests: install
+install_tests: install-test-lib
 	$(MAKE) INSTALL=$(INSTALL_PLUGIN) install-plugin
 	$(CP) ../db/data/*.s* $(INSTALL_PLUGIN)/db/
 	(cd $(INSTALL_PLUGIN)/db; rm -f testing.db; ./create_database.sh)
@@ -98,7 +102,7 @@ install_tests: install
 
 run_tests:
 	(cd $(INSTALL_MAIN); bin/web_harness > $(LOGFILE))
-	-grep "Failed Tests" $(LOGFILE) >> $(LOG)
+	-grep "Failed Assertions" $(LOGFILE) >> $(LOG)
 	-grep "Unexpected Errors" $(LOGFILE) >> $(LOG)
 
 runtests: setup_tests install_tests run_tests

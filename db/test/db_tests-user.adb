@@ -69,8 +69,9 @@ package body DB_Tests.User is
       Expected : constant User_Set :=
                    User_Set'
                      (1 => User'(+"enzbang", +"password", +"v2p@ramonat.fr"),
-                      2 => User'(+"toto", +"pwd", +"toto@here.com"),
-                      3 => User'(+"turbo", +"turbopass", +"v2p@obry.net"));
+                      2 => User'(+"test", +"test", +"test@whatever.fr"),
+                      3 => User'(+"toto", +"pwd", +"toto@here.com"),
+                      4 => User'(+"turbo", +"turbopass", +"v2p@obry.net"));
 
       H        : DB.SQLite.Handle;
       I        : DB.SQLite.Iterator;
@@ -99,15 +100,9 @@ package body DB_Tests.User is
    begin
       DB.SQLite.Connect (H, "../data/testing.db");
 
-      Insert_User : begin
-         DB.SQLite.Execute
-           (H, "insert into user values ('toto', 'pwd', 'toto@here.com')");
-      exception
-         when others =>
-            --  Catch all exceptions, just in case the data have already been
-            --  inserted into the database.
-            null;
-      end Insert_User;
+      DB.SQLite.Execute
+        (H, "insert into user ('login', 'password', 'email', 'admin')" &
+         " values ('toto', 'pwd', 'toto@here.com', 'false')");
 
       DB.SQLite.Prepare_Select
         (H, I, "select login, password, email from user order by login");

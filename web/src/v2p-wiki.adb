@@ -105,7 +105,8 @@ package body V2P.Wiki is
    function Wiki_To_HTML (S : in String) return String is
    begin
       if not Exists (Wiki_Service_Name) then
-         return "";
+         Text_IO.Put_Line ("Does not exists;");
+         return "Doest not exists";
       end if;
 
       Render : declare
