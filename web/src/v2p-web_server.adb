@@ -567,11 +567,6 @@ package body V2P.Web_Server is
       --  Remove the login information from the translate table
 
       Templates.Remove (Translations, Template_Defs.Global.LOGIN);
-
-      Templates.Insert
-        (Translations,
-         Templates.Assoc (Template_Defs.R_Block_Logout.LOGIN_FORM,
-           String'(Templates.Parse (Template_Defs.Block_Login.Template))));
    end Logout_Callback;
 
    ------------------------
