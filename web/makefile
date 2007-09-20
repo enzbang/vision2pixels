@@ -38,7 +38,7 @@ check:
 	gnat check -dd -Pweb_test -rules -from=../v2p.check
 
 setup:
-	-$(MKDIR) gen
+	-$(MKDIR) gen tsrc
 	templates2ada -d templates/ -o gen/templates.cds \
 		-t templates/templates.tads
 	gnat chop -wpq gen/templates.cds tsrc/
