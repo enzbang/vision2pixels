@@ -143,7 +143,8 @@ package body V2P.Web_Block_Callbacks is
       SID : constant Session.Id := Status.Session (Request);
    begin
       Templates.Insert
-        (Translations, Database.Get_User (Session.Get (SID, "LOGIN")));
+        (Translations,
+         Database.Get_User (Session.Get (SID, Template_Defs.Global.LOGIN)));
    end Login;
 
    --------------
@@ -228,6 +229,31 @@ package body V2P.Web_Block_Callbacks is
       end if;
    end New_Post;
 
+   -----------------
+   -- Quick_Login --
+   -----------------
+
+   procedure Quick_Login
+     (Request      : in     Status.Data;
+      Context      : access Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      SID : constant Session.Id := Status.Session (Request);
+   begin
+      if Session.Exist (SID, Template_Defs.Global.LOGIN) then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.Global.LOGIN,
+               String'(Session.Get (SID, Template_Defs.Global.LOGIN))));
+      end if;
+   end Quick_Login;
+
+   -----------------------
+   -- User_Comment_List --
+   -----------------------
+
    procedure User_Comment_List
      (Request      : in     Status.Data;
       Context      : access Web_Block.Context.Object;
@@ -242,6 +268,7 @@ package body V2P.Web_Block_Callbacks is
       Templates.Insert
         (Translations, Database.Get_User_Comment (Uid => User_Name));
    end User_Comment_List;
+
    ---------------
    -- User_Page --
    ---------------

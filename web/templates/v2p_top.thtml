@@ -35,4 +35,5 @@
     > @@-- body is closed in v2p_end.thtml
 
     <div id="CTX_WB" style="display:none">@_CTX_WB_@</div>
-    <div id="quick_login">@_LAZY_QUICK_LOGIN_@<div id="login" style="display:none">@_LAZY_LOGIN_@</div></div>
+    <div id="lazy_quick_login">@_LAZY_QUICK_LOGIN_@</div>
+    <div id="lazy_login" style="display:none">@_LAZY_LOGIN_@</div>

@@ -5,7 +5,7 @@
 
   <h1>@_BABEL_ADD_NEW_PHOTO_@</h1>
 
-  <div id="post_new_photo_form">@_LAZY_NEW_PHOTO_@</div>
+  <div id="lazy_new_photo">@_LAZY_NEW_PHOTO_@</div>
 
   <hr id="step_2" />
 
@@ -20,7 +20,7 @@
     <fieldset id="new_post">
       @@-- Is user in a specific forum
 
-      <p id="forum_sel">Sélection du forum : @_LAZY_FORUM_LIST_SELECT_@
+      <p id="lazy_forum_list_select">Sélection du forum : @_LAZY_FORUM_LIST_SELECT_@
       <select name="CATEGORY" id="sel_category"></select>
       <input name="TID" id="TID" type="hidden" value="" />
       </p>
@@ -44,13 +44,11 @@
     <a href="#" id="show_metadata_edition">@_BABEL_EDIT_METADATA_@</a>
   </p>
 
-
   <p id="metadata_edition"></p>
 
   @@--  One form to rule them all
 
-  <form enctype="multipart/form-data" id="post_form" action="#"
-        method="POST">
+  <form enctype="multipart/form-data" id="post_form" action="#" method="POST">
     <p><input name="ENTER" id="post_form_enter" type="submit"
     value="Envoyer"/></p>
   </form>
@@ -62,4 +60,3 @@
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, post_form, 4=>basic_post_form, 5=>metadata_post, 6=>block_user_tmp_photo_select)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, show_metadata_edition, 19=>/xml_show_metadata_edition.xml, 20=>V2P.Map.geolocate.init)
 @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_new_photo_post, V2P.Tools.show_rel)
-

@@ -24,8 +24,8 @@
    <apply_style id="forum_post">
      <attribute id="display" value="block"/>
    </apply_style>
-   <replace id="login"><![CDATA[@_LAZY_LOGIN_@]]></replace>
-   <replace id="top_links"><![CDATA[@_LAZY_QUICK_LOGIN_@]]></replace>
+   <replace id="lazy_login"><![CDATA[@_LAZY_LOGIN_@]]></replace>
+   <replace id="lazy_quick_login"><![CDATA[@_LAZY_QUICK_LOGIN_@]]></replace>
    <replace id="comment_login">@_LOGIN_@</replace>
    <apply_style id="new_comment">
      <attribute id="display" value="block"/>

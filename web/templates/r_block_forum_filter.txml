@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <response>
-  <replace id="forum_threads"><![CDATA[@_LAZY_FORUM_THREADS_@]]></replace>
+  <replace id="lazy_forum_threads"><![CDATA[@_LAZY_FORUM_THREADS_@]]></replace>
 </response>
