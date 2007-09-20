@@ -23,34 +23,15 @@
 
 # Options
 
-INSTALL=$(HOME)/opt/v2p
-
-GWIAD_ROOT=$(HOME)/opt/gwiad
-MODE=Debug
-
-GNAT_ROOT=$(dir $(shell which gnatls))
-GWIAD_INSTALL=$(GNAT_ROOT)../lib/gwiad
-
-ifeq ($(OS),Windows_NT)
-EXEXT=.exe
-SOEXT=.dll
-else
-EXEXT=
-SOEXT=.so
-endif
-
-CP=cp -p
-MKDIR=mkdir -p
-RM=rm -f
-DIFF=diff
-GNATMAKE=gnatmake
+include mk.config
 
 LOG := ${shell pwd}/log.${shell date +%Y%m%d-%H%M%S}
 
 OPTIONS = INSTALL="$(INSTALL)" EXEXT="$(EXEXT)" MODE="$(MODE)" \
 	CP="$(CP)" MKDIR="$(MKDIR)" RM="$(RM)" MAKE="$(MAKE)" \
 	LOG="$(LOG)" SOEXT="$(SOEXT)" GNATMAKE="$(GNATMAKE)" \
-	DIFF=$(DIFF) GWIAD_ROOT="$(GWIAD_ROOT)"
+	DIFF=$(DIFF) GWIAD_ROOT="$(GWIAD_ROOT)" \
+	DIOUZHTU_DYNAMIC_LIB="$(DIOUZHTU_DYNAMIC_LIB)"
 
 all: setup-default build-default
 
@@ -90,13 +71,11 @@ endif
 
 check_tests:
 	echo $(LOG)
-	if [ `grep 0 $(LOG) | wc -l` != 6 ]; then \
-		echo "NOk, some tests have failed"; \
-		false; \
-	else \
-		echo "Ok, all tests have passed"; \
-		true; \
-	fi;
+ifneq ($(shell grep 0 $(LOG) | wc -l), 6)
+	$(error "NOk, some tests have failed")
+else
+	echo "Ok, all tests have passed"
+endif
 
 runtests: init_tests runtests-default check_tests
 

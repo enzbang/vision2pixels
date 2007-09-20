@@ -191,7 +191,7 @@ package body Web_Tests.Threads_Navigation is
            +"TID=89", +"Invasion", +"Portrait",
            +"TID=88", +"On ne pousse pas", +"Paysage",
            +"TID=87", +"Désséché", +"Abstrait",
-           not "TID=140", +"</ul>]]", +"</response>"),
+           not "TID=140", +"</ul>", +"</response>"),
          "wrong set of images in thread FID=1 (today posts)");
 
       --  Two days
@@ -264,7 +264,7 @@ package body Web_Tests.Threads_Navigation is
            +"TID=85", +"Port", +"Paysage",
            +"TID=84", +"Perdu ?", +"Macro/Animaux",
            +"TID=141", +"Hissez haut...", +"Paysage",
-           not "TID=63", +"</ul>]]", +"</response>"),
+           not "TID=63", +"</ul>", +"</response>"),
          "wrong set of images in thread FID=1 (tow days posts)");
 
       --  Seven days
@@ -351,7 +351,7 @@ package body Web_Tests.Threads_Navigation is
            +"TID=66", +"La Grande Roue", +"Abstrait",
            +"TID=65", +"Kiwi", +"Nature morte",
            +"TID=64", +"Chaises", +"Nature morte",
-           not "TID=75", +"</ul>]]", +"</response>"),
+           not "TID=75", +"</ul>", +"</response>"),
          "wrong set of images in thread FID=1 (seven days posts)");
 
       --  50 messages
@@ -416,7 +416,7 @@ package body Web_Tests.Threads_Navigation is
            +"TID=96", +"Changement de direction", +"Abstrait",
            +"TID=95", +"Saturne", +"Paysage",
            +"TID=94", +"Cabane ", +"Paysage",
-           not "TID=93", +"</ul>]]", +"</response>"),
+           not "TID=93", +"</ul>", +"</response>"),
          "wrong set of images in thread FID=1 (fifty messages)");
 
       --  Check that the filter is kept into the context
