@@ -20,6 +20,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded;
+with Ada.Text_IO;
 
 with AWS.Dispatchers.Callback;
 with AWS.Messages;
@@ -354,6 +355,20 @@ package body V2P.Web_Server is
       end if;
 
       return Web_Page;
+
+   exception
+      when others =>
+         Fatal_Error :
+         declare
+         begin
+            Ada.Text_IO.Put_Line ("fatal error");
+
+            --  ??? Here we need to know the MIME type
+            --  Without knowing it returns XML to avoid client browser warning
+            return Response.Build
+              (Message_Body => "<p>Internal error</p>",
+               Content_Type => MIME.Text_XML);
+         end Fatal_Error;
    end Default_Callback;
 
    --------------------------
