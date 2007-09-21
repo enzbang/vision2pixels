@@ -32,6 +32,14 @@
   </p>
   @@END_IF@@
   <h2>@_NAME_@</h2>
+  <p>
+    @@IF@@ @_REVEALED_@
+      @_OWNER_@
+    @@ELSE@@
+      @_BABEL_NOT_REVEALED_@
+    @@END_IF@@
+    / @_DATE_POST_@
+  </p>
   @@-- Hidden
   @@IF@@ @_ADMIN_@
   <p>@_BABEL_HIDDEN_STATUS_@:

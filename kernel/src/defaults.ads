@@ -21,10 +21,6 @@
 
 with Settings;
 
---------------
--- Defaults --
---------------
-
 package Defaults is
 
    DB                       : Settings.DB_Kind := Settings.SQLite3;
@@ -47,6 +43,8 @@ package Defaults is
 
    Anonymous_Comment        : constant Boolean := True;
 
+   Anonymity_Hours          : constant Natural := 3 * 24;
+
    Ignore_Author_Click      : constant Boolean := True;
 
    Limit_Image_Size         : constant Boolean := True;
@@ -55,7 +53,7 @@ package Defaults is
 
    Image_Maximum_Width      : constant Integer := 800;
 
-   Image_Maximum_Size       : constant Integer := 1000000;
+   Image_Maximum_Size       : constant Integer := 1_000_000;
 
    Thumbnail_Maximum_Width  : constant Integer := 150;
 
