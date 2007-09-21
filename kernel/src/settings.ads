@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2007                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -50,6 +50,9 @@ package Settings is
 
    function Anonymous_Comment return Boolean;
    --  If true, allows anonymous comment
+
+   function Anonymity_Hours return Natural;
+   --  Number of hours that a post stay anonymous
 
    function Limit_Image_Size return Boolean;
    --  If set, check image size on creation

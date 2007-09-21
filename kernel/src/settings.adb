@@ -33,17 +33,25 @@ package body Settings is
    Config_Filename : constant String := "plugins/vision2pixels/v2p.ini";
 
    type Attributes is
-     (DB, DB_Name, Images_Path, Thumbs_Path,
-      Images_Source_Prefix, Thumbs_Source_Prefix,
-      Anonymous_Visit_Counter, Anonymous_Comment, Descending_Order,
-      Ignore_Author_Click, Limit_Image_Size, Image_Maximum_Width,
-      Image_Maximum_Height, Image_Maximum_Size, Thumbnail_Maximum_Width,
-      Thumbnail_Maximum_Height, Virtual_Host, Website_Data_Path,
-      Website_Data_Prefix, Wiki_Service_Name);
+     (DB, DB_Name, Images_Path, Thumbs_Path, Images_Source_Prefix,
+      Thumbs_Source_Prefix, Anonymous_Visit_Counter, Anonymous_Comment,
+      Anonymity_Hours, Descending_Order, Ignore_Author_Click, Limit_Image_Size,
+      Image_Maximum_Width, Image_Maximum_Height, Image_Maximum_Size,
+      Thumbnail_Maximum_Width, Thumbnail_Maximum_Height, Virtual_Host,
+      Website_Data_Path, Website_Data_Prefix, Wiki_Service_Name);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
    package DB_Conf is new Conf.Enum_Values (Enum => DB_Kind);
+
+   ---------------------
+   -- Anonymity_Hours --
+   ---------------------
+
+   function Anonymity_Hours return Natural is
+   begin
+      return Conf.Get_Value (Anonymity_Hours);
+   end Anonymity_Hours;
 
    -----------------------
    -- Anonymous_Comment --
@@ -235,6 +243,7 @@ begin --  Settings : Set default values
    Conf.Set_Value (Thumbs_Source_Prefix, Defaults.Thumbs_Source_Prefix);
    Conf.Set_Value (Anonymous_Visit_Counter, Defaults.Anonymous_Visit_Counter);
    Conf.Set_Value (Anonymous_Comment, Defaults.Anonymous_Comment);
+   Conf.Set_Value (Anonymity_Hours, Defaults.Anonymity_Hours);
    Conf.Set_Value (Descending_Order, Defaults.Descending_Order);
    Conf.Set_Value (Ignore_Author_Click, Defaults.Ignore_Author_Click);
    Conf.Set_Value (Limit_Image_Size, Defaults.Limit_Image_Size);

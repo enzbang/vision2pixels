@@ -24,6 +24,8 @@ with Ada.Exceptions;
 with Ada.Task_Attributes;
 with Ada.Text_IO;
 
+with AWS.Utils;
+
 with DB;
 with Image.Metadata.Embedded;
 with Morzhol.OS;
@@ -92,17 +94,6 @@ package body V2P.Database is
    function Q (Bool : in Boolean) return String;
    pragma Inline (Q);
    --  As above but for a boolean
-
-   function Threads_Ordered_Select
-     (Fid        : in String := "";
-      User       : in String := "";
-      Admin      : in     Boolean;
-      From       : in Positive := 1;
-      Filter     : in Filter_Mode := All_Messages;
-      Where_Cond : in String := "";
-      Order_Dir  : in Order_Direction := DESC;
-      Limit      : in Natural := 0) return Unbounded_String;
-   --  Returns the select SQL query for listing threads with Filter
 
    function "+"
      (Str : in String) return Unbounded_String renames To_Unbounded_String;
@@ -336,8 +327,15 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter, "select post.name, post.comment, post.hidden, "
-         & "(select filename from photo where id=post.photo_id)"
-         & "from post where post.id=" & Q (Tid));
+         & "(select filename from photo where id=post.photo_id), "
+         & "user.login, post.date_post, "
+         & "datetime(post.date_post, '+"
+         & Utils.Image (Settings.Anonymity_Hours)
+         & " hour') < datetime('now') "
+         & "from post, user, user_post "
+         & "where post.id=" & Q (Tid)
+         & " and user.login = user_post.user_login"
+         & " and user_post.post_id = post.id");
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -353,19 +351,34 @@ package body V2P.Database is
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.IMAGE_SOURCE_PREFIX,
-               Settings.Images_Source_Prefix));
-
-         Templates.Insert
-           (Set, Templates.Assoc
               (Forum_Entry.HIDDEN, DB.String_Vectors.Element (Line, 3)));
-
-         --  Insert the image path
 
          Templates.Insert
            (Set, Templates.Assoc
               (Forum_Entry.IMAGE_SOURCE,
                DB.String_Vectors.Element (Line, 4)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Forum_Entry.OWNER, DB.String_Vectors.Element (Line, 5)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Forum_Entry.DATE_POST, DB.String_Vectors.Element (Line, 6)));
+
+         Templates.Insert
+           (Set,
+            Templates.Assoc
+              (Forum_Entry.REVEALED,
+               DB.String_Vectors.Element (Line, 7) = "1"));
+
+         --  Insert the image path
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Forum_Entry.IMAGE_SOURCE_PREFIX,
+               Settings.Images_Source_Prefix));
+
          Line.Clear;
       end if;
 
@@ -686,17 +699,133 @@ package body V2P.Database is
       use type Templates.Tag;
       use Post_Ids;
 
+      function Threads_Ordered_Select
+        (Fid        : in String := "";
+         User       : in String := "";
+         Admin      : in Boolean;
+         From       : in Positive := 1;
+         Filter     : in Filter_Mode := All_Messages;
+         Where_Cond : in String := "";
+         Order_Dir  : in Order_Direction := DESC;
+         Limit      : in Natural := 0) return Unbounded_String;
+      --  Returns the select SQL query for listing threads with Filter
+
+      ----------------------------
+      -- Threads_Ordered_Select --
+      ----------------------------
+
+      function Threads_Ordered_Select
+        (Fid        : in String := "";
+         User       : in String := "";
+         Admin      : in Boolean;
+         From       : in Positive := 1;
+         Filter     : in Filter_Mode := All_Messages;
+         Where_Cond : in String := "";
+         Order_Dir  : in Order_Direction := DESC;
+         Limit      : in Natural := 0) return Unbounded_String
+      is
+         SQL_Select  : constant String :=
+                         "select post.id, post.name, post.date_post, "
+                           & "datetime(date_post, '+"
+                           & Utils.Image (Settings.Anonymity_Hours)
+                           & " hour') < datetime('now'), "
+                           & "(select filename from photo "
+                           & "where Id = Post.Photo_Id)"
+                           & ", category.name, comment_counter,"
+                           & "visit_counter, post.hidden, user.login ";
+         SQL_From    : constant String :=
+                         " from post, category, user, user_post";
+         SQL_Where   : constant String :=
+                         " where post.category_id = category.id "
+                           & " and user_post.post_id = post.id"
+                           & Where_Cond;
+         Ordering    : constant String :=
+                         " order by post.date_post "
+                           & Order_Direction'Image (Order_Dir);
+
+         Select_Stmt : Unbounded_String := Null_Unbounded_String;
+      begin
+         if User /= "" and then Fid /= "" then
+            --  ???
+
+            Select_Stmt := Select_Stmt & SQL_Select & SQL_From
+              & SQL_Where
+              & "and category.forum_id = " & Q (Fid)
+              & "and user_post.user_id = " & Q (User);
+
+         elsif User /= "" and then Fid = "" then
+            --  ???
+
+            Select_Stmt := Select_Stmt & SQL_Select & SQL_From
+              & SQL_Where
+              & " and user_post.user_login = " & Q (User);
+
+         else
+            --  Anonymous login
+
+            Select_Stmt := Select_Stmt & SQL_Select & SQL_From
+              & SQL_Where
+              & " and category.forum_id = " & Q (Fid)
+              & " and user.login = user_post.user_login ";
+         end if;
+
+         if not Admin then
+            Select_Stmt := Select_Stmt & " and post.hidden='FALSE'";
+         end if;
+
+         --  Add filtering into the select statement
+
+         case Filter is
+            when Today =>
+               Select_Stmt := Select_Stmt
+                 & " and date(post.date_post) = date(current_date)"
+                 & Ordering;
+
+            when Two_Days =>
+               Select_Stmt := Select_Stmt
+                 & " and date(post.date_post) > date(current_date, '-2 days')"
+                 & Ordering;
+
+            when Seven_Days =>
+               Select_Stmt := Select_Stmt
+                 & " and date(post.date_post) > date(current_date, '-7 days')"
+                 & Ordering;
+
+            when Fifty_Messages =>
+               Select_Stmt := Select_Stmt & Ordering;
+
+               if Limit = 0 then
+                  --  SQL offset start to 0 !
+
+                  Select_Stmt := Select_Stmt
+                    & " limit 50 offset" & Natural'Image (From - 1);
+               end if;
+
+            when All_Messages =>
+               Select_Stmt := Select_Stmt & Ordering;
+         end case;
+
+         if Limit /= 0 then
+            Select_Stmt := Select_Stmt & " limit " & Natural'Image (Limit);
+         end if;
+
+         return Select_Stmt;
+      end Threads_Ordered_Select;
+
       DBH             : constant TLS_DBH_Access :=
                           TLS_DBH_Access (DBH_TLS.Reference);
       Iter            : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line            : DB.String_Vectors.Vector;
       Id              : Templates.Tag;
       Name            : Templates.Tag;
+      Date_Post       : Templates.Tag;
+      Revealed        : Templates.Tag;
       Category        : Templates.Tag;
       Comment_Counter : Templates.Tag;
       Visit_Counter   : Templates.Tag;
       Thumb           : Templates.Tag;
       Hidden          : Templates.Tag;
+      Owner           : Templates.Tag;
       Select_Stmt     : Unbounded_String;
 
    begin
@@ -719,14 +848,14 @@ package body V2P.Database is
 
          if From /= 1 then
             Templates.Insert
-              (Set, Templates.Assoc
-                 (Block_Forum_Navigate.PREVIOUS, From - 50));
+              (Set,
+               Templates.Assoc (Block_Forum_Navigate.PREVIOUS, From - 50));
          end if;
 
          --  ??? need to check if there is more data !
          Templates.Insert
-           (Set, Templates.Assoc
-              (Block_Forum_Navigate.NEXT, From + 50));
+           (Set,
+            Templates.Assoc (Block_Forum_Navigate.NEXT, From + 50));
       end if;
 
       DBH.Handle.Prepare_Select (Iter, To_String (Select_Stmt));
@@ -734,16 +863,19 @@ package body V2P.Database is
       while Iter.More loop
          Iter.Get_Line (Line);
 
-         Id              := Id       & DB.String_Vectors.Element (Line, 1);
-         Name            := Name     & DB.String_Vectors.Element (Line, 2);
-         Thumb           := Thumb    & DB.String_Vectors.Element (Line, 3);
-         Category        := Category & DB.String_Vectors.Element (Line, 4);
+         Id              := Id        & DB.String_Vectors.Element (Line, 1);
+         Name            := Name      & DB.String_Vectors.Element (Line, 2);
+         Date_Post       := Date_Post & DB.String_Vectors.Element (Line, 3);
+         Revealed        := Revealed
+           & (DB.String_Vectors.Element (Line, 4) = "1");
+         Thumb           := Thumb     & DB.String_Vectors.Element (Line, 5);
+         Category        := Category  & DB.String_Vectors.Element (Line, 6);
          Comment_Counter := Comment_Counter
-           & DB.String_Vectors.Element (Line, 5);
+           & DB.String_Vectors.Element (Line, 7);
          Visit_Counter   := Visit_Counter
-           & DB.String_Vectors.Element (Line, 6);
-         Hidden          := Hidden & DB.String_Vectors.Element (Line, 7);
-
+           & DB.String_Vectors.Element (Line, 8);
+         Hidden          := Hidden    & DB.String_Vectors.Element (Line, 9);
+         Owner           := Owner     & DB.String_Vectors.Element (Line, 10);
          --  Insert this post id in navigation links
 
          Navigation := Navigation & DB.String_Vectors.Element (Line, 1);
@@ -766,6 +898,10 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc
            (Block_Forum_Threads.VISIT_COUNTER, Visit_Counter));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Forum_Threads.REVEALED, Revealed));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Forum_Threads.OWNER, Owner));
       Templates.Insert
         (Set, Templates.Assoc (Block_Forum_Threads.HIDDEN, Hidden));
    end Get_Threads;
@@ -1328,102 +1464,6 @@ package body V2P.Database is
    begin
       return Q (Boolean'Image (Bool));
    end Q;
-
-   ----------------------------
-   -- Threads_Ordered_Select --
-   ----------------------------
-
-   function Threads_Ordered_Select
-     (Fid        : in String  := "";
-      User       : in String  := "";
-      Admin      : in     Boolean;
-      From       : in Positive := 1;
-      Filter     : in Filter_Mode := All_Messages;
-      Where_Cond : in String  := "";
-      Order_Dir  : in Order_Direction := DESC;
-      Limit      : in Natural := 0) return Unbounded_String
-   is
-      SQL_Select  : constant String :=
-                      "select post.id, post.name, "
-                        & "(select filename from photo "
-                        & "Where Id = Post.Photo_Id)"
-                        & ", category.name, comment_counter,"
-                        & "visit_counter, post.hidden ";
-      SQL_From    : constant String := " from post, category";
-      SQL_Where   : constant String :=
-                      " where post.category_id = category.id " & Where_Cond;
-      Ordering    : constant String :=
-                      " order by post.date_post "
-                      & Order_Direction'Image (Order_Dir);
-
-      Select_Stmt : Unbounded_String := Null_Unbounded_String;
-   begin
-      if User /= "" and then Fid /= "" then
-         --  ???
-
-         Select_Stmt := Select_Stmt & SQL_Select & SQL_From & ", user_post"
-           & SQL_Where
-           & "and category.forum_id = " & Q (Fid)
-           & "and user_post.post_id = post.id"
-           & "and user_post.user_id = " & Q (User);
-
-      elsif User /= "" and then Fid = "" then
-         --  ???
-
-         Select_Stmt := Select_Stmt & SQL_Select & SQL_From & ", user_post "
-           & SQL_Where
-           & " and user_post.post_id = post.id "
-           & " and user_post.user_login = " & Q (User);
-
-      else
-         --  Anonymous login
-
-         Select_Stmt := Select_Stmt & SQL_Select & SQL_From
-           & SQL_Where & " and category.forum_id = " & Q (Fid);
-      end if;
-
-      if not Admin then
-         Select_Stmt := Select_Stmt & " and post.hidden='FALSE'";
-      end if;
-
-      --  Add filtering into the select statement
-
-      case Filter is
-         when Today =>
-            Select_Stmt := Select_Stmt
-              & " and date(post.date_post) = date(current_date)"
-              & Ordering;
-
-         when Two_Days =>
-            Select_Stmt := Select_Stmt
-              & " and date(post.date_post) > date(current_date, '-2 days')"
-              & Ordering;
-
-         when Seven_Days =>
-            Select_Stmt := Select_Stmt
-              & " and date(post.date_post) > date(current_date, '-7 days')"
-              & Ordering;
-
-         when Fifty_Messages =>
-            Select_Stmt := Select_Stmt & Ordering;
-
-            if Limit = 0 then
-               --  SQL offset start to 0 !
-
-               Select_Stmt := Select_Stmt
-                 & " limit 50 offset" & Natural'Image (From - 1);
-            end if;
-
-         when All_Messages =>
-            Select_Stmt := Select_Stmt & Ordering;
-      end case;
-
-      if Limit /= 0 then
-         Select_Stmt := Select_Stmt & " limit " & Natural'Image (Limit);
-      end if;
-
-      return Select_Stmt;
-   end Threads_Ordered_Select;
 
    --------------------------
    -- Toggle_Hidden_Status --

@@ -14,6 +14,11 @@
   @@END_IF@@
     <p><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">@_NAME_@</a></p>
     <p>@_CATEGORY_@ @_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@
+    @@IF@@ @_REVEALED_@
+      @_OWNER_@
+    @@ELSE@@
+      @_BABEL_NOT_REVEALED_@
+    @@END_IF@@
     @@IF@@ @_ADMIN_@ and @_HIDDEN_@
       <span class="hidden_entry" id="hidden_entry">(@_BABEL_HIDDEN_@)</span>
     @@END_IF@@
