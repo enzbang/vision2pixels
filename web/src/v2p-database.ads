@@ -95,7 +95,8 @@ package V2P.Database is
    --  Returns user's temporaries photos
 
    function Get_User_Comment
-     (Uid : in String) return Templates.Translate_Set;
+     (Uid : in String; Textify : in Boolean := False)
+      return Templates.Translate_Set;
    --  Returns user's comments
 
    function Get_Metadata (Pid : in String) return Templates.Translate_Set;
