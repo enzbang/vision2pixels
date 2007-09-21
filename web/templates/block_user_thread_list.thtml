@@ -4,7 +4,7 @@
 @@--
 @@INCLUDE@@ babel.thtml
 
-<h1>@_BABEL_USER_PHOTOS_@ @_USER_NAME_@</h1>
+<h2>@_BABEL_LAST_USER_PHOTOS_@</h2>
 
 <ul class="slides">
 @@TABLE@@

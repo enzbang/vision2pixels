@@ -29,6 +29,7 @@ with AWS.Utils;
 with DB;
 with Image.Metadata.Embedded;
 with Morzhol.OS;
+with Morzhol.Strings;
 with Settings;
 
 with V2P.DB_Handle;
@@ -960,7 +961,8 @@ package body V2P.Database is
    ----------------------
 
    function Get_User_Comment
-     (Uid : in String) return Templates.Translate_Set
+     (Uid : in String; Textify : in Boolean := False)
+      return Templates.Translate_Set
    is
       SQL        : constant String :=
                      "select p.post_id, c.id, comment "
@@ -987,7 +989,13 @@ package body V2P.Database is
          Iter.Get_Line (Line);
          Post_Id    := Post_Id & DB.String_Vectors.Element (Line, 1);
          Comment_Id := Comment_Id & DB.String_Vectors.Element (Line, 2);
-         Comment    := Comment & DB.String_Vectors.Element (Line, 3);
+         if Textify then
+            Comment := Comment
+              & Morzhol.Strings.HTML_To_Text
+              (DB.String_Vectors.Element (Line, 3));
+         else
+            Comment := Comment & DB.String_Vectors.Element (Line, 3);
+         end if;
          Line.Clear;
       end loop;
 

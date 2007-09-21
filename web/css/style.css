@@ -538,3 +538,32 @@ body.forum_post_page h1 {
     margin:0.5em;
     font-size:2em;
 }
+
+
+@@--  User page
+
+body.user_page h1 {
+    font-size: 1.6em;
+    text-align:center;
+    text-transform:none;
+    font-weight:bold;
+}
+
+body.user_page #user_page_content {
+    padding:2em;
+    margin: 2em 0;
+    border:thin solid #222;
+}
+
+body.user_page h2 {
+    clear:both;
+    font-size: 1.1em;
+    text-align:center;
+    text-transform:none;
+    font-weight:bold;
+    text-decoration:underline;
+}
+
+body.user_page ul#lastusercommentlist {
+    padding:2em;
+}

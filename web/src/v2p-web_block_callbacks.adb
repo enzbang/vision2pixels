@@ -21,10 +21,10 @@
 
 with AWS.Session;
 
+with V2P.URL;
 with V2P.Database;
 with V2P.Context;
 with V2P.Template_Defs.Block_New_Comment;
-with V2P.Template_Defs.User_Page;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Global;
 
@@ -261,12 +261,11 @@ package body V2P.Web_Block_Callbacks is
    is
       pragma Unreferenced (Context);
       URI       : constant String := Status.URI (Request);
-      User_Name : constant String :=
-                    URI (URI'First
-                         + Template_Defs.User_Page.URL'Length .. URI'Last);
+      User_Name : constant String := URL.User_Name (URI);
    begin
       Templates.Insert
-        (Translations, Database.Get_User_Comment (Uid => User_Name));
+        (Translations,
+         Database.Get_User_Comment (Uid => User_Name, Textify => True));
    end User_Comment_List;
 
    ---------------
@@ -280,9 +279,8 @@ package body V2P.Web_Block_Callbacks is
    is
       pragma Unreferenced (Context);
       URI       : constant String := Status.URI (Request);
-      User_Name : constant String :=
-                    URI (URI'First
-                         + Template_Defs.User_Page.URL'Length .. URI'Last);
+      User_Name : constant String := URL.User_Name (URI);
+
    begin
       Templates.Insert
         (Translations, Database.Get_User_Page (Uid => User_Name));
@@ -308,9 +306,7 @@ package body V2P.Web_Block_Callbacks is
                      Session.Exist (SID, Template_Defs.Global.ADMIN)
                     and then Session.Get (SID, Template_Defs.Global.ADMIN);
       URI        : constant String     := Status.URI (Request);
-      User_Name  : constant String     :=
-                     URI (URI'First
-                          + Template_Defs.User_Page.URL'Length .. URI'Last);
+      User_Name  : constant String     := URL.User_Name (URI);
       Set        : Templates.Translate_Set;
       Navigation : V2P.Context.Post_Ids.Vector;
 
