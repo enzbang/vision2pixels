@@ -36,6 +36,7 @@ setup:
 	$(MKDIR) lib obj
 
 install: create_db
+	$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/db
 	(cd data; $(CP) testing.db $(GWIAD_ROOT)/plugins/vision2pixels/db)
 
 create_db:
