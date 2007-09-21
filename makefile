@@ -83,12 +83,12 @@ install_db:
 	$(MAKE) -C db install $(OPTIONS)
 
 install_gwiad_plugin: install_db
-	mkdir -p $(GWIAD_ROOT)/plugins/vision2pixels/templates/
-	mkdir -p $(GWIAD_ROOT)/plugins/vision2pixels/xml
-	mkdir -p $(GWIAD_ROOT)/plugins/vision2pixels/web_data
-	mkdir -p $(GWIAD_ROOT)/plugins/vision2pixels/we_js
-	mkdir -p $(GWIAD_ROOT)/plugins/vision2pixels/css
-	mkdir -p $(GWIAD_ROOT)/plugins/vision2pixels/css/img
+	$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/templates/
+	$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/xml
+	$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/web_data
+	$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/we_js
+	$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/css
+	$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/css/img
 	$(CP) -r web/templates/*.thtml \
 		$(GWIAD_ROOT)/plugins/vision2pixels/templates/
 	$(CP) -r web/templates/*.txml \
