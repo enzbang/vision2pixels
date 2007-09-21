@@ -5,8 +5,8 @@
 <ul id="lastusercommentlist">
 @@TABLE@@
   <li>
-      <a href="@_FORUM_ENTRY_URL_@?TID=@_COMMENT_TID_@#comment_@_COMMENT_ID_@">#@_COMMENT_ID_@</a>
-        @_WRAP(40):COMMENT_@
+      <a href="@_FORUM_ENTRY_URL_@?TID=@_COMMENT_TID_@#comment_@_COMMENT_ID_@">#@_COMMENT_ID_@
+        @_WRAP(40):COMMENT_@</a>
   </li>
 @@END_TABLE@@
 </ul>
