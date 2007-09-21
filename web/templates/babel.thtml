@@ -53,6 +53,7 @@
 @@--
 @@SET@@ BABEL_GEO_LATITUDE="Latitude"
 @@SET@@ BABEL_GEO_LONGITUDE="Longitude"
+@@SET@@ BABEL_NO_GEO_METADATA="pas de donnée géographique"
 @@SET@@ BABEL_EXIF_ISO="ISO"
 @@SET@@ BABEL_EXIF_CREATE_DATE="Date de création"
 @@SET@@ BABEL_EXIF_MAKE="Marque"
