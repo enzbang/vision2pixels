@@ -21,6 +21,8 @@
 
 package V2P.Wiki is
 
+   Wiki_Service_Error : exception;
+
    function Wiki_To_HTML (S : in String) return String;
    --  Convert a wiki syntax to valid xhtml
 
