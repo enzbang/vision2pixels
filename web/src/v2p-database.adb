@@ -731,14 +731,15 @@ package body V2P.Database is
                            & Utils.Image (Settings.Anonymity_Hours)
                            & " hour') < datetime('now'), "
                            & "(select filename from photo "
-                           & "where Id = Post.Photo_Id)"
-                           & ", category.name, comment_counter,"
+                           & "where Id = Post.Photo_Id), "
+                           & "category.name, comment_counter,"
                            & "visit_counter, post.hidden, user.login ";
          SQL_From    : constant String :=
                          " from post, category, user, user_post";
          SQL_Where   : constant String :=
                          " where post.category_id = category.id "
                            & " and user_post.post_id = post.id"
+                           & " and user_post.user_login = user.login "
                            & Where_Cond;
          Ordering    : constant String :=
                          " order by post.date_post "
