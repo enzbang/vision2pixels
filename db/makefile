@@ -39,10 +39,7 @@ install: create_db
 	-$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/db
 	(cd data; $(CP) testing.db $(GWIAD_ROOT)/plugins/vision2pixels/db)
 
-create_db: data/testing.db
-
-data/testing.db: data/create_database.sh \
-		data/schema-sqlite.sql data/initial-data.sql
+create_db:
 	(cd data; rm -f testing.db; ./create_database.sh)
 
 run_tests:
