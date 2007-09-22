@@ -1180,7 +1180,8 @@ package body V2P.Database is
       procedure Insert_Table_Post_Comment (post_Id, Comment_Id : in String);
       --  Insert row into post_Comment table
 
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+
       --------------------------
       -- Insert_Table_Comment --
       --------------------------
@@ -1250,7 +1251,7 @@ package body V2P.Database is
         & Q (Geo_Latitude_Formatted) & ", "
         & Q (Geo_Longitude_Formatted) & ")";
 
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
    begin
       Connect (DBH);
       DBH.Handle.Execute (SQL);
@@ -1281,7 +1282,8 @@ package body V2P.Database is
       procedure Insert_Table_User_Tmp_Photo (Uid, Pid : in String);
       --  Insert row into the user_tmp_photo table
 
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+
       ------------------------
       -- Insert_Table_Photo --
       ------------------------
@@ -1298,6 +1300,10 @@ package body V2P.Database is
       begin
          DBH.Handle.Execute (SQL);
       end Insert_Table_Photo;
+
+      ---------------------------------
+      -- Insert_Table_User_Tmp_Photo --
+      ---------------------------------
 
       procedure Insert_Table_User_Tmp_Photo (Uid, Pid : in String) is
          SQL : constant String :=
@@ -1348,7 +1354,8 @@ package body V2P.Database is
       procedure Insert_Table_User_Post (Uid, Post_Id : in String);
       --  Insert row into the user_post table
 
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+
       ------------------------
       -- Insert_Table_post --
       ------------------------
@@ -1412,7 +1419,7 @@ package body V2P.Database is
    ---------------
 
    function Is_Author (Uid, Pid : in String) return Boolean is
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Result : Boolean := False;
    begin
@@ -1482,7 +1489,7 @@ package body V2P.Database is
    is
       DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line         : DB.String_Vectors.Vector;
+      Line   : DB.String_Vectors.Vector;
       Hidden : Boolean := True;
       Set    : Templates.Translate_Set;
    begin
@@ -1530,7 +1537,7 @@ package body V2P.Database is
               "update user_page set content_html =  " & Q (Content_HTML)
               & ", content=" & Q (Content) & " where user_login=" & Q (Uid);
 
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
    begin
       Connect (DBH);
       DBH.Handle.Execute (SQL);
