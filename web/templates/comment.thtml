@@ -2,7 +2,11 @@
 @@-- Comment title line since it's not yet used
 <cite>
   @@IF@@ @_USER_@ /= ""
-    <a href="@_USER_PAGE_@" >@_USER_@</a>
+    @@IF@@ @_REVEALED_@ or @_USER_@ /= @_OWNER_@
+       <a href="@_USER_PAGE_@" >@_USER_@</a>
+    @@ELSE@@
+      @_BABEL_THE_AUTHOR_@
+    @@END_IF@@
   @@ELSE@@
     <span class="anonymous">@_ANONYMOUS_USER_@</span>
   @@END_IF@@
