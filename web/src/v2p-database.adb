@@ -1041,9 +1041,9 @@ package body V2P.Database is
             Admin    : constant String := DB.String_Vectors.Element (Line, 2);
          begin
             Line.Clear;
-            return (Uid      => +Uid,
-                    Password => +Password,
-                    Admin    => Boolean'Value (Admin));
+            return User_Data'(Uid      => +Uid,
+                              Password => +Password,
+                              Admin    => Boolean'Value (Admin));
          end Password_Value;
 
       else
