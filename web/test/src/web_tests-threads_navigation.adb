@@ -487,4 +487,5 @@ package body Web_Tests.Threads_Navigation is
       Register_Routine (T, List_Forum_Threads'Access, "list post");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
+
 end Web_Tests.Threads_Navigation;
