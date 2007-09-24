@@ -93,11 +93,6 @@ ul#navigate li {
    padding-right:1em;
 }
 
-ul#navigate li.prev_link
-{
-
-}
-
 ul#navigate li img {
    display:none;
 }
@@ -118,7 +113,7 @@ body.forum_entry #new_comment legend {
 }
 
 body.forum_entry #new_comment input,
-   body.forum_entry #new_comment textarea
+body.forum_entry #new_comment textarea
 {
    width:95%;
    padding:0.2em;
@@ -136,7 +131,7 @@ div#comment_login em {
 
 @@--  Forum threads
 
-div#quick_login {
+div#lazy_login, div#lazy_quick_login {
    float:right;
    margin-right:1em;
    font-size:0.8em;
@@ -146,6 +141,16 @@ div#quick_login {
    top:0px;
    right:0px;
    z-index:5000;
+}
+
+div#lazy_login {
+    top:1em;
+}
+
+div#login_err {
+    margin:0;
+    padding:0;
+    color:red;
 }
 
 div#quick_login a#show_rel_login {
