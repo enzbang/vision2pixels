@@ -27,6 +27,7 @@
 @@SET@@ BABEL_WARN_EXCEED_MAX_SIZE="Attention l'image postée dépasse la taille maximale autorisée"
 @@SET@@ BABEL_WARN_EXCEED_MAX_DIMENSION="Attention l'image postée dépasse les dimensions maximales autorisées"
 @@SET@@ BABEL_LOGIN_REQUIRED="Vous devez être connecté pour poster un message"
+@@SET@@ BABEL_NO_ANONYMOUS_COMMENT="Vous devez être connecté pour poster un commentaire"
 @@SET@@ BABEL_IS_ANONYMOUS="L'utilisateur anonyme "
 @@SET@@ BABEL_CLICK_TO_CLOSE="fermer"
 @@SET@@ BABEL_PREVIOUS="Précédent"

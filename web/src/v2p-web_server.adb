@@ -249,6 +249,13 @@ package body V2P.Web_Server is
            (Template_Defs.Global.ADMIN_URL,
             Template_Defs.Admin.URL));
 
+      --  Insert global options
+
+      Templates.Insert
+        (Translations, Templates.Assoc
+           (Template_Defs.Global.OPTION_ANONYMOUS_COMMENT,
+            Settings.Anonymous_Comment));
+
       --  Insert the thumb path
 
       Templates.Insert
