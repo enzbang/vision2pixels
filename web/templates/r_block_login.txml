@@ -4,8 +4,8 @@
 @@IF@@ @_LOGIN_@ = ""
 @@-- Login failed
 <response>
-   <replace id="status_bar">Erreur ! Impossible de se connecter</replace>
-   <apply_style id="status_bar">
+   <replace id="login_err">Erreur ! Impossible de se connecter</replace>
+   <apply_style id="login_err">
      <attribute id="display" value="block"/>
    </apply_style>
    <apply_style id="forum_post">
@@ -18,7 +18,7 @@
 @@ELSE@@
 @@-- Login OK
 <response>
-   <apply_style id="status_bar">
+   <apply_style id="login_err">
      <attribute id="display" value="none"/>
    </apply_style>
    <apply_style id="forum_post">

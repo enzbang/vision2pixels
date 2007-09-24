@@ -83,7 +83,7 @@ package body Web_Tests.User is
 
       Check
         (Response.Message_Body (Result),
-         Word_Set'(+"apply_style", +"status_bar", +"display", +"block",
+         Word_Set'(+"apply_style", +"login_err", +"display", +"block",
            +"apply_style", +"forum_post", +"display", +"none",
            +"apply_style", +"new_comment", +"display", +"none"),
          "login should have failed for turbo");
@@ -95,7 +95,7 @@ package body Web_Tests.User is
 
       Check
         (Response.Message_Body (Result),
-         Word_Set'(+"apply_style", +"status_bar", +"display", +"none",
+         Word_Set'(+"apply_style", +"login_err", +"display", +"none",
            +"apply_style", +"forum_post", +"display", +"block",
            +"replace", +"login",
            +"replace", +"comment_login",

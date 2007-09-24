@@ -6,7 +6,6 @@
 @@IF@@ @_NAME_@ /=""
 @@INCLUDE@@ v2p_top.thtml @_NAME_@ forum_entry yui-t7
 @@--
-<div id="status_bar"></div>
 <div id="image_block">
    @@-- Navigation links
   <ul id="navigate">
