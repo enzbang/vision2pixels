@@ -37,5 +37,6 @@
           value="comment_@_COMMENT_ID_@" />
     ]]>
   </replace>
+  <clear id="comment_input" />
 @@END_IF@@
 </response>
