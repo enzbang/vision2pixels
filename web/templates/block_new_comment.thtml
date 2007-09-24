@@ -1,4 +1,5 @@
 @@INCLUDE@@ babel.thtml
+@@IF@@ @_LOGIN_@ /= "" or @_OPTION_ANONYMOUS_COMMENT_@
 <form enctype="multipart/form-data" id="comment_form" action="#" method="post">
   <fieldset>
     <legend>@_BABEL_NEW_COMMENT_@</legend>
@@ -33,6 +34,9 @@
     @@--    <p><input name="FILENAME" type="file"/>
   </fieldset>
 </form>
+@@ELSE@@
+    <p>@_BABEL_NO_ANONYMOUS_COMMENT_@</p>
+@@END_IF@@
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_forum_list, 4=>sel_forum_list)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, comment_form, 4=>comment_form, 5=>PARENT_ID)

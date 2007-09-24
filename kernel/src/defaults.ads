@@ -41,7 +41,7 @@ package Defaults is
 
    Anonymous_Visit_Counter  : constant Boolean := False;
 
-   Anonymous_Comment        : constant Boolean := True;
+   Anonymous_Comment        : constant Boolean := False;
 
    Anonymity_Hours          : constant Natural := 3 * 24;
 
