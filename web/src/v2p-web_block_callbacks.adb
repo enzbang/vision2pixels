@@ -26,6 +26,7 @@ with V2P.Database;
 with V2P.Context;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_User_Page;
+with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Global;
 
 package body V2P.Web_Block_Callbacks is
@@ -156,9 +157,19 @@ package body V2P.Web_Block_Callbacks is
       Context      : access Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Request);
+
+      SID : constant Session.Id := Status.Session (Request);
+      Login       : constant String :=
+                      Session.Get (SID, Template_Defs.Global.LOGIN);
    begin
       if Context.Exist ("TID") then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (V2P.Template_Defs.Block_Metadata.IS_OWNER,
+               Boolean'Image (V2P.Database.Is_Author
+                 (Login, Context.Get_Value ("TID")))));
+
          if Context.Exist
            (V2P.Template_Defs.Global.ERROR_METADATA_NULL_METADATA) then
             Templates.Insert
@@ -178,6 +189,16 @@ package body V2P.Web_Block_Callbacks is
                   "ERROR"));
             Context.Remove
               (V2P.Template_Defs.Global.ERROR_METADATA_UNKNOWN_PHOTO);
+
+         elsif Context.Exist
+           (V2P.Template_Defs.Global.ERROR_METADATA_WRONG_METADATA) then
+            Templates.Insert
+              (Translations,
+               Templates.Assoc
+                 (V2P.Template_Defs.Global.ERROR_METADATA_WRONG_METADATA,
+                  "ERROR"));
+            Context.Remove
+              (V2P.Template_Defs.Global.ERROR_METADATA_WRONG_METADATA);
 
          else
             Templates.Insert
