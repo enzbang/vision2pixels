@@ -44,6 +44,9 @@ package V2P.Context is
    --  bug, should be changed when GNAT GPL 2007 is out and if it contains the
    --  fix as this bug is not present on recent GNAT versions.
 
+   procedure Context_Filter (Context : access Object);
+   --  Update the context filter
+
    function Previous
      (Posts : in Post_Ids.Vector;
       Id    : in String) return String;

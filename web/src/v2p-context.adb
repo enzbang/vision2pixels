@@ -19,9 +19,37 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with V2P.Template_Defs.Global;
+with V2P.Database;
+with Settings;
+
 package body V2P.Context is
 
+   use V2P;
    use Post_Ids;
+
+   --------------------
+   -- Context_Filter --
+   --------------------
+
+   procedure Context_Filter (Context : access Object) is
+   begin
+      if not Context.Exist (Template_Defs.Global.FILTER) then
+         Context.Set_Value
+           (Template_Defs.Global.FILTER,
+            Database.Filter_Mode'Image (Database.All_Messages));
+
+         if Settings.Descending_Order then
+            Context.Set_Value
+              (Template_Defs.Global.ORDER_DIR,
+               Database.Order_Direction'Image (Database.DESC));
+         else
+            Context.Set_Value
+              (Template_Defs.Global.ORDER_DIR,
+               Database.Order_Direction'Image (Database.ASC));
+         end if;
+      end if;
+   end Context_Filter;
 
    ----------
    -- Next --
