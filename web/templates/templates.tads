@@ -296,7 +296,7 @@ package body @_PACKAGE_@ is
   @@END_TABLE@@
       end Register;
 
-   begin
+   begin  -- Lazy
       Lazy.Register;
    end Lazy;
 
