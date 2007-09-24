@@ -241,7 +241,7 @@ ul#navcontainer li.index a {
 
 @@--  Colors
 
-body {
+html {
    background: #000000;
    color:#ffffff;
 }
@@ -464,7 +464,7 @@ body.user_page form#user_page_edit_form,
 }
 
 body.user_page form#user_page_edit_form textarea#content_input {
-   width:80em;
+   width:100%;
    height:30em;
 }
 
