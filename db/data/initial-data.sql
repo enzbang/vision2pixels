@@ -392,6 +392,9 @@ insert into comment values (13, '2007-02-01 19:40:54', NULL, 'enzbang', NULL, 'U
 insert into comment values (14, '2007-02-01 19:41:28', NULL, 'enzbang', NULL, '^_^', NULL);
 insert into comment values (15, '2007-02-01 19:41:50', NULL, 'enzbang', NULL, 'Unlocked ?', NULL);
 insert into comment values (16, '2007-02-01 19:42:27', NULL, 'enzbang', NULL, 'L''envie de fraise d&#195;&#169;j&#195;&#160; !', NULL);
+insert into comment values (17, '2007-02-01 21:42:27', NULL, 'turbo', NULL, 'Alors qu''en pensez-vous?', NULL);
+insert into comment values (18, '2007-02-01 22:42:27', NULL, 'enzbang', NULL, 'Bof!', NULL);
+insert into comment values (19, '2007-02-01 23:10:27', NULL, 'turbo', NULL, 'Mais encore ?', NULL);
 
 insert into post_comment values (60, 1);
 insert into post_comment values (84, 2);
@@ -409,3 +412,6 @@ insert into post_comment values (70, 13);
 insert into post_comment values (71, 14);
 insert into post_comment values (72, 15);
 insert into post_comment values (56, 16);
+insert into post_comment values (89, 17);
+insert into post_comment values (89, 18);
+insert into post_comment values (89, 19);
