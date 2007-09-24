@@ -283,31 +283,40 @@ package body V2P.Web_Ajax_Callbacks is
          return Coordinate;
       end Get;
 
-      Latitude_Coord      : constant Geo_Coordinate := Get
-        (Template_Defs.Block_Metadata.HTTP.latitude);
-      Longitude_Coord     : constant Geo_Coordinate := Get
-        (Template_Defs.Block_Metadata.HTTP.longitude);
-      Latitude_Position   : Latitude;
-      Longitude_Postition : Longitude;
-
    begin
-      if Latitude_Coord = 0.0 or else Longitude_Coord = 0.0 then
-         Context.Set_Value
-           (V2P.Template_Defs.Global.ERROR_METADATA_NULL_METADATA, "ERROR");
-      elsif not Context.Exist (Template_Defs.Global.TID) then
-         Context.Set_Value
-           (V2P.Template_Defs.Global.ERROR_METADATA_UNKNOWN_PHOTO, "ERROR");
-      else
-         Latitude_Position.Format (Latitude_Coord);
-         Longitude_Postition.Format (Longitude_Coord);
 
-         Database.Insert_Metadata
-           (Context.Get_Value (Template_Defs.Global.TID),
-            Float (Latitude_Coord),
-            Float (Longitude_Coord),
-            Image.Metadata.Geographic.Image (Latitude_Position),
-            Image.Metadata.Geographic.Image (Longitude_Postition));
-      end if;
+      Insert_Metadata :
+      declare
+         Latitude_Coord      : constant Geo_Coordinate := Get
+           (Template_Defs.Block_Metadata.HTTP.latitude);
+         Longitude_Coord     : constant Geo_Coordinate := Get
+           (Template_Defs.Block_Metadata.HTTP.longitude);
+         Latitude_Position   : Latitude;
+         Longitude_Postition : Longitude;
+      begin
+         if Latitude_Coord = 0.0 or else Longitude_Coord = 0.0 then
+            Context.Set_Value
+              (V2P.Template_Defs.Global.ERROR_METADATA_NULL_METADATA, "ERROR");
+         elsif not Context.Exist (Template_Defs.Global.TID) then
+            Context.Set_Value
+              (V2P.Template_Defs.Global.ERROR_METADATA_UNKNOWN_PHOTO, "ERROR");
+         else
+            Latitude_Position.Format (Latitude_Coord);
+            Longitude_Postition.Format (Longitude_Coord);
+
+            Database.Insert_Metadata
+              (Context.Get_Value (Template_Defs.Global.TID),
+               Float (Latitude_Coord),
+               Float (Longitude_Coord),
+               Image.Metadata.Geographic.Image (Latitude_Position),
+               Image.Metadata.Geographic.Image (Longitude_Postition));
+         end if;
+      end Insert_Metadata;
+
+   exception
+      when Constraint_Error =>
+         Context.Set_Value
+           (V2P.Template_Defs.Global.ERROR_METADATA_WRONG_METADATA, "ERROR");
    end Onsubmit_Metadata_Form_Enter_Callback;
 
    ---------------------------------------

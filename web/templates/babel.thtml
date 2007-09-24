@@ -51,10 +51,14 @@
 @@SET@@ BABEL_USER_PAGE_OF="Page d'"
 @@SET@@ BABEL_LAST_USER_PHOTOS="Dernières Photographies"
 @@SET@@ BABEL_LAST_USER_COMMENT="Derniers commentaires"
-@@--
+@@-- Metadata
 @@SET@@ BABEL_GEO_LATITUDE="Latitude"
 @@SET@@ BABEL_GEO_LONGITUDE="Longitude"
 @@SET@@ BABEL_NO_GEO_METADATA="pas de donnée géographique"
+@@SET@@ BABEL_ERROR_METADATA_NULL_METADATA="Metadonnées vides ?"
+@@SET@@ BABEL_ERROR_METADATA_UNKNOWN_PHOTO="Erreur. Photographie introuvable"
+@@SET@@ BABEL_ERROR_METADATA_WRONG_METADATA="Metadonnées non valides !"
+@@-- Exif
 @@SET@@ BABEL_EXIF_ISO="ISO"
 @@SET@@ BABEL_EXIF_CREATE_DATE="Date de création"
 @@SET@@ BABEL_EXIF_MAKE="Marque"
