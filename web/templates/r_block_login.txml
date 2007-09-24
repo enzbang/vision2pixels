@@ -30,5 +30,6 @@
    <apply_style id="new_comment">
      <attribute id="display" value="block"/>
    </apply_style>
+   <refresh/>
 </response>
 @@END_IF@@
