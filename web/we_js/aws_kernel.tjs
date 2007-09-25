@@ -155,6 +155,7 @@ AWS.Context = new function() {
 
    this.update = function ()
    {
+
       @@IF@@ @_AWS_CONTEXT_PER_WINDOW_@ = true
       @@--  Check if context has to be renewed
 
@@ -430,6 +431,8 @@ AWS.Ajax.XML = new function() {
    {
       var placeholder_id = node.getAttribute("id");
       var placeholder_content;
+
+      if ($(placeholder_id) == null) return;
 
       if (node.childNodes.length > 1) {
          placeholder_content = node.childNodes[1].nodeValue;
