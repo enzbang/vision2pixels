@@ -19,8 +19,6 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-
 with AWS.Dispatchers.Callback;
 with AWS.Messages;
 with AWS.MIME;
@@ -276,16 +274,21 @@ package body V2P.Web_Server is
 
    exception
       when others =>
-         Fatal_Error :
-         declare
-         begin
-            Ada.Text_IO.Put_Line ("fatal error");
+         Fatal_Error : begin
+            if
+              Services.Web_Block.Registry.Content_Type (URI) = MIME.Text_HTML
+            then
+               return Response.Build
+                 (Message_Body => "<p>Internal error</p>",
+                  Content_Type => MIME.Text_HTML);
 
-            --  ??? Here we need to know the MIME type
-            --  Without knowing it returns XML to avoid client browser warning
-            return Response.Build
-              (Message_Body => "<p>Internal error</p>",
-               Content_Type => MIME.Text_XML);
+            else
+               --  ??? In this case we probably want to add some Ajax error
+               --  report.
+               return Response.Build
+                 (Message_Body => "<p>Internal error</p>",
+                  Content_Type => MIME.Text_XML);
+            end if;
          end Fatal_Error;
    end Default_Callback;
 
@@ -525,7 +528,6 @@ package body V2P.Web_Server is
          end Insert_Photo;
       end if;
    end New_Photo_Callback;
-
 
    ---------------------
    -- Photos_Callback --
