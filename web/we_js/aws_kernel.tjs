@@ -180,9 +180,10 @@ AWS.Context = new function() {
             @@--  IE insists on returning the derived absolute URL,
             @@--  make sure that the ref is on the current page if the
             @@--  prefix is HTTP.
-            if (href.indexOf("http://" + window.location.hostname,0) == 0
-                || (href.indexOf("mailto:",0) != 0
-                    && href.indexOf("#",0) != 0)) {
+            if ((href.indexOf("http:",0) != 0
+                || href.indexOf(window.location.hostname) == 7)
+                && href.indexOf("mailto:",0) != 0
+                && href.indexOf("#",0) != 0) {
 
                 anchors[k].setAttribute('href',
                                         AWS.Context.href_add_anchor(href));
