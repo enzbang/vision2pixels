@@ -23,6 +23,8 @@
 
 # Options
 
+.SILENT: check_tests
+
 include mk.config
 
 LOG := ${shell pwd}/log.${shell date +%Y%m%d-%H%M%S}
@@ -71,11 +73,12 @@ endif
 
 check_tests:
 	echo $(LOG)
-ifneq ($(shell grep 0 $(LOG) | wc -l), 6)
-	$(error "NOk, some tests have failed")
-else
-	echo "Ok, all tests have passed"
-endif
+	echo ""
+	if [ `grep 0 $(LOG) | wc -l` == 6 ]; then \
+	   echo "=====>>>>>> Ok, all tests have passed"; \
+	else \
+	   echo "=====>>>>>> NOk, some tests have failed"; \
+	fi;
 
 runtests: init_tests runtests-default check_tests
 
