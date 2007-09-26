@@ -74,7 +74,7 @@
       @@END_TABLE@@
   </ol>
   @@ELSE@@
-  <div id="comments"></div>
+  <div id="comments"><p>@_BABEL_NO_COMMENT_@</p></div>
   <div id="last_parent_id" style="visibility:hidden">
     <input name="PARENT_ID" id="PARENT_ID" type="hidden" value=""/>
   </div>

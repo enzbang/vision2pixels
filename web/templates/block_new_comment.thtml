@@ -35,7 +35,7 @@
   </fieldset>
 </form>
 @@ELSE@@
-    <p>@_BABEL_NO_ANONYMOUS_COMMENT_@</p>
+    <p id="noanonymouscomment">@_BABEL_NO_ANONYMOUS_COMMENT_@</p>
 @@END_IF@@
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_forum_list, 4=>sel_forum_list)
