@@ -129,16 +129,27 @@ body.forum_entry p#main_image {
    padding:5px 0 0 0;
 }
 
-body.forum_entry ol#comments {
+body.forum_entry #comments {
     border :thin solid #111;
     padding:1em;
 }
 
-body.forum_entry ol#comments li {
+body.forum_entry #comments li {
     border :thin solid #004656;
     padding:1em;
 }
 
+body.forum_entry #comments p {
+    @@-- When no comments
+    font-size:1.4em;
+    text-align:center;
+}
+
+#noanonymouscomment {
+   text-align:center;
+   color:#B01417;
+   text-decoration:underline;
+}
 
 body.forum_entry #new_comment {
    width:@_MIN_IMAGE_SIZE_@;
