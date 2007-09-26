@@ -6,7 +6,8 @@
 @@IF@@ @_NAME_@ /=""
 @@INCLUDE@@ v2p_top.thtml @_NAME_@ forum_entry yui-t7
 @@--
-<div id="image_block">
+<div class="forums">@_LAZY_FORUM_LIST_@</div>
+  <div id="image_block">
    @@-- Navigation links
   <ul id="navigate">
     @@IF@@ @_PREVIOUS_@ /= ""
@@ -30,8 +31,9 @@
     <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"/>
   </p>
   @@END_IF@@
+<div id="image_infos">
   <h2>@_NAME_@</h2>
-  <p>
+  <p id="img_author">
     @@IF@@ @_REVEALED_@
       @_OWNER_@
     @@ELSE@@
@@ -48,12 +50,9 @@
   </p>
   @@END_IF@@
   <p id="main_image_comment">@_IMAGE_COMMENT_@</p>
-  <p>
-    <a href="#image_metadata" id="show_image_metadata" rel="lazy_metadata">
-    @_BABEL_METADATA_@</a>
-  </p>
+  <p id="lazy_metadata">@_LAZY_METADATA_@</p>
 
-  <div id="lazy_metadata" style="display:none">@_LAZY_METADATA_@</div>
+</div>
   <h2 id="comments_section">Commentaires</h2>
   @@--  Comments
   @@IF@@ @_COMMENT_ID_@ /= "" @@--  at least one comment
@@ -82,7 +81,6 @@
   @@END_IF@@
 
   <div id="lazy_new_comment">@_LAZY_NEW_COMMENT_@</div>
-  <div class="forums">@_LAZY_FORUM_LIST_@</div>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_image_metadata, V2P.Tools.toggle_show_hide_rel)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, hidden_status_toggle)
