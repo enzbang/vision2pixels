@@ -28,24 +28,12 @@ a {
    text-decoration:none;
 }
 
-body.forum_entry h2 {
-   font-size: 1.8em;
-   padding-top: 20px;
-   margin-bottom: 20px;
-   font-weight: lighter;
-   letter-spacing: 0.1ex;
-}
-
 p#cd_user {
    font-style:italic;
 }
 
-#ft, body.forum_entry ul#navcontainer {
+#ft{
    font-size:0.8em;
-}
-
-body.forum_entry ul#navcontainer {
-   margin-top:2em;
 }
 
 @@--  General
@@ -102,10 +90,55 @@ ul#navigate li img {
 
 @@--  forum_entry
 
+#image_infos {
+    margin:2em 0;
+    padding:1em 2em;
+    background-color:#111;
+    border:thin solid @_PHOTOTITLECOLOR_@;
+}
+
+body.forum_entry h2 {
+   font-size: 1.8em;
+   margin-bottom: 20px;
+   font-weight: lighter;
+   letter-spacing: 0.1ex;
+   padding-bottom:0.5em;
+   margin:0 5em 1em 5em;
+   border-bottom:thin solid @_PHOTOTITLECOLOR_@;
+   text-align:center;
+}
+
+#img_author {
+    text-align:right;
+    font-style:italic;
+    color:@_PHOTOAUTHOR_@;
+}
+
+#main_image_comment {
+  text-align:center;
+  font-size:1.3em;
+}
+
+#image_block {
+  padding:2em 0 0 0;
+}
+
 body.forum_entry p#main_image {
-   margin:0px;
+   margin:0px auto;
+   text-align:center;
    padding:5px 0 0 0;
 }
+
+body.forum_entry ol#comments {
+    border :thin solid #111;
+    padding:1em;
+}
+
+body.forum_entry ol#comments li {
+    border :thin solid #004656;
+    padding:1em;
+}
+
 
 body.forum_entry #new_comment {
    width:@_MIN_IMAGE_SIZE_@;
@@ -233,10 +266,16 @@ body.main p#logo {
 
 @@--  Forum list
 
+ul#navcontainer {
+    top:5px;
+    position:absolute;
+}
+
 ul#navcontainer li {
    display:inline;
    margin-right:1em;
    font-family:arial,sans-serif;
+   font-size:0.9em;
 }
 
 ul#navcontainer li a {
