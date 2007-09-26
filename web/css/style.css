@@ -1,6 +1,9 @@
 @@SET@@ MAX_IMAGE_SIZE=800px
 @@SET@@ MIN_IMAGE_SIZE=500px
 @@SET@@ HIGHLIGHT_COLOR=#019BBD
+@@SET@@ PHOTOTITLECOLOR=#CBCBFF
+@@SET@@ PHOTOCATEGORY=#DCE0E3
+@@SET@@ PHOTOAUTHOR=#B5C8FF
 
 @@--  Fonts
 
@@ -280,37 +283,48 @@ ul#navcontainer li.index a {
 
 
 @@-- Slides
-.slides
-{
-   clear: both;
-   float: left;
-   width: 100%;
-   list-style: none;
-   line-height: 1em;
-   margin-top: 2em;
+
+ul.slides {
+    list-style-type: none;
+    margin:0 auto;
+    width:100%;
+    text-align:center;
 }
 
-.slides li {
-   display: block;
-   float: left;
-   width: 300px;
-   height: 200px;
-   margin: 0 10px 10px 0;
-   padding: 0;
-   text-align: center;
+li.thumbs {
+    float: left;
+    overflow:hidden;
+    width:200px;
+    height:260px;
+    text-align: center;
+    margin: 30px;
 }
 
-.slides li p {
-   margin: 0.5em;
+li.thumbs img {
+    border: 1px solid #434343;
+    width:150px;
+    height:150px;
+    display: inline;
+    padding: 5px;
+    background-color: #222;
+    border: 1px solid #434343;
+    text-align: center;
 }
 
-.slides div {
-   display: block;
-   width: 200px;
+.photocat {
+    color: @_PHOTOCATEGORY_@;
+}
+
+.photoauthor {
+    color: @_PHOTOAUTHOR_@;
+}
+
+.slides li a {
+    text-align: center;
 }
 
 .slides li p a {
-   color: #424242;
+   color: @_PHOTOTITLECOLOR_@;
    font-size: 1.1em;
    font-weight: bold;
    text-decoration: none;
