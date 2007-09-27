@@ -16,6 +16,7 @@
 @@SET@@ BABEL_LOGOUT="Se déconnecter"
 @@SET@@ BABEL_NOT_LOGGED="Non connecté"
 @@SET@@ BABEL_FORUM_NEW_ENTRY="Poster un nouveau message"
+@@SET@@ BABEL_FORUM_NEW_PHOTO="Poster une nouvelle photo"
 @@SET@@ BABEL_NEW_COMMENT="Commentez !"
 @@SET@@ BABEL_POST_NAME="Titre :"
 @@SET@@ BABEL_COMMENT_TITLE="Titre"
