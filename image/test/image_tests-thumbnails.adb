@@ -24,14 +24,16 @@ with Ada.Directories;
 
 with GNAT.Calendar.Time_IO;
 
+with V2P.Settings;
+
 with G2F;
 with Image.Data;
-with Settings;
 
 package body Image_Tests.Thumbnails is
 
    use Ada;
    use Ada.Directories;
+   use V2P;
 
    use AUnit.Test_Cases.Registration;
    use AUnit.Assertions;

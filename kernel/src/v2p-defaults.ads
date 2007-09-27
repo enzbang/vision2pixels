@@ -19,11 +19,11 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Settings;
+with V2P.Settings;
 
-package Defaults is
+package V2P.Defaults is
 
-   DB                       : Settings.DB_Kind := Settings.SQLite3;
+   DB                       : V2P.Settings.DB_Kind := V2P.Settings.SQLite3;
 
    DB_Name                  : constant String := "v2p.db";
 
@@ -65,4 +65,4 @@ package Defaults is
 
    Virtual_Host             : constant String  := "127.0.0.10";
 
-end Defaults;
+end V2P.Defaults;

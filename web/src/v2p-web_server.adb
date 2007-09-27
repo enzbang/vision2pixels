@@ -35,8 +35,9 @@ with Gwiad.Web.Virtual_Host;
 with Gwiad.Plugins.Websites.Registry;
 with Morzhol.OS;
 
-with V2P.Database;
 with V2P.Context;
+with V2P.Database;
+with V2P.Settings;
 with V2P.Web_Ajax_Callbacks;
 
 with V2P.Template_Defs.Forum_Entry;
@@ -67,7 +68,6 @@ with V2P.Template_Defs.R_Block_Metadata_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 
 with Image.Data;
-with Settings;
 
 with Gwiad.Plugins.Websites;
 
