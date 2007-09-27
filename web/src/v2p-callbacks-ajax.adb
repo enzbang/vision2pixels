@@ -30,27 +30,27 @@ with V2P.Database;
 with V2P.Wiki;
 
 with V2P.Template_Defs.Forum_Entry;
+with V2P.Template_Defs.Forum_New_Entry;
 with V2P.Template_Defs.Global;
 with V2P.Template_Defs.Block_New_Comment;
-with V2P.Template_Defs.Block_New_Post;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_List_Select;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.R_Block_Login;
-with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
+with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 
 package body V2P.Callbacks.Ajax is
 
    use Ada.Strings.Unbounded;
 
-   --------------------
-   -- Login_Callback --
-   --------------------
+   -----------
+   -- Login --
+   -----------
 
-   procedure Login_Callback
+   procedure Login
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
@@ -81,13 +81,13 @@ package body V2P.Callbacks.Ajax is
               (Template_Defs.R_Block_Login.LOGIN,
                String'(Session.Get (SID, Template_Defs.Global.LOGIN))));
       end if;
-   end Login_Callback;
+   end Login;
 
-   ---------------------
-   -- Logout_Callback --
-   ---------------------
+   ------------
+   -- Logout --
+   ------------
 
-   procedure Logout_Callback
+   procedure Logout
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
@@ -100,7 +100,7 @@ package body V2P.Callbacks.Ajax is
       --  Remove the login information from the translate table
 
       Templates.Remove (Translations, Template_Defs.Global.LOGIN);
-   end Logout_Callback;
+   end Logout;
 
    ---------------------------
    -- Onchange_Filter_Forum --
@@ -122,11 +122,11 @@ package body V2P.Callbacks.Ajax is
       Context.Set_Value (Template_Defs.Global.FILTER, Filter);
    end Onchange_Filter_Forum;
 
-   ----------------------------------
-   -- Onchange_Forum_List_Callback --
-   ----------------------------------
+   -------------------------
+   -- Onchange_Forum_List --
+   -------------------------
 
-   procedure Onchange_Forum_List_Callback
+   procedure Onchange_Forum_List
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
@@ -138,7 +138,7 @@ package body V2P.Callbacks.Ajax is
                 (P, Template_Defs.Block_Forum_List_Select.HTTP.sel_forum_list);
    begin
       Templates.Insert (Translations, Database.Get_Categories (Fid));
-   end Onchange_Forum_List_Callback;
+   end Onchange_Forum_List;
 
    ----------------------------------
    -- Onclick_Hidden_Status_Toggle --
@@ -155,11 +155,11 @@ package body V2P.Callbacks.Ajax is
       Templates.Insert (Translations, Database.Toggle_Hidden_Status (TID));
    end Onclick_Hidden_Status_Toggle;
 
-   ------------------------------------------
-   -- Onsubmit_Comment_Form_Enter_Callback --
-   ------------------------------------------
+   ---------------------------------
+   -- Onsubmit_Comment_Form_Enter --
+   ---------------------------------
 
-   procedure Onsubmit_Comment_Form_Enter_Callback
+   procedure Onsubmit_Comment_Form_Enter
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
@@ -246,13 +246,13 @@ package body V2P.Callbacks.Ajax is
             --  Does not support threaded view for now
          end Insert_Comment;
       end if;
-   end Onsubmit_Comment_Form_Enter_Callback;
+   end Onsubmit_Comment_Form_Enter;
 
-   -------------------------------------------
-   -- Onsubmit_Metadata_Form_Enter_Callback --
-   -------------------------------------------
+   ----------------------------------
+   -- Onsubmit_Metadata_Form_Enter --
+   ----------------------------------
 
-   procedure Onsubmit_Metadata_Form_Enter_Callback
+   procedure Onsubmit_Metadata_Form_Enter
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
@@ -313,13 +313,13 @@ package body V2P.Callbacks.Ajax is
       when Constraint_Error =>
          Context.Set_Value
            (V2P.Template_Defs.Global.ERROR_METADATA_WRONG_METADATA, "ERROR");
-   end Onsubmit_Metadata_Form_Enter_Callback;
+   end Onsubmit_Metadata_Form_Enter;
 
-   ---------------------------------------
-   -- Onsubmit_Post_Form_Enter_Callback --
-   ---------------------------------------
+   ------------------------------
+   -- Onsubmit_Post_Form_Enter --
+   ------------------------------
 
-   procedure Onsubmit_Post_Form_Enter_Callback
+   procedure Onsubmit_Post_Form_Enter
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
@@ -331,15 +331,16 @@ package body V2P.Callbacks.Ajax is
       Login        : constant String :=
                        Session.Get (SID, Template_Defs.Global.LOGIN);
       Name         : constant String :=
-                       Parameters.Get (P, Block_New_Post.HTTP.NAME);
+                       Parameters.Get (P, Forum_New_Entry.HTTP.NAME);
       Comment      : constant String :=
-                       Parameters.Get (P, Block_New_Post.HTTP.COMMENT);
+                       Parameters.Get (P, Forum_New_Entry.HTTP.comment_input);
       CID          : constant String :=
-                       Parameters.Get (P, Block_New_Post.HTTP.CATEGORY);
+                       Parameters.Get (P, Forum_New_Entry.HTTP.CATEGORY);
       Last_Name    : constant String :=
                        Context.Get_Value (Global.CONTEXT_LAST_POST_NAME);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
    begin
+
       if Login = "" and then CID = "" then
          Templates.Insert
            (Translations,
@@ -386,19 +387,19 @@ package body V2P.Callbacks.Ajax is
             end Insert_Post;
          end if;
 
---           if Pid /= "" and then Context.Exist (Global.TID) then
---              Onsubmit_Metadata_Form_Enter_Callback
---                (Request, Context, Translations);
---           end if;
---           ???
+         --           if Pid /= "" and then Context.Exist (Global.TID) then
+         --              Onsubmit_Metadata_Form_Enter_Callback
+         --                (Request, Context, Translations);
+         --           end if;
+         --           ???
       end if;
-   end Onsubmit_Post_Form_Enter_Callback;
+   end Onsubmit_Post_Form_Enter;
 
-   -------------------------------------------------
-   -- Onsubmit_User_Page_Edit_Form_Enter_Callback --
-   -------------------------------------------------
+   ----------------------------------------
+   -- Onsubmit_User_Page_Edit_Form_Enter --
+   ----------------------------------------
 
-   procedure Onsubmit_User_Page_Edit_Form_Enter_Callback
+   procedure Onsubmit_User_Page_Edit_Form_Enter
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
@@ -425,6 +426,6 @@ package body V2P.Callbacks.Ajax is
          Templates.Assoc
            (R_Block_User_Page_Edit_Form_Enter.USER_PAGE_HTML_CONTENT,
             Content_HTML));
-   end Onsubmit_User_Page_Edit_Form_Enter_Callback;
+   end Onsubmit_User_Page_Edit_Form_Enter;
 
 end V2P.Callbacks.Ajax;

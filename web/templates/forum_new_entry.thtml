@@ -41,7 +41,7 @@
 
 @@--  One form to rule them all
 
-<form enctype="multipart/form-data" id="post_form" action="#" method="POST">
+<form enctype="multipart/form-data" id="new_entry_form_submit" action="#" method="POST">
   <p><input name="ENTER" id="post_form_enter" type="submit"
             value="Envoyer"/></p>
 </form>
@@ -50,7 +50,4 @@
 </div>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_forum_list, 4=>sel_forum_list)
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, post_form, 4=>form_image_infos, 5=>metadata_post)
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, show_metadata_edition, 19=>/xml_show_metadata_edition.xml, 20=>V2P.Map.geolocate.init)
-@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_new_photo_post, V2P.Tools.show_rel)
-
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, new_entry_form_submit, 4=>form_image_infos, 5=>metadata_post)
