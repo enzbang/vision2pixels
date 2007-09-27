@@ -109,6 +109,10 @@ package body V2P.Logs is
          Text_IO.Flush (Log);
          Semaphore.Release;
       end if;
+   exception
+      when others =>
+         --  ??? what else to do ?
+         Semaphore.Release;
    end Write;
 
 begin
