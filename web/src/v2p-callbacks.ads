@@ -19,12 +19,11 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-package V2P.URL is
+package V2P.Callbacks is
 
-   function User_Name (URL : in String) return String;
-   --  Returns User_Name from URL
+   --  Root package for all callbacks :
+   --          - Web_Block callbacks
+   --          - Ajax callbacks
+   --          - Page callbacks
 
-   function Images_Full_Prefix return String;
-   --  Returns images full prefix : Vision2Pixels plugin path + image path
-
-end V2P.URL;
+end V2P.Callbacks;

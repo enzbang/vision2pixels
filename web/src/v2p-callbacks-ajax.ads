@@ -23,84 +23,62 @@ with AWS.Status;
 with AWS.Templates;
 with AWS.Services.Web_Block.Context;
 
-package V2P.Web_Block_Callbacks is
+package V2P.Callbacks.Ajax is
 
    use AWS;
-   use AWS.Services;
 
-   procedure Exif
+   procedure Login_Callback
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
+   --  Login callback
 
-   procedure Forum_Filter
+   procedure Logout_Callback
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
+   --  Logout callback
 
-   procedure Forum_List
+   procedure Onchange_Forum_List_Callback
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
+   --  Called when a new forum is selected on post page
 
-   procedure Forum_List_Select
+   procedure Onchange_Filter_Forum
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
+   --  Called when changing the forum sorting
 
-   procedure Forum_Threads
+   procedure Onclick_Hidden_Status_Toggle
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
+   --  Called when changing the forum sorting
 
-   procedure Login
+   procedure Onsubmit_Comment_Form_Enter_Callback
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
+   --  Called when submitting a new comment
 
-   procedure Metadata
+   procedure Onsubmit_Metadata_Form_Enter_Callback
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
+   --  Called when submitting new metadata
 
-   procedure New_Comment
+   procedure Onsubmit_Post_Form_Enter_Callback
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
+   --  Called when submitting a new post
 
-   procedure New_Photo
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set) is null;
-
-   procedure New_Post
+   procedure Onsubmit_User_Page_Edit_Form_Enter_Callback
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
+   --  Called when submitting new user page content
 
-   procedure Quick_Login
-     (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set);
-
-   procedure User_Page
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set);
-
-   procedure User_Comment_List
-     (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set);
-
-   procedure User_Thread_List
-     (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set);
-
-   procedure User_Tmp_Photo_Select
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set);
-
-end V2P.Web_Block_Callbacks;
+end V2P.Callbacks.Ajax;

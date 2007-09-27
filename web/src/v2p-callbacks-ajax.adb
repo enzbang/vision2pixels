@@ -19,6 +19,8 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;
+
 with AWS.Parameters;
 with AWS.Session;
 
@@ -32,7 +34,6 @@ with V2P.Template_Defs.Global;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Post;
 with V2P.Template_Defs.Block_Metadata;
-with V2P.Template_Defs.Block_User_Tmp_Photo_Select;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_List_Select;
 with V2P.Template_Defs.Block_User_Page;
@@ -40,9 +41,8 @@ with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
-with Ada.Strings.Unbounded;
 
-package body V2P.Web_Ajax_Callbacks is
+package body V2P.Callbacks.Ajax is
 
    use Ada.Strings.Unbounded;
 
@@ -165,7 +165,6 @@ package body V2P.Web_Ajax_Callbacks is
       Translations : in out Templates.Translate_Set)
    is
       use Template_Defs;
-      use Template_Defs.Block_User_Tmp_Photo_Select;
 
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
@@ -180,9 +179,6 @@ package body V2P.Web_Ajax_Callbacks is
                        Parameters.Get (P, Block_New_Comment.HTTP.COMMENT);
       Parent_Id    : constant String :=
                        Parameters.Get (P, Forum_Entry.HTTP.PARENT_ID);
-      Pid          : constant String :=
-                       Parameters.Get
-                         (P, HTTP.block_user_tmp_photo_select);
       Tid          : constant String :=
                        Parameters.Get (P, Block_New_Comment.HTTP.TID);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
@@ -231,7 +227,7 @@ package body V2P.Web_Ajax_Callbacks is
       else
          Insert_Comment : declare
             Cid : constant String := Database.Insert_Comment
-              (Login, Anonymous, Tid, Name, Comment_Wiki, Pid);
+              (Login, Anonymous, Tid, Name, Comment_Wiki, "");
          begin
             --  Adds the new comment in context to prevent duplicated post
 
@@ -329,7 +325,6 @@ package body V2P.Web_Ajax_Callbacks is
       Translations : in out Templates.Translate_Set)
    is
       use Template_Defs;
-      use Template_Defs.Block_User_Tmp_Photo_Select;
 
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
@@ -339,9 +334,6 @@ package body V2P.Web_Ajax_Callbacks is
                        Parameters.Get (P, Block_New_Post.HTTP.NAME);
       Comment      : constant String :=
                        Parameters.Get (P, Block_New_Post.HTTP.COMMENT);
-      Pid          : constant String :=
-                       Parameters.Get
-                         (P, HTTP.block_user_tmp_photo_select);
       CID          : constant String :=
                        Parameters.Get (P, Block_New_Post.HTTP.CATEGORY);
       Last_Name    : constant String :=
@@ -368,7 +360,7 @@ package body V2P.Web_Ajax_Callbacks is
             Insert_Post : declare
                Post_Id : constant String :=
                            Database.Insert_Post
-                             (Login, CID, Name, Comment_Wiki, Pid);
+                             (Login, CID, Name, Comment_Wiki, "");
             begin
                if Post_Id /= "" then
                   --  Set new context TID (needed by
@@ -394,10 +386,11 @@ package body V2P.Web_Ajax_Callbacks is
             end Insert_Post;
          end if;
 
-         if Pid /= "" and then Context.Exist (Global.TID) then
-            Onsubmit_Metadata_Form_Enter_Callback
-              (Request, Context, Translations);
-         end if;
+--           if Pid /= "" and then Context.Exist (Global.TID) then
+--              Onsubmit_Metadata_Form_Enter_Callback
+--                (Request, Context, Translations);
+--           end if;
+--           ???
       end if;
    end Onsubmit_Post_Form_Enter_Callback;
 
@@ -434,4 +427,4 @@ package body V2P.Web_Ajax_Callbacks is
             Content_HTML));
    end Onsubmit_User_Page_Edit_Form_Enter_Callback;
 
-end V2P.Web_Ajax_Callbacks;
+end V2P.Callbacks.Ajax;
