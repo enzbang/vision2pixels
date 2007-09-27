@@ -24,10 +24,11 @@ with Ada.Text_IO;
 
 with GNAT.Calendar.Time_IO;
 
+with V2P.Settings;
+
 with Morzhol.OS;
 with G2F.Image_IO;
 with Image.Magick;
-with Settings;
 
 package body Image.Data is
 
@@ -36,6 +37,7 @@ package body Image.Data is
    use G2F;
    use G2F.Image_IO;
    use G2F.IO;
+   use V2P;
 
    ---------------------------
    -- Default_Max_Dimension --

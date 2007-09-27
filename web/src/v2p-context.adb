@@ -19,9 +19,9 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with V2P.Template_Defs.Global;
 with V2P.Database;
-with Settings;
+with V2P.Settings;
+with V2P.Template_Defs.Global;
 
 package body V2P.Context is
 

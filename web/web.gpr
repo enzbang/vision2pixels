@@ -46,7 +46,7 @@ project Web is
    for Library_Dir use "lib";
    for Library_Name use "vision2pixels";
    for Library_Interface use
-     ("v2p", "v2p.web_server", "v2p.wiki", "v2p.template_defs",
+     ("v2p.web_server", "v2p.wiki", "v2p.template_defs",
       "v2p.template_defs.block_login", "v2p.template_defs.block_forum_filter",
       "v2p.template_defs.forum_threads");
    for Library_Kind use "dynamic";

@@ -19,7 +19,7 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-package Settings is
+package V2P.Settings is
 
    type DB_Kind is (SQLite3, ODBC);
 
@@ -87,4 +87,4 @@ package Settings is
    function Wiki_Service_Name return String;
    --  Gwiad wiki service plugin name
 
-end Settings;
+end V2P.Settings;

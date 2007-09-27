@@ -22,7 +22,7 @@
 with Ada.Text_IO;
 with Ada.Exceptions;
 
-with Settings;
+with V2P.Settings;
 
 with Wiki_Interface;
 with Gwiad.Plugins.Services.Cache;

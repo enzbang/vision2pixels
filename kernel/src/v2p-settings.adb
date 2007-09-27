@@ -22,10 +22,10 @@
 with Ada.Exceptions;
 with Ada.Text_IO;
 
+with V2P.Defaults;
 with Morzhol.Iniparser;
-with Defaults;
 
-package body Settings is
+package body V2P.Settings is
 
    use Ada;
    use Ada.Exceptions;
@@ -271,4 +271,4 @@ exception
       Conf.IO.Close;
    when Text_IO.Name_Error =>
       null;
-end Settings;
+end V2P.Settings;

@@ -30,9 +30,9 @@ with DB;
 with Image.Metadata.Embedded;
 with Morzhol.OS;
 with Morzhol.Strings;
-with Settings;
 
 with V2P.DB_Handle;
+with V2P.Settings;
 with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Comment;
 with V2P.Template_Defs.Block_Exif;
