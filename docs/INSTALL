@@ -73,7 +73,7 @@ Building libraries
 ------------------
 
    It is trivial to do so on GNU/Linux and other UNIXes. The notes below are
-   for building ImageMagick on Windows using GNAT GPL 2006. Note that it is
+   for building ImageMagick on Windows using GNAT GPL 2007. Note that it is
    supposed that you have Cygwin toolset installed. It may work with MSYS but
    this has not been tested.
 
@@ -101,7 +101,7 @@ Building libraries
 
    $ tar xfz ImageMagick-6.2.4-6.tar.gz
    $ cd ImageMagick-6.2.4
-   $ prefix=/opt/GNAT/GPL_2006
+   $ prefix=/opt/GNAT/GPL_2007
 
    $ export PATH=$prefix/bin:$prefix/lib:$PATH
    $ export C_INCLUDE_PATH=$prefix/pentium-mingw32msv/include\;/opt/jpeg/include
