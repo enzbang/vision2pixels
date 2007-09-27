@@ -19,12 +19,42 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-package V2P.URL is
+with AWS.Status;
+with AWS.Templates;
+with AWS.Services.Web_Block.Context;
 
-   function User_Name (URL : in String) return String;
-   --  Returns User_Name from URL
+package V2P.Callbacks.Page is
 
-   function Images_Full_Prefix return String;
-   --  Returns images full prefix : Vision2Pixels plugin path + image path
+   use AWS;
 
-end V2P.URL;
+   procedure Main_Page_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Display v2p main page
+
+   procedure New_Photo_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Adds a new photo in user tmp photo table
+
+   procedure Forum_Entry_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Forum entry callback
+
+   procedure Forum_Threads_Callback
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Forum threads callback
+
+   procedure New_Entry_Page
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  New entry page
+
+end V2P.Callbacks.Page;

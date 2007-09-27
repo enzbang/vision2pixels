@@ -23,62 +23,78 @@ with AWS.Status;
 with AWS.Templates;
 with AWS.Services.Web_Block.Context;
 
-package V2P.Web_Ajax_Callbacks is
+package V2P.Callbacks.Web_Block is
 
    use AWS;
 
-   procedure Login_Callback
+   procedure Exif
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
-   --  Login callback
 
-   procedure Logout_Callback
+   procedure Forum_Filter
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
-   --  Logout callback
 
-   procedure Onchange_Forum_List_Callback
+   procedure Forum_List
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
-   --  Called when a new forum is selected on post page
 
-   procedure Onchange_Filter_Forum
+   procedure Forum_List_Select
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
-   --  Called when changing the forum sorting
 
-   procedure Onclick_Hidden_Status_Toggle
+   procedure Forum_Threads
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
-   --  Called when changing the forum sorting
 
-   procedure Onsubmit_Comment_Form_Enter_Callback
+   procedure Login
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
-   --  Called when submitting a new comment
 
-   procedure Onsubmit_Metadata_Form_Enter_Callback
+   procedure Metadata
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
-   --  Called when submitting new metadata
 
-   procedure Onsubmit_Post_Form_Enter_Callback
+   procedure New_Comment
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
-   --  Called when submitting a new post
 
-   procedure Onsubmit_User_Page_Edit_Form_Enter_Callback
+   procedure New_Photo
+     (Request      : in Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set) is null;
+
+   procedure New_Post
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
-   --  Called when submitting new user page content
 
-end V2P.Web_Ajax_Callbacks;
+   procedure Quick_Login
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
+   procedure User_Page
+     (Request      : in Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
+   procedure User_Comment_List
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
+   procedure User_Thread_List
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
+end V2P.Callbacks.Web_Block;

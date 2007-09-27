@@ -29,7 +29,7 @@ with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Global;
 
-package body V2P.Web_Block_Callbacks is
+package body V2P.Callbacks.Web_Block is
 
    ----------
    -- Exif --
@@ -37,7 +37,7 @@ package body V2P.Web_Block_Callbacks is
 
    procedure Exif
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
@@ -55,7 +55,7 @@ package body V2P.Web_Block_Callbacks is
 
    procedure Forum_Filter
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
@@ -73,7 +73,7 @@ package body V2P.Web_Block_Callbacks is
 
    procedure Forum_List
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Context);
@@ -87,7 +87,7 @@ package body V2P.Web_Block_Callbacks is
 
    procedure Forum_List_Select
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Context);
@@ -101,7 +101,7 @@ package body V2P.Web_Block_Callbacks is
 
    procedure Forum_Threads
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       use V2P.Context;
@@ -137,7 +137,7 @@ package body V2P.Web_Block_Callbacks is
 
    procedure Login
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
@@ -154,7 +154,7 @@ package body V2P.Web_Block_Callbacks is
 
    procedure Metadata
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
 
@@ -214,7 +214,7 @@ package body V2P.Web_Block_Callbacks is
 
    procedure New_Comment
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
@@ -240,7 +240,7 @@ package body V2P.Web_Block_Callbacks is
 
    procedure New_Post
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Translations);
@@ -256,7 +256,7 @@ package body V2P.Web_Block_Callbacks is
 
    procedure Quick_Login
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
@@ -277,7 +277,7 @@ package body V2P.Web_Block_Callbacks is
 
    procedure User_Comment_List
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
@@ -295,7 +295,7 @@ package body V2P.Web_Block_Callbacks is
 
    procedure User_Page
      (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
@@ -317,7 +317,7 @@ package body V2P.Web_Block_Callbacks is
 
    procedure User_Thread_List
      (Request      : in     Status.Data;
-      Context      : access Web_Block.Context.Object;
+      Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
@@ -341,21 +341,4 @@ package body V2P.Web_Block_Callbacks is
       Templates.Insert (Translations, Set);
    end User_Thread_List;
 
-   ---------------------------
-   -- User_Tmp_Photo_Select --
-   ---------------------------
-
-   procedure User_Tmp_Photo_Select
-     (Request      : in Status.Data;
-      Context      : access Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
-   is
-      pragma Unreferenced (Context);
-      SID : constant Session.Id := Status.Session (Request);
-   begin
-      Templates.Insert
-        (Translations,
-         Database.Get_User_Tmp_Photo (Uid => Session.Get (SID, "LOGIN")));
-   end User_Tmp_Photo_Select;
-
-end V2P.Web_Block_Callbacks;
+end V2P.Callbacks.Web_Block;

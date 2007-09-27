@@ -1,0 +1,20 @@
+@@INCLUDE@@ babel.thtml
+@@-- HTTP_URL(/add_photo)
+@@INCLUDE@@ v2p_top.thtml @_BABEL_FORUM_POST_@ page_post_photo
+
+@@SET@@ SET_FORM_ACTION = /forum/new_entry
+
+@@IF@@ @_LOGIN_@ /= ""
+<form action="@_SET_FORM_ACTION_@"
+      enctype="multipart/form-data" id="form_post_photo"
+      method="POST">
+  <fieldset>
+    <legend>@_BABEL_ADD_NEW_PHOTO_@</legend>
+    <p>
+      <input name="FILENAME" type="file"/>
+      <input name="ENTER" type="submit" value="Ajouter"/></p>
+    </fieldset>
+  </form>
+@@ELSE@@
+@_BABEL_LOGIN_REQUIRED_@
+@@END_IF@@

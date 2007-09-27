@@ -149,62 +149,8 @@ package @_PACKAGE_@ is
 
    end Lazy;
 
-@@IF@@ @_SINGLE_FILE_@ = True
-@@TABLE@@
-   package @_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@ is
-      Template : constant String := "plugins/vision2pixels/@_FILENAME_@";
-   @@TABLE@@@
-     @@IF@@ not @_IS_EMPTY:URL_@
-       @@IF@@ @_TABLE_LINE_@ = 1
-      URL      : constant String := "@_URL_@";
-       @@ELSE@@
-      URL@_TABLE_LINE_@     : constant String := "@_URL_@";
-       @@END_IF@@
-     @@END_IF@@
-   @@END_TABLE@@
-
-   @@TABLE@@
-     @@IF@@ not @_IS_EMPTY:VARIABLE_@ and @_UPPER:SLICE(1..5):VARIABLE_@ /= "LAZY_"
-      @_REPLACE_ALL(__/_):VARIABLE_@ : constant String := "@_VARIABLE_@";
-     @@END_IF@@
-   @@END_TABLE@@
-
-@@IF@@ @_EXIST:HTTP_@
-
-       package HTTP is
-   @@TABLE@@
-      @@IF@@ not @_IS_EMPTY:HTTP_@
-         @_REPLACE_ALL(__/_):HTTP_@ : constant String := "@_HTTP_@";
-      @@END_IF@@
-   @@END_TABLE@@
-       end HTTP;
-@@END_IF@@
-@@IF@@ @_EXIST:SET_VAR_@
-
-       package Set is
-   @@TABLE@@
-         @_REPLACE_ALL(__/_):SET_VAR_@ : constant String := "@_SET_VAL_@";
-   @@END_TABLE@@
-       end Set;
-@@END_IF@@
-@@IF@@ @_EXIST:AJAX_EVENT_@
-
-   package Ajax is
-      @@TABLE@@
-      @@IF@@ not @_IS_EMPTY:AJAX_EVENT_@
-      @_AJAX_EVENT_@_@_AJAX_ACTION_@ : constant String := "/@_AJAX_EVENT_@$@_AJAX_ACTION_@";
-      @@END_IF@@
-      @@END_TABLE@@
-   end Ajax;
-@@END_IF@@
-
-   end @_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@;
-
-@@END_TABLE@@
-@@END_IF@@
 end @_PACKAGE_@;
 
-@@IF@@ @_SINGLE_FILE_@ /= True
 @@TABLE@@
 @@--  @@TABLE@@
 @@--    @@IF@@ @_EXIST:INCLUDE_@
@@ -246,7 +192,7 @@ package @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@ is
 
    package Set is
    @@TABLE@@
-      @_REPLACE_ALL(SET_/)REPLACE_ALL(__/_):SET_VAR_@ : constant String := "@_SET_VAL_@";
+      @_REPLACE_ALL(SET_/):SET_VAR_@ : constant String := "@_SET_VAL_@";
    @@END_TABLE@@
    end Set;
 @@END_IF@@
@@ -263,14 +209,14 @@ package @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@ is
 
 end @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@;
 @@END_TABLE@@
-@@END_IF@@
 
 --  DO NOT EDIT, THIS FILE HAS BEEN GENERATED
 
 with AWS.Services.Web_Block.Registry;
-with V2P.Web_Block_Callbacks;
+with V2P.Callbacks.Web_Block;
 
 package body @_PACKAGE_@ is
+
    pragma Style_Checks (Off);
 
    package body Lazy is
@@ -291,7 +237,7 @@ package body @_PACKAGE_@ is
          Web_Block.Registry.Register
             ("@_VARIABLE_LIST_@",
             "plugins/vision2pixels/templates/block_@_LOWER:REPLACE_ALL(LAZY_/):VARIABLE_LIST_@.thtml",
-             Web_Block_Callbacks.@_CAPITALIZE:REPLACE_ALL(LAZY_/):VARIABLE_LIST_@'Access);
+             Callbacks.Web_Block.@_CAPITALIZE:REPLACE_ALL(LAZY_/):VARIABLE_LIST_@'Access);
      @@END_IF@@
   @@END_TABLE@@
       end Register;

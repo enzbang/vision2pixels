@@ -19,11 +19,23 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Morzhol.OS;
+with V2P.Settings;
 with V2P.Template_Defs.User_Page;
 
 package body V2P.URL is
 
    use V2P;
+
+   ------------------------
+   -- Images_Full_Prefix --
+   ------------------------
+
+   function Images_Full_Prefix return String is
+   begin
+      return Gwiad_Plugin_Path
+        & Morzhol.OS.Directory_Separator & Settings.Get_Images_Path;
+   end Images_Full_Prefix;
 
    ---------------
    -- User_Name --

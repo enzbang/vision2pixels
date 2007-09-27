@@ -1,8 +1,12 @@
 @@INCLUDE@@ babel.thtml
 @@-- HTTP_URL(/photo_form_enter)
+
+@@SET@@ SET_FORM_ACTION =    photo_form_enter
+
 @@IF@@ @_LOGIN_@ /= ""
-  <form enctype="multipart/form-data" id="form_photo_post"
-        action="/photo_form_enter" method="POST" target="photo_post_target">
+  <form enctype="multipart/form-data" id="post"
+        action="@_SET_FORM_ACTION_@"
+        method="POST" target="photo_post_target">
     <fieldset>
       <legend>
         @_BABEL_NEW_PHOTO_@

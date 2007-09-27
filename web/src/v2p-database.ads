@@ -90,10 +90,6 @@ package V2P.Database is
    --  Returns the user's data. Returns the No_User_Data if User cannot be
    --  found into the database.
 
-   function Get_User_Tmp_Photo
-     (Uid : in String) return Templates.Translate_Set;
-   --  Returns user's temporaries photos
-
    function Get_User_Comment
      (Uid : in String; Textify : in Boolean := False)
       return Templates.Translate_Set;

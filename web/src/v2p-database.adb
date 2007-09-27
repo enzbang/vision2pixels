@@ -44,7 +44,6 @@ with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Comment_List;
 with V2P.Template_Defs.Block_New_Comment;
-with V2P.Template_Defs.Block_User_Tmp_Photo_Select;
 with V2P.Template_Defs.Global;
 with V2P.Template_Defs.R_Block_Forum_List;
 
@@ -1092,51 +1091,6 @@ package body V2P.Database is
       return Set;
    end Get_User_Page;
 
-   ------------------------
-   -- Get_User_Tmp_Photo --
-   ------------------------
-
-   function Get_User_Tmp_Photo
-     (Uid : in String) return Templates.Translate_Set
-   is
-      use type Templates.Tag;
-
-      DBH          : constant TLS_DBH_Access :=
-                       TLS_DBH_Access (DBH_TLS.Reference);
-      Set          : Templates.Translate_Set;
-      Iter         : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line         : DB.String_Vectors.Vector;
-      Tmp_Id       : Templates.Tag;
-      Tmp_Filename : Templates.Tag;
-   begin
-      Connect (DBH);
-
-      DBH.Handle.Prepare_Select
-        (Iter, "select photo_id, filename from "
-           & "user_photos_queue, photos_queue, photo "
-           & "where user_photos_queue.id = photos_queue.queue_id "
-           & "and photo.id = photo_id and user_photos_queue.user_login="
-           & Q (Uid));
-
-      while Iter.More loop
-         Iter.Get_Line (Line);
-         Tmp_Id       := Tmp_Id       & DB.String_Vectors.Element (Line, 1);
-         Tmp_Filename := Tmp_Filename & DB.String_Vectors.Element (Line, 2);
-
-         Line.Clear;
-      end loop;
-
-      Iter.End_Select;
-
-      Templates.Insert
-        (Set, Templates.Assoc (Block_User_Tmp_Photo_Select.TMP_ID, Tmp_Id));
-      Templates.Insert
-        (Set, Templates.Assoc
-           (Block_User_Tmp_Photo_Select.TMP_FILENAME, Tmp_Filename));
-
-      return Set;
-   end Get_User_Tmp_Photo;
-
    -------
    -- I --
    -------
@@ -1280,8 +1234,8 @@ package body V2P.Database is
          Size     : in Integer);
       --  Insert row into the photo table
 
-      procedure Insert_Table_User_Tmp_Photo (Uid, Pid : in String);
-      --  Insert row into the user_tmp_photo table
+      procedure User_Tmp_Photo (Uid, Pid : in String);
+      --  Update user_photo_queue table
 
       DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
 
@@ -1302,18 +1256,17 @@ package body V2P.Database is
          DBH.Handle.Execute (SQL);
       end Insert_Table_Photo;
 
-      ---------------------------------
-      -- Insert_Table_User_Tmp_Photo --
-      ---------------------------------
+      --------------------
+      -- User_Tmp_Photo --
+      --------------------
 
-      procedure Insert_Table_User_Tmp_Photo (Uid, Pid : in String) is
+      procedure User_Tmp_Photo (Uid, Pid : in String) is
          SQL : constant String :=
-           "insert into photos_queue values "
-           & "((select id from user_photos_queue where user_login = " & Q (Uid)
-           & "), " & Pid & ')';
+                 "update user_photo_queue set photo_id = " & Pid
+                   & " where user_login = " & Q (Uid);
       begin
          DBH.Handle.Execute (SQL);
-      end Insert_Table_User_Tmp_Photo;
+      end User_Tmp_Photo;
 
    begin
       Connect (DBH);
@@ -1322,12 +1275,10 @@ package body V2P.Database is
 
       Insert_Table_Photo (Filename, Height, Width, Size);
 
-      --  ??? A limit should be added for user temporaries photos
-
       Row_Id : declare
          Pid : constant String := DBH.Handle.Last_Insert_Rowid;
       begin
-         Insert_Table_User_Tmp_Photo (Uid, Pid);
+         User_Tmp_Photo (Uid, Pid);
          DBH.Handle.Commit;
          return Pid;
       end Row_Id;
