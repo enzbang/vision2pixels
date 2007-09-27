@@ -357,6 +357,8 @@ AWS.Ajax = new function() {
    this.serialize = function(elm) {
       var param = "";
 
+      if ($(elm) == null) return;
+
       if ($(elm).tagName == "FORM") {
          param = Form.serialize (elm);
       } else if ($(elm).tagName == "UL") {
