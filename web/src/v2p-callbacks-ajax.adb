@@ -336,6 +336,8 @@ package body V2P.Callbacks.Ajax is
                        Parameters.Get (P, Forum_New_Entry.HTTP.comment_input);
       CID          : constant String :=
                        Parameters.Get (P, Forum_New_Entry.HTTP.CATEGORY);
+      PID          : constant String :=
+                       Parameters.Get (P, Forum_New_Entry.HTTP.PID);
       Last_Name    : constant String :=
                        Context.Get_Value (Global.CONTEXT_LAST_POST_NAME);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
@@ -361,7 +363,11 @@ package body V2P.Callbacks.Ajax is
             Insert_Post : declare
                Post_Id : constant String :=
                            Database.Insert_Post
-                             (Login, CID, Name, Comment_Wiki, "");
+                             (Uid         => Login,
+                              Category_Id => CID,
+                              Name        => Name,
+                              Comment     => Comment_Wiki,
+                              Pid         => PID);
             begin
                if Post_Id /= "" then
                   --  Set new context TID (needed by
@@ -387,11 +393,10 @@ package body V2P.Callbacks.Ajax is
             end Insert_Post;
          end if;
 
-         --           if Pid /= "" and then Context.Exist (Global.TID) then
-         --              Onsubmit_Metadata_Form_Enter_Callback
-         --                (Request, Context, Translations);
-         --           end if;
-         --           ???
+         if PID /= "" and then Context.Exist (Global.TID) then
+            Onsubmit_Metadata_Form_Enter
+              (Request, Context, Translations);
+         end if;
       end if;
    end Onsubmit_Post_Form_Enter;
 

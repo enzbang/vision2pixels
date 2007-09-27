@@ -200,6 +200,12 @@ package body V2P.Web_Server is
       Templates.Insert
         (Translations,
          Templates.Assoc
+           (Template_Defs.Global.FORUM_NEW_PHOTO_URL,
+            Template_Defs.Post_Photo.URL));
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
            (Template_Defs.Global.FORUM_ENTRY_URL,
             Template_Defs.Forum_Entry.URL));
 

@@ -21,7 +21,8 @@
 <div id="logged_box">
   <ul>
     <li><a href="/~@_LOGIN_@">@_BABEL_YOUR_PAGE_@</a></li>
-    <li><a href="@_FORUM_POST_URL_@">@_BABEL_NEW_POST_@</a><li>
+    <li><a href="@_FORUM_NEW_PHOTO_URL_@">@_BABEL_FORUM_NEW_PHOTO_@</a><li>
+    <li><a href="@_FORUM_POST_URL_@">@_BABEL_FORUM_NEW_ENTRY_@</a><li>
     @@IF@@ @_ADMIN_@
       <li><a href="@_ADMIN_URL_@">@_BABEL_ADMIN_@</a><li>
     @@END_IF@@
