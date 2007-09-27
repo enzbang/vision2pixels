@@ -21,9 +21,14 @@
 
 with Ada.Unchecked_Deallocation;
 
+with V2P.Logs;
+
 package body DB.SQLite is
 
    use GNU.DB;
+   use V2P;
+
+   Module : constant V2P.Logs.Module_Name := "DB_SQLITE";
 
    procedure Unchecked_Free is new Unchecked_Deallocation
      (Object => SQLite3.Object, Name => SQLite3.Handle);
@@ -43,6 +48,7 @@ package body DB.SQLite is
 
    overriding procedure Begin_Transaction (DB : in Handle) is
    begin
+      Logs.Write (Module, Logs.Information, "begin");
       Execute (DB, "begin");
    end Begin_Transaction;
 
@@ -57,6 +63,10 @@ package body DB.SQLite is
       use type SQLite3.Return_Value;
    begin
       if Result /= SQLite3.SQLITE_OK then
+         Logs.Write
+           (Module, Logs.Error,
+            Logs.NV ("Return_Value", SQLite3.Return_Value'Image (Result))
+              & ", " & Logs.NV ("routine", Routine));
          raise DB_Error
            with "SQLite: Error " & SQLite3.Return_Value'Image (Result) &
              " in " & Routine;
@@ -69,6 +79,7 @@ package body DB.SQLite is
 
    overriding procedure Close (DB : in out Handle) is
    begin
+      Logs.Write (Module, Logs.Information, "close");
       Check_Result ("close", SQLite3.Close (DB.H));
       Unchecked_Free (DB.H);
    end Close;
@@ -79,6 +90,7 @@ package body DB.SQLite is
 
    overriding procedure Commit (DB : in Handle) is
    begin
+      Logs.Write (Module, Logs.Information, "commit");
       Execute (DB, "commit");
    end Commit;
 
@@ -95,6 +107,8 @@ package body DB.SQLite is
       pragma Unreferenced (User, Password);
       use type GNU.DB.SQLite3.Handle;
    begin
+      Logs.Write
+        (Module, Logs.Information, "connect " & Logs.NV ("Name", Name));
       if DB.H = null then
          DB.H := new GNU.DB.SQLite3.Object;
       end if;
@@ -107,6 +121,7 @@ package body DB.SQLite is
 
    overriding procedure End_Select (Iter : in out Iterator) is
    begin
+      Logs.Write (Module, Logs.Information, "end_select");
       Check_Result ("end_select", SQLite3.finalize (Iter.S'Unchecked_Access));
    end End_Select;
 
@@ -116,6 +131,8 @@ package body DB.SQLite is
 
    overriding procedure Execute (DB : in Handle; SQL : in String) is
    begin
+      Logs.Write
+        (Module, Logs.Information, "execute : " & Logs.NV ("SQL", SQL));
       Check_Result ("execute", SQLite3.Exec (DB.H, SQL));
    exception
       when DB_Error =>
@@ -170,6 +187,8 @@ package body DB.SQLite is
       use type SQLite3.Statement_Reference;
    begin
       pragma Assert (Iter in Iterator);
+      Logs.Write
+        (Module, Logs.Information, "prepare select : " & Logs.NV ("SQL", SQL));
 
       Iterator (Iter).H := DB;
       Iterator (Iter).More := False;
@@ -190,6 +209,7 @@ package body DB.SQLite is
 
    overriding procedure Rollback (DB : in Handle) is
    begin
+      Logs.Write (Module, Logs.Information, "rollback");
       Execute (DB, "rollback");
    end Rollback;
 
