@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                           Copyright (C) 2007                             --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,29 +19,63 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with "../shared";
-with "../kernel/kernel";
-with "../lib/gnade/gnade";
+with Ada.Calendar.Formatting;
+with Ada.Characters.Handling;
+with Ada.Strings.Fixed;
+with Ada.Text_IO;
 
-project DB is
+package body V2P.Logs is
 
-   for Source_Dirs use ("src");
-   for Object_Dir use "obj";
+   use Ada;
 
-   for Library_Dir use "lib";
-   for Library_Name use "v2p_db";
-   for Library_Kind use "dynamic";
+   Is_Activated : array (Log_Level) of Boolean := (others => True);
 
-   --------------
-   -- Compiler --
-   --------------
+   Log          : Text_IO.File_Type;
 
-   package Compiler renames Shared.Compiler;
+   --------
+   -- NV --
+   --------
+
+   function NV (Name, Value : in String) return String is
+   begin
+      return Name & "=""" & Value & '"';
+   end NV;
+
+   function NV (Name : in String; Value : in Integer) return String is
+   begin
+      return NV
+        (Name,
+         Strings.Fixed.Trim (Integer'Image (Value), Strings.Left));
+   end NV;
 
    ---------
-   -- Ide --
+   -- Set --
    ---------
 
-   package Ide renames Shared.Ide;
+   procedure Set (Kind : in Log_Level; Activated : in Boolean) is
+   begin
+      Is_Activated (Kind) := Activated;
+   end Set;
 
-end DB;
+   -----------
+   -- Write --
+   -----------
+
+   procedure Write
+     (Name    : in Module_Name;
+      Kind    : in Log_Level;
+      Content : in String) is
+   begin
+      if Is_Activated (Kind) then
+         Text_IO.Put_Line
+           (Log,
+            "[" & Calendar.Formatting.Image (Calendar.Clock) & "] ["
+            & Characters.Handling.To_Upper (String (Name)) & "] ["
+            & Log_Level'Image (Kind) & "] - " & Content);
+         Text_IO.Flush (Log);
+      end if;
+   end Write;
+
+begin
+   Text_IO.Create (Log, Text_IO.Append_File, "v2p.log");
+end V2P.Logs;
