@@ -32,6 +32,13 @@ package body V2P.Logs is
 
    Log          : Text_IO.File_Type;
 
+   protected Semaphore is
+      entry Get;
+      procedure Release;
+   private
+      Free : Boolean := True;
+   end Semaphore;
+
    --------
    -- NV --
    --------
@@ -47,6 +54,32 @@ package body V2P.Logs is
         (Name,
          Strings.Fixed.Trim (Integer'Image (Value), Strings.Left));
    end NV;
+
+   ---------------
+   -- Semaphore --
+   ---------------
+
+   protected body Semaphore is
+
+      ---------
+      -- Get --
+      ---------
+
+      entry Get when Free is
+      begin
+         Free := False;
+      end Get;
+
+      -------------
+      -- Release --
+      -------------
+
+      procedure Release is
+      begin
+         Free := True;
+      end Release;
+
+   end Semaphore;
 
    ---------
    -- Set --
@@ -67,12 +100,14 @@ package body V2P.Logs is
       Content : in String) is
    begin
       if Is_Activated (Kind) then
+         Semaphore.Get;
          Text_IO.Put_Line
            (Log,
             "[" & Calendar.Formatting.Image (Calendar.Clock) & "] ["
             & Characters.Handling.To_Upper (String (Name)) & "] ["
             & Log_Level'Image (Kind) & "] - " & Content);
          Text_IO.Flush (Log);
+         Semaphore.Release;
       end if;
    end Write;
 
