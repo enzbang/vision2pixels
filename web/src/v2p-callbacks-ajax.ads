@@ -27,19 +27,19 @@ package V2P.Callbacks.Ajax is
 
    use AWS;
 
-   procedure Login_Callback
+   procedure Login
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Login callback
 
-   procedure Logout_Callback
+   procedure Logout
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Logout callback
 
-   procedure Onchange_Forum_List_Callback
+   procedure Onchange_Forum_List
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
@@ -57,25 +57,25 @@ package V2P.Callbacks.Ajax is
       Translations : in out Templates.Translate_Set);
    --  Called when changing the forum sorting
 
-   procedure Onsubmit_Comment_Form_Enter_Callback
+   procedure Onsubmit_Comment_Form_Enter
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Called when submitting a new comment
 
-   procedure Onsubmit_Metadata_Form_Enter_Callback
+   procedure Onsubmit_Metadata_Form_Enter
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Called when submitting new metadata
 
-   procedure Onsubmit_Post_Form_Enter_Callback
+   procedure Onsubmit_Post_Form_Enter
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
    --  Called when submitting a new post
 
-   procedure Onsubmit_User_Page_Edit_Form_Enter_Callback
+   procedure Onsubmit_User_Page_Edit_Form_Enter
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);

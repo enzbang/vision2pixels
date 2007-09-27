@@ -34,17 +34,16 @@ with V2P.Template_Defs.Forum_New_Entry;
 with V2P.Template_Defs.Global;
 with V2P.Template_Defs.Post_Photo;
 with V2P.Template_Defs.Block_Forum_Navigate;
-with V2P.Template_Defs.Block_New_Photo;
 
 with Image.Data;
 
 package body V2P.Callbacks.Page is
 
---------------------------
-   -- Forum_Entry_Callback --
-   --------------------------
+   -----------------
+   -- Forum_Entry --
+   -----------------
 
-   procedure Forum_Entry_Callback
+   procedure Forum_Entry
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
@@ -121,13 +120,13 @@ package body V2P.Callbacks.Page is
 
          Templates.Insert (Translations, Database.Get_Entry (TID));
       end if;
-   end Forum_Entry_Callback;
+   end Forum_Entry;
 
-   ----------------------------
-   -- Forum_Threads_Callback --
-   ----------------------------
+   -------------------
+   -- Forum_Threads --
+   -------------------
 
-   procedure Forum_Threads_Callback
+   procedure Forum_Threads
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
@@ -158,13 +157,13 @@ package body V2P.Callbacks.Page is
         (Context.all, Template_Defs.Global.NAV_FROM, From);
 
       V2P.Context.Context_Filter (Context);
-   end Forum_Threads_Callback;
+   end Forum_Threads;
 
-      ------------------------
-   -- Main_Page_Callback --
-   ------------------------
+   ---------------
+   -- Main_Page --
+   ---------------
 
-   procedure Main_Page_Callback
+   procedure Main_Page
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
@@ -179,7 +178,7 @@ package body V2P.Callbacks.Page is
       end if;
 
       V2P.Context.Context_Filter (Context);
-   end Main_Page_Callback;
+   end Main_Page;
 
    procedure New_Entry_Page
      (Request      : in     Status.Data;
@@ -205,18 +204,15 @@ package body V2P.Callbacks.Page is
       --  If a new photo has been uploaded, insert it in database
 
       if Filename /= "" then
-         New_Photo_Callback (Request, Context, Translations);
+         New_Photo (Request, Context, Translations);
       end if;
-
-
-
    end New_Entry_Page;
 
-   ------------------------
-   -- New_Photo_Callback --
-   ------------------------
+   ---------------
+   -- New_Photo --
+   ---------------
 
-   procedure New_Photo_Callback
+   procedure New_Photo
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
@@ -230,7 +226,7 @@ package body V2P.Callbacks.Page is
                       Session.Get (SID, Template_Defs.Global.LOGIN);
       Filename    : constant String :=
                       Parameters.Get
-                        (P, Template_Defs.Block_New_Photo.HTTP.FILENAME);
+                        (P, Template_Defs.Post_Photo.HTTP.FILENAME);
 
       Images_Path : String renames URL.Images_Full_Prefix;
 
@@ -285,6 +281,6 @@ package body V2P.Callbacks.Page is
                   New_Photo_Filename));
          end Insert_Photo;
       end if;
-   end New_Photo_Callback;
+   end New_Photo;
 
 end V2P.Callbacks.Page;

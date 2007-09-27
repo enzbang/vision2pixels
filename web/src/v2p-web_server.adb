@@ -40,19 +40,15 @@ with V2P.Callbacks.Ajax;
 
 with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Forum_Threads;
-with V2P.Template_Defs.Forum_Post;
 with V2P.Template_Defs.Admin;
 with V2P.Template_Defs.User_Page;
 with V2P.Template_Defs.Main_Page;
 with V2P.Template_Defs.Forum_New_Entry;
 with V2P.Template_Defs.Error;
 with V2P.Template_Defs.Global;
-with V2P.Template_Defs.Iframe_Photo_Post;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Post_Photo;
 with V2P.Template_Defs.Block_New_Comment;
-with V2P.Template_Defs.Block_New_Post;
-with V2P.Template_Defs.Block_New_Photo;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_User_Page;
@@ -199,7 +195,7 @@ package body V2P.Web_Server is
         (Translations,
          Templates.Assoc
            (Template_Defs.Global.FORUM_POST_URL,
-            Template_Defs.Forum_Post.URL));
+            Template_Defs.Forum_New_Entry.URL));
 
       Templates.Insert
         (Translations,
@@ -220,12 +216,17 @@ package body V2P.Web_Server is
            (Template_Defs.Global.OPTION_ANONYMOUS_COMMENT,
             Settings.Anonymous_Comment));
 
-      --  Insert the thumb path
+      --  Insert the images prefixes
 
       Templates.Insert
         (Translations, Templates.Assoc
            (Template_Defs.Global.THUMB_SOURCE_PREFIX,
             Settings.Thumbs_Source_Prefix));
+
+      Templates.Insert
+        (Translations, Templates.Assoc
+           (Template_Defs.Global.IMAGE_SOURCE_PREFIX,
+            Settings.Images_Source_Prefix));
 
       Web_Page := Services.Web_Block.Registry.Build
         (URI, Request, Translations, Cache_Control => Messages.Prevent_Cache);
@@ -338,31 +339,21 @@ package body V2P.Web_Server is
       Services.Web_Block.Registry.Register
         (Template_Defs.Forum_Entry.URL,
          Template_Defs.Forum_Entry.Template,
-         Callbacks.Page.Forum_Entry_Callback'Access);
-
-      Services.Web_Block.Registry.Register
-        (Template_Defs.Block_New_Photo.URL,
-         Template_Defs.Iframe_Photo_Post.Template,
-         Callbacks.Page.New_Photo_Callback'Access);
+         Callbacks.Page.Forum_Entry'Access);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Forum_Threads.URL,
          Template_Defs.Forum_Threads.Template,
-         Callbacks.Page.Forum_Threads_Callback'Access);
+         Callbacks.Page.Forum_Threads'Access);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Main_Page.URL,
          Template_Defs.Main_Page.Template,
-         Callbacks.Page.Main_Page_Callback'Access);
+         Callbacks.Page.Main_Page'Access);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Error.URL,
          Template_Defs.Error.Template,
-         null);
-
-      Services.Web_Block.Registry.Register
-        (Template_Defs.Forum_Post.URL,
-         Template_Defs.Forum_Post.Template,
          null);
 
       Services.Web_Block.Registry.Register
@@ -385,13 +376,13 @@ package body V2P.Web_Server is
       Services.Web_Block.Registry.Register
         (Template_Defs.Block_Login.Ajax.onclick_login_form_enter,
          Template_Defs.R_Block_Login.Template,
-         Callbacks.Ajax.Login_Callback'Access,
+         Callbacks.Ajax.Login'Access,
          Content_Type => MIME.Text_XML);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Block_Login.Ajax.onclick_logout_enter,
          Template_Defs.R_Block_Logout.Template,
-         Callbacks.Ajax.Logout_Callback'Access,
+         Callbacks.Ajax.Logout'Access,
          Content_Type => MIME.Text_XML);
 
       Services.Web_Block.Registry.Register
@@ -409,31 +400,31 @@ package body V2P.Web_Server is
       Services.Web_Block.Registry.Register
         (Template_Defs.Block_New_Comment.Ajax.onchange_sel_forum_list,
          Template_Defs.R_Block_Forum_List.Template,
-         Callbacks.Ajax.Onchange_Forum_List_Callback'Access,
+         Callbacks.Ajax.Onchange_Forum_List'Access,
          Content_Type => MIME.Text_XML);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Block_New_Comment.Ajax.onsubmit_comment_form,
          Template_Defs.R_Block_Comment_Form_Enter.Template,
-         Callbacks.Ajax.Onsubmit_Comment_Form_Enter_Callback'Access,
+         Callbacks.Ajax.Onsubmit_Comment_Form_Enter'Access,
          Content_Type => MIME.Text_XML);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Block_New_Post.Ajax.onsubmit_post_form,
+        (Template_Defs.Forum_New_Entry.Ajax.onsubmit_new_entry_form_submit,
          Template_Defs.R_Block_Post_Form_Enter.Template,
-         Callbacks.Ajax.Onsubmit_Post_Form_Enter_Callback'Access,
+         Callbacks.Ajax.Onsubmit_Post_Form_Enter'Access,
          Content_Type => MIME.Text_XML);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Block_Metadata.Ajax.onsubmit_metadata_post,
          Template_Defs.R_Block_Metadata_Form_Enter.Template,
-         Callbacks.Ajax.Onsubmit_Metadata_Form_Enter_Callback'Access,
+         Callbacks.Ajax.Onsubmit_Metadata_Form_Enter'Access,
          Content_Type => MIME.Text_XML);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Block_User_Page.Ajax.onsubmit_user_page_edit_form,
          Template_Defs.R_Block_User_Page_Edit_Form_Enter.Template,
-         Callbacks.Ajax.Onsubmit_User_Page_Edit_Form_Enter_Callback'Access,
+         Callbacks.Ajax.Onsubmit_User_Page_Edit_Form_Enter'Access,
          Content_Type => MIME.Text_XML);
 
       Services.Web_Block.Registry.Register
@@ -504,6 +495,7 @@ package body V2P.Web_Server is
    end WEJS_Callback;
 
 begin  -- V2P.Web_Server : register vision2pixels website
+
    Start;
 
    Gwiad.Web.Virtual_Host.Register
