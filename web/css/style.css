@@ -414,6 +414,10 @@ span.nooverflowimage img {
    text-decoration: none;
 }
 
+.slides li p a.hidden_entry {
+   text-decoration: line-through;
+   color: #ff0000;
+}
 
 iframe {
 /*    display: none; */
