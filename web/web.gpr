@@ -48,7 +48,7 @@ project Web is
    for Library_Interface use
      ("v2p.web_server", "v2p.wiki", "v2p.template_defs",
       "v2p.template_defs.block_login", "v2p.template_defs.block_forum_filter",
-      "v2p.template_defs.forum_threads");
+      "v2p.template_defs.page_forum_threads");
    for Library_Kind use "dynamic";
    for Library_Auto_Init use "false";
 

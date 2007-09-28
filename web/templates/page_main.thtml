@@ -1,8 +1,8 @@
-@@INCLUDE@@ babel.thtml
+@@INCLUDE@@ set_babel.thtml
 @@--
 @@-- HTTP_URL(/): Website root
 @@--
-@@INCLUDE@@ v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ main
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ main
 <div class="forums">@_LAZY_FORUM_LIST_@</div>
 
 <h1>Vision2pixels</h1>
@@ -25,4 +25,4 @@ a sûrement plusieurs</p>
   @@END_IF@@
   @_V2P_ERROR_@
 @@END_IF@@
-@@INCLUDE@@ v2p_end.thtml
+@@INCLUDE@@ chunk_v2p_end.thtml

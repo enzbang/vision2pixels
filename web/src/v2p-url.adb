@@ -21,7 +21,7 @@
 
 with Morzhol.OS;
 with V2P.Settings;
-with V2P.Template_Defs.User_Page;
+with V2P.Template_Defs.Page_User;
 
 package body V2P.URL is
 
@@ -43,7 +43,7 @@ package body V2P.URL is
 
    function User_Name (URL : in String) return String is
    begin
-      return URL (URL'First + Template_Defs.User_Page.URL'Length .. URL'Last);
+      return URL (URL'First + Template_Defs.Page_User.URL'Length .. URL'Last);
    end User_Name;
 
 end V2P.URL;

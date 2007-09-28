@@ -1,11 +1,11 @@
-@@INCLUDE@@ babel.thtml
+@@INCLUDE@@ set_babel.thtml
 @@-- HTTP_GET(FID): forum Id
 @@-- HTTP_URL(/forum/threads): Forum Threads URL
 @@--
-@@INCLUDE@@ v2p_top.thtml @_BABEL_THREAD_LIST_@ forum_threads yui-t7
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_THREAD_LIST_@ forum_threads yui-t7
 @@--
 <div class="forums">@_LAZY_FORUM_LIST_@</div>
 <div id="lazy_forum_filter">@_LAZY_FORUM_FILTER_@</div>
 <div id="lazy_forum_threads">@_LAZY_FORUM_THREADS_@</div>
 @@--
-@@INCLUDE@@ v2p_end.thtml
+@@INCLUDE@@ chunk_v2p_end.thtml

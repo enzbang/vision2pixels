@@ -1,4 +1,4 @@
-@@INCLUDE@@ babel.thtml
+@@INCLUDE@@ set_babel.thtml
 @@--
 <a href="#" id="show_rel_login" rel="lazy_login">
   @@IF@@ @_LOGIN_@ = ""

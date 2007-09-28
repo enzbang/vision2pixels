@@ -21,7 +21,7 @@
 
 with V2P.Database;
 with V2P.Settings;
-with V2P.Template_Defs.Global;
+with V2P.Template_Defs.Set_Global;
 
 package body V2P.Context is
 
@@ -34,18 +34,18 @@ package body V2P.Context is
 
    procedure Context_Filter (Context : access Object) is
    begin
-      if not Context.Exist (Template_Defs.Global.FILTER) then
+      if not Context.Exist (Template_Defs.Set_Global.FILTER) then
          Context.Set_Value
-           (Template_Defs.Global.FILTER,
+           (Template_Defs.Set_Global.FILTER,
             Database.Filter_Mode'Image (Database.All_Messages));
 
          if Settings.Descending_Order then
             Context.Set_Value
-              (Template_Defs.Global.ORDER_DIR,
+              (Template_Defs.Set_Global.ORDER_DIR,
                Database.Order_Direction'Image (Database.DESC));
          else
             Context.Set_Value
-              (Template_Defs.Global.ORDER_DIR,
+              (Template_Defs.Set_Global.ORDER_DIR,
                Database.Order_Direction'Image (Database.ASC));
          end if;
       end if;

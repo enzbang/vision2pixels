@@ -27,7 +27,7 @@ with V2P.Context;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Metadata;
-with V2P.Template_Defs.Global;
+with V2P.Template_Defs.Set_Global;
 
 package body V2P.Callbacks.Web_Block is
 
@@ -63,8 +63,8 @@ package body V2P.Callbacks.Web_Block is
       Templates.Insert
         (Translations,
          Templates.Assoc
-           (Template_Defs.Global.FILTER,
-            Context.Get_Value (Template_Defs.Global.FILTER)));
+           (Template_Defs.Set_Global.FILTER,
+            Context.Get_Value (Template_Defs.Set_Global.FILTER)));
    end Forum_Filter;
 
    ----------------
@@ -108,20 +108,20 @@ package body V2P.Callbacks.Web_Block is
 
       SID       : constant Session.Id := Status.Session (Request);
       Admin     : constant Boolean :=
-                    Session.Exist (SID, Template_Defs.Global.ADMIN)
-                  and then Session.Get (SID, Template_Defs.Global.ADMIN);
+                    Session.Exist (SID, Template_Defs.Set_Global.ADMIN)
+                  and then Session.Get (SID, Template_Defs.Set_Global.ADMIN);
       Set       : Templates.Translate_Set;
       Nav_Links : V2P.Context.Post_Ids.Vector;
    begin
       Database.Get_Threads
-        (FID        => Context.Get_Value (Template_Defs.Global.FID),
+        (FID        => Context.Get_Value (Template_Defs.Set_Global.FID),
          From       => Navigation_From.Get_Value
-           (Context.all, Template_Defs.Global.NAV_FROM),
+           (Context.all, Template_Defs.Set_Global.NAV_FROM),
          Admin      => Admin,
          Filter     => Database.Filter_Mode'Value (Context.Get_Value
-           (Template_Defs.Global.FILTER)),
+           (Template_Defs.Set_Global.FILTER)),
          Order_Dir  => Database.Order_Direction'Value
-           (Context.Get_Value (Template_Defs.Global.ORDER_DIR)),
+           (Context.Get_Value (Template_Defs.Set_Global.ORDER_DIR)),
          Navigation => Nav_Links,
          Set        => Set);
 
@@ -145,7 +145,8 @@ package body V2P.Callbacks.Web_Block is
    begin
       Templates.Insert
         (Translations,
-         Database.Get_User (Session.Get (SID, Template_Defs.Global.LOGIN)));
+         Database.Get_User
+           (Session.Get (SID, Template_Defs.Set_Global.LOGIN)));
    end Login;
 
    --------------
@@ -160,7 +161,7 @@ package body V2P.Callbacks.Web_Block is
 
       SID : constant Session.Id := Status.Session (Request);
       Login       : constant String :=
-                      Session.Get (SID, Template_Defs.Global.LOGIN);
+                      Session.Get (SID, Template_Defs.Set_Global.LOGIN);
    begin
       if Context.Exist ("TID") then
          Templates.Insert
@@ -171,34 +172,34 @@ package body V2P.Callbacks.Web_Block is
                  (Login, Context.Get_Value ("TID")))));
 
          if Context.Exist
-           (V2P.Template_Defs.Global.ERROR_METADATA_NULL_METADATA) then
+           (V2P.Template_Defs.Set_Global.ERROR_METADATA_NULL_METADATA) then
             Templates.Insert
               (Translations,
                Templates.Assoc
-                 (V2P.Template_Defs.Global.ERROR_METADATA_NULL_METADATA,
+                 (V2P.Template_Defs.Set_Global.ERROR_METADATA_NULL_METADATA,
                   "ERROR"));
             Context.Remove
-              (V2P.Template_Defs.Global.ERROR_METADATA_NULL_METADATA);
+              (V2P.Template_Defs.Set_Global.ERROR_METADATA_NULL_METADATA);
 
          elsif Context.Exist
-           (V2P.Template_Defs.Global.ERROR_METADATA_UNKNOWN_PHOTO) then
+           (V2P.Template_Defs.Set_Global.ERROR_METADATA_UNKNOWN_PHOTO) then
             Templates.Insert
               (Translations,
                Templates.Assoc
-                 (V2P.Template_Defs.Global.ERROR_METADATA_UNKNOWN_PHOTO,
+                 (V2P.Template_Defs.Set_Global.ERROR_METADATA_UNKNOWN_PHOTO,
                   "ERROR"));
             Context.Remove
-              (V2P.Template_Defs.Global.ERROR_METADATA_UNKNOWN_PHOTO);
+              (V2P.Template_Defs.Set_Global.ERROR_METADATA_UNKNOWN_PHOTO);
 
          elsif Context.Exist
-           (V2P.Template_Defs.Global.ERROR_METADATA_WRONG_METADATA) then
+           (V2P.Template_Defs.Set_Global.ERROR_METADATA_WRONG_METADATA) then
             Templates.Insert
               (Translations,
                Templates.Assoc
-                 (V2P.Template_Defs.Global.ERROR_METADATA_WRONG_METADATA,
+                 (V2P.Template_Defs.Set_Global.ERROR_METADATA_WRONG_METADATA,
                   "ERROR"));
             Context.Remove
-              (V2P.Template_Defs.Global.ERROR_METADATA_WRONG_METADATA);
+              (V2P.Template_Defs.Set_Global.ERROR_METADATA_WRONG_METADATA);
 
          else
             Templates.Insert
@@ -262,12 +263,12 @@ package body V2P.Callbacks.Web_Block is
       pragma Unreferenced (Context);
       SID : constant Session.Id := Status.Session (Request);
    begin
-      if Session.Exist (SID, Template_Defs.Global.LOGIN) then
+      if Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then
          Templates.Insert
            (Translations,
             Templates.Assoc
-              (Template_Defs.Global.LOGIN,
-               String'(Session.Get (SID, Template_Defs.Global.LOGIN))));
+              (Template_Defs.Set_Global.LOGIN,
+               String'(Session.Get (SID, Template_Defs.Set_Global.LOGIN))));
       end if;
    end Quick_Login;
 
@@ -324,8 +325,8 @@ package body V2P.Callbacks.Web_Block is
 
       SID        : constant Session.Id := Status.Session (Request);
       Admin      : constant Boolean :=
-                     Session.Exist (SID, Template_Defs.Global.ADMIN)
-                    and then Session.Get (SID, Template_Defs.Global.ADMIN);
+                     Session.Exist (SID, Template_Defs.Set_Global.ADMIN)
+                    and then Session.Get (SID, Template_Defs.Set_Global.ADMIN);
       URI        : constant String     := Status.URI (Request);
       User_Name  : constant String     := URL.User_Name (URI);
       Set        : Templates.Translate_Set;

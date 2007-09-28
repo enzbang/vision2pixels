@@ -1,7 +1,7 @@
-@@INCLUDE@@ babel.thtml
+@@INCLUDE@@ set_babel.thtml
 @@-- HTTP_URL(/admin): Forum Post URL
 @@--
-@@INCLUDE@@ v2p_top.thtml (1=>@_BABEL_ADMIN_@, 2=>admin_page, 4=>"notebook")
+@@INCLUDE@@ chunk_v2p_top.thtml (1=>@_BABEL_ADMIN_@, 2=>admin_page, 4=>"notebook")
 <div id="admin_page">
 @@IF@@ @_ADMIN_@
 <ul id="Tabs">
@@ -18,5 +18,5 @@
 @@ELSE@@
   <p>@_BABEL_DOES_NOT_EXIST_@</p>
 @@END_IF@@
-@@INCLUDE@@ v2p_end.thtml
+@@INCLUDE@@ chunk_v2p_end.thtml
 </div>

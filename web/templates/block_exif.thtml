@@ -1,4 +1,4 @@
-@@INCLUDE@@ babel.thtml
+@@INCLUDE@@ set_babel.thtml
 @@--
 <dl class="exif">
   @@IF@@ @_EXIST:EXIF_ISO_@

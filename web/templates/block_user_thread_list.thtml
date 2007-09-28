@@ -2,7 +2,7 @@
 @@-- ??? no navigation for now, this will be added later when the number
 @@-- of post on a single page will be limited to some value
 @@--
-@@INCLUDE@@ babel.thtml
+@@INCLUDE@@ set_babel.thtml
 
 <h2>@_BABEL_LAST_USER_PHOTOS_@</h2>
 

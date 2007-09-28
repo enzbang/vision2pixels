@@ -27,12 +27,12 @@ with V2P.Database;
 with V2P.Settings;
 with V2P.URL;
 
-with V2P.Template_Defs.Forum_Entry;
-with V2P.Template_Defs.Forum_Threads;
-with V2P.Template_Defs.Main_Page;
-with V2P.Template_Defs.Forum_New_Entry;
-with V2P.Template_Defs.Global;
-with V2P.Template_Defs.Post_Photo;
+with V2P.Template_Defs.Page_Forum_Entry;
+with V2P.Template_Defs.Page_Forum_Threads;
+with V2P.Template_Defs.Page_Main;
+with V2P.Template_Defs.Page_Forum_New_Entry;
+with V2P.Template_Defs.Set_Global;
+with V2P.Template_Defs.Page_Photo_Post;
 with V2P.Template_Defs.Block_Forum_Navigate;
 
 with Image.Data;
@@ -51,14 +51,15 @@ package body V2P.Callbacks.Page is
       SID         : constant Session.Id := Status.Session (Request);
       P           : constant Parameters.List := Status.Parameters (Request);
       TID         : constant String :=
-                      Parameters.Get (P, Template_Defs.Forum_Entry.HTTP.TID);
+                      Parameters.Get (P,
+                                      Template_Defs.Page_Forum_Entry.HTTP.TID);
       Login       : constant String :=
-                      Session.Get (SID, Template_Defs.Global.LOGIN);
+                      Session.Get (SID, Template_Defs.Set_Global.LOGIN);
       Count_Visit : Boolean := True;
    begin
       --  Set thread Id into the context
 
-      Context.Set_Value (Template_Defs.Global.TID, TID);
+      Context.Set_Value (Template_Defs.Set_Global.TID, TID);
 
       if TID /= "" then
          V2P.Context.Context_Filter (Context);
@@ -95,23 +96,23 @@ package body V2P.Callbacks.Page is
          begin
             Templates.Insert
               (Translations, Templates.Assoc
-                 (V2P.Template_Defs.Forum_Entry.PREVIOUS, Previous_Id));
+                 (V2P.Template_Defs.Page_Forum_Entry.PREVIOUS, Previous_Id));
 
             if Previous_Id /= "" then
                Templates.Insert
                  (Translations, Templates.Assoc
-                    (V2P.Template_Defs.Forum_Entry.PREVIOUS_THUMB,
+                    (V2P.Template_Defs.Page_Forum_Entry.PREVIOUS_THUMB,
                      Database.Get_Thumbnail (Previous_Id)));
             end if;
 
             Templates.Insert
               (Translations, Templates.Assoc
-                 (V2P.Template_Defs.Forum_Entry.NEXT, Next_Id));
+                 (V2P.Template_Defs.Page_Forum_Entry.NEXT, Next_Id));
 
             if Next_Id /= "" then
                Templates.Insert
                  (Translations, Templates.Assoc
-                    (V2P.Template_Defs.Forum_Entry.NEXT_THUMB,
+                    (V2P.Template_Defs.Page_Forum_Entry.NEXT_THUMB,
                      Database.Get_Thumbnail (Next_Id)));
             end if;
          end Insert_Links;
@@ -135,15 +136,15 @@ package body V2P.Callbacks.Page is
 
       P    : constant Parameters.List := Status.Parameters (Request);
       FID  : constant String :=
-               Parameters.Get (P, Template_Defs.Forum_Threads.HTTP.FID);
+               Parameters.Get (P, Template_Defs.Page_Forum_Threads.HTTP.FID);
       From : Positive := 1;
    begin
       --  Set forum Id into the context
 
-      Context.Set_Value (Template_Defs.Global.FID, FID);
+      Context.Set_Value (Template_Defs.Set_Global.FID, FID);
 
-      if Context.Exist (Template_Defs.Global.TID) then
-         Context.Remove (Template_Defs.Global.TID);
+      if Context.Exist (Template_Defs.Set_Global.TID) then
+         Context.Remove (Template_Defs.Set_Global.TID);
       end if;
 
       if Parameters.Exist
@@ -154,7 +155,7 @@ package body V2P.Callbacks.Page is
       end if;
 
       V2P.Context.Navigation_From.Set_Value
-        (Context.all, Template_Defs.Global.NAV_FROM, From);
+        (Context.all, Template_Defs.Set_Global.NAV_FROM, From);
 
       V2P.Context.Context_Filter (Context);
    end Forum_Threads;
@@ -170,11 +171,11 @@ package body V2P.Callbacks.Page is
    is
       pragma Unreferenced (Request, Translations);
    begin
-      if Context.Exist (Template_Defs.Global.TID) then
-         Context.Remove (Template_Defs.Global.TID);
+      if Context.Exist (Template_Defs.Set_Global.TID) then
+         Context.Remove (Template_Defs.Set_Global.TID);
       end if;
-      if Context.Exist (Template_Defs.Global.FID) then
-         Context.Remove (Template_Defs.Global.FID);
+      if Context.Exist (Template_Defs.Set_Global.FID) then
+         Context.Remove (Template_Defs.Set_Global.FID);
       end if;
 
       V2P.Context.Context_Filter (Context);
@@ -194,11 +195,11 @@ package body V2P.Callbacks.Page is
       P           : constant Parameters.List := Status.Parameters (Request);
       Filename    : constant String :=
                       Parameters.Get
-                        (P, Template_Defs.Post_Photo.HTTP.FILENAME);
+                        (P, Template_Defs.Page_Photo_Post.HTTP.FILENAME);
 
       SID         : constant Session.Id := Status.Session (Request);
       Login       : constant String :=
-                      Session.Get (SID, Template_Defs.Global.LOGIN);
+                      Session.Get (SID, Template_Defs.Set_Global.LOGIN);
 
    begin
 
@@ -216,20 +217,20 @@ package body V2P.Callbacks.Page is
             if New_Image.Init_Status /= Image_Created then
                Templates.Insert
                  (Translations,
-                  Templates.Assoc (Template_Defs.Main_Page.V2P_ERROR,
+                  Templates.Assoc (Template_Defs.Page_Main.V2P_ERROR,
                     Image_Init_Status'Image (New_Image.Init_Status)));
 
                Templates.Insert
                  (Translations,
                   Templates.Assoc
-                    (Template_Defs.Main_Page.EXCEED_MAXIMUM_IMAGE_DIMENSION,
+                    (Template_Defs.Page_Main.EXCEED_MAXIMUM_IMAGE_DIMENSION,
                      Image_Init_Status'Image
                        (Image.Data.Exceed_Max_Image_Dimension)));
 
                Templates.Insert
                  (Translations,
                   Templates.Assoc
-                    (Template_Defs.Main_Page.EXCEED_MAXIMUM_SIZE,
+                    (Template_Defs.Page_Main.EXCEED_MAXIMUM_SIZE,
                      Image_Init_Status'Image
                        (Image.Data.Exceed_Max_Size)));
 
@@ -249,23 +250,23 @@ package body V2P.Callbacks.Page is
                   Templates.Insert
                     (Translations,
                      Templates.Assoc
-                       (Template_Defs.Forum_New_Entry.PID, Pid));
+                       (Template_Defs.Page_Forum_New_Entry.PID, Pid));
                   Templates.Insert
                     (Translations,
                      Templates.Assoc
-                       (Template_Defs.Forum_New_Entry.IMAGE_SOURCE,
+                       (Template_Defs.Page_Forum_New_Entry.IMAGE_SOURCE,
                         New_Photo_Filename));
                end Insert_Photo;
             end if;
          end New_Photo;
       else
-         if Context.Exist (Template_Defs.Global.HAS_POST_PHOTO) then
+         if Context.Exist (Template_Defs.Set_Global.HAS_POST_PHOTO) then
             --  Display last uploaded photo
 
             Templates.Insert
               (Translations,
                Database.Get_User_Last_Photo (Login));
-            Context.Remove (Template_Defs.Global.HAS_POST_PHOTO);
+            Context.Remove (Template_Defs.Set_Global.HAS_POST_PHOTO);
          end if;
       end if;
    end New_Entry;
@@ -281,12 +282,12 @@ package body V2P.Callbacks.Page is
    is
       SID         : constant Session.Id := Status.Session (Request);
       Login       : constant String :=
-                      Session.Get (SID, Template_Defs.Global.LOGIN);
+                      Session.Get (SID, Template_Defs.Set_Global.LOGIN);
 
    begin
       if Login /= "" then
-         if not Context.Exist (Template_Defs.Global.HAS_POST_PHOTO) then
-            Context.Set_Value (Template_Defs.Global.HAS_POST_PHOTO,
+         if not Context.Exist (Template_Defs.Set_Global.HAS_POST_PHOTO) then
+            Context.Set_Value (Template_Defs.Set_Global.HAS_POST_PHOTO,
                                Boolean'Image (True));
          end if;
          Templates.Insert
