@@ -19,6 +19,8 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Exceptions;
+
 with AWS.Dispatchers.Callback;
 with AWS.Messages;
 with AWS.MIME;
@@ -68,6 +70,7 @@ with Gwiad.Plugins.Websites;
 package body V2P.Web_Server is
 
    use Ada;
+   use Ada.Exceptions;
    use AWS;
 
    use Morzhol.OS;
@@ -249,14 +252,15 @@ package body V2P.Web_Server is
       return Web_Page;
 
    exception
-      when others =>
+      when E : others =>
          Fatal_Error : begin
             if
               Services.Web_Block.Registry.Content_Type (URI) = MIME.Text_HTML
             then
                Logs.Write
                  (Module, Logs.Error, "Default_Callback HTML exception for "
-                    & Logs.NV ("URI", URI));
+                  & Logs.NV ("URI", URI) & " "
+                  & Logs.NV ("EXNAME", Exception_Name (E)));
                return Response.Build
                  (Message_Body => "<p>Internal error</p>",
                   Content_Type => MIME.Text_HTML);
@@ -265,8 +269,9 @@ package body V2P.Web_Server is
                --  ??? In this case we probably want to add some Ajax error
                --  report.
                Logs.Write
-                 (Module, Logs.Error, "Default_Callback XML exception for "
-                    & Logs.NV ("URI", URI));
+                 (Module, Logs.Error, "Default_Callback XML exception for"
+                  & Logs.NV ("URI", URI) & " "
+                  & Logs.NV ("EXNAME", Exception_Name (E)));
                return Response.Build
                  (Message_Body => "<p>Internal error</p>",
                   Content_Type => MIME.Text_XML);

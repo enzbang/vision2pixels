@@ -8,27 +8,25 @@
 @@TABLE@@
   <li class="thumbs">
   @@IF@@ @_THUMB_SOURCE_@ /= ""
-    <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
-      <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
-    </a>
+  <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
+    <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
+  </a>
   @@END_IF@@
-    <p><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">@_NAME_@</a></p>
-    <ul>
-      <li class="photocat">@_CATEGORY_@</li>
-      <li>@_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@</li>
-      <li class="photoauthor">
-        @@IF@@ @_REVEALED_@
-        @_OWNER_@
-        @@ELSE@@
-        @_BABEL_NOT_REVEALED_@
-        @@END_IF@@
-      </li>
+  <p><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">@_NAME_@</a></p>
+  <ul>
+    <li class="photocat">@_CATEGORY_@</li>
+    <li>@_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@</li>
+    <li class="photoauthor">
+      @@IF@@ @_REVEALED_@
+      @_OWNER_@
+      @@ELSE@@
+      @_BABEL_NOT_REVEALED_@
+      @@END_IF@@
+    </li>
     @@IF@@ @_ADMIN_@ and @_HIDDEN_@
-      <li class="hidden_entry" id="hidden_entry">(@_BABEL_HIDDEN_@)</li>
+    <li class="hidden_entry" id="hidden_entry">(@_BABEL_HIDDEN_@)</li>
     @@END_IF@@
     </ul>
   </li>
-  @@END_TABLE@@
+@@END_TABLE@@
 </ul>
-@@--
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, delete_thread)
