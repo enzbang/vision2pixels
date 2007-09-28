@@ -5,7 +5,7 @@
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ main
 <div class="forums">@_LAZY_FORUM_LIST_@</div>
 
-<h1>Vision2pixels</h1>
+<h1>Vision2Pixels</h1>
 
 <div id="presentation">
 <p id="logo"><img src="/web/v2p.png" /></p>
@@ -25,4 +25,5 @@ a sûrement plusieurs</p>
   @@END_IF@@
   @_V2P_ERROR_@
 @@END_IF@@
+@@--
 @@INCLUDE@@ chunk_v2p_end.thtml
