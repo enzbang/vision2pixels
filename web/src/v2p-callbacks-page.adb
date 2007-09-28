@@ -207,7 +207,6 @@ package body V2P.Callbacks.Page is
             Filename    : constant String :=
                             Parameters.Get
                               (P, Template_Defs.Post_Photo.HTTP.FILENAME);
-            Images_Path : String renames URL.Images_Full_Prefix;
             New_Image   : Image_Data;
 
          begin
@@ -237,8 +236,9 @@ package body V2P.Callbacks.Page is
 
             else
                Insert_Photo : declare
+                  use URL;
                   New_Photo_Filename : constant String := New_Image.Filename
-                    (Images_Path'Length + 1 .. New_Image.Filename'Last);
+                    (Images_Full_Prefix'Length + 1 .. New_Image.Filename'Last);
                   Pid                : constant String
                     := Database.Insert_Photo
                       (Login,
