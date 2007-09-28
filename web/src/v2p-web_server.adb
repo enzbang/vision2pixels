@@ -37,6 +37,7 @@ with V2P.Settings;
 
 with V2P.Callbacks.Page;
 with V2P.Callbacks.Ajax;
+with V2P.Logs;
 
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
@@ -74,18 +75,20 @@ package body V2P.Web_Server is
    use AWS.Services.Web_Block.Registry;
    use Gwiad.Plugins.Websites;
 
+   Module          : constant Logs.Module_Name := "V2P.Web_Server";
+
    Main_Dispatcher : Services.Dispatchers.URI.Handler;
 
-   XML_Path         : constant String :=
-                        Directories.Compose
-                          (Containing_Directory => Gwiad_Plugin_Path,
-                           Name                 => "xml");
-   XML_Prefix_URI   : constant String := "/xml_";
-   CSS_URI          : constant String := "/css";
-   Web_JS_URI       : constant String := "/we_js";
+   XML_Path        : constant String :=
+                       Directories.Compose
+                         (Containing_Directory => Gwiad_Plugin_Path,
+                          Name                 => "xml");
+   XML_Prefix_URI  : constant String := "/xml_";
+   CSS_URI         : constant String := "/css";
+   Web_JS_URI      : constant String := "/we_js";
 
-   V2p_Lib_Path     : constant String :=
-                        Gwiad.Plugins.Get_Last_Library_Path;
+   V2p_Lib_Path    : constant String :=
+                       Gwiad.Plugins.Get_Last_Library_Path;
 
    -------------------------
    --  Standard Callbacks --
@@ -251,6 +254,9 @@ package body V2P.Web_Server is
             if
               Services.Web_Block.Registry.Content_Type (URI) = MIME.Text_HTML
             then
+               Logs.Write
+                 (Module, Logs.Error, "Default_Callback HTML exception for "
+                    & Logs.NV ("URI", URI));
                return Response.Build
                  (Message_Body => "<p>Internal error</p>",
                   Content_Type => MIME.Text_HTML);
@@ -258,6 +264,9 @@ package body V2P.Web_Server is
             else
                --  ??? In this case we probably want to add some Ajax error
                --  report.
+               Logs.Write
+                 (Module, Logs.Error, "Default_Callback XML exception for "
+                    & Logs.NV ("URI", URI));
                return Response.Build
                  (Message_Body => "<p>Internal error</p>",
                   Content_Type => MIME.Text_XML);
@@ -337,10 +346,10 @@ package body V2P.Web_Server is
       --  Register Web_Block pages
 
       Services.Web_Block.Registry.Register
-        (Key          => Template_Defs.Page_User.URL,
-         Template     => Template_Defs.Page_User.Template,
-         Data_CB      => null,
-         Prefix       => True);
+        (Key      => Template_Defs.Page_User.URL,
+         Template => Template_Defs.Page_User.Template,
+         Data_CB  => null,
+         Prefix   => True);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Forum_Entry.URL,
