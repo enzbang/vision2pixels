@@ -200,6 +200,12 @@ package body V2P.Web_Server is
       Templates.Insert
         (Translations,
          Templates.Assoc
+           (Template_Defs.Global.FORUM_NEW_PHOTO_URL,
+            Template_Defs.Post_Photo.URL));
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
            (Template_Defs.Global.FORUM_ENTRY_URL,
             Template_Defs.Forum_Entry.URL));
 
@@ -349,7 +355,7 @@ package body V2P.Web_Server is
       Services.Web_Block.Registry.Register
         (Template_Defs.Main_Page.URL,
          Template_Defs.Main_Page.Template,
-         Callbacks.Page.Main_Page'Access);
+         Callbacks.Page.Main'Access);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Error.URL,
@@ -364,12 +370,12 @@ package body V2P.Web_Server is
       Services.Web_Block.Registry.Register
         (Template_Defs.Post_Photo.URL,
          Template_Defs.Post_Photo.Template,
-         null);
+         Callbacks.Page.Post_Photo'Access);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Forum_New_Entry.URL,
          Template_Defs.Forum_New_Entry.Template,
-         Callbacks.Page.New_Entry_Page'Access);
+         Callbacks.Page.New_Entry'Access);
 
       --  Register Ajax callbacks
 

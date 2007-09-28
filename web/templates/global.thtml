@@ -20,6 +20,11 @@
 @_CONTEXT_LAST_COMMENT_@
 @@--
 @@--
+@@--  Register globals state
+@@--
+@_HAS_POST_PHOTO_@
+@@--
+@@--
 @@--  Register globals errors
 @@--
 @_ERROR_METADATA_NULL_METADATA_@
