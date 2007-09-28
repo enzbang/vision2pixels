@@ -34,7 +34,7 @@
 <div id="image_infos">
   <h2>@_NAME_@</h2>
   <p id="img_author">
-    @@IF@@ @_REVEALED_@
+    @@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@
       @_OWNER_@
     @@ELSE@@
       @_BABEL_NOT_REVEALED_@

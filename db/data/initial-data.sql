@@ -9,8 +9,8 @@ insert into user ("login", "password", "email", "admin")
 
 --  Create forums
 
-insert into forum values (1, "Forum photographies");
-insert into forum values (2, "Forum matériel");
+insert into forum values (1, "Forum photographies", "TRUE", "TRUE");
+insert into forum values (2, "Forum matériel", "FALSE", "FALSE");
 
 --  Create categories
 
@@ -28,6 +28,13 @@ insert into category values (7, 2, 'MatCat2');
 insert into template values (1, 'mytemplate', 'V2P Template');
 
 --  Post comments
+
+insert into post
+    values (1, 'vends canon 350D', 0, 'en tres bon état', 6, datetime(current_timestamp, '-1.0010 days'), NULL, 1, 0, 0, "FALSE");
+insert into post
+    values (2, 'vends nikon D200', 0, 'en tres mauvais état', 6, datetime(current_timestamp, '-2.0008 days'), NULL, 1, 0, 0, "FALSE");
+insert into post
+    values (3, 'vends pentax', 0, 'avec des pellicules Kodacolor 100 - 24 poses', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 
 insert into post
     values (54, 'un camion', 1, 'commentaire du camion', 2, datetime(current_timestamp, '-2.0010 days'), NULL, 1, 0, 0, "FALSE");
@@ -156,6 +163,10 @@ insert into post values (140, 'Rides', 87, NULL, 4, datetime(current_timestamp, 
 insert into post values (141, 'Hissez haut...', 88, NULL, 2, datetime(current_timestamp, '-1.0100 days'), NULL, 1, 0, 0, "FALSE");
 
 --  User post
+
+insert into user_post values ('enzbang', 1);
+insert into user_post values ('turbo', 2);
+insert into user_post values ('turbo', 3);
 
 insert into user_post values ('turbo', 54);
 insert into user_post values ('turbo', 55);

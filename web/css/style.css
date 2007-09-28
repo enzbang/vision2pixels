@@ -410,7 +410,6 @@ display. */
    text-align: center;
 }
 
-
 ol.comments {
    padding: 1em;
 
@@ -429,7 +428,36 @@ li.type_0
    background-color: #000000;
 }
 
+table.forum_text {
+   margin-top: 2em;
+   margin-bottom: 2em;
+   width: 80%;
+}
 
+td {
+   padding: 5px;
+}
+
+td.table_title {
+   width: 50%;
+}
+
+tr.table_header
+{
+   background-color: #1b1b1b;
+   color: @_PHOTOTITLECOLOR_@;
+   font-size: 1.1em;
+   font-weight: bold;
+   text-decoration: none;
+}
+tr.table_line_0
+{
+   background-color: #1b1b1b;
+}
+tr.table_line_1
+{
+   background-color: #000000;
+}
 
 .thumbselect {
    background-position: left center;

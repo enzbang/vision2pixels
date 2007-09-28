@@ -51,8 +51,8 @@ package body V2P.Callbacks.Page is
       SID         : constant Session.Id := Status.Session (Request);
       P           : constant Parameters.List := Status.Parameters (Request);
       TID         : constant String :=
-                      Parameters.Get (P,
-                                      Template_Defs.Page_Forum_Entry.HTTP.TID);
+                      Parameters.Get
+                        (P, Template_Defs.Page_Forum_Entry.HTTP.TID);
       Login       : constant String :=
                       Session.Get (SID, Template_Defs.Set_Global.LOGIN);
       Count_Visit : Boolean := True;
@@ -121,6 +121,14 @@ package body V2P.Callbacks.Page is
 
          Templates.Insert (Translations, Database.Get_Entry (TID));
       end if;
+
+      --  Add forum information into the translate set
+      --  ??? we could probably cache those values
+
+      Templates.Insert
+        (Translations,
+         Database.Get_Forum
+           (Context.Get_Value (Template_Defs.Set_Global.FID)));
    end Forum_Entry;
 
    -------------------
@@ -132,8 +140,6 @@ package body V2P.Callbacks.Page is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Translations);
-
       P    : constant Parameters.List := Status.Parameters (Request);
       FID  : constant String :=
                Parameters.Get (P, Template_Defs.Page_Forum_Threads.HTTP.FID);
@@ -156,6 +162,8 @@ package body V2P.Callbacks.Page is
 
       V2P.Context.Navigation_From.Set_Value
         (Context.all, Template_Defs.Set_Global.NAV_FROM, From);
+
+      Templates.Insert (Translations, Database.Get_Forum (FID));
 
       V2P.Context.Context_Filter (Context);
    end Forum_Threads;
