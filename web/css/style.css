@@ -390,7 +390,8 @@ li.thumbs img {
 span.nooverflowimage {
     width:150px;
     text-align:center;
-    margin:5px;
+    margin:10px;
+    padding:0;
     vertical-align:center;
     height:100px;
     display:block;
@@ -399,12 +400,11 @@ span.nooverflowimage {
 
 span.imgcontainer {
     background-color: #222;
-    padding: 5px;
     border: 1px solid #434343;
-    width:160px;
+    width:170px;
     text-align:center;
-    margin:0 auto;
-    height:110px;
+    margin:0 20px 0 20px;
+    height:120px;
     display:block;
     overflow:hidden;
 }
