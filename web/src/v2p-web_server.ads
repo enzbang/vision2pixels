@@ -21,7 +21,7 @@
 
 package V2P.Web_Server is
 
-   procedure Start;
+   procedure Register_Callbacks;
    --  Start the Web Server, port is taken from the ini file
 
 end V2P.Web_Server;
