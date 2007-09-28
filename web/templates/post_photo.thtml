@@ -8,13 +8,25 @@
 <form action="@_SET_FORM_ACTION_@"
       enctype="multipart/form-data" id="form_post_photo"
       method="POST">
-  <fieldset>
-    <legend>@_BABEL_ADD_NEW_PHOTO_@</legend>
-    <p>
-      <input name="FILENAME" type="file"/>
-      <input name="ENTER" type="submit" value="Ajouter"/></p>
-    </fieldset>
-  </form>
+   <fieldset>
+      <legend>@_BABEL_ADD_NEW_PHOTO_@</legend>
+      <p>
+         <input name="FILENAME" type="file"/>
+         <input name="ENTER" type="submit" value="Ajouter"/></p>
+   </fieldset>
+</form>
+
+  @@IF@@ @_IMAGE_SOURCE_@ /= ""
+
+  <h2>@_BABEL_SELECT_PHOTO_@</h2>
+
+  <p id="main_image">
+     <a href="@_SET_FORM_ACTION_@">
+        <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@" />
+     </a>
+  </p>
+  @@END_IF@@
+
 @@ELSE@@
-@_BABEL_LOGIN_REQUIRED_@
+<p class="error">@_BABEL_LOGIN_REQUIRED_@</p>
 @@END_IF@@

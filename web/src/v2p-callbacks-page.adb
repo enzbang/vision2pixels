@@ -159,11 +159,11 @@ package body V2P.Callbacks.Page is
       V2P.Context.Context_Filter (Context);
    end Forum_Threads;
 
-   ---------------
-   -- Main_Page --
-   ---------------
+   ----------
+   -- Main --
+   ----------
 
-   procedure Main_Page
+   procedure Main
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
@@ -178,20 +178,28 @@ package body V2P.Callbacks.Page is
       end if;
 
       V2P.Context.Context_Filter (Context);
-   end Main_Page;
+   end Main;
 
-   procedure New_Entry_Page
+   --------------------
+   -- New_Entry_Page --
+   --------------------
+
+   procedure New_Entry
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
       use Image.Data;
 
       P           : constant Parameters.List := Status.Parameters (Request);
       Filename    : constant String :=
                       Parameters.Get
                         (P, Template_Defs.Post_Photo.HTTP.FILENAME);
+
+      SID         : constant Session.Id := Status.Session (Request);
+      Login       : constant String :=
+                      Session.Get (SID, Template_Defs.Global.LOGIN);
+
    begin
 
       --  If a new photo has been uploaded, insert it in database
@@ -199,16 +207,7 @@ package body V2P.Callbacks.Page is
       if Filename /= "" then
          New_Photo :
          declare
-            SID         : constant Session.Id := Status.Session (Request);
-            P           : constant Parameters.List :=
-                            Status.Parameters (Request);
-            Login       : constant String :=
-                            Session.Get (SID, Template_Defs.Global.LOGIN);
-            Filename    : constant String :=
-                            Parameters.Get
-                              (P, Template_Defs.Post_Photo.HTTP.FILENAME);
             New_Image   : Image_Data;
-
          begin
             Init (Img      => New_Image,
                   Root_Dir => Gwiad_Plugin_Path,
@@ -259,7 +258,41 @@ package body V2P.Callbacks.Page is
                end Insert_Photo;
             end if;
          end New_Photo;
+      else
+         if Context.Exist (Template_Defs.Global.HAS_POST_PHOTO) then
+            --  Display last uploaded photo
+
+            Templates.Insert
+              (Translations,
+               Database.Get_User_Last_Photo (Login));
+            Context.Remove (Template_Defs.Global.HAS_POST_PHOTO);
+         end if;
       end if;
-   end New_Entry_Page;
+   end New_Entry;
+
+   ----------------
+   -- Post_Photo --
+   ----------------
+
+   procedure Post_Photo
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      SID         : constant Session.Id := Status.Session (Request);
+      Login       : constant String :=
+                      Session.Get (SID, Template_Defs.Global.LOGIN);
+
+   begin
+      if Login /= "" then
+         if not Context.Exist (Template_Defs.Global.HAS_POST_PHOTO) then
+            Context.Set_Value (Template_Defs.Global.HAS_POST_PHOTO,
+                               Boolean'Image (True));
+         end if;
+         Templates.Insert
+           (Translations,
+            Database.Get_User_Last_Photo (Login));
+      end if;
+   end Post_Photo;
 
 end V2P.Callbacks.Page;

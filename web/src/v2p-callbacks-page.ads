@@ -27,7 +27,7 @@ package V2P.Callbacks.Page is
 
    use AWS;
 
-   procedure Main_Page
+   procedure Main
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
@@ -45,10 +45,16 @@ package V2P.Callbacks.Page is
       Translations : in out Templates.Translate_Set);
    --  Forum threads callback
 
-   procedure New_Entry_Page
+   procedure New_Entry
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
-   --  New entry page
+   --  New entry callback
+
+   procedure Post_Photo
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Post photo callback
 
 end V2P.Callbacks.Page;

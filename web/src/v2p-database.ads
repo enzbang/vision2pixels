@@ -95,6 +95,10 @@ package V2P.Database is
       return Templates.Translate_Set;
    --  Returns user's comments
 
+   function Get_User_Last_Photo
+     (Uid : in String) return Templates.Translate_Set;
+   --  Returns user's last photo (in the user photo queue)
+
    function Get_Metadata (Pid : in String) return Templates.Translate_Set;
    --  Returns photo geographic metadata
 

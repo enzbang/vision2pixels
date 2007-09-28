@@ -35,6 +35,7 @@ with V2P.DB_Handle;
 with V2P.Settings;
 with V2P.Template_Defs.Forum_Entry;
 with V2P.Template_Defs.Comment;
+with V2P.Template_Defs.Forum_New_Entry;
 with V2P.Template_Defs.Block_Exif;
 with V2P.Template_Defs.Block_Forum_Threads;
 with V2P.Template_Defs.Block_Forum_Navigate;
@@ -1049,6 +1050,44 @@ package body V2P.Database is
          return No_User_Data;
       end if;
    end Get_User_Data;
+
+   -------------------------
+   -- Get_User_Last_Photo --
+   -------------------------
+
+   function Get_User_Last_Photo
+     (Uid : in String) return Templates.Translate_Set is
+      SQL : constant String :=
+              "select q.photo_id, p.filename "
+                & "from user_photo_queue q, photo p "
+                & "where q.photo_id = p.id and user_login = " & Q (Uid);
+      DBH          : constant TLS_DBH_Access :=
+                       TLS_DBH_Access (DBH_TLS.Reference);
+
+      Set          : Templates.Translate_Set;
+      Iter         : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line         : DB.String_Vectors.Vector;
+   begin
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+         Templates.Insert
+           (Set,
+            Templates.Assoc
+              (Template_Defs.Forum_New_Entry.PID,
+               DB.String_Vectors.Element (Line, 1)));
+         Templates.Insert
+           (Set,
+            Templates.Assoc
+              (Template_Defs.Forum_New_Entry.IMAGE_SOURCE,
+              DB.String_Vectors.Element (Line, 2)));
+         Line.Clear;
+      end if;
+
+      Iter.End_Select;
+      return Set;
+   end Get_User_Last_Photo;
 
    -------------------
    -- Get_User_Page --
