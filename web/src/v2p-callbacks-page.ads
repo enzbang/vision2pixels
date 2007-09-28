@@ -33,12 +33,6 @@ package V2P.Callbacks.Page is
       Translations : in out Templates.Translate_Set);
    --  Display v2p main page
 
-   procedure New_Photo
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set);
-   --  Adds a new photo in user tmp photo table
-
    procedure Forum_Entry
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
