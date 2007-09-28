@@ -11,7 +11,7 @@
   <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
     <title>@_$1_@</title>
-    @@INCLUDE@@ import_css.thtml
+    @@INCLUDE@@ chunk_import_css.thtml
     @@INCLUDE@@ ../we_js/aws.tjs
     @@IF@@ @_$2_@ = "forum_post_page"
       @@--  This google key works only for http://127.0.0.10:8080
@@ -19,7 +19,7 @@
             type="text/javascript"></script>
     @@END_IF@@
     @@IF@@ @_$4_@ = "notebook"
-      @@INCLUDE@@ notebook.thtml (1=>Tabs, 2=>currentPage, 3=>TabContents, 4=>page1)
+      @@INCLUDE@@ chunk_notebook.thtml (1=>Tabs, 2=>currentPage, 3=>TabContents, 4=>page1)
     @@END_IF@@
     <script src="/we_js/v2p.tjs" type="text/javascript"></script>
   </head>
