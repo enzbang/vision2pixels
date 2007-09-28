@@ -111,7 +111,6 @@ package body V2P.Callbacks.Ajax is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Translations);
       P      : constant Parameters.List := Status.Parameters (Request);
       Filter : constant String :=
                  Parameters.Get
@@ -120,6 +119,11 @@ package body V2P.Callbacks.Ajax is
       --  Keep the sorting scheme into the session
       --  ?? we need to add this into the user's preferences
       Context.Set_Value (Template_Defs.Set_Global.FILTER, Filter);
+
+      Templates.Insert
+        (Translations,
+         Database.Get_Forum
+           (Context.Get_Value (Template_Defs.Set_Global.FID)));
    end Onchange_Filter_Forum;
 
    -------------------------
