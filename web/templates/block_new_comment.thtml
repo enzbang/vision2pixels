@@ -1,4 +1,4 @@
-@@INCLUDE@@ babel.thtml
+@@INCLUDE@@ set_babel.thtml
 @@--
 @@IF@@ @_LOGIN_@ /= "" or @_OPTION_ANONYMOUS_COMMENT_@
 <form enctype="multipart/form-data" id="comment_form" action="#" method="post">

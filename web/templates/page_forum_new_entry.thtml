@@ -1,6 +1,6 @@
-@@INCLUDE@@ babel.thtml
+@@INCLUDE@@ set_babel.thtml
 @@-- HTTP_URL(/forum/new_entry): Forum New Entry URL
-@@INCLUDE@@ v2p_top.thtml @_BABEL_FORUM_NEW_ENTRY_@ forum_new_entry yui-t7
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_FORUM_NEW_ENTRY_@ forum_new_entry yui-t7
 
 
 <form enctype="multipart/form-data"

@@ -1,10 +1,10 @@
-@@INCLUDE@@ babel.thtml
+@@INCLUDE@@ set_babel.thtml
 @@-- HTTP_GET(TID): Thread Id
 @@-- HTTP_GET(FID): Forum Id
 @@-- HTTP_URL(/forum/entry): Forum Entry URL
 @@--
 @@IF@@ @_NAME_@ /=""
-@@INCLUDE@@ v2p_top.thtml @_NAME_@ forum_entry yui-t7
+@@INCLUDE@@ chunk_v2p_top.thtml @_NAME_@ forum_entry yui-t7
 @@--
 <div class="forums">@_LAZY_FORUM_LIST_@</div>
   <div id="image_block">
@@ -84,7 +84,7 @@
 @@--
 @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_image_metadata, V2P.Tools.toggle_show_hide_rel)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, hidden_status_toggle)
-@@INCLUDE@@ v2p_end.thtml
+@@INCLUDE@@ chunk_v2p_end.thtml
 @@ELSE@@
 @_BABEL_DOES_NOT_EXIST_@
 @@END_IF@@

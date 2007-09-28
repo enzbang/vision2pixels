@@ -1,4 +1,4 @@
-@@INCLUDE@@ babel.thtml
+@@INCLUDE@@ set_babel.thtml
 @@--
 <?xml version="1.0" encoding="utf-8"?>
 @@IF@@ @_LOGIN_@ = ""

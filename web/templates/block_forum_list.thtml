@@ -1,4 +1,4 @@
-@@INCLUDE@@ babel.thtml
+@@INCLUDE@@ set_babel.thtml
 <ul id="navcontainer">
   <li class="index">
     <a href="/">@_BABEL_V2P_WEBSITE_NAME_@</a>

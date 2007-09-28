@@ -33,9 +33,9 @@ with Morzhol.Strings;
 
 with V2P.DB_Handle;
 with V2P.Settings;
-with V2P.Template_Defs.Forum_Entry;
-with V2P.Template_Defs.Comment;
-with V2P.Template_Defs.Forum_New_Entry;
+with V2P.Template_Defs.Page_Forum_Entry;
+with V2P.Template_Defs.Page_Forum_New_Entry;
+with V2P.Template_Defs.Chunk_Comment;
 with V2P.Template_Defs.Block_Exif;
 with V2P.Template_Defs.Block_Forum_Threads;
 with V2P.Template_Defs.Block_Forum_Navigate;
@@ -45,7 +45,7 @@ with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Comment_List;
 with V2P.Template_Defs.Block_New_Comment;
-with V2P.Template_Defs.Global;
+with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.R_Block_Forum_List;
 
 package body V2P.Database is
@@ -266,32 +266,33 @@ package body V2P.Database is
          Iter.Get_Line (Line);
 
          Templates.Insert
-           (Set, Templates.Assoc (Template_Defs.Comment.COMMENT_ID, Cid));
+           (Set, Templates.Assoc
+              (Template_Defs.Chunk_Comment.COMMENT_ID, Cid));
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Template_Defs.Comment.DATE_ISO_8601,
+              (Template_Defs.Chunk_Comment.DATE_ISO_8601,
                DB.String_Vectors.Element (Line, 1)));
 
          Templates.Insert
-           (Set, Templates.Assoc (Template_Defs.Comment.DATE,
+           (Set, Templates.Assoc (Template_Defs.Chunk_Comment.DATE,
             DB.String_Vectors.Element (Line, 2)));
 
          Templates.Insert
-           (Set, Templates.Assoc (Template_Defs.Comment.TIME,
+           (Set, Templates.Assoc (Template_Defs.Chunk_Comment.TIME,
             DB.String_Vectors.Element (Line, 3)));
 
          Templates.Insert
-           (Set, Templates.Assoc (Template_Defs.Comment.USER,
+           (Set, Templates.Assoc (Template_Defs.Chunk_Comment.USER,
             DB.String_Vectors.Element (Line, 4)));
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Template_Defs.Comment.ANONYMOUS_USER,
+              (Template_Defs.Chunk_Comment.ANONYMOUS_USER,
                DB.String_Vectors.Element (Line, 5)));
 
          Templates.Insert
-           (Set, Templates.Assoc (Template_Defs.Comment.COMMENT,
+           (Set, Templates.Assoc (Template_Defs.Chunk_Comment.COMMENT,
             DB.String_Vectors.Element (Line, 6)));
          Line.Clear;
       end if;
@@ -343,41 +344,42 @@ package body V2P.Database is
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.NAME, DB.String_Vectors.Element (Line, 1)));
+              (Page_Forum_Entry.NAME, DB.String_Vectors.Element (Line, 1)));
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.IMAGE_COMMENT,
+              (Page_Forum_Entry.IMAGE_COMMENT,
                DB.String_Vectors.Element (Line, 2)));
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.HIDDEN, DB.String_Vectors.Element (Line, 3)));
+              (Page_Forum_Entry.HIDDEN, DB.String_Vectors.Element (Line, 3)));
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.IMAGE_SOURCE,
+              (Page_Forum_Entry.IMAGE_SOURCE,
                DB.String_Vectors.Element (Line, 4)));
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.OWNER, DB.String_Vectors.Element (Line, 5)));
+              (Page_Forum_Entry.OWNER, DB.String_Vectors.Element (Line, 5)));
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.DATE_POST, DB.String_Vectors.Element (Line, 6)));
+              (Page_Forum_Entry.DATE_POST,
+               DB.String_Vectors.Element (Line, 6)));
 
          Templates.Insert
            (Set,
             Templates.Assoc
-              (Forum_Entry.REVEALED,
+              (Page_Forum_Entry.REVEALED,
                DB.String_Vectors.Element (Line, 7) = "1"));
 
          --  Insert the image path
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Forum_Entry.IMAGE_SOURCE_PREFIX,
+              (Page_Forum_Entry.IMAGE_SOURCE_PREFIX,
                Settings.Images_Source_Prefix));
 
          Line.Clear;
@@ -421,26 +423,28 @@ package body V2P.Database is
       Iter.End_Select;
 
       Templates.Insert
-        (Set, Templates.Assoc (Template_Defs.Comment.COMMENT_ID, Comment_Id));
+        (Set, Templates.Assoc
+           (Template_Defs.Chunk_Comment.COMMENT_ID, Comment_Id));
       Templates.Insert
         (Set, Templates.Assoc
-           (Template_Defs.Comment.DATE_ISO_8601, Date_Iso_8601));
+           (Template_Defs.Chunk_Comment.DATE_ISO_8601, Date_Iso_8601));
       Templates.Insert
-        (Set, Templates.Assoc (Template_Defs.Comment.DATE, Date));
+        (Set, Templates.Assoc (Template_Defs.Chunk_Comment.DATE, Date));
       Templates.Insert
-        (Set, Templates.Assoc (Template_Defs.Comment.TIME, Time));
+        (Set, Templates.Assoc (Template_Defs.Chunk_Comment.TIME, Time));
       Templates.Insert
-        (Set, Templates.Assoc (Template_Defs.Comment.USER, User));
+        (Set, Templates.Assoc (Template_Defs.Chunk_Comment.USER, User));
       Templates.Insert
         (Set, Templates.Assoc
-           (Template_Defs.Comment.ANONYMOUS_USER, Anonymous));
+           (Template_Defs.Chunk_Comment.ANONYMOUS_USER, Anonymous));
       Templates.Insert
-        (Set, Templates.Assoc (Template_Defs.Comment.COMMENT, Comment));
+        (Set, Templates.Assoc (Template_Defs.Chunk_Comment.COMMENT, Comment));
       Templates.Insert
-        (Set, Templates.Assoc (Forum_Entry.COMMENT_LEVEL, Comment_Level));
+        (Set, Templates.Assoc (Page_Forum_Entry.COMMENT_LEVEL, Comment_Level));
       Templates.Insert
         (Set,
-         Templates.Assoc (Forum_Entry.NB_LEVELS_TO_CLOSE, Nb_Levels_To_Close));
+         Templates.Assoc
+           (Page_Forum_Entry.NB_LEVELS_TO_CLOSE, Nb_Levels_To_Close));
 
       return Set;
    end Get_Entry;
@@ -951,7 +955,7 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc (Block_Login.HTTP.PASSWORD, U_Data.Password));
       Templates.Insert
-        (Set, Templates.Assoc (Global.ADMIN, U_Data.Admin));
+        (Set, Templates.Assoc (Set_Global.ADMIN, U_Data.Admin));
       Templates.Insert
         (Set, Templates.Assoc (Block_Login.LOGIN, Uid));
       return Set;
@@ -1075,12 +1079,12 @@ package body V2P.Database is
          Templates.Insert
            (Set,
             Templates.Assoc
-              (Template_Defs.Forum_New_Entry.PID,
+              (Template_Defs.Page_Forum_New_Entry.PID,
                DB.String_Vectors.Element (Line, 1)));
          Templates.Insert
            (Set,
             Templates.Assoc
-              (Template_Defs.Forum_New_Entry.IMAGE_SOURCE,
+              (Template_Defs.Page_Forum_New_Entry.IMAGE_SOURCE,
               DB.String_Vectors.Element (Line, 2)));
          Line.Clear;
       end if;
@@ -1508,7 +1512,7 @@ package body V2P.Database is
 
       Templates.Insert
         (Set, Templates.Assoc
-           (Forum_Entry.HIDDEN, Boolean'Image (Hidden)));
+           (Page_Forum_Entry.HIDDEN, Boolean'Image (Hidden)));
       return Set;
 
    exception

@@ -23,7 +23,7 @@ with AWS.Client;
 with AWS.Response;
 with AWS.Utils;
 
-with V2P.Template_Defs.Forum_Threads;
+with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Block_Forum_Filter;
 
 package body Web_Tests.Post is

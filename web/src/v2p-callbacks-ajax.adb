@@ -29,9 +29,9 @@ with Image.Metadata.Geographic;
 with V2P.Database;
 with V2P.Wiki;
 
-with V2P.Template_Defs.Forum_Entry;
-with V2P.Template_Defs.Forum_New_Entry;
-with V2P.Template_Defs.Global;
+with V2P.Template_Defs.Page_Forum_Entry;
+with V2P.Template_Defs.Page_Forum_New_Entry;
+with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Filter;
@@ -59,18 +59,18 @@ package body V2P.Callbacks.Ajax is
       SID       : constant Session.Id := Status.Session (Request);
       P         : constant Parameters.List := Status.Parameters (Request);
       Login     : constant String :=
-                    Parameters.Get (P, Template_Defs.Global.LOGIN);
+                    Parameters.Get (P, Template_Defs.Set_Global.LOGIN);
       User_Data : constant Database.User_Data :=
                     Database.Get_User_Data (Login);
    begin
       if To_String (User_Data.Password) =
-        Parameters.Get (P, Template_Defs.Global.PASSWORD)
+        Parameters.Get (P, Template_Defs.Set_Global.PASSWORD)
       then
-         Session.Set (SID, Template_Defs.Global.LOGIN, Login);
+         Session.Set (SID, Template_Defs.Set_Global.LOGIN, Login);
          Session.Set
            (SID,
-            Template_Defs.Global.PASSWORD, To_String (User_Data.Password));
-         Session.Set (SID, Template_Defs.Global.ADMIN, User_Data.Admin);
+            Template_Defs.Set_Global.PASSWORD, To_String (User_Data.Password));
+         Session.Set (SID, Template_Defs.Set_Global.ADMIN, User_Data.Admin);
 
          --  Set user's filtering preference
          --  ??? to be done when user's preferences are implemented
@@ -79,7 +79,7 @@ package body V2P.Callbacks.Ajax is
            (Translations,
             Templates.Assoc
               (Template_Defs.R_Block_Login.LOGIN,
-               String'(Session.Get (SID, Template_Defs.Global.LOGIN))));
+               String'(Session.Get (SID, Template_Defs.Set_Global.LOGIN))));
       end if;
    end Login;
 
@@ -99,7 +99,7 @@ package body V2P.Callbacks.Ajax is
 
       --  Remove the login information from the translate table
 
-      Templates.Remove (Translations, Template_Defs.Global.LOGIN);
+      Templates.Remove (Translations, Template_Defs.Set_Global.LOGIN);
    end Logout;
 
    ---------------------------
@@ -119,7 +119,7 @@ package body V2P.Callbacks.Ajax is
    begin
       --  Keep the sorting scheme into the session
       --  ?? we need to add this into the user's preferences
-      Context.Set_Value (Template_Defs.Global.FILTER, Filter);
+      Context.Set_Value (Template_Defs.Set_Global.FILTER, Filter);
    end Onchange_Filter_Forum;
 
    -------------------------
@@ -150,7 +150,8 @@ package body V2P.Callbacks.Ajax is
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
-      TID : constant String := Context.Get_Value (Template_Defs.Global.TID);
+      TID : constant String := Context.Get_Value
+        (Template_Defs.Set_Global.TID);
    begin
       Templates.Insert (Translations, Database.Toggle_Hidden_Status (TID));
    end Onclick_Hidden_Status_Toggle;
@@ -169,7 +170,7 @@ package body V2P.Callbacks.Ajax is
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String :=
-                       Session.Get (SID, Template_Defs.Global.LOGIN);
+                       Session.Get (SID, Template_Defs.Set_Global.LOGIN);
       Anonymous    : constant String :=
                        Parameters.Get
                          (P, Block_New_Comment.HTTP.ANONYMOUS_USER);
@@ -178,12 +179,12 @@ package body V2P.Callbacks.Ajax is
       Comment      : constant String :=
                        Parameters.Get (P, Block_New_Comment.HTTP.COMMENT);
       Parent_Id    : constant String :=
-                       Parameters.Get (P, Forum_Entry.HTTP.PARENT_ID);
+                       Parameters.Get (P, Page_Forum_Entry.HTTP.PARENT_ID);
       Tid          : constant String :=
                        Parameters.Get (P, Block_New_Comment.HTTP.TID);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
       Last_Comment : constant String :=
-                       Context.Get_Value (Global.CONTEXT_LAST_COMMENT);
+                       Context.Get_Value (Set_Global.CONTEXT_LAST_COMMENT);
 
       function Is_Valid_Comment (Comment : in String) return Boolean;
       --  Check if the comment is valid
@@ -232,7 +233,7 @@ package body V2P.Callbacks.Ajax is
             --  Adds the new comment in context to prevent duplicated post
 
             Context.Set_Value
-              (Global.CONTEXT_LAST_COMMENT, Comment & '@' & Tid);
+              (Set_Global.CONTEXT_LAST_COMMENT, Comment & '@' & Tid);
 
             Templates.Insert (Translations, Database.Get_Comment (Cid));
             Templates.Insert
@@ -292,16 +293,18 @@ package body V2P.Callbacks.Ajax is
       begin
          if Latitude_Coord = 0.0 or else Longitude_Coord = 0.0 then
             Context.Set_Value
-              (V2P.Template_Defs.Global.ERROR_METADATA_NULL_METADATA, "ERROR");
-         elsif not Context.Exist (Template_Defs.Global.TID) then
+              (V2P.Template_Defs.Set_Global.ERROR_METADATA_NULL_METADATA,
+               "ERROR");
+         elsif not Context.Exist (Template_Defs.Set_Global.TID) then
             Context.Set_Value
-              (V2P.Template_Defs.Global.ERROR_METADATA_UNKNOWN_PHOTO, "ERROR");
+              (V2P.Template_Defs.Set_Global.ERROR_METADATA_UNKNOWN_PHOTO,
+               "ERROR");
          else
             Latitude_Position.Format (Latitude_Coord);
             Longitude_Postition.Format (Longitude_Coord);
 
             Database.Insert_Metadata
-              (Context.Get_Value (Template_Defs.Global.TID),
+              (Context.Get_Value (Template_Defs.Set_Global.TID),
                Float (Latitude_Coord),
                Float (Longitude_Coord),
                Image.Metadata.Geographic.Image (Latitude_Position),
@@ -312,7 +315,8 @@ package body V2P.Callbacks.Ajax is
    exception
       when Constraint_Error =>
          Context.Set_Value
-           (V2P.Template_Defs.Global.ERROR_METADATA_WRONG_METADATA, "ERROR");
+           (V2P.Template_Defs.Set_Global.ERROR_METADATA_WRONG_METADATA,
+            "ERROR");
    end Onsubmit_Metadata_Form_Enter;
 
    ------------------------------
@@ -329,17 +333,18 @@ package body V2P.Callbacks.Ajax is
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String :=
-                       Session.Get (SID, Template_Defs.Global.LOGIN);
+                       Session.Get (SID, Template_Defs.Set_Global.LOGIN);
       Name         : constant String :=
-                       Parameters.Get (P, Forum_New_Entry.HTTP.NAME);
+                       Parameters.Get (P, Page_Forum_New_Entry.HTTP.NAME);
       Comment      : constant String :=
-                       Parameters.Get (P, Forum_New_Entry.HTTP.comment_input);
+                       Parameters.Get (P, Page_Forum_New_Entry.
+                                                        HTTP.comment_input);
       CID          : constant String :=
-                       Parameters.Get (P, Forum_New_Entry.HTTP.CATEGORY);
+                       Parameters.Get (P, Page_Forum_New_Entry.HTTP.CATEGORY);
       PID          : constant String :=
-                       Parameters.Get (P, Forum_New_Entry.HTTP.PID);
+                       Parameters.Get (P, Page_Forum_New_Entry.HTTP.PID);
       Last_Name    : constant String :=
-                       Context.Get_Value (Global.CONTEXT_LAST_POST_NAME);
+                       Context.Get_Value (Set_Global.CONTEXT_LAST_POST_NAME);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
    begin
 
@@ -373,15 +378,15 @@ package body V2P.Callbacks.Ajax is
                   --  Set new context TID (needed by
                   --  Onsubmit_Metadata_Form_Enter_Callback)
 
-                  Context.Set_Value (Global.TID, Post_Id);
-                  Context.Set_Value (Global.CONTEXT_LAST_POST_NAME, Name);
+                  Context.Set_Value (Set_Global.TID, Post_Id);
+                  Context.Set_Value (Set_Global.CONTEXT_LAST_POST_NAME, Name);
 
                   Templates.Insert
                     (Translations,
                      Templates.Assoc
                        (R_Block_Post_Form_Enter.URL,
-                        Forum_Entry.URL & '?' &
-                        Forum_Entry.HTTP.TID & '=' & Post_Id));
+                        Page_Forum_Entry.URL & '?' &
+                        Page_Forum_Entry.HTTP.TID & '=' & Post_Id));
 
                else
                   Templates.Insert
@@ -393,7 +398,7 @@ package body V2P.Callbacks.Ajax is
             end Insert_Post;
          end if;
 
-         if PID /= "" and then Context.Exist (Global.TID) then
+         if PID /= "" and then Context.Exist (Set_Global.TID) then
             Onsubmit_Metadata_Form_Enter
               (Request, Context, Translations);
          end if;
@@ -415,7 +420,7 @@ package body V2P.Callbacks.Ajax is
       SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String :=
-                       Session.Get (SID, Template_Defs.Global.LOGIN);
+                       Session.Get (SID, Template_Defs.Set_Global.LOGIN);
       Content      : constant String :=
                        Parameters.Get (P, Block_User_Page.HTTP.CONTENT);
       Content_HTML : constant String := V2P.Wiki.Wiki_To_HTML (Content);

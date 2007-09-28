@@ -1,6 +1,0 @@
-@@INCLUDE@@ babel.thtml
-@@-- HTTP_URL(/~): Forum Post URL /~UserId
-@@--
-@@INCLUDE@@ v2p_top.thtml @_BABEL_USER_PAGE_@ user_page
-@_LAZY_USER_PAGE_@
-@@INCLUDE@@ v2p_end.thtml

@@ -38,16 +38,16 @@ with V2P.Settings;
 with V2P.Callbacks.Page;
 with V2P.Callbacks.Ajax;
 
-with V2P.Template_Defs.Forum_Entry;
-with V2P.Template_Defs.Forum_Threads;
-with V2P.Template_Defs.Admin;
-with V2P.Template_Defs.User_Page;
-with V2P.Template_Defs.Main_Page;
-with V2P.Template_Defs.Forum_New_Entry;
-with V2P.Template_Defs.Error;
-with V2P.Template_Defs.Global;
+with V2P.Template_Defs.Page_Forum_Entry;
+with V2P.Template_Defs.Page_Forum_Threads;
+with V2P.Template_Defs.Page_Admin;
+with V2P.Template_Defs.Page_User;
+with V2P.Template_Defs.Page_Main;
+with V2P.Template_Defs.Page_Forum_New_Entry;
+with V2P.Template_Defs.Page_Error;
+with V2P.Template_Defs.Set_Global;
+with V2P.Template_Defs.Page_Photo_Post;
 with V2P.Template_Defs.Block_Login;
-with V2P.Template_Defs.Post_Photo;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Filter;
@@ -139,8 +139,8 @@ package body V2P.Web_Server is
    begin
       Templates.Insert
         (Translations,
-         Templates.Assoc (Template_Defs.Global.LOGIN,
-           String'(Session.Get (SID, Template_Defs.Global.LOGIN))));
+         Templates.Assoc (Template_Defs.Set_Global.LOGIN,
+           String'(Session.Get (SID, Template_Defs.Set_Global.LOGIN))));
       return Response.Build
         (MIME.Content_Type (File),
          String'(Templates.Parse (File, Translations)));
@@ -159,20 +159,20 @@ package body V2P.Web_Server is
       Translations : Templates.Translate_Set;
       Web_Page     : Response.Data;
    begin
-      if Session.Exist (SID, Template_Defs.Global.LOGIN) then
+      if Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then
          Templates.Insert
            (Translations,
             Templates.Assoc
-              (Template_Defs.Global.LOGIN,
-               String'(Session.Get (SID, Template_Defs.Global.LOGIN))));
+              (Template_Defs.Set_Global.LOGIN,
+               String'(Session.Get (SID, Template_Defs.Set_Global.LOGIN))));
       end if;
 
-      if Session.Exist (SID, Template_Defs.Global.ADMIN) then
+      if Session.Exist (SID, Template_Defs.Set_Global.ADMIN) then
          Templates.Insert
            (Translations,
             Templates.Assoc
-              (Template_Defs.Global.ADMIN,
-               String'(Session.Get (SID, Template_Defs.Global.ADMIN))));
+              (Template_Defs.Set_Global.ADMIN,
+               String'(Session.Get (SID, Template_Defs.Set_Global.ADMIN))));
       end if;
 
       --  Adds Version number
@@ -180,7 +180,7 @@ package body V2P.Web_Server is
       Templates.Insert
         (Translations,
          Templates.Assoc
-           (Template_Defs.Global.V2P_VERSION,
+           (Template_Defs.Set_Global.V2P_VERSION,
             V2P.Version));
 
       --  Adds some URL
@@ -188,50 +188,50 @@ package body V2P.Web_Server is
       Templates.Insert
         (Translations,
          Templates.Assoc
-           (Template_Defs.Global.FORUM_THREAD_URL,
-            Template_Defs.Forum_Threads.URL));
+           (Template_Defs.Set_Global.FORUM_THREAD_URL,
+            Template_Defs.Page_Forum_Threads.URL));
 
       Templates.Insert
         (Translations,
          Templates.Assoc
-           (Template_Defs.Global.FORUM_POST_URL,
-            Template_Defs.Forum_New_Entry.URL));
+           (Template_Defs.Set_Global.FORUM_POST_URL,
+            Template_Defs.Page_Forum_New_Entry.URL));
 
       Templates.Insert
         (Translations,
          Templates.Assoc
-           (Template_Defs.Global.FORUM_NEW_PHOTO_URL,
-            Template_Defs.Post_Photo.URL));
+           (Template_Defs.Set_Global.FORUM_NEW_PHOTO_URL,
+            Template_Defs.Page_Photo_Post.URL));
 
       Templates.Insert
         (Translations,
          Templates.Assoc
-           (Template_Defs.Global.FORUM_ENTRY_URL,
-            Template_Defs.Forum_Entry.URL));
+           (Template_Defs.Set_Global.FORUM_ENTRY_URL,
+            Template_Defs.Page_Forum_Entry.URL));
 
       Templates.Insert
         (Translations,
          Templates.Assoc
-           (Template_Defs.Global.ADMIN_URL,
-            Template_Defs.Admin.URL));
+           (Template_Defs.Set_Global.ADMIN_URL,
+            Template_Defs.Page_Admin.URL));
 
       --  Insert global options
 
       Templates.Insert
         (Translations, Templates.Assoc
-           (Template_Defs.Global.OPTION_ANONYMOUS_COMMENT,
+           (Template_Defs.Set_Global.OPTION_ANONYMOUS_COMMENT,
             Settings.Anonymous_Comment));
 
       --  Insert the images prefixes
 
       Templates.Insert
         (Translations, Templates.Assoc
-           (Template_Defs.Global.THUMB_SOURCE_PREFIX,
+           (Template_Defs.Set_Global.THUMB_SOURCE_PREFIX,
             Settings.Thumbs_Source_Prefix));
 
       Templates.Insert
         (Translations, Templates.Assoc
-           (Template_Defs.Global.IMAGE_SOURCE_PREFIX,
+           (Template_Defs.Set_Global.IMAGE_SOURCE_PREFIX,
             Settings.Images_Source_Prefix));
 
       Web_Page := Services.Web_Block.Registry.Build
@@ -240,7 +240,7 @@ package body V2P.Web_Server is
       if Response.Status_Code (Web_Page) = Messages.S404 then
          --  Page not found
          Web_Page := Services.Web_Block.Registry.Build
-           (Template_Defs.Error.URL, Request, Translations);
+           (Template_Defs.Page_Error.URL, Request, Translations);
       end if;
 
       return Web_Page;
@@ -337,44 +337,44 @@ package body V2P.Web_Server is
       --  Register Web_Block pages
 
       Services.Web_Block.Registry.Register
-        (Key          => Template_Defs.User_Page.URL,
-         Template     => Template_Defs.User_Page.Template,
+        (Key          => Template_Defs.Page_User.URL,
+         Template     => Template_Defs.Page_User.Template,
          Data_CB      => null,
          Prefix       => True);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Forum_Entry.URL,
-         Template_Defs.Forum_Entry.Template,
+        (Template_Defs.Page_Forum_Entry.URL,
+         Template_Defs.Page_Forum_Entry.Template,
          Callbacks.Page.Forum_Entry'Access);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Forum_Threads.URL,
-         Template_Defs.Forum_Threads.Template,
+        (Template_Defs.Page_Forum_Threads.URL,
+         Template_Defs.Page_Forum_Threads.Template,
          Callbacks.Page.Forum_Threads'Access);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Main_Page.URL,
-         Template_Defs.Main_Page.Template,
+        (Template_Defs.Page_Main.URL,
+         Template_Defs.Page_Main.Template,
          Callbacks.Page.Main'Access);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Error.URL,
-         Template_Defs.Error.Template,
+        (Template_Defs.Page_Error.URL,
+         Template_Defs.Page_Error.Template,
          null);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Admin.URL,
-         Template_Defs.Admin.Template,
+        (Template_Defs.Page_Admin.URL,
+         Template_Defs.Page_Admin.Template,
          null);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Post_Photo.URL,
-         Template_Defs.Post_Photo.Template,
+        (Template_Defs.Page_Photo_Post.URL,
+         Template_Defs.Page_Photo_Post.Template,
          Callbacks.Page.Post_Photo'Access);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Forum_New_Entry.URL,
-         Template_Defs.Forum_New_Entry.Template,
+        (Template_Defs.Page_Forum_New_Entry.URL,
+         Template_Defs.Page_Forum_New_Entry.Template,
          Callbacks.Page.New_Entry'Access);
 
       --  Register Ajax callbacks
@@ -398,7 +398,7 @@ package body V2P.Web_Server is
          Content_Type => MIME.Text_XML);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Forum_Entry.Ajax.onclick_hidden_status_toggle,
+        (Template_Defs.Page_Forum_Entry.Ajax.onclick_hidden_status_toggle,
          Template_Defs.R_Block_Hidden_Status.Template,
          Callbacks.Ajax.Onclick_Hidden_Status_Toggle'Access,
          Content_Type => MIME.Text_XML);
@@ -416,7 +416,8 @@ package body V2P.Web_Server is
          Content_Type => MIME.Text_XML);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Forum_New_Entry.Ajax.onsubmit_new_entry_form_submit,
+        (Template_Defs.Page_Forum_New_Entry.
+           Ajax.onsubmit_new_entry_form_submit,
          Template_Defs.R_Block_Post_Form_Enter.Template,
          Callbacks.Ajax.Onsubmit_Post_Form_Enter'Access,
          Content_Type => MIME.Text_XML);

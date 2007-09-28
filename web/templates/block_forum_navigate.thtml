@@ -1,4 +1,4 @@
-@@INCLUDE@@ babel.thtml
+@@INCLUDE@@ set_babel.thtml
 @@-- HTTP_GET(FROM): index of the first post to output
 <div id="forum_navigate">
 @@IF@@ @_EXIST:PREVIOUS_@

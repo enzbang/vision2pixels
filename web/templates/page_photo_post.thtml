@@ -1,6 +1,6 @@
-@@INCLUDE@@ babel.thtml
+@@INCLUDE@@ set_babel.thtml
 @@-- HTTP_URL(/add_photo)
-@@INCLUDE@@ v2p_top.thtml @_BABEL_FORUM_POST_@ page_post_photo
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_FORUM_POST_@ page_post_photo
 
 @@SET@@ SET_FORM_ACTION = /forum/new_entry
 

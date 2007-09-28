@@ -1,8 +1,8 @@
-@@INCLUDE@@ babel.thtml
+@@INCLUDE@@ set_babel.thtml
 @@--
 
 @@IF@@ @_USER_NAME_@ = ""
-@@INCLUDE error.thtml
+@@INCLUDE page_error.thtml
 @@ELSE@@
 <h1>@_BABEL_USER_PAGE_OF_@ @_USER_NAME_@</h1>
 
