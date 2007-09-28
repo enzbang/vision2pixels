@@ -8,11 +8,13 @@
 @@TABLE@@
   <li class="thumbs">
   @@IF@@ @_THUMB_SOURCE_@ /= ""
-  <span class="nooverflowimage">
-    <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
-      <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
-    </a>
+  <span class="imgcontainer">
+    <span class="nooverflowimage">
+      <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
+        <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
+      </a>
     </span>
+  </span>
   @@END_IF@@
   <p><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@"
   @@IF@@ @_ADMIN_@ and @_HIDDEN_@
@@ -25,7 +27,7 @@
   @_NAME_@
   @@END_IF@@
   </a></p>
-  <ul>
+  <ul class="thumb_metadata">
     <li class="photocat">@_CATEGORY_@</li>
     <li>@_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@</li>
     <li class="photoauthor">

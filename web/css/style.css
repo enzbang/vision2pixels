@@ -70,7 +70,7 @@ p#cd_user {
    font-style:italic;
 }
 
-#ft{
+#footnote {
    font-size:0.8em;
 }
 
@@ -365,32 +365,50 @@ ul.slides {
     text-align:center;
 }
 
+ul.thumb_metadata {
+    font-size:0.9em;
+}
+
 li.thumbs {
     float: left;
     overflow:hidden;
     width:200px;
-    height:200px;
+    height:210px;
     text-align: center;
     margin: 30px;
 }
 
 li.thumbs img {
-    width:150px;
+    width:155px;
     display: inline;
+    padding:0px;
+    margin:-2px;
+    vertical-align:center;
     text-align: center;
 }
 
-span.nooverflowimage img {
-    background-color: #222;
-    padding: 5px;
-    border: 1px solid #434343;
+span.nooverflowimage {
     width:150px;
     text-align:center;
-    margin:0 auto;
+    margin:5px;
+    vertical-align:center;
     height:100px;
     display:block;
     overflow:hidden;
 }
+
+span.imgcontainer {
+    background-color: #222;
+    padding: 5px;
+    border: 1px solid #434343;
+    width:160px;
+    text-align:center;
+    margin:0 auto;
+    height:110px;
+    display:block;
+    overflow:hidden;
+}
+
 
 .photocat {
     color: @_PHOTOCATEGORY_@;
