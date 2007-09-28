@@ -185,102 +185,81 @@ package body V2P.Callbacks.Page is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
+      pragma Unreferenced (Context);
       use Image.Data;
 
---      SID         : constant Session.Id := Status.Session (Request);
       P           : constant Parameters.List := Status.Parameters (Request);
---        Login       : constant String :=
---                        Session.Get (SID, Template_Defs.Global.LOGIN);
       Filename    : constant String :=
                       Parameters.Get
                         (P, Template_Defs.Post_Photo.HTTP.FILENAME);
-
---        Images_Path : String renames Get_Images_Path;
---
---        New_Image   : Image_Data;
-
    begin
 
       --  If a new photo has been uploaded, insert it in database
 
       if Filename /= "" then
-         New_Photo (Request, Context, Translations);
+         New_Photo :
+         declare
+            SID         : constant Session.Id := Status.Session (Request);
+            P           : constant Parameters.List :=
+                            Status.Parameters (Request);
+            Login       : constant String :=
+                            Session.Get (SID, Template_Defs.Global.LOGIN);
+            Filename    : constant String :=
+                            Parameters.Get
+                              (P, Template_Defs.Post_Photo.HTTP.FILENAME);
+            Images_Path : String renames URL.Images_Full_Prefix;
+            New_Image   : Image_Data;
+
+         begin
+            Init (Img      => New_Image,
+                  Root_Dir => Gwiad_Plugin_Path,
+                  Filename => Filename);
+
+            if New_Image.Init_Status /= Image_Created then
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc (Template_Defs.Main_Page.V2P_ERROR,
+                    Image_Init_Status'Image (New_Image.Init_Status)));
+
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc
+                    (Template_Defs.Main_Page.EXCEED_MAXIMUM_IMAGE_DIMENSION,
+                     Image_Init_Status'Image
+                       (Image.Data.Exceed_Max_Image_Dimension)));
+
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc
+                    (Template_Defs.Main_Page.EXCEED_MAXIMUM_SIZE,
+                     Image_Init_Status'Image
+                       (Image.Data.Exceed_Max_Size)));
+
+            else
+               Insert_Photo : declare
+                  New_Photo_Filename : constant String := New_Image.Filename
+                    (Images_Path'Length + 1 .. New_Image.Filename'Last);
+                  Pid                : constant String
+                    := Database.Insert_Photo
+                      (Login,
+                       New_Photo_Filename,
+                       Natural (New_Image.Dimension.Width),
+                       Natural (New_Image.Dimension.Height),
+                       Natural (New_Image.Dimension.Size));
+               begin
+                  Templates.Insert
+                    (Translations,
+                     Templates.Assoc
+                       (Template_Defs.Forum_New_Entry.PID, Pid));
+                  Templates.Insert
+                    (Translations,
+                     Templates.Assoc
+                       (Template_Defs.Forum_New_Entry.IMAGE_SOURCE,
+                        New_Photo_Filename));
+               end Insert_Photo;
+            end if;
+         end New_Photo;
       end if;
    end New_Entry_Page;
-
-   ---------------
-   -- New_Photo --
-   ---------------
-
-   procedure New_Photo
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
-   is
-      pragma Unreferenced (Context);
-      use Image.Data;
-
-      SID         : constant Session.Id := Status.Session (Request);
-      P           : constant Parameters.List := Status.Parameters (Request);
-      Login       : constant String :=
-                      Session.Get (SID, Template_Defs.Global.LOGIN);
-      Filename    : constant String :=
-                      Parameters.Get
-                        (P, Template_Defs.Post_Photo.HTTP.FILENAME);
-
-      Images_Path : String renames URL.Images_Full_Prefix;
-
-      New_Image   : Image_Data;
-
-   begin
-      Init
-        (Img      => New_Image,
-         Root_Dir => Gwiad_Plugin_Path,
-         Filename => Filename);
-
-      if New_Image.Init_Status /= Image_Created then
-         Templates.Insert
-           (Translations,
-            Templates.Assoc (Template_Defs.Main_Page.V2P_ERROR,
-              Image_Init_Status'Image (New_Image.Init_Status)));
-
-         Templates.Insert
-           (Translations,
-            Templates.Assoc
-              (Template_Defs.Main_Page.EXCEED_MAXIMUM_IMAGE_DIMENSION,
-               Image_Init_Status'Image
-                 (Image.Data.Exceed_Max_Image_Dimension)));
-
-         Templates.Insert
-           (Translations,
-            Templates.Assoc
-              (Template_Defs.Main_Page.EXCEED_MAXIMUM_SIZE,
-               Image_Init_Status'Image
-                 (Image.Data.Exceed_Max_Size)));
-
-      else
-         Insert_Photo : declare
-            New_Photo_Filename : constant String := New_Image.Filename
-              (Images_Path'Length + 1 .. New_Image.Filename'Last);
-            Pid                : constant String := Database.Insert_Photo
-              (Login,
-               New_Photo_Filename,
-               Natural (New_Image.Dimension.Width),
-               Natural (New_Image.Dimension.Height),
-               Natural (New_Image.Dimension.Size));
-         begin
-            Templates.Insert
-              (Translations,
-               Templates.Assoc
-                 (Template_Defs.Forum_New_Entry.PID,
-                  Pid));
-            Templates.Insert
-              (Translations,
-               Templates.Assoc
-                 (Template_Defs.Forum_New_Entry.IMAGE_SOURCE,
-                  New_Photo_Filename));
-         end Insert_Photo;
-      end if;
-   end New_Photo;
 
 end V2P.Callbacks.Page;
