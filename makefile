@@ -56,6 +56,11 @@ export PATH:=$(GWIAD_INSTALL):$(shell pwd)/runtime:$(PATH)
 
 clean: clean-default
 
+clean-all:
+	find . \( \( -name "*.ali" -o -name "*.o" \) \
+		-o \( -name "*$(SOEXT)" -and -not -name "sqlite3.dll" \) \) \
+		-exec rm -f {} \;
+
 check: check-default
 	gnat check -dd -Pkernel/kernel -rules -from=v2p.check
 
@@ -105,12 +110,12 @@ install_gwiad_plugin: install_db
 	$(CP) -r web/css/img/* \
 		$(GWIAD_ROOT)/plugins/vision2pixels/css/img/
 	$(CP) web/lib/*$(SOEXT) $(GWIAD_ROOT)/lib/websites
-	$(CP) $(DIOUZHTU_DYNAMIC_LIB)/libwiki_service$(SOEXT) \
-		$(GWIAD_ROOT)/lib/services
 	$(CP) db/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) image/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) kernel/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) lib/gnade/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
+	$(CP) $(DIOUZHTU_DYNAMIC_LIB)/libwiki_service$(SOEXT) \
+		$(GWIAD_ROOT)/lib/services
 
 check_mem:
 	make check_mem -C web $(OPTIONS)
