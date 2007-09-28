@@ -287,11 +287,11 @@ package body V2P.Web_Server is
       return Response.File (MIME.Content_Type (File), File);
    end Photos_Callback;
 
-   -----------
-   -- Start --
-   -----------
+   ------------------------
+   -- Register_Callbacks --
+   ------------------------
 
-   procedure Start is
+   procedure Register_Callbacks is
    begin
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
@@ -434,7 +434,7 @@ package body V2P.Web_Server is
          Content_Type => MIME.Text_XML);
       --  All URLs starting with XML_Prefix_URI are handled by a specific
       --  callback returning the corresponding file in the xml directory.
-   end Start;
+   end Register_Callbacks;
 
    ---------------------
    -- Thumbs_Callback --
@@ -446,8 +446,8 @@ package body V2P.Web_Server is
                Gwiad_Plugin_Path & Directory_Separator &
                  Settings.Get_Thumbs_Path & Directory_Separator
                    & URI
-                      (URI'First +
-                         Settings.Thumbs_Source_Prefix'Length + 1 .. URI'Last);
+                     (URI'First +
+                        Settings.Thumbs_Source_Prefix'Length + 1 .. URI'Last);
    begin
       return Response.File (MIME.Content_Type (File), File);
    end Thumbs_Callback;
@@ -496,7 +496,7 @@ package body V2P.Web_Server is
 
 begin  -- V2P.Web_Server : register vision2pixels website
 
-   Start;
+   Register_Callbacks;
 
    Gwiad.Web.Virtual_Host.Register
      (Hostname => Settings.Virtual_Host,
