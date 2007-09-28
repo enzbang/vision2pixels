@@ -52,6 +52,7 @@ V2P.Tools = new function () {
          Element.show(this.rel);
       else
          Element.hide(this.rel);
+         return false;
    }
 }
 
