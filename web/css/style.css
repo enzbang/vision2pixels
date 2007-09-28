@@ -5,6 +5,44 @@
 @@SET@@ PHOTOCATEGORY=#DCE0E3
 @@SET@@ PHOTOAUTHOR=#B5C8FF
 
+@@-- Position
+
+html, body, #contents {
+    height:100%;
+    min-height:100%;
+    width:100%;
+}
+
+html > body, html > body #contents {
+    height:auto;
+}
+
+body {
+    margin:0pt;
+    padding:0pt;
+}
+
+#contents {
+    left:0pt;
+    position:absolute;
+    top:0pt;
+}
+
+#footer {
+    background-color:#222222;
+    bottom:0pt;
+    padding:0pt;
+    position:absolute;
+    text-align:center;
+    width:100%;
+}
+
+#main {
+    height:auto;
+    margin-bottom:5em;
+    padding:0.5em;
+}
+
 @@--  Fonts
 
 * {
@@ -37,17 +75,6 @@ p#cd_user {
 }
 
 @@--  General
-
-body {
-   margin:1em;
-}
-
-div#main {
-   position: relative;
-   min-height:100%;
-   height:auto !important;
-   height:100%;
-}
 
 select, input, textarea {
    border: thin solid @_HIGHLIGHT_COLOR_@;
@@ -206,7 +233,7 @@ div#quick_login a#show_rel_login {
 }
 
 body.forum_threads select#forum_filter_set {
-   margin:1em 0 0 0;
+   margin:2em 0 0 1em;
 }
 
 body.forum_threads ul#navcontainer {
@@ -268,11 +295,7 @@ body.main p#logo {
 @@--  Footpage
 
 #ft {
-   bottom: 0 !important;
-   bottom: -1px;
-   height: 40px;
-   text-align:right;
-   margin:1em 0.5em 0 0;
+    display:none;
 }
 
 @@--  Forum list
@@ -280,6 +303,7 @@ body.main p#logo {
 ul#navcontainer {
     top:5px;
     position:absolute;
+    width:80%;
 }
 
 ul#navcontainer li {
@@ -345,20 +369,27 @@ li.thumbs {
     float: left;
     overflow:hidden;
     width:200px;
-    height:260px;
+    height:200px;
     text-align: center;
     margin: 30px;
 }
 
 li.thumbs img {
+    width:150px;
+    display: inline;
+    text-align: center;
+}
+
+span.nooverflowimage img {
+    background-color: #222;
+    padding: 5px;
     border: 1px solid #434343;
     width:150px;
-    height:150px;
-    display: inline;
-    padding: 5px;
-    background-color: #222;
-    border: 1px solid #434343;
-    text-align: center;
+    text-align:center;
+    margin:0 auto;
+    height:100px;
+    display:block;
+    overflow:hidden;
 }
 
 .photocat {
@@ -377,6 +408,9 @@ li.thumbs img {
    color: @_PHOTOTITLECOLOR_@;
    font-size: 1.1em;
    font-weight: bold;
+   height:1em;
+   overflow:hidden;
+   display:block;
    text-decoration: none;
 }
 

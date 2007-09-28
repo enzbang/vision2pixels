@@ -1,7 +1,8 @@
 
 </div> @@--  End of main block (image_block)
-<div id="ft">
+<div id="footer">
   <address>Written by <a href="mailto:v2p@obry.net">Pascal Obry</a> and <a href="mailto:v2p@ramonat.fr">Olivier Ramonat</a></address>
+</div>
 </div>
 </body>
 </html>
