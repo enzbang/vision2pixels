@@ -40,7 +40,9 @@ foreign key ("parent") references comment("id")
 
 create table "forum" (
 "id" integer not null primary key autoincrement,
-"name" varchar(100) not null
+"name" varchar(100) not null,
+"anonymity" boolean default TRUE,
+"for_photo" boolean default TRUE
 );
 
 create table "category" (

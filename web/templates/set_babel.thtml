@@ -49,6 +49,11 @@
 @@SET@@ BABEL_USERS="Utilisateurs"
 @@SET@@ BABEL_NOT_REVEALED="non révélé"
 @@SET@@ BABEL_THE_AUTHOR="L'auteur"
+@@SET@@ BABEL_AUTHOR="Auteur"
+@@SET@@ BABEL_VISIBLE="Visible"
+@@SET@@ BABEL_VISIT_COUNTER="Vue"
+@@SET@@ BABEL_COMMENT_COUNTER="Commentaire"
+@@SET@@ BABEL_DATE_POST="Posté le"
 @@--  User page
 @@SET@@ BABEL_USER_EDIT_YOUR_PAGE="Éditer votre page"
 @@SET@@ BABEL_USER_PAGE="Page utilisateur"

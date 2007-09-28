@@ -1,0 +1,28 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<table class="forum_text">
+<tr class="table_header">
+  <th>@_BABEL_AUTHOR_@</th>
+  <th>@_BABEL_COMMENT_TITLE_@</th>
+  <th>@_BABEL_DATE_POST_@</th>
+  <th>@_BABEL_COMMENT_COUNTER_@</th>
+  <th>@_BABEL_VISIT_COUNTER_@</th>
+  @@IF@@ @_ADMIN_@
+  <th>@_BABEL_VISIBLE_@</th>
+  @@END_IF@@
+</tr>
+@@TABLE@@
+  <tr class="table_line_@_MOD(2):TABLE_LINE_@">
+    <td>@_OWNER_@</td>
+    <td class="table_title"><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">@_NAME_@</a></td>
+    <td>@_DATE_POST_@</td>
+    <td>@_COMMENT_COUNTER_@</td>
+    <td>@_VISIT_COUNTER_@</td>
+    <td class="hidden_entry" id="hidden_entry">
+    @@IF@@ @_ADMIN_@
+    @_BABEL_HIDDEN_@
+    @@END_IF@@
+    </td>
+  </tr>
+@@END_TABLE@@
+</table>

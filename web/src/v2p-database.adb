@@ -34,10 +34,12 @@ with Morzhol.Strings;
 with V2P.DB_Handle;
 with V2P.Settings;
 with V2P.Template_Defs.Page_Forum_Entry;
+with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Entry;
 with V2P.Template_Defs.Chunk_Comment;
 with V2P.Template_Defs.Block_Exif;
 with V2P.Template_Defs.Block_Forum_Threads;
+with V2P.Template_Defs.Block_Forum_Threads_Text;
 with V2P.Template_Defs.Block_Forum_Navigate;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Login;
@@ -403,14 +405,14 @@ package body V2P.Database is
       while Iter.More loop
          Iter.Get_Line (Line);
 
-         Comment_Id    := Comment_Id & DB.String_Vectors.Element (Line, 1);
+         Comment_Id    := Comment_Id    & DB.String_Vectors.Element (Line, 1);
          Date_Iso_8601 := Date_Iso_8601 & DB.String_Vectors.Element (Line, 2);
-         Date          := Date &  DB.String_Vectors.Element (Line, 3);
-         Time          := Time   & DB.String_Vectors.Element (Line, 4);
-         User          := User       & DB.String_Vectors.Element (Line, 5);
-         Anonymous     := Anonymous  & DB.String_Vectors.Element (Line, 6);
-         Comment       := Comment & DB.String_Vectors.Element (Line, 7);
-         Filename      := Filename & DB.String_Vectors.Element (Line, 8);
+         Date          := Date          & DB.String_Vectors.Element (Line, 3);
+         Time          := Time          & DB.String_Vectors.Element (Line, 4);
+         User          := User          & DB.String_Vectors.Element (Line, 5);
+         Anonymous     := Anonymous     & DB.String_Vectors.Element (Line, 6);
+         Comment       := Comment       & DB.String_Vectors.Element (Line, 7);
+         Filename      := Filename      & DB.String_Vectors.Element (Line, 8);
 
          --  Unthreaded view
 
@@ -567,31 +569,47 @@ package body V2P.Database is
    -- Get_Forum --
    ---------------
 
-   function Get_Forum (Fid : in String) return String is
+   function Get_Forum (Fid : in String) return Templates.Translate_Set is
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
+      Set  : Templates.Translate_Set;
    begin
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "select name from forum where id=" & Q (Fid));
+        (Iter,
+         "select name, anonymity, for_photo from forum where id=" & Q (Fid));
 
       if Iter.More then
          Iter.Get_Line (Line);
 
          Forum_Name : declare
-            Name : constant String := DB.String_Vectors.Element (Line, 1);
+            Name      : constant String  :=
+                          DB.String_Vectors.Element (Line, 1);
+            Anonymity : constant String :=
+                          DB.String_Vectors.Element (Line, 2);
+            For_Photo : constant String :=
+                          DB.String_Vectors.Element (Line, 3);
          begin
             Line.Clear;
             Iter.End_Select;
-            return Name;
+
+            Templates.Insert
+              (Set, Templates.Assoc (Block_Forum_List.FORUM_NAME, Name));
+            Templates.Insert
+              (Set,
+               Templates.Assoc (Page_Forum_Entry.FORUM_ANONYMITY, Anonymity));
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Page_Forum_Threads.FORUM_FOR_PHOTO, For_Photo));
          end Forum_Name;
 
       else
          Iter.End_Select;
-         return "";
       end if;
+
+      return Set;
    end Get_Forum;
 
    ----------------
@@ -601,22 +619,27 @@ package body V2P.Database is
    function Get_Forums return Templates.Translate_Set is
       use type Templates.Tag;
 
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Set  : Templates.Translate_Set;
-      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line : DB.String_Vectors.Vector;
-      Id   : Templates.Tag;
-      Name : Templates.Tag;
+      DBH       : constant TLS_DBH_Access :=
+                    TLS_DBH_Access (DBH_TLS.Reference);
+      Set       : Templates.Translate_Set;
+      Iter      : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line      : DB.String_Vectors.Vector;
+      Id        : Templates.Tag;
+      Name      : Templates.Tag;
+      For_Photo : Templates.Tag;
    begin
       Connect (DBH);
 
-      DBH.Handle.Prepare_Select (Iter, "select id, name from forum");
+      DBH.Handle.Prepare_Select
+        (Iter, "select id, name, for_photo from forum");
 
       while Iter.More loop
          Iter.Get_Line (Line);
 
-         Id   := Id & DB.String_Vectors.Element (Line, 1);
-         Name := Name & DB.String_Vectors.Element (Line, 2);
+         Id        := Id & DB.String_Vectors.Element (Line, 1);
+         Name      := Name & DB.String_Vectors.Element (Line, 2);
+         For_Photo := For_Photo
+           & Boolean'Image (DB.String_Vectors.Element (Line, 2) = "1");
 
          Line.Clear;
       end loop;
@@ -626,6 +649,8 @@ package body V2P.Database is
       Templates.Insert (Set, Templates.Assoc (Block_Forum_List.FID, Id));
       Templates.Insert
         (Set, Templates.Assoc (Block_Forum_List.FORUM_NAME, Name));
+      Templates.Insert
+        (Set, Templates.Assoc (Page_Forum_Threads.FORUM_FOR_PHOTO, Name));
 
       return Set;
    end Get_Forums;
@@ -896,6 +921,8 @@ package body V2P.Database is
 
       Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.TID, Id));
       Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.NAME, Name));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Forum_Threads_Text.DATE_POST, Date_Post));
       Templates.Insert
         (Set, Templates.Assoc (Block_Forum_Threads.CATEGORY, Category));
       Templates.Insert
