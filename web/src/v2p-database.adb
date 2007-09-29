@@ -313,25 +313,16 @@ package body V2P.Database is
       Set                : Templates.Translate_Set;
       Iter               : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line               : DB.String_Vectors.Vector;
-      Comment_Id         : Templates.Tag;
-      Comment_Level      : Templates.Tag;
-      Nb_Levels_To_Close : Templates.Tag;
-      User               : Templates.Tag;
-      Anonymous          : Templates.Tag;
-      Date_Iso_8601      : Templates.Tag;
-      Date               : Templates.Tag;
-      Time               : Templates.Tag;
-      Comment            : Templates.Tag;
-      Filename           : Templates.Tag;
-
    begin
       Connect (DBH);
 
-      --  Get thread information
+      --  Get entry information
 
       DBH.Handle.Prepare_Select
         (Iter, "select post.name, post.comment, post.hidden, "
          & "(select filename from photo where id=post.photo_id), "
+         & "(select width from photo where Id = Post.Photo_Id), "
+         & "(select height from photo where Id = Post.Photo_Id), "
          & "user.login, post.date_post, "
          & "datetime(post.date_post, '+"
          & Utils.Image (Settings.Anonymity_Hours)
@@ -364,89 +355,117 @@ package body V2P.Database is
 
          Templates.Insert
            (Set, Templates.Assoc
-              (Page_Forum_Entry.OWNER, DB.String_Vectors.Element (Line, 5)));
+              (Page_Forum_Entry.IMAGE_WIDTH,
+               DB.String_Vectors.Element (Line, 5)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Page_Forum_Entry.IMAGE_HEIGHT,
+               DB.String_Vectors.Element (Line, 6)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Page_Forum_Entry.OWNER, DB.String_Vectors.Element (Line, 7)));
 
          Templates.Insert
            (Set, Templates.Assoc
               (Page_Forum_Entry.DATE_POST,
-               DB.String_Vectors.Element (Line, 6)));
+               DB.String_Vectors.Element (Line, 8)));
 
          Templates.Insert
            (Set,
             Templates.Assoc
               (Page_Forum_Entry.REVEALED,
-               DB.String_Vectors.Element (Line, 7) = "1"));
+               DB.String_Vectors.Element (Line, 9)));
 
          --  Insert the image path
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Page_Forum_Entry.IMAGE_SOURCE_PREFIX,
-               Settings.Images_Source_Prefix));
 
          Line.Clear;
       end if;
 
       Iter.End_Select;
 
-      --  Get threads
+      Get_All_Comments :
+      declare
+         Comment_Id         : Templates.Tag;
+         Comment_Level      : Templates.Tag;
+         Nb_Levels_To_Close : Templates.Tag;
+         User               : Templates.Tag;
+         Anonymous          : Templates.Tag;
+         Date_Iso_8601      : Templates.Tag;
+         Date               : Templates.Tag;
+         Time               : Templates.Tag;
+         Comment            : Templates.Tag;
+         Filename           : Templates.Tag;
+      begin
 
-      DBH.Handle.Prepare_Select
-        (Iter,
-         "select comment.id, strftime('%Y-%m-%dT%H:%M:%SZ', date), "
-         & "date(date, 'localtime'), time(date, 'localtime'), "
-         & "user_login, anonymous_user, "
-         & "comment, "
-         & "(select filename from photo where id=comment.photo_id) "
-         & " from comment, post_comment"
-         & " where post_id=" & Q (Tid)
-         & " and post_comment.comment_id=comment.id");
+         DBH.Handle.Prepare_Select
+           (Iter,
+            "select comment.id, strftime('%Y-%m-%dT%H:%M:%SZ', date), "
+            & "date(date, 'localtime'), time(date, 'localtime'), "
+            & "user_login, anonymous_user, "
+            & "comment, "
+            & "(select filename from photo where id=comment.photo_id) "
+            & " from comment, post_comment"
+            & " where post_id=" & Q (Tid)
+            & " and post_comment.comment_id=comment.id");
 
-      while Iter.More loop
-         Iter.Get_Line (Line);
+         while Iter.More loop
+            Iter.Get_Line (Line);
 
-         Comment_Id    := Comment_Id    & DB.String_Vectors.Element (Line, 1);
-         Date_Iso_8601 := Date_Iso_8601 & DB.String_Vectors.Element (Line, 2);
-         Date          := Date          & DB.String_Vectors.Element (Line, 3);
-         Time          := Time          & DB.String_Vectors.Element (Line, 4);
-         User          := User          & DB.String_Vectors.Element (Line, 5);
-         Anonymous     := Anonymous     & DB.String_Vectors.Element (Line, 6);
-         Comment       := Comment       & DB.String_Vectors.Element (Line, 7);
-         Filename      := Filename      & DB.String_Vectors.Element (Line, 8);
+            Comment_Id    := Comment_Id
+              & DB.String_Vectors.Element (Line, 1);
+            Date_Iso_8601 := Date_Iso_8601
+              & DB.String_Vectors.Element (Line, 2);
+            Date          := Date
+              & DB.String_Vectors.Element (Line, 3);
+            Time          := Time
+              & DB.String_Vectors.Element (Line, 4);
+            User          := User
+              & DB.String_Vectors.Element (Line, 5);
+            Anonymous     := Anonymous
+              & DB.String_Vectors.Element (Line, 6);
+            Comment       := Comment
+              & DB.String_Vectors.Element (Line, 7);
+            Filename      := Filename
+              & DB.String_Vectors.Element (Line, 8);
 
-         --  Unthreaded view
+            --  Unthreaded view
 
-         Comment_Level      := Comment_Level      & 1;
-         Nb_Levels_To_Close := Nb_Levels_To_Close & 1;
+            Comment_Level      := Comment_Level      & 1;
+            Nb_Levels_To_Close := Nb_Levels_To_Close & 1;
 
-         Line.Clear;
-      end loop;
+            Line.Clear;
+         end loop;
 
-      Iter.End_Select;
+         Iter.End_Select;
 
-      Templates.Insert
-        (Set, Templates.Assoc
-           (Template_Defs.Chunk_Comment.COMMENT_ID, Comment_Id));
-      Templates.Insert
-        (Set, Templates.Assoc
-           (Template_Defs.Chunk_Comment.DATE_ISO_8601, Date_Iso_8601));
-      Templates.Insert
-        (Set, Templates.Assoc (Template_Defs.Chunk_Comment.DATE, Date));
-      Templates.Insert
-        (Set, Templates.Assoc (Template_Defs.Chunk_Comment.TIME, Time));
-      Templates.Insert
-        (Set, Templates.Assoc (Template_Defs.Chunk_Comment.USER, User));
-      Templates.Insert
-        (Set, Templates.Assoc
-           (Template_Defs.Chunk_Comment.ANONYMOUS_USER, Anonymous));
-      Templates.Insert
-        (Set, Templates.Assoc (Template_Defs.Chunk_Comment.COMMENT, Comment));
-      Templates.Insert
-        (Set, Templates.Assoc (Page_Forum_Entry.COMMENT_LEVEL, Comment_Level));
-      Templates.Insert
-        (Set,
-         Templates.Assoc
-           (Page_Forum_Entry.NB_LEVELS_TO_CLOSE, Nb_Levels_To_Close));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Template_Defs.Chunk_Comment.COMMENT_ID, Comment_Id));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Template_Defs.Chunk_Comment.DATE_ISO_8601, Date_Iso_8601));
+         Templates.Insert
+           (Set, Templates.Assoc (Template_Defs.Chunk_Comment.DATE, Date));
+         Templates.Insert
+           (Set, Templates.Assoc (Template_Defs.Chunk_Comment.TIME, Time));
+         Templates.Insert
+           (Set, Templates.Assoc (Template_Defs.Chunk_Comment.USER, User));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Template_Defs.Chunk_Comment.ANONYMOUS_USER, Anonymous));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Template_Defs.Chunk_Comment.COMMENT, Comment));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Page_Forum_Entry.COMMENT_LEVEL, Comment_Level));
+         Templates.Insert
+           (Set,
+            Templates.Assoc
+              (Page_Forum_Entry.NB_LEVELS_TO_CLOSE, Nb_Levels_To_Close));
+      end Get_All_Comments;
 
       return Set;
    end Get_Entry;
