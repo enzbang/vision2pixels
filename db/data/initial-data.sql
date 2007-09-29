@@ -1,10 +1,10 @@
 --  Create users
 
-insert into user ("login", "password", "email", "admin") 
+insert into user ("login", "password", "email", "admin")
        values ('enzbang', 'password', 'v2p@ramonat.fr', "TRUE");
-insert into user ("login", "password", "email", "admin") 
+insert into user ("login", "password", "email", "admin")
        values ('turbo', 'turbopass', 'v2p@obry.net', "TRUE");
-insert into user ("login", "password", "email", "admin") 
+insert into user ("login", "password", "email", "admin")
        values ('test', 'test', 'test@whatever.fr', "FALSE");
 
 --  Create forums
@@ -260,130 +260,130 @@ insert into user_post values ('enzbang', 141);
 --  Photos
 
 insert into photo
-   values (1, '2007/Forum photographies/Paysage/200702011055-0.1.jpg', 800, 532, 82558);
+   values (1, '2007/Forum photographies/Paysage/200702011055-0.1.jpg', 532, 800, 82558);
 insert into photo
-   values (2, '2007/Forum photographies/Paysage/200702011056-1.1x2.jpg', 800, 532, 38172);
+   values (2, '2007/Forum photographies/Paysage/200702011056-1.1x2.jpg', 532, 800, 38172);
 insert into photo
-   values (3, '2007/Forum photographies/Portrait/200702011057-2.5.jpg', 800, 595, 41123);
+   values (3, '2007/Forum photographies/Portrait/200702011057-2.5.jpg', 595, 800, 41123);
 insert into photo
-   values (4, '2007/Forum photographies/Paysage/200702011102-3.6.jpg', 800, 600, 83107);
+   values (4, '2007/Forum photographies/Paysage/200702011102-3.6.jpg', 600, 800, 83107);
 insert into photo
-   values (5, '2007/Forum photographies/Paysage/200702011103-4.8.jpg', 800, 532, 52925);
+   values (5, '2007/Forum photographies/Paysage/200702011103-4.8.jpg', 532, 800, 52925);
 insert into photo
-   values (6, '2007/Forum photographies/Paysage/200702011103-5.9.jpg', 800, 600, 94582);
+   values (6, '2007/Forum photographies/Paysage/200702011103-5.9.jpg', 600, 800, 94582);
 insert into photo
-   values (7, '2007/Forum photographies/Nature morte/200702011104-6.9x.jpg', 800, 600, 28457);
+   values (7, '2007/Forum photographies/Nature morte/200702011104-6.9x.jpg', 600, 800, 28457);
 insert into photo
-   values (8, '2007/Forum photographies/Nature morte/200702011105-7.11.jpg', 800, 533, 29558);
+   values (8, '2007/Forum photographies/Nature morte/200702011105-7.11.jpg', 533, 800, 29558);
 insert into photo
-   values (9, '2007/Forum photographies/Nature morte/200702011106-8.12.jpg', 764, 600, 50060);
+   values (9, '2007/Forum photographies/Nature morte/200702011106-8.12.jpg', 600, 764, 50060);
 insert into photo
-   values (10, '2007/Forum photographies/Macro/Animaux/200702011203-9.15.jpg', 800, 600, 134700);
+   values (10, '2007/Forum photographies/Macro/Animaux/200702011203-9.15.jpg', 600, 800, 134700);
 insert into photo
-   values (11, '2007/Forum photographies/Nature morte/200702011208-10.23.jpg', 800, 531, 58024);
+   values (11, '2007/Forum photographies/Nature morte/200702011208-10.23.jpg', 531, 800, 58024);
 insert into photo
-   values (12, '2007/Forum photographies/Nature morte/200702011209-11.25.jpg', 800, 466, 37296);
+   values (12, '2007/Forum photographies/Nature morte/200702011209-11.25.jpg', 466, 800, 37296);
 insert into photo
-   values (13, '2007/Forum photographies/Abstrait/200702011210-12.25x.jpg', 800, 549, 93859);
+   values (13, '2007/Forum photographies/Abstrait/200702011210-12.25x.jpg', 549, 800, 93859);
 insert into photo
-   values (14, '2007/Forum photographies/Abstrait/200702011211-13.29.jpg', 800, 600, 42118);
+   values (14, '2007/Forum photographies/Abstrait/200702011211-13.29.jpg', 600, 800, 42118);
 insert into photo
-   values (15, '2007/Forum photographies/Paysage/200702011212-14.31.jpg', 800, 593, 73722);
+   values (15, '2007/Forum photographies/Paysage/200702011212-14.31.jpg', 593, 800, 73722);
 insert into photo
-   values (16, '2007/Forum photographies/Abstrait/200702011213-15.38.jpg', 800, 600, 43389);
+   values (16, '2007/Forum photographies/Abstrait/200702011213-15.38.jpg', 600, 800, 43389);
 insert into photo
-   values (17, '2007/Forum photographies/Nature morte/200702011214-16.48.jpg', 800, 532, 52693);
+   values (17, '2007/Forum photographies/Nature morte/200702011214-16.48.jpg', 532, 800, 52693);
 insert into photo
-   values (18, '2007/Forum photographies/Nature morte/200702011214-17.52.jpg', 800, 600, 43914);
+   values (18, '2007/Forum photographies/Nature morte/200702011214-17.52.jpg', 600, 800, 43914);
 insert into photo
-   values (19, '2007/Forum photographies/Nature morte/200702011215-18.53.jpg', 800, 600, 55107);
+   values (19, '2007/Forum photographies/Nature morte/200702011215-18.53.jpg', 600, 800, 55107);
 insert into photo
-   values (20, '2007/Forum photographies/Paysage/200702011216-19.55.jpg', 800, 600, 33503);
+   values (20, '2007/Forum photographies/Paysage/200702011216-19.55.jpg', 600, 800, 33503);
 insert into photo
-   values (21, '2007/Forum photographies/Nature morte/200702011216-20.58.jpg', 800, 558, 54012);
+   values (21, '2007/Forum photographies/Nature morte/200702011216-20.58.jpg', 558, 800, 54012);
 insert into photo
-   values (22, '2007/Forum photographies/Nature morte/200702011217-21.61.jpg', 600, 800, 43378);
+   values (22, '2007/Forum photographies/Nature morte/200702011217-21.61.jpg', 800, 600, 43378);
 insert into photo
-   values (23, '2007/Forum photographies/Paysage/200702011217-22.71.jpg', 600, 800, 143269);
+   values (23, '2007/Forum photographies/Paysage/200702011217-22.71.jpg', 800, 600, 143269);
 insert into photo
    values (24, '2007/Forum photographies/Nature morte/200702011218-23.73.jpg', 600, 600, 14464);
 insert into photo
-   values (25, '2007/Forum photographies/Paysage/200702011219-24.91.jpg', 800, 600, 78384);
+   values (25, '2007/Forum photographies/Paysage/200702011219-24.91.jpg', 600, 800, 78384);
 insert into photo
-   values (26, '2007/Forum photographies/Macro/Animaux/200702011219-25.106.jpg', 788, 600, 54892);
+   values (26, '2007/Forum photographies/Macro/Animaux/200702011219-25.106.jpg', 600, 788, 54892);
 insert into photo
-   values (27, '2007/Forum photographies/Abstrait/200702011220-26.110.jpg', 800, 600, 97441);
+   values (27, '2007/Forum photographies/Abstrait/200702011220-26.110.jpg', 600, 800, 97441);
 insert into photo
-   values (28, '2007/Forum photographies/Nature morte/200702011221-27.AGRIC055.jpg', 640, 800, 87672);
+   values (28, '2007/Forum photographies/Nature morte/200702011221-27.AGRIC055.jpg', 800, 640, 87672);
 insert into photo
-   values (29, '2007/Forum photographies/Macro/Animaux/200702011222-28.ANIMAUX089.jpg', 750, 600, 39951);
+   values (29, '2007/Forum photographies/Macro/Animaux/200702011222-28.ANIMAUX089.jpg', 600, 750, 39951);
 insert into photo
-   values (30, '2007/Forum photographies/Macro/Animaux/200702011222-29.ANIMAUX113.jpg', 750, 600, 73108);
+   values (30, '2007/Forum photographies/Macro/Animaux/200702011222-29.ANIMAUX113.jpg', 600, 750, 73108);
 insert into photo
-   values (31, '2007/Forum photographies/Macro/Animaux/200702011223-30.ANIMAUX114.jpg', 750, 600, 71637);
+   values (31, '2007/Forum photographies/Macro/Animaux/200702011223-30.ANIMAUX114.jpg', 600, 750, 71637);
 insert into photo
-   values (32, '2007/Forum photographies/Paysage/200702011223-31.ARCHIT001.jpg', 750, 600, 89270);
+   values (32, '2007/Forum photographies/Paysage/200702011223-31.ARCHIT001.jpg', 600, 750, 89270);
 insert into photo
-   values (33, '2007/Forum photographies/Paysage/200702011224-32.ARCHT072.jpg', 600, 750, 25293);
+   values (33, '2007/Forum photographies/Paysage/200702011224-32.ARCHT072.jpg', 750, 600, 25293);
 insert into photo
-   values (34, '2007/Forum photographies/Abstrait/200702011225-33.FONDS009.jpg', 750, 600, 90927);
+   values (34, '2007/Forum photographies/Abstrait/200702011225-33.FONDS009.jpg', 600, 750, 90927);
 insert into photo
-   values (35, '2007/Forum photographies/Paysage/200702011226-34.PERS008.jpg', 750, 600, 59954);
+   values (35, '2007/Forum photographies/Paysage/200702011226-34.PERS008.jpg', 600, 750, 59954);
 insert into photo
-   values (36, '2007/Forum photographies/Portrait/200702011227-35.PERS012.jpg', 750, 600, 103911);
+   values (36, '2007/Forum photographies/Portrait/200702011227-35.PERS012.jpg', 600, 750, 103911);
 insert into photo
-   values (37, '2007/Forum photographies/Portrait/200702011227-36.PERS024.jpg', 750, 600, 72551);
-insert into photo values (38, '2007/Forum photographies/Paysage/200702012114-0.conv_1.jpg', 800, 600, 72762);
-insert into photo values (39, '2007/Forum photographies/Paysage/200702012140-1.conv_4.jpg', 800, 600, 146591);
-insert into photo values (40, '2007/Forum photographies/Macro/Animaux/200702012140-2.conv_8.jpg', 800, 533, 37338);
-insert into photo values (41, '2007/Forum photographies/Paysage/200702012141-3.conv_10.jpg', 800, 533, 147253);
-insert into photo values (42, '2007/Forum photographies/Paysage/200702012141-4.conv_10b.jpg', 800, 531, 113581);
-insert into photo values (43, '2007/Forum photographies/Abstrait/200702012142-5.conv_11.jpg', 532, 800, 56176);
-insert into photo values (44, '2007/Forum photographies/Abstrait/200702012143-6.conv_11b.jpg', 800, 600, 65582);
-insert into photo values (45, '2007/Forum photographies/Macro/Animaux/200702012143-7.conv_12.jpg', 800, 599, 77307);
-insert into photo values (46, '2007/Forum photographies/Macro/Animaux/200702012144-8.conv_12b.jpg', 800, 600, 123416);
-insert into photo values (47, '2007/Forum photographies/Abstrait/200702012144-9.conv_13.jpg', 800, 600, 94453);
-insert into photo values (48, '2007/Forum photographies/Macro/Animaux/200702012145-10.conv_17.jpg', 800, 600, 112182);
-insert into photo values (49, '2007/Forum photographies/Paysage/200702012145-11.conv_19.jpg', 800, 533, 85781);
-insert into photo values (50, '2007/Forum photographies/Macro/Animaux/200702012146-12.conv_25.jpg', 800, 600, 137316);
-insert into photo values (51, '2007/Forum photographies/Macro/Animaux/200702012146-13.conv_25b.jpg', 800, 533, 51365);
-insert into photo values (52, '2007/Forum photographies/Paysage/200702012147-14.conv_30.jpg', 533, 800, 60825);
-insert into photo values (53, '2007/Forum photographies/Paysage/200702012147-15.conv_31.jpg', 800, 533, 95442);
-insert into photo values (54, '2007/Forum photographies/Paysage/200702012148-16.conv_32.jpg', 800, 600, 99593);
-insert into photo values (55, '2007/Forum photographies/Abstrait/200702012148-17.conv_34.jpg', 800, 524, 79084);
-insert into photo values (56, '2007/Forum photographies/Macro/Animaux/200702012149-18.conv_36.jpg', 800, 600, 20425);
-insert into photo values (57, '2007/Forum photographies/Paysage/200702012149-19.conv_39.jpg', 800, 533, 149062);
-insert into photo values (58, '2007/Forum photographies/Paysage/200702012149-20.conv_40.jpg', 800, 600, 100181);
-insert into photo values (59, '2007/Forum photographies/Paysage/200702012150-21.conv_40b.jpg', 800, 657, 102548);
-insert into photo values (60, '2007/Forum photographies/Paysage/200702012150-22.conv_42.jpg', 533, 800, 123293);
-insert into photo values (61, '2007/Forum photographies/Abstrait/200702012151-23.conv_43.jpg', 600, 800, 141948);
-insert into photo values (62, '2007/Forum photographies/Abstrait/200702012151-24.conv_46.jpg', 800, 600, 74131);
-insert into photo values (63, '2007/Forum photographies/Abstrait/200702012151-25.conv_49.jpg', 800, 600, 39485);
-insert into photo values (64, '2007/Forum photographies/Abstrait/200702012152-26.conv_49b.jpg', 800, 532, 105675);
-insert into photo values (65, '2007/Forum photographies/Paysage/200702012152-27.conv_55.jpg', 800, 600, 123954);
-insert into photo values (66, '2007/Forum photographies/Abstrait/200702012153-28.conv_57.jpg', 800, 532, 87446);
-insert into photo values (67, '2007/Forum photographies/Nature morte/200702012153-29.conv_58.jpg', 800, 500, 85840);
-insert into photo values (68, '2007/Forum photographies/Paysage/200702012154-30.conv_60.jpg', 533, 800, 57675);
-insert into photo values (69, '2007/Forum photographies/Abstrait/200702012155-31.conv_63.jpg', 800, 600, 61868);
-insert into photo values (70, '2007/Forum photographies/Macro/Animaux/200702012155-32.conv_67.jpg', 800, 600, 87149);
-insert into photo values (71, '2007/Forum photographies/Portrait/200702012156-33.conv_70.jpg', 531, 800, 47871);
-insert into photo values (72, '2007/Forum photographies/Paysage/200702012156-34.conv_71.jpg', 800, 533, 192053);
-insert into photo values (73, '2007/Forum photographies/Macro/Animaux/200702012157-35.conv_80.jpg', 800, 523, 35783);
-insert into photo values (74, '2007/Forum photographies/Nature morte/200702012157-36.conv_92.jpg', 800, 600, 180136);
-insert into photo values (75, '2007/Forum photographies/Macro/Animaux/200702012157-37.conv_93.jpg', 800, 587, 138881);
-insert into photo values (76, '2007/Forum photographies/Abstrait/200702012158-38.conv_96.jpg', 800, 600, 188896);
-insert into photo values (77, '2007/Forum photographies/Paysage/200702012158-39.conv_99.jpg', 800, 532, 117796);
-insert into photo values (78, '2007/Forum photographies/Paysage/200702012159-40.conv_105.jpg', 532, 800, 88058);
-insert into photo values (79, '2007/Forum photographies/Macro/Animaux/200702012159-41.conv_ANIMX031.jpg', 800, 526, 37963);
-insert into photo values (80, '2007/Forum photographies/Paysage/200702012159-42.conv_ARBRE017.jpg', 800, 640, 34189);
-insert into photo values (81, '2007/Forum photographies/Portrait/200702012200-43.conv_ARBRE023.jpg', 800, 640, 66731);
-insert into photo values (82, '2007/Forum photographies/Paysage/200702012200-44.conv_COTES064.jpg', 800, 529, 49048);
-insert into photo values (83, '2007/Forum photographies/Abstrait/200702012201-45.conv_MAISN002.jpg', 800, 543, 22580);
-insert into photo values (84, '2007/Forum photographies/Macro/Animaux/200702012201-46.conv_MONUM113.jpg', 800, 527, 49269);
-insert into photo values (85, '2007/Forum photographies/Paysage/200702012202-47.conv_PARIS008.jpg', 506, 800, 30177);
-insert into photo values (86, '2007/Forum photographies/Paysage/200702012202-48.conv_SPTLS046.jpg', 529, 800, 49362);
-insert into photo values (87, '2007/Forum photographies/Nature morte/200702012202-49.conv_TEX009.jpg', 800, 533, 78529);
-insert into photo values (88, '2007/Forum photographies/Paysage/200702012203-50.conv_TRSPT066.jpg', 641, 800, 54089);
+   values (37, '2007/Forum photographies/Portrait/200702011227-36.PERS024.jpg', 600, 750, 72551);
+insert into photo values (38, '2007/Forum photographies/Paysage/200702012114-0.conv_1.jpg', 600, 800, 72762);
+insert into photo values (39, '2007/Forum photographies/Paysage/200702012140-1.conv_4.jpg', 600, 800, 146591);
+insert into photo values (40, '2007/Forum photographies/Macro/Animaux/200702012140-2.conv_8.jpg', 533, 800, 37338);
+insert into photo values (41, '2007/Forum photographies/Paysage/200702012141-3.conv_10.jpg', 533, 800, 147253);
+insert into photo values (42, '2007/Forum photographies/Paysage/200702012141-4.conv_10b.jpg', 531, 800, 113581);
+insert into photo values (43, '2007/Forum photographies/Abstrait/200702012142-5.conv_11.jpg', 800, 532, 56176);
+insert into photo values (44, '2007/Forum photographies/Abstrait/200702012143-6.conv_11b.jpg', 600, 800, 65582);
+insert into photo values (45, '2007/Forum photographies/Macro/Animaux/200702012143-7.conv_12.jpg', 599, 800, 77307);
+insert into photo values (46, '2007/Forum photographies/Macro/Animaux/200702012144-8.conv_12b.jpg', 600, 800, 123416);
+insert into photo values (47, '2007/Forum photographies/Abstrait/200702012144-9.conv_13.jpg', 600, 800, 94453);
+insert into photo values (48, '2007/Forum photographies/Macro/Animaux/200702012145-10.conv_17.jpg', 600, 800, 112182);
+insert into photo values (49, '2007/Forum photographies/Paysage/200702012145-11.conv_19.jpg', 533, 800, 85781);
+insert into photo values (50, '2007/Forum photographies/Macro/Animaux/200702012146-12.conv_25.jpg', 600, 800, 137316);
+insert into photo values (51, '2007/Forum photographies/Macro/Animaux/200702012146-13.conv_25b.jpg', 533, 800, 51365);
+insert into photo values (52, '2007/Forum photographies/Paysage/200702012147-14.conv_30.jpg', 800, 533, 60825);
+insert into photo values (53, '2007/Forum photographies/Paysage/200702012147-15.conv_31.jpg', 533, 800, 95442);
+insert into photo values (54, '2007/Forum photographies/Paysage/200702012148-16.conv_32.jpg', 600, 800, 99593);
+insert into photo values (55, '2007/Forum photographies/Abstrait/200702012148-17.conv_34.jpg', 524, 800, 79084);
+insert into photo values (56, '2007/Forum photographies/Macro/Animaux/200702012149-18.conv_36.jpg', 600, 800, 20425);
+insert into photo values (57, '2007/Forum photographies/Paysage/200702012149-19.conv_39.jpg', 533, 800, 149062);
+insert into photo values (58, '2007/Forum photographies/Paysage/200702012149-20.conv_40.jpg', 600, 800, 100181);
+insert into photo values (59, '2007/Forum photographies/Paysage/200702012150-21.conv_40b.jpg', 657, 800, 102548);
+insert into photo values (60, '2007/Forum photographies/Paysage/200702012150-22.conv_42.jpg', 800, 533, 123293);
+insert into photo values (61, '2007/Forum photographies/Abstrait/200702012151-23.conv_43.jpg', 800, 600, 141948);
+insert into photo values (62, '2007/Forum photographies/Abstrait/200702012151-24.conv_46.jpg', 600, 800, 74131);
+insert into photo values (63, '2007/Forum photographies/Abstrait/200702012151-25.conv_49.jpg', 600, 800, 39485);
+insert into photo values (64, '2007/Forum photographies/Abstrait/200702012152-26.conv_49b.jpg', 532, 800, 105675);
+insert into photo values (65, '2007/Forum photographies/Paysage/200702012152-27.conv_55.jpg', 600, 800, 123954);
+insert into photo values (66, '2007/Forum photographies/Abstrait/200702012153-28.conv_57.jpg', 532, 800, 87446);
+insert into photo values (67, '2007/Forum photographies/Nature morte/200702012153-29.conv_58.jpg', 500, 800, 85840);
+insert into photo values (68, '2007/Forum photographies/Paysage/200702012154-30.conv_60.jpg', 800, 533, 57675);
+insert into photo values (69, '2007/Forum photographies/Abstrait/200702012155-31.conv_63.jpg', 600, 800, 61868);
+insert into photo values (70, '2007/Forum photographies/Macro/Animaux/200702012155-32.conv_67.jpg', 600, 800, 87149);
+insert into photo values (71, '2007/Forum photographies/Portrait/200702012156-33.conv_70.jpg', 800, 531, 47871);
+insert into photo values (72, '2007/Forum photographies/Paysage/200702012156-34.conv_71.jpg', 533, 800, 192053);
+insert into photo values (73, '2007/Forum photographies/Macro/Animaux/200702012157-35.conv_80.jpg', 523, 800, 35783);
+insert into photo values (74, '2007/Forum photographies/Nature morte/200702012157-36.conv_92.jpg', 600, 800, 180136);
+insert into photo values (75, '2007/Forum photographies/Macro/Animaux/200702012157-37.conv_93.jpg', 587, 800, 138881);
+insert into photo values (76, '2007/Forum photographies/Abstrait/200702012158-38.conv_96.jpg', 600, 800, 188896);
+insert into photo values (77, '2007/Forum photographies/Paysage/200702012158-39.conv_99.jpg', 532, 800, 117796);
+insert into photo values (78, '2007/Forum photographies/Paysage/200702012159-40.conv_105.jpg', 800, 532, 88058);
+insert into photo values (79, '2007/Forum photographies/Macro/Animaux/200702012159-41.conv_ANIMX031.jpg', 526, 800, 37963);
+insert into photo values (80, '2007/Forum photographies/Paysage/200702012159-42.conv_ARBRE017.jpg', 640, 800, 34189);
+insert into photo values (81, '2007/Forum photographies/Portrait/200702012200-43.conv_ARBRE023.jpg', 640, 800, 66731);
+insert into photo values (82, '2007/Forum photographies/Paysage/200702012200-44.conv_COTES064.jpg', 529, 800, 49048);
+insert into photo values (83, '2007/Forum photographies/Abstrait/200702012201-45.conv_MAISN002.jpg', 543, 800, 22580);
+insert into photo values (84, '2007/Forum photographies/Macro/Animaux/200702012201-46.conv_MONUM113.jpg', 527, 800, 49269);
+insert into photo values (85, '2007/Forum photographies/Paysage/200702012202-47.conv_PARIS008.jpg', 800, 506, 30177);
+insert into photo values (86, '2007/Forum photographies/Paysage/200702012202-48.conv_SPTLS046.jpg', 800, 529, 49362);
+insert into photo values (87, '2007/Forum photographies/Nature morte/200702012202-49.conv_TEX009.jpg', 533, 800, 78529);
+insert into photo values (88, '2007/Forum photographies/Paysage/200702012203-50.conv_TRSPT066.jpg', 800, 641, 54089);
 
 --  Comments
 
