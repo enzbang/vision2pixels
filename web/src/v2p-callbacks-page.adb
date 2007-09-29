@@ -249,11 +249,11 @@ package body V2P.Callbacks.Page is
                     (Images_Full_Prefix'Length + 1 .. New_Image.Filename'Last);
                   Pid                : constant String
                     := Database.Insert_Photo
-                      (Login,
-                       New_Photo_Filename,
-                       Natural (New_Image.Dimension.Width),
-                       Natural (New_Image.Dimension.Height),
-                       Natural (New_Image.Dimension.Size));
+                      (Uid      => Login,
+                       Filename => New_Photo_Filename,
+                       Height   => Natural (New_Image.Dimension.Height),
+                       Width    => Natural (New_Image.Dimension.Width),
+                       Size     => Natural (New_Image.Dimension.Size));
                begin
                   Templates.Insert
                     (Translations,
