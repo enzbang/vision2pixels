@@ -9,7 +9,8 @@
 <div class="forums">@_LAZY_FORUM_LIST_@</div>
   <div id="image_block">
    @@-- Navigation links
-  <ul id="navigate">
+  <ul id="navigate" style="margin-left:@_MULT(-1):SUB(400):DIV(2):IMAGE_WIDTH_@px;">
+
     @@IF@@ @_PREVIOUS_@ /= ""
     <li class="prev_link">
       <a href="@_FORUM_ENTRY_URL_@?TID=@_PREVIOUS_@&amp;FID=@_Current_FID_@">
@@ -28,7 +29,8 @@
   @@-- Image
   @@IF@@ @_IMAGE_SOURCE_@ /= ""
   <p id="main_image">
-    <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"/>
+    <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
+     height="@_IMAGE_HEIGHT_@" width="@_IMAGE_WIDTH_@" />
   </p>
   @@END_IF@@
 <div id="image_infos">

@@ -1,5 +1,5 @@
-@@SET@@ MAX_IMAGE_SIZE=800px
-@@SET@@ MIN_IMAGE_SIZE=500px
+@@SET@@ MAX_IMAGE_SIZE=800
+@@SET@@ MIN_IMAGE_SIZE=500
 @@SET@@ HIGHLIGHT_COLOR=#019BBD
 @@SET@@ PHOTOTITLECOLOR=#CBCBFF
 @@SET@@ PHOTOCATEGORY=#DCE0E3
@@ -97,9 +97,11 @@ cite, em {
 @@--  Blocks
 
 div#image_block {
-   margin-left:60px;
-   margin-top:10px;
-   width:@_MAX_IMAGE_SIZE_@;
+   left:50%;
+   margin:40px 0 0 -@_DIV(2):MAX_IMAGE_SIZE_@px;
+   position:relative;
+   padding:0;
+   width:@_MAX_IMAGE_SIZE_@px;
 }
 
 @@--  Navigation links
@@ -146,10 +148,6 @@ body.forum_entry h2 {
   font-size:1.3em;
 }
 
-#image_block {
-  padding:2em 0 0 0;
-}
-
 body.forum_entry p#main_image {
    margin:0px auto;
    text-align:center;
@@ -179,7 +177,7 @@ body.forum_entry #comments p {
 }
 
 body.forum_entry #new_comment {
-   width:@_MIN_IMAGE_SIZE_@;
+   width:@_MIN_IMAGE_SIZE_@px;
 }
 
 body.forum_entry #new_comment legend {
