@@ -269,7 +269,7 @@ package body V2P.Web_Server is
                --  ??? In this case we probably want to add some Ajax error
                --  report.
                Logs.Write
-                 (Module, Logs.Error, "Default_Callback XML exception for"
+                 (Module, Logs.Error, "Default_Callback XML exception for "
                   & Logs.NV ("URI", URI) & " "
                   & Logs.NV ("EXNAME", Exception_Name (E)));
                return Response.Build
