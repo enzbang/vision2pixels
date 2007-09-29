@@ -114,6 +114,7 @@ install_gwiad_plugin: install_db
 	$(CP) image/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) kernel/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) lib/gnade/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
+	$(CP) lib/g2f_io/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) $(DIOUZHTU_DYNAMIC_LIB)/libwiki_service$(SOEXT) \
 		$(GWIAD_ROOT)/lib/services
 
