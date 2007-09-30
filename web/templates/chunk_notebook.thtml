@@ -18,7 +18,7 @@
 @@--   * Include this template in the header (between <head> and </head>)
 @@--     This is done with an instruction like:
 @@--
-@@--         @@INCLUDE@@ notebook.thtml (1=>Tabs, 2=>currentPage,
+@@--         @@INCLUDE@@ chunk_notebook.thtml (1=>Tabs, 2=>currentPage,
 @@--              3=>TabContents, 4=>initialPageName,
 @@--              5=>activePageColor, 6=>inactivePageColor)
 @@--
@@ -87,7 +87,6 @@
 @@--   remains the same that it was before. This requires cookies, but so does
 @@--   AWS to support sessions.
 @@--
-@@--  $Id: notebook.thtml 9435 2006-09-13 09:20:27Z obry $
 
 @@SET@@ ACTIVE_PAGE_COLOR       = $5  | #333
 @@SET@@ PAGE_COLOR              = $6  | black

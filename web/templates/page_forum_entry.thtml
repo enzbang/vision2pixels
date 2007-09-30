@@ -62,7 +62,7 @@
     @@TABLE@@
     <li id="comment_@_COMMENT_ID_@"
         class="level_@_COMMENT_LEVEL_@ type_@_MOD(2):TABLE_LINE_@">
-      @@INCLUDE@@ comment.thtml
+      @@INCLUDE@@ chunk_comment.thtml
       @@IF@@ @_NB_LEVELS_TO_CLOSE_@ > 0
       @_REPEAT("</li>"):NB_LEVELS_TO_CLOSE_@
       @@END_IF@@
