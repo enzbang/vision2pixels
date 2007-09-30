@@ -16,7 +16,7 @@
     <![CDATA[
     <!-- '@_PARENT_ID_@' -->
     <li id="comment_@_COMMENT_ID_@" class="level_@_COMMENT_LEVEL_@ new">
-    @@INCLUDE@@ comment.thtml
+    @@INCLUDE@@ chunk_comment.thtml
     </li>
     ]]>
   </insert_after>
@@ -25,7 +25,7 @@
     <![CDATA[
     <ol id="comments">
       <li id="comment_@_COMMENT_ID_@" class="level_@_COMMENT_LEVEL_@ new">
-      @@INCLUDE@@ comment.thtml
+      @@INCLUDE@@ chunk_comment.thtml
       </li>
     </ol>
     ]]>
