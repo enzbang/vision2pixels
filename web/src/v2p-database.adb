@@ -310,83 +310,15 @@ package body V2P.Database is
    function Get_Entry (Tid : in String) return Templates.Translate_Set is
       use type Templates.Tag;
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Set                : Templates.Translate_Set;
-      Iter               : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line               : DB.String_Vectors.Vector;
+      Set  : Templates.Translate_Set;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
    begin
       Connect (DBH);
 
-      --  Get entry information
+      Templates.Insert (Set, Get_Post (Tid));
 
-      DBH.Handle.Prepare_Select
-        (Iter, "select post.name, post.comment, post.hidden, "
-         & "(select filename from photo where id=post.photo_id), "
-         & "(select width from photo where Id = Post.Photo_Id), "
-         & "(select height from photo where Id = Post.Photo_Id), "
-         & "user.login, post.date_post, "
-         & "datetime(post.date_post, '+"
-         & Utils.Image (Settings.Anonymity_Hours)
-         & " hour') < datetime('now') "
-         & "from post, user, user_post "
-         & "where post.id=" & Q (Tid)
-         & " and user.login = user_post.user_login"
-         & " and user_post.post_id = post.id");
-
-      if Iter.More then
-         Iter.Get_Line (Line);
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Page_Forum_Entry.NAME, DB.String_Vectors.Element (Line, 1)));
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Page_Forum_Entry.IMAGE_COMMENT,
-               DB.String_Vectors.Element (Line, 2)));
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Page_Forum_Entry.HIDDEN, DB.String_Vectors.Element (Line, 3)));
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Page_Forum_Entry.IMAGE_SOURCE,
-               DB.String_Vectors.Element (Line, 4)));
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Page_Forum_Entry.IMAGE_WIDTH,
-               DB.String_Vectors.Element (Line, 5)));
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Page_Forum_Entry.IMAGE_HEIGHT,
-               DB.String_Vectors.Element (Line, 6)));
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Page_Forum_Entry.OWNER, DB.String_Vectors.Element (Line, 7)));
-
-         Templates.Insert
-           (Set, Templates.Assoc
-              (Page_Forum_Entry.DATE_POST,
-               DB.String_Vectors.Element (Line, 8)));
-
-         Templates.Insert
-           (Set,
-            Templates.Assoc
-              (Page_Forum_Entry.REVEALED,
-               DB.String_Vectors.Element (Line, 9)));
-
-         --  Insert the image path
-
-         Line.Clear;
-      end if;
-
-      Iter.End_Select;
-
-      Get_All_Comments :
-      declare
+      Get_All_Comments : declare
          Comment_Id         : Templates.Tag;
          Comment_Level      : Templates.Tag;
          Nb_Levels_To_Close : Templates.Tag;
@@ -730,6 +662,87 @@ package body V2P.Database is
       Iter.End_Select;
       return Set;
    end Get_Metadata;
+
+   --------------
+   -- Get_Post --
+   --------------
+
+   function Get_Post (Tid : in String) return Templates.Translate_Set is
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Set  : Templates.Translate_Set;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+   begin
+      Connect (DBH);
+
+      --  Get entry information
+
+      DBH.Handle.Prepare_Select
+        (Iter, "select post.name, post.comment, post.hidden, "
+         & "(select filename from photo where id=post.photo_id), "
+         & "(select width from photo where Id = Post.Photo_Id), "
+         & "(select height from photo where Id = Post.Photo_Id), "
+         & "user.login, post.date_post, "
+         & "datetime(post.date_post, '+"
+         & Utils.Image (Settings.Anonymity_Hours)
+         & " hour') < datetime('now') "
+         & "from post, user, user_post "
+         & "where post.id=" & Q (Tid)
+         & " and user.login = user_post.user_login"
+         & " and user_post.post_id = post.id");
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Page_Forum_Entry.NAME, DB.String_Vectors.Element (Line, 1)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Page_Forum_Entry.IMAGE_COMMENT,
+               DB.String_Vectors.Element (Line, 2)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Page_Forum_Entry.HIDDEN, DB.String_Vectors.Element (Line, 3)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Page_Forum_Entry.IMAGE_SOURCE,
+               DB.String_Vectors.Element (Line, 4)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Page_Forum_Entry.IMAGE_WIDTH,
+               DB.String_Vectors.Element (Line, 5)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Page_Forum_Entry.IMAGE_HEIGHT,
+               DB.String_Vectors.Element (Line, 6)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Page_Forum_Entry.OWNER, DB.String_Vectors.Element (Line, 7)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Page_Forum_Entry.DATE_POST,
+               DB.String_Vectors.Element (Line, 8)));
+
+         Templates.Insert
+           (Set,
+            Templates.Assoc
+              (Page_Forum_Entry.REVEALED,
+               DB.String_Vectors.Element (Line, 9)));
+         Line.Clear;
+      end if;
+
+      Iter.End_Select;
+
+      return Set;
+   end Get_Post;
 
    -----------------
    -- Get_Threads --

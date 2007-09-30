@@ -77,8 +77,11 @@ package V2P.Database is
    function Get_Category_Full_Name (CID : in String) return String;
    --  Returns a category name "Forum/Category" for the given id
 
+   function Get_Post (Tid : in String) return Templates.Translate_Set;
+   --  Returns the post information (no comments)
+
    function Get_Entry (Tid : in String) return Templates.Translate_Set;
-   --  Returns the full content of the entry Id
+   --  Returns the full content of the entry Id. As above with comments
 
    function Get_Comment (Cid : in String) return Templates.Translate_Set;
    --  Returns a comment for the given comment id
