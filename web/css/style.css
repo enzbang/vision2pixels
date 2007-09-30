@@ -591,20 +591,25 @@ ol#comments cite {
    margin:0 0 5px 0;
 }
 
-ol#comments cite a {
+ol#comments cite span.user_name {
    margin:0px;
-   font-size:1.2em;
-   color:#019bbd;
+   color:#029cbe;
 }
 
-ol#comments p.commentmetadata {
-   margin:0 0 1em 0;
+ol#comments cite span.user_name a {
+   margin:0px;
+   font-size:1.2em;
+   color:#029cbe;
+}
+
+ol#comments abbr.comment_date {
+   font-size: 0.8em;
+   float: right;
 }
 
 ol#comments p.comment_body {
    line-height:1.5em;
 }
-
 
 @@--  User page
 

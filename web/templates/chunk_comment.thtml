@@ -1,6 +1,7 @@
 @@--        <h3 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h3>
 @@-- Comment title line since it's not yet used
 <cite>
+  <span class="user_name">
   @@IF@@ @_USER_@ /= ""
     @@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@ or @_USER_@ /= @_OWNER_@
        <a href="@_USER_PAGE_@" >@_USER_@</a>
@@ -10,11 +11,13 @@
   @@ELSE@@
     <span class="anonymous">@_ANONYMOUS_USER_@</span>
   @@END_IF@@
+  </span>
+  <span class="commentmetadata">
+    <a href="#comment_@_COMMENT_ID_@">
+      <abbr class="comment_date"
+      title="@_DATE_ISO_8601_@">@_FORMAT_DATE(%d %b %Y):DATE_@ &nbsp; @_TIME_@
+      </abbr>
+    </a>
+  </span>
 </cite>
-<p class="commentmetadata">
-  <a href="#comment_@_COMMENT_ID_@">
-    <abbr class="comment_date"
-          title="@_DATE_ISO_8601_@">@_FORMAT_DATE(%d %b %Y):DATE_@ &nbsp; @_TIME_@</abbr>
-  </a>
-</p>
 <div class="comment_body">@_COMMENT_@</div>
