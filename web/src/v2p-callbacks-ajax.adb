@@ -135,13 +135,13 @@ package body V2P.Callbacks.Ajax is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
       P   : constant Parameters.List := Status.Parameters (Request);
       Fid : constant String :=
               Parameters.Get
                 (P, Template_Defs.Block_Forum_List_Select.HTTP.sel_forum_list);
    begin
       Templates.Insert (Translations, Database.Get_Categories (Fid));
+      Context.Set_Value (Template_Defs.Set_Global.FID, Fid);
    end Onchange_Forum_List;
 
    ----------------------------------
@@ -249,6 +249,14 @@ package body V2P.Callbacks.Ajax is
                Templates.Assoc
                  (R_Block_Comment_Form_Enter.COMMENT_LEVEL, "1"));
             --  Does not support threaded view for now
+
+            Templates.Insert
+              (Translations,
+               Database.Get_Forum (Context.Get_Value (Set_Global.FID)));
+
+            Templates.Insert
+              (Translations,
+               Database.Get_Post (Context.Get_Value (Set_Global.TID)));
          end Insert_Comment;
       end if;
    end Onsubmit_Comment_Form_Enter;
@@ -341,8 +349,8 @@ package body V2P.Callbacks.Ajax is
       Name         : constant String :=
                        Parameters.Get (P, Page_Forum_New_Entry.HTTP.NAME);
       Comment      : constant String :=
-                       Parameters.Get (P, Page_Forum_New_Entry.
-                                                        HTTP.comment_input);
+                       Parameters.Get
+                         (P, Page_Forum_New_Entry.HTTP.comment_input);
       CID          : constant String :=
                        Parameters.Get (P, Page_Forum_New_Entry.HTTP.CATEGORY);
       PID          : constant String :=
