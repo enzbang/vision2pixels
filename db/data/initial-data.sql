@@ -387,25 +387,25 @@ insert into photo values (88, '2007/Forum photographies/Paysage/200702012203-50.
 
 --  Comments
 
-insert into comment values (1, '2007-02-01 19:29:21', NULL, 'enzbang', NULL, 'See <a href=''http://en.wikipedia.org/wiki/Rubik%27s_cube'' rel=''nofollow''>http://en.wikipedia.org/wiki/Rubik%27s_cube</a> if you''re interested...', NULL);
-insert into comment values (2, '2007-02-01 19:30:22', NULL, 'enzbang', NULL, 'Quel est cet animal ?', NULL);
-insert into comment values (3, '2007-02-01 19:33:57', NULL, 'enzbang', NULL, 'Parque Nacional de Monegros ?', NULL);
-insert into comment values (4, '2007-02-01 19:34:19', NULL, 'enzbang', NULL, 'Filtre polarisant ?', NULL);
-insert into comment values (5, '2007-02-01 19:34:54', NULL, 'enzbang', NULL, 'Id&#195;&#169;e originale ! <em>bravo</em> ', NULL);
-insert into comment values (6, '2007-02-01 19:35:45', NULL, 'enzbang', NULL, 'Tiens les accents ne passent pas ? &#195;&#169;&#195;&#160;&#195;&#185;&#195;&#179;', NULL);
-insert into comment values (7, '2007-02-01 19:36:06', NULL, 'enzbang', NULL, 'Hum... sans moi', NULL);
-insert into comment values (8, '2007-02-01 19:36:59', NULL, 'enzbang', NULL, '&#195;&#167;a penche !', NULL);
-insert into comment values (9, '2007-02-01 19:38:19', NULL, 'enzbang', NULL, 'la m&#195;&#170;me avec un cadre ?', NULL);
-insert into comment values (10, '2007-02-01 19:39:02', NULL, 'enzbang', NULL, 'J''aurais cadr&#195;&#169; l&#195;&#169;g&#195;&#168;rement plus &#195;&#160; droite', NULL);
-insert into comment values (11, '2007-02-01 19:39:31', NULL, 'enzbang', NULL, 'D&#195;&#169;sol&#195;&#169; mais je n''accroche pas', NULL);
-insert into comment values (12, '2007-02-01 19:40:30', NULL, 'enzbang', NULL, 'Good idea 4 this picture', NULL);
-insert into comment values (13, '2007-02-01 19:40:54', NULL, 'enzbang', NULL, 'Un classique', NULL);
-insert into comment values (14, '2007-02-01 19:41:28', NULL, 'enzbang', NULL, '^_^', NULL);
-insert into comment values (15, '2007-02-01 19:41:50', NULL, 'enzbang', NULL, 'Unlocked ?', NULL);
-insert into comment values (16, '2007-02-01 19:42:27', NULL, 'enzbang', NULL, 'L''envie de fraise d&#195;&#169;j&#195;&#160; !', NULL);
-insert into comment values (17, '2007-02-01 21:42:27', NULL, 'turbo', NULL, 'Alors qu''en pensez-vous?', NULL);
-insert into comment values (18, '2007-02-01 22:42:27', NULL, 'enzbang', NULL, 'Bof!', NULL);
-insert into comment values (19, '2007-02-01 23:10:27', NULL, 'turbo', NULL, 'Mais encore ?', NULL);
+insert into comment values (1, '2007-02-01 19:29:21', NULL, 'enzbang', NULL, '<p>See <a href=''http://en.wikipedia.org/wiki/Rubik%27s_cube'' rel=''nofollow''>http://en.wikipedia.org/wiki/Rubik%27s_cube</a> if you''re interested...</p>', NULL);
+insert into comment values (2, '2007-02-01 19:30:22', NULL, 'enzbang', NULL, '<p>Quel est cet animal ?</p>', NULL);
+insert into comment values (3, '2007-02-01 19:33:57', NULL, 'enzbang', NULL, '<p>Parque Nacional de Monegros ?</p>', NULL);
+insert into comment values (4, '2007-02-01 19:34:19', NULL, 'enzbang', NULL, '<p>Filtre polarisant ?</p>', NULL);
+insert into comment values (5, '2007-02-01 19:34:54', NULL, 'enzbang', NULL, '<p>Id&#195;&#169;e originale ! <em>bravo</em> </p>', NULL);
+insert into comment values (6, '2007-02-01 19:35:45', NULL, 'enzbang', NULL, '<p>Tiens les accents ne passent pas ? &#195;&#169;&#195;&#160;&#195;&#185;&#195;&#179;</p>', NULL);
+insert into comment values (7, '2007-02-01 19:36:06', NULL, 'enzbang', NULL, '<p>Hum... sans moi</p>', NULL);
+insert into comment values (8, '2007-02-01 19:36:59', NULL, 'enzbang', NULL, '<p>&#195;&#167;a penche !</p>', NULL);
+insert into comment values (9, '2007-02-01 19:38:19', NULL, 'enzbang', NULL, '<p>la m&#195;&#170;me avec un cadre ?</p>', NULL);
+insert into comment values (10, '2007-02-01 19:39:02', NULL, 'enzbang', NULL, '<p>J''aurais cadr&#195;&#169; l&#195;&#169;g&#195;&#168;rement plus &#195;&#160; droite</p>', NULL);
+insert into comment values (11, '2007-02-01 19:39:31', NULL, 'enzbang', NULL, '<p>D&#195;&#169;sol&#195;&#169; mais je n''accroche pas</p>', NULL);
+insert into comment values (12, '2007-02-01 19:40:30', NULL, 'enzbang', NULL, '<p>Good idea 4 this picture</p>', NULL);
+insert into comment values (13, '2007-02-01 19:40:54', NULL, 'enzbang', NULL, '<p>Un classique</p>', NULL);
+insert into comment values (14, '2007-02-01 19:41:28', NULL, 'enzbang', NULL, '<p>^_^</p>', NULL);
+insert into comment values (15, '2007-02-01 19:41:50', NULL, 'enzbang', NULL, '<p>Unlocked ?</p>', NULL);
+insert into comment values (16, '2007-02-01 19:42:27', NULL, 'enzbang', NULL, '<p>L''envie de fraise d&#195;&#169;j&#195;&#160; !</p>', NULL);
+insert into comment values (17, '2007-02-01 21:42:27', NULL, 'turbo', NULL, '<p>Alors qu''en pensez-vous?</p>', NULL);
+insert into comment values (18, '2007-02-01 22:42:27', NULL, 'enzbang', NULL, '<p>Bof!</p>', NULL);
+insert into comment values (19, '2007-02-01 23:10:27', NULL, 'turbo', NULL, '<p>Mais encore ?</p>', NULL);
 
 insert into post_comment values (60, 1);
 insert into post_comment values (84, 2);
