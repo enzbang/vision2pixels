@@ -68,7 +68,7 @@ create trigger add_user_photo_queue after insert on user
 create table "user_photo_queue" (
 "user_login" varchar(50) not null,
 "photo_id" integer,
-foreign key ("user_login") references user("login")
+foreign key ("user_login") references user("login"),
 foreign key ("photo_id") references photo("id")
 );
 
@@ -137,3 +137,42 @@ create table "photo_exif" (
 "iso" integer,
 foreign key ("photo_id") references photo("id")
 );
+
+create table "criteria" (
+"id" integer not null primary key autoincrement,
+"name" varchar(100) not null
+);
+
+create table "rating" (
+"user_login" varchar(50) null,
+"post_id" integer not null,
+"criteria_id" integer not null,
+"post_rating" integer not null,
+foreign key ("user_login") references user("login"),
+foreign key ("post_id") references post("id"),
+foreign key ("criteria_id") references criteria("id"),
+primary key ("user_login", "post_id", "criteria_id")
+);
+
+create table global_rating (
+"post_id" integer not null,
+"criteria_id" integer not null,
+"post_rating" integer not null,
+foreign key ("post_id") references post("id"),
+foreign key ("criteria_id") references criteria("id"),
+primary key ("post_id", "criteria_id")
+);
+
+create trigger initialize_global_rating after insert on post
+begin
+   insert into global_rating (post_id, criteria_id, post_rating)
+             select new.id, id, 0 from criteria;
+end;
+
+create trigger update_global_rating after insert on rating
+begin
+  update global_rating set post_rating=
+    (select sum(post_rating)/count(post_rating) from rating
+        where criteria_id = new.criteria_id and post_id = new.post_id)
+      where criteria_id = new.criteria_id and post_id = new.post_id;
+end;
