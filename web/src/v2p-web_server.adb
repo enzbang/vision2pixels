@@ -88,6 +88,7 @@ package body V2P.Web_Server is
                           Name                 => "xml");
    XML_Prefix_URI  : constant String := "/xml_";
    CSS_URI         : constant String := "/css";
+   IMG_URI         : constant String := "/css/img";
    Web_JS_URI      : constant String := "/we_js";
 
    V2p_Lib_Path    : constant String :=
@@ -113,6 +114,9 @@ package body V2P.Web_Server is
 
    function CSS_Callback (Request : in Status.Data) return Response.Data;
    --  Web Element CSS callback
+
+   function IMG_Callback (Request : in Status.Data) return Response.Data;
+   --  Image callback
 
    function Photos_Callback (Request : in Status.Data) return Response.Data;
    --  Photos callback
@@ -293,6 +297,19 @@ package body V2P.Web_Server is
       return File;
    end Default_XML_Callback;
 
+   ------------------
+   -- IMG_Callback --
+   ------------------
+
+   function IMG_Callback (Request : in Status.Data) return Response.Data is
+      URI  : constant String := Status.URI (Request);
+      File : constant String :=
+               Gwiad_Plugin_Path & Directory_Separator
+                 & URI (URI'First + 1 .. URI'Last);
+   begin
+      return Response.File (MIME.Content_Type (File), File);
+   end IMG_Callback;
+
    ---------------------
    -- Photos_Callback --
    ---------------------
@@ -319,6 +336,12 @@ package body V2P.Web_Server is
         (Main_Dispatcher,
          Web_JS_URI,
          Action => Dispatchers.Callback.Create (WEJS_Callback'Access),
+         Prefix => True);
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         IMG_URI,
+         Action => Dispatchers.Callback.Create (IMG_Callback'Access),
          Prefix => True);
 
       Services.Dispatchers.URI.Register
