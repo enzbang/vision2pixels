@@ -32,6 +32,7 @@ with Morzhol.OS;
 with Morzhol.Strings;
 
 with V2P.DB_Handle;
+with V2P.Logs;
 with V2P.Settings;
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
@@ -59,6 +60,8 @@ package body V2P.Database is
 
    use V2P.Context;
    use V2P.Template_Defs;
+
+   Module : constant Logs.Module_Name := "Database";
 
    type TLS_DBH is record
       Handle    : access DB.Handle'Class;
@@ -117,9 +120,10 @@ package body V2P.Database is
             DBH.Connected := True;
             DBH_TLS.Set_Value (DBH.all);
          else
-            Ada.Text_IO.Put_Line
-              ("ERROR : No database found : " & DB_Path);
-            raise No_Database;
+            Logs.Write
+              (Module, Logs.Error, "ERROR : No database found : " & DB_Path);
+            raise No_Database
+              with "ERROR : No database found : " & DB_Path;
          end if;
       end if;
    end Connect;
@@ -520,7 +524,63 @@ package body V2P.Database is
    -- Get_Forum --
    ---------------
 
-   function Get_Forum (Fid : in String) return Templates.Translate_Set is
+   function Get_Forum
+     (Fid, Tid : in String) return Templates.Translate_Set
+   is
+      function Get_Fid
+        (DBH      : TLS_DBH_Access;
+         Fid, Tid : in String) return String;
+      pragma Inline (Get_Fid);
+      --  Returns Fid is not empty otherwise compute it usingg Tid
+
+      -------------
+      -- Get_Fid --
+      -------------
+
+      function Get_Fid
+        (DBH      : TLS_DBH_Access;
+         Fid, Tid : in String) return String
+      is
+         Line : DB.String_Vectors.Vector;
+      begin
+         if Fid = "" then
+            --  Get the Fid using Tid
+            Check_Fid : declare
+               Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+            begin
+               DBH.Handle.Prepare_Select
+                 (Iter,
+                  "select forum_id from category, post "
+                  & "where category.id = post.category_id "
+                  & "and post.id = " & Q (Tid));
+               if Iter.More then
+                  Iter.Get_Line (Line);
+
+                  Fid : declare
+                     Fid : constant String :=
+                             DB.String_Vectors.Element (Line, 1);
+                  begin
+                     Line.Clear;
+                     Iter.End_Select;
+                     return Fid;
+                  end Fid;
+
+               else
+                  --  This case should never happen, but in case it does return
+                  --  1 (the id of the first forum).
+                  Logs.Write
+                    (Module,
+                     Logs.Error,
+                     "Get_Id, Fid and Tid empty, returning 1");
+                  return "1";
+               end if;
+            end Check_Fid;
+
+         else
+            return Fid;
+         end if;
+      end Get_Fid;
+
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
@@ -528,37 +588,45 @@ package body V2P.Database is
    begin
       Connect (DBH);
 
-      DBH.Handle.Prepare_Select
-        (Iter,
-         "select name, anonymity, for_photo from forum where id=" & Q (Fid));
+      Get_Forum_Data : declare
+         L_Fid : constant String := Get_Fid (DBH, Fid, Tid);
+         --  Local Fid computed using Fid or Tid
+      begin
+         DBH.Handle.Prepare_Select
+           (Iter,
+            "select name, anonymity, for_photo from forum where id="
+            & Q (L_Fid));
 
-      if Iter.More then
-         Iter.Get_Line (Line);
+         if Iter.More then
+            Iter.Get_Line (Line);
 
-         Forum_Name : declare
-            Name      : constant String  :=
-                          DB.String_Vectors.Element (Line, 1);
-            Anonymity : constant String :=
-                          DB.String_Vectors.Element (Line, 2);
-            For_Photo : constant String :=
-                          DB.String_Vectors.Element (Line, 3);
-         begin
-            Line.Clear;
+            Forum_Data : declare
+               Name      : constant String  :=
+                             DB.String_Vectors.Element (Line, 1);
+               Anonymity : constant String :=
+                             DB.String_Vectors.Element (Line, 2);
+               For_Photo : constant String :=
+                             DB.String_Vectors.Element (Line, 3);
+            begin
+               Line.Clear;
+               Iter.End_Select;
+
+               Templates.Insert
+                 (Set, Templates.Assoc (Block_Forum_List.FORUM_NAME, Name));
+               Templates.Insert
+                 (Set,
+                  Templates.Assoc
+                    (Page_Forum_Entry.FORUM_ANONYMITY, Anonymity));
+               Templates.Insert
+                 (Set, Templates.Assoc
+                    (Page_Forum_Threads.FORUM_FOR_PHOTO, For_Photo));
+               Templates.Insert (Set, Templates.Assoc (Set_Global.FID, L_Fid));
+            end Forum_Data;
+
+         else
             Iter.End_Select;
-
-            Templates.Insert
-              (Set, Templates.Assoc (Block_Forum_List.FORUM_NAME, Name));
-            Templates.Insert
-              (Set,
-               Templates.Assoc (Page_Forum_Entry.FORUM_ANONYMITY, Anonymity));
-            Templates.Insert
-              (Set, Templates.Assoc
-                 (Page_Forum_Threads.FORUM_FOR_PHOTO, For_Photo));
-         end Forum_Name;
-
-      else
-         Iter.End_Select;
-      end if;
+         end if;
+      end Get_Forum_Data;
 
       return Set;
    end Get_Forum;
@@ -808,28 +876,31 @@ package body V2P.Database is
 
          Select_Stmt : Unbounded_String := Null_Unbounded_String;
       begin
-         if User /= "" and then Fid /= "" then
-            --  ???
+         if Fid /= "" then
 
-            Select_Stmt := Select_Stmt & SQL_Select & SQL_From
-              & SQL_Where
-              & "and category.forum_id = " & Q (Fid)
-              & "and user_post.user_id = " & Q (User);
+            if User = "" then
+               --  Anonymous login
 
-         elsif User /= "" and then Fid = "" then
+               Select_Stmt := Select_Stmt & SQL_Select & SQL_From
+                 & SQL_Where
+                 & " and category.forum_id = " & Q (Fid)
+                 & " and user.login = user_post.user_login ";
+            else
+               --  ???
+               Select_Stmt := Select_Stmt & SQL_Select & SQL_From
+                 & SQL_Where
+                 & "and category.forum_id = " & Q (Fid)
+                 & "and user_post.user_id = " & Q (User);
+            end if;
+
+            Templates.Insert (Set, Templates.Assoc (Set_Global.FID, Fid));
+
+         elsif User /= "" then
             --  ???
 
             Select_Stmt := Select_Stmt & SQL_Select & SQL_From
               & SQL_Where
               & " and user_post.user_login = " & Q (User);
-
-         else
-            --  Anonymous login
-
-            Select_Stmt := Select_Stmt & SQL_Select & SQL_From
-              & SQL_Where
-              & " and category.forum_id = " & Q (Fid)
-              & " and user.login = user_post.user_login ";
          end if;
 
          if not Admin then
