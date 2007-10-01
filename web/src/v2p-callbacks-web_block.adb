@@ -110,7 +110,6 @@ package body V2P.Callbacks.Web_Block is
       Admin     : constant Boolean :=
                     Session.Exist (SID, Template_Defs.Set_Global.ADMIN)
                   and then Session.Get (SID, Template_Defs.Set_Global.ADMIN);
-      Set       : Templates.Translate_Set;
       Nav_Links : V2P.Context.Post_Ids.Vector;
    begin
       Database.Get_Threads
@@ -123,12 +122,10 @@ package body V2P.Callbacks.Web_Block is
          Order_Dir  => Database.Order_Direction'Value
            (Context.Get_Value (Template_Defs.Set_Global.ORDER_DIR)),
          Navigation => Nav_Links,
-         Set        => Set);
+         Set        => Translations);
 
       V2P.Context.Navigation_Links.Set_Value
         (Context.all, "Navigation_Links", Nav_Links);
-
-      Templates.Insert (Translations, Set);
    end Forum_Threads;
 
    -----------
