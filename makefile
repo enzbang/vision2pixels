@@ -31,7 +31,7 @@ LOG := ${shell pwd}/log.${shell date +%Y%m%d-%H%M%S}
 
 OPTIONS = INSTALL="$(INSTALL)" EXEXT="$(EXEXT)" MODE="$(MODE)" \
 	CP="$(CP)" MKDIR="$(MKDIR)" RM="$(RM)" MAKE="$(MAKE)" \
-	LOG="$(LOG)" SOEXT="$(SOEXT)" GNATMAKE="$(GNATMAKE)" \
+	LOG="$(LOG)" SOEXT="$(SOEXT)" GNAT="$(GNAT)" \
 	DIFF=$(DIFF) GWIAD_ROOT="$(GWIAD_ROOT)" \
 	DIOUZHTU_DYNAMIC_LIB="$(DIOUZHTU_DYNAMIC_LIB)"
 
@@ -62,7 +62,7 @@ clean-all:
 		-exec rm -f {} \;
 
 check: check-default
-	gnat check -dd -Pkernel/kernel -rules -from=v2p.check
+	$(GNAT) check -dd -Pkernel/kernel -rules -from=v2p.check
 
 init_tests:
 ifeq ($(OS),Windows_NT)
