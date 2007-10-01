@@ -23,6 +23,12 @@ insert into category values (5, 1, 'Abstrait');
 insert into category values (6, 2, 'MatCat1');
 insert into category values (7, 2, 'MatCat2');
 
+--  Create criteria
+
+insert into criteria values (1, 'Composition');
+insert into criteria values (2, 'Focus');
+insert into criteria values (3, 'Lightling');
+
 --  Create templates
 
 insert into template values (1, 'mytemplate', 'V2P Template');
@@ -426,3 +432,9 @@ insert into post_comment values (56, 16);
 insert into post_comment values (89, 17);
 insert into post_comment values (89, 18);
 insert into post_comment values (89, 19);
+
+--  Insert rating
+
+insert into rating values ("turbo", 141, 1, 5);
+insert into rating values ("enzbang", 141, 1, 1);
+insert into rating values ("test", 141, 1, 4);
