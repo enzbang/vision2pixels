@@ -123,7 +123,7 @@ package body V2P.Callbacks.Ajax is
       Templates.Insert
         (Translations,
          Database.Get_Forum
-           (Context.Get_Value (Template_Defs.Set_Global.FID)));
+           (Context.Get_Value (Template_Defs.Set_Global.FID), Tid => ""));
    end Onchange_Filter_Forum;
 
    -------------------------
@@ -252,7 +252,8 @@ package body V2P.Callbacks.Ajax is
 
             Templates.Insert
               (Translations,
-               Database.Get_Forum (Context.Get_Value (Set_Global.FID)));
+               Database.Get_Forum
+                 (Context.Get_Value (Set_Global.FID), Tid => ""));
 
             Templates.Insert
               (Translations,

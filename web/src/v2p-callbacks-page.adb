@@ -66,6 +66,7 @@ package body V2P.Callbacks.Page is
 
          if not Settings.Anonymous_Visit_Counter then
             --  Do not count anonymous click
+            --  ??? can use a simple assignment
             if Login = "" then
                Count_Visit := False;
 
@@ -128,7 +129,7 @@ package body V2P.Callbacks.Page is
       Templates.Insert
         (Translations,
          Database.Get_Forum
-           (Context.Get_Value (Template_Defs.Set_Global.FID)));
+           (Context.Get_Value (Template_Defs.Set_Global.FID), TID));
    end Forum_Entry;
 
    -------------------
@@ -163,7 +164,7 @@ package body V2P.Callbacks.Page is
       V2P.Context.Navigation_From.Set_Value
         (Context.all, Template_Defs.Set_Global.NAV_FROM, From);
 
-      Templates.Insert (Translations, Database.Get_Forum (FID));
+      Templates.Insert (Translations, Database.Get_Forum (FID, Tid => ""));
 
       V2P.Context.Context_Filter (Context);
    end Forum_Threads;
@@ -210,13 +211,12 @@ package body V2P.Callbacks.Page is
                       Session.Get (SID, Template_Defs.Set_Global.LOGIN);
 
    begin
-
       --  If a new photo has been uploaded, insert it in database
 
       if Filename /= "" then
          New_Photo :
          declare
-            New_Image   : Image_Data;
+            New_Image : Image_Data;
          begin
             Init (Img      => New_Image,
                   Root_Dir => Gwiad_Plugin_Path,
