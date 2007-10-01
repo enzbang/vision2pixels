@@ -260,7 +260,8 @@ package body V2P.Web_Server is
                Logs.Write
                  (Module, Logs.Error, "Default_Callback HTML exception for "
                   & Logs.NV ("URI", URI) & " "
-                  & Logs.NV ("EXNAME", Exception_Name (E)));
+                  & Logs.NV ("EXNAME", Exception_Name (E)) & " "
+                  & Logs.NV ("EXMESS", Exception_Message (E)));
                return Response.Build
                  (Message_Body => "<p>Internal error</p>",
                   Content_Type => MIME.Text_HTML);
@@ -271,7 +272,8 @@ package body V2P.Web_Server is
                Logs.Write
                  (Module, Logs.Error, "Default_Callback XML exception for "
                   & Logs.NV ("URI", URI) & " "
-                  & Logs.NV ("EXNAME", Exception_Name (E)));
+                  & Logs.NV ("EXNAME", Exception_Name (E)) & " "
+                  & Logs.NV ("EXMESS", Exception_Message (E)));
                return Response.Build
                  (Message_Body => "<p>Internal error</p>",
                   Content_Type => MIME.Text_XML);
