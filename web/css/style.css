@@ -164,7 +164,7 @@ body.forum_entry #comments li {
     padding:1em;
 }
 
-body.forum_entry #comments p {
+body.forum_entry #comments p#nocomment {
     @@-- When no comments
     font-size:1.4em;
     text-align:center;
@@ -591,14 +591,15 @@ ol#comments cite {
    margin:0 0 5px 0;
 }
 
-ol#comments cite span.user_name {
+span.user_name {
    margin:0px;
    color:#029cbe;
+   font-size: 1.2em;
+   font-weight: bold;
 }
 
-ol#comments cite span.user_name a {
+span.user_name a {
    margin:0px;
-   font-size:1.2em;
    color:#029cbe;
 }
 
@@ -607,8 +608,10 @@ ol#comments abbr.comment_date {
    float: right;
 }
 
-ol#comments p.comment_body {
+ol#comments div.comment_body {
+   font-size: 1.2em;
    line-height:1.5em;
+   text-align: left;
 }
 
 @@--  User page
