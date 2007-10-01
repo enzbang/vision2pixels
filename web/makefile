@@ -30,12 +30,12 @@ LOGFILE := $(INSTALL_MAIN)/web_harness.log.${shell date +%Y%m%d-%H%M%S}
 
 build:
 	-chmod a+w lib_ali/*
-	gnat make -XPRJ_BUILD=$(MODE) -Pweb
-	gnat make -XPRJ_BUILD=$(MODE) -Pweb_test
+	$(GNAT) make -XPRJ_BUILD=$(MODE) -Pweb
+	$(GNAT) make -XPRJ_BUILD=$(MODE) -Pweb_test
 
 check:
-	gnat check -dd -Pweb -rules -from=../v2p.check
-	gnat check -dd -Pweb_test -rules -from=../v2p.check
+	$(GNAT) check -dd -Pweb -rules -from=../v2p.check
+	$(GNAT) check -dd -Pweb_test -rules -from=../v2p.check
 
 setup:
 	-$(MKDIR) gen tsrc obj lib lib_ali test/obj test/bin
@@ -84,9 +84,9 @@ install-test-lib: install-dir
 
 clean:
 	-$(RM) -r gen src/v2p-template_defs*
-	-gnat clean -r -Pweb
+	-$(GNAT) clean -r -Pweb
 	$(RM) -fr $(INSTALL_MAIN)
-	gnat clean -Pweb_test
+	-$(GNAT) clean -Pweb_test
 
 setup_tests:
 	-$(MKDIR) $(INSTALL_PLUGIN)/db
@@ -108,7 +108,7 @@ run_tests:
 runtests: setup_tests install_tests run_tests
 
 check_mem: setup_tests install_tests
-	$(GNATMAKE) -Pcheck_mem
+	$(GNAT) make -Pcheck_mem
 	$(CP) test/bin/check_mem $(INSTALL_MAIN)/bin
 	(cd $(INSTALL_MAIN); \
 	rm -f check_mem.*; \

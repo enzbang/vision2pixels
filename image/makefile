@@ -26,11 +26,11 @@
 LOGFILE := ${shell pwd}/test/image_harness.log.${shell date +%Y%m%d-%H%M%S}
 
 build:
-	gnat make -XPRJ_BUILD=$(MODE) -Pimage_test
+	$(GNAT) make -XPRJ_BUILD=$(MODE) -Pimage_test
 
 check:
-	gnat check -dd -Pimage -rules -from=../v2p.check
-	gnat check -dd -Pimage_test -rules -from=../v2p.check
+	$(GNAT) check -dd -Pimage -rules -from=../v2p.check
+	$(GNAT) check -dd -Pimage_test -rules -from=../v2p.check
 
 setup:
 	$(MKDIR) obj lib ../kernel/obj ../kernel/lib
@@ -45,6 +45,6 @@ run_tests:
 runtests: run_tests
 
 clean:
-	gnat clean -XPRJ_BUILD=$(MODE) -Pimage_test
+	-$(GNAT) clean -XPRJ_BUILD=$(MODE) -Pimage_test
 	-$(RM) test/*.res test/image_harness.log.*
 	-$(RM) -r images
