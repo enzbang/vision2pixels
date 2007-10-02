@@ -1,9 +1,11 @@
+
 @@SET@@ MAX_IMAGE_SIZE=800
 @@SET@@ MIN_IMAGE_SIZE=500
 @@SET@@ HIGHLIGHT_COLOR=#019BBD
 @@SET@@ PHOTOTITLECOLOR=#CBCBFF
 @@SET@@ PHOTOCATEGORY=#DCE0E3
 @@SET@@ PHOTOAUTHOR=#B5C8FF
+@@SET@@ LIGHT_BORDER=#111
 
 @@-- Position
 
@@ -76,14 +78,14 @@ p#cd_user {
 
 @@--  General
 
-select, input, textarea {
+select, input {
    border: thin solid @_HIGHLIGHT_COLOR_@;
-   color:#ffffff;
+   color: white;
 }
 
 input[type="submit"] {
-   background-color:@_HIGHLIGHT_COLOR_@;
-   color:#000000;
+   background-color: @_HIGHLIGHT_COLOR_@;
+   color: black;
 }
 
 strong {
@@ -122,7 +124,7 @@ ul#navigate li img {
 #image_infos {
     margin:2em 0;
     padding:1em 2em;
-    background-color:#111;
+    background-color:@_LIGHT_BORDER_@;
     border:thin solid @_PHOTOTITLECOLOR_@;
 }
 
@@ -148,6 +150,32 @@ body.forum_entry h2 {
   font-size:1.3em;
 }
 
+textarea#comment_input {
+   width:95%;
+   height:10em;
+   background: black;
+   color: white;
+   border: thin dotted white;
+}
+
+label#comment_input {
+   width: 90%;
+   font-size: 1.2em;
+   background: black;
+}
+
+form#comment_form label {
+   font-weight: bold;
+   font-size: 1.2em;
+   background: black;
+}
+
+div#lazy_new_comment {
+   border: thin solid @_LIGHT_BORDER_@;
+   padding: 1em;
+   margin-top: 1em;
+}
+
 body.forum_entry p#main_image {
    margin:0px auto;
    text-align:center;
@@ -155,7 +183,7 @@ body.forum_entry p#main_image {
 }
 
 body.forum_entry #comments {
-    border :thin solid #111;
+    border :thin solid @_LIGHT_BORDER_@;
     padding:1em;
 }
 
@@ -322,15 +350,15 @@ ul#navcontainer li.index a {
 @@--  Colors
 
 html {
-   background: #000000;
-   color:#ffffff;
+   background: black;
+   color:white;
 }
 
 a {
    color:white;
 }
 
-select, input, textarea
+select, input
 {
    background-color:#131313;
 }
@@ -479,7 +507,7 @@ li.level_1
 
 li.type_0
 {
-   background-color: #000000;
+   background-color: black;
 }
 
 table.forum_text {
@@ -510,7 +538,7 @@ tr.table_line_0
 }
 tr.table_line_1
 {
-   background-color: #000000;
+   background-color: black;
 }
 
 .thumbselect {
