@@ -176,3 +176,11 @@ begin
         where criteria_id = new.criteria_id and post_id = new.post_id)
       where criteria_id = new.criteria_id and post_id = new.post_id;
 end;
+
+create trigger re_update_global_rating after update on rating
+begin
+  update global_rating set post_rating=
+    (select sum(post_rating)/count(post_rating) from rating
+        where criteria_id = new.criteria_id and post_id = new.post_id)
+      where criteria_id = new.criteria_id and post_id = new.post_id;
+end;
