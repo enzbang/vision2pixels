@@ -124,7 +124,7 @@ ul#navigate li img {
 #image_infos {
     margin:2em 0;
     padding:1em 2em;
-    background-color:@_LIGHT_BORDER_@;
+    background-color: @_LIGHT_BORDER_@;
     border:thin solid @_PHOTOTITLECOLOR_@;
 }
 
@@ -241,6 +241,14 @@ div#lazy_login, div#lazy_quick_login {
    top:0px;
    right:0px;
    z-index:5000;
+}
+
+div#forum_text {
+   border: thin solid @_LIGHT_BORDER_@;
+   width: 90%;
+   margin-left: 2em;
+   margin-top: 2em;
+   padding: 1em;
 }
 
 div#lazy_login {
