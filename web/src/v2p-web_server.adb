@@ -79,9 +79,6 @@ package body V2P.Web_Server is
    use Gwiad.Plugins.Websites;
 
    Module          : constant Logs.Module_Name := "V2P.Web_Server";
-
-   Main_Dispatcher : Services.Dispatchers.URI.Handler;
-
    XML_Path        : constant String :=
                        Directories.Compose
                          (Containing_Directory => Gwiad_Plugin_Path,
@@ -93,6 +90,8 @@ package body V2P.Web_Server is
 
    V2p_Lib_Path    : constant String :=
                        Gwiad.Plugins.Get_Last_Library_Path;
+
+   Main_Dispatcher : Services.Dispatchers.URI.Handler;
 
    -------------------------
    --  Standard Callbacks --
