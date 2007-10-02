@@ -178,8 +178,6 @@ package body V2P.Callbacks.Ajax is
       Anonymous    : constant String :=
                        Parameters.Get
                          (P, Block_New_Comment.HTTP.ANONYMOUS_USER);
-      Name         : constant String :=
-                       Parameters.Get (P, Block_New_Comment.HTTP.NAME);
       Comment      : constant String :=
                        Parameters.Get (P, Block_New_Comment.HTTP.COMMENT);
       Parent_Id    : constant String :=
@@ -232,7 +230,7 @@ package body V2P.Callbacks.Ajax is
       else
          Insert_Comment : declare
             Cid : constant String := Database.Insert_Comment
-              (Login, Anonymous, Tid, Name, Comment_Wiki, "");
+              (Login, Anonymous, Tid, "", Comment_Wiki, "");
          begin
             --  Adds the new comment in context to prevent duplicated post
 
@@ -417,6 +415,38 @@ package body V2P.Callbacks.Ajax is
          end if;
       end if;
    end Onsubmit_Post_Form_Enter;
+
+   -------------------
+   -- Onsubmit_Rate --
+   -------------------
+
+   procedure Onsubmit_Rate
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context, Translations);
+      use Template_Defs;
+
+      SID      : constant Session.Id := Status.Session (Request);
+      P        : constant Parameters.List := Status.Parameters (Request);
+      Login    : constant String :=
+                   Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+      Tid      : constant String :=
+                   Parameters.Get (P, Block_New_Comment.HTTP.TID);
+      Criteria : constant String :=
+                   Parameters.Get
+                     (P, Block_New_Comment.Set.AJAX_RATE_CRITERIA);
+      Value    : constant String :=
+                   Parameters.Get
+                     (P, Block_New_Comment.Set.AJAX_RATE_VAL);
+   begin
+      Database.Update_Rating
+        (Uid      => Login,
+         Tid      => Tid,
+         Criteria => Criteria,
+         Value    => Value);
+   end Onsubmit_Rate;
 
    ----------------------------------------
    -- Onsubmit_User_Page_Edit_Form_Enter --

@@ -6,6 +6,7 @@
   @@--  subdivided regions of one to four columns.
 
   @import url(/css/style.css);
+  @import url(/css/rating.css);
 
   @@IF@@ @_LOGIN_@ = ""
     @import url(/css/visitor.css);

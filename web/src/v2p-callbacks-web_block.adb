@@ -216,7 +216,12 @@ package body V2P.Callbacks.Web_Block is
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
+      use AWS.Templates;
+
+      Ratings : Templates.Tag;
+
    begin
+
       if Context.Exist ("FID") then
          Templates.Insert
            (Translations,
@@ -230,6 +235,14 @@ package body V2P.Callbacks.Web_Block is
               (Template_Defs.Block_New_Comment.Current_TID,
                Context.Get_Value ("TID")));
       end if;
+
+      Ratings := Ratings & "1" & "2" & "3" & "4" & "5";
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Block_New_Comment.RATING,
+            Ratings));
    end New_Comment;
 
    --------------
