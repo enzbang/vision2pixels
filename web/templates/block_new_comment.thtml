@@ -19,6 +19,9 @@
       <input name="TID" id="TID" type="hidden" value="@_Current_TID_@" />
       <input name="FID" id="FID" type="hidden" value="@_Current_FID_@" />
     </p>
+    <!-- <p id="title_name_input">
+           <input name="NAME" id="title_input" type="entry" value="@_NAME_@"/>
+         </p> -->
     <p>
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
       <textarea name="COMMENT" id="comment_input"></textarea>
