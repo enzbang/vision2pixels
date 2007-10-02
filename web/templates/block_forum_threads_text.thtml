@@ -1,5 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
+<div id="forum_text">
 <table class="forum_text">
 <tr class="table_header">
   <th>@_BABEL_AUTHOR_@</th>
@@ -26,3 +27,4 @@
   </tr>
 @@END_TABLE@@
 </table>
+</div>
