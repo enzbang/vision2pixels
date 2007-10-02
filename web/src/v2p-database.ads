@@ -162,6 +162,13 @@ package V2P.Database is
      (Uid : in String; Content : in String; Content_HTML : in String);
    --  Update a user page
 
+   procedure Update_Rating
+     (Uid      : in String;
+      Tid      : in String;
+      Criteria : in String;
+      Value    : in String);
+   --  Update post rating
+
 private
 
    No_User_Data : constant User_Data := User_Data'

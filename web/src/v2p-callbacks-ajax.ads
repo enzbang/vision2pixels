@@ -81,4 +81,10 @@ package V2P.Callbacks.Ajax is
       Translations : in out Templates.Translate_Set);
    --  Called when submitting new user page content
 
+   procedure Onsubmit_Rate
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Called when submitting a new rating
+
 end V2P.Callbacks.Ajax;

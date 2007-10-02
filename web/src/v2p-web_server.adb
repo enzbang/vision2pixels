@@ -59,6 +59,7 @@ with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Hidden_Status;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Forum_List;
+with V2P.Template_Defs.R_Block_Rate;
 with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
@@ -470,6 +471,12 @@ package body V2P.Web_Server is
         (Template_Defs.Block_User_Page.Ajax.onsubmit_user_page_edit_form,
          Template_Defs.R_Block_User_Page_Edit_Form_Enter.Template,
          Callbacks.Ajax.Onsubmit_User_Page_Edit_Form_Enter'Access,
+         Content_Type => MIME.Text_XML);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_New_Comment.Set.AJAX_RATE_URL,
+         Template_Defs.R_Block_Rate.Template,
+         Callbacks.Ajax.Onsubmit_Rate'Access,
          Content_Type => MIME.Text_XML);
 
       Services.Web_Block.Registry.Register

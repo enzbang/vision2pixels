@@ -1668,4 +1668,41 @@ package body V2P.Database is
       DBH.Handle.Execute (SQL);
    end Update_Page;
 
+   -------------------
+   -- Update_Rating --
+   -------------------
+
+   procedure Update_Rating
+     (Uid      : in String;
+      Tid      : in String;
+      Criteria : in String;
+      Value    : in String)
+   is
+      SQL  : constant String := "select 1 from rating where user_login="
+        & Q (Uid) & " and post_id=" & Q (Tid) & " and criteria_id="
+        & Q (Criteria);
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      if Iter.More then
+         --  Need update
+         Iter.End_Select;
+         DBH.Handle.Execute ("update rating set post_rating = " & Q (Value)
+                             & "where user_login="
+                             & Q (Uid) & " and post_id=" & Q (Tid)
+                             & " and criteria_id=" & Q (Criteria));
+      else
+         --  Insert new rating
+         Iter.End_Select;
+         DBH.Handle.Execute ("insert into rating values (" & Q (Uid)
+                             & ", " & Q (Tid) & ", " & Q (Criteria)
+                             & ", " & Q (Value) & ")");
+
+      end if;
+   end Update_Rating;
+
 end V2P.Database;

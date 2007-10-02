@@ -19,9 +19,34 @@
       <input name="TID" id="TID" type="hidden" value="@_Current_TID_@" />
       <input name="FID" id="FID" type="hidden" value="@_Current_FID_@" />
     </p>
-    <!-- <p id="title_name_input">
-           <input name="NAME" id="title_input" type="entry" value="@_NAME_@"/>
-         </p> -->
+    <ul id="unit_ul1a" class="unit-rating" style="width:150px;">
+     <li class="current-rating" style="width:99.3px;">Currently 3.31/5</li>
+     @@TABLE@@
+        <li><a href="#" id="rating_@_RATING_@_l"
+               class="r@_RATING_@-unit rater" rel="nofollow">@_RATING_@</a></li>
+     @@END_TABLE@@
+
+     <script type="text/javascript">
+       <!--
+           @@SET@@ SET_AJAX_RATE_URL = /rate
+           @@SET@@ SET_AJAX_RATE_CRITERIA = criteria
+           @@SET@@ SET_AJAX_RATE_VAL = value
+
+           var rule_rate_criteria_1 = {
+	   '#unit_ul1a li a' : function(el) {
+                 el.onclick = function () {
+                    AWS.Ajax.XML.request ("@_SET_AJAX_RATE_URL_@",
+                    "@_SET_AJAX_RATE_CRITERIA_@=1&@_SET_AJAX_RATE_VAL_@="
+                    + this.innerHTML + "&" + AWS.Ajax.serialize("TID"), "");
+                    return (false);
+                 }
+              }
+           };
+           Behaviour.register (rule_rate_criteria_1);
+         -->
+     </script>
+    </ul>
+   - Adds CSS for rating:web/templates/block_new_comment.thtml
     <p>
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
       <textarea name="COMMENT" id="comment_input"></textarea>
