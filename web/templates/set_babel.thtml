@@ -11,7 +11,7 @@
 @@SET@@ BABEL_WELCOME="Bienvenue"
 @@SET@@ BABEL_ON_DATE="Le"
 @@SET@@ BABEL_HAS_WRITTEN="a écrit :"
-@@SET@@ BABEL_ENTER_COMMENT="Commentaire : "
+@@SET@@ BABEL_ENTER_COMMENT="Ajouter un commentaire"
 @@SET@@ BABEL_NO_COMMENT="Pas de commentaire pour l'instant"
 @@SET@@ BABEL_LOGOUT="Se déconnecter"
 @@SET@@ BABEL_NOT_LOGGED="Non connecté"
