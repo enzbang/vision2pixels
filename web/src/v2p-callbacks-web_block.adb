@@ -234,6 +234,11 @@ package body V2P.Callbacks.Web_Block is
             Templates.Assoc
               (Template_Defs.Block_New_Comment.Current_TID,
                Context.Get_Value ("TID")));
+
+         Templates.Insert
+           (Translations, Database.Get_Global_Rating
+              (Context.Get_Value ("TID")));
+
       end if;
 
       Ratings := Ratings & "1" & "2" & "3" & "4" & "5";
@@ -243,6 +248,7 @@ package body V2P.Callbacks.Web_Block is
          Templates.Assoc
            (Template_Defs.Block_New_Comment.RATING,
             Ratings));
+
    end New_Comment;
 
    --------------

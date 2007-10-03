@@ -674,6 +674,59 @@ package body V2P.Database is
       return Set;
    end Get_Forums;
 
+   function Get_Global_Rating
+     (Tid : in String) return Templates.Translate_Set is
+      use AWS.Templates;
+
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Set  : Templates.Translate_Set;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+
+      Post_Rating : Templates.Tag;
+      Criteria_Id : Templates.Tag;
+      Criteria    : Templates.Tag;
+
+   begin
+      Connect (DBH);
+
+      --  Get entry information
+
+      DBH.Handle.Prepare_Select
+        (Iter, "select post_rating, criteria_id, "
+           & "(select name from criteria where id=criteria_id) "
+           & "from global_rating where post_id=" & Q (Tid));
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+
+         Post_Rating := Post_Rating & DB.String_Vectors.Element (Line, 1);
+         Criteria_Id := Criteria_Id & DB.String_Vectors.Element (Line, 2);
+         Criteria    := Criteria    & DB.String_Vectors.Element (Line, 3);
+
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Block_New_Comment.CRITERIA_NAME, Criteria));
+
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Block_New_Comment.CRITERIA_ID, Criteria_Id));
+
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Block_New_Comment.CRITERIA_CURRENT_RATING, Post_Rating));
+
+      return Set;
+   end Get_Global_Rating;
+
    ------------------
    -- Get_Metadata --
    ------------------
