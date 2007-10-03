@@ -4,7 +4,7 @@
 @@IF@@ @_LOGIN_@ = ""
 @@-- Login failed
 <response>
-   <replace id="login_err">Erreur ! Impossible de se connecter</replace>
+   <replace id="login_err">@_BABEL_LOGIN_FAILED_@</replace>
    <apply_style id="login_err">
      <attribute id="display" value="block"/>
    </apply_style>

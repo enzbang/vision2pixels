@@ -46,7 +46,7 @@
          -->
      </script>
     </ul>
-   - Adds CSS for rating:web/templates/block_new_comment.thtml
+
     <p>
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
       <textarea name="COMMENT" id="comment_input"></textarea>
