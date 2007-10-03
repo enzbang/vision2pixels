@@ -48,6 +48,7 @@ with V2P.Template_Defs.Page_User;
 with V2P.Template_Defs.Page_Main;
 with V2P.Template_Defs.Page_Forum_New_Entry;
 with V2P.Template_Defs.Page_Error;
+with V2P.Template_Defs.Page_Fatal_Error;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.Page_Photo_Post;
 with V2P.Template_Defs.Block_Login;
@@ -271,7 +272,7 @@ package body V2P.Web_Server is
                Templates.Insert
                  (Translations,
                   Templates.Assoc
-                    (Template_Defs.R_Block_Fatal_Error.EXCEPTION_MSG,
+                    (Template_Defs.Page_Fatal_Error.EXCEPTION_MSG,
                      "Default_Callback HTML exception for "
                      & Logs.NV ("URI", URI) & " "
                      & Logs.NV ("EXNAME", Exception_Name (E)) & " "
@@ -280,7 +281,7 @@ package body V2P.Web_Server is
                return Response.Build
                  (Content_Type => MIME.Text_HTML,
                   Message_Body => String'(Templates.Parse
-                    (Template_Defs.R_Block_Fatal_Error.Template,
+                    (Template_Defs.Page_Fatal_Error.Template,
                        Translations)));
 
             else
