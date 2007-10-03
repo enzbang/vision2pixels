@@ -65,6 +65,7 @@ with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_Metadata_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
+with V2P.Template_Defs.R_Block_Fatal_Error;
 
 with Gwiad.Plugins.Websites;
 
@@ -266,21 +267,43 @@ package body V2P.Web_Server is
                   & Logs.NV ("URI", URI) & " "
                   & Logs.NV ("EXNAME", Exception_Name (E)) & " "
                   & Logs.NV ("EXMESS", Exception_Message (E)));
+
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc
+                    (Template_Defs.R_Block_Fatal_Error.EXCEPTION_MSG,
+                     "Default_Callback HTML exception for "
+                     & Logs.NV ("URI", URI) & " "
+                     & Logs.NV ("EXNAME", Exception_Name (E)) & " "
+                     & Logs.NV ("EXMESS", Exception_Message (E))));
+
                return Response.Build
-                 (Message_Body => "<p>Internal error</p>",
-                  Content_Type => MIME.Text_HTML);
+                 (Content_Type => MIME.Text_HTML,
+                  Message_Body => String'(Templates.Parse
+                    (Template_Defs.R_Block_Fatal_Error.Template,
+                       Translations)));
 
             else
-               --  ??? In this case we probably want to add some Ajax error
-               --  report.
                Logs.Write
                  (Module, Logs.Error, "Default_Callback XML exception for "
                   & Logs.NV ("URI", URI) & " "
                   & Logs.NV ("EXNAME", Exception_Name (E)) & " "
                   & Logs.NV ("EXMESS", Exception_Message (E)));
+
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc
+                    (Template_Defs.R_Block_Fatal_Error.EXCEPTION_MSG,
+                     "Default_Callback XML exception for "
+                     & Logs.NV ("URI", URI) & " "
+                     & Logs.NV ("EXNAME", Exception_Name (E)) & " "
+                     & Logs.NV ("EXMESS", Exception_Message (E))));
+
                return Response.Build
-                 (Message_Body => "<p>Internal error</p>",
-                  Content_Type => MIME.Text_XML);
+                 (Content_Type => MIME.Text_XML,
+                  Message_Body => String'(Templates.Parse
+                    (Template_Defs.R_Block_Fatal_Error.Template,
+                       Translations)));
             end if;
          end Fatal_Error;
    end Default_Callback;
