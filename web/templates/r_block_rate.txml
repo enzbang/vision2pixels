@@ -2,7 +2,7 @@
 @@--
 <?xml version="1.0" encoding="utf-8"?>
 <response>
-   <![CDATA[
-      <replace id="lazy_new_comment">@_LAZY_NEW_COMMENT_@</replace>
-   ]]>
+   <replace id="lazy_new_comment">
+      <![CDATA[@_LAZY_NEW_COMMENT_@]]>
+   </replace>
 </response>
