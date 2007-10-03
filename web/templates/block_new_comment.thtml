@@ -19,10 +19,16 @@
       <input name="TID" id="TID" type="hidden" value="@_Current_TID_@" />
       <input name="FID" id="FID" type="hidden" value="@_Current_FID_@" />
     </p>
-    <ul id="unit_ul1a" class="unit-rating" style="width:150px;">
-     <li class="current-rating" style="width:99.3px;">Currently 3.31/5</li>
+
+    @@TABLE@@
+
+    <dl><dt>@_CRITERIA_NAME_@</dt>
+    <dd>
+    <ul id="votefor@_CRITERIA_ID_@" class="unit-rating" style="width:150px;">
+     <li class="current-rating" style="width:@_MULT(30):CRITERIA_CURRENT_RATING_@px;">
+     Currently @_CRITERIA_CURRENT_RATING_@/5</li>
      @@TABLE@@
-        <li><a href="#" id="rating_@_RATING_@_l"
+        <li><a href="#" id="rating_@_RATING_@_@_CRITERIA_ID_@"
                class="r@_RATING_@-unit rater" rel="nofollow">@_RATING_@</a></li>
      @@END_TABLE@@
 
@@ -32,20 +38,23 @@
            @@SET@@ SET_AJAX_RATE_CRITERIA = criteria
            @@SET@@ SET_AJAX_RATE_VAL = value
 
-           var rule_rate_criteria_1 = {
-	   '#unit_ul1a li a' : function(el) {
+           var rule_votefor@_CRITERIA_ID_@ = {
+	   '#votefor@_CRITERIA_ID_@ li a' : function(el) {
                  el.onclick = function () {
                     AWS.Ajax.XML.request ("@_SET_AJAX_RATE_URL_@",
-                    "@_SET_AJAX_RATE_CRITERIA_@=1&@_SET_AJAX_RATE_VAL_@="
+                    "@_SET_AJAX_RATE_CRITERIA_@=@_CRITERIA_ID_@&@_SET_AJAX_RATE_VAL_@="
                     + this.innerHTML + "&" + AWS.Ajax.serialize("TID"), "");
                     return (false);
                  }
               }
            };
-           Behaviour.register (rule_rate_criteria_1);
+           Behaviour.register (rule_votefor@_CRITERIA_ID_@);
          -->
      </script>
     </ul>
+    </dd>
+    </dl>
+    @@END_TABLE@@
 
     <p>
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>

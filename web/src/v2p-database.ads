@@ -169,6 +169,9 @@ package V2P.Database is
       Value    : in String);
    --  Update post rating
 
+   function Get_Global_Rating (Tid : in String) return Templates.Translate_Set;
+   --  Get the post global rating
+
 private
 
    No_User_Data : constant User_Data := User_Data'
