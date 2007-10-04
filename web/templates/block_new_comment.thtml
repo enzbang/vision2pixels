@@ -24,8 +24,8 @@
 
     <dl><dt>@_CRITERIA_NAME_@</dt>
     <dd>
-    <ul id="votefor@_CRITERIA_ID_@" class="unit-rating" style="width:150px;">
-     <li class="current-rating" style="width:@_MULT(30):CRITERIA_CURRENT_RATING_@px;">
+    <ul id="votefor@_CRITERIA_ID_@" class="unit-rating">
+     <li class="current-rating" style="width:@_MULT(15):CRITERIA_CURRENT_RATING_@px;">
      Currently @_CRITERIA_CURRENT_RATING_@/5</li>
      @@TABLE@@
         <li><a href="#" id="rating_@_RATING_@_@_CRITERIA_ID_@"

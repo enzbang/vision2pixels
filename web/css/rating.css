@@ -9,6 +9,10 @@ See http://www.masugadesign.com/the-lab/scripts/unobtrusive-ajax-star-rating-bar
 for the original php script
 --------------------------------------------------------- */
 
+.unit-rating {
+        width: 75px;
+}
+
 .ratingblock {
 	display:block;
 	border-bottom:1px solid #999;
@@ -20,7 +24,7 @@ for the original php script
 	list-style:none;
 	margin: 0px;
 	padding:0px;
-	height: 30px;
+	height: 15px;
 	position: relative;
 	background: url('/css/img/starrating_black.gif') top left repeat-x;
 	}
@@ -37,8 +41,8 @@ for the original php script
 .unit-rating li a {
 	outline: none;
 	display:block;
-	width:30px;
-	height: 30px;
+	width:15px;
+	height: 15px;
 	text-decoration: none;
 	text-indent: -9000px;
 	z-index: 20;
@@ -53,30 +57,30 @@ for the original php script
 	}
 
 .unit-rating a.r1-unit{left: 0px;}
-.unit-rating a.r1-unit:hover{width:30px;}
-.unit-rating a.r2-unit{left:30px;}
-.unit-rating a.r2-unit:hover{width: 60px;}
-.unit-rating a.r3-unit{left: 60px;}
-.unit-rating a.r3-unit:hover{width: 90px;}
-.unit-rating a.r4-unit{left: 90px;}
-.unit-rating a.r4-unit:hover{width: 120px;}
-.unit-rating a.r5-unit{left: 120px;}
-.unit-rating a.r5-unit:hover{width: 150px;}
-.unit-rating a.r6-unit{left: 150px;}
-.unit-rating a.r6-unit:hover{width: 180px;}
-.unit-rating a.r7-unit{left: 180px;}
-.unit-rating a.r7-unit:hover{width: 210px;}
-.unit-rating a.r8-unit{left: 210px;}
-.unit-rating a.r8-unit:hover{width: 240px;}
-.unit-rating a.r9-unit{left: 240px;}
-.unit-rating a.r9-unit:hover{width: 270px;}
-.unit-rating a.r10-unit{left: 270px;}
-.unit-rating a.r10-unit:hover{width: 300px;}
+.unit-rating a.r1-unit:hover{width:15px;}
+.unit-rating a.r2-unit{left:15px;}
+.unit-rating a.r2-unit:hover{width: 30px;}
+.unit-rating a.r3-unit{left: 30px;}
+.unit-rating a.r3-unit:hover{width: 45px;}
+.unit-rating a.r4-unit{left: 45px;}
+.unit-rating a.r4-unit:hover{width: 60px;}
+.unit-rating a.r5-unit{left: 60px;}
+.unit-rating a.r5-unit:hover{width: 75px;}
+.unit-rating a.r6-unit{left: 75px;}
+.unit-rating a.r6-unit:hover{width: 90px;}
+.unit-rating a.r7-unit{left: 90px;}
+.unit-rating a.r7-unit:hover{width: 105px;}
+.unit-rating a.r8-unit{left: 105px;}
+.unit-rating a.r8-unit:hover{width: 120px;}
+.unit-rating a.r9-unit{left: 120px;}
+.unit-rating a.r9-unit:hover{width: 135px;}
+.unit-rating a.r10-unit{left: 135px;}
+.unit-rating a.r10-unit:hover{width: 150px;}
 
 .unit-rating li.current-rating {
 	background: url('/css/img/starrating_black.gif') left bottom;
 	position: absolute;
-	height: 30px;
+	height: 15px;
 	display: block;
 	text-indent: -9000px;
 	z-index: 1;
