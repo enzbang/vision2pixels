@@ -128,6 +128,24 @@ package body V2P.Callbacks.Web_Block is
         (Context.all, "Navigation_Links", Nav_Links);
    end Forum_Threads;
 
+   -------------------
+   -- Global_Rating --
+   -------------------
+
+   procedure Global_Rating
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+   begin
+      if Context.Exist ("TID") then
+         Templates.Insert
+           (Translations,
+            Database.Get_Global_Rating (Context.Get_Value ("TID")));
+      end if;
+   end Global_Rating;
+
    -----------
    -- Login --
    -----------
@@ -215,9 +233,9 @@ package body V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Request);
       use AWS.Templates;
 
+      SID     : constant Session.Id := Status.Session (Request);
       Ratings : Templates.Tag;
 
    begin
@@ -235,10 +253,14 @@ package body V2P.Callbacks.Web_Block is
               (Template_Defs.Block_New_Comment.Current_TID,
                Context.Get_Value ("TID")));
 
-         Templates.Insert
-           (Translations, Database.Get_Global_Rating
-              (Context.Get_Value ("TID")));
-
+         if Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then
+            Templates.Insert
+              (Translations,
+               Database.Get_User_Rating_On_Post
+                 (Uid => String'(Session.Get
+                  (SID, Template_Defs.Set_Global.LOGIN)),
+                  Tid => Context.Get_Value ("TID")));
+         end if;
       end if;
 
       Ratings := Ratings & "1" & "2" & "3" & "4" & "5";

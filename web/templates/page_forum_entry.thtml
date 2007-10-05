@@ -55,6 +55,11 @@
   <p id="lazy_metadata">@_LAZY_METADATA_@</p>
 
 </div>
+
+<div id="lazy_global_rating">
+@_LAZY_GLOBAL_RATING_@
+</div>
+
   <h2 id="comments_section">Commentaires</h2>
   @@--  Comments
   @@IF@@ @_COMMENT_ID_@ /= "" @@--  at least one comment

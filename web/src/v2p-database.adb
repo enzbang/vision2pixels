@@ -47,6 +47,7 @@ with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Comment_List;
+with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.R_Block_Forum_List;
@@ -712,17 +713,17 @@ package body V2P.Database is
       Templates.Insert
         (Set,
          Templates.Assoc
-           (Block_New_Comment.CRITERIA_NAME, Criteria));
+           (Block_Global_Rating.GLOBAL_CRITERIA_NAME, Criteria));
 
       Templates.Insert
         (Set,
          Templates.Assoc
-           (Block_New_Comment.CRITERIA_ID, Criteria_Id));
+           (Block_Global_Rating.GLOBAL_CRITERIA_ID, Criteria_Id));
 
       Templates.Insert
         (Set,
          Templates.Assoc
-           (Block_New_Comment.CRITERIA_CURRENT_RATING, Post_Rating));
+           (Block_Global_Rating.GLOBAL_CRITERIA_CURRENT_RATING, Post_Rating));
 
       return Set;
    end Get_Global_Rating;
@@ -1316,6 +1317,60 @@ package body V2P.Database is
 
       return Set;
    end Get_User_Page;
+
+   function Get_User_Rating_On_Post
+     (Uid : in String; Tid : in String) return Templates.Translate_Set is
+      use AWS.Templates;
+
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Set  : Templates.Translate_Set;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+
+      Post_Rating : Templates.Tag;
+      Criteria_Id : Templates.Tag;
+      Criteria    : Templates.Tag;
+
+   begin
+      Connect (DBH);
+
+      --  Get entry information
+
+      DBH.Handle.Prepare_Select
+        (Iter, "select id, name, (select post_rating from rating r "
+         & "where r.post_id=" & Q (Tid)
+         & " and r.user_login=" & Q (Uid)
+         & " and criteria_id=id) from criteria");
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+
+         Criteria_Id := Criteria_Id & DB.String_Vectors.Element (Line, 1);
+         Criteria    := Criteria    & DB.String_Vectors.Element (Line, 2);
+         Post_Rating := Post_Rating & DB.String_Vectors.Element (Line, 3);
+
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Block_New_Comment.CRITERIA_NAME, Criteria));
+
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Block_New_Comment.CRITERIA_ID, Criteria_Id));
+
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Block_New_Comment.CRITERIA_CURRENT_RATING, Post_Rating));
+
+      return Set;
+   end Get_User_Rating_On_Post;
 
    -------
    -- I --

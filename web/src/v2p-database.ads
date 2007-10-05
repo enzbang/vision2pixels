@@ -172,6 +172,10 @@ package V2P.Database is
    function Get_Global_Rating (Tid : in String) return Templates.Translate_Set;
    --  Get the post global rating
 
+   function Get_User_Rating_On_Post
+     (Uid : in String; Tid : in String) return Templates.Translate_Set;
+   --  Get the user rating on a specific post
+
 private
 
    No_User_Data : constant User_Data := User_Data'

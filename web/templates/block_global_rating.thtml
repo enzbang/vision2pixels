@@ -1,0 +1,16 @@
+
+@@TABLE@@
+
+<dl><dt>@_GLOBAL_CRITERIA_NAME_@</dt>
+  <dd>
+    <ul id="votefor@_GLOBAL_CRITERIA_ID_@" class="unit-rating" style="width:150px;">
+      <li class="current-rating" style="width:@_MULT(30):GLOBAL_CRITERIA_CURRENT_RATING_@px;">
+        Currently @_GLOBAL_CRITERIA_CURRENT_RATING_@/5</li>
+      @@TABLE@@
+      <li><a href="#"
+             class="r@_RATING_@-unit rater" rel="nofollow">@_RATING_@</a></li>
+      @@END_TABLE@@
+    </ul>
+  </dd>
+</dl>
+@@END_TABLE@@

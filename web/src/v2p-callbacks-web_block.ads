@@ -58,6 +58,11 @@ package V2P.Callbacks.Web_Block is
       Translations : in out Templates.Translate_Set)
       renames Forum_Threads;
 
+   procedure Global_Rating
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
    procedure Login
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;

@@ -5,4 +5,9 @@
    <replace id="lazy_new_comment">
       <![CDATA[@_LAZY_NEW_COMMENT_@]]>
    </replace>
+   <replace id="lazy_global_rating">
+      <![CDATA[@_LAZY_GLOBAL_RATING_@]]>
+   </replace>
+
+
 </response>
