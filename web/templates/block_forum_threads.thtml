@@ -32,9 +32,17 @@
     <li>@_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@</li>
     <li class="photoauthor">
       @@IF@@ @_REVEALED_@
-      @_OWNER_@
+        @@IF@@ @_OWNER_@ /= @_LOGIN_@
+           @_OWNER_@
+        @@ELSE@@
+          @_BABEL_YOU_@
+        @@END_IF@@
       @@ELSE@@
-      @_BABEL_NOT_REVEALED_@
+        @@IF@@ @_OWNER_@ /= @_LOGIN_@
+          @_BABEL_NOT_REVEALED_@
+        @@ELSE@@
+          @_BABEL_YOU_@ (@_BABEL_NOT_REVEALED_@)
+        @@END_IF@@
       @@END_IF@@
     </li>
     </ul>

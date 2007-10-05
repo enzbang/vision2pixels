@@ -14,7 +14,13 @@
 </tr>
 @@TABLE@@
   <tr class="table_line_@_MOD(2):TABLE_LINE_@">
-    <td>@_OWNER_@</td>
+    <td>
+      @@IF@@ @_OWNER_@ /= @_LOGIN_@
+         @_OWNER_@
+      @@ELSE@@
+        @_BABEL_YOU_@
+      @@END_IF@@
+    </td>
     <td class="table_title"><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">@_NAME_@</a></td>
     <td>@_DATE_POST_@</td>
     <td>@_COMMENT_COUNTER_@</td>

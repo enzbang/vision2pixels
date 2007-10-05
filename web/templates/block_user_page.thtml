@@ -4,7 +4,11 @@
 @@IF@@ @_USER_NAME_@ = ""
 @@INCLUDE page_error.thtml
 @@ELSE@@
+@@IF@@ @_LOGIN_@ = @_USER_NAME_@
+<h1>@_BABEL_YOUR_PAGE_@</h1>
+@@ELSE@@
 <h1>@_BABEL_USER_PAGE_OF_@ @_USER_NAME_@</h1>
+@@END_IF@@
 
 <div id="user_page_content">@_USER_PAGE_HTML_CONTENT_@</div>
 

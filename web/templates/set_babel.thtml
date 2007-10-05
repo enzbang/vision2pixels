@@ -2,6 +2,7 @@
 @@--
 @@SET@@ BABEL_V2P_SMALL_WEBSITE_NAME="v2p"
 @@SET@@ BABEL_V2P_WEBSITE_NAME="v2p - AMR Version"
+@@SET@@ BABEL_YOU="Vous"
 @@SET@@ BABEL_CONNECTION_ERROR="Impossible de se connecter"
 @@SET@@ BABEL_ASK_AUTHENTICATION="Authentifiez vous :"
 @@SET@@ BABEL_LOGIN_DEFAULT_VALUE="Pseudo ou e-mail"
