@@ -8,20 +8,35 @@
 
 <ul class="slides">
 @@TABLE@@
-@@IF@@ @_REVEALED_@ or @_OWNER_@ = @_LOGIN_@
-  <li class="thumbs
-@@IF@@ not @_REVEALED_@
-notrevaled
-@@END_IF@@
-">
+  @@IF@@ @_REVEALED_@
+    <li class="thumbs">
     @@IF@@ @_THUMB_SOURCE_@ /= ""
-      <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@&FID=@_Current_FID_@">
-        <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
-      </a>
+    <span class="imgcontainer">
+      <span class="nooverflowimage">
+        <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
+          <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
+        </a>
+      </span>
+    </span>
     @@END_IF@@
-    <p><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@&FID=@_Current_FID_@">@_NAME_@</a></p>
-    <p>@_CATEGORY_@ @_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@</p>
-  </li>
-@@END_IF@@
+    <p><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@"
+    @@IF@@ @_ADMIN_@ and @_HIDDEN_@
+      class="hidden_entry"
+    @@END_IF@@
+    >
+    @@IF@@ @_SIZE:NAME_@ > 20
+    @_SLICE(1..20):NAME_@...
+    @@ELSE@@
+    @_NAME_@
+    @@END_IF@@
+    </a></p>
+    <ul class="thumb_metadata">
+      <li class="photocat">@_CATEGORY_@</li>
+      <li>@_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@</li>
+      <li class="photoauthor">
+      </li>
+      </ul>
+    </li>
+    @@END_IF@@
 @@END_TABLE@@
 </ul>
