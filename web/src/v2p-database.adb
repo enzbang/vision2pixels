@@ -1881,9 +1881,10 @@ package body V2P.Database is
       Criteria : in String;
       Value    : in String)
    is
-      SQL  : constant String := "select 1 from rating where user_login="
-        & Q (Uid) & " and post_id=" & Q (Tid) & " and criteria_id="
-        & Q (Criteria);
+      SQL  : constant String :=
+               "select 1 from rating where user_login="
+                 & Q (Uid) & " and post_id=" & Q (Tid) & " and criteria_id="
+                 & Q (Criteria);
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
    begin
@@ -1904,7 +1905,6 @@ package body V2P.Database is
          DBH.Handle.Execute ("insert into rating values (" & Q (Uid)
                              & ", " & Q (Tid) & ", " & Q (Criteria)
                              & ", " & Q (Value) & ")");
-
       end if;
    end Update_Rating;
 

@@ -207,9 +207,9 @@ package body V2P.Callbacks.Web_Block is
       Translations : in out Templates.Translate_Set)
    is
 
-      SID : constant Session.Id := Status.Session (Request);
-      Login       : constant String :=
-                      Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+      SID   : constant Session.Id := Status.Session (Request);
+      Login : constant String :=
+                Session.Get (SID, Template_Defs.Set_Global.LOGIN);
    begin
       if Context.Exist ("TID") then
          Templates.Insert
@@ -301,9 +301,7 @@ package body V2P.Callbacks.Web_Block is
       Templates.Insert
         (Translations,
          Templates.Assoc
-           (Template_Defs.Block_New_Comment.RATING,
-            Ratings));
-
+           (Template_Defs.Block_New_Comment.RATING, Ratings));
    end New_Comment;
 
    --------------

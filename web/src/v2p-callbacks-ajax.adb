@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007                               --
+--                           Copyright (C) 2007                             --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -293,8 +293,7 @@ package body V2P.Callbacks.Ajax is
 
    begin
 
-      Insert_Metadata :
-      declare
+      Insert_Metadata : declare
          Latitude_Coord      : constant Geo_Coordinate := Get
            (Template_Defs.Block_Metadata.HTTP.latitude);
          Longitude_Coord     : constant Geo_Coordinate := Get
@@ -306,10 +305,12 @@ package body V2P.Callbacks.Ajax is
             Context.Set_Value
               (V2P.Template_Defs.Set_Global.ERROR_METADATA_NULL_METADATA,
                "ERROR");
+
          elsif not Context.Exist (Template_Defs.Set_Global.TID) then
             Context.Set_Value
               (V2P.Template_Defs.Set_Global.ERROR_METADATA_UNKNOWN_PHOTO,
                "ERROR");
+
          else
             Latitude_Position.Format (Latitude_Coord);
             Longitude_Postition.Format (Longitude_Coord);
