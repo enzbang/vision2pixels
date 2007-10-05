@@ -96,6 +96,14 @@ cite, em {
    font-style: italic;
 }
 
+h1 {
+   padding:2em 0 0 0;
+   font-size:1.6em;
+   font-weight:bold;
+   text-align:center;
+   text-transform:none;
+}
+
 @@--  Blocks
 
 div#image_block {

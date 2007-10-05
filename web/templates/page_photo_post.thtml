@@ -5,11 +5,11 @@
 @@SET@@ SET_FORM_ACTION = /forum/new_entry
 
 @@IF@@ @_LOGIN_@ /= ""
+<h1>@_BABEL_ADD_NEW_PHOTO_@</h1>
 <form action="@_SET_FORM_ACTION_@"
       enctype="multipart/form-data" id="form_post_photo"
       method="POST">
    <fieldset>
-      <legend>@_BABEL_ADD_NEW_PHOTO_@</legend>
       <p>
          <input name="FILENAME" type="file"/>
          <input name="ENTER" type="submit" value="Ajouter"/></p>
