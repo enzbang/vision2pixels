@@ -1,0 +1,17 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<ul class="latest_post">
+@@TABLE@@
+  <li class="small_thumbs">
+  @@IF@@ @_THUMB_SOURCE_@ /= ""
+  <span class="small_imgcontainer">
+    <span class="small_nooverflowimage">
+      <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
+        <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
+      </a>
+    </span>
+  </span>
+  @@END_IF@@
+  </li>
+@@END_TABLE@@
+</ul>
