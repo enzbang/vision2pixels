@@ -183,6 +183,7 @@ package body V2P.Callbacks.Page is
       if Context.Exist (Template_Defs.Set_Global.TID) then
          Context.Remove (Template_Defs.Set_Global.TID);
       end if;
+
       if Context.Exist (Template_Defs.Set_Global.FID) then
          Context.Remove (Template_Defs.Set_Global.FID);
       end if;
@@ -201,14 +202,14 @@ package body V2P.Callbacks.Page is
    is
       use Image.Data;
 
-      P           : constant Parameters.List := Status.Parameters (Request);
-      Filename    : constant String :=
-                      Parameters.Get
-                        (P, Template_Defs.Page_Photo_Post.HTTP.FILENAME);
+      P        : constant Parameters.List := Status.Parameters (Request);
+      Filename : constant String :=
+                   Parameters.Get
+                     (P, Template_Defs.Page_Photo_Post.HTTP.FILENAME);
 
-      SID         : constant Session.Id := Status.Session (Request);
-      Login       : constant String :=
-                      Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+      SID      : constant Session.Id := Status.Session (Request);
+      Login    : constant String :=
+                   Session.Get (SID, Template_Defs.Set_Global.LOGIN);
 
    begin
       --  If a new photo has been uploaded, insert it in database
@@ -288,10 +289,9 @@ package body V2P.Callbacks.Page is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      SID         : constant Session.Id := Status.Session (Request);
-      Login       : constant String :=
-                      Session.Get (SID, Template_Defs.Set_Global.LOGIN);
-
+      SID   : constant Session.Id := Status.Session (Request);
+      Login : constant String :=
+                Session.Get (SID, Template_Defs.Set_Global.LOGIN);
    begin
       if Login /= "" then
          if not Context.Exist (Template_Defs.Set_Global.HAS_POST_PHOTO) then
