@@ -3,7 +3,6 @@
 @@-- HTTP_URL(/): Website root
 @@--
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ main
-<div class="forums">@_LAZY_FORUM_LIST_@</div>
 
 <h1>Vision2Pixels</h1>
 

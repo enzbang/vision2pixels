@@ -6,7 +6,6 @@
 @@IF@@ @_NAME_@ /=""
 @@INCLUDE@@ chunk_v2p_top.thtml @_NAME_@ forum_entry yui-t7
 @@--
-<div class="forums">@_LAZY_FORUM_LIST_@</div>
   <div id="image_block">
    @@-- Navigation links
   <ul id="navigate" style="margin-left:@_MULT(-1):SUB(400):DIV(2):IMAGE_WIDTH_@px;">

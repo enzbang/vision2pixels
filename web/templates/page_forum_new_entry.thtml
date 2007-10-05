@@ -2,6 +2,7 @@
 @@-- HTTP_URL(/forum/new_entry): Forum New Entry URL
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_FORUM_NEW_ENTRY_@ forum_new_entry yui-t7
 
+<h1>@_BABEL_FORUM_NEW_ENTRY_@</h1>
 
 <form enctype="multipart/form-data"
       id="form_image_infos" action="#" method="POST">
@@ -23,7 +24,7 @@
       <input name="NAME" id="new_entry_name_input" type="entry" value=""/>
     </p>
   <p id="img_author">
-    @_LOGIN_@ / @_DATE_POST_@
+    @_LOGIN_@
   </p>
 
     <p id="entry_comment">

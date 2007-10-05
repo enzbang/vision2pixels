@@ -39,3 +39,5 @@
     <div id="CTX_WB" style="display:none">@_CTX_WB_@</div>
     <div id="lazy_quick_login">@_LAZY_QUICK_LOGIN_@</div>
     <div id="lazy_login" style="display:none">@_LAZY_LOGIN_@</div>
+
+    <div class="forums">@_LAZY_FORUM_LIST_@</div>
