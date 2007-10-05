@@ -163,6 +163,22 @@ package body V2P.Callbacks.Web_Block is
          Database.Get_Latest_Posts (Settings.Number_Latest_Posts));
    end Latest_Posts;
 
+   ------------------
+   -- Latest_Users --
+   ------------------
+
+   procedure Latest_Users
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context);
+   begin
+      Templates.Insert
+        (Translations,
+         Database.Get_Latest_Users (Settings.Number_Latest_Users));
+   end Latest_Users;
+
    -----------
    -- Login --
    -----------

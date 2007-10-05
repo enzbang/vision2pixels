@@ -67,4 +67,6 @@ package V2P.Defaults is
 
    Number_Latest_Posts      : constant Positive := 6;
 
+   Number_Latest_Users      : constant Positive := 5;
+
 end V2P.Defaults;

@@ -91,4 +91,8 @@ package V2P.Settings is
    --  Returns the number of latest posts to display for the latest post lazy
    --  tag.
 
+   function Number_Latest_Users return Positive;
+   --  Returns the number of latest registered users to display for the latest
+   --  users lazy tag.
+
 end V2P.Settings;
