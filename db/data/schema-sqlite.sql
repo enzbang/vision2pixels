@@ -157,7 +157,10 @@ primary key ("user_login", "post_id", "criteria_id")
 create table global_rating (
 "post_id" integer not null,
 "criteria_id" integer not null,
+"nb_vote" integer not null,
+"post_rating_ponderated" integer not null,
 "post_rating" integer not null,
+"controversial_level" integer not null,
 foreign key ("post_id") references post("id"),
 foreign key ("criteria_id") references criteria("id"),
 primary key ("post_id", "criteria_id")
@@ -165,22 +168,33 @@ primary key ("post_id", "criteria_id")
 
 create trigger initialize_global_rating after insert on post
 begin
-   insert into global_rating (post_id, criteria_id, post_rating)
-             select new.id, id, 0 from criteria;
+   insert into global_rating (post_id, criteria_id, nb_vote, post_rating_ponderated, post_rating, controversial_level)
+             select new.id, id, 0, 0, 0, 0 from criteria;
 end;
 
 create trigger update_global_rating after insert on rating
 begin
   update global_rating set post_rating=
-    (select sum(post_rating)/count(post_rating) from rating
-        where criteria_id = new.criteria_id and post_id = new.post_id)
+    (select avg(post_rating) from rating
+        where criteria_id = new.criteria_id and post_id = new.post_id),
+      nb_vote=nb_vote+1
+      where criteria_id = new.criteria_id and post_id = new.post_id;
+  update global_rating set post_rating_ponderated=post_rating*nb_vote,
+               controversial_level=(select sum(abs(r.post_rating - g.post_rating)) from rating r , global_rating g
+                            where g.criteria_id = new.criteria_id and g.post_id = new.post_id
+                            and r.criteria_id = new.criteria_id and r.post_id = new.post_id)
       where criteria_id = new.criteria_id and post_id = new.post_id;
 end;
 
 create trigger re_update_global_rating after update on rating
 begin
   update global_rating set post_rating=
-    (select sum(post_rating)/count(post_rating) from rating
+    (select avg(post_rating) from rating
         where criteria_id = new.criteria_id and post_id = new.post_id)
+      where criteria_id = new.criteria_id and post_id = new.post_id;
+  update global_rating set post_rating_ponderated=post_rating*nb_vote,
+               controversial_level=(select sum(abs(r.post_rating - g.post_rating)) from rating r , global_rating g
+                            where g.criteria_id = new.criteria_id and g.post_id = new.post_id
+                            and r.criteria_id = new.criteria_id and r.post_id = new.post_id)
       where criteria_id = new.criteria_id and post_id = new.post_id;
 end;
