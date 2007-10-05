@@ -36,9 +36,17 @@
   <h2>@_NAME_@</h2>
   <p id="img_author">
     @@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@
-      @_OWNER_@
+      @@IF@@ @_OWNER_@ /= @_LOGIN_@
+         @_OWNER_@
+      @@ELSE@@
+        @_BABEL_YOU_@
+      @@END_IF@@
     @@ELSE@@
-      @_BABEL_NOT_REVEALED_@
+      @@IF@@ @_OWNER_@ /= @_LOGIN_@
+        @_BABEL_NOT_REVEALED_@
+      @@ELSE@@
+        @_BABEL_YOU_@ (@_BABEL_NOT_REVEALED_@)
+      @@END_IF@@
     @@END_IF@@
     / @_DATE_POST_@
   </p>
