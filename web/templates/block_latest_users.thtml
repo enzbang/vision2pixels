@@ -1,0 +1,9 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<ul class="latest_users">
+@@TABLE@@
+  <li class="latest_users">
+    <a href="/~@_USER_@">@_USER_@</a>
+  </li>
+@@END_TABLE@@
+</ul>

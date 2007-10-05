@@ -39,7 +39,7 @@ package body V2P.Settings is
       Image_Maximum_Width, Image_Maximum_Height, Image_Maximum_Size,
       Thumbnail_Maximum_Width, Thumbnail_Maximum_Height, Virtual_Host,
       Website_Data_Path, Website_Data_Prefix, Wiki_Service_Name,
-      Number_Latest_Posts);
+      Number_Latest_Posts, Number_Latest_Users);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -180,6 +180,15 @@ package body V2P.Settings is
       return Conf.Get_Value (Number_Latest_Posts);
    end Number_Latest_Posts;
 
+   -------------------------
+   -- Number_Latest_Users --
+   -------------------------
+
+   function Number_Latest_Users return Positive is
+   begin
+      return Conf.Get_Value (Number_Latest_Users);
+   end Number_Latest_Users;
+
    ------------------------------
    -- Thumbnail_Maximum_Height --
    ------------------------------
@@ -268,6 +277,7 @@ begin --  Settings : Set default values
    Conf.Set_Value (Website_Data_Prefix, Defaults.Website_Data_Prefix);
    Conf.Set_Value (Wiki_Service_Name, Defaults.Wiki_Service_Name);
    Conf.Set_Value (Number_Latest_Posts, Defaults.Number_Latest_Posts);
+   Conf.Set_Value (Number_Latest_Users, Defaults.Number_Latest_Users);
 
    --  Now read the config file if any
 

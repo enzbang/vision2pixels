@@ -69,6 +69,10 @@ package V2P.Database is
      (Limit : in Positive) return Templates.Translate_Set;
    --  Returns the Limit latest posts from all photo based forums
 
+   function Get_Latest_Users
+     (Limit : in Positive) return Templates.Translate_Set;
+   --  Returns the Limit latest registered users
+
    function Get_Thumbnail (Post : in String) return String;
    --  Returns the thumbnail filename of the photo
    --  associated with the given post

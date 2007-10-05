@@ -63,6 +63,11 @@ package V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
 
+   procedure Latest_Users
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
    procedure Global_Rating
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;

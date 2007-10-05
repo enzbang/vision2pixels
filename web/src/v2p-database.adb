@@ -44,6 +44,7 @@ with V2P.Template_Defs.Block_Forum_Threads_Text;
 with V2P.Template_Defs.Block_Forum_Navigate;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Latest_Posts;
+with V2P.Template_Defs.Block_Latest_Users;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_User_Page;
@@ -749,6 +750,7 @@ package body V2P.Database is
                                    & "and post.category_id = category.id "
                                    & "and category.forum_id = forum.id "
                                    & "and forum.for_photo = 'TRUE' "
+                                   & "order by post.date_post DESC "
                                    & "limit" & Positive'Image (Limit);
       Iter  : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line  : DB.String_Vectors.Vector;
@@ -782,6 +784,44 @@ package body V2P.Database is
 
       return Set;
    end Get_Latest_Posts;
+
+   ----------------------
+   -- Get_Latest_Users --
+   ----------------------
+
+   function Get_Latest_Users
+     (Limit : in Positive) return Templates.Translate_Set
+   is
+      use type Templates.Tag;
+      DBH   : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      SQL   : constant String := "select login from user "
+                                   & " order by created DESC "
+                                   & " limit " & Positive'Image (Limit);
+      Iter  : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line  : DB.String_Vectors.Vector;
+      User  : Templates.Tag;
+      Set   : Templates.Translate_Set;
+   begin
+      Connect (DBH);
+
+      --  Get entry information
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+
+         User := User & DB.String_Vectors.Element (Line, 1);
+
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert (Set, Templates.Assoc (Block_Latest_Users.USER, User));
+
+      return Set;
+   end Get_Latest_Users;
 
    ------------------
    -- Get_Metadata --
