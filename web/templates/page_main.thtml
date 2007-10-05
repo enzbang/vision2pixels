@@ -18,6 +18,8 @@ a sûrement plusieurs</p>
 
 <div id="latest_posts">@_LAZY_LATEST_POSTS_@</div>
 
+<div id="latest_users">@_LAZY_LATEST_USERS_@</div>
+
 @@IF@@ @_V2P_ERROR_@ /= ""
   @@IF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_IMAGE_DIMENSION_@
     @_BABEL_WARN_EXCEED_MAX_DIMENSION_@
