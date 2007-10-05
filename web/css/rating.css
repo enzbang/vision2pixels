@@ -9,6 +9,22 @@ See http://www.masugadesign.com/the-lab/scripts/unobtrusive-ajax-star-rating-bar
 for the original php script
 --------------------------------------------------------- */
 
+#lazy_global_rating {
+  padding: 1em;
+}
+
+.criterianame, ul.unit-rating {
+  float:left;
+}
+
+.criterianame {
+  margin-right:0.5em;
+}
+
+ul.unit-rating {
+ margin-right:1.5em;
+}
+
 .unit-rating {
         width: 75px;
 }

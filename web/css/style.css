@@ -229,6 +229,12 @@ div#comment_login em {
    font-size:1.1em;
 }
 
+.enternewcomment {
+   clear:left;
+   margin: 3em 0 0 0;
+   position:relative;
+}
+
 @@--  Forum threads
 
 div#lazy_login, div#lazy_quick_login {

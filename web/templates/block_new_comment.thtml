@@ -22,8 +22,7 @@
 
     @@TABLE@@
 
-    <dl><dt>@_CRITERIA_NAME_@</dt>
-    <dd>
+    <h3 class="criterianame">@_CRITERIA_NAME_@</h3>
     <ul id="user_votefor@_CRITERIA_ID_@" class="unit-rating">
       @@IF@@ @_CRITERIA_CURRENT_RATING_@ /= ""
       <li class="current-rating" style="width:@_MULT(15):CRITERIA_CURRENT_RATING_@px;">
@@ -57,11 +56,9 @@
          -->
      </script>
     </ul>
-    </dd>
-    </dl>
     @@END_TABLE@@
 
-    <p>
+    <p class="enternewcomment">
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
       <textarea name="COMMENT" id="comment_input"></textarea>
     </p>
