@@ -20,44 +20,46 @@
       <input name="FID" id="FID" type="hidden" value="@_Current_FID_@" />
     </p>
 
-    @@TABLE@@
+    @@IF@@ @_OWNER_@ /= @_LOGIN_@
+      @@TABLE@@
+        <h3 class="criterianame">@_CRITERIA_NAME_@</h3>
+        <ul id="user_votefor@_CRITERIA_ID_@" class="unit-rating">
+          @@IF@@ @_CRITERIA_CURRENT_RATING_@ /= ""
+            <li class="current-rating"
+                style="width:@_MULT(15):CRITERIA_CURRENT_RATING_@px;">
+            Currently @_CRITERIA_CURRENT_RATING_@/5</li>
+          @@ELSE@@
+            <li class="current-rating" style="width:0px;">
+            Currently no vote</li>
+          @@END_IF@@
+          @@TABLE@@
+            <li><a href="#" id="rating_@_RATING_@_@_CRITERIA_ID_@"
+                   class="r@_RATING_@-unit rater"
+                   rel="nofollow">@_RATING_@</a></li>
+          @@END_TABLE@@
 
-    <h3 class="criterianame">@_CRITERIA_NAME_@</h3>
-    <ul id="user_votefor@_CRITERIA_ID_@" class="unit-rating">
-      @@IF@@ @_CRITERIA_CURRENT_RATING_@ /= ""
-      <li class="current-rating" style="width:@_MULT(15):CRITERIA_CURRENT_RATING_@px;">
-        Currently @_CRITERIA_CURRENT_RATING_@/5</li>
-      @@ELSE@@
-      <li class="current-rating" style="width:0px;">
-        Currently no vote</li>
-      @@END_IF@@
-     @@TABLE@@
-        <li><a href="#" id="rating_@_RATING_@_@_CRITERIA_ID_@"
-               class="r@_RATING_@-unit rater" rel="nofollow">@_RATING_@</a></li>
-     @@END_TABLE@@
+          <script type="text/javascript">
+          <!--
+            @@SET@@ SET_AJAX_RATE_URL = /rate
+            @@SET@@ SET_AJAX_RATE_CRITERIA = criteria
+            @@SET@@ SET_AJAX_RATE_VAL = value
 
-     <script type="text/javascript">
-       <!--
-           @@SET@@ SET_AJAX_RATE_URL = /rate
-           @@SET@@ SET_AJAX_RATE_CRITERIA = criteria
-           @@SET@@ SET_AJAX_RATE_VAL = value
-
-           var rule_user_votefor@_CRITERIA_ID_@ = {
-	   '#user_votefor@_CRITERIA_ID_@ li a' : function(el) {
+            var rule_user_votefor@_CRITERIA_ID_@ = {
+	    '#user_votefor@_CRITERIA_ID_@ li a' : function(el) {
                  el.onclick = function () {
                     AWS.Ajax.XML.request ("@_SET_AJAX_RATE_URL_@",
                     "@_SET_AJAX_RATE_CRITERIA_@=@_CRITERIA_ID_@&@_SET_AJAX_RATE_VAL_@="
                     + this.innerHTML + "&" + AWS.Ajax.serialize("TID"), "");
                     return (false);
                  }
-              }
-           };
-           Behaviour.register (rule_user_votefor@_CRITERIA_ID_@);
-         -->
-     </script>
-    </ul>
-    @@END_TABLE@@
-
+               }
+            };
+            Behaviour.register (rule_user_votefor@_CRITERIA_ID_@);
+          -->
+          </script>
+        </ul>
+      @@END_TABLE@@
+    @@END_IF@@
     <p class="enternewcomment">
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
       <textarea name="COMMENT" id="comment_input"></textarea>
