@@ -3,7 +3,7 @@
 
 <dl><dt>@_GLOBAL_CRITERIA_NAME_@</dt>
   <dd>
-    <ul id="votefor@_GLOBAL_CRITERIA_ID_@" class="unit-rating" style="width:150px;">
+    <ul id="votefor@_GLOBAL_CRITERIA_ID_@" class="unit-rating">
       <li class="current-rating" style="width:@_MULT(30):GLOBAL_CRITERIA_CURRENT_RATING_@px;">
         Currently @_GLOBAL_CRITERIA_CURRENT_RATING_@/5</li>
       @@TABLE@@
