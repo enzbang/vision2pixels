@@ -87,4 +87,8 @@ package V2P.Settings is
    function Wiki_Service_Name return String;
    --  Gwiad wiki service plugin name
 
+   function Number_Latest_Posts return Positive;
+   --  Returns the number of latest posts to display for the latest post lazy
+   --  tag.
+
 end V2P.Settings;

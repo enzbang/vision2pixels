@@ -65,4 +65,6 @@ package V2P.Defaults is
 
    Virtual_Host             : constant String  := "127.0.0.10";
 
+   Number_Latest_Posts      : constant Positive := 6;
+
 end V2P.Defaults;

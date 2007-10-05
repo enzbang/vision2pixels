@@ -417,7 +417,7 @@ ul.thumb_metadata {
     font-size:0.9em;
 }
 
-li.thumbs {
+li.thumbs, li.small_thumbs {
     float: left;
     overflow:hidden;
     width:200px;
@@ -426,7 +426,13 @@ li.thumbs {
     margin: 30px;
 }
 
-li.thumbs img {
+li.small_thumbs {
+    width: 130px;
+    height: 100px;
+    margin: 1px;
+}
+
+li.thumbs img, li.small_thumbs img {
     width:155px;
     display: inline;
     padding:0px;
@@ -435,7 +441,12 @@ li.thumbs img {
     text-align: center;
 }
 
-span.nooverflowimage {
+li.small_thumbs img {
+    width:105px;
+    margin:-5px;
+}
+
+span.nooverflowimage, span.small_nooverflowimage {
     width:150px;
     text-align:center;
     margin:10px;
@@ -446,7 +457,13 @@ span.nooverflowimage {
     overflow:hidden;
 }
 
-span.imgcontainer {
+span.small_nooverflowimage {
+    width:110px;
+    margin:5px;
+    height:65px;
+}
+
+span.imgcontainer, span.small_imgcontainer {
     background-color: #222;
     border: 1px solid #434343;
     width:170px;
@@ -457,6 +474,11 @@ span.imgcontainer {
     overflow:hidden;
 }
 
+span.small_imgcontainer {
+    width:120px;
+    margin:0 10px;
+    height:75px;
+}
 
 .photocat {
     color: @_PHOTOCATEGORY_@;

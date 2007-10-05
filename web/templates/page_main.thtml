@@ -16,6 +16,8 @@ site communautaire autour de la critique photographique.</p>
 a sûrement plusieurs</p>
 </div>
 
+<div id="latest_posts">@_LAZY_LATEST_POSTS_@</div>
+
 @@IF@@ @_V2P_ERROR_@ /= ""
   @@IF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_IMAGE_DIMENSION_@
     @_BABEL_WARN_EXCEED_MAX_DIMENSION_@
