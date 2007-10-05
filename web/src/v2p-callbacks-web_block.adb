@@ -24,6 +24,7 @@ with AWS.Session;
 with V2P.URL;
 with V2P.Database;
 with V2P.Context;
+with V2P.Settings;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Metadata;
@@ -145,6 +146,22 @@ package body V2P.Callbacks.Web_Block is
             Database.Get_Global_Rating (Context.Get_Value ("TID")));
       end if;
    end Global_Rating;
+
+   ------------------
+   -- Latest_Posts --
+   ------------------
+
+   procedure Latest_Posts
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context);
+   begin
+      Templates.Insert
+        (Translations,
+         Database.Get_Latest_Posts (Settings.Number_Latest_Posts));
+   end Latest_Posts;
 
    -----------
    -- Login --

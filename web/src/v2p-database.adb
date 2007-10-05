@@ -43,6 +43,7 @@ with V2P.Template_Defs.Block_Forum_Threads;
 with V2P.Template_Defs.Block_Forum_Threads_Text;
 with V2P.Template_Defs.Block_Forum_Navigate;
 with V2P.Template_Defs.Block_Forum_List;
+with V2P.Template_Defs.Block_Latest_Posts;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_User_Page;
@@ -675,9 +676,14 @@ package body V2P.Database is
       return Set;
    end Get_Forums;
 
+   -----------------------
+   -- Get_Global_Rating --
+   -----------------------
+
    function Get_Global_Rating
-     (Tid : in String) return Templates.Translate_Set is
-      use AWS.Templates;
+     (Tid : in String) return Templates.Translate_Set
+   is
+      use type Templates.Tag;
 
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Set  : Templates.Translate_Set;
@@ -727,6 +733,55 @@ package body V2P.Database is
 
       return Set;
    end Get_Global_Rating;
+
+   ----------------------
+   -- Get_Latest_Posts --
+   ----------------------
+
+   function Get_Latest_Posts
+     (Limit : in Positive) return Templates.Translate_Set
+   is
+      use type Templates.Tag;
+      DBH   : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      SQL   : constant String := "select post.id, post.name, filename "
+                                   & "from post, forum, photo, category "
+                                   & "where post.photo_id = photo.id "
+                                   & "and post.category_id = category.id "
+                                   & "and category.forum_id = forum.id "
+                                   & "and forum.for_photo = 'TRUE' "
+                                   & "limit" & Positive'Image (Limit);
+      Iter  : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line  : DB.String_Vectors.Vector;
+      Id    : Templates.Tag;
+      Name  : Templates.Tag;
+      Thumb : Templates.Tag;
+      Set   : Templates.Translate_Set;
+   begin
+      Connect (DBH);
+
+      --  Get entry information
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+
+         Id    := Id    & DB.String_Vectors.Element (Line, 1);
+         Name  := Name  & DB.String_Vectors.Element (Line, 2);
+         Thumb := Thumb & DB.String_Vectors.Element (Line, 3);
+
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert (Set, Templates.Assoc (Block_Latest_Posts.TID, Id));
+      Templates.Insert (Set, Templates.Assoc (Block_Latest_Posts.NAME, Name));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Latest_Posts.THUMB_SOURCE, Thumb));
+
+      return Set;
+   end Get_Latest_Posts;
 
    ------------------
    -- Get_Metadata --
@@ -1074,7 +1129,7 @@ package body V2P.Database is
       Iter.End_Select;
 
       Templates.Insert
-        (Set, Templates.Assoc ("THUMB_SOURCE", Thumb));
+        (Set, Templates.Assoc (Block_Forum_Threads.THUMB_SOURCE, Thumb));
 
       Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.TID, Id));
       Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.NAME, Name));

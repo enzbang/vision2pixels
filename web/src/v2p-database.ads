@@ -62,8 +62,12 @@ package V2P.Database is
       Order_Dir  : in     Order_Direction := DESC;
       Navigation :    out V2P.Context.Post_Ids.Vector;
       Set        :    out Templates.Translate_Set);
-   --  Returns all threads for a given forum
-   --  Returns navigation links to store in context
+   --  Returns all threads for a given forum.
+   --  Returns navigation links to store in context.
+
+   function Get_Latest_Posts
+     (Limit : in Positive) return Templates.Translate_Set;
+   --  Returns the Limit latest posts from all photo based forums
 
    function Get_Thumbnail (Post : in String) return String;
    --  Returns the thumbnail filename of the photo
