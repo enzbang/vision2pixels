@@ -87,4 +87,10 @@ package V2P.Callbacks.Ajax is
       Translations : in out Templates.Translate_Set);
    --  Called when submitting a new rating
 
+   procedure On_Context_Error
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set) is null;
+   --  Context error callback
+
 end V2P.Callbacks.Ajax;

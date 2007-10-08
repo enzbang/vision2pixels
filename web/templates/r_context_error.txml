@@ -1,0 +1,6 @@
+@@SET@@ SET_CONTEXT_ERROR_URL = /context_error_url
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+   <location url="/"/>
+</response>
