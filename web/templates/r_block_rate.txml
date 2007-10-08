@@ -8,6 +8,4 @@
    <replace id="lazy_global_rating">
       <![CDATA[@_LAZY_GLOBAL_RATING_@]]>
    </replace>
-
-
 </response>
