@@ -298,6 +298,11 @@ package body V2P.Callbacks.Page is
             Context.Set_Value (Template_Defs.Set_Global.HAS_POST_PHOTO,
                                Boolean'Image (True));
          end if;
+
+         Templates.Insert
+           (Translations,
+            Database.Get_New_Post_Delay (Login));
+
          Templates.Insert
            (Translations,
             Database.Get_User_Last_Photo (Login));

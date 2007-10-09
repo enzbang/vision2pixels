@@ -184,6 +184,10 @@ package V2P.Database is
      (Uid : in String; Tid : in String) return Templates.Translate_Set;
    --  Get the user rating on a specific post
 
+   function Get_New_Post_Delay
+     (Uid : in String) return Templates.Translate_Set;
+   --  Get the delay the user has to wait before he can post
+
 private
 
    No_User_Data : constant User_Data := User_Data'

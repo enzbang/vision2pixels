@@ -5,28 +5,31 @@
 @@SET@@ SET_FORM_ACTION = /forum/new_entry
 
 @@IF@@ @_LOGIN_@ /= ""
-<h1>@_BABEL_ADD_NEW_PHOTO_@</h1>
-<form action="@_SET_FORM_ACTION_@"
+  @@IF@@ @_NEW_POST_DELAY_@ /= ""
+    <p class="error">@_BABEL_BAD_BOY_YOU_HAVE_TO_WAIT_@ @_NEW_POST_DATE_@</p>
+  @@ELSE@@
+    <h1>@_BABEL_ADD_NEW_PHOTO_@</h1>
+    <form action="@_SET_FORM_ACTION_@"
       enctype="multipart/form-data" id="form_post_photo"
       method="POST">
-   <fieldset>
-      <p>
-         <input name="FILENAME" type="file"/>
-         <input name="ENTER" type="submit" value="Ajouter"/></p>
-   </fieldset>
-</form>
+      <fieldset>
+        <p>
+          <input name="FILENAME" type="file"/>
+          <input name="ENTER" type="submit" value="Ajouter"/></p>
+      </fieldset>
+    </form>
 
-  @@IF@@ @_IMAGE_SOURCE_@ /= ""
+    @@IF@@ @_IMAGE_SOURCE_@ /= ""
 
-  <h2>@_BABEL_SELECT_PHOTO_@</h2>
+    <h2>@_BABEL_SELECT_PHOTO_@</h2>
 
-  <p id="main_image">
-     <a href="@_SET_FORM_ACTION_@">
+    <p id="main_image">
+      <a href="@_SET_FORM_ACTION_@">
         <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@" />
-     </a>
-  </p>
+      </a>
+    </p>
+    @@END_IF@@
   @@END_IF@@
-
 @@ELSE@@
 <p class="error">@_BABEL_LOGIN_REQUIRED_@</p>
 @@END_IF@@
