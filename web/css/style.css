@@ -104,6 +104,13 @@ h1 {
    text-transform:none;
 }
 
+.error {
+   padding:2em;
+   color:red;
+   font-size:1.6em;
+   font-weight:bold;
+}
+
 @@--  Blocks
 
 div#image_block {

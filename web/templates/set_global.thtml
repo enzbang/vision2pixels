@@ -23,6 +23,8 @@
 @@--  Register globals state
 @@--
 @_HAS_POST_PHOTO_@
+@_NEW_POST_DATE_@
+@_NEW_POST_DELAY_@
 @@--
 @@--
 @@--  Register globals errors

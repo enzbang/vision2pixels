@@ -880,6 +880,55 @@ package body V2P.Database is
       return Set;
    end Get_Metadata;
 
+   ------------------------
+   -- Get_New_Post_Delay --
+   ------------------------
+
+   function Get_New_Post_Delay
+     (Uid : in String) return Templates.Translate_Set
+   is
+      SQL : constant String := "select julianday (p.date_post, '+"
+        & Utils.Image (Settings.Anonymity_Hours)
+        & " hour') - julianday ('now'), datetime (p.date_post, '+"
+        & Utils.Image (Settings.Anonymity_Hours)
+        & " hour') "
+        & "from user_post up, post p "
+        & "where up.post_id = p.id and p.photo_id != 0 "
+        & "and datetime(p.date_post, '+"
+        & Utils.Image (Settings.Anonymity_Hours)
+        & " hour') > datetime('now') and up.user_login=" & Q (Uid);
+
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Set  : Templates.Translate_Set;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Templates.Insert
+           (Set  => Set,
+            Item => Templates.Assoc
+              (Template_Defs.Set_Global.NEW_POST_DELAY,
+               DB.String_Vectors.Element (Line, 1)));
+
+         Templates.Insert
+           (Set  => Set,
+            Item => Templates.Assoc
+              (Template_Defs.Set_Global.NEW_POST_DATE,
+               DB.String_Vectors.Element (Line, 2)));
+
+         Line.Clear;
+      end if;
+
+      Iter.End_Select;
+      return Set;
+   end Get_New_Post_Delay;
+
    --------------
    -- Get_Post --
    --------------

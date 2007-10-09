@@ -56,6 +56,7 @@
 @@SET@@ BABEL_VISIT_COUNTER="Vue"
 @@SET@@ BABEL_COMMENT_COUNTER="Commentaire"
 @@SET@@ BABEL_DATE_POST="Posté le"
+@@SET@@ BABEL_BAD_BOY_YOU_HAVE_TO_WAIT="Que faites-vous là ? Vous devez attendre jusqu'au"
 @@--  User page
 @@SET@@ BABEL_USER_EDIT_YOUR_PAGE="Éditer votre page"
 @@SET@@ BABEL_USER_PAGE="Page utilisateur"
