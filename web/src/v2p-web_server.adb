@@ -71,6 +71,8 @@ with V2P.Template_Defs.R_Context_Error;
 
 with Gwiad.Plugins.Websites;
 
+with AWS.Services.Web_Block.Context;
+
 package body V2P.Web_Server is
 
    use Ada;
@@ -134,10 +136,6 @@ package body V2P.Web_Server is
    procedure Unregister (Name : in Website_Name);
    --  Unregister website
 
-   --------------------------
-   -- Other local routines --
-   --------------------------
-
    ------------------
    -- CSS_Callback --
    ------------------
@@ -163,12 +161,12 @@ package body V2P.Web_Server is
    -- Default_Callback --
    ----------------------
 
-   function Default_Callback
-     (Request : in Status.Data) return Response.Data
+   function Default_Callback (Request : in Status.Data) return Response.Data
    is
       use type Messages.Status_Code;
       URI          : constant String := Status.URI (Request);
       SID          : constant Session.Id := Status.Session (Request);
+      C_Request    : aliased Status.Data := Request;
       Translations : Templates.Translate_Set;
       Web_Page     : Response.Data;
    begin
@@ -178,6 +176,18 @@ package body V2P.Web_Server is
             Templates.Assoc
               (Template_Defs.Set_Global.LOGIN,
                String'(Session.Get (SID, Template_Defs.Set_Global.LOGIN))));
+
+         declare
+            Context : Services.Web_Block.Context.Object
+              := Services.Web_Block.Registry.Get_Context (C_Request'Access);
+         begin
+            if not Context.Exist (Template_Defs.Set_Global.LOGIN) then
+               Context.Set_Value (Template_Defs.Set_Global.LOGIN,
+                                  Session.Get
+                                    (SID, Template_Defs.Set_Global.LOGIN));
+            end if;
+         end;
+
       end if;
 
       if Session.Exist (SID, Template_Defs.Set_Global.ADMIN) then
