@@ -92,10 +92,11 @@ package body V2P.Callbacks.Ajax is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
       SID : constant Session.Id := Status.Session (Request);
    begin
       Session.Delete (SID);
+
+      Context.Remove (Template_Defs.Set_Global.LOGIN);
 
       --  Remove the login information from the translate table
 
@@ -171,10 +172,9 @@ package body V2P.Callbacks.Ajax is
    is
       use Template_Defs;
 
-      SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String :=
-                       Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       Anonymous    : constant String :=
                        Parameters.Get
                          (P, Block_New_Comment.HTTP.ANONYMOUS_USER);
@@ -342,10 +342,9 @@ package body V2P.Callbacks.Ajax is
    is
       use Template_Defs;
 
-      SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String :=
-                       Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       Name         : constant String :=
                        Parameters.Get (P, Page_Forum_New_Entry.HTTP.NAME);
       Comment      : constant String :=
@@ -426,13 +425,12 @@ package body V2P.Callbacks.Ajax is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context, Translations);
+      pragma Unreferenced (Translations);
       use Template_Defs;
 
-      SID      : constant Session.Id := Status.Session (Request);
       P        : constant Parameters.List := Status.Parameters (Request);
       Login    : constant String :=
-                   Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+                   Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       Tid      : constant String :=
                    Parameters.Get (P, Block_New_Comment.HTTP.TID);
       Criteria : constant String :=
@@ -458,13 +456,11 @@ package body V2P.Callbacks.Ajax is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
       use Template_Defs;
 
-      SID          : constant Session.Id := Status.Session (Request);
       P            : constant Parameters.List := Status.Parameters (Request);
       Login        : constant String :=
-                       Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       Content      : constant String :=
                        Parameters.Get (P, Block_User_Page.HTTP.CONTENT);
       Content_HTML : constant String := V2P.Wiki.Wiki_To_HTML (Content);
