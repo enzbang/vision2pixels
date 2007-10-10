@@ -161,7 +161,8 @@ package body V2P.Web_Server is
    -- Default_Callback --
    ----------------------
 
-   function Default_Callback (Request : in Status.Data) return Response.Data
+   function Default_Callback
+     (Request : in Status.Data) return Response.Data
    is
       use type Messages.Status_Code;
       URI          : constant String := Status.URI (Request);
@@ -182,9 +183,9 @@ package body V2P.Web_Server is
               := Services.Web_Block.Registry.Get_Context (C_Request'Access);
          begin
             if not Context.Exist (Template_Defs.Set_Global.LOGIN) then
-               Context.Set_Value (Template_Defs.Set_Global.LOGIN,
-                                  Session.Get
-                                    (SID, Template_Defs.Set_Global.LOGIN));
+               Context.Set_Value
+                 (Template_Defs.Set_Global.LOGIN,
+                  Session.Get (SID, Template_Defs.Set_Global.LOGIN));
             end if;
          end;
 
@@ -592,7 +593,7 @@ package body V2P.Web_Server is
    function WEJS_Callback (Request : in Status.Data) return Response.Data is
       URI          : constant String := Status.URI (Request);
       File         : constant String := Gwiad_Plugin_Path
-        & Directory_Separator & URI (URI'First + 1 .. URI'Last);
+                       & Directory_Separator & URI (URI'First + 1 .. URI'Last);
       Translations : Templates.Translate_Set;
    begin
       return Response.Build
