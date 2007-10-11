@@ -187,16 +187,21 @@ package body V2P.Web_Server is
                  (Template_Defs.Set_Global.LOGIN,
                   Session.Get (SID, Template_Defs.Set_Global.LOGIN));
             end if;
+
+            if Session.Exist (SID, Template_Defs.Set_Global.ADMIN) then
+               if not Context.Exist (Template_Defs.Set_Global.ADMIN) then
+                  Context.Set_Value
+                    (Template_Defs.Set_Global.ADMIN,
+                     Session.Get (SID, Template_Defs.Set_Global.ADMIN));
+               end if;
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc
+                    (Template_Defs.Set_Global.ADMIN,
+                     String'(Session.Get
+                       (SID, Template_Defs.Set_Global.ADMIN))));
+            end if;
          end;
-
-      end if;
-
-      if Session.Exist (SID, Template_Defs.Set_Global.ADMIN) then
-         Templates.Insert
-           (Translations,
-            Templates.Assoc
-              (Template_Defs.Set_Global.ADMIN,
-               String'(Session.Get (SID, Template_Defs.Set_Global.ADMIN))));
       end if;
 
       --  Adds Version number

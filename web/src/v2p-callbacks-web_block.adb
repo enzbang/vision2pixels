@@ -19,8 +19,6 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AWS.Session;
-
 with V2P.URL;
 with V2P.Database;
 with V2P.Context;
@@ -105,12 +103,13 @@ package body V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
+      pragma Unreferenced (Request);
       use V2P.Context;
 
-      SID       : constant Session.Id := Status.Session (Request);
       Admin     : constant Boolean :=
-                    Session.Exist (SID, Template_Defs.Set_Global.ADMIN)
-                  and then Session.Get (SID, Template_Defs.Set_Global.ADMIN);
+                    Context.Exist (Template_Defs.Set_Global.ADMIN)
+                  and then Context.Get_Value
+                    (Template_Defs.Set_Global.ADMIN) = "TRUE";
       Nav_Links : V2P.Context.Post_Ids.Vector;
    begin
       Database.Get_Threads
@@ -179,24 +178,6 @@ package body V2P.Callbacks.Web_Block is
          Database.Get_Latest_Users (Settings.Number_Latest_Users));
    end Latest_Users;
 
-   -----------
-   -- Login --
-   -----------
-
-   procedure Login
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
-   is
-      pragma Unreferenced (Context);
-      SID : constant Session.Id := Status.Session (Request);
-   begin
-      Templates.Insert
-        (Translations,
-         Database.Get_User
-           (Session.Get (SID, Template_Defs.Set_Global.LOGIN)));
-   end Login;
-
    --------------
    -- Metadata --
    --------------
@@ -206,10 +187,10 @@ package body V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
+      pragma Unreferenced (Request);
 
-      SID   : constant Session.Id := Status.Session (Request);
       Login : constant String :=
-                Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+                Context.Get_Value (Template_Defs.Set_Global.LOGIN);
    begin
       if Context.Exist ("TID") then
          Templates.Insert
@@ -266,9 +247,9 @@ package body V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
+      pragma Unreferenced (Request);
       use AWS.Templates;
 
-      SID     : constant Session.Id := Status.Session (Request);
       Ratings : Templates.Tag;
 
    begin
@@ -286,12 +267,11 @@ package body V2P.Callbacks.Web_Block is
               (Template_Defs.Block_New_Comment.Current_TID,
                Context.Get_Value ("TID")));
 
-         if Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then
+         if Context.Exist (Template_Defs.Set_Global.LOGIN) then
             Templates.Insert
               (Translations,
                Database.Get_User_Rating_On_Post
-                 (Uid => String'(Session.Get
-                  (SID, Template_Defs.Set_Global.LOGIN)),
+                 (Uid => Context.Get_Value (Template_Defs.Set_Global.LOGIN),
                   Tid => Context.Get_Value ("TID")));
          end if;
       end if;
@@ -329,15 +309,14 @@ package body V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
-      SID : constant Session.Id := Status.Session (Request);
+      pragma Unreferenced (Request);
    begin
-      if Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then
+      if Context.Exist (Template_Defs.Set_Global.LOGIN) then
          Templates.Insert
            (Translations,
             Templates.Assoc
               (Template_Defs.Set_Global.LOGIN,
-               String'(Session.Get (SID, Template_Defs.Set_Global.LOGIN))));
+               String'(Context.Get_Value  (Template_Defs.Set_Global.LOGIN))));
       end if;
    end Quick_Login;
 
@@ -390,12 +369,11 @@ package body V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
 
-      SID        : constant Session.Id := Status.Session (Request);
       Admin      : constant Boolean :=
-                     Session.Exist (SID, Template_Defs.Set_Global.ADMIN)
-                    and then Session.Get (SID, Template_Defs.Set_Global.ADMIN);
+                     Context.Exist (Template_Defs.Set_Global.ADMIN)
+                   and then Context.Get_Value
+                     (Template_Defs.Set_Global.ADMIN) = "TRUE";
       URI        : constant String     := Status.URI (Request);
       User_Name  : constant String     := URL.User_Name (URI);
       Set        : Templates.Translate_Set;
