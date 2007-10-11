@@ -20,7 +20,6 @@
 ------------------------------------------------------------------------------
 
 with AWS.Parameters;
-with AWS.Session;
 
 with V2P.Context;
 with V2P.Database;
@@ -48,13 +47,12 @@ package body V2P.Callbacks.Page is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      SID         : constant Session.Id := Status.Session (Request);
       P           : constant Parameters.List := Status.Parameters (Request);
       TID         : constant String :=
                       Parameters.Get
                         (P, Template_Defs.Page_Forum_Entry.HTTP.TID);
       Login       : constant String :=
-                      Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+                      Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       Count_Visit : Boolean := True;
    begin
       --  Set thread Id into the context
@@ -207,9 +205,8 @@ package body V2P.Callbacks.Page is
                    Parameters.Get
                      (P, Template_Defs.Page_Photo_Post.HTTP.FILENAME);
 
-      SID      : constant Session.Id := Status.Session (Request);
       Login    : constant String :=
-                   Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+                   Context.Get_Value (Template_Defs.Set_Global.LOGIN);
 
    begin
       --  If a new photo has been uploaded, insert it in database
@@ -289,9 +286,9 @@ package body V2P.Callbacks.Page is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      SID   : constant Session.Id := Status.Session (Request);
+      pragma Unreferenced (Request);
       Login : constant String :=
-                Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+                Context.Get_Value (Template_Defs.Set_Global.LOGIN);
    begin
       if Login /= "" then
          if not Context.Exist (Template_Defs.Set_Global.HAS_POST_PHOTO) then

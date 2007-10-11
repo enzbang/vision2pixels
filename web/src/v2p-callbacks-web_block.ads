@@ -76,7 +76,7 @@ package V2P.Callbacks.Web_Block is
    procedure Login
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set);
+      Translations : in out Templates.Translate_Set) is null;
 
    procedure Metadata
      (Request      : in     Status.Data;
