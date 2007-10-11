@@ -63,6 +63,7 @@
 @@SET@@ BABEL_USER_PAGE_OF="Page d'"
 @@SET@@ BABEL_LAST_USER_PHOTOS="Dernières Photographies"
 @@SET@@ BABEL_LAST_USER_COMMENT="Derniers commentaires"
+@@SET@@ BABEL_LAST_USERS="Derniers Inscrits"
 @@-- Metadata
 @@SET@@ BABEL_GEO_LATITUDE="Latitude"
 @@SET@@ BABEL_GEO_LONGITUDE="Longitude"

@@ -5,7 +5,7 @@
 @@SET@@ PHOTOTITLECOLOR=#CBCBFF
 @@SET@@ PHOTOCATEGORY=#DCE0E3
 @@SET@@ PHOTOAUTHOR=#B5C8FF
-@@SET@@ LIGHT_BORDER=#111
+@@SET@@ LIGHT_BORDER=#333
 
 @@-- Position
 
@@ -335,16 +335,43 @@ body.main p#v2p_binary {
    width:40em;
 }
 
-body.main p#logo {
-   padding:0;
-   position:absolute;
-   float:right;
-   margin-left:34em;
-   witdh:200px;
+#presentation {
+   border: thin solid @_LIGHT_BORDER_@;
+   padding: 0.5%;
+   margin: 1%;
+   width: 30%;
+   height: 20em;
+   float: left;
 }
 
-#presentation p {
-   width:30em;
+#logo {
+   border: thin solid @_LIGHT_BORDER_@;
+   padding: 0.5%;
+   margin: 1%;
+   width: 30%;
+   float: left;
+   height: 20em;
+}
+
+#latest_users {
+   border: thin solid @_LIGHT_BORDER_@;
+   padding: 0.5%;
+   margin: 1%;
+   width: 30%;
+   float: left;
+   height: 20em;
+}
+
+#latest_posts {
+   border: thin solid @_LIGHT_BORDER_@;
+   padding: 1%;
+   margin: 2% 1% 3%;
+   width: 95.5%;
+   float: left;
+}
+
+#latest_posts p {
+   float: left;
 }
 
 @@--  Footpage
@@ -483,7 +510,7 @@ span.imgcontainer, span.small_imgcontainer {
 
 span.small_imgcontainer {
     width:120px;
-    margin:0 10px;
+    margin:12px 10px 10px 10px;
     height:75px;
 }
 
