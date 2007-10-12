@@ -38,6 +38,7 @@ check:
 	$(GNAT) check -dd -Pweb_test -rules -from=../v2p.check
 
 setup:
+	-$(RM) -fr tsrc gen
 	-$(MKDIR) gen tsrc obj lib lib_ali test/obj test/bin
 	templates2ada -d templates/ -o gen/templates.cds \
 		-t templates/templates.tads
