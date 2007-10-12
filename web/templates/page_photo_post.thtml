@@ -6,7 +6,7 @@
 
 @@IF@@ @_LOGIN_@ /= ""
   @@IF@@ @_NEW_POST_DELAY_@ /= ""
-    <p class="error">@_BABEL_BAD_BOY_YOU_HAVE_TO_WAIT_@ @_NEW_POST_DATE_@</p>
+    <p class="error">@_BABEL_HAVE_TO_WAIT_@ @_NEW_POST_DATE_@</p>
   @@ELSE@@
     <h1>@_BABEL_ADD_NEW_PHOTO_@</h1>
     <form action="@_SET_FORM_ACTION_@"
