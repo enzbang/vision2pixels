@@ -531,7 +531,7 @@ package body V2P.Database is
      (Fid, Tid : in String) return Templates.Translate_Set
    is
       function Get_Fid
-        (DBH      : TLS_DBH_Access;
+        (DBH      : in TLS_DBH_Access;
          Fid, Tid : in String) return String;
       pragma Inline (Get_Fid);
       --  Returns Fid is not empty otherwise compute it usingg Tid
@@ -541,7 +541,7 @@ package body V2P.Database is
       -------------
 
       function Get_Fid
-        (DBH      : TLS_DBH_Access;
+        (DBH      : in TLS_DBH_Access;
          Fid, Tid : in String) return String
       is
          Line : DB.String_Vectors.Vector;

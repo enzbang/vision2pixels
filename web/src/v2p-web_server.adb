@@ -178,7 +178,7 @@ package body V2P.Web_Server is
               (Template_Defs.Set_Global.LOGIN,
                String'(Session.Get (SID, Template_Defs.Set_Global.LOGIN))));
 
-         declare
+         Set_Context_Login : declare
             Context : Services.Web_Block.Context.Object
               := Services.Web_Block.Registry.Get_Context (C_Request'Access);
          begin
@@ -201,7 +201,7 @@ package body V2P.Web_Server is
                      String'(Session.Get
                        (SID, Template_Defs.Set_Global.ADMIN))));
             end if;
-         end;
+         end Set_Context_Login;
       end if;
 
       --  Adds Version number
