@@ -252,7 +252,7 @@ package body V2P.Settings is
       return Conf.Get_Value (Wiki_Service_Name);
    end Wiki_Service_Name;
 
-begin --  Settings : Set default values
+begin --  V2P.Settings : Set default values
 
    DB_Conf.Set_Value (DB, Defaults.DB);
    Conf.Set_Value (DB_Name, Defaults.DB_Name);

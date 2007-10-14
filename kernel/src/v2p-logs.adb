@@ -115,6 +115,6 @@ package body V2P.Logs is
          Semaphore.Release;
    end Write;
 
-begin
-   Text_IO.Create (Log, Text_IO.Append_File, "v2p.log");
+begin -- V2P.Logs
+   Text_IO.Create (Log, Text_IO.Append_File, Name => "v2p.log");
 end V2P.Logs;
