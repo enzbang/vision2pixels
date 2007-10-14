@@ -534,7 +534,7 @@ package body V2P.Database is
         (DBH      : in TLS_DBH_Access;
          Fid, Tid : in String) return String;
       pragma Inline (Get_Fid);
-      --  Returns Fid is not empty otherwise compute it usingg Tid
+      --  Returns Fid is not empty otherwise compute it using Tid
 
       -------------
       -- Get_Fid --
