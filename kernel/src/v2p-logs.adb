@@ -116,5 +116,5 @@ package body V2P.Logs is
    end Write;
 
 begin -- V2P.Logs
-   Text_IO.Create (Log, Text_IO.Append_File, Name => "v2p.log");
+   Text_IO.Create (Log, Mode => Text_IO.Append_File, Name => "v2p.log");
 end V2P.Logs;
