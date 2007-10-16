@@ -59,11 +59,12 @@
   </p>
   @@END_IF@@
   <p id="main_image_comment">@_IMAGE_COMMENT_@</p>
-  <p id="lazy_metadata">@_LAZY_METADATA_@</p>
-<div id="lazy_global_rating">
-@_LAZY_GLOBAL_RATING_@
-</div>
-
+  @@IF@@ @_IMAGE_SOURCE_@ /= ""
+    <p id="lazy_metadata">@_LAZY_METADATA_@</p>
+    <div id="lazy_global_rating">
+       @_LAZY_GLOBAL_RATING_@
+    </div>
+  @@END_IF@@
 </div>
 
   <h2 id="comments_section">Commentaires</h2>

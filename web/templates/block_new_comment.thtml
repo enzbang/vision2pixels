@@ -25,7 +25,7 @@
       @@END_IF@@
     </p>
 
-    @@IF@@ @_OWNER_@ /= @_LOGIN_@
+    @@IF@@ @_OWNER_@ /= @_LOGIN_@ and @_IMAGE_SOURCE_@ /= ""
       @@TABLE@@
         <h3 class="criterianame">@_CRITERIA_NAME_@</h3>
         <ul id="user_votefor@_CRITERIA_ID_@" class="unit-rating">
