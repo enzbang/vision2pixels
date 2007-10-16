@@ -32,17 +32,22 @@ package V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
 
-   procedure Forum_Filter
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set);
-
    procedure Forum_List
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
 
-   procedure Forum_List_Select
+   procedure Forum_Filter
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
+   procedure Forum_Photo_List_Select
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
+   procedure Forum_Text_List_Select
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);

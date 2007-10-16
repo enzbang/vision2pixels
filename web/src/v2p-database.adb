@@ -638,7 +638,10 @@ package body V2P.Database is
    -- Get_Forums --
    ----------------
 
-   function Get_Forums return Templates.Translate_Set is
+   function Get_Forums
+     (Forum_Type : in V2P.Database.Forum_Type)
+      return Templates.Translate_Set
+   is
       use type Templates.Tag;
 
       DBH       : constant TLS_DBH_Access :=
@@ -649,11 +652,18 @@ package body V2P.Database is
       Id        : Templates.Tag;
       Name      : Templates.Tag;
       For_Photo : Templates.Tag;
+
+      SQL       : constant String := "select id, name, for_photo from forum";
    begin
       Connect (DBH);
 
-      DBH.Handle.Prepare_Select
-        (Iter, "select id, name, for_photo from forum");
+      if Forum_Type /= Forum_All then
+         DBH.Handle.Prepare_Select
+           (Iter, SQL & " where for_photo = '"
+            & Boolean'Image (Forum_Type = Forum_Photo) & "'");
+      else
+         DBH.Handle.Prepare_Select (Iter, SQL);
+      end if;
 
       while Iter.More loop
          Iter.Get_Line (Line);

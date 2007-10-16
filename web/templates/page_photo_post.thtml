@@ -2,7 +2,7 @@
 @@-- HTTP_URL(/add_photo)
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_FORUM_POST_@ page_post_photo
 
-@@SET@@ SET_FORM_ACTION = /forum/new_entry
+@@SET@@ SET_FORM_ACTION = /forum/new_photo_entry
 
 @@IF@@ @_LOGIN_@ /= ""
   @@IF@@ @_NEW_POST_DELAY_@ /= ""

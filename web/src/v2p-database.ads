@@ -36,6 +36,8 @@ package V2P.Database is
    --  Kind of filter to apply when returning the list of posts, see
    --  Get_Threads.
 
+   type Forum_Type is (Forum_Text, Forum_Photo, Forum_All);
+
    type User_Data is record
       UID      : Unbounded_String;
       Password : Unbounded_String;
@@ -46,7 +48,8 @@ package V2P.Database is
 
    type Order_Direction is (DESC, ASC);
 
-   function Get_Forums return Templates.Translate_Set;
+   function Get_Forums
+     (Forum_Type : in V2P.Database.Forum_Type) return Templates.Translate_Set;
    --  Returns the forum list
 
    function Get_Forum (Fid, Tid : in String) return Templates.Translate_Set;

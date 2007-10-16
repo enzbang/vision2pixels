@@ -74,25 +74,45 @@ package body V2P.Callbacks.Web_Block is
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
-   is
+     is
       pragma Unreferenced (Request, Context);
    begin
-      Templates.Insert (Translations, Database.Get_Forums);
+      Templates.Insert
+        (Translations,
+         Database.Get_Forums (Forum_Type => Database.Forum_All));
    end Forum_List;
 
-   -----------------------
-   -- Forum_List_Select --
-   -----------------------
+   -----------------------------
+   -- Forum_Photo_List_Select --
+   -----------------------------
 
-   procedure Forum_List_Select
+   procedure Forum_Photo_List_Select
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Context);
    begin
-      Templates.Insert (Translations, Database.Get_Forums);
-   end Forum_List_Select;
+      Templates.Insert
+        (Translations,
+         Database.Get_Forums (Forum_Type => Database.Forum_Photo));
+   end Forum_Photo_List_Select;
+
+   ----------------------------
+   -- Forum_Text_List_Select --
+   ----------------------------
+
+   procedure Forum_Text_List_Select
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context);
+   begin
+      Templates.Insert
+        (Translations,
+         Database.Get_Forums (Forum_Type => Database.Forum_Text));
+   end Forum_Text_List_Select;
 
    -------------------
    -- Forum_Threads --
