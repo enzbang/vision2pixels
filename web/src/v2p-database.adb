@@ -569,13 +569,11 @@ package body V2P.Database is
                   end Fid;
 
                else
-                  --  This case should never happen, but in case it does return
-                  --  1 (the id of the first forum).
                   Logs.Write
                     (Module,
                      Logs.Error,
-                     "Get_Id, Fid and Tid empty, returning 1");
-                  return "1";
+                     "Get_Id, Fid and Tid empty, raise Database_Error");
+                  raise Database_Error;
                end if;
             end Check_Fid;
 
@@ -670,8 +668,7 @@ package body V2P.Database is
 
          Id        := Id & DB.String_Vectors.Element (Line, 1);
          Name      := Name & DB.String_Vectors.Element (Line, 2);
-         For_Photo := For_Photo
-           & Boolean'Image (DB.String_Vectors.Element (Line, 2) = "1");
+         For_Photo := For_Photo & DB.String_Vectors.Element (Line, 2);
 
          Line.Clear;
       end loop;
@@ -1208,8 +1205,7 @@ package body V2P.Database is
          Id              := Id        & DB.String_Vectors.Element (Line, 1);
          Name            := Name      & DB.String_Vectors.Element (Line, 2);
          Date_Post       := Date_Post & DB.String_Vectors.Element (Line, 3);
-         Revealed        := Revealed
-           & (DB.String_Vectors.Element (Line, 4) = "1");
+         Revealed        := Revealed  & DB.String_Vectors.Element (Line, 4);
          Thumb           := Thumb     & DB.String_Vectors.Element (Line, 5);
          Category        := Category  & DB.String_Vectors.Element (Line, 6);
          Comment_Counter := Comment_Counter
