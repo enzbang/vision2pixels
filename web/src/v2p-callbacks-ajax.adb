@@ -30,12 +30,13 @@ with V2P.Database;
 with V2P.Wiki;
 
 with V2P.Template_Defs.Page_Forum_Entry;
-with V2P.Template_Defs.Page_Forum_New_Entry;
+with V2P.Template_Defs.Page_Forum_New_Text_Entry;
+with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Filter;
-with V2P.Template_Defs.Block_Forum_List_Select;
+with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
@@ -139,7 +140,7 @@ package body V2P.Callbacks.Ajax is
       P   : constant Parameters.List := Status.Parameters (Request);
       Fid : constant String :=
               Parameters.Get
-                (P, Template_Defs.Block_Forum_List_Select.HTTP.sel_forum_list);
+                (P, Template_Defs.Chunk_Forum_List_Select.HTTP.sel_forum_list);
    begin
       Templates.Insert (Translations, Database.Get_Categories (Fid));
       Context.Set_Value (Template_Defs.Set_Global.FID, Fid);
@@ -355,14 +356,15 @@ package body V2P.Callbacks.Ajax is
       Login        : constant String :=
                        Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       Name         : constant String :=
-                       Parameters.Get (P, Page_Forum_New_Entry.HTTP.NAME);
+                       Parameters.Get (P, Page_Forum_New_Text_Entry.HTTP.NAME);
       Comment      : constant String :=
                        Parameters.Get
-                         (P, Page_Forum_New_Entry.HTTP.comment_input);
+                         (P, Page_Forum_New_Text_Entry.HTTP.comment_input);
       CID          : constant String :=
-                       Parameters.Get (P, Page_Forum_New_Entry.HTTP.CATEGORY);
+                       Parameters.Get
+                         (P, Chunk_Forum_List_Select.HTTP.CATEGORY);
       PID          : constant String :=
-                       Parameters.Get (P, Page_Forum_New_Entry.HTTP.PID);
+                       Parameters.Get (P, Page_Forum_New_Photo_Entry.HTTP.PID);
       Last_Name    : constant String :=
                        Context.Get_Value (Set_Global.CONTEXT_LAST_POST_NAME);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);

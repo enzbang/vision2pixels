@@ -36,7 +36,7 @@ with V2P.Logs;
 with V2P.Settings;
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
-with V2P.Template_Defs.Page_Forum_New_Entry;
+with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Chunk_Comment;
 with V2P.Template_Defs.Block_Exif;
 with V2P.Template_Defs.Block_Forum_Threads;
@@ -683,16 +683,19 @@ package body V2P.Database is
    is
       use type Templates.Tag;
 
+      SQL       : constant String := "select id, name, for_photo from forum";
       DBH       : constant TLS_DBH_Access :=
                     TLS_DBH_Access (DBH_TLS.Reference);
+
       Set       : Templates.Translate_Set;
       Iter      : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line      : DB.String_Vectors.Vector;
       Id        : Templates.Tag;
       Name      : Templates.Tag;
       For_Photo : Templates.Tag;
+      Nb_Lines  : Natural := 0;
 
-      SQL       : constant String := "select id, name, for_photo from forum";
+
    begin
       Connect (DBH);
 
@@ -705,6 +708,7 @@ package body V2P.Database is
       end if;
 
       while Iter.More loop
+         Nb_Lines := Nb_Lines + 1;
          Iter.Get_Line (Line);
 
          Id        := Id & DB.String_Vectors.Element (Line, 1);
@@ -721,6 +725,14 @@ package body V2P.Database is
         (Set, Templates.Assoc (Block_Forum_List.FORUM_NAME, Name));
       Templates.Insert
         (Set, Templates.Assoc (Page_Forum_Threads.FORUM_FOR_PHOTO, Name));
+
+      if Filter /= Forum_All and then Nb_Lines = 1 then
+
+         --  Only one forum matched. Returns the categories too
+
+         Templates.Insert (Set, Get_Categories (Templates.Item (Id, 1)));
+
+      end if;
 
       return Set;
    end Get_Forums;
@@ -1509,12 +1521,12 @@ package body V2P.Database is
          Templates.Insert
            (Set,
             Templates.Assoc
-              (Template_Defs.Page_Forum_New_Entry.PID,
+              (Template_Defs.Page_Forum_New_Photo_Entry.PID,
                DB.String_Vectors.Element (Line, 1)));
          Templates.Insert
            (Set,
             Templates.Assoc
-              (Template_Defs.Page_Forum_New_Entry.IMAGE_SOURCE,
+              (Template_Defs.Page_Forum_New_Photo_Entry.IMAGE_SOURCE,
               DB.String_Vectors.Element (Line, 2)));
          Line.Clear;
       end if;
