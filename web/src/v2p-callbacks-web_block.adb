@@ -74,7 +74,7 @@ package body V2P.Callbacks.Web_Block is
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
-     is
+   is
       pragma Unreferenced (Request, Context);
    begin
       Templates.Insert

@@ -120,8 +120,9 @@ package body V2P.Callbacks.Page is
 
          Templates.Insert
            (Translations,
-            Database.Get_Entry (Tid        => TID,
-                                Forum_Type => Database.Get_Forum_Type (TID)));
+            Database.Get_Entry
+              (Tid        => TID,
+               Forum_Type => Database.Get_Forum_Type (TID)));
       end if;
 
       --  Add forum information into the translate set
@@ -193,7 +194,7 @@ package body V2P.Callbacks.Page is
    end Main;
 
    ---------------------
-   -- New_photo_Entry --
+   -- New_Photo_Entry --
    ---------------------
 
    procedure New_Photo_Entry

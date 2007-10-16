@@ -210,7 +210,6 @@ package body V2P.Callbacks.Ajax is
       end Is_Valid_Comment;
 
    begin
-
       if Parameters.Get (P, Block_New_Comment.HTTP.forum_photo) /= "" then
          Forum_Type := V2P.Database.Forum_Photo;
       end if;
