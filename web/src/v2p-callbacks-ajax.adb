@@ -188,6 +188,8 @@ package body V2P.Callbacks.Ajax is
       Last_Comment : constant String :=
                        Context.Get_Value (Set_Global.CONTEXT_LAST_COMMENT);
 
+      Forum_Type   : V2P.Database.Forum_Type := V2P.Database.Forum_Text;
+
       function Is_Valid_Comment (Comment : in String) return Boolean;
       --  Check if the comment is valid
 
@@ -207,6 +209,11 @@ package body V2P.Callbacks.Ajax is
       end Is_Valid_Comment;
 
    begin
+
+      if Parameters.Get (P, Block_New_Comment.HTTP.forum_photo) /= "" then
+         Forum_Type := V2P.Database.Forum_Photo;
+      end if;
+
       if Login = "" and then Anonymous = "" then
          Templates.Insert
            (Translations,
@@ -255,7 +262,9 @@ package body V2P.Callbacks.Ajax is
 
             Templates.Insert
               (Translations,
-               Database.Get_Post (Context.Get_Value (Set_Global.TID)));
+               Database.Get_Post
+                 (Tid        => Context.Get_Value (Set_Global.TID),
+                  Forum_Type => Forum_Type));
          end Insert_Comment;
       end if;
    end Onsubmit_Comment_Form_Enter;

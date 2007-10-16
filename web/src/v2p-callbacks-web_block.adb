@@ -79,7 +79,7 @@ package body V2P.Callbacks.Web_Block is
    begin
       Templates.Insert
         (Translations,
-         Database.Get_Forums (Forum_Type => Database.Forum_All));
+         Database.Get_Forums (Filter => Database.Forum_All));
    end Forum_List;
 
    -----------------------------
@@ -95,7 +95,7 @@ package body V2P.Callbacks.Web_Block is
    begin
       Templates.Insert
         (Translations,
-         Database.Get_Forums (Forum_Type => Database.Forum_Photo));
+         Database.Get_Forums (Filter => Database.Forum_Photo));
    end Forum_Photo_List_Select;
 
    ----------------------------
@@ -111,7 +111,7 @@ package body V2P.Callbacks.Web_Block is
    begin
       Templates.Insert
         (Translations,
-         Database.Get_Forums (Forum_Type => Database.Forum_Text));
+         Database.Get_Forums (Filter => Database.Forum_Text));
    end Forum_Text_List_Select;
 
    -------------------
