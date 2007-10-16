@@ -664,7 +664,7 @@ package body V2P.Database is
 
       Iter.Get_Line (Line);
 
-      if DB.String_Vectors.Element (Line, 1) = "1" then
+      if DB.String_Vectors.Element (Line, 1) = "TRUE" then
          Forum_Type := Forum_Photo;
       end if;
 
