@@ -29,7 +29,7 @@ with V2P.URL;
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Main;
-with V2P.Template_Defs.Page_Forum_New_Entry;
+with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.Page_Photo_Post;
 with V2P.Template_Defs.Block_Forum_Navigate;
@@ -259,11 +259,11 @@ package body V2P.Callbacks.Page is
                   Templates.Insert
                     (Translations,
                      Templates.Assoc
-                       (Template_Defs.Page_Forum_New_Entry.PID, Pid));
+                       (Template_Defs.Page_Forum_New_Photo_Entry.PID, Pid));
                   Templates.Insert
                     (Translations,
                      Templates.Assoc
-                       (Template_Defs.Page_Forum_New_Entry.IMAGE_SOURCE,
+                       (Template_Defs.Page_Forum_New_Photo_Entry.IMAGE_SOURCE,
                         New_Photo_Filename));
                end Insert_Photo;
             end if;

@@ -8,3 +8,11 @@
   @@END_TABLE@@
   </select>
 @@END_IF@@
+<select name="CATEGORY" id="sel_category">
+  @@TABLE@@
+    <option value="@_CATEGORY_ID_@">@_CATEGORY_@</option>
+  @@END_TABLE@@
+</select>
+
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_forum_list, 4=>sel_forum_list)
+
