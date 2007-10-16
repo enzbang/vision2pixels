@@ -45,7 +45,7 @@ package V2P.Callbacks.Page is
       Translations : in out Templates.Translate_Set);
    --  Forum threads callback
 
-   procedure New_Entry
+   procedure New_Photo_Entry
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);

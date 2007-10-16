@@ -189,11 +189,11 @@ package body V2P.Callbacks.Page is
       V2P.Context.Context_Filter (Context);
    end Main;
 
-   --------------------
-   -- New_Entry_Page --
-   --------------------
+   ---------------------
+   -- New_photo_Entry --
+   ---------------------
 
-   procedure New_Entry
+   procedure New_Photo_Entry
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
@@ -275,7 +275,7 @@ package body V2P.Callbacks.Page is
             Context.Remove (Template_Defs.Set_Global.HAS_POST_PHOTO);
          end if;
       end if;
-   end New_Entry;
+   end New_Photo_Entry;
 
    ----------------
    -- Post_Photo --

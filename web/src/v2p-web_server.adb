@@ -46,7 +46,8 @@ with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Admin;
 with V2P.Template_Defs.Page_User;
 with V2P.Template_Defs.Page_Main;
-with V2P.Template_Defs.Page_Forum_New_Entry;
+with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
+with V2P.Template_Defs.Page_Forum_New_Text_Entry;
 with V2P.Template_Defs.Page_Error;
 with V2P.Template_Defs.Page_Fatal_Error;
 with V2P.Template_Defs.Set_Global;
@@ -224,7 +225,7 @@ package body V2P.Web_Server is
         (Translations,
          Templates.Assoc
            (Template_Defs.Set_Global.FORUM_POST_URL,
-            Template_Defs.Page_Forum_New_Entry.URL));
+            Template_Defs.Page_Forum_New_Text_Entry.URL));
 
       Templates.Insert
         (Translations,
@@ -456,9 +457,14 @@ package body V2P.Web_Server is
          Callbacks.Page.Post_Photo'Access);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Page_Forum_New_Entry.URL,
-         Template_Defs.Page_Forum_New_Entry.Template,
-         Callbacks.Page.New_Entry'Access);
+        (Template_Defs.Page_Forum_New_Text_Entry.URL,
+         Template_Defs.Page_Forum_New_Text_Entry.Template,
+         null);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Forum_New_Photo_Entry.URL,
+         Template_Defs.Page_Forum_New_Photo_Entry.Template,
+         Callbacks.Page.New_Photo_Entry'Access);
 
       --  Register Ajax callbacks
 
@@ -505,7 +511,7 @@ package body V2P.Web_Server is
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Page_Forum_New_Entry.
+        (Template_Defs.Page_Forum_New_Text_Entry.
            Ajax.onsubmit_new_entry_form_submit,
          Template_Defs.R_Block_Post_Form_Enter.Template,
          Callbacks.Ajax.Onsubmit_Post_Form_Enter'Access,
