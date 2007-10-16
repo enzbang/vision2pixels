@@ -38,7 +38,9 @@ package V2P.Database is
    --  Kind of filter to apply when returning the list of posts, see
    --  Get_Threads.
 
-   type Forum_Type is (Forum_Text, Forum_Photo, Forum_All);
+   type Forum_Filter is (Forum_Text, Forum_Photo, Forum_All);
+
+   type Forum_Type is new Forum_Filter range Forum_Text .. Forum_Photo;
 
    type User_Data is record
       UID      : Unbounded_String;
@@ -51,12 +53,15 @@ package V2P.Database is
    type Order_Direction is (DESC, ASC);
 
    function Get_Forums
-     (Forum_Type : in V2P.Database.Forum_Type) return Templates.Translate_Set;
+     (Filter : in Forum_Filter) return Templates.Translate_Set;
    --  Returns the forum list
 
    function Get_Forum (Fid, Tid : in String) return Templates.Translate_Set;
    --  Returns the DB line for the given forum. If Fid is empty it uses the Tid
    --  information to get the corresponding forum Id.
+
+   function Get_Forum_Type (Tid : in String) return V2P.Database.Forum_Type;
+   --  Returns the forum type from a Tid
 
    procedure Get_Threads
      (Fid        : in     String := "";
@@ -91,10 +96,16 @@ package V2P.Database is
    function Get_Category_Full_Name (CID : in String) return String;
    --  Returns a category name "Forum/Category" for the given id
 
-   function Get_Post (Tid : in String) return Templates.Translate_Set;
+   function Get_Post
+     (Tid        : in String;
+      Forum_Type : in V2P.Database.Forum_Type)
+      return Templates.Translate_Set;
    --  Returns the post information (no comments)
 
-   function Get_Entry (Tid : in String) return Templates.Translate_Set;
+   function Get_Entry
+     (Tid        : in String;
+      Forum_Type : in V2P.Database.Forum_Type)
+      return Templates.Translate_Set;
    --  Returns the full content of the entry Id. As above with comments
 
    function Get_Comment (Cid : in String) return Templates.Translate_Set;

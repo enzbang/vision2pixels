@@ -18,6 +18,11 @@
              type="hidden" value="@_Category_Id_@"/>
       <input name="TID" id="TID" type="hidden" value="@_Current_TID_@" />
       <input name="FID" id="FID" type="hidden" value="@_Current_FID_@" />
+      @@IF@@ @_IMAGE_SOURCE_@ /= ""
+        <input name="forum_photo" id="forum_photo" type="hidden" value="t" />
+      @@ELSE@@
+        <input name="forum_photo" id="forum_photo" type="hidden" value="" />
+      @@END_IF@@
     </p>
 
     @@IF@@ @_OWNER_@ /= @_LOGIN_@

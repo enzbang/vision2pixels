@@ -118,7 +118,10 @@ package body V2P.Callbacks.Page is
 
          --  Insert the entry information
 
-         Templates.Insert (Translations, Database.Get_Entry (TID));
+         Templates.Insert
+           (Translations,
+            Database.Get_Entry (Tid        => TID,
+                                Forum_Type => Database.Get_Forum_Type (TID)));
       end if;
 
       --  Add forum information into the translate set
