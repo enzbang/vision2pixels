@@ -29,7 +29,9 @@ package V2P.Database is
    use AWS;
    use Ada.Strings.Unbounded;
 
-   No_Database : exception;
+   No_Database    : exception;
+
+   Database_Error :  exception;
 
    type Filter_Mode is
      (Today, Two_Days, Seven_Days, Fifty_Messages, All_Messages);
