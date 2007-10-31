@@ -273,7 +273,6 @@ package body V2P.Callbacks.Web_Block is
       Ratings : Templates.Tag;
 
    begin
-
       if Context.Exist ("FID") then
          Templates.Insert
            (Translations,
