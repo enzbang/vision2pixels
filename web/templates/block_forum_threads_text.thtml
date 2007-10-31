@@ -1,6 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-<div id="forum_text">
+<div id="bftt_forum_text">
 <table class="forum_text">
 <tr class="table_header">
   <th>@_BABEL_AUTHOR_@</th>
@@ -25,7 +25,7 @@
     <td>@_DATE_POST_@</td>
     <td>@_COMMENT_COUNTER_@</td>
     <td>@_VISIT_COUNTER_@</td>
-    <td class="hidden_entry" id="hidden_entry">
+    <td class="hidden_entry" id="bftt_hidden_entry">
     @@IF@@ @_ADMIN_@
     @_BABEL_HIDDEN_@
     @@END_IF@@

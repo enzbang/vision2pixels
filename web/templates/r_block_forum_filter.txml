@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <response>
   @@IF@@ @_FORUM_FOR_PHOTO_@
-  <replace id="lazy_forum_threads"><![CDATA[@_LAZY_FORUM_THREADS_@]]></replace>
+  <replace id="pft_lazy_forum_threads"><![CDATA[@_LAZY_FORUM_THREADS_@]]></replace>
   @@ELSE@@
-  <replace id="lazy_forum_threads"><![CDATA[@_LAZY_FORUM_THREADS_TEXT_@]]></replace>
+  <replace id="pft_lazy_forum_threads"><![CDATA[@_LAZY_FORUM_THREADS_TEXT_@]]></replace>
   @@END_IF@@
 </response>

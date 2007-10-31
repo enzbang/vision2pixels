@@ -181,7 +181,7 @@ package body Web_Tests.Threads_Navigation is
       Client.Get
         (Connection,
          Result,
-         URI => Block_Forum_Filter.Ajax.onchange_forum_filter_set
+         URI => Block_Forum_Filter.Ajax.onchange_bff_forum_filter_set
          & "?" & Block_Forum_Filter.HTTP.Forum_Filter_Set
          & "=TODAY&" & URL_Context);
 
@@ -199,7 +199,7 @@ package body Web_Tests.Threads_Navigation is
       Client.Get
         (Connection,
          Result,
-         URI => Block_Forum_Filter.Ajax.onchange_forum_filter_set
+         URI => Block_Forum_Filter.Ajax.onchange_bff_forum_filter_set
          & "?" & Block_Forum_Filter.HTTP.Forum_Filter_Set
          & "=TWO_DAYS&" & URL_Context);
 
@@ -272,7 +272,7 @@ package body Web_Tests.Threads_Navigation is
       Client.Get
         (Connection,
          Result,
-         URI => Block_Forum_Filter.Ajax.Onchange_Forum_Filter_Set
+         URI => Block_Forum_Filter.Ajax.onchange_bff_forum_filter_set
          & "?" & Block_Forum_Filter.HTTP.Forum_Filter_Set
          & "=SEVEN_DAYS&" & URL_Context);
 
@@ -359,7 +359,7 @@ package body Web_Tests.Threads_Navigation is
       Client.Get
         (Connection,
          Result,
-         URI => Block_Forum_Filter.Ajax.Onchange_Forum_Filter_Set
+         URI => Block_Forum_Filter.Ajax.onchange_bff_forum_filter_set
            & "?" & Block_Forum_Filter.HTTP.Forum_Filter_Set
            & "=FIFTY_MESSAGES&" & URL_Context);
 
@@ -424,7 +424,7 @@ package body Web_Tests.Threads_Navigation is
       Client.Get
         (Connection,
          Result,
-         URI => Block_Forum_Filter.Ajax.onchange_forum_filter_set
+         URI => Block_Forum_Filter.Ajax.onchange_bff_forum_filter_set
          & "?" & Block_Forum_Filter.HTTP.Forum_Filter_Set
          & "=TODAY&" & URL_Context);
 

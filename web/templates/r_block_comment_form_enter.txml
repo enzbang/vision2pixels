@@ -3,11 +3,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <response>
 @@IF@@ @_ERROR_@ /= ""
-  <replace id="new_comment_error">
+  <replace id="bnc_new_comment_error">
     <![CDATA[@_BABEL_UNKNOWN_ERROR_@]]>
   </replace>
 @@ELSIF@@ @_ERROR_DUPLICATED_@ /= ""
-  <replace id="new_comment_error">
+  <replace id="bnc_new_comment_error">
     <![CDATA[@_BABEL_ERROR_DUPLICATED_@]]>
   </replace>
 @@ELSE@@
@@ -21,9 +21,9 @@
     ]]>
   </insert_after>
   @@ELSE@@
-  <replace id="comments">
+  <replace id="pfe_comments">
     <![CDATA[
-    <ol id="comments">
+    <ol id="pfe_comments">
       <li id="comment_@_COMMENT_ID_@" class="level_@_COMMENT_LEVEL_@ new">
       @@INCLUDE@@ chunk_comment.thtml
       </li>
@@ -31,12 +31,12 @@
     ]]>
   </replace>
   @@END_IF@@
-  <replace id="last_parent_id">
+  <replace id="pfe_last_parent_id">
     <![CDATA[
     <input name="PARENT_ID" id="PARENT_ID" type="hidden"
           value="comment_@_COMMENT_ID_@" />
     ]]>
   </replace>
-  <clear id="comment_input" />
+  <clear id="global_comment_input" />
 @@END_IF@@
 </response>

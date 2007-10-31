@@ -7,6 +7,6 @@
     <![CDATA[@_BABEL_UNKNOWN_ERROR_@]]>
   </replace>
 @@ELSE@@
-  <replace id="lazy_metadata"><![CDATA[@_LAZY_METADATA_@]]></replace>
+  <replace id="global_lazy_metadata"><![CDATA[@_LAZY_METADATA_@]]></replace>
 @@END_IF@@
 </response>

@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <response>
-  <replace id="image_hidden_status">@_HIDDEN_@</replace>
+  <replace id="pfe_image_hidden_status">@_HIDDEN_@</replace>
 </response>

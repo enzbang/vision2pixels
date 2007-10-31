@@ -1,4 +1,4 @@
-<select name="forum_filter_set" id="forum_filter_set">
+<select name="forum_filter_set" id="bff_forum_filter_set">
   <option value="TODAY"
   @@IF@@ @_FILTER_@ = "TODAY"
     selected="selected"
@@ -31,4 +31,4 @@
 </select>
 
 @@--
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, forum_filter_set, 4=>forum_filter_set)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bff_forum_filter_set, 4=>bff_forum_filter_set)

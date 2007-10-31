@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                        Copyright (C) 2006-2007                           --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -78,7 +78,7 @@ package body Web_Tests.User is
    begin
       Client.Get
         (Connection, Result,
-         URI => Block_Login.Ajax.onclick_login_form_enter &
+         URI => Block_Login.Ajax.onclick_bl_login_form_enter &
          '?' & Login_Parameters ("turbo", "password"));
 
       Check
@@ -90,7 +90,7 @@ package body Web_Tests.User is
 
       Client.Get
         (Connection, Result,
-         URI => Block_Login.Ajax.onclick_login_form_enter &
+         URI => Block_Login.Ajax.onclick_bl_login_form_enter &
          '?' & Login_Parameters ("turbo", "turbopass"));
 
       Check

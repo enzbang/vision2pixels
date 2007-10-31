@@ -469,42 +469,42 @@ package body V2P.Web_Server is
       --  Register Ajax callbacks
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Block_Login.Ajax.onclick_login_form_enter,
+        (Template_Defs.Block_Login.Ajax.onclick_bl_login_form_enter,
          Template_Defs.R_Block_Login.Template,
          Callbacks.Ajax.Login'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Block_Login.Ajax.onclick_logout_enter,
+        (Template_Defs.Block_Login.Ajax.onclick_bl_logout_enter,
          Template_Defs.R_Block_Logout.Template,
          Callbacks.Ajax.Logout'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Block_Forum_Filter.Ajax.onchange_forum_filter_set,
+        (Template_Defs.Block_Forum_Filter.Ajax.onchange_bff_forum_filter_set,
          Template_Defs.R_Block_Forum_Filter.Template,
          Callbacks.Ajax.Onchange_Filter_Forum'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Page_Forum_Entry.Ajax.onclick_hidden_status_toggle,
+        (Template_Defs.Page_Forum_Entry.Ajax.onclick_pfe_hidden_status_toggle,
          Template_Defs.R_Block_Hidden_Status.Template,
          Callbacks.Ajax.Onclick_Hidden_Status_Toggle'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Block_New_Comment.Ajax.onchange_sel_forum_list,
+        (Template_Defs.Block_New_Comment.Ajax.onchange_bnc_sel_forum_list,
          Template_Defs.R_Block_Forum_List.Template,
          Callbacks.Ajax.Onchange_Forum_List'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Block_New_Comment.Ajax.onsubmit_comment_form,
+        (Template_Defs.Block_New_Comment.Ajax.onsubmit_bnc_comment_form,
          Template_Defs.R_Block_Comment_Form_Enter.Template,
          Callbacks.Ajax.Onsubmit_Comment_Form_Enter'Access,
          Content_Type     => MIME.Text_XML,
@@ -512,21 +512,21 @@ package body V2P.Web_Server is
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Forum_New_Text_Entry.
-           Ajax.onsubmit_new_entry_form_submit,
+           Ajax.onsubmit_pfnte_new_entry_form_submit,
          Template_Defs.R_Block_Post_Form_Enter.Template,
          Callbacks.Ajax.Onsubmit_Post_Form_Enter'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Block_Metadata.Ajax.onsubmit_metadata_post,
+        (Template_Defs.Block_Metadata.Ajax.onsubmit_bm_metadata_post,
          Template_Defs.R_Block_Metadata_Form_Enter.Template,
          Callbacks.Ajax.Onsubmit_Metadata_Form_Enter'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Block_User_Page.Ajax.onsubmit_user_page_edit_form,
+        (Template_Defs.Block_User_Page.Ajax.onsubmit_bup_user_page_edit_form,
          Template_Defs.R_Block_User_Page_Edit_Form_Enter.Template,
          Callbacks.Ajax.Onsubmit_User_Page_Edit_Form_Enter'Access,
          Content_Type     => MIME.Text_XML,

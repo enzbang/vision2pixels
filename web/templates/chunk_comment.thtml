@@ -1,4 +1,4 @@
-@@--        <h3 id="id_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h3>
+@@--        <h3 id="cc_@_COMMENT_ID_@">@_COMMENT_TITLE_@</h3>
 @@-- Comment title line since it's not yet used
 <cite>
   <span class="commentmetadata">
