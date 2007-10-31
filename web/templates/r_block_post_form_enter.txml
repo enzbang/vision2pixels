@@ -5,7 +5,7 @@
   @@IF@@ @_ERROR_@ = "" and @_URL_@ /= ""
     <location url="@_URL_@"/>
   @@ELSE@@
-    <replace id="post_error">
+    <replace id="pfnpe_post_error">
     <![CDATA[
     @@IF@@ @_ERROR_@ /= ""
       @_ERROR_@

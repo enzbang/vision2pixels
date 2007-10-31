@@ -1,6 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
 @@-- HTTP_GET(FROM): index of the first post to output
-<div id="forum_navigate">
+<div id="bfn_forum_navigate">
 @@IF@@ @_EXIST:PREVIOUS_@
   <a href="@_FORUM_THREAD_URL_@?FID=@_FID_@&FROM=@_PREVIOUS_@">@_BABEL_PREVIOUS_@</a>
 @@END_IF@@

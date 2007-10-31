@@ -1,6 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-<ul id="navcontainer">
+<ul id="bfl_navcontainer">
   <li class="index"><a href="/">@_BABEL_V2P_WEBSITE_NAME_@</a></li>
   @@TABLE@@
   <li class="fc_@_FID_@">

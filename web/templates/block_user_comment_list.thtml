@@ -2,7 +2,7 @@
 
 <h2>@_BABEL_LAST_USER_COMMENT_@</h2>
 
-<ul id="lastusercommentlist">
+<ul id="bucl_lastusercommentlist">
 @@TABLE@@
   <li>
       <a href="@_FORUM_ENTRY_URL_@?TID=@_COMMENT_TID_@#comment_@_COMMENT_ID_@">#@_COMMENT_ID_@

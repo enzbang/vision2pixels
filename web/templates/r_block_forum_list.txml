@@ -2,9 +2,9 @@
 @@--
 <?xml version="1.0" encoding="utf-8"?>
 <response>
-  <select action="clear" id="sel_category"/>
+  <select action="clear" id="cfls_sel_category"/>
   @@TABLE@@
-    <select action="add" id="sel_category"
+    <select action="add" id="cfls_sel_category"
       option_value="@_CATEGORY_ID_@" option_content="@_CATEGORY_@"/>
   @@END_TABLE@@
 </response>

@@ -1,24 +1,24 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
 @@IF@@ @_LOGIN_@ = ""
-<form method="post" id="login_form" action="">
+<form method="post" id="bl_login_form" action="">
   <fieldset>
     <legend>@_BABEL_ASK_AUTHENTICATION_@</legend>
     <p>
       <label for="login_input">Login</label>
-      <input id="login_input" name="LOGIN" type="text"
+      <input id="bl_login_input" name="LOGIN" type="text"
       value="@_BABEL_LOGIN_DEFAULT_VALUE_@" size="15"/></p>
     <p><label for="password_input">Password</label>
-      <input id="password_input" name="PASSWORD" type="password"
+      <input id="bl_password_input" name="PASSWORD" type="password"
              value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/>
     </p>
-    <p><input name="ENTER" id="login_form_enter" type="submit" value="OK"/></p>
-    <p id="cd_user"><a href="my">Créer/Modifier votre compte</a>
+    <p><input name="ENTER" id="bl_login_form_enter" type="submit" value="OK"/></p>
+    <p id="bl_cd_user"><a href="my">Créer/Modifier votre compte</a>
     </p>
   </fieldset>
 </form>
 @@ELSE@@
-<div id="logged_box">
+<div id="bl_logged_box">
   <ul>
     <li><a href="/~@_LOGIN_@">@_BABEL_YOUR_PAGE_@</a></li>
     <li><a href="@_FORUM_NEW_PHOTO_URL_@">@_BABEL_FORUM_NEW_PHOTO_@</a><li>
@@ -26,17 +26,17 @@
     @@IF@@ @_ADMIN_@
       <li><a href="@_ADMIN_URL_@">@_BABEL_ADMIN_@</a><li>
     @@END_IF@@
-    <li><a id="logout_enter" href="#">@_BABEL_LOGOUT_@</a></li>
+    <li><a id="bl_logout_enter" href="#">@_BABEL_LOGOUT_@</a></li>
   </ul>
 </div>
 @@END_IF@@
-<div id="login_err"></div>
+<div id="bl_login_err"></div>
 
 @@----------------------------------------------------------------------------
 @@-- Events
 @@-- Login
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, login_form_enter, 4=>login_form)
-@@INCLUDE@@ ../we_js/aws_action_clear.tjs (onfocus, login_input, login_input)
-@@INCLUDE@@ ../we_js/aws_action_clear.tjs (onfocus, password_input, password_input)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bl_login_form_enter, 4=>bl_login_form)
+@@INCLUDE@@ ../we_js/aws_action_clear.tjs (onfocus, bl_login_input, bl_login_input)
+@@INCLUDE@@ ../we_js/aws_action_clear.tjs (onfocus, bl_password_input, bl_password_input)
 @@-- Logout
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, logout_enter)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bl_logout_enter)

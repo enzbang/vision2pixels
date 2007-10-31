@@ -1,18 +1,17 @@
 @@IF@@ @_FID'LENGTH_@ = 1
   @_FORUM_NAME_@
 @@ELSE@@
-  <select name="sel_forum_list" id="sel_forum_list">
+  <select name="sel_forum_list" id="cfls_sel_forum_list">
     <option value="x">@_BABEL_SELECT_FORUM_@</option>
   @@TABLE@@
     <option value="@_FID_@">@_FORUM_NAME_@</option>
   @@END_TABLE@@
   </select>
 @@END_IF@@
-<select name="CATEGORY" id="sel_category">
+<select name="CATEGORY" id="cfls_sel_category">
   @@TABLE@@
     <option value="@_CATEGORY_ID_@">@_CATEGORY_@</option>
   @@END_TABLE@@
 </select>
 
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_forum_list, 4=>sel_forum_list)
-
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, cfls_sel_forum_list, 4=>cfls_sel_forum_list)

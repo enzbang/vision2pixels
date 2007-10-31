@@ -10,26 +10,26 @@
 <h1>@_BABEL_USER_PAGE_OF_@ @_USER_NAME_@</h1>
 @@END_IF@@
 
-<div id="user_page_content">@_USER_PAGE_HTML_CONTENT_@</div>
+<div id="bup_user_page_content">@_USER_PAGE_HTML_CONTENT_@</div>
 
 @@IF@@ @_LOGIN_@ = @_USER_NAME_@
 <form enctype="multipart/form-data"
-      id="user_page_edit_form" action="#" method="post">
+      id="bup_user_page_edit_form" action="#" method="post">
   <fieldset>
     <legend>@_BABEL_USER_EDIT_YOUR_PAGE_@</legend>
     <p>
       <textarea name="CONTENT" rows="3" cols="40"
-                id="content_input">@_USER_PAGE_CONTENT_@</textarea>
+                id="bup_content_input">@_USER_PAGE_CONTENT_@</textarea>
     </p>
     <p>
-      <input name="ENTER" id="user_page_edit_form_enter" type="submit" value="OK"/>
+      <input name="ENTER" id="bup_user_page_edit_form_enter" type="submit" value="OK"/>
     </p>
-    <p id="user_page_edit_error"></p>
+    <p id="bup_user_page_edit_error"></p>
     @@--    <p><input name="FILENAME" type="file"/>
   </fieldset>
 </form>
 @@--
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, user_page_edit_form, 4=>user_page_edit_form)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bup_user_page_edit_form, 4=>bup_user_page_edit_form)
 @@END_IF@@
 
 @_LAZY_USER_THREAD_LIST_@

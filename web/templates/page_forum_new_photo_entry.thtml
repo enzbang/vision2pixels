@@ -6,42 +6,42 @@
 <h1>@_BABEL_FORUM_NEW_ENTRY_@</h1>
 
 <form enctype="multipart/form-data"
-      id="form_image_infos" action="#" method="POST">
+      id="pfnpe_form_image_infos" action="#" method="POST">
   <fieldset>
-    <p id="lazy_forum_list_select">Sélection du forum : @_LAZY_FORUM_PHOTO_LIST_SELECT_@
-      <input name="TID" id="TID" type="hidden" value="" />
+    <p id="pfnpe_lazy_forum_list_select">Sélection du forum : @_LAZY_FORUM_PHOTO_LIST_SELECT_@
+      <input name="TID" id="pfnpe_TID" type="hidden" value="" />
     </p>
 
-    <p id="main_image">
+    <p id="pfnpe_main_image">
       <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"/>
-      <input name="PID" id="PID" type="hidden" value="@_PID_@" />
+      <input name="PID" id="pfnpe_PID" type="hidden" value="@_PID_@" />
     </p>
 
-    <p id="new_entry_name">
+    <p id="pfnpe_new_entry_name">
       <label for="new_entry_name_input">@_BABEL_POST_NAME_@</label>
-      <input name="NAME" id="new_entry_name_input" type="entry" value=""/>
+      <input name="NAME" id="pfnpe_new_entry_name_input" type="entry" value=""/>
     </p>
-  <p id="img_author">
+  <p id="pfnpe_img_author">
     @_LOGIN_@
   </p>
 
-    <p id="entry_comment">
+    <p id="pfnpe_entry_comment">
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
       <textarea name="comment_input" rows="3" cols="40"
-                id="comment_input"></textarea>
+                id="global_comment_input"></textarea>
     </p>
-    <div id="post_error"></div>
+    <div id="pfnpe_post_error"></div>
   </fieldset>
 </form>
 
-<hr id="step_4" />
+<hr id="pfnpe_step_4" />
 
-  <p id="lazy_metadata">@_LAZY_METADATA_@</p>
+  <p id="global_lazy_metadata">@_LAZY_METADATA_@</p>
 
 @@--  One form to rule them all
 
-<form enctype="multipart/form-data" id="new_entry_form_submit" action="#" method="POST">
-  <p><input name="ENTER" id="post_form_enter" type="submit"
+<form enctype="multipart/form-data" id="pfnpe_new_entry_form_submit" action="#" method="POST">
+  <p><input name="ENTER" id="pfnpe_post_form_enter" type="submit"
             value="Envoyer"/></p>
 </form>
 
@@ -50,4 +50,4 @@
 </div>
 </div>
 @@--
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, new_entry_form_submit, 4=>form_image_infos, 5=>metadata_post)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, pfnpe_new_entry_form_submit, 4=>pfnpe_form_image_infos, 5=>bm_metadata_post)

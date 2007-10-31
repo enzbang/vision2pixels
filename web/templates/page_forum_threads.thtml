@@ -4,11 +4,11 @@
 @@--
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_THREAD_LIST_@ forum_threads yui-t7
 @@--
-<div id="lazy_forum_filter">@_LAZY_FORUM_FILTER_@</div>
+<div id="pft_lazy_forum_filter">@_LAZY_FORUM_FILTER_@</div>
 @@IF@@ @_FORUM_FOR_PHOTO_@
-<div id="lazy_forum_threads">@_LAZY_FORUM_THREADS_@</div>
+<div id="pft_lazy_forum_threads">@_LAZY_FORUM_THREADS_@</div>
 @@ELSE@@
-<div id="lazy_forum_threads">@_LAZY_FORUM_THREADS_TEXT_@</div>
+<div id="pft_lazy_forum_threads">@_LAZY_FORUM_THREADS_TEXT_@</div>
 @@END_IF@@
 @@--
 @@INCLUDE@@ chunk_v2p_end.thtml

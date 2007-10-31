@@ -3,7 +3,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <response>
 @@IF@@ @_ERROR_@ /= ""
-  <replace id="user_page_edit_error">
+  <replace id="bup_user_page_edit_error">
     <![CDATA[@_BABEL_UNKNOWN_ERROR_@]]>
   </replace>
 @@ELSE@@

@@ -2,13 +2,13 @@
 @@--
 <?xml version="1.0" encoding="utf-8"?>
 <response>
-   <replace id="fatal_error">
+   <replace id="cve_fatal_error">
    <![CDATA[
    <p>@_BABEL_UNKNOWN_ERROR_@</p>
    <p>@_EXCEPTION_MSG_@</p>
    ]]>
    </replace>
-   <apply_style id="fatal_error">
+   <apply_style id="cve_fatal_error">
      <attribute id="display" value="block"/>
    </apply_style>
 </response>

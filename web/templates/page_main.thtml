@@ -6,7 +6,7 @@
 
 <h1>Vision2Pixels</h1>
 
-<div id="presentation">
+<div id="pm_presentation">
 <p>Vision2pixels est un projet GPL visant à construire un outil de gestion de
 site communautaire autour de la critique photographique.</p>
 
@@ -15,13 +15,13 @@ site communautaire autour de la critique photographique.</p>
 a sûrement plusieurs</p>
 </div>
 
-<div id="logo"><p>LOGO<img src="/web/v2p.png" /></p></div>
+<div id="pm_logo"><p>LOGO<img src="/web/v2p.png" /></p></div>
 
-<div id="latest_users"><p>@_BABEL_LAST_USERS_@ :</p>@_LAZY_LATEST_USERS_@</div>
+<div id="pm_latest_users"><p>@_BABEL_LAST_USERS_@ :</p>@_LAZY_LATEST_USERS_@</div>
 
 <p/>
 
-<div id="latest_posts"><p>@_BABEL_LAST_USER_PHOTOS_@</p>@_LAZY_LATEST_POSTS_@</p></div>
+<div id="pm_latest_posts"><p>@_BABEL_LAST_USER_PHOTOS_@</p>@_LAZY_LATEST_POSTS_@</p></div>
 
 @@IF@@ @_V2P_ERROR_@ /= ""
   @@IF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_IMAGE_DIMENSION_@

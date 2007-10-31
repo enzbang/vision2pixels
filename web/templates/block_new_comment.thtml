@@ -1,34 +1,34 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
 @@IF@@ @_LOGIN_@ /= "" or @_OPTION_ANONYMOUS_COMMENT_@
-<form enctype="multipart/form-data" id="comment_form" action="#" method="post">
+<form enctype="multipart/form-data" id="bnc_comment_form" action="#" method="post">
   <fieldset>
     @@-- Is user logged
-    <div id="comment_login"><p>
+    <div id="bnc_comment_login"><p>
         @@IF@@ @_LOGIN_@ = ""
         <label for="anonymous_user">@_BABEL_YOUR_NAME_@</label>
-        <input name="ANONYMOUS_USER" id="anonymous_user" type="text"/>
+        <input name="ANONYMOUS_USER" id="bnc_anonymous_user" type="text"/>
         @@END_IF@@
     </p></div>
     @@-- Is user in a specific forum
     <p>
-      <input name="FORUM" id="sel_forum_list"
+      <input name="FORUM" id="bnc_sel_forum_list"
              type="hidden" value="@_Current_FID_@"/>
-      <input name="CATEGORY" id="sel_category"
+      <input name="CATEGORY" id="bnc_sel_category"
              type="hidden" value="@_Category_Id_@"/>
-      <input name="TID" id="TID" type="hidden" value="@_Current_TID_@" />
-      <input name="FID" id="FID" type="hidden" value="@_Current_FID_@" />
+      <input name="TID" id="bnc_TID" type="hidden" value="@_Current_TID_@" />
+      <input name="FID" id="bnc_FID" type="hidden" value="@_Current_FID_@" />
       @@IF@@ @_IMAGE_SOURCE_@ /= ""
-        <input name="forum_photo" id="forum_photo" type="hidden" value="t" />
+        <input name="forum_photo" id="bnc_forum_photo" type="hidden" value="t" />
       @@ELSE@@
-        <input name="forum_photo" id="forum_photo" type="hidden" value="" />
+        <input name="forum_photo" id="bnc_forum_photo" type="hidden" value="" />
       @@END_IF@@
     </p>
 
     @@IF@@ @_OWNER_@ /= @_LOGIN_@ and @_IMAGE_SOURCE_@ /= ""
       @@TABLE@@
         <h3 class="criterianame">@_CRITERIA_NAME_@</h3>
-        <ul id="user_votefor@_CRITERIA_ID_@" class="unit-rating">
+        <ul id="bnc_user_votefor@_CRITERIA_ID_@" class="unit-rating">
           @@IF@@ @_CRITERIA_CURRENT_RATING_@ /= ""
             <li class="current-rating"
                 style="width:@_MULT(15):CRITERIA_CURRENT_RATING_@px;">
@@ -38,7 +38,7 @@
             Currently no vote</li>
           @@END_IF@@
           @@TABLE@@
-            <li><a href="#" id="rating_@_RATING_@_@_CRITERIA_ID_@"
+            <li><a href="#" id="bnc_rating_@_RATING_@_@_CRITERIA_ID_@"
                    class="r@_RATING_@-unit rater"
                    rel="nofollow">@_RATING_@</a></li>
           @@END_TABLE@@
@@ -50,11 +50,12 @@
             @@SET@@ SET_AJAX_RATE_VAL = value
 
             var rule_user_votefor@_CRITERIA_ID_@ = {
-	    '#user_votefor@_CRITERIA_ID_@ li a' : function(el) {
+	    '#bnc_user_votefor@_CRITERIA_ID_@ li a' : function(el) {
                  el.onclick = function () {
                     AWS.Ajax.XML.request ("@_SET_AJAX_RATE_URL_@",
                     "@_SET_AJAX_RATE_CRITERIA_@=@_CRITERIA_ID_@&@_SET_AJAX_RATE_VAL_@="
-                    + this.innerHTML + "&" + AWS.Ajax.serialize("TID"), "");
+                    + this.innerHTML
+                    + "&" + AWS.Ajax.serialize("bnc_TID", "TID"), "");
                     return (false);
                  }
                }
@@ -67,18 +68,18 @@
     @@END_IF@@
     <p class="enternewcomment">
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
-      <textarea name="COMMENT" id="comment_input"></textarea>
+      <textarea name="COMMENT" id="global_comment_input"></textarea>
     </p>
     <p>
-      <input name="ENTER" id="comment_form_enter" type="submit" value="OK"/>
+      <input name="ENTER" id="bnc_comment_form_enter" type="submit" value="OK"/>
     </p>
-    <p id="new_comment_error"></p>
+    <p id="bnc_new_comment_error"></p>
     @@--    <p><input name="FILENAME" type="file"/>
   </fieldset>
 </form>
 @@ELSE@@
-    <p id="noanonymouscomment">@_BABEL_NO_ANONYMOUS_COMMENT_@</p>
+    <p id="bnc_noanonymouscomment">@_BABEL_NO_ANONYMOUS_COMMENT_@</p>
 @@END_IF@@
 @@--
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, sel_forum_list, 4=>sel_forum_list)
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, comment_form, 4=>comment_form, 5=>PARENT_ID)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bnc_sel_forum_list, 4=>bnc_sel_forum_list)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bnc_comment_form, 4=>bnc_comment_form, 5=>PARENT_ID)

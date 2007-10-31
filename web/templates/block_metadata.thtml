@@ -1,7 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 
 @@--
-<div id="geo_metadata">
+<div id="bm_geo_metadata">
   @@IF@@ @_METADATA_LATITUDE_@ /= ""
     <dl class="geo">
       <dt><strong>@_BABEL_GEO_LATITUDE_@</strong></dt>
@@ -19,19 +19,19 @@
     </dl>
   @@ELSE@@
     @@IF@@ @_LOGIN_@ = @_OWNER_@ or @_IS_OWNER_@
-      <form enctype="multipart/form-data" id="metadata_post"
+      <form enctype="multipart/form-data" id="bm_metadata_post"
             action="#" method="POST">
         <fieldset>
           <p>
             <label for="latitude">@_BABEL_GEO_LATITUDE_@</label>
-            <input id="latitude" name="latitude" type="entry"/>
+            <input id="bm_latitude" name="latitude" type="entry"/>
           </p>
           <p>
             <label for="longitude">@_BABEL_GEO_LONGITUDE_@</label>
-            <input id="longitude" name="longitude" type="entry"/>
+            <input id="bm_longitude" name="longitude" type="entry"/>
           </p>
           <p>
-            <input name="ENTER" id="metadata_form_enter"
+            <input name="ENTER" id="bm_metadata_form_enter"
                    type="submit" value="OK"/>
           </p>
         </fieldset>
@@ -49,9 +49,9 @@
       @_BABEL_ERROR_METADATA_WRONG_METADATA_@
       @@END_IF@@
 
-      @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, metadata_post, 4=>metadata_post)
+      @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bm_metadata_post, 4=>bm_metadata_post)
     @@END_IF@@
   @@END_IF@@
 </div>
 @@--
-<div id="exif_metadata" class="yui-u">@_LAZY_EXIF_@</div>
+<div id="bm_exif_metadata" class="yui-u">@_LAZY_EXIF_@</div>

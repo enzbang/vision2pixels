@@ -6,9 +6,9 @@
 @@IF@@ @_NAME_@ /=""
 @@INCLUDE@@ chunk_v2p_top.thtml @_NAME_@ forum_entry yui-t7
 @@--
-  <div id="image_block">
+  <div id="pfe_image_block">
    @@-- Navigation links
-  <ul id="navigate" style="margin-left:@_MULT(-1):SUB(400):DIV(2):IMAGE_WIDTH_@px;">
+  <ul id="pfe_navigate" style="margin-left:@_MULT(-1):SUB(400):DIV(2):IMAGE_WIDTH_@px;">
 
     @@IF@@ @_PREVIOUS_@ /= ""
     <li class="prev_link">
@@ -27,14 +27,14 @@
   </ul>
   @@-- Image
   @@IF@@ @_IMAGE_SOURCE_@ /= ""
-  <p id="main_image">
+  <p id="pfe_main_image">
     <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
      height="@_IMAGE_HEIGHT_@" width="@_IMAGE_WIDTH_@" />
   </p>
   @@END_IF@@
-<div id="image_infos">
+<div id="pfe_image_infos">
   <h2>@_NAME_@</h2>
-  <p id="img_author">
+  <p id="pfe_img_author">
     @@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@
       @@IF@@ @_OWNER_@ /= @_LOGIN_@
          @_OWNER_@
@@ -53,26 +53,24 @@
   @@-- Hidden
   @@IF@@ @_ADMIN_@
   <p>@_BABEL_HIDDEN_STATUS_@:
-    <a href="#" id="hidden_status_toggle">
-      <span id="image_hidden_status">@_OUI_NON:HIDDEN_@</span>
+    <a href="#" id="pfe_hidden_status_toggle">
+      <span id="pfe_image_hidden_status">@_OUI_NON:HIDDEN_@</span>
     </a>
   </p>
   @@END_IF@@
-  <p id="main_image_comment">@_IMAGE_COMMENT_@</p>
+  <p id="pfe_main_image_comment">@_IMAGE_COMMENT_@</p>
   @@IF@@ @_IMAGE_SOURCE_@ /= ""
-    <p id="lazy_metadata">@_LAZY_METADATA_@</p>
-    <div id="lazy_global_rating">
-       @_LAZY_GLOBAL_RATING_@
-    </div>
+    <p id="global_lazy_metadata">@_LAZY_METADATA_@</p>
+    <div id="pfe_lazy_global_rating">@_LAZY_GLOBAL_RATING_@</div>
   @@END_IF@@
 </div>
 
-  <h2 id="comments_section">Commentaires</h2>
+  <h2 id="pfe_comments_section">Commentaires</h2>
   @@--  Comments
   @@IF@@ @_COMMENT_ID_@ /= "" @@--  at least one comment
-  <ol id="comments">
+  <ol id="pfe_comments">
     @@TABLE@@
-    <li id="comment_@_COMMENT_ID_@"
+    <li id="pfe_comment_@_COMMENT_ID_@"
         class="level_@_COMMENT_LEVEL_@ type_@_MOD(2):TABLE_LINE_@">
       @@INCLUDE@@ chunk_comment.thtml
       @@IF@@ @_NB_LEVELS_TO_CLOSE_@ > 0
@@ -80,24 +78,23 @@
       @@END_IF@@
 
       @@IF@@ @_TABLE_LINE_@ = @_COMMENT_ID'Length_@
-      <div id="last_parent_id" style="visibility:hidden">
-        <input name="PARENT_ID" id="PARENT_ID" type="hidden"
+      <div id="pfe_last_parent_id" style="visibility:hidden">
+        <input name="PARENT_ID" id="pfe_PARENT_ID" type="hidden"
                value="comment_@_COMMENT_ID_@" />
       </div>
       @@END_IF@@
-      @@END_TABLE@@
+    @@END_TABLE@@
   </ol>
   @@ELSE@@
-  <div id="comments"><p id="nocomment">@_BABEL_NO_COMMENT_@</p></div>
-  <div id="last_parent_id" style="visibility:hidden">
-    <input name="PARENT_ID" id="PARENT_ID" type="hidden" value=""/>
+  <div id="pfe_comments"><p id="pfe_nocomment">@_BABEL_NO_COMMENT_@</p></div>
+  <div id="pfe_last_parent_id" style="visibility:hidden">
+    <input name="PARENT_ID" id="pfe_PARENT_ID" type="hidden" value=""/>
   </div>
   @@END_IF@@
 
-  <div id="lazy_new_comment">@_LAZY_NEW_COMMENT_@</div>
+  <div id="pfe_lazy_new_comment">@_LAZY_NEW_COMMENT_@</div>
 @@--
-@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_image_metadata, V2P.Tools.toggle_show_hide_rel)
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, hidden_status_toggle)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, pfe_hidden_status_toggle)
 @@INCLUDE@@ chunk_v2p_end.thtml
 @@ELSE@@
 @_BABEL_DOES_NOT_EXIST_@

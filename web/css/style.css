@@ -9,13 +9,13 @@
 
 @@-- Position
 
-html, body, #contents {
+html, body, #cvt_contents {
     height:100%;
     min-height:100%;
     width:100%;
 }
 
-html > body, html > body #contents {
+html > body, html > body #cvt_contents {
     height:auto;
 }
 
@@ -24,13 +24,13 @@ body {
     padding:0pt;
 }
 
-#contents {
+#cvt_contents {
     left:0pt;
     position:absolute;
     top:0pt;
 }
 
-#footer {
+#cve_footer {
     background-color:#222222;
     bottom:0pt;
     padding:0pt;
@@ -39,7 +39,7 @@ body {
     width:100%;
 }
 
-#main {
+#cvt_main {
     height:auto;
     margin-bottom:5em;
     padding:0.5em;
@@ -68,7 +68,7 @@ a {
    text-decoration:none;
 }
 
-p#cd_user {
+p#bl_cd_user {
    font-style:italic;
 }
 
@@ -104,16 +104,9 @@ h1 {
    text-transform:none;
 }
 
-.error {
-   padding:2em;
-   color:red;
-   font-size:1.6em;
-   font-weight:bold;
-}
-
 @@--  Blocks
 
-div#image_block {
+div#pfe_image_block {
    left:50%;
    margin:40px 0 0 -@_DIV(2):MAX_IMAGE_SIZE_@px;
    position:relative;
@@ -123,49 +116,38 @@ div#image_block {
 
 @@--  Navigation links
 
-ul#navigate li {
+ul#pfe_navigate li {
    display:inline;
    text-transform:uppercase;
    font-size:0.8em;
    padding-right:1em;
 }
 
-ul#navigate li img {
+ul#pfe_navigate li img {
    display:none;
 }
 
 @@--  forum_entry
 
-#image_infos {
+#pfe_image_infos {
     margin:2em 0;
     padding:1em 2em;
     background-color: @_LIGHT_BORDER_@;
     border:thin solid @_PHOTOTITLECOLOR_@;
 }
 
-body.forum_entry h2 {
-   font-size: 1.8em;
-   margin-bottom: 20px;
-   font-weight: lighter;
-   letter-spacing: 0.1ex;
-   padding-bottom:0.5em;
-   margin:0 5em 1em 5em;
-   border-bottom:thin solid @_PHOTOTITLECOLOR_@;
-   text-align:center;
-}
-
-#img_author {
+#pfe_img_author, #pfnpe_img_author {
     text-align:right;
     font-style:italic;
     color:@_PHOTOAUTHOR_@;
 }
 
-#main_image_comment {
+#pfe_main_image_comment {
   text-align:center;
   font-size:1.3em;
 }
 
-textarea#comment_input {
+textarea#global_comment_input {
    width:95%;
    height:10em;
    background: black;
@@ -173,86 +155,80 @@ textarea#comment_input {
    border: thin dotted white;
 }
 
-label#comment_input {
+label#global_comment_input {
    width: 90%;
    font-size: 1.2em;
    background: black;
 }
 
-form#comment_form label {
+form#bnc_comment_form label {
    font-weight: bold;
    font-size: 1.2em;
    background: black;
 }
 
-div#lazy_new_comment {
+div#pfe_lazy_new_comment {
    border: thin solid @_LIGHT_BORDER_@;
    padding: 1em;
    margin-top: 1em;
 }
 
-body.forum_entry p#main_image {
+body.forum_entry p#pfe_main_image {
    margin:0px auto;
    text-align:center;
    padding:5px 0 0 0;
 }
 
-body.forum_entry #comments {
+body.forum_entry #pfe_comments {
     border :thin solid @_LIGHT_BORDER_@;
     padding:1em;
 }
 
-body.forum_entry #comments li {
+body.forum_entry #pfe_comments li {
     border :thin solid #004656;
     padding:1em;
 }
 
-body.forum_entry #comments p#nocomment {
+body.forum_entry #pfe_comments p#pfe_nocomment {
     @@-- When no comments
     font-size:1.4em;
     text-align:center;
 }
 
-#noanonymouscomment {
+#bnc_noanonymouscomment {
    text-align:center;
    color:#B01417;
    text-decoration:underline;
 }
 
-body.forum_entry #new_comment {
+body.forum_entry #pfe_new_comment {
    width:@_MIN_IMAGE_SIZE_@px;
 }
 
-body.forum_entry #new_comment legend {
+body.forum_entry #pfe_new_comment legend {
    display:none;
 }
 
-body.forum_entry #new_comment input,
-body.forum_entry #new_comment textarea
+body.forum_entry #pfe_new_comment input,
+body.forum_entry #pfe_new_comment textarea
 {
    width:95%;
    padding:0.2em;
    margin:5px 0 5px 0;
 }
 
-body.forum_entry #new_comment input[type="submit"]
+body.forum_entry #pfe_new_comment input[type="submit"]
 {
    width:2em;
 }
 
-div#comment_login em {
+div#bnc_comment_login em {
    font-size:1.1em;
-}
-
-.enternewcomment {
-   clear:left;
-   margin: 3em 0 0 0;
-   position:relative;
 }
 
 @@--  Forum threads
 
-div#lazy_login, div#lazy_quick_login {
+div#cvt_lazy_login, div#cvt_lazy_quick_login {
    float:right;
    margin-right:1em;
    font-size:0.8em;
@@ -264,7 +240,7 @@ div#lazy_login, div#lazy_quick_login {
    z-index:5000;
 }
 
-div#forum_text {
+div#bftt_forum_text {
    border: thin solid @_LIGHT_BORDER_@;
    width: 90%;
    margin-left: 2em;
@@ -272,54 +248,44 @@ div#forum_text {
    padding: 1em;
 }
 
-div#lazy_login {
+div#cvt_lazy_login {
     top:1em;
 }
 
-div#login_err {
+div#bl_login_err {
     margin:0;
     padding:0;
     color:red;
 }
 
-div#quick_login a#show_rel_login {
-   border: thin solid #2181b5;
-   padding:2px;
-}
-
-body.forum_threads select#forum_filter_set {
+body.forum_threads select#bff_forum_filter_set {
    margin:2em 0 0 1em;
-}
-
-body.forum_threads ul#navcontainer {
-   margin:5px 0 0 5px;
 }
 
 @@--  Login form
 
-form#login_form {
+form#bl_login_form {
    margin: 2em 0 2em 0;
 }
 
-form#login_form legend,
-   form#login_form p {
+form#bl_login_form p {
       display:inline;
-   }
+}
 
-form#login_form p#cd_user {
+form#bl_login_form p#bl_cd_user {
    display:block;
 }
 
-#login_form input {
+#bl_login_form input {
    margin-right:1em;
    width:8em;
 }
 
-#login_form label {
+#bl_login_form label {
    display:none;
 }
 
-#logged_box {
+#bl_logged_box {
    padding:2em;
 }
 
@@ -330,12 +296,7 @@ body.main h1 {
    font-size:2em;
 }
 
-body.main p#v2p_binary {
-   font-size:0.6em;
-   width:40em;
-}
-
-#presentation {
+#pm_presentation {
    border: thin solid @_LIGHT_BORDER_@;
    padding: 0.5%;
    margin: 1%;
@@ -344,7 +305,7 @@ body.main p#v2p_binary {
    float: left;
 }
 
-#logo {
+#pm_logo {
    border: thin solid @_LIGHT_BORDER_@;
    padding: 0.5%;
    margin: 1%;
@@ -353,7 +314,7 @@ body.main p#v2p_binary {
    height: 20em;
 }
 
-#latest_users {
+#pm_latest_users {
    border: thin solid @_LIGHT_BORDER_@;
    padding: 0.5%;
    margin: 1%;
@@ -362,7 +323,7 @@ body.main p#v2p_binary {
    height: 20em;
 }
 
-#latest_posts {
+#pm_latest_posts {
    border: thin solid @_LIGHT_BORDER_@;
    padding: 1%;
    margin: 2% 1% 3%;
@@ -370,36 +331,36 @@ body.main p#v2p_binary {
    float: left;
 }
 
-#latest_posts p {
+#pm_latest_posts p {
    float: left;
 }
 
 @@--  Footpage
 
-#ft {
+#ct_ft {
     display:none;
 }
 
 @@--  Forum list
 
-ul#navcontainer {
+ul#bfl_navcontainer {
     top:5px;
     position:absolute;
     width:80%;
 }
 
-ul#navcontainer li {
+ul#bfl_navcontainer li {
    display:inline;
    margin-right:1em;
    font-family:arial,sans-serif;
    font-size:0.9em;
 }
 
-ul#navcontainer li a {
+ul#bfl_navcontainer li a {
    text-decoration:underline;
 }
 
-ul#navcontainer li.index a {
+ul#bfl_navcontainer li.index a {
   text-decoration:none;
 }
 
@@ -425,18 +386,17 @@ input:hoover,
    color:white;
 }
 
-ul#navcontainer li a {
+ul#bfl_navcontainer li a {
    color:#c1c7c7;
 }
 
-ul#navcontainer li.index a {
+ul#bfl_navcontainer li.index a {
    color:#436EEE;
 }
 
 .right {
    text-align:right;
 }
-
 
 @@-- Slides
 
@@ -554,10 +514,9 @@ display. */
    left: -9000px;
 }
 
-#new_comment {
+#rbl_new_comment {
    margin-top: 2em;
 }
-
 
 .thumbs img
 {
@@ -634,63 +593,7 @@ tr.table_line_1
    padding-left: 90px;
 }
 
-#show_new_photo_post {
-   background: url(/css/img/list-add.gif);
-   background-position: left center;
-   background-repeat: no-repeat;
-   padding: 10px 10px 10px 40px;
-}
-
-a#show_new_photo_post {
-   text-decoration:underline;
-}
-
-div#form_container p {
-   margin:10px 0 0 2em;
-}
-
-form#basic_post_form legend
-{
-   font-size:1.3em;
-   margin:0 0 1em 0;
-
-}
-
-#new_post {
-   width:30em;
-}
-
-#new_post label {
-   float:left;
-   margin:1em 0 0 0;
-}
-
-#new_post p#forum_sel select {
-   float:left;
-   width:45%;
-}
-
-#new_post p#forum_sel select#sel_category {
-   margin-left:10%;
-}
-
-#new_post input, #new_post textarea {
-   float:left;
-   width:100%;
-}
-
-input#photo_form_enter {
-   margin-left:1em;
-}
-
-form#metadata_edition_form {
-   float:left;
-   position:absolute;
-   top:2em;
-   margin-left:40em;
-}
-
-ol#comments cite {
+ol#rbcfe_comments cite {
    border-bottom:thin solid #019bbd;
    width:100%;
    display:block;
@@ -709,12 +612,12 @@ span.user_name a {
    color:#029cbe;
 }
 
-ol#comments abbr.comment_date {
+ol#rbcfe_comments abbr.comment_date {
    font-size: 0.8em;
    float: right;
 }
 
-ol#comments div.comment_body {
+ol#rbcfe_comments div.comment_body {
    font-size: 1.2em;
    line-height:1.5em;
    text-align: left;
@@ -722,88 +625,74 @@ ol#comments div.comment_body {
 
 @@--  User page
 
-body.user_page form#user_page_edit_form,
+body.user_page form#bup_user_page_edit_form,
    #user_page_content
 {
    margin:2em 0 0 1em;
 }
 
-body.user_page form#user_page_edit_form textarea#content_input {
+body.user_page form#bup_user_page_edit_form textarea#bup_content_input {
    width:100%;
    height:30em;
 }
 
-#user_page_content h1 {
+#bup_user_page_content h1 {
    font-size:1.4em;
 }
 
-#user_page_content h2 {
+#bup_user_page_content h2 {
    font-size:1.2em;
 }
 
-#user_page_content h3 {
+#bup_user_page_content h3 {
    font-size:1.1em;
 }
 
-
-#user_page_content h1 {
+#bup_user_page_content h1 {
    display: block;
    font-size: 2em;
    font-weight: bold;
    margin: .67em 0;
 }
 
-#user_page_content h2 {
+#bup_user_page_content h2 {
    display: block;
    font-size: 1.5em;
    font-weight: bold;
    margin: .83em 0;
 }
 
-#user_page_content h3 {
+#bup_user_page_content h3 {
    display: block;
    font-size: 1.17em;
    font-weight: bold;
    margin: 1em 0;
 }
 
-#user_page_content h4 {
+#bup_user_page_content h4 {
    display: block;
    font-weight: bold;
    margin: 1.33em 0;
 }
 
-#user_page_content h5 {
+#bup_user_page_content h5 {
    display: block;
    font-size: 0.83em;
    font-weight: bold;
    margin: 1.67em 0;
 }
 
-#user_page_content h6 {
+#bup_user_page_content h6 {
    display: block;
    font-size: 0.67em;
    font-weight: bold;
    margin: 2.33em 0;
 }
 
-hr#step_1, hr#step_2, hr#step_3, hr#step_4 {
-    padding:0;
-    margin:1em 0 0 0;
-    width:40%;
-    border-left:thin solid white;
-}
-
-hr#step_2, hr#step_4 {
-    left:20%;
-    position:relative;
-}
-
 body.forum_post_page h1 {
     margin:0.5em;
     font-size:2em;
 }
-
 
 @@--  User page
 
@@ -814,7 +703,7 @@ body.user_page h1 {
     font-weight:bold;
 }
 
-body.user_page #user_page_content {
+body.user_page #bup_user_page_content {
     padding:2em;
     margin: 2em 0;
     border:thin solid #222;
@@ -829,6 +718,6 @@ body.user_page h2 {
     text-decoration:underline;
 }
 
-body.user_page ul#lastusercommentlist {
+body.user_page ul#bucl_lastusercommentlist {
     padding:2em;
 }

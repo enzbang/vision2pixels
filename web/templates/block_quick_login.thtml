@@ -1,6 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-<a href="#" id="show_rel_login" rel="lazy_login">
+<a href="#" id="bql_show_rel_login" rel="cvt_lazy_login">
   @@IF@@ @_LOGIN_@ = ""
     @_BABEL_NOT_LOGGED_@
   @@ELSE@@
@@ -8,4 +8,4 @@
   @@END_IF@@
 </a>
 @@--
-@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, show_rel_login, V2P.Tools.toggle_show_hide_rel)
+@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, bql_show_rel_login, V2P.Tools.toggle_show_hide_rel)

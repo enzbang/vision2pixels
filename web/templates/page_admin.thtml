@@ -2,10 +2,10 @@
 @@-- HTTP_URL(/admin): Forum Post URL
 @@--
 @@INCLUDE@@ chunk_v2p_top.thtml (1=>@_BABEL_ADMIN_@, 2=>admin_page, 4=>"notebook")
-<div id="admin_page">
+<div id="pa_admin_page">
 @@IF@@ @_ADMIN_@
-<ul id="Tabs">
-  <li id="page1" class="currentPage">
+<ul id="pa_Tabs">
+  <li id="pa_page1" class="currentPage">
     <a href="#" onclick="switchTabPage_Tabs('page1')">@_BABEL_USERS_@</a>
   </li>
 </ul>
