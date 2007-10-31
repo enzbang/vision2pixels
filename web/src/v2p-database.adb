@@ -647,6 +647,8 @@ package body V2P.Database is
       Line       : DB.String_Vectors.Vector;
       Forum_Type : V2P.Database.Forum_Type := Forum_Text;
    begin
+      Connect (DBH);
+
       DBH.Handle.Prepare_Select
         (Iter,
          "select for_photo from category, post, forum "
