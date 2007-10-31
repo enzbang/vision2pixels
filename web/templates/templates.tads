@@ -191,21 +191,21 @@ package @_PACKAGE_@.@_CAPITALIZE:REPLACE_ALL(\./_):BASENAME_@ is
 @@IF@@ @_EXIST:SET_VAR_@
 
    package Set is
-      @@TABLE@@
-        @@IF@@ not @_IS_EMPTY:SET_VAR_@
-        @_REPLACE_ALL(SET_/):SET_VAR_@ : constant String := "@_SET_VAL_@";
-        @@END_IF@@
-      @@END_TABLE@@
+   @@TABLE@@
+     @@IF@@ not @_IS_EMPTY:SET_VAR_@
+     @_REPLACE_ALL(SET_/):SET_VAR_@ : constant String := "@_SET_VAL_@";
+     @@END_IF@@
+   @@END_TABLE@@
    end Set;
 @@END_IF@@
 @@IF@@ @_EXIST:AJAX_EVENT_@
 
    package Ajax is
-      @@TABLE@@
+   @@TABLE@@
       @@IF@@ not @_IS_EMPTY:AJAX_EVENT_@
       @_AJAX_EVENT_@_@_AJAX_ACTION_@ : constant String := "/@_AJAX_EVENT_@$@_AJAX_ACTION_@";
       @@END_IF@@
-      @@END_TABLE@@
+   @@END_TABLE@@
    end Ajax;
 @@END_IF@@
 
