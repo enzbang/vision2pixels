@@ -695,7 +695,6 @@ package body V2P.Database is
       For_Photo : Templates.Tag;
       Nb_Lines  : Natural := 0;
 
-
    begin
       Connect (DBH);
 
@@ -1071,6 +1070,7 @@ package body V2P.Database is
                   DB.String_Vectors.Element (Line, 9)));
             Line.Clear;
          end if;
+
       else
          DBH.Handle.Prepare_Select
            (Iter, "select post.name, post.comment, post.hidden, "
@@ -1120,6 +1120,7 @@ package body V2P.Database is
             Line.Clear;
          end if;
       end if;
+
       Iter.End_Select;
 
       return Set;
@@ -1576,8 +1577,13 @@ package body V2P.Database is
       return Set;
    end Get_User_Page;
 
+   -----------------------------
+   -- Get_User_Rating_On_Post --
+   -----------------------------
+
    function Get_User_Rating_On_Post
-     (Uid : in String; Tid : in String) return Templates.Translate_Set is
+     (Uid : in String; Tid : in String) return Templates.Translate_Set
+   is
       use AWS.Templates;
 
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
@@ -1657,7 +1663,7 @@ package body V2P.Database is
    -- Insert_Comment --
    --------------------
 
-   function  Insert_Comment
+   function Insert_Comment
      (Uid       : in String;
       Anonymous : in String;
       Thread    : in String;
