@@ -120,3 +120,6 @@ install_gwiad_plugin: install_db
 
 check_mem:
 	make check_mem -C web $(OPTIONS)
+
+check_xrefs:
+	webxref -C -d -pi file_based -ki CTX_WB web/templates/* web/css/*
