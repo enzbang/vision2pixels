@@ -66,6 +66,24 @@ package body V2P.Callbacks.Web_Block is
             Context.Get_Value (Template_Defs.Set_Global.FILTER)));
    end Forum_Filter;
 
+   ----------------------------
+   -- Forum_Filter_Page_Size --
+   ----------------------------
+
+   procedure Forum_Filter_Page_Size
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+   begin
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.FILTER_PAGE_SIZE,
+            Context.Get_Value (Template_Defs.Set_Global.FILTER_PAGE_SIZE)));
+   end Forum_Filter_Page_Size;
+
    ----------------
    -- Forum_List --
    ----------------
@@ -139,6 +157,8 @@ package body V2P.Callbacks.Web_Block is
          Admin      => Admin,
          Filter     => Database.Filter_Mode'Value (Context.Get_Value
            (Template_Defs.Set_Global.FILTER)),
+         Page_Size  => Positive'Value (Context.Get_Value
+           (Template_Defs.Set_Global.FILTER_PAGE_SIZE)),
          Order_Dir  => Database.Order_Direction'Value
            (Context.Get_Value (Template_Defs.Set_Global.ORDER_DIR)),
          Navigation => Nav_Links,

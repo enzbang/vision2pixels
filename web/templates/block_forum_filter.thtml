@@ -1,4 +1,4 @@
-<select name="forum_filter_set" id="bff_forum_filter_set">
+<select name="bff_forum_filter_set" id="bff_forum_filter_set">
   <option value="TODAY"
   @@IF@@ @_FILTER_@ = "TODAY"
     selected="selected"

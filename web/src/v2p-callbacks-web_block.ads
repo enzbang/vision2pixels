@@ -42,6 +42,11 @@ package V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
 
+   procedure Forum_Filter_Page_Size
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
    procedure Forum_Photo_List_Select
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
