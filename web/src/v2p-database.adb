@@ -1141,7 +1141,8 @@ package body V2P.Database is
       Filter     : in     Filter_Mode := All_Messages;
       Order_Dir  : in     Order_Direction := DESC;
       Navigation :    out Post_Ids.Vector;
-      Set        :    out Templates.Translate_Set)
+      Set        :    out Templates.Translate_Set;
+      Nb_Lines   :    out Natural)
    is
       use type Templates.Tag;
       use Post_Ids;
@@ -1312,7 +1313,8 @@ package body V2P.Database is
          end case;
 
          if Limit /= 0 then
-            Select_Stmt := Select_Stmt & " limit " & Natural'Image (Limit);
+            Select_Stmt := Select_Stmt & " limit " & Natural'Image (Limit)
+              & " offset" & Natural'Image (From - 1);
          end if;
 
          return Select_Stmt;
@@ -1333,7 +1335,6 @@ package body V2P.Database is
       Hidden          : Templates.Tag;
       Owner           : Templates.Tag;
       Select_Stmt     : Unbounded_String;
-      Nb_Line         : Natural := 0;
    begin
 
       Navigation := Post_Ids.Empty_Vector;
@@ -1368,9 +1369,11 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select (Iter, To_String (Select_Stmt));
 
+      Nb_Lines := 0;
+
       while Iter.More loop
          Iter.Get_Line (Line);
-         Nb_Line := Nb_Line + 1; --  ??? Maybe a smarter way to do this
+         Nb_Lines := Nb_Lines + 1; --  ??? Maybe a smarter way to do this
 
          Id              := Id        & DB.String_Vectors.Element (Line, 1);
          Name            := Name      & DB.String_Vectors.Element (Line, 2);
@@ -1417,7 +1420,8 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc (Block_Forum_Threads.TOTAL_NB_THREADS, Count));
       Templates.Insert
-        (Set, Templates.Assoc (Block_Forum_Threads.NB_LINE_RETURNED, Nb_Line));
+        (Set, Templates.Assoc
+           (Block_Forum_Threads.NB_LINE_RETURNED, Nb_Lines));
       Templates.Insert
         (Set, Templates.Assoc (Set_Global.NAV_FROM, From));
    end Get_Threads;

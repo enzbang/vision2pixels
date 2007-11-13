@@ -44,6 +44,10 @@ package V2P.Context is
    --  bug, should be changed when GNAT GPL 2007 is out and if it contains the
    --  fix as this bug is not present on recent GNAT versions.
 
+   package Counter is
+     new Generic_Data (Data => Integer, Null_Data => 1);
+   --  Same as Navigation_From : should be positive
+
    procedure Context_Filter (Context : access Object);
    --  Update the context filter
 

@@ -28,6 +28,7 @@ with Image.Metadata.Geographic;
 
 with V2P.Database;
 with V2P.Wiki;
+with V2P.Context;
 
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_New_Text_Entry;
@@ -148,7 +149,11 @@ package body V2P.Callbacks.Ajax is
 
       --  Keep the sorting scheme into the session
       --  ?? we need to add this into the user's preferences
-      Context.Set_Value (Template_Defs.Set_Global.FILTER_PAGE_SIZE, Filter);
+
+      V2P.Context.Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
+         Value   => Positive'Value (Filter));
 
       Templates.Insert
         (Translations,
@@ -173,6 +178,74 @@ package body V2P.Callbacks.Ajax is
       Templates.Insert (Translations, Database.Get_Categories (Fid));
       Context.Set_Value (Template_Defs.Set_Global.FID, Fid);
    end Onchange_Forum_List;
+
+   ----------------------------
+   -- Onclick_Goto_Next_Page --
+   ----------------------------
+
+   procedure Onclick_Goto_Next_Page
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      use Template_Defs;
+      Last_From : constant Integer :=
+                    V2P.Context.Navigation_From.Get_Value
+                      (Context => Context.all,
+                       Name    => Set_Global.NAV_FROM);
+      Last_Nb_Viewed : constant Integer :=
+                         V2P.Context.Counter.Get_Value
+                           (Context => Context.all,
+                            Name    => Set_Global.NB_LINE_RETURNED);
+   begin
+      V2P.Context.Navigation_From.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NAV_FROM,
+         Value   => Last_From + Last_Nb_Viewed);
+
+      Templates.Insert
+        (Translations,
+         Database.Get_Forum
+           (Context.Get_Value (Template_Defs.Set_Global.FID), Tid => ""));
+   end Onclick_Goto_Next_Page;
+
+   --------------------------------
+   -- Onclick_Goto_Previous_Page --
+   --------------------------------
+
+   procedure Onclick_Goto_Previous_Page
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      use Template_Defs;
+      Last_From      : constant Integer :=
+                         V2P.Context.Navigation_From.Get_Value
+                           (Context => Context.all,
+                            Name    => Set_Global.NAV_FROM);
+      Last_Nb_Viewed : constant Integer :=
+                         V2P.Context.Counter.Get_Value
+                           (Context => Context.all,
+                            Name    => Set_Global.NB_LINE_RETURNED);
+      From           : Positive := 1;
+   begin
+
+      if Last_From > Last_Nb_Viewed then
+         From := Last_From - Last_Nb_Viewed;
+      end if;
+
+      V2P.Context.Navigation_From.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NAV_FROM,
+         Value   => From);
+
+      Templates.Insert
+        (Translations,
+         Database.Get_Forum
+           (Context.Get_Value (Template_Defs.Set_Global.FID), Tid => ""));
+   end Onclick_Goto_Previous_Page;
 
    ----------------------------------
    -- Onclick_Hidden_Status_Toggle --
