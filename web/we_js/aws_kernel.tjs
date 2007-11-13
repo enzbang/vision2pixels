@@ -363,7 +363,7 @@ AWS.Ajax = new function() {
          param = Form.serialize (elm);
       } else if ($(elm).tagName == "UL") {
          param = Sortable.serialize(elm);
-      } else if (name == "") {
+      } else if (name == "" || name == null) {
          param = elm + "=" + $F(elm);
       } else {
          param = name + "=" + $F(elm);
