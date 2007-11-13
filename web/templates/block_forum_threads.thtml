@@ -4,6 +4,13 @@
 @@--
 @@INCLUDE@@ set_babel.thtml
 @@--
+
+<p class="threads_page_info">
+@_TOTAL_NB_THREADS_@ @_BABEL_IN_THIS_CATEGORY_@
+@_NB_LINE_RETURNED_@ @_BABEL_NB_LINE_RETURNED_@
+@_BABEL_PAGE_NUMBER_@ @_NAV_FROM_@
+</p>
+
 <ul class="slides">
 @@TABLE@@
   <li class="thumbs">

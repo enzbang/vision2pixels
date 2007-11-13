@@ -39,6 +39,10 @@ package body V2P.Context is
            (Template_Defs.Set_Global.FILTER,
             Database.Filter_Mode'Image (Database.All_Messages));
 
+         Context.Set_Value
+           (Template_Defs.Set_Global.FILTER_PAGE_SIZE,
+            Integer'Image (10));
+
          if Settings.Descending_Order then
             Context.Set_Value
               (Template_Defs.Set_Global.ORDER_DIR,

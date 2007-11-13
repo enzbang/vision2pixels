@@ -70,6 +70,7 @@ package V2P.Database is
       User       : in     String := "";
       Admin      : in     Boolean;
       From       : in     Positive := 1;
+      Page_Size  : in     Positive := 10;
       Filter     : in     Filter_Mode := All_Messages;
       Order_Dir  : in     Order_Direction := DESC;
       Navigation :    out V2P.Context.Post_Ids.Vector;

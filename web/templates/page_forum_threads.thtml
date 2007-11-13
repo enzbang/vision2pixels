@@ -5,6 +5,7 @@
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_THREAD_LIST_@ forum_threads yui-t7
 @@--
 <div id="pft_lazy_forum_filter">@_LAZY_FORUM_FILTER_@</div>
+<div id="pft_lazy_forum_filter_page_size">@_LAZY_FORUM_FILTER_PAGE_SIZE_@</div>
 @@IF@@ @_FORUM_FOR_PHOTO_@
 <div id="pft_lazy_forum_threads">@_LAZY_FORUM_THREADS_@</div>
 @@ELSE@@

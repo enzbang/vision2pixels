@@ -1137,6 +1137,7 @@ package body V2P.Database is
       User       : in     String := "";
       Admin      : in     Boolean;
       From       : in     Positive := 1;
+      Page_Size  : in     Positive := 10;
       Filter     : in     Filter_Mode := All_Messages;
       Order_Dir  : in     Order_Direction := DESC;
       Navigation :    out Post_Ids.Vector;
@@ -1144,6 +1145,12 @@ package body V2P.Database is
    is
       use type Templates.Tag;
       use Post_Ids;
+
+      function Count_Threads
+        (Fid        : in String := "";
+         User       : in String := "")
+         return Natural;
+      --  Returns the number of threads matching the query
 
       function Threads_Ordered_Select
         (Fid        : in String := "";
@@ -1155,6 +1162,55 @@ package body V2P.Database is
          Order_Dir  : in Order_Direction := DESC;
          Limit      : in Natural := 0) return Unbounded_String;
       --  Returns the select SQL query for listing threads with Filter
+
+      -------------------
+      -- Count_Threads --
+      -------------------
+
+      function Count_Threads
+        (Fid        : in String := "";
+         User       : in String := "")
+         return Natural
+      is
+         DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+         Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+         Line : DB.String_Vectors.Vector;
+      begin
+         Connect (DBH);
+
+         if User = "" then
+            --  Anonymous login
+
+            DBH.Handle.Prepare_Select
+              (Iter, "select count(post.id) from post, category "
+                 & "where post.category_id = category.id "
+                 & "and category.forum_id = " & Q (Fid));
+         else
+            --  User threads
+            DBH.Handle.Prepare_Select
+              (Iter, "select count(post.id) from post, category, user_post"
+                 & "where post.category_id = category.id "
+                 & "and category.forum_id = "
+                 & Q (Fid) & " and user_post.post_id = post.id"
+                 & " and user_post.user_id = " & Q (User));
+         end if;
+
+         if Iter.More then
+            Iter.Get_Line (Line);
+            declare
+               Count : constant Natural :=
+                 Natural'Value (DB.String_Vectors.Element (Line, 1));
+            begin
+               Line.Clear;
+               Iter.End_Select;
+               return Count;
+            end;
+         end if;
+
+         Line.Clear;
+         Iter.End_Select;
+         return 0;
+      end Count_Threads;
 
       ----------------------------
       -- Threads_Ordered_Select --
@@ -1261,7 +1317,7 @@ package body V2P.Database is
 
          return Select_Stmt;
       end Threads_Ordered_Select;
-
+      Count           : constant Natural := Count_Threads (Fid, User);
       DBH             : constant TLS_DBH_Access :=
                           TLS_DBH_Access (DBH_TLS.Reference);
       Iter            : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -1277,8 +1333,9 @@ package body V2P.Database is
       Hidden          : Templates.Tag;
       Owner           : Templates.Tag;
       Select_Stmt     : Unbounded_String;
-
+      Nb_Line         : Natural := 0;
    begin
+
       Navigation := Post_Ids.Empty_Vector;
 
       Connect (DBH);
@@ -1288,6 +1345,7 @@ package body V2P.Database is
          User      => User,
          Admin     => Admin,
          From      => From,
+         Limit     => Page_Size,
          Filter    => Filter,
          Order_Dir => Order_Dir);
 
@@ -1312,6 +1370,7 @@ package body V2P.Database is
 
       while Iter.More loop
          Iter.Get_Line (Line);
+         Nb_Line := Nb_Line + 1; --  ??? Maybe a smarter way to do this
 
          Id              := Id        & DB.String_Vectors.Element (Line, 1);
          Name            := Name      & DB.String_Vectors.Element (Line, 2);
@@ -1355,6 +1414,12 @@ package body V2P.Database is
         (Set, Templates.Assoc (Block_Forum_Threads.OWNER, Owner));
       Templates.Insert
         (Set, Templates.Assoc (Block_Forum_Threads.HIDDEN, Hidden));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Forum_Threads.TOTAL_NB_THREADS, Count));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Forum_Threads.NB_LINE_RETURNED, Nb_Line));
+      Templates.Insert
+        (Set, Templates.Assoc (Set_Global.NAV_FROM, From));
    end Get_Threads;
 
    -------------------

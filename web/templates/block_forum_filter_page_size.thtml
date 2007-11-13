@@ -1,0 +1,27 @@
+@@INCLUDE@@ set_babel.thtml
+<select name="bffps_forum_filter_pagesize" id="bffps_forum_filter_pagesize">
+  <option value="10"
+  @@IF@@ @_FILTER_PAGE_SIZE_@ = "10"
+    selected="selected"
+  @@END_IF@@
+  >10 @_BABEL_PER_PAGE_@</option>
+
+  <option value="20"
+  @@IF@@ @_FILTER_PAGE_SIZE_@ = "20"
+     selected="selected"
+   @@END_IF@@
+   >20 @_BABEL_PER_PAGE_@</option>
+
+   <option value="50"
+   @@IF@@ @_FILTER_PAGE_SIZE_@ = "50"
+     selected="selected"
+   @@END_IF@@
+   >50 @_BABEL_PER_PAGE_@</option>
+
+   <option value="100"
+   @@IF@@ @_FILTER_PAGE_SIZE_@ = "100"
+     selected="selected"
+   @@END_IF@@
+   >100 @_BABEL_PER_PAGE_@</option>
+</select>
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bffps_forum_filter_pagesize, 4=>bffps_forum_filter_pagesize)

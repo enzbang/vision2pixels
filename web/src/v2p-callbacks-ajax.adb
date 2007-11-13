@@ -36,6 +36,7 @@ with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Filter;
+with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.R_Block_Login;
@@ -113,10 +114,11 @@ package body V2P.Callbacks.Ajax is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
+      package HTTP renames Template_Defs.Block_Forum_Filter.HTTP;
+
       P      : constant Parameters.List := Status.Parameters (Request);
       Filter : constant String :=
-                 Parameters.Get
-                   (P, Template_Defs.Block_Forum_Filter.HTTP.forum_filter_set);
+                 Parameters.Get (P, HTTP.bff_forum_filter_set);
    begin
       --  Keep the sorting scheme into the session
       --  ?? we need to add this into the user's preferences
@@ -127,6 +129,32 @@ package body V2P.Callbacks.Ajax is
          Database.Get_Forum
            (Context.Get_Value (Template_Defs.Set_Global.FID), Tid => ""));
    end Onchange_Filter_Forum;
+
+   -------------------------------------
+   -- Onchange_Filter_Forum_Page_Size --
+   -------------------------------------
+
+   procedure Onchange_Filter_Forum_Page_Size
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      package HTTP renames Template_Defs.Block_Forum_Filter_Page_Size.HTTP;
+
+      P      : constant Parameters.List := Status.Parameters (Request);
+      Filter : constant String          :=
+                 Parameters.Get (P, HTTP.bffps_forum_filter_pagesize);
+   begin
+
+      --  Keep the sorting scheme into the session
+      --  ?? we need to add this into the user's preferences
+      Context.Set_Value (Template_Defs.Set_Global.FILTER_PAGE_SIZE, Filter);
+
+      Templates.Insert
+        (Translations,
+         Database.Get_Forum
+           (Context.Get_Value (Template_Defs.Set_Global.FID), Tid => ""));
+   end Onchange_Filter_Forum_Page_Size;
 
    -------------------------
    -- Onchange_Forum_List --
