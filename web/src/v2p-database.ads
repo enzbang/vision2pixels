@@ -74,7 +74,8 @@ package V2P.Database is
       Filter     : in     Filter_Mode := All_Messages;
       Order_Dir  : in     Order_Direction := DESC;
       Navigation :    out V2P.Context.Post_Ids.Vector;
-      Set        :    out Templates.Translate_Set);
+      Set        :    out Templates.Translate_Set;
+      Nb_Lines   :    out Natural);
    --  Returns all threads for a given forum.
    --  Returns navigation links to store in context.
 

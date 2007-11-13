@@ -58,6 +58,7 @@ with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_User_Page;
+with V2P.Template_Defs.Block_Forum_Threads;
 with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Hidden_Status;
 with V2P.Template_Defs.R_Block_Login;
@@ -487,6 +488,20 @@ package body V2P.Web_Server is
         (Template_Defs.Block_Forum_Filter.Ajax.onchange_bff_forum_filter_set,
          Template_Defs.R_Block_Forum_Filter.Template,
          Callbacks.Ajax.Onchange_Filter_Forum'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Forum_Threads.Ajax.onclick_bft_goto_next_page,
+         Template_Defs.R_Block_Forum_Filter.Template,
+         Callbacks.Ajax.Onclick_Goto_Next_Page'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Forum_Threads.Ajax.onclick_bft_goto_previous_page,
+         Template_Defs.R_Block_Forum_Filter.Template,
+         Callbacks.Ajax.Onclick_Goto_Previous_Page'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

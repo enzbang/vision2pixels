@@ -11,6 +11,12 @@
 @_BABEL_PAGE_NUMBER_@ @_NAV_FROM_@
 </p>
 
+<p><a href="#" id="bft_goto_previous_page">Previous Page</a></p>
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bft_goto_previous_page)
+
+<p><a href="#" id="bft_goto_next_page">Next Page</a></p>
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bft_goto_next_page)
+
 <ul class="slides">
 @@TABLE@@
   <li class="thumbs">

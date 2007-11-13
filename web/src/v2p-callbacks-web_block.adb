@@ -148,7 +148,12 @@ package body V2P.Callbacks.Web_Block is
                     Context.Exist (Template_Defs.Set_Global.ADMIN)
                   and then Context.Get_Value
                     (Template_Defs.Set_Global.ADMIN) = "TRUE";
+      Page_Size : constant Positive :=
+                    V2P.Context.Counter.Get_Value
+                      (Context => Context.all,
+                       Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE);
       Nav_Links : V2P.Context.Post_Ids.Vector;
+      Nb_Lines  : Natural;
    begin
       Database.Get_Threads
         (FID        => Context.Get_Value (Template_Defs.Set_Global.FID),
@@ -157,15 +162,20 @@ package body V2P.Callbacks.Web_Block is
          Admin      => Admin,
          Filter     => Database.Filter_Mode'Value (Context.Get_Value
            (Template_Defs.Set_Global.FILTER)),
-         Page_Size  => Positive'Value (Context.Get_Value
-           (Template_Defs.Set_Global.FILTER_PAGE_SIZE)),
+         Page_Size  => Page_Size,
          Order_Dir  => Database.Order_Direction'Value
            (Context.Get_Value (Template_Defs.Set_Global.ORDER_DIR)),
          Navigation => Nav_Links,
-         Set        => Translations);
+         Set        => Translations,
+         Nb_Lines   => Nb_Lines);
 
       V2P.Context.Navigation_Links.Set_Value
         (Context.all, "Navigation_Links", Nav_Links);
+
+      V2P.Context.Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NB_LINE_RETURNED,
+         Value   => Nb_Lines);
    end Forum_Threads;
 
    -------------------
@@ -417,15 +427,21 @@ package body V2P.Callbacks.Web_Block is
       User_Name  : constant String     := URL.User_Name (URI);
       Set        : Templates.Translate_Set;
       Navigation : V2P.Context.Post_Ids.Vector;
+      Nb_Lines   : Natural;
 
    begin
       Database.Get_Threads
         (User       => User_Name,
          Navigation => Navigation,
          Set        => Set,
-         Admin      => Admin);
+         Admin      => Admin,
+         Nb_Lines   => Nb_Lines);
 
       Templates.Insert (Translations, Set);
+      V2P.Context.Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NB_LINE_RETURNED,
+         Value   => Nb_Lines);
    end User_Thread_List;
 
 end V2P.Callbacks.Web_Block;
