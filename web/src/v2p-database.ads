@@ -69,11 +69,11 @@ package V2P.Database is
      (Fid         : in     String := "";
       User        : in     String := "";
       Admin       : in     Boolean;
-      From        : in     Positive := 1;
       Page_Size   : in     Positive := 10;
       Filter      : in     Filter_Mode := All_Messages;
       Filter_Cat  : in     String      := "";
       Order_Dir   : in     Order_Direction := DESC;
+      From        : in out Positive;
       Navigation  :    out Context.Post_Ids.Vector;
       Set         :    out Templates.Translate_Set;
       Nb_Lines    :    out Natural;
