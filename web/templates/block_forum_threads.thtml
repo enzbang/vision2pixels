@@ -11,10 +11,25 @@
 @_BABEL_PAGE_NUMBER_@ @_NAV_FROM_@
 </p>
 
-<p><a href="#" id="bft_goto_previous_page">Previous Page</a></p>
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bft_goto_previous_page)
+@@-- Navigation links
+<ul id="bft_navigate">
+  <li class="prev_link"
+  @@IF@@ @_NAV_FROM_@ = 1
+  style="visibility:hidden"
+  @@END_IF@@
+  >
+    <a href="#" id="bft_goto_previous_page">Previous Page</a>
+  </li>
+  <li class="next_link"
+  @@IF@@ @_ADD(NB_LINE_RETURNED):NAV_FROM_@ >= @_TOTAL_NB_THREADS_@
+  style="visibility:hidden"
+  @@END_IF@@
+  >
+    <a href="#" id="bft_goto_next_page">Next Page</a>
+  </li>
+</ul>
 
-<p><a href="#" id="bft_goto_next_page">Next Page</a></p>
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bft_goto_previous_page)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bft_goto_next_page)
 
 <ul class="slides">
