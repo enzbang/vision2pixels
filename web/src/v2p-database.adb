@@ -58,6 +58,8 @@ package body V2P.Database is
    use Ada;
    use Ada.Exceptions;
 
+   use Morzhol.Strings;
+
    use Morzhol.OS;
 
    use V2P.Context;
@@ -1135,11 +1137,11 @@ package body V2P.Database is
      (Fid         : in     String := "";
       User        : in     String := "";
       Admin       : in     Boolean;
-      From        : in     Positive := 1;
       Page_Size   : in     Positive := 10;
       Filter      : in     Filter_Mode := All_Messages;
       Filter_Cat  : in     String      := "";
       Order_Dir   : in     Order_Direction := DESC;
+      From        : in out Positive;
       Navigation  :    out Post_Ids.Vector;
       Set         :    out Templates.Translate_Set;
       Nb_Lines    :    out Natural;
@@ -1148,31 +1150,151 @@ package body V2P.Database is
       use type Templates.Tag;
       use Post_Ids;
 
+      function Build_Select
+        (Count_Only : in Boolean := False) return String;
+      --  Returns the SQL select
+
+      function Build_From
+        (User       : in String;
+         Count_Only : in Boolean := False)
+         return String;
+      --  Returns the SQL from
+
+      function Build_Where
+        (Fid        : in String;
+         User       : in String;
+         Filter     : in Filter_Mode;
+         Filter_Cat : in String;
+         Count_Only : in Boolean := False) return String;
+      --  Build the where statement
+
       function Count_Threads
-        (Fid        : in String := "";
-         User       : in String := "")
+        (Fid        : in String;
+         User       : in String;
+         Filter     : in Filter_Mode;
+         Filter_Cat : in     String)
          return Natural;
       --  Returns the number of threads matching the query
 
       function Threads_Ordered_Select
-        (Fid        : in String := "";
-         User       : in String := "";
+        (Fid        : in String;
+         User       : in String;
          Admin      : in Boolean;
-         From       : in Positive := 1;
-         Filter     : in Filter_Mode := All_Messages;
-         Filter_Cat  : in     String;
-         Where_Cond : in String := "";
-         Order_Dir  : in Order_Direction := DESC;
-         Limit      : in Natural := 0) return Unbounded_String;
+         From       : in Positive;
+         Filter     : in Filter_Mode;
+         Filter_Cat : in     String;
+         Order_Dir  : in Order_Direction;
+         Limit      : in Natural)
+         return Unbounded_String;
       --  Returns the select SQL query for listing threads with Filter
+
+      ----------------
+      -- Build_From --
+      ----------------
+
+      function Build_From
+        (User       : in String;
+         Count_Only : in Boolean := False) return String
+      is
+      begin
+         if not Count_Only or else User /= "" then
+            --  Need the user_post table for join
+            return " from post, category, user_post ";
+         else
+            return " from post, category ";
+         end if;
+      end Build_From;
+
+      ------------------
+      -- Build_Select --
+      ------------------
+
+      function Build_Select
+        (Count_Only : in Boolean := False) return String
+      is
+      begin
+         if Count_Only then
+            return "select count(post.id) ";
+         else
+            return "select post.id, post.name, post.date_post, "
+              & "datetime(date_post, '+"
+              & Utils.Image (Settings.Anonymity_Hours)
+              & " hour') < datetime('now'), "
+              & "(select filename from photo "
+              & "where Id = Post.Photo_Id), "
+              & "category.name, comment_counter,"
+              & "visit_counter, post.hidden, user_post.user_login ";
+         end if;
+      end Build_Select;
+
+      -----------------
+      -- Build_Where --
+      -----------------
+
+      function Build_Where
+        (Fid        : in String;
+         User       : in String;
+         Filter     : in Filter_Mode;
+         Filter_Cat : in String;
+         Count_Only : in Boolean := False) return String
+      is
+         Where_Stmt : Unbounded_String :=
+                        +" where post.category_id = category.id ";
+      begin
+         if not Count_Only or else User /= "" then
+            --  if count_only is false, join with user_post table
+            --  as we want to display the user_name
+            --  if count_only is true and user is not null then
+            --  join in needed to restrict to the given user
+            Append (Where_Stmt, " and user_post.post_id = post.id ");
+         end if;
+
+         if Fid /= "" then
+            --  Restrict query to the given forum id
+            Append (Where_Stmt,
+                    " and category.forum_id = " & Q (Fid) & " ");
+         end if;
+
+         if User /= "" then
+               --  Restrict to a specific user
+            Append (Where_Stmt,
+                    " and user_post.user_login = " & Q (User) & " ");
+         end if;
+
+         if Filter_Cat /= "" then
+            Append (Where_Stmt,
+                    " and category.id = " & Q (Filter_Cat) & " ");
+         end if;
+
+         case Filter is
+            when Today =>
+               Append (Where_Stmt,
+                 " and date(post.date_post) = date(current_date) ");
+
+            when Two_Days =>
+               Append (Where_Stmt,
+                 " and date(post.date_post) > date(current_date, '-2 days')");
+
+            when Seven_Days =>
+               Append (Where_Stmt,
+                       " and date(post.date_post) "
+                       & "> date(current_date, '-7 days') ");
+
+            when All_Messages =>
+               null;
+         end case;
+         return -Where_Stmt;
+      end Build_Where;
 
       -------------------
       -- Count_Threads --
       -------------------
 
       function Count_Threads
-        (Fid        : in String := "";
-         User       : in String := "")
+        (Fid        : in String;
+         User       : in String;
+         Filter     : in Filter_Mode;
+         Filter_Cat : in     String)
          return Natural
       is
          DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
@@ -1181,22 +1303,15 @@ package body V2P.Database is
       begin
          Connect (DBH);
 
-         if User = "" then
-            --  Anonymous login
-
-            DBH.Handle.Prepare_Select
-              (Iter, "select count(post.id) from post, category "
-                 & "where post.category_id = category.id "
-                 & "and category.forum_id = " & Q (Fid));
-         else
-            --  User threads
-            DBH.Handle.Prepare_Select
-              (Iter, "select count(post.id) from post, category, user_post"
-                 & "where post.category_id = category.id "
-                 & "and category.forum_id = "
-                 & Q (Fid) & " and user_post.post_id = post.id"
-                 & " and user_post.user_id = " & Q (User));
-         end if;
+         DBH.Handle.Prepare_Select
+           (Iter, Build_Select (Count_Only => True)
+            & Build_From (User => User, Count_Only => True)
+            & Build_Where
+              (Fid        => Fid,
+               User       => User,
+               Filter     => Filter,
+               Filter_Cat => Filter_Cat,
+               Count_Only => True));
 
          if Iter.More then
             Iter.Get_Line (Line);
@@ -1220,99 +1335,43 @@ package body V2P.Database is
       ----------------------------
 
       function Threads_Ordered_Select
-        (Fid        : in String := "";
-         User       : in String := "";
+        (Fid        : in String;
+         User       : in String;
          Admin      : in Boolean;
-         From       : in Positive := 1;
-         Filter     : in Filter_Mode := All_Messages;
+         From       : in Positive;
+         Filter     : in Filter_Mode;
          Filter_Cat : in     String;
-         Where_Cond : in String := "";
-         Order_Dir  : in Order_Direction := DESC;
-         Limit      : in Natural := 0) return Unbounded_String
+         Order_Dir  : in Order_Direction;
+         Limit      : in Natural)
+         return Unbounded_String
       is
-         SQL_Select  : constant String :=
-                         "select post.id, post.name, post.date_post, "
-                           & "datetime(date_post, '+"
-                           & Utils.Image (Settings.Anonymity_Hours)
-                           & " hour') < datetime('now'), "
-                           & "(select filename from photo "
-                           & "where Id = Post.Photo_Id), "
-                           & "category.name, comment_counter,"
-                           & "visit_counter, post.hidden, user.login ";
-         SQL_From    : constant String :=
-                         " from post, category, user, user_post";
+         SQL_Select  : constant String := Build_Select;
+         SQL_From    : constant String := Build_From (User => User);
          SQL_Where   : constant String :=
-                         " where post.category_id = category.id "
-                           & " and user_post.post_id = post.id"
-                           & " and user_post.user_login = user.login "
-                           & Where_Cond;
+                         Build_Where
+                           (Fid        => Fid,
+                            User       => User,
+                            Filter     => Filter,
+                            Filter_Cat => Filter_Cat);
          Ordering    : constant String :=
                          " order by post.date_post "
                            & Order_Direction'Image (Order_Dir);
 
-         Select_Stmt : Unbounded_String := Null_Unbounded_String;
+         Select_Stmt : Unbounded_String :=
+                         +SQL_Select & SQL_From & SQL_Where;
       begin
-         if Fid /= "" then
-
-            if User = "" then
-               --  Anonymous login
-
-               Select_Stmt := Select_Stmt & SQL_Select & SQL_From
-                 & SQL_Where
-                 & " and category.forum_id = " & Q (Fid)
-                 & " and user.login = user_post.user_login ";
-            else
-               --  ???
-               Select_Stmt := Select_Stmt & SQL_Select & SQL_From
-                 & SQL_Where
-                 & "and category.forum_id = " & Q (Fid)
-                 & "and user_post.user_id = " & Q (User);
-            end if;
-
-            Templates.Insert (Set, Templates.Assoc (Set_Global.FID, Fid));
-
-         elsif User /= "" then
-            --  ???
-
-            Select_Stmt := Select_Stmt & SQL_Select & SQL_From
-              & SQL_Where
-              & " and user_post.user_login = " & Q (User);
-         end if;
-
          if not Admin then
-            Select_Stmt := Select_Stmt & " and post.hidden='FALSE'";
+            Append (Select_Stmt, " and post.hidden='FALSE' ");
          end if;
 
          --  Add filtering into the select statement
 
-         if Filter_Cat /= "" then
-            Select_Stmt := Select_Stmt
-              & " and category.id = " & Q (Filter_Cat);
-         end if;
-
-         case Filter is
-            when Today =>
-               Select_Stmt := Select_Stmt
-                 & " and date(post.date_post) = date(current_date)"
-                 & Ordering;
-
-            when Two_Days =>
-               Select_Stmt := Select_Stmt
-                 & " and date(post.date_post) > date(current_date, '-2 days')"
-                 & Ordering;
-
-            when Seven_Days =>
-               Select_Stmt := Select_Stmt
-                 & " and date(post.date_post) > date(current_date, '-7 days')"
-                 & Ordering;
-
-            when All_Messages =>
-               Select_Stmt := Select_Stmt & Ordering;
-         end case;
+         Append (Select_Stmt, Ordering);
 
          if Limit /= 0 then
-            Select_Stmt := Select_Stmt & " limit " & Natural'Image (Limit)
-              & " offset" & Natural'Image (From - 1);
+            Append (Select_Stmt,
+                    " limit " & Natural'Image (Limit)
+                    & " offset" & Natural'Image (From - 1));
          end if;
 
          return Select_Stmt;
@@ -1335,7 +1394,15 @@ package body V2P.Database is
       Select_Stmt     : Unbounded_String;
    begin
 
-      Total_Lines := Count_Threads (Fid, User);
+      Total_Lines := Count_Threads (Fid        => Fid,
+                                    User       => User,
+                                    Filter     => Filter,
+                                    Filter_Cat => Filter_Cat);
+
+      if Total_Lines < From then
+         From := 1; -- ??? What should be done in this case ?
+      end if;
+
       Navigation  := Post_Ids.Empty_Vector;
 
       Connect (DBH);

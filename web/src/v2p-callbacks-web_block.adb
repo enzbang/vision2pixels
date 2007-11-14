@@ -171,7 +171,7 @@ package body V2P.Callbacks.Web_Block is
                     V2P.Context.Counter.Get_Value
                       (Context => Context.all,
                        Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE);
-      Nav_From  : constant Positive :=
+      Nav_From  : Positive :=
                     V2P.Context.Not_Null_Counter.Get_Value
                       (Context => Context.all,
                        Name    => Template_Defs.Set_Global.NAV_FROM);
@@ -197,6 +197,11 @@ package body V2P.Callbacks.Web_Block is
 
       V2P.Context.Navigation_Links.Set_Value
         (Context.all, "Navigation_Links", Nav_Links);
+
+      V2P.Context.Not_Null_Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NAV_FROM,
+         Value   => Nav_From);
 
       V2P.Context.Counter.Set_Value
         (Context => Context.all,
@@ -458,6 +463,7 @@ package body V2P.Callbacks.Web_Block is
       User_Name  : constant String     := URL.User_Name (URI);
       Set        : Templates.Translate_Set;
       Navigation : V2P.Context.Post_Ids.Vector;
+      From       : Natural := 1;
       Nb_Lines   : Natural;
       Total      : Natural;
    begin
@@ -466,6 +472,7 @@ package body V2P.Callbacks.Web_Block is
          Navigation  => Navigation,
          Set         => Set,
          Admin       => Admin,
+         From        => From,
          Nb_Lines    => Nb_Lines,
          Total_Lines => Total);
 
