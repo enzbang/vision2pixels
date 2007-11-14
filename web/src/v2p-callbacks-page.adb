@@ -163,7 +163,7 @@ package body V2P.Callbacks.Page is
            (Parameters.Get (P, Template_Defs.Block_Forum_Navigate.HTTP.FROM));
       end if;
 
-      V2P.Context.Navigation_From.Set_Value
+      V2P.Context.Not_Null_Counter.Set_Value
         (Context.all, Template_Defs.Set_Global.NAV_FROM, From);
 
       Templates.Insert (Translations, Database.Get_Forum (FID, Tid => ""));

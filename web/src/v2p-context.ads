@@ -37,16 +37,19 @@ package V2P.Context is
                        Null_Data => Post_Ids.Empty_Vector);
    --  Adds Post_Ids.Vector to context value data
 
-   package Navigation_From is
+   package Counter is
+     new Generic_Data (Data => Integer, Null_Data => 0);
+   --  Adds natural to context value data
+   --  ??? Integer used here instead of Positive to work around a GNAT GPL 2006
+   --  bug, should be changed when GNAT GPL 2007 is out and if it contains the
+   --  fix as this bug is not present on recent GNAT versions.
+
+   package Not_Null_Counter is
      new Generic_Data (Data => Integer, Null_Data => 1);
    --  Adds positive to context value data
    --  ??? Integer used here instead of Positive to work around a GNAT GPL 2006
    --  bug, should be changed when GNAT GPL 2007 is out and if it contains the
    --  fix as this bug is not present on recent GNAT versions.
-
-   package Counter is
-     new Generic_Data (Data => Integer, Null_Data => 1);
-   --  Same as Navigation_From : should be positive
 
    procedure Context_Filter (Context : access Object);
    --  Update the context filter

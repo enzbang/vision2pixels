@@ -35,6 +35,7 @@ package body V2P.Context is
    procedure Context_Filter (Context : access Object) is
    begin
       if not Context.Exist (Template_Defs.Set_Global.FILTER) then
+
          Context.Set_Value
            (Template_Defs.Set_Global.FILTER,
             Database.Filter_Mode'Image (Database.All_Messages));
@@ -43,6 +44,7 @@ package body V2P.Context is
            (Context => Context.all,
             Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
             Value   => 10);
+
          --  Should be in config
 
          if Settings.Descending_Order then
