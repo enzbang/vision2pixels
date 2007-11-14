@@ -41,7 +41,6 @@ with V2P.Template_Defs.Chunk_Comment;
 with V2P.Template_Defs.Block_Exif;
 with V2P.Template_Defs.Block_Forum_Threads;
 with V2P.Template_Defs.Block_Forum_Threads_Text;
-with V2P.Template_Defs.Block_Forum_Navigate;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Latest_Posts;
 with V2P.Template_Defs.Block_Latest_Users;
@@ -1299,16 +1298,6 @@ package body V2P.Database is
                  & " and date(post.date_post) > date(current_date, '-7 days')"
                  & Ordering;
 
-            when Fifty_Messages =>
-               Select_Stmt := Select_Stmt & Ordering;
-
-               if Limit = 0 then
-                  --  SQL offset start to 0 !
-
-                  Select_Stmt := Select_Stmt
-                    & " limit 50 offset" & Natural'Image (From - 1);
-               end if;
-
             when All_Messages =>
                Select_Stmt := Select_Stmt & Ordering;
          end case;
@@ -1351,23 +1340,6 @@ package body V2P.Database is
          Limit     => Page_Size,
          Filter    => Filter,
          Order_Dir => Order_Dir);
-
-      if Filter = Fifty_Messages then
-         --  ???
-
-         --  Add next and previous information into the translate set
-
-         if From /= 1 then
-            Templates.Insert
-              (Set,
-               Templates.Assoc (Block_Forum_Navigate.PREVIOUS, From - 50));
-         end if;
-
-         --  ??? need to check if there is more data !
-         Templates.Insert
-           (Set,
-            Templates.Assoc (Block_Forum_Navigate.NEXT, From + 50));
-      end if;
 
       DBH.Handle.Prepare_Select (Iter, To_String (Select_Stmt));
 

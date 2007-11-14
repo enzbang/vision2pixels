@@ -34,7 +34,7 @@ package V2P.Database is
    Database_Error :  exception;
 
    type Filter_Mode is
-     (Today, Two_Days, Seven_Days, Fifty_Messages, All_Messages);
+     (Today, Two_Days, Seven_Days, All_Messages);
    --  Kind of filter to apply when returning the list of posts, see
    --  Get_Threads.
 
