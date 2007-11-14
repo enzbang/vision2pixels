@@ -274,8 +274,10 @@ body.forum_threads select#bffps_forum_filter_pagesize {
     border:black;
 }
 
-body.forum_threads select#bff_forum_filter_set {
+body.forum_threads select#bfcf_forum_category_filter_set,
+ body.forum_threads select#bff_forum_filter_set {
     top:2em;
+    position:absolute;
 }
 
 ul#bft_navigate {

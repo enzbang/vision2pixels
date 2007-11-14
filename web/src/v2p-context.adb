@@ -40,6 +40,10 @@ package body V2P.Context is
            (Template_Defs.Set_Global.FILTER,
             Database.Filter_Mode'Image (Database.All_Messages));
 
+         Context.Set_Value
+           (Template_Defs.Set_Global.FILTER_CATEGORY,
+            "");
+
          Counter.Set_Value
            (Context => Context.all,
             Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,

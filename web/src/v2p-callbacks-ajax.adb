@@ -38,6 +38,7 @@ with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
+with V2P.Template_Defs.Block_Forum_Category_Filter;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.R_Block_Login;
@@ -106,7 +107,32 @@ package body V2P.Callbacks.Ajax is
       Templates.Remove (Translations, Template_Defs.Set_Global.LOGIN);
    end Logout;
 
-   ---------------------------
+   ------------------------------------
+   -- Onchange_Category_Filter_Forum --
+   ------------------------------------
+
+   procedure Onchange_Category_Filter_Forum
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      package HTTP renames Template_Defs.Block_Forum_Category_Filter.HTTP;
+
+      P      : constant Parameters.List := Status.Parameters (Request);
+      Filter : constant String :=
+                 Parameters.Get (P, HTTP.bfcf_forum_category_filter_set);
+   begin
+      --  Keep the sorting scheme into the session
+      --  ?? we need to add this into the user's preferences
+      Context.Set_Value (Template_Defs.Set_Global.FILTER_CATEGORY, Filter);
+
+      Templates.Insert
+        (Translations,
+         Database.Get_Forum
+           (Context.Get_Value (Template_Defs.Set_Global.FID), Tid => ""));
+   end Onchange_Category_Filter_Forum;
+
+---------------------------
    -- Onchange_Filter_Forum --
    ---------------------------
 

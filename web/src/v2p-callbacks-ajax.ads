@@ -57,6 +57,12 @@ package V2P.Callbacks.Ajax is
       Translations : in out Templates.Translate_Set);
    --  Called when changing the forum page size limit
 
+   procedure Onchange_Category_Filter_Forum
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Called when changing the forum category filter
+
    procedure Onclick_Goto_Next_Page
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;

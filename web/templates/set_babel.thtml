@@ -61,6 +61,7 @@
 @@SET@@ BABEL_IN_THIS_CATEGORY="posts dans cette catégorie"
 @@SET@@ BABEL_NB_LINE_RETURNED="affichés"
 @@SET@@ BABEL_PAGE_NUMBER="Page"
+@@SET@@ BABEL_ALL_CATEGORIES="Toutes catégories"
 @@--  User page
 @@SET@@ BABEL_USER_EDIT_YOUR_PAGE="Éditer votre page"
 @@SET@@ BABEL_USER_PAGE="Page utilisateur"
