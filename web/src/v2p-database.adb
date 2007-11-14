@@ -1133,16 +1133,17 @@ package body V2P.Database is
    -----------------
 
    procedure Get_Threads
-     (Fid        : in     String := "";
-      User       : in     String := "";
-      Admin      : in     Boolean;
-      From       : in     Positive := 1;
-      Page_Size  : in     Positive := 10;
-      Filter     : in     Filter_Mode := All_Messages;
-      Order_Dir  : in     Order_Direction := DESC;
-      Navigation :    out Post_Ids.Vector;
-      Set        :    out Templates.Translate_Set;
-      Nb_Lines   :    out Natural)
+     (Fid         : in     String := "";
+      User        : in     String := "";
+      Admin       : in     Boolean;
+      From        : in     Positive := 1;
+      Page_Size   : in     Positive := 10;
+      Filter      : in     Filter_Mode := All_Messages;
+      Order_Dir   : in     Order_Direction := DESC;
+      Navigation  :    out Post_Ids.Vector;
+      Set         :    out Templates.Translate_Set;
+      Nb_Lines    :    out Natural;
+      Total_Lines :    out Natural)
    is
       use type Templates.Tag;
       use Post_Ids;
@@ -1319,7 +1320,7 @@ package body V2P.Database is
 
          return Select_Stmt;
       end Threads_Ordered_Select;
-      Count           : constant Natural := Count_Threads (Fid, User);
+
       DBH             : constant TLS_DBH_Access :=
                           TLS_DBH_Access (DBH_TLS.Reference);
       Iter            : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -1337,7 +1338,8 @@ package body V2P.Database is
       Select_Stmt     : Unbounded_String;
    begin
 
-      Navigation := Post_Ids.Empty_Vector;
+      Total_Lines := Count_Threads (Fid, User);
+      Navigation  := Post_Ids.Empty_Vector;
 
       Connect (DBH);
 
@@ -1418,7 +1420,8 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc (Block_Forum_Threads.HIDDEN, Hidden));
       Templates.Insert
-        (Set, Templates.Assoc (Block_Forum_Threads.TOTAL_NB_THREADS, Count));
+        (Set, Templates.Assoc
+           (Block_Forum_Threads.TOTAL_NB_THREADS, Total_Lines));
       Templates.Insert
         (Set, Templates.Assoc
            (Block_Forum_Threads.NB_LINE_RETURNED, Nb_Lines));

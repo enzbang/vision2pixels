@@ -66,16 +66,17 @@ package V2P.Database is
    --  Returns the forum type from a Tid
 
    procedure Get_Threads
-     (Fid        : in     String := "";
-      User       : in     String := "";
-      Admin      : in     Boolean;
-      From       : in     Positive := 1;
-      Page_Size  : in     Positive := 10;
-      Filter     : in     Filter_Mode := All_Messages;
-      Order_Dir  : in     Order_Direction := DESC;
-      Navigation :    out V2P.Context.Post_Ids.Vector;
-      Set        :    out Templates.Translate_Set;
-      Nb_Lines   :    out Natural);
+     (Fid         : in     String := "";
+      User        : in     String := "";
+      Admin       : in     Boolean;
+      From        : in     Positive := 1;
+      Page_Size   : in     Positive := 10;
+      Filter      : in     Filter_Mode := All_Messages;
+      Order_Dir   : in     Order_Direction := DESC;
+      Navigation  :    out Context.Post_Ids.Vector;
+      Set         :    out Templates.Translate_Set;
+      Nb_Lines    :    out Natural;
+      Total_Lines :    out Natural);
    --  Returns all threads for a given forum.
    --  Returns navigation links to store in context.
 

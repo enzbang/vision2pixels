@@ -190,19 +190,29 @@ package body V2P.Callbacks.Ajax is
    is
       pragma Unreferenced (Request);
       use Template_Defs;
-      Last_From : constant Integer :=
-                    V2P.Context.Navigation_From.Get_Value
-                      (Context => Context.all,
-                       Name    => Set_Global.NAV_FROM);
-      Last_Nb_Viewed : constant Integer :=
+      Last_Nb_Viewed : constant Natural :=
                          V2P.Context.Counter.Get_Value
                            (Context => Context.all,
-                            Name    => Set_Global.NB_LINE_RETURNED);
+                            Name    => Set_Global.NAV_NB_LINES_RETURNED);
+      Total          : constant Natural :=
+                         V2P.Context.Counter.Get_Value
+                           (Context => Context.all,
+                            Name    => Set_Global.NAV_NB_LINES_TOTAL);
+      From           : Positive         :=
+                         V2P.Context.Not_Null_Counter.Get_Value
+                           (Context => Context.all,
+                            Name    => Set_Global.NAV_FROM);
    begin
-      V2P.Context.Navigation_From.Set_Value
+      if From + Last_Nb_Viewed < Total then
+         From := From + Last_Nb_Viewed;
+      end if;
+
+      --  Update FROM counter
+
+      V2P.Context.Not_Null_Counter.Set_Value
         (Context => Context.all,
          Name    => Template_Defs.Set_Global.NAV_FROM,
-         Value   => Last_From + Last_Nb_Viewed);
+         Value   => From);
 
       Templates.Insert
         (Translations,
@@ -221,14 +231,14 @@ package body V2P.Callbacks.Ajax is
    is
       pragma Unreferenced (Request);
       use Template_Defs;
-      Last_From      : constant Integer :=
-                         V2P.Context.Navigation_From.Get_Value
+      Last_From      : constant Positive :=
+                         V2P.Context.Not_Null_Counter.Get_Value
                            (Context => Context.all,
                             Name    => Set_Global.NAV_FROM);
       Last_Nb_Viewed : constant Integer :=
                          V2P.Context.Counter.Get_Value
                            (Context => Context.all,
-                            Name    => Set_Global.NB_LINE_RETURNED);
+                            Name    => Set_Global.NAV_NB_LINES_RETURNED);
       From           : Positive := 1;
    begin
 
@@ -236,7 +246,7 @@ package body V2P.Callbacks.Ajax is
          From := Last_From - Last_Nb_Viewed;
       end if;
 
-      V2P.Context.Navigation_From.Set_Value
+      V2P.Context.Not_Null_Counter.Set_Value
         (Context => Context.all,
          Name    => Template_Defs.Set_Global.NAV_FROM,
          Value   => From);
