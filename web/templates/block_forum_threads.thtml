@@ -8,6 +8,8 @@
 <p class="threads_page_info">
 </p>
 
+<!-- @_NB_LINE_RETURNED_@ -->
+
 @@-- Navigation links
 <ul id="bft_navigate">
   <li class="prev_link"
@@ -19,7 +21,7 @@
   </li>
   <li class="next_link"
   @@IF@@ @_ADD(NB_LINE_RETURNED):NAV_FROM_@ >= @_TOTAL_NB_THREADS_@
-  style="visibility:hidden"
+     style="visibility:hidden"
   @@END_IF@@
   >
     <a href="#" id="bft_goto_next_page">Next Page</a>
