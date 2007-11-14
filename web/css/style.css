@@ -116,15 +116,23 @@ div#pfe_image_block {
 
 @@--  Navigation links
 
-ul#pfe_navigate li {
+ul#bft_navigate li, ul#pfe_navigate li {
    display:inline;
    text-transform:uppercase;
    font-size:0.8em;
    padding-right:1em;
 }
 
+ul#bft_navigate {
+    margin: 0 0 0 30px;
+}
+
 ul#pfe_navigate li img {
    display:none;
+}
+
+ul#bft_navigate li.nav_info {
+   font-size:0.7em;
 }
 
 @@--  forum_entry
@@ -258,8 +266,20 @@ div#bl_login_err {
     color:red;
 }
 
+body.forum_threads select#bff_forum_filter_set,
+body.forum_threads select#bffps_forum_filter_pagesize {
+    top:4em;
+    right:0.5em;
+    position:absolute;
+    border:black;
+}
+
 body.forum_threads select#bff_forum_filter_set {
-   margin:2em 0 0 1em;
+    top:2em;
+}
+
+ul#bft_navigate {
+    margin-top:4em;
 }
 
 @@--  Login form
