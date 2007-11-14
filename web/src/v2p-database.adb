@@ -1138,6 +1138,7 @@ package body V2P.Database is
       From        : in     Positive := 1;
       Page_Size   : in     Positive := 10;
       Filter      : in     Filter_Mode := All_Messages;
+      Filter_Cat  : in     String      := "";
       Order_Dir   : in     Order_Direction := DESC;
       Navigation  :    out Post_Ids.Vector;
       Set         :    out Templates.Translate_Set;
@@ -1159,6 +1160,7 @@ package body V2P.Database is
          Admin      : in Boolean;
          From       : in Positive := 1;
          Filter     : in Filter_Mode := All_Messages;
+         Filter_Cat  : in     String;
          Where_Cond : in String := "";
          Order_Dir  : in Order_Direction := DESC;
          Limit      : in Natural := 0) return Unbounded_String;
@@ -1223,6 +1225,7 @@ package body V2P.Database is
          Admin      : in Boolean;
          From       : in Positive := 1;
          Filter     : in Filter_Mode := All_Messages;
+         Filter_Cat : in     String;
          Where_Cond : in String := "";
          Order_Dir  : in Order_Direction := DESC;
          Limit      : in Natural := 0) return Unbounded_String
@@ -1282,6 +1285,11 @@ package body V2P.Database is
 
          --  Add filtering into the select statement
 
+         if Filter_Cat /= "" then
+            Select_Stmt := Select_Stmt
+              & " and category.id = " & Q (Filter_Cat);
+         end if;
+
          case Filter is
             when Today =>
                Select_Stmt := Select_Stmt
@@ -1333,13 +1341,14 @@ package body V2P.Database is
       Connect (DBH);
 
       Select_Stmt := Threads_Ordered_Select
-        (Fid       => Fid,
-         User      => User,
-         Admin     => Admin,
-         From      => From,
-         Limit     => Page_Size,
-         Filter    => Filter,
-         Order_Dir => Order_Dir);
+        (Fid        => Fid,
+         User       => User,
+         Admin      => Admin,
+         From       => From,
+         Limit      => Page_Size,
+         Filter     => Filter,
+         Filter_Cat => Filter_Cat,
+         Order_Dir  => Order_Dir);
 
       DBH.Handle.Prepare_Select (Iter, To_String (Select_Stmt));
 

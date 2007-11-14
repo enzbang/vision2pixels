@@ -72,6 +72,7 @@ package V2P.Database is
       From        : in     Positive := 1;
       Page_Size   : in     Positive := 10;
       Filter      : in     Filter_Mode := All_Messages;
+      Filter_Cat  : in     String      := "";
       Order_Dir   : in     Order_Direction := DESC;
       Navigation  :    out Context.Post_Ids.Vector;
       Set         :    out Templates.Translate_Set;

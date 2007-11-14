@@ -48,6 +48,25 @@ package body V2P.Callbacks.Web_Block is
       end if;
    end Exif;
 
+   ---------------------------
+   -- Forum_Category_Filter --
+   ---------------------------
+
+   procedure Forum_Category_Filter
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+   begin
+      if Context.Exist (Template_Defs.Set_Global.FID) then
+         Templates.Insert
+           (Translations,
+            Database.Get_Categories
+              (Context.Get_Value (Template_Defs.Set_Global.FID)));
+      end if;
+   end Forum_Category_Filter;
+
    ------------------
    -- Forum_Filter --
    ------------------
@@ -166,6 +185,8 @@ package body V2P.Callbacks.Web_Block is
          Admin       => Admin,
          Filter      => Database.Filter_Mode'Value (Context.Get_Value
            (Template_Defs.Set_Global.FILTER)),
+         Filter_Cat  => Context.Get_Value
+           (Template_Defs.Set_Global.FILTER_CATEGORY),
          Page_Size   => Page_Size,
          Order_Dir   => Database.Order_Direction'Value
            (Context.Get_Value (Template_Defs.Set_Global.ORDER_DIR)),
