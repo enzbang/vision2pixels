@@ -48,18 +48,22 @@ package body V2P.Callbacks.Page is
       Translations : in out Templates.Translate_Set)
    is
       P           : constant Parameters.List := Status.Parameters (Request);
-      TID         : constant String :=
-                      Parameters.Get
-                        (P, Template_Defs.Page_Forum_Entry.HTTP.TID);
+      TID         : constant Database.Id :=
+                      Database.Id'Value
+                        (Parameters.Get
+                           (P, Template_Defs.Page_Forum_Entry.HTTP.TID));
       Login       : constant String :=
                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       Count_Visit : Boolean := True;
    begin
       --  Set thread Id into the context
 
-      Context.Set_Value (Template_Defs.Set_Global.TID, TID);
+      V2P.Context.Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.TID,
+         Value   => TID);
 
-      if TID /= "" then
+      if TID /= Database.Empty_Id then
          if not Settings.Anonymous_Visit_Counter then
             --  Do not count anonymous click
             --  ??? can use a simple assignment
@@ -86,16 +90,16 @@ package body V2P.Callbacks.Page is
             Selected_Post : constant V2P.Context.Post_Ids.Vector :=
                               V2P.Context.Navigation_Links.Get_Value
                                 (Context.all, "Navigation_Links");
-            Previous_Id   : constant String :=
+            Previous_Id   : constant Database.Id :=
                               V2P.Context.Previous (Selected_Post, TID);
-            Next_Id       : constant String :=
+            Next_Id       : constant Database.Id :=
                               V2P.Context.Next (Selected_Post, TID);
          begin
             Templates.Insert
               (Translations, Templates.Assoc
                  (V2P.Template_Defs.Page_Forum_Entry.PREVIOUS, Previous_Id));
 
-            if Previous_Id /= "" then
+            if Previous_Id /= Database.Empty_Id then
                Templates.Insert
                  (Translations, Templates.Assoc
                     (V2P.Template_Defs.Page_Forum_Entry.PREVIOUS_THUMB,
@@ -106,7 +110,7 @@ package body V2P.Callbacks.Page is
               (Translations, Templates.Assoc
                  (V2P.Template_Defs.Page_Forum_Entry.NEXT, Next_Id));
 
-            if Next_Id /= "" then
+            if Next_Id /= Database.Empty_Id then
                Templates.Insert
                  (Translations, Templates.Assoc
                     (V2P.Template_Defs.Page_Forum_Entry.NEXT_THUMB,
@@ -129,9 +133,12 @@ package body V2P.Callbacks.Page is
       Templates.Insert
         (Translations,
          Database.Get_Forum
-           (Context.Get_Value (Template_Defs.Set_Global.FID), TID));
+           (Fid => V2P.Context.Counter.Get_Value
+              (Context => Context.all,
+               Name    => Template_Defs.Set_Global.FID),
+            Tid => TID));
    exception
-      when Database.Parameter_Error =>
+      when Database.Parameter_Error | Constraint_Error =>
          raise Error_404;
    end Forum_Entry;
 
@@ -145,13 +152,16 @@ package body V2P.Callbacks.Page is
       Translations : in out Templates.Translate_Set)
    is
       P    : constant Parameters.List := Status.Parameters (Request);
-      FID  : constant String :=
-               Parameters.Get (P, Template_Defs.Page_Forum_Threads.HTTP.FID);
+      FID  : constant Database.Id := Database.Id'Value
+               (Parameters.Get (P, Template_Defs.Page_Forum_Threads.HTTP.FID));
       From : Positive := 1;
    begin
       --  Set forum Id into the context
 
-      Context.Set_Value (Template_Defs.Set_Global.FID, FID);
+      V2P.Context.Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.FID,
+         Value   => FID);
 
       if Context.Exist (Template_Defs.Set_Global.TID) then
          Context.Remove (Template_Defs.Set_Global.TID);
@@ -167,7 +177,8 @@ package body V2P.Callbacks.Page is
       V2P.Context.Not_Null_Counter.Set_Value
         (Context.all, Template_Defs.Set_Global.NAV_FROM, From);
 
-      Templates.Insert (Translations, Database.Get_Forum (FID, Tid => ""));
+      Templates.Insert (Translations,
+                        Database.Get_Forum (FID, Tid => Database.Empty_Id));
    exception
       when Database.Parameter_Error =>
          --  Redirect to main page

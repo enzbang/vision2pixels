@@ -129,7 +129,10 @@ package body V2P.Callbacks.Ajax is
       Templates.Insert
         (Translations,
          Database.Get_Forum
-           (Context.Get_Value (Template_Defs.Set_Global.FID), Tid => ""));
+           (V2P.Context.Counter.Get_Value
+              (Context => Context.all,
+               Name    => Template_Defs.Set_Global.FID),
+            Tid => Database.Empty_Id));
    end Onchange_Category_Filter_Forum;
 
 ---------------------------
@@ -154,7 +157,10 @@ package body V2P.Callbacks.Ajax is
       Templates.Insert
         (Translations,
          Database.Get_Forum
-           (Context.Get_Value (Template_Defs.Set_Global.FID), Tid => ""));
+           (V2P.Context.Counter.Get_Value
+              (Context => Context.all,
+               Name    => Template_Defs.Set_Global.FID),
+            Tid => Database.Empty_Id));
    end Onchange_Filter_Forum;
 
    -------------------------------------
@@ -184,7 +190,10 @@ package body V2P.Callbacks.Ajax is
       Templates.Insert
         (Translations,
          Database.Get_Forum
-           (Context.Get_Value (Template_Defs.Set_Global.FID), Tid => ""));
+           (V2P.Context.Counter.Get_Value
+              (Context => Context.all,
+               Name    => Template_Defs.Set_Global.FID),
+            Tid => Database.Empty_Id));
    end Onchange_Filter_Forum_Page_Size;
 
    -------------------------
@@ -196,13 +205,17 @@ package body V2P.Callbacks.Ajax is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
+      package HTTP renames Template_Defs.Chunk_Forum_List_Select.HTTP;
       P   : constant Parameters.List := Status.Parameters (Request);
-      Fid : constant String :=
-              Parameters.Get
-                (P, Template_Defs.Chunk_Forum_List_Select.HTTP.sel_forum_list);
+      Fid : constant Database.Id :=
+              Database.Id'Value
+                (Parameters.Get (P, HTTP.sel_forum_list));
    begin
       Templates.Insert (Translations, Database.Get_Categories (Fid));
-      Context.Set_Value (Template_Defs.Set_Global.FID, Fid);
+      V2P.Context.Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.FID,
+         Value   => Fid);
    end Onchange_Forum_List;
 
    ----------------------------
@@ -243,7 +256,10 @@ package body V2P.Callbacks.Ajax is
       Templates.Insert
         (Translations,
          Database.Get_Forum
-           (Context.Get_Value (Template_Defs.Set_Global.FID), Tid => ""));
+           (V2P.Context.Counter.Get_Value
+              (Context => Context.all,
+               Name    => Template_Defs.Set_Global.FID),
+            Tid => Database.Empty_Id));
    end Onclick_Goto_Next_Page;
 
    --------------------------------
@@ -280,7 +296,10 @@ package body V2P.Callbacks.Ajax is
       Templates.Insert
         (Translations,
          Database.Get_Forum
-           (Context.Get_Value (Template_Defs.Set_Global.FID), Tid => ""));
+           (V2P.Context.Counter.Get_Value
+              (Context => Context.all,
+               Name    => Template_Defs.Set_Global.FID),
+            Tid => Database.Empty_Id));
    end Onclick_Goto_Previous_Page;
 
    ----------------------------------
@@ -293,8 +312,9 @@ package body V2P.Callbacks.Ajax is
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
-      TID : constant String := Context.Get_Value
-        (Template_Defs.Set_Global.TID);
+      TID : constant Database.Id := V2P.Context.Counter.Get_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.TID);
    begin
       Templates.Insert (Translations, Database.Toggle_Hidden_Status (TID));
    end Onclick_Hidden_Status_Toggle;
@@ -323,8 +343,10 @@ package body V2P.Callbacks.Ajax is
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
       Last_Comment : constant String :=
                        Context.Get_Value (Set_Global.CONTEXT_LAST_COMMENT);
-      TID          : constant String :=
-                       Context.Get_Value (Template_Defs.Set_Global.TID);
+      TID          : constant Database.Id :=
+                       V2P.Context.Counter.Get_Value
+                         (Context => Context.all,
+                          Name    => Template_Defs.Set_Global.TID);
 
       Forum_Type   : V2P.Database.Forum_Type := V2P.Database.Forum_Text;
 
@@ -358,7 +380,7 @@ package body V2P.Callbacks.Ajax is
             Templates.Assoc
               (R_Block_Comment_Form_Enter.ERROR, "ERROR_NO_LOGIN"));
 
-      elsif Last_Comment = Comment & '@' & TID then
+      elsif Last_Comment = Comment & '@' & Database.To_String (TID) then
          --   This is a duplicated post
 
          Templates.Insert
@@ -366,21 +388,29 @@ package body V2P.Callbacks.Ajax is
             Templates.Assoc
               (R_Block_Comment_Form_Enter.ERROR_DUPLICATED, "ERROR"));
 
-      elsif TID /= "" and then not Is_Valid_Comment (Comment_Wiki) then
+      elsif TID /= Database.Empty_Id
+        and then not Is_Valid_Comment (Comment_Wiki)
+      then
          Templates.Insert
            (Translations,
             Templates.Assoc
               (R_Block_Comment_Form_Enter.ERROR, "ERROR"));
-            --  ??? Adds an error message
+         --  ??? Adds an error message
       else
          Insert_Comment : declare
-            Cid : constant String := Database.Insert_Comment
-              (Login, Anonymous, TID, "", Comment_Wiki, "");
+            Cid : constant Database.Id := Database.Insert_Comment
+              (Uid       => Login,
+               Anonymous => Anonymous,
+               Thread    => TID,
+               Name      => "",
+               Comment   => Comment_Wiki,
+               Pid       => Database.Empty_Id);
          begin
             --  Adds the new comment in context to prevent duplicated post
 
             Context.Set_Value
-              (Set_Global.CONTEXT_LAST_COMMENT, Comment & '@' & TID);
+              (Set_Global.CONTEXT_LAST_COMMENT,
+               Comment & '@' & Database.To_String (TID));
 
             Templates.Insert (Translations, Database.Get_Comment (Cid));
             Templates.Insert
@@ -396,12 +426,17 @@ package body V2P.Callbacks.Ajax is
             Templates.Insert
               (Translations,
                Database.Get_Forum
-                 (Context.Get_Value (Set_Global.FID), Tid => ""));
+                 (V2P.Context.Counter.Get_Value
+                    (Context => Context.all,
+                     Name    => Set_Global.FID),
+                  Tid => Database.Empty_Id));
 
             Templates.Insert
               (Translations,
                Database.Get_Post
-                 (Tid        => Context.Get_Value (Set_Global.TID),
+                 (Tid        => V2P.Context.Counter.Get_Value
+                    (Context => Context.all,
+                     Name    => Set_Global.TID),
                   Forum_Type => Forum_Type));
          end Insert_Comment;
       end if;
@@ -463,7 +498,9 @@ package body V2P.Callbacks.Ajax is
             Longitude_Postition.Format (Longitude_Coord);
 
             Database.Insert_Metadata
-              (Context.Get_Value (Template_Defs.Set_Global.TID),
+              (V2P.Context.Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Template_Defs.Set_Global.TID),
                Float (Latitude_Coord),
                Float (Longitude_Coord),
                Image.Metadata.Geographic.Image (Latitude_Position),
@@ -497,17 +534,20 @@ package body V2P.Callbacks.Ajax is
       Comment      : constant String :=
                        Parameters.Get
                          (P, Page_Forum_New_Text_Entry.HTTP.comment_input);
-      CID          : constant String :=
-                       Parameters.Get
-                         (P, Chunk_Forum_List_Select.HTTP.CATEGORY);
-      PID          : constant String :=
-                       Parameters.Get (P, Page_Forum_New_Photo_Entry.HTTP.PID);
+      CID          : constant Database.Id :=
+                       Database.Id'Value
+                         (Parameters.Get
+                            (P, Chunk_Forum_List_Select.HTTP.CATEGORY));
+      PID          : constant Database.Id :=
+                       Database.Id'Value
+                         (Parameters.Get
+                            (P, Page_Forum_New_Photo_Entry.HTTP.PID));
       Last_Name    : constant String :=
                        Context.Get_Value (Set_Global.CONTEXT_LAST_POST_NAME);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
    begin
 
-      if Login = "" and then CID = "" then
+      if Login = "" and then CID = Database.Empty_Id then
          Templates.Insert
            (Translations,
             Templates.Assoc
@@ -525,7 +565,7 @@ package body V2P.Callbacks.Ajax is
 
          else
             Insert_Post : declare
-               Post_Id : constant String :=
+               Post_Id : constant Database.Id :=
                            Database.Insert_Post
                              (Uid         => Login,
                               Category_Id => CID,
@@ -533,11 +573,15 @@ package body V2P.Callbacks.Ajax is
                               Comment     => Comment_Wiki,
                               Pid         => PID);
             begin
-               if Post_Id /= "" then
+               if Post_Id /= Database.Empty_Id then
                   --  Set new context TID (needed by
                   --  Onsubmit_Metadata_Form_Enter_Callback)
 
-                  Context.Set_Value (Set_Global.TID, Post_Id);
+                  V2P.Context.Counter.Set_Value
+                    (Context => Context.all,
+                     Name    => Set_Global.TID,
+                     Value   => Post_Id);
+
                   Context.Set_Value (Set_Global.CONTEXT_LAST_POST_NAME, Name);
 
                   Templates.Insert
@@ -545,7 +589,8 @@ package body V2P.Callbacks.Ajax is
                      Templates.Assoc
                        (R_Block_Post_Form_Enter.URL,
                         Page_Forum_Entry.URL & '?' &
-                        Page_Forum_Entry.HTTP.TID & '=' & Post_Id));
+                        Page_Forum_Entry.HTTP.TID & '='
+                        & Database.To_String (Post_Id)));
 
                else
                   Templates.Insert
@@ -557,7 +602,9 @@ package body V2P.Callbacks.Ajax is
             end Insert_Post;
          end if;
 
-         if PID /= "" and then Context.Exist (Set_Global.TID) then
+         if PID /= Database.Empty_Id
+           and then Context.Exist (Set_Global.TID)
+         then
             Onsubmit_Metadata_Form_Enter
               (Request, Context, Translations);
          end if;
@@ -578,9 +625,10 @@ package body V2P.Callbacks.Ajax is
       P        : constant Parameters.List := Status.Parameters (Request);
       Login    : constant String :=
                    Context.Get_Value (Template_Defs.Set_Global.LOGIN);
-      TID      : constant String :=
-                   Context.Get_Value
-                     (Template_Defs.Set_Global.TID);
+      TID      : constant Database.Id :=
+                   V2P.Context.Counter.Get_Value
+                     (Context => Context.all,
+                      Name    => Template_Defs.Set_Global.TID);
       Criteria : constant String :=
                    Parameters.Get
                      (P, Block_New_Comment.Set.AJAX_RATE_CRITERIA);
