@@ -12,12 +12,6 @@
     </p></div>
     @@-- Is user in a specific forum
     <p>
-      <input name="FORUM" id="bnc_sel_forum_list"
-             type="hidden" value="@_Current_FID_@"/>
-      <input name="CATEGORY" id="bnc_sel_category"
-             type="hidden" value="@_Category_Id_@"/>
-      <input name="TID" id="bnc_TID" type="hidden" value="@_Current_TID_@" />
-      <input name="FID" id="bnc_FID" type="hidden" value="@_Current_FID_@" />
       @@IF@@ @_IMAGE_SOURCE_@ /= ""
         <input name="forum_photo" id="bnc_forum_photo" type="hidden" value="t" />
       @@ELSE@@
@@ -82,4 +76,4 @@
 @@END_IF@@
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bnc_sel_forum_list, 4=>bnc_sel_forum_list)
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bnc_comment_form, 4=>bnc_comment_form, 5=>PARENT_ID)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bnc_comment_form, 4=>bnc_comment_form, 5=>pfe_PARENT_ID)

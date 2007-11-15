@@ -339,6 +339,7 @@ package body V2P.Callbacks.Web_Block is
       Ratings : Templates.Tag;
 
    begin
+
       if Context.Exist ("FID") then
          Templates.Insert
            (Translations,
@@ -346,12 +347,6 @@ package body V2P.Callbacks.Web_Block is
       end if;
 
       if Context.Exist ("TID") then
-         Templates.Insert
-           (Translations,
-            Templates.Assoc
-              (Template_Defs.Block_New_Comment.Current_TID,
-               Context.Get_Value ("TID")));
-
          if Context.Exist (Template_Defs.Set_Global.LOGIN) then
             Templates.Insert
               (Translations,

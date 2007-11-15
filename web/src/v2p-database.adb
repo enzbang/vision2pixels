@@ -210,8 +210,6 @@ package body V2P.Database is
       Iter.End_Select;
 
       Templates.Insert
-        (Set, Templates.Assoc (Block_New_Comment.Category_Id, Id));
-      Templates.Insert
         (Set, Templates.Assoc (R_Block_Forum_List.CATEGORY, Name));
 
       return Set;
