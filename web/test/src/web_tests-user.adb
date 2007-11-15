@@ -95,12 +95,9 @@ package body Web_Tests.User is
 
       Check
         (Response.Message_Body (Result),
-         Word_Set'(+"apply_style", +"login_err", +"display", +"none",
-           +"apply_style", +"forum_post", +"display", +"block",
-           +"replace", +"login",
-           +"replace", +"comment_login",
-           +"apply_style", +"new_comment", +"display", +"block"),
+         Word_Set'(1 => +"refresh"),
          "login failed for turbo");
+
    end Login;
 
    ---------------
