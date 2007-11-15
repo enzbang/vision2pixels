@@ -26,4 +26,6 @@ package V2P.Callbacks is
    --          - Ajax callbacks
    --          - Page callbacks
 
+   Error_404 : exception;
+
 end V2P.Callbacks;

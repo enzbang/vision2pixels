@@ -165,6 +165,12 @@ package body V2P.Callbacks.Page is
         (Context.all, Template_Defs.Set_Global.NAV_FROM, From);
 
       Templates.Insert (Translations, Database.Get_Forum (FID, Tid => ""));
+   exception
+      when Database.Parameter_Error =>
+         --  Redirect to main page
+         --  ??? Log the exception message ?
+         --  ??? Raise 404 Error
+         raise Error_404;
    end Forum_Threads;
 
    ----------
