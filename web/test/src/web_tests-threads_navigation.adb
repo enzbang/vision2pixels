@@ -25,10 +25,14 @@ with AWS.Utils;
 
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Block_Forum_Filter;
+with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 
 package body Web_Tests.Threads_Navigation is
 
    use AWS;
+
+   function URL_Context return String;
+   --  Returns the context as an HTTP URL parameter
 
    procedure Main_Page (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  The very first thing to do is to get the main page
@@ -38,6 +42,9 @@ package body Web_Tests.Threads_Navigation is
 
    procedure List_Forum_Threads (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  List threads in a forum
+
+   procedure Set_Page_Size (T : in out AUnit.Test_Cases.Test_Case'Class);
+   --  Set page size to 500
 
    Connection : Client.HTTP_Connection;
    --  Server connection used by all tests
@@ -65,19 +72,6 @@ package body Web_Tests.Threads_Navigation is
       use V2P.Template_Defs;
 
       Result : Response.Data;
-
-      function URL_Context return String;
-      --  Returns the context as an HTTP URL parameter
-
-      -----------------
-      -- URL_Context --
-      -----------------
-
-      function URL_Context return String is
-      begin
-         return "CTX_WB=" & To_String (Context);
-      end URL_Context;
-
    begin
       --  All posts
 
@@ -419,8 +413,36 @@ package body Web_Tests.Threads_Navigation is
       use AUnit.Test_Cases.Registration;
    begin
       Register_Routine (T, Main_Page'Access, "main page");
+      Register_Routine (T, Set_Page_Size'Access, "Set page size");
       Register_Routine (T, List_Forum_Threads'Access, "list post");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
 
+   -------------------
+   -- Set_Page_Size --
+   -------------------
+
+   procedure Set_Page_Size (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      use V2P.Template_Defs;
+
+      Result : Response.Data;
+   begin
+      Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
+
+      Client.Get
+        (Connection, Result,
+         URI => Block_Forum_Filter_Page_Size.Ajax.
+           onchange_bffps_forum_filter_pagesize
+         & "?" & Block_Forum_Filter_Page_Size.HTTP.bffps_forum_filter_pagesize
+         & "=500&" & URL_Context);
+   end Set_Page_Size;
+
+   -----------------
+   -- URL_Context --
+   -----------------
+
+   function URL_Context return String is
+   begin
+      return "CTX_WB=" & To_String (Context);
+   end URL_Context;
 end Web_Tests.Threads_Navigation;
