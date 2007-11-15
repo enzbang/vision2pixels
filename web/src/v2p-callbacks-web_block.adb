@@ -100,7 +100,9 @@ package body V2P.Callbacks.Web_Block is
         (Translations,
          Templates.Assoc
            (Template_Defs.Set_Global.FILTER_PAGE_SIZE,
-            Context.Get_Value (Template_Defs.Set_Global.FILTER_PAGE_SIZE)));
+            V2P.Context.Not_Null_Counter.Get_Value
+              (Context => Context.all,
+               Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE)));
    end Forum_Filter_Page_Size;
 
    ----------------
@@ -167,8 +169,8 @@ package body V2P.Callbacks.Web_Block is
                     Context.Exist (Template_Defs.Set_Global.ADMIN)
                   and then Context.Get_Value
                     (Template_Defs.Set_Global.ADMIN) = "TRUE";
-      Page_Size : constant Natural :=
-                    V2P.Context.Counter.Get_Value
+      Page_Size : constant Database.Page_Size :=
+                    V2P.Context.Not_Null_Counter.Get_Value
                       (Context => Context.all,
                        Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE);
       Nav_From  : Positive :=

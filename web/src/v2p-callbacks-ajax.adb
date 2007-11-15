@@ -176,7 +176,7 @@ package body V2P.Callbacks.Ajax is
       --  Keep the sorting scheme into the session
       --  ?? we need to add this into the user's preferences
 
-      V2P.Context.Counter.Set_Value
+      V2P.Context.Not_Null_Counter.Set_Value
         (Context => Context.all,
          Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
          Value   => Positive'Value (Filter));
