@@ -319,12 +319,12 @@ package body V2P.Callbacks.Ajax is
       Comment      : constant String :=
                        Parameters.Get (P, Block_New_Comment.HTTP.COMMENT);
       Parent_Id    : constant String :=
-                       Parameters.Get (P, Page_Forum_Entry.HTTP.PARENT_ID);
-      Tid          : constant String :=
-                       Parameters.Get (P, Block_New_Comment.HTTP.TID);
+                       Parameters.Get (P, Page_Forum_Entry.HTTP.pfe_PARENT_ID);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
       Last_Comment : constant String :=
                        Context.Get_Value (Set_Global.CONTEXT_LAST_COMMENT);
+      TID          : constant String :=
+                       Context.Get_Value (Template_Defs.Set_Global.TID);
 
       Forum_Type   : V2P.Database.Forum_Type := V2P.Database.Forum_Text;
 
@@ -347,6 +347,7 @@ package body V2P.Callbacks.Ajax is
       end Is_Valid_Comment;
 
    begin
+
       if Parameters.Get (P, Block_New_Comment.HTTP.forum_photo) /= "" then
          Forum_Type := V2P.Database.Forum_Photo;
       end if;
@@ -357,7 +358,7 @@ package body V2P.Callbacks.Ajax is
             Templates.Assoc
               (R_Block_Comment_Form_Enter.ERROR, "ERROR_NO_LOGIN"));
 
-      elsif Last_Comment = Comment & '@' & Tid then
+      elsif Last_Comment = Comment & '@' & TID then
          --   This is a duplicated post
 
          Templates.Insert
@@ -365,7 +366,7 @@ package body V2P.Callbacks.Ajax is
             Templates.Assoc
               (R_Block_Comment_Form_Enter.ERROR_DUPLICATED, "ERROR"));
 
-      elsif Tid /= "" and then not Is_Valid_Comment (Comment_Wiki) then
+      elsif TID /= "" and then not Is_Valid_Comment (Comment_Wiki) then
          Templates.Insert
            (Translations,
             Templates.Assoc
@@ -374,12 +375,12 @@ package body V2P.Callbacks.Ajax is
       else
          Insert_Comment : declare
             Cid : constant String := Database.Insert_Comment
-              (Login, Anonymous, Tid, "", Comment_Wiki, "");
+              (Login, Anonymous, TID, "", Comment_Wiki, "");
          begin
             --  Adds the new comment in context to prevent duplicated post
 
             Context.Set_Value
-              (Set_Global.CONTEXT_LAST_COMMENT, Comment & '@' & Tid);
+              (Set_Global.CONTEXT_LAST_COMMENT, Comment & '@' & TID);
 
             Templates.Insert (Translations, Database.Get_Comment (Cid));
             Templates.Insert
@@ -578,8 +579,9 @@ package body V2P.Callbacks.Ajax is
       P        : constant Parameters.List := Status.Parameters (Request);
       Login    : constant String :=
                    Context.Get_Value (Template_Defs.Set_Global.LOGIN);
-      Tid      : constant String :=
-                   Parameters.Get (P, Block_New_Comment.HTTP.TID);
+      TID      : constant String :=
+                   Context.Get_Value
+                     (Template_Defs.Set_Global.TID);
       Criteria : constant String :=
                    Parameters.Get
                      (P, Block_New_Comment.Set.AJAX_RATE_CRITERIA);
@@ -589,7 +591,7 @@ package body V2P.Callbacks.Ajax is
    begin
       Database.Update_Rating
         (Uid      => Login,
-         Tid      => Tid,
+         Tid      => TID,
          Criteria => Criteria,
          Value    => Value);
    end Onsubmit_Rate;

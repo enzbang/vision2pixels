@@ -12,10 +12,10 @@
   </replace>
 @@ELSE@@
   @@IF@@ @_PARENT_ID_@ /= ""
-  <insert_after id="@_PARENT_ID_@">
+  <insert_after id="pfe_@_PARENT_ID_@">
     <![CDATA[
     <!-- '@_PARENT_ID_@' -->
-    <li id="comment_@_COMMENT_ID_@" class="level_@_COMMENT_LEVEL_@ new">
+    <li id="pfe_comment_@_COMMENT_ID_@" class="level_@_COMMENT_LEVEL_@ new">
     @@INCLUDE@@ chunk_comment.thtml
     </li>
     ]]>
