@@ -661,8 +661,8 @@ package body V2P.Database is
          Logs.Write
            (Module,
             Logs.Error,
-            "Get_Id, Fid and Tid empty, raise Database_Error");
-         raise Database_Error;
+            "Get_Id, Fid and Tid empty, raise Parameter_Error");
+         raise Parameter_Error with "Can not get forum type for Tid = " & Tid;
       end if;
 
       Iter.Get_Line (Line);
@@ -1137,7 +1137,7 @@ package body V2P.Database is
      (Fid         : in     String := "";
       User        : in     String := "";
       Admin       : in     Boolean;
-      Page_Size   : in     Positive := 10;
+      Page_Size   : in     Database.Page_Size := Default_Page_Size;
       Filter      : in     Filter_Mode := All_Messages;
       Filter_Cat  : in     String      := "";
       Order_Dir   : in     Order_Direction := DESC;
