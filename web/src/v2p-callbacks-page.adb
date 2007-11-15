@@ -130,6 +130,9 @@ package body V2P.Callbacks.Page is
         (Translations,
          Database.Get_Forum
            (Context.Get_Value (Template_Defs.Set_Global.FID), TID));
+   exception
+      when Database.Parameter_Error =>
+         raise Error_404;
    end Forum_Entry;
 
    -------------------
