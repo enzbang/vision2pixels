@@ -41,10 +41,13 @@ package body V2P.Callbacks.Web_Block is
    is
       pragma Unreferenced (Request);
    begin
-      if Context.Exist ("TID") then
+      if Context.Exist (Template_Defs.Set_Global.TID) then
          Templates.Insert
            (Translations,
-            Database.Get_Exif (Context.Get_Value ("TID")));
+            Database.Get_Exif
+              (V2P.Context.Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Template_Defs.Set_Global.TID)));
       end if;
    end Exif;
 
@@ -63,7 +66,9 @@ package body V2P.Callbacks.Web_Block is
          Templates.Insert
            (Translations,
             Database.Get_Categories
-              (Context.Get_Value (Template_Defs.Set_Global.FID)));
+              (V2P.Context.Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Template_Defs.Set_Global.FID)));
       end if;
    end Forum_Category_Filter;
 
@@ -182,7 +187,9 @@ package body V2P.Callbacks.Web_Block is
       Total     : Natural;
    begin
       Database.Get_Threads
-        (FID         => Context.Get_Value (Template_Defs.Set_Global.FID),
+        (FID         => V2P.Context.Counter.Get_Value
+           (Context => Context.all,
+            Name    => Template_Defs.Set_Global.FID),
          From        => Nav_From,
          Admin       => Admin,
          Filter      => Database.Filter_Mode'Value (Context.Get_Value
@@ -227,10 +234,13 @@ package body V2P.Callbacks.Web_Block is
    is
       pragma Unreferenced (Request);
    begin
-      if Context.Exist ("TID") then
+      if Context.Exist (Template_Defs.Set_Global.TID) then
          Templates.Insert
            (Translations,
-            Database.Get_Global_Rating (Context.Get_Value ("TID")));
+            Database.Get_Global_Rating
+              (V2P.Context.Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Template_Defs.Set_Global.TID)));
       end if;
    end Global_Rating;
 
@@ -280,13 +290,15 @@ package body V2P.Callbacks.Web_Block is
       Login : constant String :=
                 Context.Get_Value (Template_Defs.Set_Global.LOGIN);
    begin
-      if Context.Exist ("TID") then
+      if Context.Exist (Template_Defs.Set_Global.TID) then
          Templates.Insert
            (Translations,
             Templates.Assoc
               (V2P.Template_Defs.Block_Metadata.IS_OWNER,
                Boolean'Image (V2P.Database.Is_Author
-                 (Login, Context.Get_Value ("TID")))));
+                 (Login, V2P.Context.Counter.Get_Value
+                    (Context => Context.all,
+                     Name => Template_Defs.Set_Global.TID)))));
 
          if Context.Exist
            (V2P.Template_Defs.Set_Global.ERROR_METADATA_NULL_METADATA) then
@@ -321,7 +333,10 @@ package body V2P.Callbacks.Web_Block is
          else
             Templates.Insert
               (Translations,
-               Database.Get_Metadata (Context.Get_Value ("TID")));
+               Database.Get_Metadata
+                 (V2P.Context.Counter.Get_Value
+                    (Context => Context.all,
+                     Name    => Template_Defs.Set_Global.TID)));
          end if;
       end if;
    end Metadata;
@@ -342,19 +357,24 @@ package body V2P.Callbacks.Web_Block is
 
    begin
 
-      if Context.Exist ("FID") then
+      if Context.Exist (Template_Defs.Set_Global.FID) then
          Templates.Insert
            (Translations,
-            Database.Get_Categories (Context.Get_Value ("FID")));
+            Database.Get_Categories
+              (V2P.Context.Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Template_Defs.Set_Global.FID)));
       end if;
 
-      if Context.Exist ("TID") then
+      if Context.Exist (Template_Defs.Set_Global.TID) then
          if Context.Exist (Template_Defs.Set_Global.LOGIN) then
             Templates.Insert
               (Translations,
                Database.Get_User_Rating_On_Post
                  (Uid => Context.Get_Value (Template_Defs.Set_Global.LOGIN),
-                  Tid => Context.Get_Value ("TID")));
+                  Tid => V2P.Context.Counter.Get_Value
+                    (Context => Context.all,
+                     Name    => Template_Defs.Set_Global.TID)));
          end if;
       end if;
 

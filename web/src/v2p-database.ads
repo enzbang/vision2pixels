@@ -44,6 +44,13 @@ package V2P.Database is
    subtype Page_Size is Positive range 1 .. 500;
    --  Limit page size to 500
 
+   subtype Id is Natural;
+   Empty_Id : constant Id;
+
+   function To_String (Id : in Database.Id) return String;
+   pragma Inline (To_String);
+   --  Returns Id image
+
    Default_Page_Size : constant Page_Size;
 
    type Forum_Filter is (Forum_Text, Forum_Photo, Forum_All);
@@ -66,15 +73,15 @@ package V2P.Database is
    --  If filter is Forum_Photo or Forum_Text and only one forum found, then
    --  returns the category list in that forum
 
-   function Get_Forum (Fid, Tid : in String) return Templates.Translate_Set;
+   function Get_Forum (Fid, Tid : in Id) return Templates.Translate_Set;
    --  Returns the DB line for the given forum. If Fid is empty it uses the Tid
    --  information to get the corresponding forum Id.
 
-   function Get_Forum_Type (Tid : in String) return V2P.Database.Forum_Type;
+   function Get_Forum_Type (Tid : in Id) return V2P.Database.Forum_Type;
    --  Returns the forum type from a Tid
 
    procedure Get_Threads
-     (Fid         : in     String := "";
+     (Fid         : in     Id := Empty_Id;
       User        : in     String := "";
       Admin       : in     Boolean;
       Page_Size   : in     Database.Page_Size := Default_Page_Size;
@@ -97,32 +104,32 @@ package V2P.Database is
      (Limit : in Positive) return Templates.Translate_Set;
    --  Returns the Limit latest registered users
 
-   function Get_Thumbnail (Post : in String) return String;
+   function Get_Thumbnail (Post : in Id) return String;
    --  Returns the thumbnail filename of the photo
    --  associated with the given post
 
-   function Get_Categories (Fid : in String) return Templates.Translate_Set;
+   function Get_Categories (Fid : in Id) return Templates.Translate_Set;
    --  Returns all categories for the given forum
 
-   function Get_Category (Tid : in String) return Templates.Translate_Set;
+   function Get_Category (Tid : in Id) return Templates.Translate_Set;
    --  Returns the category for the given thread
 
    function Get_Category_Full_Name (CID : in String) return String;
    --  Returns a category name "Forum/Category" for the given id
 
    function Get_Post
-     (Tid        : in String;
+     (Tid        : in Id;
       Forum_Type : in V2P.Database.Forum_Type)
       return Templates.Translate_Set;
    --  Returns the post information (no comments)
 
    function Get_Entry
-     (Tid        : in String;
+     (Tid        : in Id;
       Forum_Type : in V2P.Database.Forum_Type)
       return Templates.Translate_Set;
    --  Returns the full content of the entry Id. As above with comments
 
-   function Get_Comment (Cid : in String) return Templates.Translate_Set;
+   function Get_Comment (Cid : in Id) return Templates.Translate_Set;
    --  Returns a comment for the given comment id
 
    function Get_User (Uid : in String) return Templates.Translate_Set;
@@ -141,24 +148,24 @@ package V2P.Database is
      (Uid : in String) return Templates.Translate_Set;
    --  Returns user's last photo (in the user photo queue)
 
-   function Get_Metadata (Pid : in String) return Templates.Translate_Set;
+   function Get_Metadata (Pid : in Id) return Templates.Translate_Set;
    --  Returns photo geographic metadata
 
-   function Get_Exif (Pid : in String) return Templates.Translate_Set;
+   function Get_Exif (Pid : in Id) return Templates.Translate_Set;
    --  Returns photo exif metadata, get them from the image if needed and
    --  update the database.
 
    function Toggle_Hidden_Status
-     (Tid : in String) return Templates.Translate_Set;
+     (Tid : in Id) return Templates.Translate_Set;
    --  Toggle Tid hidden status and returns the new status
 
    function Insert_Comment
      (Uid       : in String;
       Anonymous : in String;
-      Thread    : in String;
+      Thread    : in Id;
       Name      : in String;
       Comment   : in String;
-      Pid       : in String) return String;
+      Pid       : in Id) return Id;
    --  Insert comment Name/Comment into the given forum and thread,
    --  Returns Comment Id.
 
@@ -172,7 +179,7 @@ package V2P.Database is
    --  Returns photo id
 
    procedure Insert_Metadata
-     (Pid                     : in String;
+     (Pid                     : in Id;
       Geo_Latitude            : in Float;
       Geo_Longitude           : in Float;
       Geo_Latitude_Formatted  : in String;
@@ -181,16 +188,16 @@ package V2P.Database is
 
    function Insert_Post
      (Uid         : in String;
-      Category_Id : in String;
+      Category_Id : in Id;
       Name        : in String;
       Comment     : in String;
-      Pid         : in String) return String;
+      Pid         : in Id) return Id;
    --  Insert a new post into the database and returns post id
 
-   procedure Increment_Visit_Counter (Pid : in String);
+   procedure Increment_Visit_Counter (Pid : in Id);
    --  Increment a thread visit counter
 
-   function Is_Author (Uid, Pid : in String) return Boolean;
+   function Is_Author (Uid : in String; Pid : in Id) return Boolean;
    --  Returns true whether the user of the post Pid is Uid
 
    function Get_User_Page (Uid : in String) return Templates.Translate_Set;
@@ -202,16 +209,16 @@ package V2P.Database is
 
    procedure Update_Rating
      (Uid      : in String;
-      Tid      : in String;
+      Tid      : in Id;
       Criteria : in String;
       Value    : in String);
    --  Update post rating
 
-   function Get_Global_Rating (Tid : in String) return Templates.Translate_Set;
+   function Get_Global_Rating (Tid : in Id) return Templates.Translate_Set;
    --  Get the post global rating
 
    function Get_User_Rating_On_Post
-     (Uid : in String; Tid : in String) return Templates.Translate_Set;
+     (Uid : in String; Tid : in Id) return Templates.Translate_Set;
    --  Get the user rating on a specific post
 
    function Get_New_Post_Delay
@@ -225,5 +232,6 @@ private
                                     Null_Unbounded_String,
                                     False);
    Default_Page_Size : constant Page_Size := 10;
+   Empty_Id          : constant Id := 0;
 
 end V2P.Database;

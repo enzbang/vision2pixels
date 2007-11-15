@@ -145,7 +145,7 @@ package body V2P.Database is
    -- Get_Categories --
    --------------------
 
-   function Get_Categories (Fid : in String) return Templates.Translate_Set is
+   function Get_Categories (Fid : in Id) return Templates.Translate_Set is
       use type Templates.Tag;
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Set  : Templates.Translate_Set;
@@ -158,7 +158,7 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter, "select id, name from category"
-         & " where forum_id=" & Q (Fid));
+         & " where forum_id=" & To_String (Fid));
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -183,7 +183,7 @@ package body V2P.Database is
    -- Get_Category --
    ------------------
 
-   function Get_Category (Tid : in String) return Templates.Translate_Set is
+   function Get_Category (Tid : in Id) return Templates.Translate_Set is
       use type Templates.Tag;
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Set  : Templates.Translate_Set;
@@ -196,7 +196,7 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter, "select id, name from category"
-         & " where post.category_id=category.id post.id=" & Q (Tid));
+         & " where post.category_id=category.id post.id=" & To_String (Tid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -250,7 +250,7 @@ package body V2P.Database is
    -- Get_Comment --
    -----------------
 
-   function Get_Comment (Cid : in String) return Templates.Translate_Set is
+   function Get_Comment (Cid : in Id) return Templates.Translate_Set is
       use type Templates.Tag;
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Set  : Templates.Translate_Set;
@@ -268,7 +268,7 @@ package body V2P.Database is
          & "comment"
          --  & "(select filename from photo where id=comment.photo_id) "
          --  ??? Filename is not used for now
-         & " from comment where id=" & Cid);
+         & " from comment where id=" & To_String (Cid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -314,7 +314,7 @@ package body V2P.Database is
    ---------------
 
    function Get_Entry
-     (Tid        : in String;
+     (Tid        : in Id;
       Forum_Type : in V2P.Database.Forum_Type)
       return Templates.Translate_Set
    is
@@ -349,7 +349,7 @@ package body V2P.Database is
             & "comment, "
             & "(select filename from photo where id=comment.photo_id) "
             & " from comment, post_comment"
-            & " where post_id=" & Q (Tid)
+            & " where post_id=" & To_String (Tid)
             & " and post_comment.comment_id=comment.id");
 
          while Iter.More loop
@@ -416,7 +416,7 @@ package body V2P.Database is
    -- Get_Exif --
    --------------
 
-   function Get_Exif (Pid : in String) return Templates.Translate_Set is
+   function Get_Exif (Pid : in Id) return Templates.Translate_Set is
 
       function "+"
         (Str : in String) return Unbounded_String renames To_Unbounded_String;
@@ -429,7 +429,7 @@ package body V2P.Database is
       Exif : Image.Metadata.Embedded.Data;
 
    begin
-      if Pid = "" then
+      if Pid = Empty_Id then
          --  ???
          return Set;
       end if;
@@ -441,7 +441,7 @@ package body V2P.Database is
          & "shutter_speed_value, aperture_value, flash, focal_length, "
          & "exposure_mode, exposure_program, white_balance, metering_mode, "
          & "iso from photo_exif "
-         & "where photo_id = " & Q (Pid));
+         & "where photo_id = " & To_String (Pid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -465,7 +465,7 @@ package body V2P.Database is
       else
          --  No exif metadata recorded for this photo, get them now
          DBH.Handle.Prepare_Select
-           (Iter, "select filename from photo where id=" & Q (Pid));
+           (Iter, "select filename from photo where id=" & To_String (Pid));
 
          if Iter.More then
             Iter.Get_Line (Line);
@@ -482,7 +482,8 @@ package body V2P.Database is
             & "'focal_length', 'exposure_mode', 'exposure_program', "
             & "'white_balance', 'metering_mode', 'iso')"
             & "values ("
-            & Q (Pid) & ',' & Q (Exif.Create_Date) & ',' & Q (Exif.Make) & ','
+            & To_String (Pid) & ',' & Q (Exif.Create_Date)
+            & ',' & Q (Exif.Make) & ','
             & Q (Exif.Camera_Model_Name) & ',' & Q (Exif.Shutter_Speed_Value)
             & ',' & Q (Exif.Aperture_Value) & ',' & Q (Exif.Flash) & ','
             & Q (Exif.Focal_Length) & ',' & Q (Exif.Exposure_Mode) & ','
@@ -530,12 +531,10 @@ package body V2P.Database is
    -- Get_Forum --
    ---------------
 
-   function Get_Forum
-     (Fid, Tid : in String) return Templates.Translate_Set
-   is
+   function Get_Forum (Fid, Tid : in Id) return Templates.Translate_Set is
       function Get_Fid
         (DBH      : in TLS_DBH_Access;
-         Fid, Tid : in String) return String;
+         Fid, Tid : in Id) return Id;
       pragma Inline (Get_Fid);
       --  Returns Fid is not empty otherwise compute it using Tid
 
@@ -545,11 +544,11 @@ package body V2P.Database is
 
       function Get_Fid
         (DBH      : in TLS_DBH_Access;
-         Fid, Tid : in String) return String
+         Fid, Tid : in Id) return Id
       is
          Line : DB.String_Vectors.Vector;
       begin
-         if Fid = "" then
+         if Fid = Empty_Id then
             --  Get the Fid using Tid
             Check_Fid : declare
                Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -558,13 +557,13 @@ package body V2P.Database is
                  (Iter,
                   "select forum_id from category, post "
                   & "where category.id = post.category_id "
-                  & "and post.id = " & Q (Tid));
+                  & "and post.id = " & To_String (Tid));
                if Iter.More then
                   Iter.Get_Line (Line);
 
                   Fid : declare
-                     Fid : constant String :=
-                             DB.String_Vectors.Element (Line, 1);
+                     Fid : constant Id :=
+                             Id'Value (DB.String_Vectors.Element (Line, 1));
                   begin
                      Line.Clear;
                      Iter.End_Select;
@@ -593,13 +592,13 @@ package body V2P.Database is
       Connect (DBH);
 
       Get_Forum_Data : declare
-         L_Fid : constant String := Get_Fid (DBH, Fid, Tid);
+         L_Fid : constant Id := Get_Fid (DBH, Fid, Tid);
          --  Local Fid computed using Fid or Tid
       begin
          DBH.Handle.Prepare_Select
            (Iter,
             "select name, anonymity, for_photo from forum where id="
-            & Q (L_Fid));
+            & To_String (L_Fid));
 
          if Iter.More then
             Iter.Get_Line (Line);
@@ -629,8 +628,9 @@ package body V2P.Database is
 
          else
             Iter.End_Select;
-            raise Parameter_Error with "Can not find forum FID= " & Fid
-              & " TID=" & Tid;
+            raise Parameter_Error with "Can not find forum FID= "
+              & To_String (Fid)
+              & " TID=" & To_String (Tid);
          end if;
       end Get_Forum_Data;
 
@@ -641,7 +641,7 @@ package body V2P.Database is
    -- Get_Forum_Type --
    --------------------
 
-   function Get_Forum_Type (Tid : in String) return V2P.Database.Forum_Type is
+   function Get_Forum_Type (Tid : in Id) return V2P.Database.Forum_Type is
       DBH        : constant TLS_DBH_Access :=
                      TLS_DBH_Access (DBH_TLS.Reference);
       Iter       : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -655,14 +655,15 @@ package body V2P.Database is
          "select for_photo from category, post, forum "
          & "where category.id = post.category_id "
          & "and forum.id = category.forum_id "
-         & "and post.id = " & Q (Tid));
+         & "and post.id = " & To_String (Tid));
 
       if not Iter.More then
          Logs.Write
            (Module,
             Logs.Error,
             "Get_Id, Fid and Tid empty, raise Parameter_Error");
-         raise Parameter_Error with "Can not get forum type for Tid = " & Tid;
+         raise Parameter_Error with "Can not get forum type for Tid = "
+           & To_String (Tid);
       end if;
 
       Iter.Get_Line (Line);
@@ -732,7 +733,8 @@ package body V2P.Database is
 
          --  Only one forum matched. Returns the categories too
 
-         Templates.Insert (Set, Get_Categories (Templates.Item (Id, 1)));
+         Templates.Insert
+           (Set, Get_Categories (Database.Id'Value (Templates.Item (Id, 1))));
 
       end if;
 
@@ -743,9 +745,7 @@ package body V2P.Database is
    -- Get_Global_Rating --
    -----------------------
 
-   function Get_Global_Rating
-     (Tid : in String) return Templates.Translate_Set
-   is
+   function Get_Global_Rating (Tid : in Id) return Templates.Translate_Set is
       use type Templates.Tag;
 
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
@@ -765,7 +765,7 @@ package body V2P.Database is
       DBH.Handle.Prepare_Select
         (Iter, "select post_rating, criteria_id, "
            & "(select name from criteria where id=criteria_id) "
-           & "from global_rating where post_id=" & Q (Tid));
+           & "from global_rating where post_id=" & To_String (Tid));
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -889,7 +889,7 @@ package body V2P.Database is
    -- Get_Metadata --
    ------------------
 
-   function Get_Metadata (Pid : in String) return Templates.Translate_Set is
+   function Get_Metadata (Pid : in Id) return Templates.Translate_Set is
       use type Templates.Tag;
 
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
@@ -898,7 +898,7 @@ package body V2P.Database is
       Set  : Templates.Translate_Set;
 
    begin
-      if Pid = "" then
+      if Pid = Empty_Id then
          --  ???
          return Set;
       end if;
@@ -909,7 +909,8 @@ package body V2P.Database is
         (Iter, "select geo_latitude, geo_longitude, "
          & "geo_latitude_formatted, geo_longitude_formatted "
          & "from photo_metadata "
-         & "where photo_id = (select photo_id from post where id=" & Pid
+         & "where photo_id = (select photo_id from post where id="
+         & To_String (Pid)
          & ')');
 
       if Iter.More then
@@ -998,7 +999,7 @@ package body V2P.Database is
    --------------
 
    function Get_Post
-     (Tid        : in String;
+     (Tid        : in Id;
       Forum_Type : in V2P.Database.Forum_Type)
       return Templates.Translate_Set
    is
@@ -1019,7 +1020,7 @@ package body V2P.Database is
             & Utils.Image (Settings.Anonymity_Hours)
             & " hour') < datetime('now') "
             & "from post, user, user_post, photo "
-            & "where post.id=" & Q (Tid)
+            & "where post.id=" & To_String (Tid)
             & " and user.login = user_post.user_login"
             & " and user_post.post_id = post.id"
             & " and photo.id = post.photo_id");
@@ -1082,7 +1083,7 @@ package body V2P.Database is
             & Utils.Image (Settings.Anonymity_Hours)
             & " hour') < datetime('now') "
             & "from post, user, user_post "
-            & "where post.id=" & Q (Tid)
+            & "where post.id=" & To_String (Tid)
             & " and user.login = user_post.user_login"
             & " and user_post.post_id = post.id");
 
@@ -1134,7 +1135,7 @@ package body V2P.Database is
    -----------------
 
    procedure Get_Threads
-     (Fid         : in     String := "";
+     (Fid         : in     Id := Empty_Id;
       User        : in     String := "";
       Admin       : in     Boolean;
       Page_Size   : in     Database.Page_Size := Default_Page_Size;
@@ -1142,7 +1143,7 @@ package body V2P.Database is
       Filter_Cat  : in     String      := "";
       Order_Dir   : in     Order_Direction := DESC;
       From        : in out Positive;
-      Navigation  :    out Post_Ids.Vector;
+      Navigation  :    out Context.Post_Ids.Vector;
       Set         :    out Templates.Translate_Set;
       Nb_Lines    :    out Natural;
       Total_Lines :    out Natural)
@@ -1161,7 +1162,7 @@ package body V2P.Database is
       --  Returns the SQL from
 
       function Build_Where
-        (Fid        : in String;
+        (Fid        : in Id;
          User       : in String;
          Filter     : in Filter_Mode;
          Filter_Cat : in String;
@@ -1169,7 +1170,7 @@ package body V2P.Database is
       --  Build the where statement
 
       function Count_Threads
-        (Fid        : in String;
+        (Fid        : in Id;
          User       : in String;
          Filter     : in Filter_Mode;
          Filter_Cat : in     String)
@@ -1177,7 +1178,7 @@ package body V2P.Database is
       --  Returns the number of threads matching the query
 
       function Threads_Ordered_Select
-        (Fid        : in String;
+        (Fid        : in Id;
          User       : in String;
          Admin      : in Boolean;
          From       : in Positive;
@@ -1232,7 +1233,7 @@ package body V2P.Database is
       -----------------
 
       function Build_Where
-        (Fid        : in String;
+        (Fid        : in Id;
          User       : in String;
          Filter     : in Filter_Mode;
          Filter_Cat : in String;
@@ -1249,10 +1250,10 @@ package body V2P.Database is
             Append (Where_Stmt, " and user_post.post_id = post.id ");
          end if;
 
-         if Fid /= "" then
+         if Fid /= Empty_Id then
             --  Restrict query to the given forum id
             Append (Where_Stmt,
-                    " and category.forum_id = " & Q (Fid) & " ");
+                    " and category.forum_id = " & To_String (Fid) & " ");
          end if;
 
          if User /= "" then
@@ -1291,7 +1292,7 @@ package body V2P.Database is
       -------------------
 
       function Count_Threads
-        (Fid        : in String;
+        (Fid        : in Id;
          User       : in String;
          Filter     : in Filter_Mode;
          Filter_Cat : in     String)
@@ -1335,7 +1336,7 @@ package body V2P.Database is
       ----------------------------
 
       function Threads_Ordered_Select
-        (Fid        : in String;
+        (Fid        : in Id;
          User       : in String;
          Admin      : in Boolean;
          From       : in Positive;
@@ -1439,7 +1440,8 @@ package body V2P.Database is
          Owner           := Owner     & DB.String_Vectors.Element (Line, 10);
          --  Insert this post id in navigation links
 
-         Navigation := Navigation & DB.String_Vectors.Element (Line, 1);
+         Navigation := Navigation & Database.Id'Value
+           (DB.String_Vectors.Element (Line, 1));
 
          Line.Clear;
       end loop;
@@ -1481,7 +1483,7 @@ package body V2P.Database is
    -- Get_Thumbnail --
    -------------------
 
-   function Get_Thumbnail (Post : in String) return String is
+   function Get_Thumbnail (Post : in Id) return String is
       DBH      : constant TLS_DBH_Access :=
                    TLS_DBH_Access (DBH_TLS.Reference);
       Iter     : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -1492,7 +1494,7 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter, "select filename from photo, post "
-         & "where photo.id = post.photo_id and post.id = " & Post);
+         & "where photo.id = post.photo_id and post.id = " & To_String (Post));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -1704,7 +1706,7 @@ package body V2P.Database is
    -----------------------------
 
    function Get_User_Rating_On_Post
-     (Uid : in String; Tid : in String) return Templates.Translate_Set
+     (Uid : in String; Tid : in Id) return Templates.Translate_Set
    is
       use AWS.Templates;
 
@@ -1724,7 +1726,7 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter, "select id, name, (select post_rating from rating r "
-         & "where r.post_id=" & Q (Tid)
+         & "where r.post_id=" & To_String (Tid)
          & " and r.user_login=" & Q (Uid)
          & " and criteria_id=id) from criteria");
 
@@ -1771,11 +1773,11 @@ package body V2P.Database is
    -- Increment_Visit_Counter --
    -----------------------------
 
-   procedure Increment_Visit_Counter (Pid : in String) is
+   procedure Increment_Visit_Counter (Pid : in Id) is
       DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       SQL : constant String :=
               "update post set visit_counter = visit_counter + 1 where "
-                & "id = " & Q (Pid);
+                & "id = " & To_String (Pid);
    begin
       Connect (DBH);
       DBH.Handle.Execute (SQL);
@@ -1788,10 +1790,10 @@ package body V2P.Database is
    function Insert_Comment
      (Uid       : in String;
       Anonymous : in String;
-      Thread    : in String;
+      Thread    : in Id;
       Name      : in String;
       Comment   : in String;
-      Pid       : in String) return String
+      Pid       : in Id) return Id
    is
       pragma Unreferenced (Name);
 
@@ -1799,7 +1801,7 @@ package body V2P.Database is
         (User_Login, Anonymous, Comment : in String);
       --  Insert row into Comment table
 
-      procedure Insert_Table_Post_Comment (post_Id, Comment_Id : in String);
+      procedure Insert_Table_Post_Comment (Post_Id, Comment_Id : in Id);
       --  Insert row into post_Comment table
 
       DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
@@ -1816,7 +1818,7 @@ package body V2P.Database is
                    & "'comment', 'photo_id')"
                    & " values ("
                    & Q (User_Login) & ',' & Q (Anonymous) & ',' & Q (Comment)
-                   & ',' & Q (Pid) & ')';
+                   & ',' & To_String (Pid) & ')';
       begin
          DBH.Handle.Execute (SQL);
       end Insert_Table_Comment;
@@ -1826,11 +1828,11 @@ package body V2P.Database is
       --------------------------------
 
       procedure Insert_Table_Post_Comment
-        (post_Id, Comment_Id : in String)
+        (Post_Id, Comment_Id : in Id)
       is
          SQL : constant String :=
                  "insert into post_comment values ("
-                   & post_Id & "," & Comment_Id & ')';
+                   & To_String (Post_Id) & "," & To_String (Comment_Id) & ')';
       begin
          DBH.Handle.Execute (SQL);
       end Insert_Table_Post_Comment;
@@ -1841,7 +1843,7 @@ package body V2P.Database is
       Insert_Table_Comment (Uid, Anonymous, Comment);
 
       Row_Id : declare
-         Cid : constant String := DBH.Handle.Last_Insert_Rowid;
+         Cid : constant Id := Id'Value (DBH.Handle.Last_Insert_Rowid);
       begin
          Insert_Table_Post_Comment (Thread, Cid);
          DBH.Handle.Commit;
@@ -1851,7 +1853,7 @@ package body V2P.Database is
       when E : DB.DB_Error =>
          DBH.Handle.Rollback;
          Text_IO.Put_Line (Exception_Message (E));
-         return "";
+         return Empty_Id;
    end Insert_Comment;
 
    ---------------------
@@ -1859,7 +1861,7 @@ package body V2P.Database is
    ---------------------
 
    procedure Insert_Metadata
-     (Pid                     : in String;
+     (Pid                     : in Id;
       Geo_Latitude            : in Float;
       Geo_Longitude           : in Float;
       Geo_Latitude_Formatted  : in String;
@@ -1868,7 +1870,7 @@ package body V2P.Database is
       SQL : constant String := "insert into photo_metadata (photo_id, "
         & "geo_latitude, geo_longitude, geo_latitude_formatted, "
         & "geo_longitude_formatted) values ("
-        & "(select photo_id from post where id=" & Pid & "), "
+        & "(select photo_id from post where id=" & To_String (Pid) & "), "
         & F (Geo_Latitude) & ", " & F (Geo_Longitude) & ", "
         & Q (Geo_Latitude_Formatted) & ", "
         & Q (Geo_Longitude_Formatted) & ")";
@@ -1961,16 +1963,16 @@ package body V2P.Database is
 
    function Insert_Post
      (Uid         : in String;
-      Category_Id : in String;
+      Category_Id : in Id;
       Name        : in String;
       Comment     : in String;
-      Pid         : in String) return String
+      Pid         : in Id) return Id
    is
       procedure Insert_Table_Post
         (Name, Category_Id, Comment, Photo_Id : in String);
       --  Insert row into the post table
 
-      procedure Insert_Table_User_Post (Uid, Post_Id : in String);
+      procedure Insert_Table_User_Post (Uid : in String; Post_Id : in Id);
       --  Insert row into the user_post table
 
       DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
@@ -1995,10 +1997,10 @@ package body V2P.Database is
       -- Insert_Table_User_post --
       -----------------------------
 
-      procedure Insert_Table_User_Post (Uid, Post_Id : in String) is
+      procedure Insert_Table_User_Post (Uid : in String; Post_Id : in Id) is
          SQL : constant String :=
                  "insert into user_post values ("
-                   & Q (Uid) & ',' & Post_Id & ")";
+                   & Q (Uid) & ',' & To_String (Post_Id) & ")";
       begin
          DBH.Handle.Execute (SQL);
       end Insert_Table_User_Post;
@@ -2008,36 +2010,37 @@ package body V2P.Database is
 
       DBH.Handle.Begin_Transaction;
 
-      if Pid /= "" then
-         Insert_Table_Post (Name, Category_Id, Comment, Pid);
+      if Pid /= Empty_Id then
+         Insert_Table_Post
+           (Name, To_String (Category_Id), Comment, To_String (Pid));
       else
-         Insert_Table_Post (Name, Category_Id, Comment, "NULL");
+         Insert_Table_Post (Name, To_String (Category_Id), Comment, "NULL");
       end if;
 
       Row_Id : declare
-         Post_Id : constant String := DBH.Handle.Last_Insert_Rowid;
+         Post_Id : constant Id := Id'Value (DBH.Handle.Last_Insert_Rowid);
       begin
          Insert_Table_User_Post (Uid, Post_Id);
          DBH.Handle.Commit;
-         return Post_Id (Post_Id'First + 1 .. Post_Id'Last);
+         return Post_Id;
       end Row_Id;
 
    exception
       when E : DB.DB_Error =>
          DBH.Handle.Rollback;
          Text_IO.Put_Line (Exception_Message (E));
-         return "";
+         return Empty_Id;
       when E : others =>
          DBH.Handle.Rollback;
          Text_IO.Put_Line (Exception_Message (E));
-         return "";
+         return Empty_Id;
    end Insert_Post;
 
    ---------------
    -- Is_Author --
    ---------------
 
-   function Is_Author (Uid, Pid : in String) return Boolean is
+   function Is_Author (Uid : in String; Pid : in Id) return Boolean is
       DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Result : Boolean := False;
@@ -2049,7 +2052,7 @@ package body V2P.Database is
       DBH.Handle.Prepare_Select
         (Iter,
          "select * from user_post where post_id  = "
-           & Q (Pid) & " and user_login = " & Q (Uid));
+           & To_String (Pid) & " and user_login = " & Q (Uid));
 
       if Iter.More then
          Result := True;
@@ -2099,13 +2102,21 @@ package body V2P.Database is
       return Q (Boolean'Image (Bool));
    end Q;
 
+   ---------------
+   -- To_String --
+   ---------------
+
+   function To_String (Id : in Database.Id) return String is
+   begin
+      return Natural'Image (Id);
+   end To_String;
+
    --------------------------
    -- Toggle_Hidden_Status --
    --------------------------
 
    function Toggle_Hidden_Status
-     (Tid : in String) return Templates.Translate_Set
-   is
+     (Tid : in Id) return Templates.Translate_Set is
       DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line   : DB.String_Vectors.Vector;
@@ -2117,7 +2128,7 @@ package body V2P.Database is
       --  Get current hidden status
 
       DBH.Handle.Prepare_Select
-        (Iter, "select hidden from post where post.id=" & Q (Tid));
+        (Iter, "select hidden from post where post.id=" & To_String (Tid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -2132,7 +2143,8 @@ package body V2P.Database is
       Hidden := not Hidden;
 
       DBH.Handle.Execute
-        ("update post set hidden=" & Q (Hidden) & " where id=" & Q (Tid));
+        ("update post set hidden="
+         & Q (Hidden) & " where id=" & To_String (Tid));
 
       Templates.Insert
         (Set, Templates.Assoc
@@ -2168,13 +2180,14 @@ package body V2P.Database is
 
    procedure Update_Rating
      (Uid      : in String;
-      Tid      : in String;
+      Tid      : in Id;
       Criteria : in String;
       Value    : in String)
    is
       SQL  : constant String :=
                "select 1 from rating where user_login="
-                 & Q (Uid) & " and post_id=" & Q (Tid) & " and criteria_id="
+                 & Q (Uid) & " and post_id="
+                 & To_String (Tid) & " and criteria_id="
                  & Q (Criteria);
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -2188,13 +2201,13 @@ package body V2P.Database is
          Iter.End_Select;
          DBH.Handle.Execute ("update rating set post_rating = " & Q (Value)
                              & "where user_login="
-                             & Q (Uid) & " and post_id=" & Q (Tid)
+                             & Q (Uid) & " and post_id=" & To_String (Tid)
                              & " and criteria_id=" & Q (Criteria));
       else
          --  Insert new rating
          Iter.End_Select;
          DBH.Handle.Execute ("insert into rating values (" & Q (Uid)
-                             & ", " & Q (Tid) & ", " & Q (Criteria)
+                             & ", " & To_String (Tid) & ", " & Q (Criteria)
                              & ", " & Q (Value) & ")");
       end if;
    end Update_Rating;

@@ -30,7 +30,7 @@ package V2P.Context is
 
    package Post_Ids is
      new Containers.Indefinite_Vectors
-       (Index_Type => Positive, Element_Type => String);
+       (Index_Type => Positive, Element_Type => Positive);
    --  Post_Ids stores all visible post ids in forum threads page
 
    package Navigation_Links is
@@ -58,12 +58,12 @@ package V2P.Context is
 
    function Previous
      (Posts : in Post_Ids.Vector;
-      Id    : in String) return String;
+      Id    : in Positive) return Natural;
    --  Returns previous post stored in Post_Ids.Vector
 
    function Next
      (Posts : in Post_Ids.Vector;
-      Id    : in String) return String;
+      Id    : in Positive) return Natural;
    --  Returns next post stored in Post_Ids.Vector
 
 end V2P.Context;

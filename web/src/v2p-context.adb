@@ -34,12 +34,12 @@ package body V2P.Context is
 
    function Next
      (Posts : in Post_Ids.Vector;
-      Id    : in String) return String
+      Id    : in Positive) return Natural
    is
       Current : Cursor := Find (Posts, Id);
    begin
       if Current = No_Element then
-         return "";
+         return 0;
       end if;
 
       Next (Current);
@@ -47,7 +47,7 @@ package body V2P.Context is
       if Current /= No_Element then
          return Element (Current);
       else
-         return "";
+         return 0;
       end if;
    end Next;
 
@@ -57,12 +57,12 @@ package body V2P.Context is
 
    function Previous
      (Posts : in Post_Ids.Vector;
-      Id    : in String) return String
+      Id    : in Positive) return Natural
    is
       Current : Cursor := Find (Posts, Id);
    begin
       if Current = No_Element then
-         return "";
+         return 0;
       end if;
 
       Previous (Current);
@@ -70,7 +70,7 @@ package body V2P.Context is
       if Current /= No_Element then
          return Element (Current);
       else
-         return "";
+         return 0;
       end if;
    end Previous;
 
