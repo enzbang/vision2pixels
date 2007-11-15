@@ -37,6 +37,7 @@ with Morzhol.OS;
 
 with V2P.Settings;
 
+with V2P.Context;
 with V2P.Callbacks.Page;
 with V2P.Callbacks.Ajax;
 with V2P.Logs;
@@ -165,16 +166,26 @@ package body V2P.Web_Server is
    -- Default_Callback --
    ----------------------
 
-   function Default_Callback
-     (Request : in Status.Data) return Response.Data
-   is
+   function Default_Callback (Request : in Status.Data) return Response.Data is
       use type Messages.Status_Code;
       URI          : constant String := Status.URI (Request);
       SID          : constant Session.Id := Status.Session (Request);
       C_Request    : aliased Status.Data := Request;
+      Context      : aliased Services.Web_Block.Context.Object :=
+                       Services.Web_Block.Registry.Get_Context
+                         (Request => C_Request'Access);
       Translations : Templates.Translate_Set;
       Web_Page     : Response.Data;
    begin
+
+      --  Update the context
+
+      V2P.Context.Update (Context'Access, SID);
+      --  Note that the Context is linked to the C_Request object
+      --  Do not use Request object anymore
+
+      --  Add LOGIN and ADMIN in template
+
       if Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then
          Templates.Insert
            (Translations,
@@ -182,33 +193,18 @@ package body V2P.Web_Server is
               (Template_Defs.Set_Global.LOGIN,
                String'(Session.Get (SID, Template_Defs.Set_Global.LOGIN))));
 
-         Set_Context_Login : declare
-            Context : Services.Web_Block.Context.Object
-              := Services.Web_Block.Registry.Get_Context (C_Request'Access);
-         begin
-            if not Context.Exist (Template_Defs.Set_Global.LOGIN) then
-               Context.Set_Value
-                 (Template_Defs.Set_Global.LOGIN,
-                  Session.Get (SID, Template_Defs.Set_Global.LOGIN));
-            end if;
-
-            if Session.Exist (SID, Template_Defs.Set_Global.ADMIN) then
-               if not Context.Exist (Template_Defs.Set_Global.ADMIN) then
-                  Context.Set_Value
-                    (Template_Defs.Set_Global.ADMIN,
-                     Session.Get (SID, Template_Defs.Set_Global.ADMIN));
-               end if;
-               Templates.Insert
-                 (Translations,
-                  Templates.Assoc
-                    (Template_Defs.Set_Global.ADMIN,
-                     String'(Session.Get
-                       (SID, Template_Defs.Set_Global.ADMIN))));
-            end if;
-         end Set_Context_Login;
+         if Session.Exist (SID, Template_Defs.Set_Global.ADMIN) then
+            Templates.Insert
+              (Translations,
+               Templates.Assoc
+                 (Template_Defs.Set_Global.ADMIN,
+                  String'(Session.Get
+                    (SID, Template_Defs.Set_Global.ADMIN))));
+         end if;
       end if;
 
-      --  Adds Version number
+
+      --  Add Version number
 
       Templates.Insert
         (Translations,
@@ -216,7 +212,7 @@ package body V2P.Web_Server is
            (Template_Defs.Set_Global.V2P_VERSION,
             V2P.Version));
 
-      --  Adds some URL
+      --  Add some URL
 
       Templates.Insert
         (Translations,
@@ -268,7 +264,7 @@ package body V2P.Web_Server is
             Settings.Images_Source_Prefix));
 
       Web_Page := Services.Web_Block.Registry.Build
-        (URI, Request, Translations,
+        (URI, C_Request, Translations,
          Cache_Control => Messages.Prevent_Cache,
          Context_Error =>
            Template_Defs.R_Context_Error.Set.CONTEXT_ERROR_URL);
@@ -276,7 +272,7 @@ package body V2P.Web_Server is
       if Response.Status_Code (Web_Page) = Messages.S404 then
          --  Page not found
          Web_Page := Services.Web_Block.Registry.Build
-           (Template_Defs.Page_Error.URL, Request, Translations);
+           (Template_Defs.Page_Error.URL, C_Request, Translations);
       end if;
 
       return Web_Page;

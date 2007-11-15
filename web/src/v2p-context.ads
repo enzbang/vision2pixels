@@ -21,6 +21,7 @@
 
 with Ada.Containers.Indefinite_Vectors;
 with AWS.Services.Web_Block.Context;
+with AWS.Session;
 
 package V2P.Context is
 
@@ -51,8 +52,9 @@ package V2P.Context is
    --  bug, should be changed when GNAT GPL 2007 is out and if it contains the
    --  fix as this bug is not present on recent GNAT versions.
 
-   procedure Context_Filter (Context : access Object);
+   procedure Update (Context : access Object; SID : in AWS.Session.Id);
    --  Update the context filter
+   --  Set LOGIN in Context
 
    function Previous
      (Posts : in Post_Ids.Vector;

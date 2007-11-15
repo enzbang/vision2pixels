@@ -60,8 +60,6 @@ package body V2P.Callbacks.Page is
       Context.Set_Value (Template_Defs.Set_Global.TID, TID);
 
       if TID /= "" then
-         V2P.Context.Context_Filter (Context);
-
          if not Settings.Anonymous_Visit_Counter then
             --  Do not count anonymous click
             --  ??? can use a simple assignment
@@ -167,8 +165,6 @@ package body V2P.Callbacks.Page is
         (Context.all, Template_Defs.Set_Global.NAV_FROM, From);
 
       Templates.Insert (Translations, Database.Get_Forum (FID, Tid => ""));
-
-      V2P.Context.Context_Filter (Context);
    end Forum_Threads;
 
    ----------
@@ -189,8 +185,6 @@ package body V2P.Callbacks.Page is
       if Context.Exist (Template_Defs.Set_Global.FID) then
          Context.Remove (Template_Defs.Set_Global.FID);
       end if;
-
-      V2P.Context.Context_Filter (Context);
    end Main;
 
    ---------------------
