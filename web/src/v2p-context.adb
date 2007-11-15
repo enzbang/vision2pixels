@@ -110,7 +110,7 @@ package body V2P.Context is
          Context.Set_Value
            (Template_Defs.Set_Global.FILTER_CATEGORY, "");
 
-         Counter.Set_Value
+         Not_Null_Counter.Set_Value
            (Context => Context.all,
             Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
             Value   => 10);
