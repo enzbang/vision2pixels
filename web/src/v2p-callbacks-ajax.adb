@@ -573,7 +573,6 @@ package body V2P.Callbacks.Ajax is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Translations);
       use Template_Defs;
 
       P        : constant Parameters.List := Status.Parameters (Request);
@@ -594,6 +593,10 @@ package body V2P.Callbacks.Ajax is
          Tid      => TID,
          Criteria => Criteria,
          Value    => Value);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc (Block_New_Comment.IN_RATE_CB, "t"));
    end Onsubmit_Rate;
 
    ----------------------------------------

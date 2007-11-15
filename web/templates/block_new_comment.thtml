@@ -19,7 +19,7 @@
       @@END_IF@@
     </p>
 
-    @@IF@@ @_OWNER_@ /= @_LOGIN_@ and @_IMAGE_SOURCE_@ /= ""
+    @@IF@@ @_IN_RATE_CB_@ /= "" or (@_OWNER_@ /= @_LOGIN_@ and @_IMAGE_SOURCE_@ /= "")
       @@TABLE@@
         <h3 class="criterianame">@_CRITERIA_NAME_@</h3>
         <ul id="bnc_user_votefor@_CRITERIA_ID_@" class="unit-rating">
