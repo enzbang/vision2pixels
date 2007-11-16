@@ -133,6 +133,14 @@ package body V2P.Callbacks.Ajax is
               (Context => Context.all,
                Name    => Template_Defs.Set_Global.FID),
             Tid => Database.Empty_Id));
+
+      --  Reset FROM
+
+      V2P.Context.Not_Null_Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NAV_FROM,
+         Value   => 1);
+
    end Onchange_Category_Filter_Forum;
 
 ---------------------------
