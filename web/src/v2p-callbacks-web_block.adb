@@ -22,6 +22,7 @@
 with V2P.URL;
 with V2P.Database;
 with V2P.Context;
+with V2P.Navigation_Links;
 with V2P.Settings;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_User_Page;
@@ -174,7 +175,7 @@ package body V2P.Callbacks.Web_Block is
                     Context.Exist (Template_Defs.Set_Global.ADMIN)
                   and then Context.Get_Value
                     (Template_Defs.Set_Global.ADMIN) = "TRUE";
-      Page_Size : constant Database.Page_Size :=
+      Page_Size : constant Navigation_Links.Page_Size :=
                     V2P.Context.Not_Null_Counter.Get_Value
                       (Context => Context.all,
                        Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE);
@@ -182,10 +183,19 @@ package body V2P.Callbacks.Web_Block is
                     V2P.Context.Not_Null_Counter.Get_Value
                       (Context => Context.all,
                        Name    => Template_Defs.Set_Global.NAV_FROM);
-      Nav_Links : V2P.Context.Post_Ids.Vector;
+      Nav_Links : Navigation_Links.Post_Ids.Vector;
       Nb_Lines  : Natural;
       Total     : Natural;
    begin
+
+      --  ??? This function does exactly the same thing as
+      --  V2P.Navigation_Links.Load_Pages
+      --  This need some refactoring :
+      --        - Split Get_Threads so that the procedure can returns
+      --            * only the Post_Ids vector
+      --             (as needed by V2P.Navigation_Links.Load_Pages)
+      --            * and only the Template Set ?
+
       Database.Get_Threads
         (FID         => V2P.Context.Counter.Get_Value
            (Context => Context.all,
@@ -204,8 +214,7 @@ package body V2P.Callbacks.Web_Block is
          Nb_Lines    => Nb_Lines,
          Total_Lines => Total);
 
-      V2P.Context.Navigation_Links.Set_Value
-        (Context.all, "Navigation_Links", Nav_Links);
+      Navigation_Links.Set (Context, Nav_Links);
 
       V2P.Context.Not_Null_Counter.Set_Value
         (Context => Context.all,
@@ -479,7 +488,7 @@ package body V2P.Callbacks.Web_Block is
       URI        : constant String     := Status.URI (Request);
       User_Name  : constant String     := URL.User_Name (URI);
       Set        : Templates.Translate_Set;
-      Navigation : V2P.Context.Post_Ids.Vector;
+      Navigation : Navigation_Links.Post_Ids.Vector;
       From       : Natural := 1;
       Nb_Lines   : Natural;
       Total      : Natural;

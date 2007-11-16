@@ -62,7 +62,6 @@ package body V2P.Database is
 
    use Morzhol.OS;
 
-   use V2P.Context;
    use V2P.Template_Defs;
 
    Module : constant Logs.Module_Name := "Database";
@@ -1138,18 +1137,19 @@ package body V2P.Database is
      (Fid         : in     Id := Empty_Id;
       User        : in     String := "";
       Admin       : in     Boolean;
-      Page_Size   : in     Database.Page_Size := Default_Page_Size;
+      Page_Size   : in     Navigation_Links.Page_Size :=
+        Navigation_Links.Default_Page_Size;
       Filter      : in     Filter_Mode := All_Messages;
       Filter_Cat  : in     String      := "";
       Order_Dir   : in     Order_Direction := DESC;
       From        : in out Positive;
-      Navigation  :    out Context.Post_Ids.Vector;
+      Navigation  :    out Navigation_Links.Post_Ids.Vector;
       Set         :    out Templates.Translate_Set;
       Nb_Lines    :    out Natural;
       Total_Lines :    out Natural)
    is
       use type Templates.Tag;
-      use Post_Ids;
+      use type V2P.Navigation_Links.Post_Ids.Vector;
 
       function Build_Select
         (Count_Only : in Boolean := False) return String;
@@ -1404,7 +1404,7 @@ package body V2P.Database is
          From := 1; -- ??? What should be done in this case ?
       end if;
 
-      Navigation  := Post_Ids.Empty_Vector;
+      Navigation  := V2P.Navigation_Links.Post_Ids.Empty_Vector;
 
       Connect (DBH);
 

@@ -22,7 +22,8 @@
 with Ada.Strings.Unbounded;
 
 with AWS.Templates;
-with V2P.Context;
+
+with V2P.Navigation_Links;
 
 package V2P.Database is
 
@@ -41,17 +42,12 @@ package V2P.Database is
    --  Kind of filter to apply when returning the list of posts, see
    --  Get_Threads.
 
-   subtype Page_Size is Positive range 1 .. 500;
-   --  Limit page size to 500
-
    subtype Id is Natural;
    Empty_Id : constant Id;
 
    function To_String (Id : in Database.Id) return String;
    pragma Inline (To_String);
    --  Returns Id image
-
-   Default_Page_Size : constant Page_Size;
 
    type Forum_Filter is (Forum_Text, Forum_Photo, Forum_All);
 
@@ -84,12 +80,13 @@ package V2P.Database is
      (Fid         : in     Id := Empty_Id;
       User        : in     String := "";
       Admin       : in     Boolean;
-      Page_Size   : in     Database.Page_Size := Default_Page_Size;
+      Page_Size   : in     Navigation_Links.Page_Size :=
+        Navigation_Links.Default_Page_Size;
       Filter      : in     Filter_Mode := All_Messages;
       Filter_Cat  : in     String      := "";
       Order_Dir   : in     Order_Direction := DESC;
       From        : in out Positive;
-      Navigation  :    out Context.Post_Ids.Vector;
+      Navigation  :    out Navigation_Links.Post_Ids.Vector;
       Set         :    out Templates.Translate_Set;
       Nb_Lines    :    out Natural;
       Total_Lines :    out Natural);
@@ -231,7 +228,6 @@ private
                          User_Data'(Null_Unbounded_String,
                                     Null_Unbounded_String,
                                     False);
-   Default_Page_Size : constant Page_Size := 10;
    Empty_Id          : constant Id := 0;
 
 end V2P.Database;
