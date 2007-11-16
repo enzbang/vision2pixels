@@ -61,8 +61,9 @@
       @@END_TABLE@@
     @@END_IF@@
     <p class="enternewcomment">
-      <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
-      <textarea name="COMMENT" id="global_comment_input"></textarea>
+      <label for="global_comment_input">@_BABEL_ENTER_COMMENT_@</label>
+      <textarea name="global_comment_input"
+                id="global_comment_input"></textarea>
     </p>
     <p>
       <input name="ENTER" id="bnc_comment_form_enter" type="submit" value="OK"/>
@@ -75,5 +76,4 @@
     <p id="bnc_noanonymouscomment">@_BABEL_NO_ANONYMOUS_COMMENT_@</p>
 @@END_IF@@
 @@--
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bnc_sel_forum_list, 4=>bnc_sel_forum_list)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bnc_comment_form, 4=>bnc_comment_form, 5=>pfe_PARENT_ID)

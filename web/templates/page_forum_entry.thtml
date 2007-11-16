@@ -80,7 +80,7 @@
       @@IF@@ @_TABLE_LINE_@ = @_COMMENT_ID'Length_@
       <div id="pfe_last_parent_id" style="visibility:hidden">
         <input name="pfe_PARENT_ID" id="pfe_PARENT_ID" type="hidden"
-               value="comment_@_COMMENT_ID_@" />
+               value="pfe_comment_@_COMMENT_ID_@" />
       </div>
       @@END_IF@@
     @@END_TABLE@@

@@ -337,7 +337,9 @@ package body V2P.Callbacks.Ajax is
                        Parameters.Get
                          (P, Block_New_Comment.HTTP.ANONYMOUS_USER);
       Comment      : constant String :=
-                       Parameters.Get (P, Block_New_Comment.HTTP.COMMENT);
+                       Parameters.Get (P,
+                                       Block_New_Comment.
+                                         HTTP.global_comment_input);
       Parent_Id    : constant String :=
                        Parameters.Get (P, Page_Forum_Entry.HTTP.pfe_PARENT_ID);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
@@ -429,7 +431,7 @@ package body V2P.Callbacks.Ajax is
                  (V2P.Context.Counter.Get_Value
                     (Context => Context.all,
                      Name    => Set_Global.FID),
-                  Tid => Database.Empty_Id));
+                  Tid => TID));
 
             Templates.Insert
               (Translations,

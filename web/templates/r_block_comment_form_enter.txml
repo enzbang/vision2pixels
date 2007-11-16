@@ -12,7 +12,7 @@
   </replace>
 @@ELSE@@
   @@IF@@ @_PARENT_ID_@ /= ""
-  <insert_after id="pfe_@_PARENT_ID_@">
+  <insert_after id="@_PARENT_ID_@">
     <![CDATA[
     <!-- '@_PARENT_ID_@' -->
     <li id="pfe_comment_@_COMMENT_ID_@" class="level_@_COMMENT_LEVEL_@ new">
@@ -24,7 +24,7 @@
   <replace id="pfe_comments">
     <![CDATA[
     <ol id="pfe_comments">
-      <li id="comment_@_COMMENT_ID_@" class="level_@_COMMENT_LEVEL_@ new">
+      <li id="pfe_comment_@_COMMENT_ID_@" class="level_@_COMMENT_LEVEL_@ new">
       @@INCLUDE@@ chunk_comment.thtml
       </li>
     </ol>
@@ -33,8 +33,8 @@
   @@END_IF@@
   <replace id="pfe_last_parent_id">
     <![CDATA[
-    <input name="PARENT_ID" id="PARENT_ID" type="hidden"
-          value="comment_@_COMMENT_ID_@" />
+    <input name="pfe_PARENT_ID" id="pfe_PARENT_ID" type="hidden"
+          value="pfe_comment_@_COMMENT_ID_@" />
     ]]>
   </replace>
   <clear id="global_comment_input" />
