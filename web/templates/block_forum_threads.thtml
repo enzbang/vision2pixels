@@ -19,6 +19,7 @@
   >
     <a href="#" id="bft_goto_previous_page">Previous Page</a>
   </li>
+  <li class="nav_info">@_NAV_FROM_@/@_TOTAL_NB_THREADS_@</li>
   <li class="next_link"
   @@IF@@ @_ADD(NB_LINE_RETURNED):NAV_FROM_@ >= @_TOTAL_NB_THREADS_@
      style="visibility:hidden"
@@ -26,7 +27,7 @@
   >
     <a href="#" id="bft_goto_next_page">Next Page</a>
   </li>
-  <li class="nav_info">@_NAV_FROM_@/@_TOTAL_NB_THREADS_@</li>
+
 </ul>
 
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bft_goto_previous_page)

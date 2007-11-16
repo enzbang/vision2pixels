@@ -103,3 +103,11 @@ li.current-global-rating {
 .voted {color:#999;}
 .thanks {color:#36AA3D;}
 .static {color:#5D3126;}
+
+p#bgr_has_vote {
+    font-size:0.9em;
+}
+
+p#bgr_no_vote {
+    font-style:italic;
+}

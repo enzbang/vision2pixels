@@ -10,20 +10,26 @@
    @@-- Navigation links
   <ul id="pfe_navigate" style="margin-left:@_MULT(-1):SUB(400):DIV(2):IMAGE_WIDTH_@px;">
 
-    @@IF@@ @_PREVIOUS_@ /= ""
+    @@IF@@ @_PREVIOUS_@ /= "0"
     <li class="prev_link">
-      <a href="@_FORUM_ENTRY_URL_@?TID=@_PREVIOUS_@&amp;FID=@_Current_FID_@">
+      <a href="@_FORUM_ENTRY_URL_@?TID=@_PREVIOUS_@">
         <img alt="previous" src="@_THUMB_SOURCE_PREFIX_@/@_PREVIOUS_THUMB_@" />Previous
       </a>
     </li>
     @@END_IF@@
-    @@IF@@ @_NEXT_@ /= ""
+    @@IF@@ @_NEXT_@ /= "0"
     <li class="next_link">
-      <a href="@_FORUM_ENTRY_URL_@?TID=@_NEXT_@&amp;FID=@_Current_FID_@">
+      <a href="@_FORUM_ENTRY_URL_@?TID=@_NEXT_@">
         <img alt="next" src="@_THUMB_SOURCE_PREFIX_@/@_NEXT_THUMB_@" />Next
       </a>
     </li>
     @@END_IF@@
+    @@IF@@ @_PREVIOUS_@ = "0" and @_NEXT_@ = "0"
+    <li>&nbsp;</li>
+    @@END_IF@@
+    <li id="pfe_go_to_list">
+      <a href="@_FORUM_THREAD_URL_@?FID=@_FID_@">Back to @_FORUM_NAME_@</a>
+    </li>
   </ul>
   @@-- Image
   @@IF@@ @_IMAGE_SOURCE_@ /= ""
@@ -33,7 +39,6 @@
   </p>
   @@END_IF@@
 <div id="pfe_image_infos">
-  <h2>@_NAME_@</h2>
   <p id="pfe_img_author">
     @@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@
       @@IF@@ @_OWNER_@ /= @_LOGIN_@
@@ -50,6 +55,7 @@
     @@END_IF@@
     / @_DATE_POST_@
   </p>
+  <h2>@_NAME_@</h2>
   @@-- Hidden
   @@IF@@ @_ADMIN_@
   <p>@_BABEL_HIDDEN_STATUS_@:
