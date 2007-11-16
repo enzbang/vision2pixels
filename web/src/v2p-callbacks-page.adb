@@ -22,6 +22,7 @@
 with AWS.Parameters;
 
 with V2P.Context;
+with V2P.Navigation_Links;
 with V2P.Database;
 with V2P.Settings;
 with V2P.URL;
@@ -87,13 +88,12 @@ package body V2P.Callbacks.Page is
          --  Insert navigation links (previous and next post)
 
          Insert_Links : declare
-            Selected_Post : constant V2P.Context.Post_Ids.Vector :=
-                              V2P.Context.Navigation_Links.Get_Value
-                                (Context.all, "Navigation_Links");
             Previous_Id   : constant Database.Id :=
-                              V2P.Context.Previous (Selected_Post, TID);
+                              Navigation_Links.Previous_Post
+                                (Context, TID);
             Next_Id       : constant Database.Id :=
-                              V2P.Context.Next (Selected_Post, TID);
+                              Navigation_Links.Next_Post
+                                (Context, TID);
          begin
             Templates.Insert
               (Translations, Templates.Assoc
