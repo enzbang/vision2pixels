@@ -122,8 +122,14 @@ ul#bft_navigate li, ul#pfe_navigate li {
    padding-right:1em;
 }
 @@--
+ul#pfe_navigate li#pfe_go_to_list {
+    position:absolute;
+    right:1.5em;
+}
+@@--
 ul#bft_navigate {
-    margin: 0 0 0 30px;
+    margin: 0 auto;
+    text-align:center;
 }
 @@--
 ul#pfe_navigate li img {
@@ -142,16 +148,22 @@ ul#bft_navigate li.nav_info {
     background-color: @_LIGHT_BORDER_@;
     border:thin solid @_PHOTOTITLECOLOR_@;
 }
+
+#pfe_image_infos h2 {
+  font-size:1.3em;
+}
+
 @@--
 #pfe_img_author, #pfnpe_img_author {
-    text-align:right;
+    float:right;
+    margin:0;
     font-style:italic;
     color:@_PHOTOAUTHOR_@;
 }
 @@--
 #pfe_main_image_comment {
+  font-size:1.1em;
   text-align:center;
-  font-size:1.3em;
 }
 @@--
 textarea#global_comment_input {
@@ -236,12 +248,13 @@ div#bnc_comment_login em {
 @@--  Forum threads
 @@--
 div#pft_filters {
-    margin:4em auto;
+    margin:4em auto 0;
     width:50em;
     color:#C1C7C7;
     font-weight:bold;
     border:thin solid #C1C7C7;
     padding:0.3em;
+    text-align:center;
 }
 
 div#pft_filters div, div#pft_filters h2 {
@@ -284,15 +297,6 @@ div#bl_login_err {
     margin:0;
     padding:0;
     color:red;
-}
-@@--
-body.forum_threads select#bff_forum_filter_set,
-body.forum_threads select#bffps_forum_filter_pagesize {
-
-}
-@@--
-ul#bft_navigate {
-    margin-top:4em;
 }
 @@--
 @@--  Login form

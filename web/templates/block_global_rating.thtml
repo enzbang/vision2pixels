@@ -1,9 +1,14 @@
-@@TABLE@@
-<h3 class="criterianame">@_GLOBAL_CRITERIA_NAME_@</h3>
-<ul id="bgr_votefor@_GLOBAL_CRITERIA_ID_@" class="unit-global-rating">
-  <li class="current-global-rating"
-      style="width:@_MULT(15):GLOBAL_CRITERIA_CURRENT_RATING_@px;">
-    Currently @_GLOBAL_CRITERIA_CURRENT_RATING_@/5
-  </li>
-</ul>
-@@END_TABLE@@
+@@IF@@ @_GLOBAL_NB_VOTE_@ /= 0
+  <p id="bgr_has_vote">@_GLOBAL_NB_VOTE_@ Vote : </p>
+  @@TABLE@@
+  <h3 class="criterianame">@_GLOBAL_CRITERIA_NAME_@</h3>
+  <ul id="bgr_votefor@_GLOBAL_CRITERIA_ID_@" class="unit-global-rating">
+    <li class="current-global-rating"
+        style="width:@_MULT(15):GLOBAL_CRITERIA_CURRENT_RATING_@px;">
+      Currently @_GLOBAL_CRITERIA_CURRENT_RATING_@/5
+    </li>
+  </ul>
+  @@END_TABLE@@
+@@ELSE@@
+  <p id="bgr_no_vote">Pas de vote pour l'instant</p>
+@@END_IF@@

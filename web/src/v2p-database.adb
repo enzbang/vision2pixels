@@ -756,6 +756,8 @@ package body V2P.Database is
       Criteria_Id : Templates.Tag;
       Criteria    : Templates.Tag;
 
+      Nb_Vote     : Natural := 0;
+
    begin
       Connect (DBH);
 
@@ -763,8 +765,8 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter, "select post_rating, criteria_id, "
-           & "(select name from criteria where id=criteria_id) "
-           & "from global_rating where post_id=" & To_String (Tid));
+           & "(select name from criteria where id=criteria_id), "
+           & "nb_vote from global_rating where post_id=" & To_String (Tid));
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -773,6 +775,9 @@ package body V2P.Database is
          Criteria_Id := Criteria_Id & DB.String_Vectors.Element (Line, 2);
          Criteria    := Criteria    & DB.String_Vectors.Element (Line, 3);
 
+         if Nb_Vote < Natural'Value (DB.String_Vectors.Element (Line, 4)) then
+            Nb_Vote := Natural'Value (DB.String_Vectors.Element (Line, 4));
+         end if;
          Line.Clear;
       end loop;
 
@@ -793,6 +798,10 @@ package body V2P.Database is
          Templates.Assoc
            (Block_Global_Rating.GLOBAL_CRITERIA_CURRENT_RATING, Post_Rating));
 
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Block_Global_Rating.GLOBAL_NB_VOTE, Nb_Vote));
       return Set;
    end Get_Global_Rating;
 
