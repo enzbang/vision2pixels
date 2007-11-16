@@ -1,4 +1,3 @@
-
 @@SET@@ MAX_IMAGE_SIZE=800
 @@SET@@ MIN_IMAGE_SIZE=500
 @@SET@@ HIGHLIGHT_COLOR=#019BBD
@@ -6,96 +5,96 @@
 @@SET@@ PHOTOCATEGORY=#DCE0E3
 @@SET@@ PHOTOAUTHOR=#B5C8FF
 @@SET@@ LIGHT_BORDER=#333
-
+@@--
 @@-- Position
-
+@@--
 html, body, #cvt_contents {
     height:100%;
     min-height:100%;
     width:100%;
 }
-
+@@--
 html > body, html > body #cvt_contents {
     height:auto;
 }
-
+@@--
 body {
-    margin:0pt;
-    padding:0pt;
+    margin:0;
+    padding:0;
 }
-
+@@--
 #cvt_contents {
-    left:0pt;
+    left:0;
     position:absolute;
-    top:0pt;
+    top:0;
 }
-
+@@--
 #cve_footer {
-    background-color:#222222;
-    bottom:0pt;
-    padding:0pt;
+    background-color:#222;
+    bottom:0;
+    padding:0;
     position:absolute;
     text-align:center;
     width:100%;
 }
-
+@@--
 #cvt_main {
     height:auto;
     margin-bottom:5em;
     padding:0.5em;
 }
-
+@@--
 @@--  Fonts
-
+@@--
 * {
    line-height:1.4em;
 }
-
+@@--
 h1, h2, h3, h4, h5, h6 {
    text-transform:capitalize;
 }
-
+@@--
 p {
    margin: 1em 0em;
 }
-
+@@--
 body {
-   font-family: arial, sans-serif;
+   font-family:verdana,helvetica,arial,sans-serif;
    text-align:left;
 }
-
+@@--
 a {
    text-decoration:none;
 }
-
+@@--
 p#bl_cd_user {
    font-style:italic;
 }
-
+@@--
 #footnote {
    font-size:0.8em;
 }
-
+@@--
 @@--  General
-
+@@--
 select, input {
    border: thin solid @_HIGHLIGHT_COLOR_@;
    color: white;
 }
-
+@@--
 input[type="submit"] {
    background-color: @_HIGHLIGHT_COLOR_@;
    color: black;
 }
-
+@@--
 strong {
    font-weight: bolder;
 }
-
+@@--
 cite, em {
    font-style: italic;
 }
-
+@@--
 h1 {
    padding:2em 0 0 0;
    font-size:1.6em;
@@ -103,9 +102,9 @@ h1 {
    text-align:center;
    text-transform:none;
 }
-
+@@--
 @@--  Blocks
-
+@@--
 div#pfe_image_block {
    left:50%;
    margin:40px 0 0 -@_DIV(2):MAX_IMAGE_SIZE_@px;
@@ -113,48 +112,48 @@ div#pfe_image_block {
    padding:0;
    width:@_MAX_IMAGE_SIZE_@px;
 }
-
+@@--
 @@--  Navigation links
-
+@@--
 ul#bft_navigate li, ul#pfe_navigate li {
    display:inline;
    text-transform:uppercase;
    font-size:0.8em;
    padding-right:1em;
 }
-
+@@--
 ul#bft_navigate {
     margin: 0 0 0 30px;
 }
-
+@@--
 ul#pfe_navigate li img {
    display:none;
 }
-
+@@--
 ul#bft_navigate li.nav_info {
    font-size:0.7em;
 }
-
+@@--
 @@--  forum_entry
-
+@@--
 #pfe_image_infos {
     margin:2em 0;
     padding:1em 2em;
     background-color: @_LIGHT_BORDER_@;
     border:thin solid @_PHOTOTITLECOLOR_@;
 }
-
+@@--
 #pfe_img_author, #pfnpe_img_author {
     text-align:right;
     font-style:italic;
     color:@_PHOTOAUTHOR_@;
 }
-
+@@--
 #pfe_main_image_comment {
   text-align:center;
   font-size:1.3em;
 }
-
+@@--
 textarea#global_comment_input {
    width:95%;
    height:10em;
@@ -162,61 +161,61 @@ textarea#global_comment_input {
    color: white;
    border: thin dotted white;
 }
-
+@@--
 label#global_comment_input {
    width: 90%;
    font-size: 1.2em;
    background: black;
 }
-
+@@--
 form#bnc_comment_form label {
    font-weight: bold;
    font-size: 1.2em;
    background: black;
 }
-
+@@--
 div#pfe_lazy_new_comment {
    border: thin solid @_LIGHT_BORDER_@;
    padding: 1em;
    margin-top: 1em;
 }
-
+@@--
 body.forum_entry p#pfe_main_image {
    margin:0px auto;
    text-align:center;
    padding:5px 0 0 0;
 }
-
+@@--
 body.forum_entry #pfe_comments {
     border :thin solid @_LIGHT_BORDER_@;
     padding:1em;
 }
-
+@@--
 body.forum_entry #pfe_comments li {
     border :thin solid #004656;
     padding:1em;
 }
-
+@@--
 body.forum_entry #pfe_comments p#pfe_nocomment {
     @@-- When no comments
     font-size:1.4em;
     text-align:center;
 }
-
+@@--
 #bnc_noanonymouscomment {
    text-align:center;
    color:#B01417;
    text-decoration:underline;
 }
-
+@@--
 body.forum_entry #pfe_new_comment {
    width:@_MIN_IMAGE_SIZE_@px;
 }
-
+@@--
 body.forum_entry #pfe_new_comment legend {
    display:none;
 }
-
+@@--
 body.forum_entry #pfe_new_comment input,
 body.forum_entry #pfe_new_comment textarea
 {
@@ -224,17 +223,38 @@ body.forum_entry #pfe_new_comment textarea
    padding:0.2em;
    margin:5px 0 5px 0;
 }
-
+@@--
 body.forum_entry #pfe_new_comment input[type="submit"]
 {
    width:2em;
 }
-
+@@--
 div#bnc_comment_login em {
    font-size:1.1em;
 }
-
+@@--
 @@--  Forum threads
+@@--
+div#pft_filters {
+    margin:4em auto;
+    width:50em;
+    color:#C1C7C7;
+    font-weight:bold;
+    border:thin solid #C1C7C7;
+    padding:0.3em;
+}
+
+div#pft_filters div, div#pft_filters h2 {
+    display:inline;
+    padding:0 1.5em;
+}
+
+div#pft_filters div select, div#pft_filters div select option {
+    padding:0.4pt;
+    color:#C1C7C7;
+    font-weight:bold;
+    border:black;
+}
 
 div#cvt_lazy_login, div#cvt_lazy_quick_login {
    float:right;
@@ -247,7 +267,7 @@ div#cvt_lazy_login, div#cvt_lazy_quick_login {
    right:0px;
    z-index:5000;
 }
-
+@@--
 div#bftt_forum_text {
    border: thin solid @_LIGHT_BORDER_@;
    width: 90%;
@@ -255,69 +275,60 @@ div#bftt_forum_text {
    margin-top: 2em;
    padding: 1em;
 }
-
+@@--
 div#cvt_lazy_login {
     top:1em;
 }
-
+@@--
 div#bl_login_err {
     margin:0;
     padding:0;
     color:red;
 }
-
+@@--
 body.forum_threads select#bff_forum_filter_set,
 body.forum_threads select#bffps_forum_filter_pagesize {
-    top:4em;
-    right:0.5em;
-    position:absolute;
-    border:black;
-}
 
-body.forum_threads select#bfcf_forum_category_filter_set,
- body.forum_threads select#bff_forum_filter_set {
-    top:2em;
-    position:absolute;
 }
-
+@@--
 ul#bft_navigate {
     margin-top:4em;
 }
-
+@@--
 @@--  Login form
-
+@@--
 form#bl_login_form {
    margin: 2em 0 2em 0;
 }
-
+@@--
 form#bl_login_form p {
       display:inline;
 }
-
+@@--
 form#bl_login_form p#bl_cd_user {
    display:block;
 }
-
+@@--
 #bl_login_form input {
    margin-right:1em;
    width:8em;
 }
-
+@@--
 #bl_login_form label {
    display:none;
 }
-
+@@--
 #bl_logged_box {
    padding:2em;
 }
-
+@@--
 @@--  Main page
-
+@@--
 body.main h1 {
    padding:2em 0 0.5em 0;
    font-size:2em;
 }
-
+@@--
 #pm_presentation {
    border: thin solid @_LIGHT_BORDER_@;
    padding: 0.5%;
@@ -326,7 +337,7 @@ body.main h1 {
    height: 20em;
    float: left;
 }
-
+@@--
 #pm_logo {
    border: thin solid @_LIGHT_BORDER_@;
    padding: 0.5%;
@@ -335,7 +346,7 @@ body.main h1 {
    float: left;
    height: 20em;
 }
-
+@@--
 #pm_latest_users {
    border: thin solid @_LIGHT_BORDER_@;
    padding: 0.5%;
@@ -344,7 +355,7 @@ body.main h1 {
    float: left;
    height: 20em;
 }
-
+@@--
 #pm_latest_posts {
    border: thin solid @_LIGHT_BORDER_@;
    padding: 1%;
@@ -352,87 +363,82 @@ body.main h1 {
    width: 95.5%;
    float: left;
 }
-
+@@--
 #pm_latest_posts p {
    float: left;
 }
-
+@@--
 @@--  Footpage
-
+@@--
 #ct_ft {
     display:none;
 }
-
+@@--
 @@--  Forum list
-
+@@--
 ul#bfl_navcontainer {
     top:5px;
     position:absolute;
     width:80%;
 }
-
+@@--
 ul#bfl_navcontainer li {
    display:inline;
    margin-right:1em;
    font-family:arial,sans-serif;
    font-size:0.9em;
+   font-size:0.8em;
+   font-weight:bold;
+   padding:0.2em;
 }
-
-ul#bfl_navcontainer li a {
-   text-decoration:underline;
-}
-
-ul#bfl_navcontainer li.index a {
-  text-decoration:none;
-}
-
+@@--
 @@--  Colors
-
+@@--
 html {
    background: black;
    color:white;
 }
-
+@@--
 a {
    color:white;
 }
-
+@@--
 select, input
 {
    background-color:#131313;
 }
-
+@@--
 input:hoover,
    textarea:hoover
 {
    color:white;
 }
-
+@@--
 ul#bfl_navcontainer li a {
    color:#c1c7c7;
 }
-
+@@--
 ul#bfl_navcontainer li.index a {
    color:#436EEE;
 }
-
+@@--
 .right {
    text-align:right;
 }
-
+@@--
 @@-- Slides
-
+@@--
 ul.slides {
     list-style-type: none;
     margin:0 auto;
     width:100%;
     text-align:center;
 }
-
+@@--
 ul.thumb_metadata {
     font-size:0.9em;
 }
-
+@@--
 li.thumbs, li.small_thumbs {
     float: left;
     overflow:hidden;
@@ -441,13 +447,13 @@ li.thumbs, li.small_thumbs {
     text-align: center;
     margin: 30px;
 }
-
+@@--
 li.small_thumbs {
     width: 130px;
     height: 100px;
     margin: 1px;
 }
-
+@@--
 li.thumbs img, li.small_thumbs img {
     width:155px;
     display: inline;
@@ -456,12 +462,12 @@ li.thumbs img, li.small_thumbs img {
     vertical-align:center;
     text-align: center;
 }
-
+@@--
 li.small_thumbs img {
     width:105px;
     margin:-5px;
 }
-
+@@--
 span.nooverflowimage, span.small_nooverflowimage {
     width:150px;
     text-align:center;
@@ -472,13 +478,13 @@ span.nooverflowimage, span.small_nooverflowimage {
     display:block;
     overflow:hidden;
 }
-
+@@--
 span.small_nooverflowimage {
     width:110px;
     margin:5px;
     height:65px;
 }
-
+@@--
 span.imgcontainer, span.small_imgcontainer {
     background-color: #222;
     border: 1px solid #434343;
@@ -489,25 +495,25 @@ span.imgcontainer, span.small_imgcontainer {
     display:block;
     overflow:hidden;
 }
-
+@@--
 span.small_imgcontainer {
     width:120px;
     margin:12px 10px 10px 10px;
     height:75px;
 }
-
+@@--
 .photocat {
     color: @_PHOTOCATEGORY_@;
 }
-
+@@--
 .photoauthor {
     color: @_PHOTOAUTHOR_@;
 }
-
+@@--
 .slides li a {
     text-align: center;
 }
-
+@@--
 .slides li p a {
    color: @_PHOTOTITLECOLOR_@;
    font-size: 1.1em;
@@ -517,45 +523,45 @@ span.small_imgcontainer {
    display:block;
    text-decoration: none;
 }
-
+@@--
 .slides li p a.hidden_entry {
    text-decoration: line-through;
    color: #ff0000;
 }
-
+@@--
 iframe {
-/*    display: none; */
-/* It is not possible to use the display property here as IE7 will
-refuse to activate the form if the submit button is not displayed. For
-the record, using "visibility: hidden" does not work. So the trick is
-to make the button with a null size and move it outside of the
-display. */
+@@--  display: none;
+@@--  It is not possible to use the display property here as IE7 will
+@@--  refuse to activate the form if the submit button is not displayed. For
+@@--  the record, using "visibility: hidden" does not work. So the trick is
+@@--  to make the button with a null size and move it outside of the
+@@--  display.
    width: 0;
    height: 0;
    position: absolute;
    left: -9000px;
 }
-
+@@--
 #rbl_new_comment {
    margin-top: 2em;
 }
-
+@@--
 .thumbs img
 {
    border: thin solid silver;
    margin-bottom: 0.3em;
 }
-
+@@--
 .thumbs
 {
    text-align: center;
 }
-
+@@--
 ol.comments {
    padding: 1em;
-
+@@--
 }
-
+@@--
 li.level_1
 {
    background-color: #1b1b1b;
@@ -563,26 +569,26 @@ li.level_1
    margin: 0.4em;
    padding:0.2em;
 }
-
+@@--
 li.type_0
 {
    background-color: black;
 }
-
+@@--
 table.forum_text {
    margin-top: 2em;
    margin-bottom: 2em;
    width: 80%;
 }
-
+@@--
 td {
    padding: 5px;
 }
-
+@@--
 td.table_title {
    width: 50%;
 }
-
+@@--
 tr.table_header
 {
    background-color: #1b1b1b;
@@ -599,14 +605,14 @@ tr.table_line_1
 {
    background-color: black;
 }
-
+@@--
 .thumbselect {
    background-position: left center;
    background-repeat: no-repeat;
    height: 80px;
    padding-left: 90px;
 }
-
+@@--
 .thumboption {
    background-position: left center;
    background-repeat: no-repeat;
@@ -614,123 +620,123 @@ tr.table_line_1
    margin-bottom: 2px;
    padding-left: 90px;
 }
-
+@@--
 ol#rbcfe_comments cite {
    border-bottom:thin solid #019bbd;
    width:100%;
    display:block;
    margin:0 0 5px 0;
 }
-
+@@--
 span.user_name {
    margin:0px;
    color:#029cbe;
    font-size: 1.2em;
    font-weight: bold;
 }
-
+@@--
 span.user_name a {
    margin:0px;
    color:#029cbe;
 }
-
+@@--
 ol#rbcfe_comments abbr.comment_date {
    font-size: 0.8em;
    float: right;
 }
-
+@@--
 ol#rbcfe_comments div.comment_body {
    font-size: 1.2em;
    line-height:1.5em;
    text-align: left;
 }
-
+@@--
 @@--  User page
-
+@@--
 body.user_page form#bup_user_page_edit_form,
    #user_page_content
 {
    margin:2em 0 0 1em;
 }
-
+@@--
 body.user_page form#bup_user_page_edit_form textarea#bup_content_input {
    width:100%;
    height:30em;
 }
-
+@@--
 #bup_user_page_content h1 {
    font-size:1.4em;
 }
-
+@@--
 #bup_user_page_content h2 {
    font-size:1.2em;
 }
-
+@@--
 #bup_user_page_content h3 {
    font-size:1.1em;
 }
-
+@@--
 #bup_user_page_content h1 {
    display: block;
    font-size: 2em;
    font-weight: bold;
    margin: .67em 0;
 }
-
+@@--
 #bup_user_page_content h2 {
    display: block;
    font-size: 1.5em;
    font-weight: bold;
    margin: .83em 0;
 }
-
+@@--
 #bup_user_page_content h3 {
    display: block;
    font-size: 1.17em;
    font-weight: bold;
    margin: 1em 0;
 }
-
+@@--
 #bup_user_page_content h4 {
    display: block;
    font-weight: bold;
    margin: 1.33em 0;
 }
-
+@@--
 #bup_user_page_content h5 {
    display: block;
    font-size: 0.83em;
    font-weight: bold;
    margin: 1.67em 0;
 }
-
+@@--
 #bup_user_page_content h6 {
    display: block;
    font-size: 0.67em;
    font-weight: bold;
    margin: 2.33em 0;
 }
-
+@@--
 body.forum_post_page h1 {
     margin:0.5em;
     font-size:2em;
 }
-
+@@--
 @@--  User page
-
+@@--
 body.user_page h1 {
     font-size: 1.6em;
     text-align:center;
     text-transform:none;
     font-weight:bold;
 }
-
+@@--
 body.user_page #bup_user_page_content {
     padding:2em;
     margin: 2em 0;
     border:thin solid #222;
 }
-
+@@--
 body.user_page h2 {
     clear:both;
     font-size: 1.1em;
@@ -739,7 +745,7 @@ body.user_page h2 {
     font-weight:bold;
     text-decoration:underline;
 }
-
+@@--
 body.user_page ul#bucl_lastusercommentlist {
     padding:2em;
 }

@@ -59,12 +59,13 @@ with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Forum_Category_Filter;
+with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Forum_Threads;
+with V2P.Template_Defs.R_Block_Forum_List;
 with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Hidden_Status;
 with V2P.Template_Defs.R_Block_Login;
-with V2P.Template_Defs.R_Block_Forum_List;
 with V2P.Template_Defs.R_Block_Rate;
 with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
@@ -526,7 +527,8 @@ package body V2P.Web_Server is
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Block_New_Comment.Ajax.onchange_bnc_sel_forum_list,
+        (Template_Defs.Chunk_Forum_List_Select.
+           Ajax.onchange_cfls_sel_forum_list,
          Template_Defs.R_Block_Forum_List.Template,
          Callbacks.Ajax.Onchange_Forum_List'Access,
          Content_Type     => MIME.Text_XML,
