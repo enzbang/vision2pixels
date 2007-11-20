@@ -163,6 +163,9 @@ package body V2P.Callbacks.Page is
          Name    => Template_Defs.Set_Global.FID,
          Value   => FID);
 
+      Context.Set_Value
+        (Template_Defs.Set_Global.FILTER_CATEGORY, "");
+
       if Context.Exist (Template_Defs.Set_Global.TID) then
          Context.Remove (Template_Defs.Set_Global.TID);
       end if;
