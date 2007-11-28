@@ -21,6 +21,7 @@
 
 with "aws";
 with "morzhol";
+with "gnadelite";
 
 with "gwiad-plugins-services";
 with "gwiad-plugins-websites";
@@ -29,9 +30,7 @@ with "gwiad-web";
 with "wiki_interface";
 
 with "../shared";
-with "../db/db";
 with "../image/image";
-with "../lib/gnade/gnade";
 with "../kernel/kernel";
 
 project Web is

@@ -19,9 +19,10 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with "gnadelite";
+with "morzhol";
 with "../shared";
 with "../lib/aunit/v2p_aunit";
-with "db";
 
 project DB_Test is
 
@@ -46,13 +47,6 @@ project DB_Test is
    ------------
 
    package Linker is
-
-      case Shared.OS is
-         when "Windows_NT" =>
-            null;
-         when others =>
-            for Default_Switches ("Ada") use ("-lodbc");
-      end case;
 
       case Shared.Build is
          when "Debug" =>
