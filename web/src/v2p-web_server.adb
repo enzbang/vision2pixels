@@ -34,13 +34,13 @@ with AWS.Templates;
 with Gwiad.Web.Virtual_Host;
 with Gwiad.Plugins.Websites.Registry;
 with Morzhol.OS;
+with Morzhol.Logs;
 
 with V2P.Settings;
 
 with V2P.Context;
 with V2P.Callbacks.Page;
 with V2P.Callbacks.Ajax;
-with V2P.Logs;
 
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
@@ -85,6 +85,7 @@ package body V2P.Web_Server is
    use Ada.Exceptions;
    use AWS;
 
+   use Morzhol;
    use Morzhol.OS;
 
    use AWS.Services.Web_Block.Registry;
@@ -285,7 +286,9 @@ package body V2P.Web_Server is
               Services.Web_Block.Registry.Content_Type (URI) = MIME.Text_HTML
             then
                Logs.Write
-                 (Module, Logs.Error, "Default_Callback HTML exception for "
+                 (Name    => Module,
+                  Kind    => Logs.Error,
+                  Content => "Default_Callback HTML exception for "
                   & Logs.NV ("URI", URI) & " "
                   & Logs.NV ("EXNAME", Exception_Name (E)) & " "
                   & Logs.NV ("EXMESS", Exception_Message (E)));
@@ -307,7 +310,9 @@ package body V2P.Web_Server is
 
             else
                Logs.Write
-                 (Module, Logs.Error, "Default_Callback XML exception for "
+                 (Name    => Module,
+                  Kind    => Logs.Error,
+                  Content => "Default_Callback XML exception for "
                   & Logs.NV ("URI", URI) & " "
                   & Logs.NV ("EXNAME", Exception_Name (E)) & " "
                   & Logs.NV ("EXMESS", Exception_Message (E)));
