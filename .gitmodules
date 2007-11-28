@@ -1,0 +1,3 @@
+[submodule "lib/gnadelite"]
+	url = git+ssh://enzbang@repo.or.cz/srv/git/gnadelite.git
+	path = lib/gnadelite
