@@ -28,11 +28,11 @@ with AWS.Utils;
 
 with DB;
 with Image.Metadata.Embedded;
+with Morzhol.Logs;
 with Morzhol.OS;
 with Morzhol.Strings;
 
 with V2P.DB_Handle;
-with V2P.Logs;
 with V2P.Settings;
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
@@ -58,8 +58,8 @@ package body V2P.Database is
    use Ada;
    use Ada.Exceptions;
 
+   use Morzhol;
    use Morzhol.Strings;
-
    use Morzhol.OS;
 
    use V2P.Template_Defs;
@@ -124,7 +124,9 @@ package body V2P.Database is
             DBH_TLS.Set_Value (DBH.all);
          else
             Logs.Write
-              (Module, Logs.Error, "ERROR : No database found : " & DB_Path);
+              (Name    => Module,
+               Kind    => Logs.Error,
+               Content => "ERROR : No database found : " & DB_Path);
             raise No_Database
               with "ERROR : No database found : " & DB_Path;
          end if;
@@ -571,9 +573,10 @@ package body V2P.Database is
 
                else
                   Logs.Write
-                    (Module,
-                     Logs.Error,
-                     "Get_Id, Fid and Tid empty, raise Database_Error");
+                    (Name    => Module,
+                     Kind    => Logs.Error,
+                     Content => "Get_Id, Fid and Tid empty, "
+                     & "raise Database_Error");
                   raise Database_Error;
                end if;
             end Check_Fid;
@@ -658,9 +661,9 @@ package body V2P.Database is
 
       if not Iter.More then
          Logs.Write
-           (Module,
-            Logs.Error,
-            "Get_Id, Fid and Tid empty, raise Parameter_Error");
+           (Name    => Module,
+            Kind    => Logs.Error,
+            Content => "Get_Id, Fid and Tid empty, raise Parameter_Error");
          raise Parameter_Error with "Can not get forum type for Tid = "
            & To_String (Tid);
       end if;
