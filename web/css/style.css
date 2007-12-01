@@ -172,6 +172,7 @@ textarea#global_comment_input {
    background: black;
    color: white;
    border: thin dotted white;
+   padding: 10px;
 }
 @@--
 label#global_comment_input {
