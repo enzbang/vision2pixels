@@ -1,6 +1,7 @@
 **b~*
 *.ali
 *.db
+*.exe
 *.log.*
 *.o
 *.orig
