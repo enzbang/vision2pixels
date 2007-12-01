@@ -33,7 +33,7 @@ check:
 	$(GNAT) check -dd -Pdb_test -rules -from=../v2p.check
 
 setup:
-	$(MKDIR) lib obj
+	$(MKDIR) obj
 
 install: create_db
 	-$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/db
@@ -43,7 +43,7 @@ create_db:
 	(cd data; rm -f testing.db; ./create_database.sh)
 
 run_tests:
-	(cd test; ./db_harness > $(LOGFILE))
+	(cd test; ../obj/db_harness > $(LOGFILE))
 	-grep "Failed Assertions" $(LOGFILE) >> $(LOG)
 	-grep "Unexpected Errors" $(LOGFILE) >> $(LOG)
 
