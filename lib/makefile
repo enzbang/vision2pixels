@@ -29,7 +29,7 @@ build: build-default
 clean: clean-default
 
 setup: setup-default
-	$(MKDIR) aunit/obj gnade/lib gnade/obj
+	$(MKDIR) aunit/obj
 
 check:
 
