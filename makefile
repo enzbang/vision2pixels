@@ -67,10 +67,8 @@ check: check-default
 init_tests:
 ifeq ($(OS),Windows_NT)
 	-mkdir runtime
-	$(CP) -p db/lib/*$(SOEXT) runtime/
 	$(CP) -p image/lib/*$(SOEXT) runtime/
 	$(CP) -p kernel/lib/*$(SOEXT) runtime/
-	$(CP) -p lib/gnade/lib/*$(SOEXT) runtime/
 	$(CP) -p lib/g2f_io/lib/*$(SOEXT) runtime/
 	$(CP) -p web/lib/*$(SOEXT) runtime/
 endif
@@ -110,10 +108,8 @@ install_gwiad_plugin: install_db
 	$(CP) -r web/css/img/* \
 		$(GWIAD_ROOT)/plugins/vision2pixels/css/img/
 	$(CP) -f web/lib/*$(SOEXT) $(GWIAD_ROOT)/lib/websites
-	$(CP) db/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) image/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) kernel/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
-	$(CP) lib/gnade/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) lib/g2f_io/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) -f $(DIOUZHTU_DYNAMIC_LIB)/*wiki_service$(SOEXT) \
 		$(GWIAD_ROOT)/lib/services
