@@ -148,11 +148,10 @@ ul#bft_navigate li.nav_info {
     background-color: @_LIGHT_BORDER_@;
     border:thin solid @_PHOTOTITLECOLOR_@;
 }
-
+@@--
 #pfe_image_infos h2 {
   font-size:1.3em;
 }
-
 @@--
 #pfe_img_author, #pfnpe_img_author {
     float:right;
@@ -257,19 +256,19 @@ div#pft_filters {
     padding:0.3em;
     text-align:center;
 }
-
+@@--
 div#pft_filters div, div#pft_filters h2 {
     display:inline;
     padding:0 1.5em;
 }
-
+@@--
 div#pft_filters div select, div#pft_filters div select option {
     padding:0.4pt;
     color:#C1C7C7;
     font-weight:bold;
     border:black;
 }
-
+@@--
 div#cvt_lazy_login, div#cvt_lazy_quick_login {
    float:right;
    margin-right:1em;
