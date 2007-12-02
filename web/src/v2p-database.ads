@@ -172,8 +172,7 @@ package V2P.Database is
       Height   : in Integer;
       Width    : in Integer;
       Size     : in Integer) return String;
-   --  Insert a new photo into the database
-   --  Returns photo id
+   --  Insert a new photo into the database, returns photo id
 
    procedure Insert_Metadata
      (Pid                     : in Id;
@@ -189,7 +188,8 @@ package V2P.Database is
       Name        : in String;
       Comment     : in String;
       Pid         : in Id) return Id;
-   --  Insert a new post into the database and returns post id
+   --  Insert a new post into the database. If Pid /= Empty_Id it is the photo
+   --  Id for the new post, otherwise it is a textual post. returns post id.
 
    procedure Increment_Visit_Counter (Pid : in Id);
    --  Increment a thread visit counter
@@ -224,10 +224,10 @@ package V2P.Database is
 
 private
 
-   No_User_Data      : constant User_Data :=
-                         User_Data'(Null_Unbounded_String,
-                                    Null_Unbounded_String,
-                                    False);
-   Empty_Id          : constant Id := 0;
+   No_User_Data : constant User_Data :=
+                    User_Data'(Null_Unbounded_String,
+                               Null_Unbounded_String,
+                               False);
+   Empty_Id     : constant Id := 0;
 
 end V2P.Database;

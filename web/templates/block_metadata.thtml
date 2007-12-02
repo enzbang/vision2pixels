@@ -1,5 +1,4 @@
 @@INCLUDE@@ set_babel.thtml
-
 @@--
 <div id="bm_geo_metadata">
   @@IF@@ @_METADATA_LATITUDE_@ /= ""
