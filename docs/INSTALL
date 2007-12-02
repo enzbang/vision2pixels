@@ -3,23 +3,39 @@ Some notes for building Vision2Pixels from sources.
 
 Vision2Pixels needs some support libraries:
 
+   * Gwiad (required)
+
+     http://repo.or.cz/w/gwiad.git
+
+     Morzhol submodule must also be installed.
+
    * ImageMagick (required)
 
      Tested with ImageMagick 6.2.4.
+
+   * GnadeLite (required - a Git submodule)
+
+     http://repo.or.cz/w/gnadelite.git
+
+     Minimal version of GNADE database binding for Vision2Pixels.
+     It also contains a high level binding to abstract the database
+     used, this will permit to swicth to PostgreSQL if needed.
 
    * JPEG (required for ImageMagick JPEG support)
 
      Tested with JPEG v6b
 
-   * SQLite3 (optional)
+   * SQLite3 (required)
 
-     Needed only if using the SQLite3 database and not the ODBC
-     support. With ODBC it is possible to use any databases
-     like PostgreSQL or MySQL for example.
-
+     SQLite3 database is at the moment the primary database.
 
 Building
 --------
+
+   Ada modules Gwiad, Morzhol and GnadeLite must be installed into the
+   standard location. See install documentation for each of them.
+
+   Building Vision2Pixels:
 
    $ cd v2p
    $ make
@@ -64,7 +80,7 @@ is the v2p.ini to use with the demo environment:
 
    db_name db/testing.db
    images_path db/images/
-   thumbs_path db//thumbs/
+   thumbs_path db/thumbs/
 
 Means that the database can be found in
 ~/opt/gwiad/plugins/vision2pixels/db/testing.db.
@@ -72,10 +88,22 @@ Means that the database can be found in
 Building libraries
 ------------------
 
-   It is trivial to do so on GNU/Linux and other UNIXes. The notes below are
-   for building ImageMagick on Windows using GNAT GPL 2007. Note that it is
-   supposed that you have Cygwin toolset installed. It may work with MSYS but
-   this has not been tested.
+   It is trivial to do so on GNU/Linux and other UNIXes.
+
+   On Windows it is possible to download tested libraries here:
+
+   http://code.google.com/p/vision2pixels/downloads/list
+
+   It is also possible to build those libraries from source. This is not
+   tested anymore. So the information below could need some tweaking.
+
+   -----------------------------------------------------------------------
+                NOT SUPPORTED ANYMORE - KEPT JUST IN CASE
+   -----------------------------------------------------------------------
+
+   The notes below are for building ImageMagick on Windows using GNAT GPL
+   2007. Note that it is supposed that you have Cygwin toolset
+   installed. It may work with MSYS but this has not been tested.
 
    Note also that we build only the static libraries. Shared libraries are
    not supported for now.
