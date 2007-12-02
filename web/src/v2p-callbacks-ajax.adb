@@ -548,14 +548,20 @@ package body V2P.Callbacks.Ajax is
                        Database.Id'Value
                          (Parameters.Get
                             (P, Chunk_Forum_List_Select.HTTP.CATEGORY));
-      PID          : constant Database.Id :=
-                       Database.Id'Value
-                         (Parameters.Get
-                            (P, Page_Forum_New_Photo_Entry.HTTP.PID));
       Last_Name    : constant String :=
                        Context.Get_Value (Set_Global.CONTEXT_LAST_POST_NAME);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
+      PID          : Database.Id := 0;
    begin
+      declare
+         --  Check PID which could be empty if posting on a text forum
+         PID_Str : constant String :=
+                     Parameters.Get (P, Page_Forum_New_Photo_Entry.HTTP.PID);
+      begin
+         if PID_Str /= "" then
+            PID := Database.Id'Value (PID_Str);
+         end if;
+      end;
 
       if Login = "" and then CID = Database.Empty_Id then
          Templates.Insert
