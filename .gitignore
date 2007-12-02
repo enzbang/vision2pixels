@@ -24,4 +24,5 @@ lib/g2f_io/lib_ext/libmagick.dll.a
 lib/gnade/lib
 test
 web/lib
+web/obj
 web/test/bin
