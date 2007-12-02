@@ -80,7 +80,7 @@ install-test-lib: install-dir
 	$(RM) $(INSTALL_MAIN)/lib/websites/*vision2pixels$(SOEXT)
 	$(RM) $(INSTALL_MAIN)/lib/services/*
 	$(CP) lib/*vision2pixels$(SOEXT) $(INSTALL_MAIN)/lib/websites
-	$(CP) $(DIOUZHTU_DYNAMIC_LIB)/libwiki_service$(SOEXT) \
+	$(CP) $(DIOUZHTU_DYNAMIC_LIB)/*wiki_service$(SOEXT) \
 		$(INSTALL_MAIN)/lib/services
 
 clean:
