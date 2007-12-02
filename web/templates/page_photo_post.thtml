@@ -33,3 +33,5 @@
 @@ELSE@@
 <p class="error">@_BABEL_LOGIN_REQUIRED_@</p>
 @@END_IF@@
+@@--
+@@INCLUDE@@ chunk_v2p_end.thtml

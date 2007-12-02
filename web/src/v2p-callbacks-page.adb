@@ -163,8 +163,7 @@ package body V2P.Callbacks.Page is
          Name    => Template_Defs.Set_Global.FID,
          Value   => FID);
 
-      Context.Set_Value
-        (Template_Defs.Set_Global.FILTER_CATEGORY, "");
+      Context.Set_Value (Template_Defs.Set_Global.FILTER_CATEGORY, "");
 
       if Context.Exist (Template_Defs.Set_Global.TID) then
          Context.Remove (Template_Defs.Set_Global.TID);
@@ -230,7 +229,7 @@ package body V2P.Callbacks.Page is
                    Context.Get_Value (Template_Defs.Set_Global.LOGIN);
 
    begin
-      --  If a new photo has been uploaded, insert it in database
+      --  If a new photo has been uploaded, insert it in the database
 
       if Filename /= "" then
          New_Photo :
@@ -286,6 +285,7 @@ package body V2P.Callbacks.Page is
                end Insert_Photo;
             end if;
          end New_Photo;
+
       else
          if Context.Exist (Template_Defs.Set_Global.HAS_POST_PHOTO) then
             --  Display last uploaded photo
@@ -313,8 +313,8 @@ package body V2P.Callbacks.Page is
    begin
       if Login /= "" then
          if not Context.Exist (Template_Defs.Set_Global.HAS_POST_PHOTO) then
-            Context.Set_Value (Template_Defs.Set_Global.HAS_POST_PHOTO,
-                               Boolean'Image (True));
+            Context.Set_Value
+              (Template_Defs.Set_Global.HAS_POST_PHOTO, Boolean'Image (True));
          end if;
 
          Templates.Insert

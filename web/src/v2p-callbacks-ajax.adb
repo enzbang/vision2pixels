@@ -570,8 +570,8 @@ package body V2P.Callbacks.Ajax is
               (Template_Defs.R_Block_Post_Form_Enter.ERROR,
                "POST SUBMIT ERROR"));
          --  ??? Adds an error message
-      else
 
+      else
          if Last_Name = Name then
             Templates.Insert
               (Translations,
@@ -621,8 +621,7 @@ package body V2P.Callbacks.Ajax is
          if PID /= Database.Empty_Id
            and then Context.Exist (Set_Global.TID)
          then
-            Onsubmit_Metadata_Form_Enter
-              (Request, Context, Translations);
+            Onsubmit_Metadata_Form_Enter (Request, Context, Translations);
          end if;
       end if;
    end Onsubmit_Post_Form_Enter;

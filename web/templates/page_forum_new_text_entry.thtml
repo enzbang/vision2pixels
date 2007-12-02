@@ -30,7 +30,7 @@
 
 <hr id="pfnte_step_4" />
 
-  <p id="global_lazy_metadata">@_LAZY_METADATA_@</p>
+<p id="global_lazy_metadata">@_LAZY_METADATA_@</p>
 
 @@--  One form to rule them all
 
