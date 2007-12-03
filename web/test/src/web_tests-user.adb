@@ -60,8 +60,6 @@ package body Web_Tests.User is
    procedure Login (T : in out AUnit.Test_Cases.Test_Case'Class) is
       use V2P.Template_Defs;
 
-      Result : Response.Data;
-
       function Login_Parameters (Login, Password : in String) return String;
       --  Returns the HTTP login parameters
 
@@ -74,6 +72,8 @@ package body Web_Tests.User is
          return Block_Login.HTTP.LOGIN & '=' & Login &
            '&' & Block_Login.HTTP.PASSWORD & '=' & Password;
       end Login_Parameters;
+
+      Result : Response.Data;
 
    begin
       Client.Get
@@ -97,7 +97,6 @@ package body Web_Tests.User is
         (Response.Message_Body (Result),
          Word_Set'(1 => +"refresh"),
          "login failed for turbo");
-
    end Login;
 
    ---------------
