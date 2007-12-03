@@ -27,7 +27,7 @@ insert into category values (7, 2, 'MatCat2');
 
 insert into criteria values (1, 'Composition');
 insert into criteria values (2, 'Focus');
-insert into criteria values (3, 'Lightling');
+insert into criteria values (3, 'Lumière');
 
 --  Create templates
 
