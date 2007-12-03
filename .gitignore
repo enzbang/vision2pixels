@@ -11,7 +11,9 @@
 *tsrc*
 *v2p-testdir*
 *~
+.#*
 db/lib
+db/obj
 db/test/db_harness
 image/lib
 image/test/image_harness
@@ -22,7 +24,8 @@ lib/g2f_io/lib
 lib/g2f_io/lib_ext/libjpeg.dll.a
 lib/g2f_io/lib_ext/libmagick.dll.a
 lib/gnade/lib
-test
 web/lib
+web/lib_ali
 web/obj
 web/test/bin
+web/test/obj
