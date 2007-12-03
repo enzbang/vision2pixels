@@ -2,6 +2,7 @@
 @@-- HTTP_URL(/forum/new_entry): Forum New Entry URL
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_FORUM_NEW_ENTRY_@ forum_new_entry yui-t7
 
+@@IF@@ @_LOGIN_@ /= ""
 <h1>@_BABEL_FORUM_NEW_ENTRY_@</h1>
 
 <form enctype="multipart/form-data"
@@ -43,3 +44,8 @@
 </div>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, pfnte_new_entry_form_submit, 4=>pfnte_form_image_infos, 5=>bm_metadata_post)
+@@ELSE@@
+<p class="error">@_BABEL_LOGIN_REQUIRED_@</p>
+@@END_IF@@
+@@--
+@@INCLUDE@@ chunk_v2p_end.thtml
