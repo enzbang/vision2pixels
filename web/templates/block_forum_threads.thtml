@@ -17,7 +17,7 @@
   style="visibility:hidden"
   @@END_IF@@
   >
-    <a href="#" id="bft_goto_previous_page">Previous Page</a>
+    <a href="#" id="bft_goto_previous_page">@_BABEL_PREVIOUS_PAGE_@</a>
   </li>
   <li class="nav_info">@_NAV_FROM_@/@_TOTAL_NB_THREADS_@</li>
   <li class="next_link"
@@ -25,7 +25,7 @@
      style="visibility:hidden"
   @@END_IF@@
   >
-    <a href="#" id="bft_goto_next_page">Next Page</a>
+    <a href="#" id="bft_goto_next_page">@_BABEL_NEXT_PAGE_@</a>
   </li>
 
 </ul>
