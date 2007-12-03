@@ -93,3 +93,7 @@
 @@SET@@ BABEL_EXIF_EXPOSURE_PROGRAM="Programme d'exposition"
 @@SET@@ BABEL_EXIF_WHITE_BALANCE="Balance des blancs"
 @@SET@@ BABEL_EXIF_METERING_MODE="Calcul d'exposition"
+@@-- Voting system
+@@SET@@ BABEL_COMPOSITION="Composition"
+@@SET@@ BABEL_FOCUS="Focus"
+@@SET@@ BABEL_LIGHTING="Lumière"
