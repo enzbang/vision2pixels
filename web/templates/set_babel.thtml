@@ -36,6 +36,9 @@
 @@SET@@ BABEL_CLICK_TO_CLOSE="fermer"
 @@SET@@ BABEL_PREVIOUS="Précédent"
 @@SET@@ BABEL_NEXT="Suivant"
+@@SET@@ BABEL_PREVIOUS_PAGE="Page Précédente"
+@@SET@@ BABEL_NEXT_PAGE="Page Suivante"
+@@SET@@ BABEL_BACK_TO="Retour vers"
 @@SET@@ BABEL_ADD_NEW_PHOTO="Ajouter une nouvelle photo"
 @@SET@@ BABEL_SELECT_PHOTO="Sélectionner une photo"
 @@SET@@ BABEL_UNKNOWN_ERROR="Une erreur s'est produite"
@@ -62,6 +65,7 @@
 @@SET@@ BABEL_NB_LINE_RETURNED="affichés"
 @@SET@@ BABEL_PAGE_NUMBER="Page"
 @@SET@@ BABEL_ALL_CATEGORIES="Toutes catégories"
+@@SET@@ BABEL_FILTER="Filtres"
 @@--  User page
 @@SET@@ BABEL_USER_EDIT_YOUR_PAGE="Éditer votre page"
 @@SET@@ BABEL_USER_PAGE="Page utilisateur"
