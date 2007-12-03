@@ -91,7 +91,6 @@ clean:
 
 setup_tests:
 	-$(MKDIR) $(INSTALL_PLUGIN)/db
-
 	echo "server_port 8042" > $(INSTALL_MAIN)/aws.ini
 	echo "db_name db/testing.db" > $(INSTALL_PLUGIN)/v2p.ini
 

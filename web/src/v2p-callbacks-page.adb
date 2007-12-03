@@ -179,8 +179,8 @@ package body V2P.Callbacks.Page is
       V2P.Context.Not_Null_Counter.Set_Value
         (Context.all, Template_Defs.Set_Global.NAV_FROM, From);
 
-      Templates.Insert (Translations,
-                        Database.Get_Forum (FID, Tid => Database.Empty_Id));
+      Templates.Insert
+        (Translations, Database.Get_Forum (FID, Tid => Database.Empty_Id));
    exception
       when Database.Parameter_Error =>
          --  Redirect to main page
@@ -291,8 +291,7 @@ package body V2P.Callbacks.Page is
             --  Display last uploaded photo
 
             Templates.Insert
-              (Translations,
-               Database.Get_User_Last_Photo (Login));
+              (Translations, Database.Get_User_Last_Photo (Login));
             Context.Remove (Template_Defs.Set_Global.HAS_POST_PHOTO);
          end if;
       end if;
@@ -317,13 +316,8 @@ package body V2P.Callbacks.Page is
               (Template_Defs.Set_Global.HAS_POST_PHOTO, Boolean'Image (True));
          end if;
 
-         Templates.Insert
-           (Translations,
-            Database.Get_New_Post_Delay (Login));
-
-         Templates.Insert
-           (Translations,
-            Database.Get_User_Last_Photo (Login));
+         Templates.Insert (Translations, Database.Get_New_Post_Delay (Login));
+         Templates.Insert (Translations, Database.Get_User_Last_Photo (Login));
       end if;
    end Post_Photo;
 
