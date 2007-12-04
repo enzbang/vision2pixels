@@ -11,39 +11,39 @@
 @@-- Position
 @@--
 html, body, #cvt_contents {
-    height:100%;
-    min-height:100%;
-    width:100%;
+   height:100%;
+   min-height:100%;
+   width:100%;
 }
 @@--
 html > body, html > body #cvt_contents {
-    height:auto;
+   height:auto;
 }
 @@--
 body {
-    margin:0;
-    padding:0;
+   margin:0;
+   padding:0;
 }
 @@--
 #cvt_contents {
-    left:0;
-    position:absolute;
-    top:0;
+   left:0;
+   position:absolute;
+   top:0;
 }
 @@--
 #cve_footer {
-    background-color:#222;
-    bottom:0;
-    padding:0;
-    position:absolute;
-    text-align:center;
-    width:100%;
+   background-color:#222;
+   bottom:0;
+   padding:0;
+   position:absolute;
+   text-align:center;
+   width:100%;
 }
 @@--
 #cvt_main {
-    height:auto;
-    margin-bottom:5em;
-    padding:0.5em;
+   height:auto;
+   margin-bottom:5em;
+   padding:0.5em;
 }
 @@--
 @@--  Fonts
@@ -142,13 +142,13 @@ ul#bft_navigate li, ul#pfe_navigate li {
 }
 @@--
 ul#pfe_navigate li#pfe_go_to_list {
-    position:absolute;
-    right:1.5em;
+   position:absolute;
+   right:1.5em;
 }
 @@--
 ul#bft_navigate {
-    margin: 0 auto;
-    text-align:center;
+   margin: 0 auto;
+   text-align:center;
 }
 @@--
 ul#pfe_navigate li img {
@@ -162,32 +162,32 @@ ul#bft_navigate li.nav_info {
 @@--  forum_entry
 @@--
 #pfe_image_infos {
-    margin:2em 0;
-    padding:1em 2em;
-    background-color: @_LIGHT_BORDER_COLOR_@;
-    border:thin solid @_PHOTOTITLECOLOR_@;
+   margin:2em 0;
+   padding:1em 2em;
+   background-color: @_LIGHT_BORDER_COLOR_@;
+   border:thin solid @_PHOTOTITLECOLOR_@;
 }
 @@--
 #pfe_image_infos h2 {
-  font-size:1.3em;
+   font-size:1.3em;
 }
 @@--
 #pfe_img_author, #pfnpe_img_author {
-    float:right;
-    margin:0;
-    font-style:italic;
-    color:@_PHOTOAUTHOR_COLOR_@;
+   float:right;
+   margin:0;
+   font-style:italic;
+   color:@_PHOTOAUTHOR_COLOR_@;
 }
 @@--
 #pfnpe_img_author, #pfnte_img_author {
-    float:none;
-    font-style:italic;
-    color:@_PHOTOAUTHOR_COLOR_@;    
+   float:none;
+   font-style:italic;
+   color:@_PHOTOAUTHOR_COLOR_@;   
 }
 @@--
 #pfe_main_image_comment {
-  font-size:1.1em;
-  text-align:center;
+   font-size:1.1em;
+   text-align:center;
 }
 @@--
 textarea#global_comment_input {
@@ -224,19 +224,19 @@ body.forum_entry p#pfe_main_image {
 }
 @@--
 body.forum_entry #pfe_comments {
-    border :thin solid @_LIGHT_BORDER_COLOR_@;
-    padding:1em;
+   border :thin solid @_LIGHT_BORDER_COLOR_@;
+   padding:1em;
 }
 @@--
 body.forum_entry #pfe_comments li {
-    border :thin solid #004656;
-    padding:1em;
+   border :thin solid #004656;
+   padding:1em;
 }
 @@--
 body.forum_entry #pfe_comments p#pfe_nocomment {
-    @@-- When no comments
-    font-size:1.4em;
-    text-align:center;
+   @@-- When no comments
+   font-size:1.4em;
+   text-align:center;
 }
 @@--
 #bnc_noanonymouscomment {
@@ -279,25 +279,25 @@ div#bnc_comment_login em {
 @@--  Forum threads
 @@--
 div#pft_filters {
-    margin:4em auto 0;
-    width:50em;
-    color:#C1C7C7;
-    font-weight:bold;
-    border:thin solid #C1C7C7;
-    padding:0.3em;
-    text-align:center;
+   margin:4em auto 0;
+   width:50em;
+   color:#C1C7C7;
+   font-weight:bold;
+   border:thin solid #C1C7C7;
+   padding:0.3em;
+   text-align:center;
 }
 @@--
 div#pft_filters div, div#pft_filters h2 {
-    display:inline;
-    padding:0 1.5em;
+   display:inline;
+   padding:0 1.5em;
 }
 @@--
 div#pft_filters div select, div#pft_filters div select option {
-    padding:0.4pt;
-    color:#C1C7C7;
-    font-weight:bold;
-    border:black;
+   padding:0.4pt;
+   color:#C1C7C7;
+   font-weight:bold;
+   border:black;
 }
 @@--
 div#cvt_lazy_login, div#cvt_lazy_quick_login {
@@ -326,9 +326,9 @@ div#cvt_lazy_login {
 }
 @@--
 div#bl_login_err {
-    margin:0;
-    padding:0;
-    color:red;
+   margin:0;
+   padding:0;
+   color:red;
 }
 @@--
 @@--  Login form
@@ -338,7 +338,7 @@ form#bl_login_form {
 }
 @@--
 form#bl_login_form p {
-      display:inline;
+     display:inline;
 }
 @@--
 form#bl_login_form p#bl_cd_user {
@@ -407,15 +407,15 @@ body.main h1 {
 @@--  Footpage
 @@--
 #ct_ft {
-    display:none;
+   display:none;
 }
 @@--
 @@--  Forum list
 @@--
 ul#bfl_navcontainer {
-    top:5px;
-    position:absolute;
-    width:80%;
+   top:5px;
+   position:absolute;
+   width:80%;
 }
 @@--
 ul#bfl_navcontainer li {
@@ -460,89 +460,89 @@ ul#bfl_navcontainer li.index a {
 @@-- Slides
 @@--
 ul.slides {
-    list-style-type: none;
-    margin:0 auto;
-    width:100%;
-    text-align:center;
+   list-style-type: none;
+   margin:0 auto;
+   width:100%;
+   text-align:center;
 }
 @@--
 ul.thumb_metadata {
-    font-size:0.9em;
+   font-size:0.9em;
 }
 @@--
 li.thumbs, li.small_thumbs {
-    float: left;
-    overflow:hidden;
-    width:200px;
-    height:210px;
-    text-align: center;
-    margin: 30px;
+   float: left;
+   overflow:hidden;
+   width:200px;
+   height:210px;
+   text-align: center;
+   margin: 30px;
 }
 @@--
 li.small_thumbs {
-    width: 130px;
-    height: 100px;
-    margin: 1px;
+   width: 130px;
+   height: 100px;
+   margin: 1px;
 }
 @@--
 li.thumbs img, li.small_thumbs img {
-    width:155px;
-    display: inline;
-    padding:0px;
-    margin:-2px;
-    vertical-align:center;
-    text-align: center;
+   width:155px;
+   display: inline;
+   padding:0px;
+   margin:-2px;
+   vertical-align:center;
+   text-align: center;
 }
 @@--
 li.small_thumbs img {
-    width:105px;
-    margin:-5px;
+   width:105px;
+   margin:-5px;
 }
 @@--
 span.nooverflowimage, span.small_nooverflowimage {
-    width:150px;
-    text-align:center;
-    margin:10px;
-    padding:0;
-    vertical-align:center;
-    height:100px;
-    display:block;
-    overflow:hidden;
+   width:150px;
+   text-align:center;
+   margin:10px;
+   padding:0;
+   vertical-align:center;
+   height:100px;
+   display:block;
+   overflow:hidden;
 }
 @@--
 span.small_nooverflowimage {
-    width:110px;
-    margin:5px;
-    height:65px;
+   width:110px;
+   margin:5px;
+   height:65px;
 }
 @@--
 span.imgcontainer, span.small_imgcontainer {
-    background-color: #222;
-    border: 1px solid #434343;
-    width:170px;
-    text-align:center;
-    margin:0 20px 0 20px;
-    height:120px;
-    display:block;
-    overflow:hidden;
+   background-color: #222;
+   border: 1px solid #434343;
+   width:170px;
+   text-align:center;
+   margin:0 20px 0 20px;
+   height:120px;
+   display:block;
+   overflow:hidden;
 }
 @@--
 span.small_imgcontainer {
-    width:120px;
-    margin:12px 10px 10px 10px;
-    height:75px;
+   width:120px;
+   margin:12px 10px 10px 10px;
+   height:75px;
 }
 @@--
 .photocat {
-    color: @_PHOTOCATEGORY_COLOR_@;
+   color: @_PHOTOCATEGORY_COLOR_@;
 }
 @@--
 .photoauthor {
-    color: @_PHOTOAUTHOR_COLOR_@;
+   color: @_PHOTOAUTHOR_COLOR_@;
 }
 @@--
 .slides li a {
-    text-align: center;
+   text-align: center;
 }
 @@--
 .slides li p a {
@@ -749,50 +749,50 @@ body.user_page form#bup_user_page_edit_form textarea#bup_content_input {
 }
 @@--
 body.forum_post_page h1 {
-    margin:0.5em;
-    font-size:2em;
+   margin:0.5em;
+   font-size:2em;
 }
 @@--
 .posting_form {
-    width: 80%;
-    padding: 3em;
+   width: 80%;
+   padding: 3em;
 }
 @@--
 #pfnte_new_entry_form_submit {
-    top-margin: 2em;
+   top-margin: 2em;
 }
 @@--
 @@--  User page
 @@--
 body.user_page h1 {
-    font-size: 1.6em;
-    text-align:center;
-    text-transform:none;
-    font-weight:bold;
+   font-size: 1.6em;
+   text-align:center;
+   text-transform:none;
+   font-weight:bold;
 }
 @@--
 body.user_page #bup_user_page_content {
-    padding:2em;
-    margin: 2em 0;
-    border:thin solid #222;
+   padding:2em;
+   margin: 2em 0;
+   border:thin solid #222;
 }
 @@--
 body.user_page h2 {
-    clear:both;
-    font-size: 1.1em;
-    text-align:center;
-    text-transform:none;
-    font-weight:bold;
-    text-decoration:underline;
+   clear:both;
+   font-size: 1.1em;
+   text-align:center;
+   text-transform:none;
+   font-weight:bold;
+   text-decoration:underline;
 }
 @@--
 body.user_page ul#bucl_lastusercommentlist {
-    padding:2em;
+   padding:2em;
 }
 @@--
 .error {
-    font-size: 24px;
-    color: @_ERROR_COLOR_@;
-    text-align: center;
-    padding: 3em;
+   font-size: 24px;
+   color: @_ERROR_COLOR_@;
+   text-align: center;
+   padding: 3em;
 }
