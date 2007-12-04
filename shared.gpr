@@ -78,7 +78,7 @@ project Shared is
    ---------
 
    package Ide is
-      for VCS_Kind use "Subversion";
+      for VCS_Kind use "Git";
       for VCS_Log_Check
         use "style_checker -l75";
       for VCS_File_Check
