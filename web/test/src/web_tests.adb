@@ -184,6 +184,10 @@ package body Web_Tests is
       Assert (Status, Message);
    end Check;
 
+   ---------
+   -- Get --
+   ---------
+
    function Get
      (Page, Regpat : in String; Index : in Positive) return String
    is
