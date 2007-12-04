@@ -253,6 +253,12 @@ body.forum_entry #pfe_new_comment legend {
    display:none;
 }
 @@--
+form#bl_login_form legend {
+   padding: 0 0 1em 1em;
+   font-size: 1.2em;
+   font-style:italic;
+}
+@@--
 body.forum_entry #pfe_new_comment input,
 body.forum_entry #pfe_new_comment textarea
 {
@@ -315,7 +321,8 @@ div#bftt_forum_text {
 }
 @@--
 div#cvt_lazy_login {
-    top:1em;
+   top:1em;
+   background: #333333; 
 }
 @@--
 div#bl_login_err {
