@@ -23,11 +23,9 @@
   @@ELSE@@
   <replace id="pfe_comments">
     <![CDATA[
-    <ol id="pfe_comments">
       <li id="pfe_comment_@_COMMENT_ID_@" class="level_@_COMMENT_LEVEL_@ new">
       @@INCLUDE@@ chunk_comment.thtml
       </li>
-    </ol>
     ]]>
   </replace>
   @@END_IF@@
