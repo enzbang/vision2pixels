@@ -25,7 +25,10 @@ with Ada.Text_IO;
 with GNAT.Regpat;
 
 with AUnit;
+with AWS.Response;
 with AWS.Utils;
+
+with V2P.Template_Defs.Block_Login;
 
 package body Web_Tests is
 
@@ -195,6 +198,59 @@ package body Web_Tests is
       end if;
       return Page (Matches (Index).First .. Matches (Index).Last);
    end Get;
+
+   -----------
+   -- Login --
+   -----------
+
+   procedure Login
+     (Connection : in out Client.HTTP_Connection; User, Password : in String)
+   is
+      use V2P.Template_Defs;
+
+      function Login_Parameters (Login, Password : in String) return String;
+      --  Returns the HTTP login parameters
+
+      ----------------------
+      -- Login_Parameters --
+      ----------------------
+
+      function Login_Parameters (Login, Password : in String) return String is
+      begin
+         return '&' & Block_Login.HTTP.LOGIN & '=' & Login &
+           '&' & Block_Login.HTTP.PASSWORD & '=' & Password;
+      end Login_Parameters;
+
+      Result : Response.Data;
+
+   begin
+      Client.Get
+        (Connection, Result,
+         URI => Block_Login.Ajax.onclick_bl_login_form_enter &
+         '?' & URL_Context & Login_Parameters (User, Password));
+   end Login;
+
+   ------------
+   -- Logout --
+   ------------
+
+   procedure Logout (Connection : in out Client.HTTP_Connection) is
+      use V2P.Template_Defs;
+      Result : Response.Data;
+   begin
+      Client.Get
+        (Connection, Result,
+         URI => Block_Login.Ajax.onclick_bl_logout_enter & '?' & URL_Context);
+   end Logout;
+
+   -----------------
+   -- URL_Context --
+   -----------------
+
+   function URL_Context return String is
+   begin
+      return "CTX_WB=" & To_String (Context);
+   end URL_Context;
 
 begin --  Web_Tests : Initialization
    Coding_Rules :=

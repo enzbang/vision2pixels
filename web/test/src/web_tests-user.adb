@@ -120,21 +120,30 @@ package body Web_Tests.User is
    -- Name --
    ----------
 
-   function Name (T : in Test_Case) return Message_Strings.Message_String is
+   overriding function Name (T : in Test_Case) return Message_String is
    begin
-      return Message_Strings.New_String ("Web_Tests.User");
+      return New_String ("Web_Tests.User");
    end Name;
 
    --------------------
    -- Register_Tests --
    --------------------
 
-   procedure Register_Tests (T : in out Test_Case) is
+   overriding procedure Register_Tests (T : in out Test_Case) is
       use AUnit.Test_Cases.Registration;
    begin
       Register_Routine (T, Main_Page'Access, "main page");
       Register_Routine (T, Login'Access, "user login");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
+
+   -----------------
+   -- Set_Up_Case --
+   -----------------
+
+   overriding procedure Set_Up_Case (T : in out Test_Case) is
+   begin
+      Context := Null_Unbounded_String;
+   end;
 
 end Web_Tests.User;

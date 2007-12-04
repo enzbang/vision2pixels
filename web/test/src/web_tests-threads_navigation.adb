@@ -31,9 +31,6 @@ package body Web_Tests.Threads_Navigation is
 
    use AWS;
 
-   function URL_Context return String;
-   --  Returns the context as an HTTP URL parameter
-
    procedure Main_Page (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  The very first thing to do is to get the main page
 
@@ -48,9 +45,6 @@ package body Web_Tests.Threads_Navigation is
 
    Connection : Client.HTTP_Connection;
    --  Server connection used by all tests
-
-   Context    : Unbounded_String;
-   --  The context Id to be passed with each request
 
    -----------
    -- Close --
@@ -400,7 +394,7 @@ package body Web_Tests.Threads_Navigation is
    -- Name --
    ----------
 
-   function Name (T : in Test_Case) return Message_String is
+   overriding function Name (T : in Test_Case) return Message_String is
    begin
       return New_String ("Web_Tests.Threads_Navigation");
    end Name;
@@ -409,7 +403,7 @@ package body Web_Tests.Threads_Navigation is
    -- Register_Tests --
    --------------------
 
-   procedure Register_Tests (T : in out Test_Case) is
+   overriding procedure Register_Tests (T : in out Test_Case) is
       use AUnit.Test_Cases.Registration;
    begin
       Register_Routine (T, Main_Page'Access, "main page");
@@ -438,11 +432,12 @@ package body Web_Tests.Threads_Navigation is
    end Set_Page_Size;
 
    -----------------
-   -- URL_Context --
+   -- Set_Up_Case --
    -----------------
 
-   function URL_Context return String is
+   overriding procedure Set_Up_Case (T : in out Test_Case) is
    begin
-      return "CTX_WB=" & To_String (Context);
-   end URL_Context;
+      Context := Null_Unbounded_String;
+   end;
+
 end Web_Tests.Threads_Navigation;

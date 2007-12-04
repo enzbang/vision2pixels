@@ -20,10 +20,12 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded;
+with AWS.Client;
 
 package Web_Tests is
 
    use Ada.Strings.Unbounded;
+   use AWS;
 
    Host : constant String := "127.0.0.10";
    --  v2p web server host
@@ -49,5 +51,21 @@ package Web_Tests is
    function "not" (Word : in String) return Unbounded_String;
    -- A word that should not be found into the results, this is intended to be
    -- used to build a Word_Set.
+
+   --  V2P common routines
+
+   Context : Unbounded_String;
+   --  The context Id to be passed with each request
+
+   procedure Login
+     (Connection     : in out Client.HTTP_Connection;
+      User, Password : in     String);
+   --  Login the specified user
+
+   procedure Logout (Connection : in out Client.HTTP_Connection);
+   --  Logout current connected user
+
+   function URL_Context return String;
+   --  Returns the context as an HTTP URL parameter
 
 end Web_Tests;

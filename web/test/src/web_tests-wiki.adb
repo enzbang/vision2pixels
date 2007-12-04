@@ -32,16 +32,16 @@ package body Web_Tests.Wiki is
    -- Name --
    ----------
 
-   function Name (T : in Test_Case) return Message_Strings.Message_String is
+   overriding function Name (T : in Test_Case) return Message_String is
    begin
-      return Message_Strings.New_String ("Web_Tests.Wiki");
+      return New_String ("Web_Tests.Wiki");
    end Name;
 
    --------------------
    -- Register_Tests --
    --------------------
 
-   procedure Register_Tests (T : in out Test_Case) is
+   overriding procedure Register_Tests (T : in out Test_Case) is
       use AUnit.Test_Cases.Registration;
    begin
       Register_Routine (T, Wiki_To_HTML'Access, "wiki to html");

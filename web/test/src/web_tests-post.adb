@@ -51,20 +51,8 @@ package body Web_Tests.Post is
    procedure Post_New_Message (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  Posts a new photo
 
-   function URL_Context return String;
-   --  Returns the context as an HTTP URL parameter
-
-   procedure Login (User, Password : in String);
-   --  Login the specified user
-
-   procedure Logout;
-   --  Logout current connected user
-
    Connection : Client.HTTP_Connection;
    --  Server connection used by all tests
-
-   Context    : Unbounded_String;
-   --  The context Id to be passed with each request
 
    -----------
    -- Close --
@@ -117,48 +105,6 @@ package body Web_Tests.Post is
          "wrong entry for post 89");
    end Check_Post;
 
-   -----------
-   -- Login --
-   -----------
-
-   procedure Login (User, Password : in String) is
-      use V2P.Template_Defs;
-
-      function Login_Parameters (Login, Password : in String) return String;
-      --  Returns the HTTP login parameters
-
-      ----------------------
-      -- Login_Parameters --
-      ----------------------
-
-      function Login_Parameters (Login, Password : in String) return String is
-      begin
-         return '&' & Block_Login.HTTP.LOGIN & '=' & Login &
-           '&' & Block_Login.HTTP.PASSWORD & '=' & Password;
-      end Login_Parameters;
-
-      Result : Response.Data;
-
-   begin
-      Client.Get
-        (Connection, Result,
-         URI => Block_Login.Ajax.onclick_bl_login_form_enter &
-         '?' & URL_Context & Login_Parameters (User, Password));
-   end Login;
-
-   ------------
-   -- Logout --
-   ------------
-
-   procedure Logout is
-      use V2P.Template_Defs;
-      Result : Response.Data;
-   begin
-      Client.Get
-        (Connection, Result,
-         URI => Block_Login.Ajax.onclick_bl_logout_enter & '?' & URL_Context);
-   end Logout;
-
    ---------------
    -- Main_Page --
    ---------------
@@ -190,7 +136,7 @@ package body Web_Tests.Post is
    -- Name --
    ----------
 
-   function Name (T : in Test_Case) return Message_String is
+   overriding function Name (T : in Test_Case) return Message_String is
    begin
       return New_String ("Web_Tests.Post");
    end Name;
@@ -203,7 +149,7 @@ package body Web_Tests.Post is
       use V2P.Template_Defs;
       Result : Response.Data;
    begin
-      Logout;
+      Logout (Connection);
 
       --  Go to the upload page (anonymous)
 
@@ -221,7 +167,7 @@ package body Web_Tests.Post is
 
       --  Go to the upload page (turbo)
 
-      Login ("turbo", "turbopass");
+      Login (Connection, "turbo", "turbopass");
 
       Client.Get (Connection, Result, URI => "/add_photo?" & URL_Context);
 
@@ -237,8 +183,8 @@ package body Web_Tests.Post is
 
       --  Go to the upload page (test)
 
-      Logout;
-      Login ("test", "test");
+      Logout (Connection);
+      Login (Connection, "test", "test");
 
       Client.Get (Connection, Result, URI => "/add_photo?" & URL_Context);
 
@@ -314,7 +260,7 @@ package body Web_Tests.Post is
       use V2P.Template_Defs;
       Result : Response.Data;
    begin
-      Logout;
+      Logout (Connection);
 
       --  Go to the post test page (anonymous)
 
@@ -333,7 +279,7 @@ package body Web_Tests.Post is
 
       --  Go to the post text page (turbo)
 
-      Login ("turbo", "turbopass");
+      Login (Connection, "turbo", "turbopass");
 
       Client.Get
         (Connection, Result, URI => "/forum/new_entry?" & URL_Context);
@@ -382,7 +328,7 @@ package body Web_Tests.Post is
    -- Register_Tests --
    --------------------
 
-   procedure Register_Tests (T : in out Test_Case) is
+   overriding procedure Register_Tests (T : in out Test_Case) is
       use AUnit.Test_Cases.Registration;
    begin
       Register_Routine (T, Main_Page'Access, "main page");
@@ -394,12 +340,12 @@ package body Web_Tests.Post is
    end Register_Tests;
 
    -----------------
-   -- URL_Context --
+   -- Set_Up_Case --
    -----------------
 
-   function URL_Context return String is
+   overriding procedure Set_Up_Case (T : in out Test_Case) is
    begin
-      return "CTX_WB=" & To_String (Context);
-   end URL_Context;
+      Context := Null_Unbounded_String;
+   end;
 
 end Web_Tests.Post;
