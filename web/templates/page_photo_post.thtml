@@ -4,6 +4,7 @@
 
 @@SET@@ SET_FORM_ACTION = /forum/new_photo_entry
 
+<div class="posting_form">
 @@IF@@ @_LOGIN_@ /= ""
   @@IF@@ @_NEW_POST_DELAY_@ /= ""
     <p class="error">@_BABEL_HAVE_TO_WAIT_@ @_NEW_POST_DATE_@</p>
@@ -33,5 +34,6 @@
 @@ELSE@@
 <p class="error">@_BABEL_LOGIN_REQUIRED_@</p>
 @@END_IF@@
+</div>
 @@--
 @@INCLUDE@@ chunk_v2p_end.thtml

@@ -3,6 +3,7 @@
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_FORUM_NEW_ENTRY_@ forum_new_entry yui-t7
 
 @@IF@@ @_IMAGE_SOURCE_@ /= ""
+<div class="posting_form">
 <h1>@_BABEL_FORUM_NEW_PHOTO_ENTRY_@</h1>
 
 <form enctype="multipart/form-data"
@@ -32,8 +33,6 @@
   </fieldset>
 </form>
 
-<hr id="pfnpe_step_4"/>
-
 <p id="global_lazy_metadata">@_LAZY_METADATA_@</p>
 
 @@--  One form to rule them all
@@ -43,6 +42,7 @@
             value="Envoyer"/></p>
 </form>
 @@END_IF@@
+</div>
 @@INCLUDE@@ chunk_v2p_end.thtml
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, pfnpe_new_entry_form_submit, 4=>pfnpe_form_image_infos, 5=>bm_metadata_post)
