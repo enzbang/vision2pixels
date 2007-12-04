@@ -29,10 +29,13 @@ package Web_Tests.Post is
 
    type Test_Case is new Test_Cases.Test_Case with null record;
 
-   procedure Register_Tests (T : in out Test_Case);
+   overriding procedure Register_Tests (T : in out Test_Case);
    --  Register routines to be run
 
-   function Name (T : in Test_Case) return Message_String;
+   overriding function Name (T : in Test_Case) return Message_String;
    --  Returns name identifying the test case
+
+   overriding procedure Set_Up_Case (T : in out Test_Case);
+   --  Before running the test case
 
 end Web_Tests.Post;
