@@ -25,11 +25,15 @@
     <td>@_DATE_POST_@</td>
     <td>@_COMMENT_COUNTER_@</td>
     <td>@_VISIT_COUNTER_@</td>
-    <td class="hidden_entry" id="bftt_hidden_entry">
     @@IF@@ @_ADMIN_@
-    @_BABEL_HIDDEN_@
+      <td class="hidden_entry" id="bftt_hidden_entry">
+      @@IF@@ @_HIDDEN_@
+        @_BABEL_YES_@
+      @@ELSE@@
+        @_BABEL_NO_@
+      @@END_IF@@
+      </td>
     @@END_IF@@
-    </td>
   </tr>
 @@END_TABLE@@
 </table>

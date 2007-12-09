@@ -174,7 +174,7 @@ package body V2P.Callbacks.Web_Block is
       Admin     : constant Boolean :=
                     Context.Exist (Template_Defs.Set_Global.ADMIN)
                   and then Context.Get_Value
-                    (Template_Defs.Set_Global.ADMIN) = "TRUE";
+                    (Template_Defs.Set_Global.ADMIN) = "T";
       Page_Size : constant Navigation_Links.Page_Size :=
                     V2P.Context.Not_Null_Counter.Get_Value
                       (Context => Context.all,
