@@ -600,6 +600,10 @@ package body V2P.Callbacks.Ajax is
 
                   Context.Set_Value (Set_Global.CONTEXT_LAST_POST_NAME, Name);
 
+                  if Context.Exist (Set_Global.FID) then
+                     Context.Remove (Set_Global.FID);
+                  end if;
+
                   Templates.Insert
                     (Translations,
                      Templates.Assoc
