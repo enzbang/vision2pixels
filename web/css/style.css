@@ -684,30 +684,35 @@ ol#rbcfe_comments div.comment_body {
 @@--
 @@--  User page
 @@--
-body.user_page form#bup_user_page_edit_form,
-   #user_page_content
-{
-   margin:2em 0 0 1em;
+#pu_user_page h2 {
+   width: 80;
+   font-size: 1.2em;
+   background: @_PHOTOTITLE_COLOR_@;
+   text-decoration: none;
+   width: 90%;
+   align: center;
+   margin: 0% 0% 1% 5%;
+   padding: 0.2em;
+   color: black;
+}
+body.user_page form#bup_user_page_edit_form, #bup_user_page_content {
+   margin:2em;
+   width: 80%;
 }
 @@--
 body.user_page form#bup_user_page_edit_form textarea#bup_content_input {
    width:100%;
-   height:30em;
+   height:15em;
+}
+@@--
+#bup_user_page_edit {
+   margin:2em;
+   width: 90%;
+   margin: 0% 0% 1% 5%;
 }
 @@--
 #bup_user_page_content h1 {
    font-size:1.4em;
-}
-@@--
-#bup_user_page_content h2 {
-   font-size:1.2em;
-}
-@@--
-#bup_user_page_content h3 {
-   font-size:1.1em;
-}
-@@--
-#bup_user_page_content h1 {
    display: block;
    font-size: 2em;
    font-weight: bold;
@@ -715,6 +720,7 @@ body.user_page form#bup_user_page_edit_form textarea#bup_content_input {
 }
 @@--
 #bup_user_page_content h2 {
+   font-size:1.2em;
    display: block;
    font-size: 1.5em;
    font-weight: bold;
@@ -722,6 +728,7 @@ body.user_page form#bup_user_page_edit_form textarea#bup_content_input {
 }
 @@--
 #bup_user_page_content h3 {
+   font-size:1.1em;
    display: block;
    font-size: 1.17em;
    font-weight: bold;
@@ -773,8 +780,8 @@ body.user_page h1 {
 @@--
 body.user_page #bup_user_page_content {
    padding:2em;
-   margin: 2em 0;
-   border:thin solid #222;
+   margin: 4em 4em 0;
+   border:thin solid @_LIGHT_BORDER_COLOR_@;
 }
 @@--
 body.user_page h2 {
@@ -788,6 +795,8 @@ body.user_page h2 {
 @@--
 body.user_page ul#bucl_lastusercommentlist {
    padding:2em;
+   margin-left: 5%;
+   width: 90%;
 }
 @@--
 .error {

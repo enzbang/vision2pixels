@@ -7,7 +7,7 @@
     <![CDATA[@_BABEL_UNKNOWN_ERROR_@]]>
   </replace>
 @@ELSE@@
-  <replace id="user_page_content">
+  <replace id="bup_user_page_content">
     <![CDATA[
     @_USER_PAGE_HTML_CONTENT_@
     ]]>
