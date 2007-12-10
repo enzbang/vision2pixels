@@ -17,24 +17,43 @@
       </dd>
     </dl>
   @@ELSE@@
-    @@IF@@ @_LOGIN_@ = @_OWNER_@ or @_IS_OWNER_@
+    @@IF@@ @_LOGIN_@ = @_OWNER_@ or @_IS_OWNER_@ or @_OWNER_@ = ""
+    @@--  If OWNER is empty, the current page if a photo post page
+
       <form enctype="multipart/form-data" id="bm_metadata_post"
             action="#" method="POST">
         <fieldset>
           <p>
-            <label for="latitude">@_BABEL_GEO_LATITUDE_@</label>
-            <input id="bm_latitude" name="latitude" type="entry"/>
+            <label for="bm_latitude">@_BABEL_GEO_LATITUDE_@</label>
+            <input id="bm_latitude" name="bm_latitude" type="entry"/>
           </p>
           <p>
-            <label for="longitude">@_BABEL_GEO_LONGITUDE_@</label>
-            <input id="bm_longitude" name="longitude" type="entry"/>
+            <label for="bm_longitude">@_BABEL_GEO_LONGITUDE_@</label>
+            <input id="bm_longitude" name="bm_longitude" type="entry"/>
           </p>
+          @@IF@@ @_OWNER_@ /= ""
           <p>
             <input name="ENTER" id="bm_metadata_form_enter"
                    type="submit" value="OK"/>
           </p>
+          @@END_IF@@
         </fieldset>
       </form>
+
+      @@IF@@ @_OWNER_@ = ""
+      <form action="#" id="bm_metadata_edition_form">
+        <p>
+          <input type="text" size="60" name="bm_address" id="bm_address"
+                 value="11, avenue du Père Lachaise, Paris, France" />
+	  <a href="#" id="bm_metadata_edition_form_go" onclick="return false;">Go!</a>
+        </p>
+        <a href="#" onclick="return false;" id="bm_centermarker">Center marker</a>
+        <p id="bm_gmap_error"></p>
+        <div id="bm_map" style="width: 500px; height: 300px"></div>
+        <div id="message"></div>
+        <div id="message2"></div>
+      </form>
+      @@END_IF@@
 
       @@IF@@ @_ERROR_METADATA_NULL_METADATA_@ /= ""
       @_BABEL_ERROR_METADATA_NULL_METADATA_@
@@ -48,7 +67,9 @@
       @_BABEL_ERROR_METADATA_WRONG_METADATA_@
       @@END_IF@@
 
+      @@IF@@ @_OWNER_@ /= ""
       @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bm_metadata_post, 4=>bm_metadata_post)
+      @@END_IF@@
     @@END_IF@@
   @@END_IF@@
 </div>
