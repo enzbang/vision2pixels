@@ -487,9 +487,9 @@ package body V2P.Callbacks.Ajax is
 
       Insert_Metadata : declare
          Latitude_Coord      : constant Geo_Coordinate := Get
-           (Template_Defs.Block_Metadata.HTTP.latitude);
+           (Template_Defs.Block_Metadata.HTTP.bm_latitude);
          Longitude_Coord     : constant Geo_Coordinate := Get
-           (Template_Defs.Block_Metadata.HTTP.longitude);
+           (Template_Defs.Block_Metadata.HTTP.bm_longitude);
          Latitude_Position   : Latitude;
          Longitude_Postition : Longitude;
       begin
