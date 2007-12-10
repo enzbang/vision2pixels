@@ -8,7 +8,6 @@
 
 <ul class="slides">
 @@TABLE@@
-  @@IF@@ @_REVEALED_@
     <li class="thumbs">
     @@IF@@ @_THUMB_SOURCE_@ /= ""
     <span class="imgcontainer">
@@ -19,11 +18,7 @@
       </span>
     </span>
     @@END_IF@@
-    <p><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@"
-    @@IF@@ @_ADMIN_@ and @_HIDDEN_@
-      class="hidden_entry"
-    @@END_IF@@
-    >
+    <p><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
     @@IF@@ @_SIZE:NAME_@ > 20
     @_SLICE(1..20):NAME_@...
     @@ELSE@@
@@ -37,6 +32,5 @@
       </li>
       </ul>
     </li>
-    @@END_IF@@
 @@END_TABLE@@
 </ul>

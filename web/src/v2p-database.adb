@@ -1223,8 +1223,7 @@ package body V2P.Database is
       ------------------
 
       function Build_Select
-        (Count_Only : in Boolean := False) return String
-      is
+        (Count_Only : in Boolean := False) return String is
       begin
          if Count_Only then
             return "select count(post.id) ";
