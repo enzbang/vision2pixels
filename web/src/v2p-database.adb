@@ -1227,6 +1227,7 @@ package body V2P.Database is
       begin
          if Count_Only then
             return "select count(post.id) ";
+
          else
             return "select post.id, post.name, post.date_post, "
               & "datetime(date_post, '+"
