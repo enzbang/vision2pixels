@@ -187,7 +187,6 @@ package body V2P.Callbacks.Web_Block is
       Nb_Lines  : Natural;
       Total     : Natural;
    begin
-
       --  ??? This function does exactly the same thing as
       --  V2P.Navigation_Links.Load_Pages
       --  This need some refactoring :

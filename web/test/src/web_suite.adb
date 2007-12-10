@@ -30,6 +30,10 @@ with Web_Tests.Post;
 package body Web_Suite is
    Web_Suite_Test : Access_Test_Suite;
 
+   ----------------------
+   -- Web_Suite_Access --
+   ----------------------
+
    function Web_Suite_Access return Access_Test_Suite is
    begin
       return Web_Suite_Test;
@@ -44,4 +48,3 @@ begin --  Web_Suite : Initialize the web_suite test
    Add_Test (Web_Suite_Test, new Web_Tests.Post.Test_Case);
    Add_Test (Web_Suite_Test, new Web_Tests.Menu.Test_Case);
 end Web_Suite;
-
