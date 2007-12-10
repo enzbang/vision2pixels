@@ -1,6 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
 @@-- HTTP_URL(/forum/new_photo_entry): Forum Photo New Entry URL
-@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_FORUM_NEW_ENTRY_@ forum_new_entry yui-t7
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_FORUM_NEW_ENTRY_@ forum_new_photo_entry yui-t7
 
 @@IF@@ @_IMAGE_SOURCE_@ /= ""
 <div class="posting_form">
@@ -41,8 +41,9 @@
   <p><input name="ENTER" id="pfnpe_post_form_enter" type="submit"
             value="Envoyer"/></p>
 </form>
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, pfnpe_new_entry_form_submit, 4=>pfnpe_form_image_infos, 5=>bm_metadata_post)
+
 @@END_IF@@
 </div>
-@@INCLUDE@@ chunk_v2p_end.thtml
 @@--
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, pfnpe_new_entry_form_submit, 4=>pfnpe_form_image_infos, 5=>bm_metadata_post)
+@@INCLUDE@@ chunk_v2p_end.thtml

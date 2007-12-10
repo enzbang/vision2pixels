@@ -215,7 +215,7 @@ V2P.Map = new function () {
 
       this.error = function (addr)
       {
-         $('gmap_error').innerHTML = addr + 'not found';
+         $('bm_gmap_error').innerHTML = addr + 'not found';
       }
 
       @@-- --------------------------------
@@ -223,8 +223,8 @@ V2P.Map = new function () {
 
       this.write = function (pt)
       {
-         $('latitude').value  = pt.lat();
-         $('longitude').value = pt.lng();
+         $('bm_latitude').value  = pt.lat();
+         $('bm_longitude').value = pt.lng();
       }
 
       @@-- --------------------------------
@@ -246,7 +246,7 @@ V2P.Map = new function () {
 
       this.get_result = function (object)
       {
-         var address = $('address').value;
+         var address = $('bm_address').value;
          if (geocoder) {
             geocoder.getLatLng(address, V2P.Map.geolocate.get_result_hook);
          }
@@ -258,12 +258,12 @@ V2P.Map = new function () {
       this.init = function ()
       {
          V2P.Objects.geo_map = new V2P.Map.MapObject
-            ('map', 13, 48.864236, 2.39791, V2P.Map.geolocate.write);
+            ('bm_map', 13, 48.864236, 2.39791, V2P.Map.geolocate.write);
          geocoder = new GClientGeocoder();
 
-         GEvent.bindDom(document.getElementById("centermarker"), "click",
+         GEvent.bindDom(document.getElementById("bm_centermarker"), "click",
                         V2P.Objects.geo_map, V2P.Objects.geo_map.centerMap);
-         GEvent.bindDom(document.getElementById("metadata_edition_form_go"),
+         GEvent.bindDom(document.getElementById("bm_metadata_edition_form_go"),
                         "click", V2P.Map.geolocate,
                         V2P.Map.geolocate.get_result);
       }
