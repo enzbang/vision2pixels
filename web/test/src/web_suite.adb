@@ -22,10 +22,11 @@
 with AUnit; use AUnit; use AUnit.Test_Suites;
 
 with Web_Tests.Menu;
+with Web_Tests.Post;
 with Web_Tests.Threads_Navigation;
 with Web_Tests.User;
+with Web_Tests.User_Page;
 with Web_Tests.Wiki;
-with Web_Tests.Post;
 
 package body Web_Suite is
    Web_Suite_Test : Access_Test_Suite;
@@ -47,4 +48,5 @@ begin --  Web_Suite : Initialize the web_suite test
    Add_Test (Web_Suite_Test, new Web_Tests.Threads_Navigation.Test_Case);
    Add_Test (Web_Suite_Test, new Web_Tests.Post.Test_Case);
    Add_Test (Web_Suite_Test, new Web_Tests.Menu.Test_Case);
+   Add_Test (Web_Suite_Test, new Web_Tests.User_Page.Test_Case);
 end Web_Suite;

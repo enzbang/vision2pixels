@@ -19,6 +19,23 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AUnit_Framework.Framework;
+with AUnit;
 
-package AUnit is new AUnit_Framework.Framework (10, 10, 100, 100, 100_000);
+package Web_Tests.User_Page is
+
+   use AUnit;
+   use AUnit.Test_Cases;
+   use AUnit.Message_Strings;
+
+   type Test_Case is new AUnit.Test_Cases.Test_Case with null record;
+
+   overriding procedure Register_Tests (T : in out Test_Case);
+   --  Register routines to be run
+
+   overriding function Name (T : in Test_Case) return Message_String;
+   --  Returns name identifying the test case
+
+   overriding procedure Set_Up_Case (T : in out Test_Case);
+   --  Before running the test case
+
+end Web_Tests.User_Page;
