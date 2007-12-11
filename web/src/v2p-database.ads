@@ -80,6 +80,7 @@ package V2P.Database is
      (Fid         : in     Id := Empty_Id;
       User        : in     String := "";
       Admin       : in     Boolean;
+      Forum       : in     Forum_Filter := Forum_All;
       Page_Size   : in     Navigation_Links.Page_Size :=
         Navigation_Links.Default_Page_Size;
       Filter      : in     Filter_Mode := All_Messages;

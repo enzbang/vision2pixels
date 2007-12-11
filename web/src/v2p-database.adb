@@ -1149,6 +1149,7 @@ package body V2P.Database is
      (Fid         : in     Id := Empty_Id;
       User        : in     String := "";
       Admin       : in     Boolean;
+      Forum       : in     Forum_Filter := Forum_All;
       Page_Size   : in     Navigation_Links.Page_Size :=
         Navigation_Links.Default_Page_Size;
       Filter      : in     Filter_Mode := All_Messages;
@@ -1169,6 +1170,7 @@ package body V2P.Database is
 
       function Build_From
         (User       : in String;
+         Forum      : in Forum_Filter;
          Count_Only : in Boolean := False)
          return String;
       --  Returns the SQL from
@@ -1178,6 +1180,7 @@ package body V2P.Database is
          User       : in String;
          Filter     : in Filter_Mode;
          Filter_Cat : in String;
+         Forum      : in Forum_Filter;
          Count_Only : in Boolean := False) return String;
       --  Build the where statement
 
@@ -1185,8 +1188,8 @@ package body V2P.Database is
         (Fid        : in Id;
          User       : in String;
          Filter     : in Filter_Mode;
-         Filter_Cat : in     String)
-         return Natural;
+         Filter_Cat : in String;
+         Forum      : in Forum_Filter) return Natural;
       --  Returns the number of threads matching the query
 
       function Threads_Ordered_Select
@@ -1195,10 +1198,10 @@ package body V2P.Database is
          Admin      : in Boolean;
          From       : in Positive;
          Filter     : in Filter_Mode;
-         Filter_Cat : in     String;
+         Filter_Cat : in String;
          Order_Dir  : in Order_Direction;
-         Limit      : in Natural)
-         return Unbounded_String;
+         Limit      : in Natural;
+         Forum      : in Forum_Filter) return Unbounded_String;
       --  Returns the select SQL query for listing threads with Filter
 
       ----------------
@@ -1207,15 +1210,21 @@ package body V2P.Database is
 
       function Build_From
         (User       : in String;
+         Forum      : in Forum_Filter;
          Count_Only : in Boolean := False) return String
       is
+         From_Stmt : Unbounded_String := +" from post, category";
       begin
          if not Count_Only or else User /= "" then
-            --  Need the user_post table for join
-            return " from post, category, user_post ";
-         else
-            return " from post, category ";
+            --  Needed the user_post table for join
+            Append (From_Stmt, ", user_post");
          end if;
+
+         if Forum /= Forum_All then
+            Append (From_Stmt, ", forum");
+         end if;
+
+         return To_String (From_Stmt) & ' ';
       end Build_From;
 
       ------------------
@@ -1249,6 +1258,7 @@ package body V2P.Database is
          User       : in String;
          Filter     : in Filter_Mode;
          Filter_Cat : in String;
+         Forum      : in Forum_Filter;
          Count_Only : in Boolean := False) return String
       is
          Where_Stmt : Unbounded_String :=
@@ -1296,6 +1306,24 @@ package body V2P.Database is
             when All_Messages =>
                null;
          end case;
+
+         case Forum is
+            when Forum_Photo =>
+               Append
+                 (Where_Stmt,
+                  " and forum.for_photo='TRUE' "
+                  &  " and forum.id=category.forum_id ");
+
+            when Forum_Text =>
+               Append
+                 (Where_Stmt,
+                  " and forum.for_photo='FALSE' "
+                  &  " and forum.id=category.forum_id ");
+
+            when Forum_All =>
+               null;
+         end case;
+
          return -Where_Stmt;
       end Build_Where;
 
@@ -1307,8 +1335,8 @@ package body V2P.Database is
         (Fid        : in Id;
          User       : in String;
          Filter     : in Filter_Mode;
-         Filter_Cat : in     String)
-         return Natural
+         Filter_Cat : in String;
+         Forum      : in Forum_Filter) return Natural
       is
          DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
          Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -1318,12 +1346,13 @@ package body V2P.Database is
 
          DBH.Handle.Prepare_Select
            (Iter, Build_Select (Count_Only => True)
-            & Build_From (User => User, Count_Only => True)
+            & Build_From (User => User, Forum => Forum, Count_Only => True)
             & Build_Where
               (Fid        => Fid,
                User       => User,
                Filter     => Filter,
                Filter_Cat => Filter_Cat,
+               Forum      => Forum,
                Count_Only => True));
 
          if Iter.More then
@@ -1353,19 +1382,21 @@ package body V2P.Database is
          Admin      : in Boolean;
          From       : in Positive;
          Filter     : in Filter_Mode;
-         Filter_Cat : in     String;
+         Filter_Cat : in String;
          Order_Dir  : in Order_Direction;
-         Limit      : in Natural)
-         return Unbounded_String
+         Limit      : in Natural;
+         Forum      : in Forum_Filter) return Unbounded_String
       is
          SQL_Select  : constant String := Build_Select;
-         SQL_From    : constant String := Build_From (User => User);
+         SQL_From    : constant String :=
+                         Build_From (User => User, Forum => Forum);
          SQL_Where   : constant String :=
                          Build_Where
                            (Fid        => Fid,
                             User       => User,
                             Filter     => Filter,
-                            Filter_Cat => Filter_Cat);
+                            Filter_Cat => Filter_Cat,
+                            Forum      => Forum);
          Ordering    : constant String :=
                          " order by post.date_post "
                            & Order_Direction'Image (Order_Dir);
@@ -1405,12 +1436,14 @@ package body V2P.Database is
       Hidden          : Templates.Tag;
       Owner           : Templates.Tag;
       Select_Stmt     : Unbounded_String;
-   begin
 
-      Total_Lines := Count_Threads (Fid        => Fid,
-                                    User       => User,
-                                    Filter     => Filter,
-                                    Filter_Cat => Filter_Cat);
+   begin
+      Total_Lines := Count_Threads
+        (Fid        => Fid,
+         User       => User,
+         Filter     => Filter,
+         Filter_Cat => Filter_Cat,
+         Forum      => Forum);
 
       if Total_Lines < From then
          From := 1; -- ??? What should be done in this case ?
@@ -1428,7 +1461,8 @@ package body V2P.Database is
          Limit      => Page_Size,
          Filter     => Filter,
          Filter_Cat => Filter_Cat,
-         Order_Dir  => Order_Dir);
+         Order_Dir  => Order_Dir,
+         Forum      => Forum);
 
       DBH.Handle.Prepare_Select (Iter, To_String (Select_Stmt));
 
