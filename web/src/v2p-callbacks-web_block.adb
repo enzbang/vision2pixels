@@ -31,6 +31,12 @@ with V2P.Template_Defs.Set_Global;
 
 package body V2P.Callbacks.Web_Block is
 
+   procedure User_Post_List
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set;
+      Forum        : in     Database.Forum_Filter);
+
    ----------
    -- Exif --
    ----------
@@ -306,7 +312,7 @@ package body V2P.Callbacks.Web_Block is
                Boolean'Image (V2P.Database.Is_Author
                  (Login, V2P.Context.Counter.Get_Value
                     (Context => Context.all,
-                     Name => Template_Defs.Set_Global.TID)))));
+                     Name    => Template_Defs.Set_Global.TID)))));
 
          if Context.Exist
            (V2P.Template_Defs.Set_Global.ERROR_METADATA_NULL_METADATA) then
@@ -448,6 +454,18 @@ package body V2P.Callbacks.Web_Block is
          Database.Get_User_Comment (Uid => User_Name, Textify => True));
    end User_Comment_List;
 
+   -----------------------
+   -- User_Message_List --
+   -----------------------
+
+   procedure User_Message_List
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set) is
+   begin
+      User_Post_List (Request, Context, Translations, Database.Forum_Text);
+   end User_Message_List;
+
    ---------------
    -- User_Page --
    ---------------
@@ -470,14 +488,27 @@ package body V2P.Callbacks.Web_Block is
          Templates.Assoc (Template_Defs.Block_User_Page.USER_NAME, User_Name));
    end User_Page;
 
-   ----------------------
-   -- User_Thread_List --
-   ----------------------
+   ---------------------
+   -- User_Photo_List --
+   ---------------------
 
-   procedure User_Thread_List
+   procedure User_Photo_List
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+      Translations : in out Templates.Translate_Set) is
+   begin
+      User_Post_List (Request, Context, Translations, Database.Forum_Photo);
+   end User_Photo_List;
+
+   --------------------
+   -- User_Post_List --
+   --------------------
+
+   procedure User_Post_List
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set;
+      Forum        : in     Database.Forum_Filter)
    is
 
       Admin      : constant Boolean :=
@@ -499,7 +530,8 @@ package body V2P.Callbacks.Web_Block is
          Admin       => Admin,
          From        => From,
          Nb_Lines    => Nb_Lines,
-         Total_Lines => Total);
+         Total_Lines => Total,
+         Forum       => Forum);
 
       Templates.Insert (Translations, Set);
       V2P.Context.Counter.Set_Value
@@ -511,6 +543,6 @@ package body V2P.Callbacks.Web_Block is
         (Context => Context.all,
          Name    => Template_Defs.Set_Global.NAV_NB_LINES_TOTAL,
          Value   => Total);
-   end User_Thread_List;
+   end User_Post_List;
 
 end V2P.Callbacks.Web_Block;
