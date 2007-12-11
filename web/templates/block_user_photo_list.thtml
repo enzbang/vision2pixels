@@ -1,14 +1,10 @@
-@@-- @_LAZY_FORUM_NAVIGATE_@
-@@-- ??? no navigation for now, this will be added later when the number
-@@-- of post on a single page will be limited to some value
-@@--
 @@INCLUDE@@ set_babel.thtml
 
 <h2>@_BABEL_LAST_USER_PHOTOS_@</h2>
 
 <ul class="slides">
 @@TABLE@@
-    <li class="thumbs">
+  <li class="thumbs">
     @@IF@@ @_THUMB_SOURCE_@ /= ""
     <span class="imgcontainer">
       <span class="nooverflowimage">
@@ -28,9 +24,7 @@
     <ul class="thumb_metadata">
       <li class="photocat">@_CATEGORY_@</li>
       <li>@_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@</li>
-      <li class="photoauthor">
-      </li>
-      </ul>
-    </li>
+    </ul>
+  </li>
 @@END_TABLE@@
 </ul>
