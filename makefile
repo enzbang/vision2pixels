@@ -52,6 +52,8 @@ include mk.modules
 export LD_LIBRARY_PATH:=$(GWIAD_INSTALL)
 export PATH:=$(GWIAD_INSTALL):$(shell pwd)/runtime:$(PATH)
 
+DISTRIB = $(shell pwd)/v2p-dist
+
 # Targets
 
 clean: clean-default
@@ -86,6 +88,7 @@ check_tests:
 runtests: init_tests runtests-default check_tests
 
 install_db:
+	$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/db
 	$(MAKE) -C db install $(OPTIONS)
 
 install_gwiad_plugin: install_db
@@ -95,6 +98,8 @@ install_gwiad_plugin: install_db
 	$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/we_js
 	$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/css
 	$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/css/img
+	$(MKDIR) $(GWIAD_ROOT)/lib/websites
+	$(MKDIR) $(GWIAD_ROOT)/bin
 	$(CP) -r web/templates/*.thtml \
 		$(GWIAD_ROOT)/plugins/vision2pixels/templates/
 	$(CP) -r web/templates/*.txml \
@@ -113,6 +118,19 @@ install_gwiad_plugin: install_db
 	$(CP) lib/g2f_io/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) -f $(DIOUZHTU_DYNAMIC_LIB)/*wiki_service$(SOEXT) \
 		$(GWIAD_ROOT)/lib/services
+
+install-distrib: clean-distrib create-plugin-dist-dir
+	(cd $(DISTRIB)/dist; $(TAR_DIR) ../dist.tgz .)
+	$(RM) -r $(DISTRIB)/dist
+	$(CP) scripts/do-install.sh $(DISTRIB)
+	$(TAR_DIR) $(shell basename $(DISTRIB)).tgz $(shell basename $(DISTRIB))
+	$(RM) -r $(DISTRIB)
+
+create-plugin-dist-dir: GWIAD_ROOT=$(DISTRIB)/dist
+create-plugin-dist-dir: install_gwiad_plugin
+
+clean-distrib:
+	$(RM) -r $(DISTRIB)
 
 check_mem:
 	make check_mem -C web $(OPTIONS)
