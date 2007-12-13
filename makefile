@@ -70,7 +70,13 @@ include mk.modules
 export LD_LIBRARY_PATH:=$(GWIAD_INSTALL)
 export PATH:=$(GWIAD_INSTALL):$(shell pwd)/runtime:$(PATH)
 
-DISTRIB = $(shell pwd)/v2p-dist
+ifeq ($(OS),Windows_NT)
+DISTRIB_OS = win32-$(shell uname -m)
+else
+DISTRIB_OS = $(shell uname -s | tr [[:upper:]] [[:lower:]])-$(shell uname -m)
+endif
+
+DISTRIB = $(shell pwd)/v2p-$(DISTRIB_OS)-$(VERSION_ALL)
 
 # Targets
 
