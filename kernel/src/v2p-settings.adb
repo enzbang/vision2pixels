@@ -39,7 +39,7 @@ package body V2P.Settings is
       Image_Maximum_Width, Image_Maximum_Height, Image_Maximum_Size,
       Thumbnail_Maximum_Width, Thumbnail_Maximum_Height, Virtual_Host,
       Website_Data_Path, Website_Data_Prefix, Wiki_Service_Name,
-      Number_Latest_Posts, Number_Latest_Users, Google_Map_Key);
+      Number_Latest_Posts, Number_Latest_Users, Google_Map_Key, Log_Path);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -180,6 +180,15 @@ package body V2P.Settings is
       return Conf.Get_Value (Limit_Image_Size);
    end Limit_Image_Size;
 
+   --------------
+   -- Log_Path --
+   --------------
+
+   function Log_Path return String is
+   begin
+      return Conf.Get_Value (Log_Path);
+   end Log_Path;
+
    -------------------------
    -- Number_Latest_Posts --
    -------------------------
@@ -288,6 +297,7 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (Number_Latest_Posts, Defaults.Number_Latest_Posts);
    Conf.Set_Value (Number_Latest_Users, Defaults.Number_Latest_Users);
    Conf.Set_Value (Google_Map_Key, Defaults.Google_Map_Key);
+   Conf.Set_Value (Log_Path, Defaults.Log_Path);
 
    --  Now read the config file if any
 

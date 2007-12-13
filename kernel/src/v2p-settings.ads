@@ -98,4 +98,7 @@ package V2P.Settings is
    function Google_Map_Key return String;
    --  Returns the Google map key
 
+   function Log_Path return String;
+   --  Returns the path to use for the log file
+
 end V2P.Settings;

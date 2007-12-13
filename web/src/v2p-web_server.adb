@@ -19,6 +19,7 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Directories;
 with Ada.Exceptions;
 
 with AWS.Dispatchers.Callback;
@@ -664,7 +665,9 @@ package body V2P.Web_Server is
    end WEJS_Callback;
 
 begin  -- V2P.Web_Server : register vision2pixels website
-   Morzhol.Logs.Set_File ("v2p.log");
+   Morzhol.Logs.Set_File
+     (Directories.Compose
+        (Containing_Directory => Settings.Log_Path, Name => "v2p.log"));
 
    Register_Callbacks;
 
