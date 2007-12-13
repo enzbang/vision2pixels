@@ -76,11 +76,15 @@ Note that it is possible to change the defaults Vision2Pixels setting
 by editing ~/opt/gwiad/plugins/vision2pixels/v2p.ini.
 
 The PATH in v2p.ini are relatives to the .ini directory. For example, here
-is the v2p.ini to use with the demo environment:
+is the v2p.ini to use with the testing environment:
 
    db_name db/testing.db
    images_path db/images/
    thumbs_path db/thumbs/
+   google_map_key ABQIAAAAbXnh4fBA_Kpf2wc2hparDhR4WN9nhhC3FDZFKFfdWmUUvCh7cRSW8b0ArdMGZxnSR74CYHIbQ1SXxA
+
+The google map key is valid only for the testing environment pointing
+to 127.0.0.10 port 8080.
 
 Means that the database can be found in
 ~/opt/gwiad/plugins/vision2pixels/db/testing.db.
