@@ -95,4 +95,7 @@ package V2P.Settings is
    --  Returns the number of latest registered users to display for the latest
    --  users lazy tag.
 
+   function Google_Map_Key return String;
+   --  Returns the Google map key
+
 end V2P.Settings;

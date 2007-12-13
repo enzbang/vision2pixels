@@ -39,7 +39,7 @@ package body V2P.Settings is
       Image_Maximum_Width, Image_Maximum_Height, Image_Maximum_Size,
       Thumbnail_Maximum_Width, Thumbnail_Maximum_Height, Virtual_Host,
       Website_Data_Path, Website_Data_Prefix, Wiki_Service_Name,
-      Number_Latest_Posts, Number_Latest_Users);
+      Number_Latest_Posts, Number_Latest_Users, Google_Map_Key);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -116,6 +116,15 @@ package body V2P.Settings is
    begin
       return Conf.Get_Value (Thumbs_Path);
    end Get_Thumbs_Path;
+
+   --------------------
+   -- Goggle_Map_Key --
+   --------------------
+
+   function Google_Map_Key return String is
+   begin
+      return Conf.Get_Value (Google_Map_Key);
+   end Google_Map_Key;
 
    -------------------------
    -- Ignore_Author_Click --
@@ -278,6 +287,7 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (Wiki_Service_Name, Defaults.Wiki_Service_Name);
    Conf.Set_Value (Number_Latest_Posts, Defaults.Number_Latest_Posts);
    Conf.Set_Value (Number_Latest_Users, Defaults.Number_Latest_Users);
+   Conf.Set_Value (Google_Map_Key, Defaults.Google_Map_Key);
 
    --  Now read the config file if any
 
