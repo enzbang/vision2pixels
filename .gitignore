@@ -20,11 +20,15 @@ image/test/image_harness
 image/test/images
 image/test/thumbs
 kernel/lib
+kernel/obj
+kernel/src/v2p-version.ads
+lib/aunit/obj
 lib/g2f_io/lib
 lib/g2f_io/lib_ext/libjpeg.dll.a
 lib/g2f_io/lib_ext/libmagick.dll.a
 lib/gnade/lib
 runtime/*
+v2p-*.tgz
 web/lib
 web/lib_ali
 web/obj
