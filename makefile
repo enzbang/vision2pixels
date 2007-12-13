@@ -35,9 +35,27 @@ OPTIONS = INSTALL="$(INSTALL)" EXEXT="$(EXEXT)" MODE="$(MODE)" \
 	DIFF=$(DIFF) GWIAD_ROOT="$(GWIAD_ROOT)" \
 	DIOUZHTU_DYNAMIC_LIB="$(DIOUZHTU_DYNAMIC_LIB)"
 
+# Version
+
+VERSION     = $(shell git describe --abbrev=0 2>/dev/null)
+VERSION_ALL = $(shell git describe 2>/dev/null)
+
 all: setup-default build-default
 
-setup: setup-default
+setup: setup-version setup-default
+
+setup-version:
+# If git is not present then use the version.ads provided in distrib
+ifneq ("$(VERSION)", "")
+	sed -e 's,\$$VERSION\$$,$(VERSION),g' \
+	-e 's,\$$VERSION_ALL\$$,$(VERSION_ALL),g' \
+	kernel/src/v2p-version.tads > kernel/src/v2p-version.ads
+endif
+
+distrib:
+	git archive --prefix=v2p/ HEAD > v2p.tar
+	tar -C ../ -r --file=v2p.tar v2p/kernel/src/v2p-version.ads
+	gzip -f v2p.tar
 
 build: build-default
 
