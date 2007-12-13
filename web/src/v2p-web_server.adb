@@ -60,6 +60,7 @@ with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Forum_Category_Filter;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
+with V2P.Template_Defs.Chunk_V2p_Top;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Forum_Threads;
 with V2P.Template_Defs.R_Block_Forum_List;
@@ -213,6 +214,14 @@ package body V2P.Web_Server is
          Templates.Assoc
            (Template_Defs.Set_Global.V2P_VERSION,
             V2P.Version.Simple));
+
+      --  Add Google Map key
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Chunk_V2p_Top.GOOGLE_MAP_KEY,
+            Settings.Google_Map_Key));
 
       --  Add some URL
 

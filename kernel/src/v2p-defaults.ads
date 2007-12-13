@@ -69,4 +69,6 @@ package V2P.Defaults is
 
    Number_Latest_Users      : constant Positive := 5;
 
+   Google_Map_Key           : constant String   := "";
+
 end V2P.Defaults;
