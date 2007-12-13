@@ -666,6 +666,7 @@ package body V2P.Web_Server is
    end WEJS_Callback;
 
 begin  -- V2P.Web_Server : register vision2pixels website
+   Morzhol.Logs.Set_File ("v2p.log");
 
    Register_Callbacks;
 
