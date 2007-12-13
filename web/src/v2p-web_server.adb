@@ -180,7 +180,6 @@ package body V2P.Web_Server is
       Translations : Templates.Translate_Set;
       Web_Page     : Response.Data;
    begin
-
       --  Update the context
 
       V2P.Context.Update (Context'Access, SID);
@@ -205,7 +204,6 @@ package body V2P.Web_Server is
                     (SID, Template_Defs.Set_Global.ADMIN))));
          end if;
       end if;
-
 
       --  Add Version number
 
