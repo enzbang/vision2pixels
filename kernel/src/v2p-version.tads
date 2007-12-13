@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                           Copyright (C) 2007                             --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,13 +19,9 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Directories;
+package V2P.Version is
 
-package V2P is
+   Simple   : constant String := "$VERSION$";
+   Complete : constant String := "$VERSION_ALL$";
 
-   Gwiad_Plugin_Path : constant String :=
-                         Ada.Directories.Compose
-                           (Containing_Directory => "plugins",
-                            Name                 => "vision2pixels");
-
-end V2P;
+end V2P.Version;

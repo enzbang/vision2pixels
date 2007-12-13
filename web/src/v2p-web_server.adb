@@ -36,11 +36,11 @@ with Gwiad.Plugins.Websites.Registry;
 with Morzhol.OS;
 with Morzhol.Logs;
 
-with V2P.Settings;
-
 with V2P.Context;
 with V2P.Callbacks.Page;
 with V2P.Callbacks.Ajax;
+with V2P.Settings;
+with V2P.Version;
 
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
@@ -212,7 +212,7 @@ package body V2P.Web_Server is
         (Translations,
          Templates.Assoc
            (Template_Defs.Set_Global.V2P_VERSION,
-            V2P.Version));
+            V2P.Version.Simple));
 
       --  Add some URL
 
