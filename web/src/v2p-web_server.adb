@@ -37,6 +37,7 @@ with Gwiad.Plugins.Websites.Registry;
 with Morzhol.OS;
 with Morzhol.Logs;
 
+with V2P.Cache;
 with V2P.Context;
 with V2P.Callbacks.Page;
 with V2P.Callbacks.Ajax;
@@ -155,15 +156,19 @@ package body V2P.Web_Server is
       File         : constant String :=
                       Gwiad_Plugin_Path & Directory_Separator
                          & URI (URI'First + 1 .. URI'Last);
+      C_File       : constant String := Cache.Name (File);
       Translations : Templates.Translate_Set;
    begin
-      Templates.Insert
-        (Translations,
-         Templates.Assoc (Template_Defs.Set_Global.LOGIN,
-           String'(Session.Get (SID, Template_Defs.Set_Global.LOGIN))));
-      return Response.Build
-        (MIME.Content_Type (File),
-         String'(Templates.Parse (File, Translations)));
+      if not Directories.Exists (C_File) then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc (Template_Defs.Set_Global.LOGIN,
+              String'(Session.Get (SID, Template_Defs.Set_Global.LOGIN))));
+
+         Cache.Create (File, Templates.Parse (File, Translations));
+      end if;
+
+      return Response.File (MIME.Content_Type (File), C_File);
    end CSS_Callback;
 
    ----------------------
@@ -654,14 +659,22 @@ package body V2P.Web_Server is
       URI          : constant String := Status.URI (Request);
       File         : constant String := Gwiad_Plugin_Path
                        & Directory_Separator & URI (URI'First + 1 .. URI'Last);
+      C_File       : constant String := Cache.Name (File);
       Translations : Templates.Translate_Set;
    begin
-      return Response.Build
-        (MIME.Content_Type (File),
-         String'(Templates.Parse (File, Translations)));
+      if not Directories.Exists (C_File) then
+         Cache.Create (File, Templates.Parse (File, Translations));
+      end if;
+
+      return Response.File (MIME.Content_Type (File), C_File);
    end WEJS_Callback;
 
 begin  -- V2P.Web_Server : register vision2pixels website
+   --  First we want to be sure that the cached files from the previous session
+   --  are removed.
+
+   Cache.Clear (Root_Directory => Gwiad_Plugin_Path);
+
    Morzhol.Logs.Set_File
      (Morzhol.OS.Compose
         (Gwiad_Plugin_Path,
