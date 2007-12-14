@@ -374,12 +374,11 @@ package body V2P.Web_Server is
 
    function Photos_Callback (Request : in Status.Data) return Response.Data is
       URI  : constant String := Status.URI (Request);
-      File : constant String :=
-               Gwiad_Plugin_Path & Directory_Separator &
-                 Settings.Get_Images_Path & Directory_Separator
-                   & URI
-                      (URI'First +
-                         Settings.Images_Source_Prefix'Length + 1 .. URI'Last);
+      File : constant String := Morzhol.OS.Compose
+        (Gwiad_Plugin_Path,
+         Settings.Get_Images_Path & Directory_Separator
+         & URI
+           (URI'First + Settings.Images_Source_Prefix'Length + 1 .. URI'Last));
    begin
       return Response.File (MIME.Content_Type (File), File);
    end Photos_Callback;
@@ -612,12 +611,11 @@ package body V2P.Web_Server is
 
    function Thumbs_Callback (Request : in Status.Data) return Response.Data is
       URI  : constant String := Status.URI (Request);
-      File : constant String :=
-               Gwiad_Plugin_Path & Directory_Separator &
-                 Settings.Get_Thumbs_Path & Directory_Separator
-                   & URI
-                     (URI'First +
-                        Settings.Thumbs_Source_Prefix'Length + 1 .. URI'Last);
+      File : constant String := Morzhol.OS.Compose
+        (Gwiad_Plugin_Path,
+         Settings.Get_Thumbs_Path & Directory_Separator
+         & URI
+           (URI'First + Settings.Thumbs_Source_Prefix'Length + 1 .. URI'Last));
    begin
       return Response.File (MIME.Content_Type (File), File);
    end Thumbs_Callback;
@@ -638,12 +636,11 @@ package body V2P.Web_Server is
 
    function Website_Data (Request : in Status.Data) return Response.Data is
       URI  : constant String := Status.URI (Request);
-      File : constant String :=
-               Gwiad_Plugin_Path & Directory_Separator &
-                 Settings.Website_Data_Path & Directory_Separator
-                   & URI
-                      (URI'First +
-                         Settings.Website_Data_Prefix'Length + 1 .. URI'Last);
+      File : constant String := Morzhol.OS.Compose
+        (Gwiad_Plugin_Path,
+         Settings.Website_Data_Path & Directory_Separator
+         & URI
+           (URI'First + Settings.Website_Data_Prefix'Length + 1 .. URI'Last));
    begin
       return Response.File
         (Content_Type => MIME.Content_Type (File), Filename => File);
@@ -666,8 +663,9 @@ package body V2P.Web_Server is
 
 begin  -- V2P.Web_Server : register vision2pixels website
    Morzhol.Logs.Set_File
-     (Directories.Compose
-        (Containing_Directory => Settings.Log_Path, Name => "v2p.log"));
+     (Morzhol.OS.Compose
+        (Gwiad_Plugin_Path,
+         Settings.Log_Path & Directory_Separator & "v2p.log"));
 
    Register_Callbacks;
 

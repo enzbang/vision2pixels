@@ -113,8 +113,7 @@ package body V2P.Database is
 
    procedure Connect (DBH : in TLS_DBH_Access) is
       DB_Path : constant String :=
-                  Gwiad_Plugin_Path & Directory_Separator
-                    & Settings.Get_DB_Name;
+                  Morzhol.OS.Compose (Gwiad_Plugin_Path, Settings.Get_DB_Name);
    begin
       if not DBH.Connected then
          if Directories.Exists (Name => DB_Path) then
