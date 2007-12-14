@@ -147,6 +147,7 @@ install-distrib: clean-distrib create-plugin-dist-dir
 	(cd $(DISTRIB)/dist; $(TAR_DIR) ../dist.tgz .)
 	$(RM) -r $(DISTRIB)/dist
 	$(CP) scripts/do-install.sh $(DISTRIB)
+	$(CP) scripts/adduser.sh $(DISTRIB)
 	$(TAR_DIR) $(shell basename $(DISTRIB)).tgz $(shell basename $(DISTRIB))
 	$(RM) -r $(DISTRIB)
 
