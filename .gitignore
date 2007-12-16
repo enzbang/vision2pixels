@@ -12,6 +12,7 @@
 *v2p-testdir*
 *~
 .#*
+.gpsrcs
 db/lib
 db/obj
 db/test/db_harness
