@@ -98,7 +98,7 @@ setup_tests:
 install_tests: install-test-lib
 	$(MAKE) INSTALL=$(INSTALL_PLUGIN) install-plugin
 	$(CP) ../db/data/*.s* $(INSTALL_PLUGIN)/db/
-	(cd $(INSTALL_PLUGIN)/db; rm -f testing.db; ./create_database.sh)
+	(cd $(INSTALL_PLUGIN)/db; rm -f testing.db; ./create_test_database.sh)
 	$(CP) test/bin/web_harness $(INSTALL_MAIN)/bin
 
 run_tests:

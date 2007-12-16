@@ -1,9 +1,9 @@
 #!/bin/bash
 
-DATABASE_NAME="v2p.db"
+DATABASE_NAME="testing.db"
 
 SCHEMA_DB="schema-sqlite.sql"
-INITIAL_DATA="initial-data.sql"
+INITIAL_DATA="initial-test-data.sql"
 
 SQLITE=sqlite3
 
