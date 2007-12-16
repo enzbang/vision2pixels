@@ -88,12 +88,10 @@ package body V2P.Callbacks.Page is
          --  Insert navigation links (previous and next post)
 
          Insert_Links : declare
-            Previous_Id   : constant Database.Id :=
-                              Navigation_Links.Previous_Post
-                                (Context, TID);
-            Next_Id       : constant Database.Id :=
-                              Navigation_Links.Next_Post
-                                (Context, TID);
+            Previous_Id : constant Database.Id :=
+                            Navigation_Links.Previous_Post (Context, TID);
+            Next_Id     : constant Database.Id :=
+                            Navigation_Links.Next_Post (Context, TID);
          begin
             Templates.Insert
               (Translations, Templates.Assoc
