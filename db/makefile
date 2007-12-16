@@ -40,7 +40,7 @@ install: create_db
 	(cd data; $(CP) testing.db $(GWIAD_ROOT)/plugins/vision2pixels/db)
 
 create_db:
-	(cd data; rm -f testing.db; ./create_database.sh)
+	(cd data; rm -f testing.db; ./create_test_database.sh)
 
 run_tests:
 	(cd test; ../obj/db_harness > $(LOGFILE))
