@@ -25,6 +25,14 @@
 
 LOGFILE := ${shell pwd}/test/db_harness.log.${shell date +%Y%m%d-%H%M%S}
 
+ifeq ("$(DISTRIB)/dist","$(GWIAD_ROOT)")
+DBNAME=v2p.db
+BSCRIPT=create_database.sh
+else
+DBNAME=testing.db
+BSCRIPT=create_test_database.sh
+endif
+
 build:
 	$(GNAT) make -XPRJ_BUILD=$(MODE) -Pdb_test
 
@@ -37,10 +45,10 @@ setup:
 
 install: create_db
 	-$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/db
-	(cd data; $(CP) testing.db $(GWIAD_ROOT)/plugins/vision2pixels/db)
+	(cd data; $(CP) $(DBNAME) $(GWIAD_ROOT)/plugins/vision2pixels/db)
 
 create_db:
-	(cd data; rm -f testing.db; ./create_test_database.sh)
+	(cd data; rm -f $(DBNAME); ./$(BSCRIPT))
 
 run_tests:
 	(cd test; ../obj/db_harness > $(LOGFILE))
