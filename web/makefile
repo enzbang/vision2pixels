@@ -75,6 +75,7 @@ install-dir:
 	-$(MKDIR) $(INSTALL_MAIN)/lib
 	-$(MKDIR) $(INSTALL_MAIN)/lib/websites
 	-$(MKDIR) $(INSTALL_MAIN)/lib/services
+	-$(MKDIR) $(INSTALL_MAIN)/uploads
 
 install-test-lib: install-dir
 	$(RM) $(INSTALL_MAIN)/lib/websites/*vision2pixels$(SOEXT)
