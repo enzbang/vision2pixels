@@ -61,15 +61,15 @@ package V2P.Defaults is
 
    Descending_Order         : constant Boolean := True;
 
-   Wiki_Service_Name        : constant String  := "wiki_service";
+   Wiki_Service_Name        : constant String := "wiki_service";
 
-   Virtual_Host             : constant String  := "127.0.0.10";
+   Virtual_Host             : constant String := "127.0.0.10";
 
    Number_Latest_Posts      : constant Positive := 6;
 
    Number_Latest_Users      : constant Positive := 5;
 
-   Google_Map_Key           : constant String   := "";
+   Google_Map_Key           : constant String := "";
 
    Log_Path                 : constant String := "./";
 
