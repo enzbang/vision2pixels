@@ -9,7 +9,7 @@ insert into user ("login", "password", "email", "admin", created)
 
 insert into forum values (1, "Forum photographies", "TRUE", "TRUE");
 insert into forum values (2, "Forum matériel", "FALSE", "FALSE");
-insert into forum values (3, "Forum site théia", "FALSE", "FALSE");
+insert into forum values (3, "Forum site v2p", "FALSE", "FALSE");
 
 --  Create categories
 
