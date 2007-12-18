@@ -39,7 +39,8 @@ package body V2P.Settings is
       Image_Maximum_Width, Image_Maximum_Height, Image_Maximum_Size,
       Thumbnail_Maximum_Width, Thumbnail_Maximum_Height, Virtual_Host,
       Website_Data_Path, Website_Data_Prefix, Wiki_Service_Name,
-      Number_Latest_Posts, Number_Latest_Users, Google_Map_Key, Log_Path);
+      Number_Latest_Posts, Number_Latest_Users, Google_Map_Key,
+      Log_Path, Cache_Path);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -71,6 +72,15 @@ package body V2P.Settings is
    begin
       return Conf.Get_Value (Anonymous_Visit_Counter);
    end Anonymous_Visit_Counter;
+
+   ----------------
+   -- Cache_Path --
+   ----------------
+
+   function Cache_Path return String is
+   begin
+      return Conf.Get_Value (Cache_Path);
+   end Cache_Path;
 
    ----------------------
    -- Descending_Order --

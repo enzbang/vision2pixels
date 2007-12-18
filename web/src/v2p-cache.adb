@@ -21,6 +21,10 @@
 
 with Ada.Text_IO;
 
+with Morzhol.OS;
+
+with V2P.Settings;
+
 package body V2P.Cache is
 
    use Ada;
@@ -70,9 +74,12 @@ package body V2P.Cache is
    ------------
 
    procedure Create (Filename, Content : in String) is
-      File : Text_IO.File_Type;
+      C_File : constant String := Name (Filename);
+      C_Dir  : constant String := Directories.Containing_Directory (C_File);
+      File   : Text_IO.File_Type;
    begin
-      Text_IO.Create (File, Text_IO.Out_File, Filename & Cache_Ext);
+      Directories.Create_Path (C_Dir);
+      Text_IO.Create (File, Text_IO.Out_File, C_File);
       Text_IO.Put_Line (File, Content);
       Text_IO.Close (File);
    end Create;
@@ -82,8 +89,29 @@ package body V2P.Cache is
    ----------
 
    function Name (Filename : in String) return String is
+
+      function Clean_Filename return String;
+      pragma Inline (Clean_Filename);
+      --  Returns Filename with translated drive separator on Windows. This
+      --  filename must be correct if appended to a prefix.
+
+      --------------------
+      -- Clean_Filename --
+      --------------------
+
+      function Clean_Filename return String is
+      begin
+         if Filename (Filename'First + 1) = ':' then
+            return Filename (Filename'First)
+              & "_" & Filename (Filename'First + 2 .. Filename'Last);
+         else
+            return Filename;
+         end if;
+      end Clean_Filename;
+
    begin
-      return Filename & Cache_Ext;
+      return Settings.Cache_Path
+        & Morzhol.OS.Directory_Separator & Clean_Filename & Cache_Ext;
    end Name;
 
 end V2P.Cache;
