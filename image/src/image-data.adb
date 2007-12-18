@@ -190,14 +190,14 @@ package body Image.Data is
       S_Name          : constant String := Simple_Name (Filename);
       Thumb_Name      : constant String := Compose
         (Containing_Directory => Compose
-           (Containing_Directory => Root_Dir & Morzhol.OS.Directory_Separator
-                                      & Settings.Get_Thumbs_Path,
+           (Containing_Directory =>
+              Morzhol.OS.Compose (Root_Dir, Settings.Get_Thumbs_Path),
             Name                 => Year),
          Name                 => Filename_Prefix & S_Name);
       Image_Name      : constant String := Compose
         (Containing_Directory => Compose
-           (Containing_Directory => Root_Dir & Morzhol.OS.Directory_Separator
-                                      & Settings.Get_Images_Path,
+           (Containing_Directory =>
+              Morzhol.OS.Compose (Root_Dir, Settings.Get_Images_Path),
             Name                 => Year),
          Name                 => Filename_Prefix & S_Name);
    begin
