@@ -101,4 +101,7 @@ package V2P.Settings is
    function Log_Path return String;
    --  Returns the path to use for the log file
 
+   function Cache_Path return String;
+   --  Path for the cached files
+
 end V2P.Settings;

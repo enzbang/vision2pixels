@@ -71,6 +71,8 @@ package V2P.Defaults is
 
    Google_Map_Key           : constant String   := "";
 
-   Log_Path                 : constant String   := "./";
+   Log_Path                 : constant String := "./";
+
+   Cache_Path               : constant String := "./";
 
 end V2P.Defaults;
