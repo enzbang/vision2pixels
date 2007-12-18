@@ -24,8 +24,8 @@ insert into category values (7, 1, 'Portrait');
 insert into category values (8, 2, 'Vente / Achat');
 insert into category values (9, 2, 'Discussion');
 
-insert into category values (10, 2, 'Bug');
-insert into category values (11, 2, 'Idée');
+insert into category values (10, 3, 'Bug');
+insert into category values (11, 3, 'Idée');
 
 --  Create criteria
 
