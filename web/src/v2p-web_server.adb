@@ -42,6 +42,7 @@ with V2P.Context;
 with V2P.Callbacks.Page;
 with V2P.Callbacks.Ajax;
 with V2P.Settings;
+with V2P.URL;
 with V2P.Version;
 
 with V2P.Template_Defs.Page_Forum_Entry;
@@ -379,10 +380,9 @@ package body V2P.Web_Server is
 
    function Photos_Callback (Request : in Status.Data) return Response.Data is
       URI  : constant String := Status.URI (Request);
-      File : constant String := Morzhol.OS.Compose
-        (Gwiad_Plugin_Path,
-         Settings.Get_Images_Path & Directory_Separator
-         & URI
+      File : constant String := Compose
+        (V2P.URL.Images_Full_Prefix,
+         URI
            (URI'First + Settings.Images_Source_Prefix'Length + 1 .. URI'Last));
    begin
       return Response.File (MIME.Content_Type (File), File);
@@ -616,10 +616,9 @@ package body V2P.Web_Server is
 
    function Thumbs_Callback (Request : in Status.Data) return Response.Data is
       URI  : constant String := Status.URI (Request);
-      File : constant String := Morzhol.OS.Compose
-        (Gwiad_Plugin_Path,
-         Settings.Get_Thumbs_Path & Directory_Separator
-         & URI
+      File : constant String := Compose
+        (V2P.URL.Thumbs_Full_Prefix,
+         URI
            (URI'First + Settings.Thumbs_Source_Prefix'Length + 1 .. URI'Last));
    begin
       return Response.File (MIME.Content_Type (File), File);

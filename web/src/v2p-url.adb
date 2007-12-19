@@ -33,9 +33,17 @@ package body V2P.URL is
 
    function Images_Full_Prefix return String is
    begin
-      return Gwiad_Plugin_Path
-        & Morzhol.OS.Directory_Separator & Settings.Get_Images_Path;
+      return Morzhol.OS.Compose (Gwiad_Plugin_Path, Settings.Get_Images_Path);
    end Images_Full_Prefix;
+
+   ------------------------
+   -- Thumbs_Full_Prefix --
+   ------------------------
+
+   function Thumbs_Full_Prefix return String is
+   begin
+      return Morzhol.OS.Compose (Gwiad_Plugin_Path, Settings.Get_Thumbs_Path);
+   end Thumbs_Full_Prefix;
 
    ---------------
    -- User_Name --
