@@ -30,8 +30,6 @@
   </fieldset>
 </form>
 
-<p id="global_lazy_metadata">@_LAZY_METADATA_@</p>
-
 @@--  One form to rule them all
 
 <form enctype="multipart/form-data" id="pfnte_new_entry_form_submit" action="#" method="POST">
