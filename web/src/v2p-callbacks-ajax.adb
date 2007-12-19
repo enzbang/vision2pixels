@@ -217,7 +217,7 @@ package body V2P.Callbacks.Ajax is
       P   : constant Parameters.List := Status.Parameters (Request);
       Fid : constant Database.Id :=
               Database.Id'Value
-                (Parameters.Get (P, HTTP.sel_forum_list));
+                (Parameters.Get (P, HTTP.cfls_sel_forum_list));
    begin
       Templates.Insert (Translations, Database.Get_Categories (Fid));
       V2P.Context.Counter.Set_Value
