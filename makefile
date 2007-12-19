@@ -124,6 +124,7 @@ install_gwiad_plugin: install_db
 	$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/css
 	$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/css/img
 	$(MKDIR) $(GWIAD_ROOT)/lib/websites
+	$(MKDIR) $(GWIAD_ROOT)/lib/services
 	$(MKDIR) $(GWIAD_ROOT)/bin
 	$(CP) -r web/templates/*.thtml \
 		$(GWIAD_ROOT)/plugins/vision2pixels/templates/
