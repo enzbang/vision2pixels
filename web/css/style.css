@@ -182,7 +182,7 @@ ul#bft_navigate li.nav_info {
 #pfnpe_img_author, #pfnte_img_author {
    float:none;
    font-style:italic;
-   color:@_PHOTOAUTHOR_COLOR_@;   
+   color:@_PHOTOAUTHOR_COLOR_@;
 }
 @@--
 #pfe_main_image_comment {
@@ -322,7 +322,7 @@ div#bftt_forum_text {
 @@--
 div#cvt_lazy_login {
    top:1em;
-   background: #333333; 
+   background: #333333;
 }
 @@--
 div#bl_login_err {
@@ -375,13 +375,22 @@ body.main h1 {
 }
 @@--
 #pm_logo {
-   border: thin solid @_LIGHT_BORDER_COLOR_@;
-   padding: 0.5%;
+   padding: 0 0.5%;
    margin: 1%;
    width: 30%;
    float: left;
-   height: 20em;
 }
+@@--
+#pm_logo p {
+   margin:0;
+   padding:0px;
+}
+@@--
+#pm_logo img {
+   margin: auto 1em;
+   max-width:100%;
+}
+
 @@--
 #pm_latest_users {
    border: thin solid @_LIGHT_BORDER_COLOR_@;

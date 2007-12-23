@@ -215,3 +215,22 @@ begin
                     and r.post_id = new.post_id)
       where criteria_id = new.criteria_id and post_id = new.post_id;
 end;
+
+create table photo_of_the_week (
+   "id" integer not null primary key autoincrement,
+   "post_id" integer,
+   "val" real,
+   foreign key ("post_id") references post("id")
+);
+
+create table user_photo_of_the_week (
+   "user_login" varchar(50),
+   "post_id" integer not null,
+   "week_id" integer default 0,
+   foreign key ("post_id") references post("id"),
+   foreign key ("week_id") references photo_of_the_week("id")
+);
+
+create table vote_ponderated (
+   val integer not null
+);
