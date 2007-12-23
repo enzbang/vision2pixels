@@ -40,6 +40,13 @@ do
     read ADMIN
 done
 
+if [[ "$ADMIN" = "Y" || "$ADMIN" = "y" ]]
+then
+    ADMIN="TRUE"
+else
+    ADMIN="FALSE"
+fi
+
 
 echo "insert into user (login, password, email, admin) \
 values ('$LOGIN', '$PASSWORD', '$EMAIL', '$ADMIN');" | sqlite3 $DB
