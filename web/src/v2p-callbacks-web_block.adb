@@ -416,6 +416,22 @@ package body V2P.Callbacks.Web_Block is
       end if;
    end New_Post;
 
+   -----------------------
+   -- Photo_Of_The_Week --
+   -----------------------
+
+   procedure Photo_Of_The_Week
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context);
+   begin
+      Templates.Insert
+        (Translations,
+         Database.Get_Photo_Of_The_Week);
+   end Photo_Of_The_Week;
+
    -----------------
    -- Quick_Login --
    -----------------

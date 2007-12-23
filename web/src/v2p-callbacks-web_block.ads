@@ -113,6 +113,11 @@ package V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
 
+   procedure Photo_Of_The_Week
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
    procedure Quick_Login
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;

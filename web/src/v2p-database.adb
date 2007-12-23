@@ -50,6 +50,7 @@ with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Comment_List;
 with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Comment;
+with V2P.Template_Defs.Block_Photo_Of_The_Week;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.R_Block_Forum_List;
 
@@ -1003,6 +1004,46 @@ package body V2P.Database is
       Iter.End_Select;
       return Set;
    end Get_New_Post_Delay;
+
+   ---------------------------
+   -- Get_Photo_Of_The_Week --
+   ---------------------------
+
+   function Get_Photo_Of_The_Week return Templates.Translate_Set is
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Set  : Templates.Translate_Set;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select
+        (Iter, "select val, w.post_id, photo.filename"
+         & " from photo_of_the_week w, post, photo"
+         & " where post.id = w.post_id and post.photo_id = photo.id"
+         & " order by w.id desc limit 1");
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_Photo_Of_The_Week.PHOTO_OF_THE_WEEK_SCORE,
+                 DB.String_Vectors.Element (Line, 1)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_Photo_Of_The_Week.PHOTO_OF_THE_WEEK_URL,
+               DB.String_Vectors.Element (Line, 2)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_Photo_Of_The_Week.PHOTO_OF_THE_WEEK_IMG_SOURCE,
+               DB.String_Vectors.Element (Line, 3)));
+      end if;
+
+      return Set;
+   end Get_Photo_Of_The_Week;
 
    --------------
    -- Get_Post --

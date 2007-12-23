@@ -153,6 +153,9 @@ package V2P.Database is
    --  Returns photo exif metadata, get them from the image if needed and
    --  update the database.
 
+   function Get_Photo_Of_The_Week return Templates.Translate_Set;
+   --  Returns photo of the week
+
    function Toggle_Hidden_Status
      (Tid : in Id) return Templates.Translate_Set;
    --  Toggle Tid hidden status and returns the new status

@@ -438,3 +438,9 @@ insert into post_comment values (89, 19);
 insert into rating values ("turbo", 141, 1, 5);
 insert into rating values ("enzbang", 141, 1, 1);
 insert into rating values ("test", 141, 1, 4);
+
+insert into photo_of_the_week values (0, 0, 0);
+insert into user_photo_of_the_week values ("turbo", 141, 0);
+insert into user_photo_of_the_week values ("enzbang", 141, 0);
+insert into user_photo_of_the_week values ("test", 141, 0);
+insert into user_photo_of_the_week values ("test", 140, 0);
