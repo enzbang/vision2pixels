@@ -441,6 +441,14 @@ insert into rating values ("test", 141, 1, 4);
 
 insert into photo_of_the_week values (0, 0, 0);
 insert into user_photo_of_the_week values ("turbo", 141, 0);
-insert into user_photo_of_the_week values ("enzbang", 141, 0);
+insert into user_photo_of_the_week values ("enzbang", 54, 0);
+insert into user_photo_of_the_week values ("enzbang", 55, 0);
+insert into user_photo_of_the_week values ("enzbang", 56, 0);
+insert into user_photo_of_the_week values ("enzbang", 57, 0);
+insert into user_photo_of_the_week values ("enzbang", 58, 0);
+insert into user_photo_of_the_week values ("enzbang", 59, 0);
+insert into user_photo_of_the_week values ("enzbang", 60, 0);
+insert into user_photo_of_the_week values ("enzbang", 61, 0);
+insert into user_photo_of_the_week values ("enzbang", 140, 0);
 insert into user_photo_of_the_week values ("test", 141, 0);
 insert into user_photo_of_the_week values ("test", 140, 0);
