@@ -15,13 +15,13 @@ site communautaire autour de la critique photographique.</p>
 a sûrement plusieurs</p>
 </div>
 
-<div id="pm_logo"><p>@_LAZY_PHOTO_OF_THE_WEEK_@</p></div>
+<div id="pm_photo_of_the_week"><p>@_LAZY_PHOTO_OF_THE_WEEK_@</p></div>
 
-<div id="pm_latest_users"><p>@_BABEL_LAST_USERS_@ :</p>@_LAZY_LATEST_USERS_@</div>
+<div id="pm_latest_users"><h2>@_BABEL_LAST_USERS_@ :</h2>@_LAZY_LATEST_USERS_@</div>
 
 <p/>
 
-<div id="pm_latest_posts"><p>@_BABEL_LAST_USER_PHOTOS_@</p>@_LAZY_LATEST_POSTS_@</p></div>
+<div id="pm_latest_posts"><h2>@_BABEL_LAST_USER_PHOTOS_@</h2>@_LAZY_LATEST_POSTS_@</p></div>
 
 @@IF@@ @_V2P_ERROR_@ /= ""
   @@IF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_IMAGE_DIMENSION_@

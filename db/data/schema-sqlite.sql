@@ -169,7 +169,7 @@ create table global_rating (
 
 create trigger initialize_global_rating after insert on post
 begin
-   insert into global_rating 
+   insert into global_rating
       (post_id, criteria_id, nb_vote, post_rating_ponderated,
        post_rating, controversial_level)
       select new.id, id, 0, 0, 0, 0 from criteria;

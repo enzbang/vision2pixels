@@ -365,6 +365,13 @@ body.main h1 {
    font-size:2em;
 }
 @@--
+body.main h2 {
+   padding:1em;
+   font-size:1.3em;
+   font-style:italic;
+   font-weight:bolder;
+}
+@@--
 #pm_presentation {
    border: thin solid @_LIGHT_BORDER_COLOR_@;
    padding: 0.5%;
@@ -373,21 +380,25 @@ body.main h1 {
    height: 20em;
    float: left;
 }
+#pm_presentation p {
+   line-height:1.5em;
+   padding: 1em 0.6em;
+}
 @@--
-#pm_logo {
+#pm_photo_of_the_week {
    padding: 0 0.5%;
    margin: 1%;
    width: 30%;
    float: left;
 }
 @@--
-#pm_logo p {
+#pm_photo_of_the_week p {
    margin:0;
    padding:0px;
 }
 @@--
-#pm_logo img {
-   margin: auto 1em;
+#pm_photo_of_the_week img {
+   margin: 0 auto;
    max-width:100%;
 }
 
@@ -401,6 +412,10 @@ body.main h1 {
    height: 20em;
 }
 @@--
+#pm_latest_users li {
+   padding:0.5em 0 0 1em;
+}
+@@--
 #pm_latest_posts {
    border: thin solid @_LIGHT_BORDER_COLOR_@;
    padding: 1%;
@@ -409,8 +424,13 @@ body.main h1 {
    float: left;
 }
 @@--
-#pm_latest_posts p {
-   float: left;
+#pm_latest_posts h2 {
+    display:inline;
+    vertical-align:middle;
+}
+@@--
+#pm_latest_posts ul {
+   display:inline;
 }
 @@--
 @@--  Footpage
