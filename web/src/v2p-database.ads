@@ -146,8 +146,8 @@ package V2P.Database is
      (Uid : in String) return Templates.Translate_Set;
    --  Returns user's last photo (in the user photo queue)
 
-   function Get_Metadata (Pid : in Id) return Templates.Translate_Set;
-   --  Returns photo geographic metadata
+   function Get_Metadata (Tid : in Id) return Templates.Translate_Set;
+   --  Returns photo geographic metadata from thread if
 
    function Get_Exif (Pid : in Id) return Templates.Translate_Set;
    --  Returns photo exif metadata, get them from the image if needed and
