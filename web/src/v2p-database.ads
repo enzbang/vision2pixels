@@ -149,7 +149,7 @@ package V2P.Database is
    function Get_Metadata (Tid : in Id) return Templates.Translate_Set;
    --  Returns photo geographic metadata from thread if
 
-   function Get_Exif (Pid : in Id) return Templates.Translate_Set;
+   function Get_Exif (Tid : in Id) return Templates.Translate_Set;
    --  Returns photo exif metadata, get them from the image if needed and
    --  update the database.
 

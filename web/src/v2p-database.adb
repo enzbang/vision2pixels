@@ -417,7 +417,7 @@ package body V2P.Database is
    -- Get_Exif --
    --------------
 
-   function Get_Exif (Pid : in Id) return Templates.Translate_Set is
+   function Get_Exif (Tid : in Id) return Templates.Translate_Set is
 
       function "+"
         (Str : in String) return Unbounded_String renames To_Unbounded_String;
@@ -430,7 +430,7 @@ package body V2P.Database is
       Exif : Image.Metadata.Embedded.Data;
 
    begin
-      if Pid = Empty_Id then
+      if Tid = Empty_Id then
          --  ???
          return Set;
       end if;
@@ -442,7 +442,9 @@ package body V2P.Database is
          & "shutter_speed_value, aperture_value, flash, focal_length, "
          & "exposure_mode, exposure_program, white_balance, metering_mode, "
          & "iso from photo_exif "
-         & "where photo_id = " & To_String (Pid));
+         & "where photo_id = (select photo_id from post where id="
+         & To_String (Tid)
+         & ')');
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -466,7 +468,10 @@ package body V2P.Database is
       else
          --  No exif metadata recorded for this photo, get them now
          DBH.Handle.Prepare_Select
-           (Iter, "select filename from photo where id=" & To_String (Pid));
+           (Iter, "select filename from photo where id="
+            & "(select photo_id from post where id="
+            & To_String (Tid)
+            & ')');
 
          if Iter.More then
             Iter.Get_Line (Line);
@@ -482,8 +487,8 @@ package body V2P.Database is
             & "'shutter_speed_value', 'aperture_value', 'flash', "
             & "'focal_length', 'exposure_mode', 'exposure_program', "
             & "'white_balance', 'metering_mode', 'iso')"
-            & "values ("
-            & To_String (Pid) & ',' & Q (Exif.Create_Date)
+            & "values ((select photo_id from post where id="
+            & To_String (Tid) & ")," & Q (Exif.Create_Date)
             & ',' & Q (Exif.Make) & ','
             & Q (Exif.Camera_Model_Name) & ',' & Q (Exif.Shutter_Speed_Value)
             & ',' & Q (Exif.Aperture_Value) & ',' & Q (Exif.Flash) & ','
