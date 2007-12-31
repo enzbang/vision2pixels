@@ -900,7 +900,7 @@ package body V2P.Database is
    -- Get_Metadata --
    ------------------
 
-   function Get_Metadata (Pid : in Id) return Templates.Translate_Set is
+   function Get_Metadata (Tid : in Id) return Templates.Translate_Set is
       use type Templates.Tag;
 
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
@@ -909,7 +909,7 @@ package body V2P.Database is
       Set  : Templates.Translate_Set;
 
    begin
-      if Pid = Empty_Id then
+      if Tid = Empty_Id then
          --  ???
          return Set;
       end if;
@@ -921,7 +921,7 @@ package body V2P.Database is
          & "geo_latitude_formatted, geo_longitude_formatted "
          & "from photo_metadata "
          & "where photo_id = (select photo_id from post where id="
-         & To_String (Pid)
+         & To_String (Tid)
          & ')');
 
       if Iter.More then
