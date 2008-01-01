@@ -32,8 +32,14 @@ package body V2P.URL is
    ------------------------
 
    function Images_Full_Prefix return String is
+      Path : constant String := Morzhol.OS.Compose
+        (Gwiad_Plugin_Path, Settings.Get_Images_Path);
    begin
-      return Morzhol.OS.Compose (Gwiad_Plugin_Path, Settings.Get_Images_Path);
+      if Path (Path'Last) = Morzhol.OS.Directory_Separator then
+         return Path (Path'First .. Path'Last - 1);
+      else
+         return Path;
+      end if;
    end Images_Full_Prefix;
 
    ------------------------
@@ -41,8 +47,14 @@ package body V2P.URL is
    ------------------------
 
    function Thumbs_Full_Prefix return String is
+      Path : constant String := Morzhol.OS.Compose
+        (Gwiad_Plugin_Path, Settings.Get_Thumbs_Path);
    begin
-      return Morzhol.OS.Compose (Gwiad_Plugin_Path, Settings.Get_Thumbs_Path);
+      if Path (Path'Last) = Morzhol.OS.Directory_Separator then
+         return Path (Path'First .. Path'Last - 1);
+      else
+         return Path;
+      end if;
    end Thumbs_Full_Prefix;
 
    ---------------
