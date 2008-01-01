@@ -4,7 +4,7 @@
   <h3 class="criterianame">@_GLOBAL_CRITERIA_NAME_@</h3>
   <ul id="bgr_votefor@_GLOBAL_CRITERIA_ID_@" class="unit-global-rating">
     <li class="current-global-rating"
-        style="width:@_MULT(15):GLOBAL_CRITERIA_CURRENT_RATING_@px;">
+        style="width:@_FLOATMULT(15):GLOBAL_CRITERIA_CURRENT_RATING_@px;">
       Currently @_GLOBAL_CRITERIA_CURRENT_RATING_@/5
     </li>
   </ul>

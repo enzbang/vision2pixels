@@ -21,6 +21,7 @@
 
 with Ada.Directories;
 with Ada.Exceptions;
+with Ada.Float_Text_IO;
 
 with AWS.Dispatchers.Callback;
 with AWS.Messages;
@@ -82,6 +83,8 @@ with V2P.Template_Defs.R_Context_Error;
 with Gwiad.Plugins.Websites;
 
 with AWS.Services.Web_Block.Context;
+with Templates_Parser;
+
 
 package body V2P.Web_Server is
 
@@ -130,6 +133,12 @@ package body V2P.Web_Server is
 
    function CSS_Callback (Request : in Status.Data) return Response.Data;
    --  Web Element CSS callback
+
+   function Float_Mult_Filter
+     (Value      : in String;
+      Parameters : in String;
+      Context    : in Templates_Parser.Filter_Context) return String;
+   --  Mult filter (template parser user filter)
 
    function IMG_Callback (Request : in Status.Data) return Response.Data;
    --  Image callback
@@ -360,6 +369,23 @@ package body V2P.Web_Server is
    begin
       return File;
    end Default_XML_Callback;
+
+   function Float_Mult_Filter
+     (Value      : in String;
+      Parameters : in String;
+      Context    : in Templates_Parser.Filter_Context) return String
+   is
+      pragma Unreferenced (Context);
+      N, V : Float;
+      R : String (1 .. 1000);
+   begin
+      N := Float'Value (Parameters);
+      V := Float'Value (Value);
+
+      Float_Text_IO.Put (To => R, Item => V * N, Aft => 2, Exp => 0);
+
+      return R;
+   end Float_Mult_Filter;
 
    ------------------
    -- IMG_Callback --
@@ -678,6 +704,8 @@ begin  -- V2P.Web_Server : register vision2pixels website
      (Morzhol.OS.Compose
         (Gwiad_Plugin_Path,
          Settings.Log_Path & Directory_Separator & "v2p.log"));
+
+   AWS.Templates.Register_Filter ("FLOATMULT", Float_Mult_Filter'Access);
 
    Register_Callbacks;
 
