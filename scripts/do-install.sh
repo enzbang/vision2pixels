@@ -30,7 +30,7 @@ fi
 echo "Installing plugin in $ARGWIAD_ROOT"
 
 cd $ARGWIAD_ROOT
-tar --extract --verbose --backup --file $DIST
+tar --extract --verbose --file $DIST
 
 echo
 echo "Done ! You should run argwiadctl restart (or reload)"
