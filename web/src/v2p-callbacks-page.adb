@@ -261,8 +261,11 @@ package body V2P.Callbacks.Page is
             else
                Insert_Photo : declare
                   use URL;
+
+                  --  Removes Images_Full_Prefix from New_Image.Filename
+
                   New_Photo_Filename : constant String := New_Image.Filename
-                    (Images_Full_Prefix'Length + 1 .. New_Image.Filename'Last);
+                    (Images_Full_Prefix'Length + 2 .. New_Image.Filename'Last);
                   Pid                : constant String
                     := Database.Insert_Photo
                       (Uid      => Login,
