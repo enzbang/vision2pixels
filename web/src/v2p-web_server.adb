@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                         Copyright (C) 2006-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -84,7 +84,6 @@ with Gwiad.Plugins.Websites;
 
 with AWS.Services.Web_Block.Context;
 with Templates_Parser;
-
 
 package body V2P.Web_Server is
 
@@ -370,6 +369,10 @@ package body V2P.Web_Server is
       return File;
    end Default_XML_Callback;
 
+   -----------------------
+   -- Float_Mult_Filter --
+   -----------------------
+
    function Float_Mult_Filter
      (Value      : in String;
       Parameters : in String;
@@ -377,7 +380,7 @@ package body V2P.Web_Server is
    is
       pragma Unreferenced (Context);
       N, V : Float;
-      R : String (1 .. 1000);
+      R    : String (1 .. 1000);
    begin
       N := Float'Value (Parameters);
       V := Float'Value (Value);
