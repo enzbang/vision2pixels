@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                             --
+--                           Copyright (C) 2008                             --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -32,14 +32,8 @@ package body V2P.URL is
    ------------------------
 
    function Images_Full_Prefix return String is
-      Path : constant String := Morzhol.OS.Compose
-        (Gwiad_Plugin_Path, Settings.Get_Images_Path);
    begin
-      if Path (Path'Last) = Morzhol.OS.Directory_Separator then
-         return Path (Path'First .. Path'Last - 1);
-      else
-         return Path;
-      end if;
+      return Morzhol.OS.Compose (Gwiad_Plugin_Path, Settings.Get_Images_Path);
    end Images_Full_Prefix;
 
    ------------------------
@@ -47,14 +41,8 @@ package body V2P.URL is
    ------------------------
 
    function Thumbs_Full_Prefix return String is
-      Path : constant String := Morzhol.OS.Compose
-        (Gwiad_Plugin_Path, Settings.Get_Thumbs_Path);
    begin
-      if Path (Path'Last) = Morzhol.OS.Directory_Separator then
-         return Path (Path'First .. Path'Last - 1);
-      else
-         return Path;
-      end if;
+      return Morzhol.OS.Compose (Gwiad_Plugin_Path, Settings.Get_Thumbs_Path);
    end Thumbs_Full_Prefix;
 
    ---------------
