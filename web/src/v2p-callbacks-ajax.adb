@@ -143,7 +143,7 @@ package body V2P.Callbacks.Ajax is
 
    end Onchange_Category_Filter_Forum;
 
----------------------------
+   ---------------------------
    -- Onchange_Filter_Forum --
    ---------------------------
 
@@ -586,6 +586,7 @@ package body V2P.Callbacks.Ajax is
                   "ERROR_DUPLICATE_POST"));
 
          else
+
             Insert_Post : declare
                Post_Id : constant Database.Id :=
                            Database.Insert_Post
