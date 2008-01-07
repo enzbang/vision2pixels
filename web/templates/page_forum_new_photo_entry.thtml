@@ -2,6 +2,14 @@
 @@-- HTTP_URL(/forum/new_photo_entry): Forum Photo New Entry URL
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_FORUM_NEW_ENTRY_@ forum_new_photo_entry yui-t7
 
+@@IF@@ @_V2P_ERROR_@ /= ""
+  @@IF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_IMAGE_DIMENSION_@
+    <p class="error">@_BABEL_WARN_EXCEED_MAX_DIMENSION_@</p>
+  @@ELSIF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_SIZE_@
+    <p class="error">@_BABEL_WARN_EXCEED_MAX_SIZE_@</p>
+  @@END_IF@@
+@@END_IF@@
+
 @@IF@@ @_IMAGE_SOURCE_@ /= ""
 <div class="posting_form">
 <h1>@_BABEL_FORUM_NEW_PHOTO_ENTRY_@</h1>
