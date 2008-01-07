@@ -834,3 +834,6 @@ body.user_page ul#bucl_lastusercommentlist {
    text-align: center;
    padding: 3em;
 }
+.errorinline {
+   color: red;
+}

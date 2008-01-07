@@ -16,5 +16,17 @@
     @@END_IF@@
     ]]>
     </replace>
+    <replace id="pfnte_post_error">
+    <![CDATA[
+    @@IF@@ @_ERROR_@ /= ""
+      @_BABEL_UNKNOWN_ERROR_@
+      <!--  (@_ERROR_@)  -->
+    @@ELSIF@@ @_ERROR_DUPLICATED_@ /= ""
+      @_BABEL_ERROR_POST_DUPLICATED_@
+    @@ELSE@@
+      @_BABEL_UNKNOWN_ERROR_@
+    @@END_IF@@
+    ]]>
+    </replace>
   @@END_IF@@
 </response>
