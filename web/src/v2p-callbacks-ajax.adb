@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------------
---                              Vision2Pixels                               --
+--                                Vision2Pixels                             --
 --                                                                          --
---                           Copyright (C) 2007                             --
---                      Pascal Obry - Olivier Ramonat                       --
+--                           Copyright (C) 2007-2008                        --
+--                        Pascal Obry - Olivier Ramonat                     --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -563,7 +563,13 @@ package body V2P.Callbacks.Ajax is
          end if;
       end;
 
-      if Login = "" and then CID = Database.Empty_Id then
+      --  Check for empty fields
+
+      if Login = ""
+        or else CID = Database.Empty_Id
+        or else Name = ""
+        or else Comment_Wiki = ""
+      then
          Templates.Insert
            (Translations,
             Templates.Assoc
