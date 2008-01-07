@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                             --
+--                         Copyright (C) 2007-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -29,7 +29,6 @@ with V2P.URL;
 
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
-with V2P.Template_Defs.Page_Main;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.Page_Photo_Post;
@@ -217,6 +216,7 @@ package body V2P.Callbacks.Page is
       Translations : in out Templates.Translate_Set)
    is
       use Image.Data;
+      package Post_Entry renames Template_Defs.Page_Forum_New_Photo_Entry;
 
       P        : constant Parameters.List := Status.Parameters (Request);
       Filename : constant String :=
@@ -241,20 +241,20 @@ package body V2P.Callbacks.Page is
             if New_Image.Init_Status /= Image_Created then
                Templates.Insert
                  (Translations,
-                  Templates.Assoc (Template_Defs.Page_Main.V2P_ERROR,
+                  Templates.Assoc (Post_Entry.V2P_ERROR,
                     Image_Init_Status'Image (New_Image.Init_Status)));
 
                Templates.Insert
                  (Translations,
                   Templates.Assoc
-                    (Template_Defs.Page_Main.EXCEED_MAXIMUM_IMAGE_DIMENSION,
+                    (Post_Entry.EXCEED_MAXIMUM_IMAGE_DIMENSION,
                      Image_Init_Status'Image
                        (Image.Data.Exceed_Max_Image_Dimension)));
 
                Templates.Insert
                  (Translations,
                   Templates.Assoc
-                    (Template_Defs.Page_Main.EXCEED_MAXIMUM_SIZE,
+                    (Post_Entry.EXCEED_MAXIMUM_SIZE,
                      Image_Init_Status'Image
                        (Image.Data.Exceed_Max_Size)));
 
