@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                            --
+--                         Copyright (C) 2007-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -69,9 +69,8 @@ package body Web_Tests.User_Page is
       Check
         (Response.Message_Body (Result),
          Word_Set'(+"Forum photographies", +"Forum mat", +"diter votre page",
-           +"?TID=89", +"?TID=88", +"?TID=87", +"?TID=90", +"?TID=86",
-           +"?TID=85", +"?TID=84", +"?TID=63", +"?TID=62", +"?TID=61",
-           +"?TID=143", +"?TID=2", +"?TID=3",
+           +"?TID=67", +"?TID=66", +"?TID=65", +"?TID=64", +"?TID=75",
+           +"?TID=74", +"?TID=73", +"?TID=72", +"?TID=71", +"?TID=70",
            +"#17", +"#19"),
          "wrong content for obry's personal page:"
          & Response.Message_Body (Result));

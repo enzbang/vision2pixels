@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                             --
+--                         Copyright (C) 2007-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -531,8 +531,8 @@ package body V2P.Callbacks.Web_Block is
                      Context.Exist (Template_Defs.Set_Global.ADMIN)
                    and then Context.Get_Value
                      (Template_Defs.Set_Global.ADMIN) = "TRUE";
-      URI        : constant String     := Status.URI (Request);
-      User_Name  : constant String     := URL.User_Name (URI);
+      URI        : constant String := Status.URI (Request);
+      User_Name  : constant String := URL.User_Name (URI);
       Set        : Templates.Translate_Set;
       Navigation : Navigation_Links.Post_Ids.Vector;
       From       : Natural := 1;
@@ -540,14 +540,15 @@ package body V2P.Callbacks.Web_Block is
       Total      : Natural;
    begin
       Database.Get_Threads
-        (User        => User_Name,
-         Navigation  => Navigation,
-         Set         => Set,
-         Admin       => Admin,
-         From        => From,
-         Nb_Lines    => Nb_Lines,
-         Total_Lines => Total,
-         Forum       => Forum);
+        (User          => User_Name,
+         Navigation    => Navigation,
+         Set           => Set,
+         Admin         => Admin,
+         From          => From,
+         Nb_Lines      => Nb_Lines,
+         Total_Lines   => Total,
+         Forum         => Forum,
+         Only_Revealed => True);
 
       Templates.Insert (Translations, Set);
       V2P.Context.Counter.Set_Value
