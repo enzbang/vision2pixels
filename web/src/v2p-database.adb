@@ -1503,7 +1503,7 @@ package body V2P.Database is
          From := 1; -- ??? What should be done in this case ?
       end if;
 
-      Navigation  := V2P.Navigation_Links.Post_Ids.Empty_Vector;
+      Navigation := V2P.Navigation_Links.Post_Ids.Empty_Vector;
 
       Connect (DBH);
 

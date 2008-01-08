@@ -386,7 +386,6 @@ package body V2P.Callbacks.Web_Block is
       Ratings : Templates.Tag;
 
    begin
-
       if Context.Exist (Template_Defs.Set_Global.FID) then
          Templates.Insert
            (Translations,
