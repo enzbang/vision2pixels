@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                         Copyright (C) 2006-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -308,6 +308,7 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (Number_Latest_Users, Defaults.Number_Latest_Users);
    Conf.Set_Value (Google_Map_Key, Defaults.Google_Map_Key);
    Conf.Set_Value (Log_Path, Defaults.Log_Path);
+   Conf.Set_Value (Cache_Path, Defaults.Cache_Path);
 
    --  Now read the config file if any
 
