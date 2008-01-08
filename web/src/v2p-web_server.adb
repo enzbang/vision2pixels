@@ -701,7 +701,7 @@ begin  -- V2P.Web_Server : register vision2pixels website
    --  First we want to be sure that the cached files from the previous session
    --  are removed.
 
-   Cache.Clear (Root_Directory => Gwiad_Plugin_Path);
+   Cache.Clear (Root_Directory => Settings.Cache_Path);
 
    Morzhol.Logs.Set_File
      (Morzhol.OS.Compose
