@@ -26,6 +26,8 @@ with AWS.Session;
 
 with Image.Metadata.Geographic;
 
+with Morzhol.Logs;
+
 with V2P.Database;
 with V2P.Wiki;
 with V2P.Context;
@@ -50,6 +52,8 @@ with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 package body V2P.Callbacks.Ajax is
 
    use Ada.Strings.Unbounded;
+
+   Module : constant Morzhol.Logs.Module_Name := "Ajax";
 
    -----------
    -- Login --
@@ -521,6 +525,13 @@ package body V2P.Callbacks.Ajax is
 
    exception
       when Constraint_Error =>
+         Morzhol.Logs.Write
+           (Name    => Module,
+            Content =>
+            "(Onsubmit_Metadata_Form_Enter) : Constraint Error with "
+            & Parameters.Get (P, Template_Defs.Block_Metadata.HTTP.bm_latitude)
+            & " " & Parameters.Get
+              (P, Template_Defs.Block_Metadata.HTTP.bm_longitude));
          Context.Set_Value
            (V2P.Template_Defs.Set_Global.ERROR_METADATA_WRONG_METADATA,
             "ERROR");
