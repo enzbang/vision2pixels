@@ -43,8 +43,8 @@
       @@IF@@ @_OWNER_@ = ""
       <form action="#" id="bm_metadata_edition_form">
         <p>
-          <input type="text" size="60" name="bm_address" id="bm_address"
-                 value="11, avenue du Père Lachaise, Paris, France" />
+          <textarea name="bm_address"
+	            id="bm_address">11, avenue du Père Lachaise, Paris, France</textarea>
 	  <a href="#" id="bm_metadata_edition_form_go" onclick="return false;">Go!</a>
         </p>
         <a href="#" onclick="return false;" id="bm_centermarker">Center marker</a>
