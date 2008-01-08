@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                         Copyright (C) 2006-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -1191,20 +1191,21 @@ package body V2P.Database is
    -----------------
 
    procedure Get_Threads
-     (Fid         : in     Id := Empty_Id;
-      User        : in     String := "";
-      Admin       : in     Boolean;
-      Forum       : in     Forum_Filter := Forum_All;
-      Page_Size   : in     Navigation_Links.Page_Size :=
+     (Fid           : in     Id := Empty_Id;
+      User          : in     String := "";
+      Admin         : in     Boolean;
+      Forum         : in     Forum_Filter := Forum_All;
+      Page_Size     : in     Navigation_Links.Page_Size :=
         Navigation_Links.Default_Page_Size;
-      Filter      : in     Filter_Mode := All_Messages;
-      Filter_Cat  : in     String      := "";
-      Order_Dir   : in     Order_Direction := DESC;
-      From        : in out Positive;
-      Navigation  :    out Navigation_Links.Post_Ids.Vector;
-      Set         :    out Templates.Translate_Set;
-      Nb_Lines    :    out Natural;
-      Total_Lines :    out Natural)
+      Filter        : in     Filter_Mode := All_Messages;
+      Filter_Cat    : in     String      := "";
+      Order_Dir     : in     Order_Direction := DESC;
+      Only_Revealed : in     Boolean := False;
+      From          : in out Positive;
+      Navigation    :    out Navigation_Links.Post_Ids.Vector;
+      Set           :    out Templates.Translate_Set;
+      Nb_Lines      :    out Natural;
+      Total_Lines   :    out Natural)
    is
       use type Templates.Tag;
       use type V2P.Navigation_Links.Post_Ids.Vector;
@@ -1368,6 +1369,14 @@ package body V2P.Database is
             when Forum_All =>
                null;
          end case;
+
+         if Only_Revealed then
+            Append
+              (Where_Stmt,
+               " and datetime(post.date_post, '+"
+               & Utils.Image (V2P.Settings.Anonymity_Hours)
+               & " hour') < datetime('now') ");
+         end if;
 
          return -Where_Stmt;
       end Build_Where;

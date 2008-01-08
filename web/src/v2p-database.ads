@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                         Copyright (C) 2006-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -77,22 +77,24 @@ package V2P.Database is
    --  Returns the forum type from a Tid
 
    procedure Get_Threads
-     (Fid         : in     Id := Empty_Id;
-      User        : in     String := "";
-      Admin       : in     Boolean;
-      Forum       : in     Forum_Filter := Forum_All;
-      Page_Size   : in     Navigation_Links.Page_Size :=
+     (Fid           : in     Id := Empty_Id;
+      User          : in     String := "";
+      Admin         : in     Boolean;
+      Forum         : in     Forum_Filter := Forum_All;
+      Page_Size     : in     Navigation_Links.Page_Size :=
         Navigation_Links.Default_Page_Size;
-      Filter      : in     Filter_Mode := All_Messages;
-      Filter_Cat  : in     String      := "";
-      Order_Dir   : in     Order_Direction := DESC;
-      From        : in out Positive;
-      Navigation  :    out Navigation_Links.Post_Ids.Vector;
-      Set         :    out Templates.Translate_Set;
-      Nb_Lines    :    out Natural;
-      Total_Lines :    out Natural);
+      Filter        : in     Filter_Mode := All_Messages;
+      Filter_Cat    : in     String      := "";
+      Order_Dir     : in     Order_Direction := DESC;
+      Only_Revealed : in     Boolean := False;
+      From          : in out Positive;
+      Navigation    :    out Navigation_Links.Post_Ids.Vector;
+      Set           :    out Templates.Translate_Set;
+      Nb_Lines      :    out Natural;
+      Total_Lines   :    out Natural);
    --  Returns all threads for a given forum.
    --  Returns navigation links to store in context.
+   --  Set Revealed to True to retreive only revealed photos.
 
    function Get_Latest_Posts
      (Limit : in Positive) return Templates.Translate_Set;
