@@ -59,6 +59,7 @@ with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.Page_Photo_Post;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
+with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
@@ -618,7 +619,7 @@ package body V2P.Web_Server is
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Block_New_Comment.Set.AJAX_RATE_URL,
+        (Template_Defs.Block_New_Vote.Set.AJAX_RATE_URL,
          Template_Defs.R_Block_Rate.Template,
          Callbacks.Ajax.Onsubmit_Rate'Access,
          Content_Type     => MIME.Text_XML,

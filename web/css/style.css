@@ -217,6 +217,13 @@ div#pfe_lazy_new_comment {
    margin-top: 1em;
 }
 @@--
+div#pfe_lazy_new_vote {
+   border: thin solid @_LIGHT_BORDER_COLOR_@;
+   padding: 1em 2em 2em;
+   margin-top: 1em;
+   background: #111111;
+}
+@@--
 body.forum_entry p#pfe_main_image {
    margin:0px auto;
    text-align:center;

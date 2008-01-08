@@ -49,7 +49,7 @@ with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Comment_List;
 with V2P.Template_Defs.Block_Global_Rating;
-with V2P.Template_Defs.Block_New_Comment;
+with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Photo_Of_The_Week;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.R_Block_Forum_List;
@@ -1845,17 +1845,17 @@ package body V2P.Database is
       Templates.Insert
         (Set,
          Templates.Assoc
-           (Block_New_Comment.CRITERIA_NAME, Criteria));
+           (Block_New_Vote.CRITERIA_NAME, Criteria));
 
       Templates.Insert
         (Set,
          Templates.Assoc
-           (Block_New_Comment.CRITERIA_ID, Criteria_Id));
+           (Block_New_Vote.CRITERIA_ID, Criteria_Id));
 
       Templates.Insert
         (Set,
          Templates.Assoc
-           (Block_New_Comment.CRITERIA_CURRENT_RATING, Post_Rating));
+           (Block_New_Vote.CRITERIA_CURRENT_RATING, Post_Rating));
 
       return Set;
    end Get_User_Rating_On_Post;

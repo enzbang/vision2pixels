@@ -24,7 +24,7 @@ with V2P.Database;
 with V2P.Context;
 with V2P.Navigation_Links;
 with V2P.Settings;
-with V2P.Template_Defs.Block_New_Comment;
+with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Set_Global;
@@ -355,11 +355,27 @@ package body V2P.Callbacks.Web_Block is
       end if;
    end Metadata;
 
-   -----------------
-   -- New_Comment --
-   -----------------
+   --------------
+   -- New_Post --
+   --------------
 
-   procedure New_Comment
+   procedure New_Post
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Translations);
+   begin
+      if Context.Exist ("TID") then
+         Context.Remove ("TID");
+      end if;
+   end New_Post;
+
+   --------------
+   -- New_Vote --
+   --------------
+
+   procedure New_Vote
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
@@ -397,24 +413,8 @@ package body V2P.Callbacks.Web_Block is
       Templates.Insert
         (Translations,
          Templates.Assoc
-           (Template_Defs.Block_New_Comment.RATING, Ratings));
-   end New_Comment;
-
-   --------------
-   -- New_Post --
-   --------------
-
-   procedure New_Post
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
-   is
-      pragma Unreferenced (Request, Translations);
-   begin
-      if Context.Exist ("TID") then
-         Context.Remove ("TID");
-      end if;
-   end New_Post;
+           (Template_Defs.Block_New_Vote.RATING, Ratings));
+   end New_Vote;
 
    -----------------------
    -- Photo_Of_The_Week --
