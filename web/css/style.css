@@ -86,7 +86,7 @@ select {
    margin-left: 1em;
    margin-right: 1em;
 }
-input {
+textarea, input {
    border: thin solid @_HIGHLIGHT_COLOR_@;
    color: white;
    background-color:#131313;
@@ -843,4 +843,9 @@ body.user_page ul#bucl_lastusercommentlist {
 }
 .errorinline {
    color: red;
+}
+@@--
+#bm_metadata_edition_form textarea {
+   width:30em;
+   height:2em;
 }
