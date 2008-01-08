@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                             --
+--                         Copyright (C) 2007-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -43,5 +43,6 @@ package V2P.Context is
 
    procedure Update (Context : access Object; SID : in AWS.Session.Id);
    --  Update the context filter
-   --  Set LOGIN in Context
+   --  Set LOGIN in Context.
+
 end V2P.Context;
