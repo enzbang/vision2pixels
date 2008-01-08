@@ -217,7 +217,7 @@ div#pfe_lazy_new_comment {
    margin-top: 1em;
 }
 @@--
-div#pfe_lazy_new_vote {
+div#bnv_lazy_new_vote {
    border: thin solid @_LIGHT_BORDER_COLOR_@;
    padding: 1em 2em 2em;
    margin-top: 1em;
