@@ -18,48 +18,6 @@
         <input name="forum_photo" id="bnc_forum_photo" type="hidden" value="" />
       @@END_IF@@
     </p>
-
-    @@IF@@ @_IN_RATE_CB_@ /= "" or (@_OWNER_@ /= @_LOGIN_@ and @_IMAGE_SOURCE_@ /= "")
-      @@TABLE@@
-        <h3 class="criterianame">@_CRITERIA_NAME_@</h3>
-        <ul id="bnc_user_votefor@_CRITERIA_ID_@" class="unit-rating">
-          @@IF@@ @_CRITERIA_CURRENT_RATING_@ /= ""
-            <li class="current-rating"
-                style="width:@_MULT(15):CRITERIA_CURRENT_RATING_@px;">
-            Currently @_CRITERIA_CURRENT_RATING_@/5</li>
-          @@ELSE@@
-            <li class="current-rating" style="width:0px;">
-            Currently no vote</li>
-          @@END_IF@@
-          @@TABLE@@
-            <li><a href="#" id="bnc_rating_@_RATING_@_@_CRITERIA_ID_@"
-                   class="r@_RATING_@-unit rater"
-                   rel="nofollow">@_RATING_@</a></li>
-          @@END_TABLE@@
-
-          <script type="text/javascript">
-          <!--
-            @@SET@@ SET_AJAX_RATE_URL = /rate
-            @@SET@@ SET_AJAX_RATE_CRITERIA = criteria
-            @@SET@@ SET_AJAX_RATE_VAL = value
-
-            var rule_user_votefor@_CRITERIA_ID_@ = {
-	    '#bnc_user_votefor@_CRITERIA_ID_@ li a' : function(el) {
-                 el.onclick = function () {
-                    AWS.Ajax.XML.request ("@_SET_AJAX_RATE_URL_@",
-                    "@_SET_AJAX_RATE_CRITERIA_@=@_CRITERIA_ID_@&@_SET_AJAX_RATE_VAL_@="
-                    + this.innerHTML
-                    + "&" + AWS.Ajax.serialize("bnc_TID", "TID"), "");
-                    return (false);
-                 }
-               }
-            };
-            Behaviour.register (rule_user_votefor@_CRITERIA_ID_@);
-          -->
-          </script>
-        </ul>
-      @@END_TABLE@@
-    @@END_IF@@
     <p class="enternewcomment">
       <label for="global_comment_input">@_BABEL_ENTER_COMMENT_@</label>
       <textarea name="global_comment_input"

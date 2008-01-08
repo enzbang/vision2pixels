@@ -2,8 +2,8 @@
 @@--
 <?xml version="1.0" encoding="utf-8"?>
 <response>
-   <replace id="pfe_lazy_new_comment">
-      <![CDATA[@_LAZY_NEW_COMMENT_@]]>
+   <replace id="pfe_lazy_new_vote">
+      <![CDATA[@_LAZY_NEW_VOTE_@]]>
    </replace>
    <replace id="pfe_lazy_global_rating">
       <![CDATA[@_LAZY_GLOBAL_RATING_@]]>

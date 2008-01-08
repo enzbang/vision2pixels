@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------------
---                                Vision2Pixels                             --
+--                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007-2008                        --
---                        Pascal Obry - Olivier Ramonat                     --
+--                         Copyright (C) 2007-2008                          --
+--                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -35,6 +35,7 @@ with V2P.Template_Defs.Page_Forum_New_Text_Entry;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.Block_New_Comment;
+with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
@@ -657,10 +658,10 @@ package body V2P.Callbacks.Ajax is
                       Name    => Template_Defs.Set_Global.TID);
       Criteria : constant String :=
                    Parameters.Get
-                     (P, Block_New_Comment.Set.AJAX_RATE_CRITERIA);
+                     (P, Block_New_Vote.Set.AJAX_RATE_CRITERIA);
       Value    : constant String :=
                    Parameters.Get
-                     (P, Block_New_Comment.Set.AJAX_RATE_VAL);
+                     (P, Block_New_Vote.Set.AJAX_RATE_VAL);
    begin
       Database.Update_Rating
         (Uid      => Login,
@@ -670,7 +671,7 @@ package body V2P.Callbacks.Ajax is
 
       Templates.Insert
         (Translations,
-         Templates.Assoc (Block_New_Comment.IN_RATE_CB, "t"));
+         Templates.Assoc (Block_New_Vote.IN_RATE_CB, "t"));
    end Onsubmit_Rate;
 
    ----------------------------------------
