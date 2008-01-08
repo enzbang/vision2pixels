@@ -27,7 +27,7 @@ package body Image.Metadata.Geographic is
 
    function "=" (Left, Right : in Geo_Coordinate) return Boolean is
    begin
-      return (Left - Right < 0.0001);
+      return (abs (Left - Right) < 0.0001);
    end "=";
 
    ------------
