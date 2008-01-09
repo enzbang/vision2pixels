@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                         Copyright (C) 2006-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -94,11 +94,12 @@ package body Image.Data is
       Out_Thumbnail_Filename : in     String := "";
       Out_Max_Dimension      : in     Image_Dimension := Null_Dimension)
    is
-      Thumb_Size      : constant G2F.IO.Image_Size
-        := Image_Size'(X => Image_Size_T (Settings.Thumbnail_Maximum_Width),
-                       Y => Image_Size_T (Settings.Thumbnail_Maximum_Height));
-      Thumb           : Image_Ptr;
-      Thumb_Info      : Image_Info_Ptr;
+      Thumb_Size : constant G2F.IO.Image_Size :=
+                     Image_Size'
+                       (X => Image_Size_T (Settings.Thumbnail_Maximum_Width),
+                        Y => Image_Size_T (Settings.Thumbnail_Maximum_Height));
+      Thumb      : Image_Ptr;
+      Thumb_Info : Image_Info_Ptr;
    begin
       --  Read image info
 
