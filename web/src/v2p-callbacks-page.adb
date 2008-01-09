@@ -255,8 +255,7 @@ package body V2P.Callbacks.Page is
                  (Translations,
                   Templates.Assoc
                     (Post_Entry.EXCEED_MAXIMUM_SIZE,
-                     Image_Init_Status'Image
-                       (Image.Data.Exceed_Max_Size)));
+                     Image_Init_Status'Image (Image.Data.Exceed_Max_Size)));
 
             else
                Insert_Photo : declare
