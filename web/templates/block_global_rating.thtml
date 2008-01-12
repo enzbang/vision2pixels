@@ -1,5 +1,13 @@
 @@IF@@ @_GLOBAL_NB_VOTE_@ /= 0
-  <p id="bgr_has_vote">@_GLOBAL_NB_VOTE_@ Vote : </p>
+  @@INLINE@@
+     <p id="bgr_has_vote">@_GLOBAL_NB_VOTE_@
+    @@IF@@ @_GLOBAL_NB_VOTE_@ > 1
+      Votes
+    @@ELSE@@
+      Vote
+    @@END_IF@@
+     : </p>
+  @@END_INLINE@@
   @@TABLE@@
   <h3 class="criterianame">@_GLOBAL_CRITERIA_NAME_@</h3>
   <ul id="bgr_votefor@_GLOBAL_CRITERIA_ID_@" class="unit-global-rating">
