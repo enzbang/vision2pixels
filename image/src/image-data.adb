@@ -58,8 +58,7 @@ package body Image.Data is
    function Dimension (Img : in Image_Data) return Image_Dimension is
    begin
       if Img.Init_Status /= Image_Created then
-         raise Image_Error
-           with "Get_Height : Error image not created";
+         raise Image_Error with "Get_Height : Error image not created";
       end if;
       return Img.Dimension;
    end Dimension;
@@ -103,7 +102,7 @@ package body Image.Data is
    begin
       --  Read image info
 
-      G2F.IO.Set_Filename (Img.Info_Ptr, Original_Filename);
+      Set_Filename (Img.Info_Ptr, Original_Filename);
 
       Img.Image_Ptr := Read_Image (Img.Info_Ptr);
 
