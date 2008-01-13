@@ -384,7 +384,6 @@ package body V2P.Callbacks.Ajax is
       end Is_Valid_Comment;
 
    begin
-
       if Parameters.Get (P, Block_New_Comment.HTTP.forum_photo) /= "" then
          Forum_Type := V2P.Database.Forum_Photo;
       end if;
@@ -411,6 +410,7 @@ package body V2P.Callbacks.Ajax is
             Templates.Assoc
               (R_Block_Comment_Form_Enter.ERROR, "ERROR"));
          --  ??? Adds an error message
+
       else
          Insert_Comment : declare
             Cid : constant Database.Id := Database.Insert_Comment
@@ -489,7 +489,6 @@ package body V2P.Callbacks.Ajax is
       end Get;
 
    begin
-
       Insert_Metadata : declare
          Latitude_Coord      : constant Geo_Coordinate := Get
            (Template_Defs.Block_Metadata.HTTP.bm_latitude);
