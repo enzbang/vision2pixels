@@ -580,7 +580,6 @@ package body V2P.Callbacks.Ajax is
       if Login = ""
         or else CID = Database.Empty_Id
         or else Name = ""
-        or else Comment_Wiki = ""
       then
          Templates.Insert
            (Translations,
