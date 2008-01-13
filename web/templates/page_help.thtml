@@ -1,0 +1,73 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@-- HTTP_URL(/help): Website help page
+@@--
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ help
+
+<h1>Vision2Pixels</h1>
+
+<h2>Un projet libre</h2>
+
+<p>Vision2pixels est un projet GPL développé par Pascal Obry et
+Olivier Ramonat visant à construire un outil de gestion de site
+communautaire autour de la critique photographique. Ce project est
+pour l'instant entièrement tourné vers la réalisation du site que vous
+voyez.</p>
+
+<p>Étant pour le moment encore en phase de développement, vous êtes
+invités à vous inscrire afin de tester le site et de signaler les
+éventuels disfonctionnements.</p>
+
+<h2>Une communauté de photographes</h2>
+
+<p>Le but de ce site est de réunir une communauté de photographes afin
+de s'améliorer en soumettant des photographies à la critique et en
+critiquant les photographies des autres.</p>
+
+<h2>Avec des coup de cœur</h2>
+
+<p>Régulièrement, une photographie sera choisie comme coup de cœur du
+site. Cette photographie sera élue par vous : pour chaque coup de cœur
+vous pouvez voter pour jusqu'à 7 photographies. Plus vous êtes
+indécis, c'est à dire plus vous avez voté pour le coup de cœur, moins
+votre vote comptera.</p>
+
+<h2>Des auteurs non revelés pendant trois jours</h2>
+
+<p>Ce site est tourné vers la critique photographique. Ce n'est pas un
+site de gallerie photo. Vous ne pouvez donc pas poster plus d'une
+photo tous les trois jours. Pendant cette période, la dernière
+photographie que vous avez posté n'aura pas son champs "auteur" de
+mis-à-jour. L'auteur sera "non-révelé". Ceci afin que les notes et
+commentaires portent vraiment sur la photo et non sur l'auteur.</p>
+
+<h2>La possibilité de noter des photos</h2>
+
+<p>Lorsque vous êtes connecté, vous pouvez noter chaque photo (sauf
+les votres !) à l'aide de différents critères : Composition, Focus
+(mise au point), Lumiére. La note que vous donnerez (de 1 à 5) pourra
+être changée à tout moment en revenant sur la photographie.</p>
+
+<h2>Information EXIF et Géolocalisation</h2>
+
+<p>Lorsque vous postez une photographie, les informations EXIF sont
+récupérées si elles existent. Vous avez aussi la possibilité de
+géolocaliser votre photo en la positionnant sur une carte ou en
+entrant directement la latitude et la longitude.</p>
+
+<h2>A suivre...</h2>
+
+<p>Nous souhaitons apporter de nombreuses améliorations : </p>
+<ul>
+<li>Des flux RSS/Atom pour suivre l'actualité.</li>
+<li>La notification de nouveaux commentaires sur ces propres photos ou
+sur les photographies "bookmarquées".</li>
+<li>La possibilité de tagger des photos.</li>
+<li>Et de nombreuses autres fonctionnalités...</li>
+</ul>
+
+@@IF@@ @_V2P_ERROR_@ /= ""
+  @_V2P_ERROR_@
+@@END_IF@@
+@@--
+@@INCLUDE@@ chunk_v2p_end.thtml
