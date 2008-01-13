@@ -153,6 +153,9 @@ install-distrib: clean-distrib create-plugin-dist-dir
 	$(TAR_DIR) $(shell basename $(DISTRIB)).tgz $(shell basename $(DISTRIB))
 	$(RM) -r $(DISTRIB)
 
+install-distrib-show-name:
+	@echo $(DISTRIB)
+
 create-plugin-dist-dir: GWIAD_ROOT=$(DISTRIB)/dist
 create-plugin-dist-dir: install_gwiad_plugin
 
