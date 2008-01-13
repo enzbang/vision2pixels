@@ -7,12 +7,12 @@
 <h1>Vision2Pixels</h1>
 
 <div id="pm_presentation">
-<p>Vision2pixels est un projet GPL visant à construire un outil de gestion de
-site communautaire autour de la critique photographique.</p>
+<p>Vision2pixels est un site communautaire autour de la critique photographique.</p>
 
 <p>Vous êtes invités à vous inscrire afin de tester le site et de signaler les
-éventuels disfonctionnements. Le logiciel étant en plein développement il y en
-a sûrement plusieurs</p>
+éventuels disfonctionnements.</p>
+
+<p><a class="help" href="/help">En savoir plus.</a></p>
 </div>
 
 <div id="pm_photo_of_the_week"><p>@_LAZY_PHOTO_OF_THE_WEEK_@</p></div>

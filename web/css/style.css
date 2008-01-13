@@ -849,3 +849,31 @@ body.user_page ul#bucl_lastusercommentlist {
    width:30em;
    height:2em;
 }
+@@-- help page
+body.help h2 {
+   text-transform:none;
+   margin:2em 0 0.5em 0;
+   padding-top:0.7em;
+   font-size:1.3em;
+   font-weight:bold;
+   text-align:center;
+   border-top:thin solid @_LIGHT_BORDER_COLOR_@;
+}
+
+body.help p, body.help ul {
+   margin:0 auto;
+   padding-left:1em;
+   line-height:1.5em;
+   width:80%;
+   text-align:justify;
+}
+
+body.help li {
+   margin-left:1.4em;
+   line-height:1.5em;
+   list-style:square;
+}
+
+a.help {
+   text-decoration:underline;
+}

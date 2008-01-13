@@ -55,6 +55,7 @@ with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Page_Forum_New_Text_Entry;
 with V2P.Template_Defs.Page_Error;
 with V2P.Template_Defs.Page_Fatal_Error;
+with V2P.Template_Defs.Page_Help;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.Page_Photo_Post;
 with V2P.Template_Defs.Block_Login;
@@ -512,6 +513,11 @@ package body V2P.Web_Server is
         (Template_Defs.Page_Forum_New_Photo_Entry.URL,
          Template_Defs.Page_Forum_New_Photo_Entry.Template,
          Callbacks.Page.New_Photo_Entry'Access);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Help.URL,
+         Template_Defs.Page_Help.Template,
+         null);
 
       --  Register Ajax callbacks
 
