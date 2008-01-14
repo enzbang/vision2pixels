@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                             --
+--                         Copyright (C) 2007-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -27,7 +27,7 @@ package body Image.Metadata.Geographic is
 
    function "=" (Left, Right : in Geo_Coordinate) return Boolean is
    begin
-      return (abs (Left - Right) < 0.0001);
+      return (abs (Left - Right) < 0.0002);
    end "=";
 
    ------------
@@ -75,7 +75,6 @@ package body Image.Metadata.Geographic is
          Position.C_Direction := S;
       end if;
    end Format_Direction;
-
 
    overriding procedure Format_Direction
      (Position   : in out Longitude;
