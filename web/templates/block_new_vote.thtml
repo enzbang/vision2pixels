@@ -1,8 +1,8 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
 @@IF@@ @_LOGIN_@ /= "" or @_OPTION_ANONYMOUS_COMMENT_@
-  @@IF@@ @_IN_RATE_CB_@ /= "" or (@_OWNER_@ /= @_LOGIN_@ and @_IMAGE_SOURCE_@ /= "")
-  <div id="bnv_lazy_new_vote">
+  @@IF@@ @_IN_RATE_CB_@ /= "" or @_OWNER_@ /= @_LOGIN_@
+  <div id="bnv_new_vote">
     @@TABLE@@
       <h3 class="criterianame">@_CRITERIA_NAME_@</h3>
       <ul id="bnv_user_votefor@_CRITERIA_ID_@" class="unit-rating">
