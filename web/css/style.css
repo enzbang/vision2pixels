@@ -711,6 +711,7 @@ span.user_name {
    color:#029cbe;
    font-size: 1.2em;
    font-weight: bold;
+   padding-left: 3em;
 }
 @@--
 span.user_name a {
