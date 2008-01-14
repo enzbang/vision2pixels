@@ -1,7 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
-
+@@--
 <h2>@_BABEL_LAST_USER_PHOTOS_@</h2>
-
+@@--
 <ul class="slides">
 @@TABLE@@
   @@IF@@ @_REVEALED_@
