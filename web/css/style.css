@@ -224,6 +224,16 @@ div#bnv_lazy_new_vote {
    background: #111111;
 }
 @@--
+div#bvwp_vote_week_photo {
+   text-align: center;
+}
+@@--
+a#bvwp_vote_button {
+   color: #019bbd;
+   text-transform: capitalize;
+   font-size: 1.2em;
+}
+@@--
 body.forum_entry p#pfe_main_image {
    margin:0px auto;
    text-align:center;

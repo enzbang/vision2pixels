@@ -228,6 +228,14 @@ package V2P.Database is
      (Uid : in String) return Templates.Translate_Set;
    --  Get the delay the user has to wait before he can post
 
+   --  Weekly votes
+
+   procedure Toggle_Vote_Week_Photo (Uid : in String; Tid : in Id);
+   --  Set or Reset user Uid vote for photo Tid
+
+   function Has_User_Vote (Uid : in String; Tid : in Id) return Boolean;
+   --  Returns True if user Uid has voted for the given photo
+
 private
 
    No_User_Data : constant User_Data :=

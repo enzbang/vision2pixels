@@ -148,4 +148,9 @@ package V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
 
+   procedure Vote_Week_Photo
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
 end V2P.Callbacks.Web_Block;
