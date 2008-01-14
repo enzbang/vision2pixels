@@ -100,8 +100,9 @@
     <input name="pfe_PARENT_ID" id="pfe_PARENT_ID" type="hidden" value=""/>
   </div>
   @@END_IF@@
-
+@@IF@@ @_IMAGE_SOURCE_@ /= ""
   <div id="pfe_lazy_new_vote">@_LAZY_NEW_VOTE_@</div>
+@@END_IF@@
   <div id="pfe_lazy_new_comment">@_LAZY_NEW_COMMENT_@</div>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, pfe_hidden_status_toggle)
