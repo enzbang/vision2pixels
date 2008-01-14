@@ -106,6 +106,7 @@ package body V2P.Callbacks.Ajax is
       Session.Delete (SID);
 
       Context.Remove (Template_Defs.Set_Global.LOGIN);
+      Context.Remove (Template_Defs.Set_Global.ADMIN);
 
       --  Remove the login information from the translate table
 
