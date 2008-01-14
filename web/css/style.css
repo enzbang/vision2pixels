@@ -880,3 +880,6 @@ a.help {
 #bm_map_geoloc_content {
     color:black;
 }
+#bm_show_map {
+    padding-top:1em;
+}
