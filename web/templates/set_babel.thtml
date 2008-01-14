@@ -34,6 +34,7 @@
 @@SET@@ BABEL_LOGIN_REQUIRED="Vous devez être connecté pour poster un message"
 @@SET@@ BABEL_LOGIN_FAILED="Erreur ! Impossible de se connecter"
 @@SET@@ BABEL_NO_ANONYMOUS_COMMENT="Vous devez être connecté pour poster un commentaire"
+@@SET@@ BABEL_NO_ANONYMOUS_VOTE="Vous devez être connecté pour pouvoir voter"
 @@SET@@ BABEL_IS_ANONYMOUS="L'utilisateur anonyme "
 @@SET@@ BABEL_CLICK_TO_CLOSE="fermer"
 @@SET@@ BABEL_PREVIOUS="Précédent"

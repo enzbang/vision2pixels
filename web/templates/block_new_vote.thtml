@@ -45,5 +45,5 @@
   </div>
   @@END_IF@@
 @@ELSE@@
-    <p id="bnv_noanonymouscomment">@_BABEL_NO_ANONYMOUS_COMMENT_@</p>
+    <p id="bnv_noanonymouscomment">@_BABEL_NO_ANONYMOUS_VOTE_@</p>
 @@END_IF@@

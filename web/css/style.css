@@ -256,10 +256,11 @@ body.forum_entry #pfe_comments p#pfe_nocomment {
    text-align:center;
 }
 @@--
-#bnc_noanonymouscomment {
+#bnc_noanonymouscomment, #bnv_noanonymouscomment {
    text-align:center;
    color:#B01417;
    text-decoration:underline;
+   font-size: 1.3em;
 }
 @@--
 body.forum_entry #pfe_new_comment {
