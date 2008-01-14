@@ -130,8 +130,7 @@ package body V2P.Callbacks.Web_Block is
       pragma Unreferenced (Request, Context);
    begin
       Templates.Insert
-        (Translations,
-         Database.Get_Forums (Filter => Database.Forum_All));
+        (Translations, Database.Get_Forums (Filter => Database.Forum_All));
    end Forum_List;
 
    -----------------------------
@@ -427,9 +426,7 @@ package body V2P.Callbacks.Web_Block is
    is
       pragma Unreferenced (Request, Context);
    begin
-      Templates.Insert
-        (Translations,
-         Database.Get_Photo_Of_The_Week);
+      Templates.Insert (Translations, Database.Get_Photo_Of_The_Week);
    end Photo_Of_The_Week;
 
    -----------------
