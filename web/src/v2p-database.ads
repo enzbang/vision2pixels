@@ -236,6 +236,11 @@ package V2P.Database is
    function Has_User_Vote (Uid : in String; Tid : in Id) return Boolean;
    --  Returns True if user Uid has voted for the given photo
 
+   function Get_User_Voted_Photos
+     (Uid : in String) return Templates.Translate_Set;
+   --  Returns the translate table with the list of all voted photos for the
+   --  given user.
+
 private
 
    No_User_Data : constant User_Data :=

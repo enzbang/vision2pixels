@@ -79,6 +79,8 @@
 @@SET@@ BABEL_LAST_USER_MESSAGES="Derniers Messages"
 @@SET@@ BABEL_LAST_USER_COMMENT="Derniers commentaires"
 @@SET@@ BABEL_LAST_USERS="Derniers Inscrits"
+@@SET@@ BABEL_USER_VOTED_PHOTOS="Votes pour la photo de la semaine"
+@@SET@@ BABEL_NO_VOTE="Pas de vote pour le moment"
 @@-- Metadata
 @@SET@@ BABEL_GEO_LATITUDE="Latitude"
 @@SET@@ BABEL_GEO_LONGITUDE="Longitude"

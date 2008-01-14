@@ -559,6 +559,24 @@ package body V2P.Callbacks.Web_Block is
          Value   => Total);
    end User_Post_List;
 
+   ----------------------------
+   -- User_Voted_Photos_List --
+   ----------------------------
+
+   procedure User_Voted_Photos_List
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      URI        : constant String := Status.URI (Request);
+      User_Name  : constant String := URL.User_Name (URI);
+      Set        : Templates.Translate_Set;
+   begin
+      Set := Database.Get_User_Voted_Photos (User_Name);
+      Templates.Insert (Translations, Set);
+   end User_Voted_Photos_List;
+
    ---------------------
    -- Vote_Week_Photo --
    ---------------------

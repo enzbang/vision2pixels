@@ -1,0 +1,23 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<h2>@_BABEL_USER_VOTED_PHOTOS_@</h2>
+@@--
+@@IF@@ @_TID'LENGTH_@ = 0
+<p id="buvpl_no_vote">@_BABEL_NO_VOTE_@</p>
+@@ELSE@@
+<ul class="slides">
+@@TABLE@@
+  <li class="thumbs">
+  @@IF@@ @_THUMB_SOURCE_@ /= ""
+  <span class="imgcontainer">
+    <span class="nooverflowimage">
+      <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
+        <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
+      </a>
+    </span>
+  </span>
+  @@END_IF@@
+  </li>
+@@END_TABLE@@
+</ul>
+@@END_IF@@

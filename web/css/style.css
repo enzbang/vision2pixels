@@ -845,6 +845,11 @@ body.user_page ul#bucl_lastusercommentlist {
    width: 90%;
 }
 @@--
+#buvpl_no_vote {
+   text-align: center;
+   font-size: 1.2em;
+}
+@@--
 .error {
    font-size: 24px;
    color: @_ERROR_COLOR_@;
