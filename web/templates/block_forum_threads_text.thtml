@@ -28,9 +28,9 @@
     @@IF@@ @_ADMIN_@
       <td class="hidden_entry" id="bftt_hidden_entry">
       @@IF@@ @_HIDDEN_@
-        @_BABEL_YES_@
-      @@ELSE@@
         @_BABEL_NO_@
+      @@ELSE@@
+        @_BABEL_YES_@
       @@END_IF@@
       </td>
     @@END_IF@@
