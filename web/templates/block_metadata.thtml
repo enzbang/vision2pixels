@@ -2,20 +2,27 @@
 @@--
 <div id="bm_geo_metadata">
   @@IF@@ @_METADATA_LATITUDE_@ /= ""
-    <dl class="geo">
-      <dt><strong>@_BABEL_GEO_LATITUDE_@</strong></dt>
-      <dd>
-        <abbr class="latitude" title="@_METADATA_LATITUDE_@">
-          @_METADATA_LATITUDE_FORMATTED_@
-        </abbr>
-      </dd>
-      <dt><strong>@_BABEL_GEO_LONGITUDE_@</strong></dt>
-      <dd>
-        <abbr class="longitude" title="@_METADATA_LONGITUDE_@">
-          @_METADATA_LONGITUDE_FORMATTED_@
-        </abbr>
-      </dd>
-    </dl>
+    <a href="#" id="bm_show_toggle" rel="bm_show_map">Voir sur une carte</a>
+    <div id="bm_show_map"  style="display:none">
+       <div id="map_canvas" style="width:600px; height:300px"></div>
+       <div id="bm_map_geoloc_content">
+         <dl class="geo">
+           <dt><strong>@_BABEL_GEO_LATITUDE_@</strong></dt>
+           <dd>
+             <abbr class="latitude" id="bm_latitude" title="@_METADATA_LATITUDE_@">
+               @_METADATA_LATITUDE_FORMATTED_@
+             </abbr>
+           </dd>
+           <dt><strong>@_BABEL_GEO_LONGITUDE_@</strong></dt>
+           <dd>
+             <abbr class="longitude" id="bm_longitude" title="@_METADATA_LONGITUDE_@">
+               @_METADATA_LONGITUDE_FORMATTED_@
+             </abbr>
+           </dd>
+         </dl>
+       </div>
+    </div>
+    @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, bm_show_toggle, V2P.Map.geodisplay.init)
   @@ELSE@@
     @@IF@@ @_LOGIN_@ = @_OWNER_@ or @_IS_OWNER_@ or @_OWNER_@ = ""
     @@--  If OWNER is empty, the current page if a photo post page
@@ -42,11 +49,12 @@
 
       @@IF@@ @_OWNER_@ = ""
       <form action="#" id="bm_metadata_edition_form">
-        <p>
           <textarea name="bm_address"
-	            id="bm_address">11, avenue du Père Lachaise, Paris, France</textarea>
-	  <a href="#" id="bm_metadata_edition_form_go" onclick="return false;">Go!</a>
-        </p>
+	            id="bm_address"></textarea>
+
+          <p id="address_example">11, avenue du Père Lachaise,
+          Paris, France <a href="#" id="bm_metadata_edition_form_go"
+          onclick="return false;">Go!</a></p>
         <a href="#" onclick="return false;" id="bm_centermarker">Center marker</a>
         <p id="bm_gmap_error"></p>
         <div id="bm_map" style="width: 500px; height: 300px"></div>
