@@ -877,3 +877,6 @@ body.help li {
 a.help {
    text-decoration:underline;
 }
+#bm_map_geoloc_content {
+    color:black;
+}

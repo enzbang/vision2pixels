@@ -279,4 +279,22 @@ V2P.Map = new function () {
 
       var geocoder = null;
    }
+
+   this.geodisplay = new function ()
+   {
+     this.init = function ()
+     {
+        Element.show($('bm_show_map'));
+        if (V2P.Objects.geo_map == null && GBrowserIsCompatible()) {
+           V2P.Objects.geo_map = new GMap2(document.getElementById("map_canvas"));
+
+           V2P.Objects.geo_map.setCenter
+           (new GLatLng($('bm_latitude').title, $('bm_longitude').title), 13);
+
+           V2P.Objects.geo_map.openInfoWindowHtml
+           (V2P.Objects.geo_map.getCenter(),
+            document.getElementById('bm_map_geoloc_content'));
+        }
+       }
+   }
 }
