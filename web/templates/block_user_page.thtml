@@ -39,4 +39,10 @@
 @_LAZY_USER_MESSAGE_LIST_@
 
 @_LAZY_USER_COMMENT_LIST_@
+
+@@-- Display the voted photos only for the user. We do not want to influence
+@@-- other's votes.
+@@IF@@ @_LOGIN_@ = @_USER_NAME_@
+  @_LAZY_USER_VOTED_PHOTOS_LIST_@
+@@END_IF@@
 @@END_IF@@

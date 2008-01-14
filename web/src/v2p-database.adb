@@ -51,6 +51,7 @@ with V2P.Template_Defs.Block_User_Comment_List;
 with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Photo_Of_The_Week;
+with V2P.Template_Defs.Block_User_Voted_Photos_List;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.R_Block_Forum_List;
 
@@ -1859,6 +1860,53 @@ package body V2P.Database is
 
       return Set;
    end Get_User_Rating_On_Post;
+
+   ---------------------------
+   -- Get_User_Voted_Photos --
+   ---------------------------
+
+   function Get_User_Voted_Photos
+     (Uid : in String) return Templates.Translate_Set
+   is
+      use type AWS.Templates.Tag;
+
+      DBH          : constant TLS_DBH_Access :=
+                       TLS_DBH_Access (DBH_TLS.Reference);
+      SQL          : constant String :=
+                       "select w.post_id, photo.filename "
+                         & "from user_photo_of_the_week w, photo, post "
+                         & "where w.post_id = post.id "
+                         & "and post.photo_id = photo.id "
+                         & "and w.user_login = " & Q (Uid);
+
+      Set          : Templates.Translate_Set;
+      Iter         : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line         : DB.String_Vectors.Vector;
+      Ids, Thumbs  : Templates.Tag;
+   begin
+      Connect (DBH);
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+
+         Ids    := Ids    & DB.String_Vectors.Element (Line, 1);
+         Thumbs := Thumbs & DB.String_Vectors.Element (Line, 2);
+         Line.Clear;
+      end loop;
+
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Block_User_Voted_Photos_List.TID, Ids));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Block_User_Voted_Photos_List.THUMB_SOURCE, Thumbs));
+
+      Iter.End_Select;
+      return Set;
+   end Get_User_Voted_Photos;
 
    -------------------
    -- Has_User_Vote --
