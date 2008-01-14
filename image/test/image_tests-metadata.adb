@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                          Copyright (C) 2007                              --
+--                         Copyright (C) 2007-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -64,7 +64,7 @@ package body Image_Tests.Metadata is
 
       Get_Long := To_Geo_Coordinate (Pos_Long);
 
-      Assert (Get_Long = Get_Lat,
+      Assert (Get_Long = Geo_Long,
               "To_Geo_Coordinate error for 2° 23' 53'' E");
 
       Assert (Image.Metadata.Geographic.Image (Pos_Lat) = "N 48° 51' 51",
