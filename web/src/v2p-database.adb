@@ -1728,14 +1728,15 @@ package body V2P.Database is
    -------------------------
 
    function Get_User_Last_Photo
-     (Uid : in String) return Templates.Translate_Set is
-      SQL : constant String :=
-              "select q.photo_id, p.filename "
-                & "from user_photo_queue q, photo p "
-                & "where q.photo_id = p.id and user_login = " & Q (Uid);
+     (Uid : in String) return Templates.Translate_Set
+   is
       DBH          : constant TLS_DBH_Access :=
                        TLS_DBH_Access (DBH_TLS.Reference);
-
+      SQL          : constant String :=
+                       "select q.photo_id, p.filename "
+                         & "from user_photo_queue q, photo p "
+                         & "where q.photo_id = p.id "
+                         & "and user_login = " & Q (Uid);
       Set          : Templates.Translate_Set;
       Iter         : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line         : DB.String_Vectors.Vector;
@@ -1809,7 +1810,7 @@ package body V2P.Database is
    function Get_User_Rating_On_Post
      (Uid : in String; Tid : in Id) return Templates.Translate_Set
    is
-      use AWS.Templates;
+      use type AWS.Templates.Tag;
 
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Set  : Templates.Translate_Set;

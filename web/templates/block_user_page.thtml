@@ -1,6 +1,5 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-
 @@IF@@ @_USER_NAME_@ = ""
 @@INCLUDE page_error.thtml
 @@ELSE@@
