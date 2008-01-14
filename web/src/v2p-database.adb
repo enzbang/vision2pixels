@@ -342,7 +342,6 @@ package body V2P.Database is
          Comment            : Templates.Tag;
          Filename           : Templates.Tag;
       begin
-
          DBH.Handle.Prepare_Select
            (Iter,
             "select comment.id, strftime('%Y-%m-%dT%H:%M:%SZ', date), "
