@@ -102,7 +102,7 @@
   <div id="pfe_lazy_new_comment">@_LAZY_NEW_COMMENT_@</div>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, pfe_hidden_status_toggle)
-@@INCLUDE@@ chunk_v2p_end.thtml
+@@INCLUDE@@ chunk_v2p_end.thtml forum_entry
 @@ELSE@@
 @_BABEL_DOES_NOT_EXIST_@
 @@END_IF@@
