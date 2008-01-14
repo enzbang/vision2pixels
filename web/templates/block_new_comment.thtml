@@ -1,6 +1,21 @@
 @@INCLUDE@@ set_babel.thtml
-@@--
+
 @@IF@@ @_LOGIN_@ /= "" or @_OPTION_ANONYMOUS_COMMENT_@
+@@SET@@ SET_FORM_POST_COMMENT_PHOTO = /bnc_add_photo
+<form enctype="multipart/form-data" id="bnc_add_photo_form"
+      action="@_SET_FORM_POST_COMMENT_PHOTO_@"
+      method="POST" target="bnc_photo_post_target">
+  <fieldset>
+    <p><input name="FILENAME" type="file"/>
+      <input name="ENTER" id="photo_form_enter"
+             type="submit" value="Upload"/>
+    </p>
+    <div id="bnc_add_photo">
+      <iframe name="bnc_photo_post_target" id="bnc_photo_post_target"></iframe>
+    </div>
+  </fieldset>
+</form>
+
 <form enctype="multipart/form-data" id="bnc_comment_form" action="#" method="post">
   <fieldset>
     @@-- Is user logged
@@ -14,6 +29,7 @@
     <p>
       @@IF@@ @_IMAGE_SOURCE_@ /= ""
         <input name="forum_photo" id="bnc_forum_photo" type="hidden" value="t" />
+        <input name="bnc_comment_pid" id="bnc_comment_pid" type="hidden" value="" />
       @@ELSE@@
         <input name="forum_photo" id="bnc_forum_photo" type="hidden" value="" />
       @@END_IF@@
@@ -33,5 +49,4 @@
 @@ELSE@@
     <p id="bnc_noanonymouscomment">@_BABEL_NO_ANONYMOUS_COMMENT_@</p>
 @@END_IF@@
-@@--
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bnc_comment_form, 4=>bnc_comment_form, 5=>pfe_PARENT_ID)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bnc_comment_form, 4=>bnc_comment_form, 5=>pfe_PARENT_ID, 6=>bnc_comment_pid)

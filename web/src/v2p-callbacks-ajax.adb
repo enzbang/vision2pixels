@@ -373,6 +373,9 @@ package body V2P.Callbacks.Ajax is
                        Parameters.Get (P,
                                        Block_New_Comment.
                                          HTTP.global_comment_input);
+      Get_Photo_ID : constant String :=
+                       Parameters.Get
+                         (P, Block_New_Comment.HTTP.bnc_comment_pid);
       Parent_Id    : constant String :=
                        Parameters.Get (P, Page_Forum_Entry.HTTP.pfe_PARENT_ID);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
@@ -384,6 +387,7 @@ package body V2P.Callbacks.Ajax is
                           Name    => Template_Defs.Set_Global.TID);
 
       Forum_Type   : V2P.Database.Forum_Type := V2P.Database.Forum_Text;
+      Photo_Id     : V2P.Database.Id;
 
       function Is_Valid_Comment (Comment : in String) return Boolean;
       --  Check if the comment is valid
@@ -404,6 +408,20 @@ package body V2P.Callbacks.Ajax is
       end Is_Valid_Comment;
 
    begin
+
+      if Get_Photo_ID /= "" then
+         Convert_Photo_Id : begin
+            Photo_Id := V2P.Database.Id'Value (Get_Photo_ID);
+         exception
+            when Constraint_Error =>
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc
+                    (R_Block_Comment_Form_Enter.ERROR,
+                     "Get_photo_ID is " & Get_Photo_ID));
+         end Convert_Photo_Id;
+      end if;
+
       if Parameters.Get (P, Block_New_Comment.HTTP.forum_photo) /= "" then
          Forum_Type := V2P.Database.Forum_Photo;
       end if;
@@ -439,7 +457,7 @@ package body V2P.Callbacks.Ajax is
                Thread    => TID,
                Name      => "",
                Comment   => Comment_Wiki,
-               Pid       => Database.Empty_Id);
+               Pid       => Photo_Id);
          begin
             --  Adds the new comment in context to prevent duplicated post
 

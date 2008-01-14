@@ -67,6 +67,7 @@ with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Forum_Category_Filter;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
+with V2P.Template_Defs.Chunk_New_Comment_Photo;
 with V2P.Template_Defs.Chunk_V2p_Top;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Forum_Threads;
@@ -514,6 +515,11 @@ package body V2P.Web_Server is
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Forum_New_Photo_Entry.URL,
          Template_Defs.Page_Forum_New_Photo_Entry.Template,
+         Callbacks.Page.New_Photo_Entry'Access);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_New_Comment.Set.FORM_POST_COMMENT_PHOTO,
+         Template_Defs.Chunk_New_Comment_Photo.Template,
          Callbacks.Page.New_Photo_Entry'Access);
 
       Services.Web_Block.Registry.Register

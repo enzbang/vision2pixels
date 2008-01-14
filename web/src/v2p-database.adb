@@ -267,9 +267,8 @@ package body V2P.Database is
          "select strftime('%Y-%m-%dT%H:%M:%SZ', date), "
          & "date(date, 'localtime'), time(date, 'localtime'), "
          & "user_login, anonymous_user, "
-         & "comment"
-         --  & "(select filename from photo where id=comment.photo_id) "
-         --  ??? Filename is not used for now
+         & "comment, "
+         & "(select filename from photo where id=comment.photo_id) "
          & " from comment where id=" & To_String (Cid));
 
       if Iter.More then
@@ -304,6 +303,12 @@ package body V2P.Database is
          Templates.Insert
            (Set, Templates.Assoc (Template_Defs.Chunk_Comment.COMMENT,
             DB.String_Vectors.Element (Line, 6)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Template_Defs.Chunk_Comment.COMMENT_IMAGE_SOURCE,
+               DB.String_Vectors.Element (Line, 7)));
+
          Line.Clear;
       end if;
 
@@ -386,6 +391,9 @@ package body V2P.Database is
          Templates.Insert
            (Set, Templates.Assoc
               (Template_Defs.Chunk_Comment.COMMENT_ID, Comment_Id));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Template_Defs.Chunk_Comment.COMMENT_IMAGE_SOURCE, Filename));
          Templates.Insert
            (Set, Templates.Assoc
               (Template_Defs.Chunk_Comment.DATE_ISO_8601, Date_Iso_8601));
