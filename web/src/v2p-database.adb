@@ -1075,12 +1075,13 @@ package body V2P.Database is
             & "filename, width, height, user.login, post.date_post, "
             & "datetime(post.date_post, '+"
             & Utils.Image (Settings.Anonymity_Hours)
-            & " hour') < datetime('now') "
-            & "from post, user, user_post, photo "
+            & " hour') < datetime('now'), category.name "
+            & "from post, user, user_post, photo, category "
             & "where post.id=" & To_String (Tid)
             & " and user.login = user_post.user_login"
             & " and user_post.post_id = post.id"
-            & " and photo.id = post.photo_id");
+            & " and photo.id = post.photo_id"
+            & " and category.id = post.category_id");
 
          if Iter.More then
             Iter.Get_Line (Line);
@@ -1129,6 +1130,12 @@ package body V2P.Database is
                Templates.Assoc
                  (Page_Forum_Entry.REVEALED,
                   DB.String_Vectors.Element (Line, 9)));
+
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Page_Forum_Entry.CATEGORY,
+                  DB.String_Vectors.Element (Line, 10)));
+
             Line.Clear;
          end if;
 
