@@ -1,0 +1,8 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+   <replace id="pfe_lazy_vote_week_photo">
+      <![CDATA[@_LAZY_VOTE_WEEK_PHOTO_@]]>
+   </replace>
+</response>

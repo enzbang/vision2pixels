@@ -24,9 +24,10 @@ with V2P.Database;
 with V2P.Context;
 with V2P.Navigation_Links;
 with V2P.Settings;
+with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_User_Page;
-with V2P.Template_Defs.Block_Metadata;
+with V2P.Template_Defs.Block_Vote_Week_Photo;
 with V2P.Template_Defs.Set_Global;
 
 package body V2P.Callbacks.Web_Block is
@@ -560,5 +561,31 @@ package body V2P.Callbacks.Web_Block is
          Name    => Template_Defs.Set_Global.NAV_NB_LINES_TOTAL,
          Value   => Total);
    end User_Post_List;
+
+   ---------------------
+   -- Vote_Week_Photo --
+   ---------------------
+
+   procedure Vote_Week_Photo
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+   begin
+      if Context.Exist (Template_Defs.Set_Global.LOGIN)
+        and then Context.Exist (Template_Defs.Set_Global.TID)
+      then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.Block_Vote_Week_Photo.HAS_USER_VOTE,
+               Database.Has_User_Vote
+                 (Uid => Context.Get_Value (Template_Defs.Set_Global.LOGIN),
+                  Tid => V2P.Context.Counter.Get_Value
+                    (Context => Context.all,
+                     Name    => Template_Defs.Set_Global.TID))));
+      end if;
+   end Vote_Week_Photo;
 
 end V2P.Callbacks.Web_Block;

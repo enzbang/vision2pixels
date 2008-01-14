@@ -332,6 +332,26 @@ package body V2P.Callbacks.Ajax is
       Templates.Insert (Translations, Database.Toggle_Hidden_Status (TID));
    end Onclick_Hidden_Status_Toggle;
 
+   -----------------------------
+   -- Onclick_Vote_Week_Photo --
+   -----------------------------
+
+   procedure Onclick_Vote_Week_Photo
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Translations);
+      Login        : constant String :=
+                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      TID          : constant Database.Id :=
+                       V2P.Context.Counter.Get_Value
+                         (Context => Context.all,
+                          Name    => Template_Defs.Set_Global.TID);
+   begin
+      Database.Toggle_Vote_Week_Photo (Login, TID);
+   end Onclick_Vote_Week_Photo;
+
    ---------------------------------
    -- Onsubmit_Comment_Form_Enter --
    ---------------------------------

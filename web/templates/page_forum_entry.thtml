@@ -70,9 +70,12 @@
     <div id="pfe_lazy_global_rating">@_LAZY_GLOBAL_RATING_@</div>
   @@END_IF@@
 </div>
-
+  @@-- Vote photo of the week (only for photo forum)
+@@IF@@ @_IMAGE_SOURCE_@ /= ""
+<div id="pfe_lazy_vote_week_photo">@_LAZY_VOTE_WEEK_PHOTO_@</div>
+@@END_IF@@
+  @@-- Comments
   <h2 id="pfe_comments_section">Commentaires</h2>
-  @@--  Comments
   @@IF@@ @_COMMENT_ID_@ /= "" @@--  at least one comment
   <ol id="pfe_comments">
     @@TABLE@@

@@ -1860,6 +1860,31 @@ package body V2P.Database is
       return Set;
    end Get_User_Rating_On_Post;
 
+   -------------------
+   -- Has_User_Vote --
+   -------------------
+
+   function Has_User_Vote (Uid : in String; Tid : in Id) return Boolean is
+      DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      SQL    : constant String :=
+                 "select * from user_photo_of_the_week "
+                   & "where user_login=" & Q (Uid)
+                   & " and post_id=" & To_String (Tid);
+      Result : Boolean := False;
+   begin
+      Connect (DBH);
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      if Iter.More then
+         Result := True;
+      end if;
+
+      Iter.End_Select;
+
+      return Result;
+   end Has_User_Vote;
+
    -------
    -- I --
    -------
@@ -2256,6 +2281,26 @@ package body V2P.Database is
          Text_IO.Put_Line (Exception_Message (E));
          return Set;
    end Toggle_Hidden_Status;
+
+   ----------------------------
+   -- Toggle_Vote_Week_Photo --
+   ----------------------------
+
+   procedure Toggle_Vote_Week_Photo (Uid : in String; Tid : in Id) is
+      DBH      : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Has_Vote : constant Boolean := Has_User_Vote (Uid, Tid);
+   begin
+      if Has_Vote then
+         DBH.Handle.Execute
+           ("delete from user_photo_of_the_week "
+              & "where user_login=" & Q (Uid)
+              & " and post_id=" & To_String  (Tid));
+      else
+         DBH.Handle.Execute
+           ("insert into user_photo_of_the_week "
+              & "values (" & Q (Uid) & ", " & To_String (Tid) & ", 0)");
+      end if;
+   end Toggle_Vote_Week_Photo;
 
    -----------------
    -- Update_Page --

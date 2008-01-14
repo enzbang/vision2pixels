@@ -65,6 +65,7 @@ with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Forum_Category_Filter;
+with V2P.Template_Defs.Block_Vote_Week_Photo;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Chunk_V2p_Top;
 with V2P.Template_Defs.Block_User_Page;
@@ -80,6 +81,7 @@ with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_Metadata_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 with V2P.Template_Defs.R_Block_Fatal_Error;
+with V2P.Template_Defs.R_Block_Vote_Week_Photo;
 with V2P.Template_Defs.R_Context_Error;
 
 with Gwiad.Plugins.Websites;
@@ -628,6 +630,13 @@ package body V2P.Web_Server is
         (Template_Defs.Block_New_Vote.Set.AJAX_RATE_URL,
          Template_Defs.R_Block_Rate.Template,
          Callbacks.Ajax.Onsubmit_Rate'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Vote_Week_Photo.Ajax.onclick_bvwp_vote_button,
+         Template_Defs.R_Block_Vote_Week_Photo.Template,
+         Callbacks.Ajax.Onclick_Vote_Week_Photo'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 
