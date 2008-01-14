@@ -9,14 +9,12 @@ insert into vote_photo_of_the_week (user_login, nb_vote)
               where week_id = 0
               group by user_login;
 
-
 create temp table score_photo_of_the_week (
    "post_id" integer not null,
    "user_login" varchar(50) not null,
    "val" integer,
    foreign key ("post_id") references post("id")
 );
-
 
 insert into score_photo_of_the_week (post_id, user_login, val)
        select post_id, u.user_login, p.val
@@ -31,9 +29,3 @@ insert into photo_of_the_week (val, post_id)
 update user_photo_of_the_week
        set week_id = (select max(id) from photo_of_the_week)
        where week_id = 0;
-
-
-
-
-
-

@@ -2241,7 +2241,8 @@ package body V2P.Database is
    --------------------------
 
    function Toggle_Hidden_Status
-     (Tid : in Id) return Templates.Translate_Set is
+     (Tid : in Id) return Templates.Translate_Set
+   is
       DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line   : DB.String_Vectors.Vector;
