@@ -266,6 +266,11 @@ V2P.Map = new function () {
          GEvent.bindDom(document.getElementById("bm_metadata_edition_form_go"),
                         "click", V2P.Map.geolocate,
                         V2P.Map.geolocate.get_result);
+
+         @@--  Clear latitude and longitude data
+
+         $('bm_latitude').value = "";
+         $('bm_longitude').value = "";
       }
 
       @@------------

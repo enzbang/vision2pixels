@@ -16,7 +16,7 @@
     <script src="/we_js/v2p.tjs" type="text/javascript"></script>
     @@IF@@ @_$2_@ = "forum_new_photo_entry"
       @@--  This google key works only for http://127.0.0.10:8080
-      <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=@_GOOGLE_MAP_KEY_@"
+      <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=@_GOOGLE_MAP_KEY_@&amp;hl=fr"
             type="text/javascript"></script>
 
       <script type="text/javascript">
