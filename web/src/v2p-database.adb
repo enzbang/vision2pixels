@@ -1744,16 +1744,16 @@ package body V2P.Database is
    function Get_User_Last_Photo
      (Uid : in String) return Templates.Translate_Set
    is
-      DBH          : constant TLS_DBH_Access :=
-                       TLS_DBH_Access (DBH_TLS.Reference);
-      SQL          : constant String :=
-                       "select q.photo_id, p.filename "
-                         & "from user_photo_queue q, photo p "
-                         & "where q.photo_id = p.id "
-                         & "and user_login = " & Q (Uid);
-      Set          : Templates.Translate_Set;
-      Iter         : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line         : DB.String_Vectors.Vector;
+      DBH  : constant TLS_DBH_Access :=
+               TLS_DBH_Access (DBH_TLS.Reference);
+      SQL  : constant String :=
+               "select q.photo_id, p.filename "
+                 & "from user_photo_queue q, photo p "
+                 & "where q.photo_id = p.id "
+                 & "and user_login = " & Q (Uid);
+      Set  : Templates.Translate_Set;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
    begin
       DBH.Handle.Prepare_Select (Iter, SQL);
 

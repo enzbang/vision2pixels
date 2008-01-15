@@ -408,7 +408,6 @@ package body V2P.Callbacks.Ajax is
       end Is_Valid_Comment;
 
    begin
-
       if Get_Photo_ID /= "" then
          Convert_Photo_Id : begin
             Photo_Id := V2P.Database.Id'Value (Get_Photo_ID);
