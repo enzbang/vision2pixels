@@ -5,8 +5,10 @@
    parent.document.getElementById('bnc_comment_pid').value = "@_PID_@";
    parent.document.getElementById('bnc_photo_post_target').style['left'] = '0';
    parent.document.getElementById('bnc_photo_post_target').style['position'] = 'relative';
-   parent.document.getElementById('bnc_photo_post_target').style['width'] = '100%';
+   parent.document.getElementById('bnc_photo_post_target').style['width'] = '40%';
    parent.document.getElementById('bnc_photo_post_target').style['height'] = '100%';
+   parent.document.getElementById('bnc_photo_post_target').style['border'] = 'none';
+   parent.document.getElementById('bnc_photo_post_target').style['padding-left'] = '3em';
 -->
 </script>
 @@END_IF@@

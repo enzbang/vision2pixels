@@ -6,7 +6,7 @@
       action="@_SET_FORM_POST_COMMENT_PHOTO_@"
       method="POST" target="bnc_photo_post_target">
   <fieldset>
-    <p><input name="FILENAME" type="file"/>
+    <p id="bnc_upload_file"><input name="FILENAME" type="file"/>
       <input name="ENTER" id="photo_form_enter"
              type="submit" value="@_BABEL_UPLOAD_@"/>
     </p>

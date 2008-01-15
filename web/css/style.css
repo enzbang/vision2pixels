@@ -211,6 +211,11 @@ form#bnc_comment_form label {
    background: black;
 }
 @@--
+#bnc_upload_file {
+   float: left;
+   padding-right: 5em;
+}
+@@--
 div#pfe_lazy_new_comment {
    border: thin solid @_LIGHT_BORDER_COLOR_@;
    padding: 1em;
