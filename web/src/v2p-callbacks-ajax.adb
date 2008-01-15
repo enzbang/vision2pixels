@@ -420,6 +420,8 @@ package body V2P.Callbacks.Ajax is
                     (R_Block_Comment_Form_Enter.ERROR,
                      "Get_photo_ID is " & Get_Photo_ID));
          end Convert_Photo_Id;
+      else
+         Photo_Id := Database.Empty_Id;
       end if;
 
       if Parameters.Get (P, Block_New_Comment.HTTP.forum_photo) /= "" then
