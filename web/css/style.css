@@ -1,3 +1,10 @@
+@@--  Gather all CSS here to avoid a lot of http request
+
+@@INCLUDE@@ reset-fonts-grids.css
+@@--  The foundational YUI Grids CSS file offers three preset page
+@@--  widths, seven core templates, and the ability to nest
+@@--  subdivided regions of one to four columns.
+@@--
 @@SET@@ MAX_IMAGE_SIZE=800
 @@SET@@ MIN_IMAGE_SIZE=500
 @@SET@@ HIGHLIGHT_COLOR=#019BBD
@@ -909,3 +916,5 @@ a.help {
 #bm_show_map {
     padding-top:1em;
 }
+@@-- Include rating.css
+@@INCLUDE@@ rating.css

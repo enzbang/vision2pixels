@@ -1,3 +1,10 @@
+@@--  Gather all js file to avoid a lot of http request
+@@INCLUDE@@ prototype.js
+@@INCLUDE@@ behaviour.js
+@@INCLUDE@@ scriptaculous.js
+@@INCLUDE@@ aws_kernel.tjs
+@@--
+@@-- Now the specific content
 var V2P = {
    'Map' : null,
    'ThumbPreview' : null,
