@@ -37,7 +37,6 @@ build:
 	$(GNAT) make -XPRJ_BUILD=$(MODE) -Pdb_test
 
 check:
-	$(GNAT) check -dd -Pdb -rules -from=../v2p.check
 	$(GNAT) check -dd -Pdb_test -rules -from=../v2p.check
 
 setup:
