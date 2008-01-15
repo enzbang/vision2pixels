@@ -19,6 +19,7 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Calendar;
 with Ada.Directories;
 with Ada.Exceptions;
 with Ada.Float_Text_IO;
@@ -26,7 +27,7 @@ with Ada.Float_Text_IO;
 with AWS.Dispatchers.Callback;
 with AWS.Messages;
 with AWS.MIME;
-with AWS.Response;
+with AWS.Response.Set;
 with AWS.Services.Dispatchers.URI;
 with AWS.Services.Web_Block.Registry;
 with AWS.Session;
@@ -94,6 +95,7 @@ with Templates_Parser;
 package body V2P.Web_Server is
 
    use Ada;
+   use Ada.Calendar;
    use Ada.Exceptions;
    use AWS;
 
@@ -117,6 +119,8 @@ package body V2P.Web_Server is
                        Gwiad.Plugins.Get_Last_Library_Path;
 
    Main_Dispatcher : Services.Dispatchers.URI.Handler;
+
+   In_Ten_Year : Calendar.Time;
 
    -------------------------
    --  Standard Callbacks --
@@ -411,8 +415,16 @@ package body V2P.Web_Server is
       File : constant String :=
                Gwiad_Plugin_Path & Directory_Separator
                  & URI (URI'First + 1 .. URI'Last);
+      Result : AWS.Response.Data;
    begin
-      return Response.File (MIME.Content_Type (File), File);
+      Result := Response.File (MIME.Content_Type (File), File);
+
+      AWS.Response.Set.Add_Header
+        (Result,
+         AWS.Messages.Expires_Token,
+         AWS.Messages.To_HTTP_Date (In_Ten_Year));
+
+      return Result;
    end IMG_Callback;
 
    ---------------------
@@ -425,8 +437,16 @@ package body V2P.Web_Server is
         (V2P.URL.Images_Full_Prefix,
          URI
            (URI'First + Settings.Images_Source_Prefix'Length + 1 .. URI'Last));
+      Result : AWS.Response.Data;
    begin
-      return Response.File (MIME.Content_Type (File), File);
+      Result := Response.File (MIME.Content_Type (File), File);
+
+      AWS.Response.Set.Add_Header
+        (Result,
+         AWS.Messages.Expires_Token,
+         AWS.Messages.To_HTTP_Date (In_Ten_Year));
+
+      return Result;
    end Photos_Callback;
 
    ------------------------
@@ -683,8 +703,14 @@ package body V2P.Web_Server is
         (V2P.URL.Thumbs_Full_Prefix,
          URI
            (URI'First + Settings.Thumbs_Source_Prefix'Length + 1 .. URI'Last));
+      Result : AWS.Response.Data;
    begin
-      return Response.File (MIME.Content_Type (File), File);
+      Result := Response.File (MIME.Content_Type (File), File);
+      AWS.Response.Set.Add_Header
+        (Result,
+         AWS.Messages.Expires_Token,
+         AWS.Messages.To_HTTP_Date (In_Ten_Year));
+      return Result;
    end Thumbs_Callback;
 
    ----------------
@@ -761,4 +787,8 @@ begin  -- V2P.Web_Server : register vision2pixels website
       Description  => "a Web space engine to comment user's photos",
       Unregister   => Unregister'Access,
       Library_Path => V2p_Lib_Path);
+
+   --  Init Ten_Year_From_Now
+
+   In_Ten_Year := Clock + (3_650.0 * 86_400.0);
 end V2P.Web_Server;
