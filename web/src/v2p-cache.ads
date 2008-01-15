@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                           --
+--                         Copyright (C) 2007-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -24,8 +24,12 @@ package V2P.Cache is
    function Name (Filename : in String) return String;
    --  Returns the cache filename for the given file
 
-   procedure Create (Filename, Content : in String);
-   --  Create the cache for filename given the content
+   function Name_Compressed (Filename : in String) return String;
+   --  Returns the filename of the compressed version
+
+   procedure Create (Filename, Content : in String; Compress : in Boolean);
+   --  Create the cache for filename given the content.
+   --  If Compress is true, then create a compressed version too.
 
    procedure Clear (Root_Directory : in String);
    --  Deletes all cache files under the given root directory
