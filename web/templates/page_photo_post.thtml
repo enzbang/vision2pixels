@@ -16,7 +16,7 @@
       <fieldset>
         <p>
           <input name="FILENAME" type="file"/>
-          <input name="ENTER" type="submit" value="Ajouter"/></p>
+          <input name="ENTER" type="submit" value="@_BABEL_UPLOAD_@"/></p>
       </fieldset>
     </form>
 

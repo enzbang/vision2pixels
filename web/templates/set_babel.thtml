@@ -72,6 +72,7 @@
 @@SET@@ BABEL_FILTER="Filtres"
 @@SET@@ BABEL_SET_VOTE_WEEK_PHOTO="Voter pour cette photo"
 @@SET@@ BABEL_RESET_VOTE_WEEK_PHOTO="Enlever vote pour cette photo"
+@@SET@@ BABEL_UPLOAD="Ajouter"
 @@--  User page
 @@SET@@ BABEL_USER_EDIT_YOUR_PAGE="Éditer votre page"
 @@SET@@ BABEL_USER_PAGE="Page utilisateur"

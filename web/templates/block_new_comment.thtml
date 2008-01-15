@@ -8,7 +8,7 @@
   <fieldset>
     <p><input name="FILENAME" type="file"/>
       <input name="ENTER" id="photo_form_enter"
-             type="submit" value="Upload"/>
+             type="submit" value="@_BABEL_UPLOAD_@"/>
     </p>
     <div id="bnc_add_photo">
       <iframe name="bnc_photo_post_target" id="bnc_photo_post_target"></iframe>
