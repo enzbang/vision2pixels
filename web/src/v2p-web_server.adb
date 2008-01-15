@@ -53,6 +53,7 @@ with V2P.Template_Defs.Page_User;
 with V2P.Template_Defs.Page_Main;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Page_Forum_New_Text_Entry;
+with V2P.Template_Defs.Page_Google_Map_View;
 with V2P.Template_Defs.Page_Error;
 with V2P.Template_Defs.Page_Fatal_Error;
 with V2P.Template_Defs.Page_Help;
@@ -525,6 +526,11 @@ package body V2P.Web_Server is
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Help.URL,
          Template_Defs.Page_Help.Template,
+         null);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Google_Map_View.URL,
+         Template_Defs.Page_Google_Map_View.Template,
          null);
 
       --  Register Ajax callbacks

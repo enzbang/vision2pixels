@@ -285,16 +285,17 @@ V2P.Map = new function () {
    {
      this.init = function ()
      {
-        Element.show($('bm_show_map'));
+
         if (V2P.Objects.geo_view == null && GBrowserIsCompatible()) {
-           V2P.Objects.geo_view = new GMap2(document.getElementById("map_canvas"));
+           V2P.Objects.geo_view = new GMap2(parent.document.getElementById("bm_map_canvas"));
 
            V2P.Objects.geo_view.setCenter
-           (new GLatLng($('bm_latitude').title, $('bm_longitude').title), 7);
+           (new GLatLng(parent.document.getElementById('bm_latitude').title,
+           parent.document.getElementById('bm_longitude').title), 7);
 
            V2P.Objects.geo_view.openInfoWindowHtml
            (V2P.Objects.geo_view.getCenter(),
-            document.getElementById('bm_map_geoloc_content'));
+            parent.document.getElementById('bm_map_geoloc_content'));
 
            V2P.Objects.geo_view.addControl(new GLargeMapControl());
            V2P.Objects.geo_view.addControl(new GScaleControl(),
@@ -306,6 +307,21 @@ V2P.Map = new function () {
                                                                 new GSize(5, 5)));
         }
 
+     }
+     this.view = function ()
+     {
+        @@--  Toggle map canvas
+        if ($('bm_map_canvas').style.display == "none")
+          Element.show($('bm_map_canvas'));
+        else
+          Element.hide($('bm_map_canvas'));
+
+        if ($('bm_map_geoloc_content').style.display == "none") {
+          Element.show($('bm_map_geoloc_content'));
+          return true;
+        } else {
+          return false; @@-- Do not try to reload gmap content
+        }
      }
    }
 }

@@ -7,18 +7,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
 "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-
   <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
     <title>@_$1_@</title>
     @@INCLUDE@@ chunk_import_css.thtml
     @@INCLUDE@@ ../we_js/aws.tjs
     <script src="/we_js/v2p.tjs" type="text/javascript"></script>
-    @@IF@@ @_$2_@ = "forum_new_photo_entry"
-      <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=@_GOOGLE_MAP_KEY_@&amp;hl=fr"
-            type="text/javascript"></script>
+    @@IF@@ @_$2_@ = forum_new_photo_entry or @_$2_@ = "iframe_map_view"
+      <script type="text/javascript"
+              src="http://www.google.com/jsapi?key=@_GOOGLE_MAP_KEY_@">
+      </script>
       <script type="text/javascript">
-         Behaviour.addLoadEvent(V2P.Map.geolocate.init);
+         google.load("maps", "2", {"locale" : "fr"});
+         @@IF@@ @_$2_@ = forum_new_photo_entry
+           google.setOnLoadCallback(V2P.Map.geolocate.init);
+         @@ELSE@@
+           google.setOnLoadCallback(V2P.Map.geodisplay.init);
+         @@END_IF@@
       </script>
     @@END_IF@@
 
@@ -32,7 +37,7 @@
     fc_@_Current_FID_@
     @@END_IF@@
     "
-    @@IF@@ @_$2_@ =  forum_new_photo_entry
+    @@IF@@ @_$2_@ = forum_new_photo_entry or @_$2_@ = "iframe_map_view"
     onunload="GUnload()"
     @@END_IF@@
     > @@-- body is closed in v2p_end.thtml
