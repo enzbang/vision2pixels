@@ -524,7 +524,7 @@ package body V2P.Web_Server is
          Callbacks.Page.New_Photo_Entry'Access);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Page_Help.URL,
+        (Template_Defs.Page_Help.Set.URL,
          Template_Defs.Page_Help.Template,
          null);
 
