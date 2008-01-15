@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------------
---                              Vision2Pixels                               --
+--                                Vision2Pixels                             --
 --                                                                          --
---                           Copyright (C) 2007                             --
---                      Pascal Obry - Olivier Ramonat                       --
+--                           Copyright (C) 2007-2008                        --
+--                        Pascal Obry - Olivier Ramonat                     --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -128,7 +128,7 @@ package body V2P.Navigation_Links is
       else
          --  Try harder to find next post id
 
-         declare
+         Try_Harder : declare
             Page_Size : constant Navigation_Links.Page_Size :=
                           V2P.Context.Not_Null_Counter.Get_Value
                             (Context => Context.all,
@@ -157,7 +157,7 @@ package body V2P.Navigation_Links is
 
                return 0;
             end if;
-         end;
+         end Try_Harder;
       end if;
    end Next_Post;
 
@@ -190,7 +190,7 @@ package body V2P.Navigation_Links is
 
          --  Try harder to find previous post id
 
-         declare
+         Try_Harder : declare
             Page_Size : constant Navigation_Links.Page_Size :=
                           V2P.Context.Not_Null_Counter.Get_Value
                             (Context => Context.all,
@@ -224,7 +224,7 @@ package body V2P.Navigation_Links is
 
                return 0;
             end if;
-         end;
+         end Try_Harder;
       end if;
    end Previous_Post;
 
@@ -237,6 +237,5 @@ package body V2P.Navigation_Links is
                        Name    => Navigation_Links_Name,
                        Value   => Posts);
    end Set;
-
 
 end V2P.Navigation_Links;

@@ -1426,14 +1426,14 @@ package body V2P.Database is
 
          if Iter.More then
             Iter.Get_Line (Line);
-            declare
+            Return_Count : declare
                Count : constant Natural :=
                  Natural'Value (DB.String_Vectors.Element (Line, 1));
             begin
                Line.Clear;
                Iter.End_Select;
                return Count;
-            end;
+            end Return_Count;
          end if;
 
          Line.Clear;

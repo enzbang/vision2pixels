@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------------
---                              Vision2Pixels                               --
+--                                Vision2Pixels                             --
 --                                                                          --
---                           Copyright (C) 2007                             --
---                      Pascal Obry - Olivier Ramonat                       --
+--                           Copyright (C) 2007-2008                        --
+--                        Pascal Obry - Olivier Ramonat                     --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -26,6 +26,8 @@ with AWS.Services.Web_Block.Context;
 package V2P.Callbacks.Page is
 
    use AWS;
+
+   Error_404 : exception renames V2P.Callbacks.Error_404;
 
    procedure Main
      (Request      : in     Status.Data;
