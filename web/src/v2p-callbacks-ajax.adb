@@ -603,7 +603,7 @@ package body V2P.Callbacks.Ajax is
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
       PID          : Database.Id := 0;
    begin
-      declare
+      Convert_PID : declare
          --  Check PID which could be empty if posting on a text forum
          PID_Str : constant String :=
                      Parameters.Get (P, Page_Forum_New_Photo_Entry.HTTP.PID);
@@ -611,7 +611,7 @@ package body V2P.Callbacks.Ajax is
          if PID_Str /= "" then
             PID := Database.Id'Value (PID_Str);
          end if;
-      end;
+      end Convert_PID;
 
       --  Check for empty fields
 

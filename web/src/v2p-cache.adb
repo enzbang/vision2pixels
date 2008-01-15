@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------------
---                              Vision2Pixels                               --
+--                                Vision2Pixels                             --
 --                                                                          --
---                          Copyright (C) 2007                           --
---                      Pascal Obry - Olivier Ramonat                       --
+--                           Copyright (C) 2007-2008                        --
+--                        Pascal Obry - Olivier Ramonat                     --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -53,7 +53,8 @@ package body V2P.Cache is
          if Kind (Directory_Entry) = Directory
            and then SN /= ".." and then SN /= "."
          then
-            Clear (Compose (Root_Directory, SN));
+            Clear (Compose (Containing_Directory => Root_Directory,
+                            Name                 => SN));
 
          elsif '.' & Extension (SN) = Cache_Ext then
             Delete_File (Directories.Full_Name (Directory_Entry));
@@ -65,7 +66,8 @@ package body V2P.Cache is
         (Root_Directory,
          Pattern => "*",
          Filter  =>
-           Filter_Type'(Ordinary_File | Directory => True, others => False),
+           Filter_Type'(Ordinary_File | Directory => True,
+                        Special_File              => False),
          Process => Delete'Access);
    end Clear;
 
@@ -79,7 +81,9 @@ package body V2P.Cache is
       File   : Text_IO.File_Type;
    begin
       Directories.Create_Path (C_Dir);
-      Text_IO.Create (File, Text_IO.Out_File, C_File);
+      Text_IO.Create (File => File,
+                      Mode => Text_IO.Out_File,
+                      Name => C_File);
       Text_IO.Put_Line (File, Content);
       Text_IO.Close (File);
    end Create;
