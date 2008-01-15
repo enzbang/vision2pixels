@@ -19,18 +19,24 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Streams.Stream_IO;
 with Ada.Text_IO;
 
 with Morzhol.OS;
 
 with V2P.Settings;
 
+with ZLib;
+
 package body V2P.Cache is
 
    use Ada;
+   use Ada.Streams;
 
    Cache_Ext : constant String := ".cached";
    --  Cache filename extension
+
+   Compress_Ext : constant String := ".gz";
 
    -----------
    -- Clear --
@@ -75,7 +81,7 @@ package body V2P.Cache is
    -- Create --
    ------------
 
-   procedure Create (Filename, Content : in String) is
+   procedure Create (Filename, Content : in String; Compress : in Boolean) is
       C_File : constant String := Name (Filename);
       C_Dir  : constant String := Directories.Containing_Directory (C_File);
       File   : Text_IO.File_Type;
@@ -86,6 +92,64 @@ package body V2P.Cache is
                       Name => C_File);
       Text_IO.Put_Line (File, Content);
       Text_IO.Close (File);
+
+      if Compress then
+         Zip_File : declare
+            File_In         : Stream_IO.File_Type;
+            Compressed_File : Stream_IO.File_Type;
+            Filter          : ZLib.Filter_Type;
+
+            procedure Data_In
+              (Item : out Stream_Element_Array;
+               Last : out Stream_Element_Offset);
+            --  Read data from File
+
+            procedure Data_Out (Item : in Stream_Element_Array);
+            --  Write data to the Compress_File
+
+            procedure Translate is new ZLib.Generic_Translate
+              (Data_In  => Data_In,
+               Data_Out => Data_Out);
+
+            -------------
+            -- Data_In --
+            -------------
+
+            procedure Data_In
+              (Item : out Stream_Element_Array;
+               Last : out Stream_Element_Offset) is
+            begin
+               Stream_IO.Read (File_In, Item, Last);
+            end Data_In;
+
+            --------------
+            -- Data_Out --
+            --------------
+
+            procedure Data_Out (Item : in Stream_Element_Array) is
+            begin
+               Stream_IO.Write (Compressed_File, Item);
+            end Data_Out;
+
+         begin
+            Stream_IO.Open (File_In, Stream_IO.In_File, C_File);
+            Stream_IO.Create
+              (Compressed_File, Stream_IO.Out_File, C_File & Compress_Ext);
+
+            --  Deflate File
+
+            ZLib.Deflate_Init
+              (Filter   => Filter,
+               Level    => ZLib.Best_Compression,
+               Header   => ZLib.GZip);
+
+            Translate (Filter);
+            ZLib.Close (Filter);
+
+            Stream_IO.Close (File_In);
+            Stream_IO.Close (Compressed_File);
+         end Zip_File;
+      end if;
    end Create;
 
    ----------
@@ -117,5 +181,14 @@ package body V2P.Cache is
       return Settings.Cache_Path
         & Morzhol.OS.Directory_Separator & Clean_Filename & Cache_Ext;
    end Name;
+
+   ---------------------
+   -- Name_Compressed --
+   ---------------------
+
+   function Name_Compressed (Filename : in String) return String is
+   begin
+      return Name (Filename) & Compress_Ext;
+   end Name_Compressed;
 
 end V2P.Cache;
