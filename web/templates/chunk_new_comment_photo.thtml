@@ -1,3 +1,4 @@
+@@IF@@ @_IMAGE_SOURCE_@ /= ""
 <img src='@_THUMB_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@' />
 <script type="text/javascript">
 <!--
@@ -8,3 +9,4 @@
    parent.document.getElementById('bnc_photo_post_target').style['height'] = '100%';
 -->
 </script>
+@@END_IF@@
