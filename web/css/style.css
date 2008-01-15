@@ -216,6 +216,10 @@ form#bnc_comment_form label {
    padding-right: 5em;
 }
 @@--
+.comment_photo {
+   padding-top: 1em;
+}
+@@--
 div#pfe_lazy_new_comment {
    border: thin solid @_LIGHT_BORDER_COLOR_@;
    padding: 1em;
