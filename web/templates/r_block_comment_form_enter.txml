@@ -36,5 +36,7 @@
     ]]>
   </replace>
   <clear id="global_comment_input" />
+  <clear id="bnc_photo_filename" />
+  <clear id="bnc_photo_post_target" />
 @@END_IF@@
 </response>
