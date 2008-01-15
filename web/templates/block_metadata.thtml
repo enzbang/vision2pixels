@@ -2,27 +2,26 @@
 @@--
 <div id="bm_geo_metadata">
   @@IF@@ @_METADATA_LATITUDE_@ /= ""
-    <a href="#bm_show_map" id="bm_show_toggle" rel="bm_show_map">Voir sur une carte</a>
-    <div id="bm_show_map"  style="display:none">
-       <div id="map_canvas" style="width:600px; height:300px"></div>
-       <div id="bm_map_geoloc_content">
-         <dl class="geo">
-           <dt><strong>@_BABEL_GEO_LATITUDE_@</strong></dt>
-           <dd>
-             <abbr class="latitude" id="bm_latitude" title="@_METADATA_LATITUDE_@">
-               @_METADATA_LATITUDE_FORMATTED_@
-             </abbr>
-           </dd>
-           <dt><strong>@_BABEL_GEO_LONGITUDE_@</strong></dt>
-           <dd>
-             <abbr class="longitude" id="bm_longitude" title="@_METADATA_LONGITUDE_@">
-               @_METADATA_LONGITUDE_FORMATTED_@
-             </abbr>
-           </dd>
-         </dl>
-       </div>
-    </div>
-    @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, bm_show_toggle, V2P.Map.geodisplay.init)
+    <a href="/gmap_photo_entry_view" id="bm_show_toggle" rel="bm_show_map" target="iframe_gmap_view">Voir sur une carte</a>
+   <div id="bm_map_canvas" style="width:600px; height:300px; display:none"></div>
+   <div id="bm_map_geoloc_content" style="display:none">
+     <dl class="geo">
+       <dt><strong>@_BABEL_GEO_LATITUDE_@</strong></dt>
+       <dd>
+         <abbr class="latitude" id="bm_latitude" title="@_METADATA_LATITUDE_@">
+           @_METADATA_LATITUDE_FORMATTED_@
+         </abbr>
+       </dd>
+       <dt><strong>@_BABEL_GEO_LONGITUDE_@</strong></dt>
+       <dd>
+         <abbr class="longitude" id="bm_longitude" title="@_METADATA_LONGITUDE_@">
+           @_METADATA_LONGITUDE_FORMATTED_@
+         </abbr>
+       </dd>
+     </dl>
+   </div>
+    <iframe id="iframe_gmap_view" name="iframe_gmap_view" class="iframe_visible"></iframe>
+    @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, bm_show_toggle, V2P.Map.geodisplay.view)
   @@ELSE@@
     @@IF@@ @_LOGIN_@ = @_OWNER_@ or @_IS_OWNER_@ or @_OWNER_@ = ""
     @@--  If OWNER is empty, the current page if a photo post page

@@ -5,11 +5,5 @@
 <div id="cve_fatal_error">
 </div>
 </div>
-@@IF@@ @_$1_@ = "forum_entry"
-    <script type="text/javascript" src="http://www.google.com/jsapi?key=@_GOOGLE_MAP_KEY_@"></script>
-    <script type="text/javascript">
-       google.load("maps", "2", {"locale" : "fr"});
-    </script>
-@@END_IF@@
 </body>
 </html>
