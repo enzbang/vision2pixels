@@ -32,6 +32,16 @@ echo "Installing plugin in $ARGWIAD_ROOT"
 cd $ARGWIAD_ROOT
 tar --extract --verbose --file $DIST
 
+# If aws.ini exists, remove current settings
+
+if [ -f "aws.ini" ];
+then
+    grep -iv max_connection aws.ini > aws.ini-tmp
+    rm aws.ini
+    mv aws.ini-tmp aws.ini
+fi
+
+echo "max_connection 30" >> aws.ini
+
 echo
 echo "Done ! You should run argwiadctl restart (or reload)"
-
