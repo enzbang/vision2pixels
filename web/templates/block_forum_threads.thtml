@@ -19,7 +19,9 @@
   >
     <a href="#" id="bft_goto_previous_page">@_BABEL_PREVIOUS_PAGE_@</a>
   </li>
-  <li class="nav_info">@_NAV_FROM_@/@_TOTAL_NB_THREADS_@</li>
+  @@IF@@ @_TOTAL_NB_THREADS_@ /= 0
+  <li class="nav_info">@_NAV_FROM_@ .. @_SUB(1):ADD(NB_LINE_RETURNED):NAV_FROM_@ / @_TOTAL_NB_THREADS_@</li>
+  @@END_IF@@
   <li class="next_link"
   @@IF@@ @_ADD(NB_LINE_RETURNED):NAV_FROM_@ >= @_TOTAL_NB_THREADS_@
      style="visibility:hidden"
