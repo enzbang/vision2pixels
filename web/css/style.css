@@ -247,7 +247,6 @@ div#bvwp_vote_week_photo {
 @@--
 a#bvwp_vote_button {
    color: #019bbd;
-   text-transform: capitalize;
    font-size: 1.2em;
 }
 @@--
