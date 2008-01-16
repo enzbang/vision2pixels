@@ -177,6 +177,7 @@ ul#bft_navigate li.nav_info {
 @@--
 #pfe_image_infos h2 {
    font-size:1.3em;
+   text-transform:none;
 }
 @@--
 #pfe_img_author, #pfnpe_img_author {
