@@ -6,6 +6,8 @@
 
 <h1>Vision2Pixels</h1>
 
+<div id="pm_photo_of_the_week"><p>@_LAZY_PHOTO_OF_THE_WEEK_@</p></div>
+
 <div id="pm_presentation">
 <p>Vision2pixels est un site communautaire autour de la critique photographique.</p>
 
@@ -13,9 +15,8 @@
 éventuels disfonctionnements.</p>
 
 <p><a class="help" href="/help">En savoir plus.</a></p>
+<p><a class="whatsnew" href="/new">Nouveautés !</a></p>
 </div>
-
-<div id="pm_photo_of_the_week"><p>@_LAZY_PHOTO_OF_THE_WEEK_@</p></div>
 
 <div id="pm_latest_users"><h2>@_BABEL_LAST_USERS_@ :</h2>@_LAZY_LATEST_USERS_@</div>
 

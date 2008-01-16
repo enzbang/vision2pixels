@@ -1,0 +1,60 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@--
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ new
+@@SET@@ SET_URL = /new
+
+<h1>Vision2Pixels - What's new</h1>
+
+<p>Vision2Pixels s'améliore. Merci à tous ceux qui nous font des
+  rapports d'erreur ou des demandes de fonctionnalités. Le site ne peut
+  évoluer sans vous.</p>
+
+<h2>Version 1.0-rc3</h2>
+
+<p>Ce nom barbare signifie que la version que vous avez sous les yeux est
+  la troisième "Release Candidate" pour la version 1.0</p>
+
+<h3>De l'aide !</h3>
+
+<p>Une première remarque a été qu'il manquait un peu d'explications
+  sur le fonctionnement du site. Nous vous avons entendu. Une page
+  d'introduction a donc vu le jour : voir la
+  <a href="/help" title="Page d'aide">page d'aide</a>. Cette page
+  aussi permet de mieux suivre l'évolution du site.</p>
+
+<h3>Coup de cœur</h3>
+
+<p>Lorsque vous appréciez particulièrement une photographie, vous
+  pouvez voter pour elle. A chaque élection, vous avez le droit de
+  voter 7 fois. Si vous votez pour une seule photo, vous lui donnez un
+  point. Si vous votez pour deux photos, vous leur donnez 0.75 points
+  chacune ; pour trois photos, 0.61 points...</p>
+
+<p>Régulièrement, cela dépendra de l'affluence du site, nous
+  procéderons au vote. Il n'y a aucune manipulation de notre part, le
+  coup de cœur est votre coup de cœur. Pas celui des administrateurs
+  du site.</p>
+
+<h3>Google Maps</h3>
+
+<p>Il était déjà possible de géolocaliser des photographies avec
+  google maps. Il est maintenant possible de visualiser sur une carte
+  les photos déjà géo-localisées.</p>
+
+<h3>Photographie en commentaire</h3>
+
+<p>Il est maintenant possible de joindre une photographie en
+  commentaire.</p>
+
+<h3>Autres améliorations</h3>
+
+<p>Cette version verra de nombreuses corrections de bugs. Les pages
+  devraient aussi mettre moins de temps à charger suite à
+  l'amélioration de la mise en cache et à la compression des données.</p>
+
+@@IF@@ @_V2P_ERROR_@ /= ""
+  @_V2P_ERROR_@
+@@END_IF@@
+@@--
+@@INCLUDE@@ chunk_v2p_end.thtml

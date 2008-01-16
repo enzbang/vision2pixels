@@ -408,42 +408,49 @@ body.main h2 {
 @@--
 #pm_presentation {
    border: thin solid @_LIGHT_BORDER_COLOR_@;
-   padding: 0.5%;
-   margin: 1%;
-   width: 30%;
-   height: 20em;
-   float: left;
+   margin-left:65%;
+   position:relative;
+   top:0pt;
+   width:30%;
 }
 #pm_presentation p {
    line-height:1.5em;
-   padding: 1em 0.6em;
+   padding:0em 0.5em 0pt 1em;
 }
 @@--
 #pm_photo_of_the_week {
-   padding: 0 0.5%;
-   margin: 1%;
-   width: 30%;
+   margin: 0 0 0 1%;
+   width: 60%;
    float: left;
 }
 @@--
 #pm_photo_of_the_week p {
+   padding:0 auto;
    margin:0;
-   padding:0px;
+   text-align:center;
+}
+@@--
+#pm_rb {
+   padding: 0;
+   margin: 0 1%;
+   width: 36%;
+   float: right;
 }
 @@--
 #pm_photo_of_the_week img {
-   margin: 0 auto;
+   margin:0;
    max-width:100%;
+   border:thin solid @_LIGHT_BORDER_COLOR_@;
 }
 
 @@--
 #pm_latest_users {
    border: thin solid @_LIGHT_BORDER_COLOR_@;
-   padding: 0.5%;
-   margin: 1%;
-   width: 30%;
-   float: left;
-   height: 20em;
+   margin-left:65%;
+   position:relative;
+   top:2em;
+   padding:0 0 1em 0;
+   width:30%;
 }
 @@--
 #pm_latest_users li {
@@ -883,17 +890,29 @@ body.user_page ul#bucl_lastusercommentlist {
    height:2em;
 }
 @@-- help page
-body.help h2 {
+body.new h2, body.new h3, body.new h1, body.help h2 {
    text-transform:none;
    margin:2em 0 0.5em 0;
    padding-top:0.7em;
-   font-size:1.3em;
    font-weight:bold;
    text-align:center;
+}
+@@--
+body.new h2, body.help h2 {
+   font-size:1.3em;
    border-top:thin solid @_LIGHT_BORDER_COLOR_@;
 }
 @@--
-body.help p, body.help ul {
+body.new h1 {
+   font-size:2em;
+}
+@@--
+body.new h2 {
+   color:#F5FFF0;
+   font-size:1.6em;
+}
+@@--
+body.new p, body.help p, body.help ul {
    margin:0 auto;
    padding-left:1em;
    line-height:1.5em;
@@ -911,10 +930,16 @@ a.help {
    text-decoration:underline;
 }
 #bm_map_geoloc_content {
-    color:black;
+   color:black;
 }
 #bm_show_map {
-    padding-top:1em;
+   padding-top:1em;
+}
+.whatsnew {
+   color:red;
+   font-size:1.1em;
+   font-weight:lighter;
+   text-decoration:underline;
 }
 @@-- Include rating.css
 @@INCLUDE@@ rating.css
