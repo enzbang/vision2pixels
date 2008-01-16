@@ -52,6 +52,7 @@ with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Admin;
 with V2P.Template_Defs.Page_User;
 with V2P.Template_Defs.Page_Main;
+with V2P.Template_Defs.Page_New;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Page_Forum_New_Text_Entry;
 with V2P.Template_Defs.Page_Google_Map_View;
@@ -552,6 +553,11 @@ package body V2P.Web_Server is
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Help.Set.URL,
          Template_Defs.Page_Help.Template,
+         null);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_New.Set.URL,
+         Template_Defs.Page_New.Template,
          null);
 
       Services.Web_Block.Registry.Register
