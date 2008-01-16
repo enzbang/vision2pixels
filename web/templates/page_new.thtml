@@ -4,7 +4,7 @@
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ new
 @@SET@@ SET_URL = /new
 
-<h1>Vision2Pixels - What's new</h1>
+<h1>Vision2Pixels - Quoi de neuf ?</h1>
 
 <p>Vision2Pixels s'améliore. Merci à tous ceux qui nous font des
   rapports d'erreur ou des demandes de fonctionnalités. Le site ne peut
