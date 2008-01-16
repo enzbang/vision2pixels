@@ -136,25 +136,24 @@ div#pfe_image_block {
    margin:40px 0 0 -@_DIV(2):MAX_IMAGE_SIZE_@px;
    position:relative;
    padding:0;
-   width:@_MAX_IMAGE_SIZE_@px;
+   width:@_ADD(70):MAX_IMAGE_SIZE_@px;
 }
 @@--
 @@--  Navigation links
 @@--
 ul#bft_navigate li, ul#pfe_navigate li {
    display:inline;
-   text-transform:uppercase;
-   font-size:0.8em;
+   font-variant:small-caps;
+   font-size:0.9em;
    padding-right:1em;
-}
-@@--
-ul#pfe_navigate li#pfe_go_to_list {
-   position:absolute;
-   right:1.5em;
 }
 @@--
 ul#bft_navigate {
    margin: 0 auto;
+   text-align:center;
+}
+@@--
+ul#pfe_navigate {
    text-align:center;
 }
 @@--
@@ -328,10 +327,11 @@ div#pft_filters div, div#pft_filters h2 {
 }
 @@--
 div#pft_filters div select, div#pft_filters div select option {
-   padding:0.4pt;
+   padding:0.4pt 0;
    color:#C1C7C7;
    font-weight:bold;
    border:black;
+   margin:0;
 }
 @@--
 div#cvt_lazy_login, div#cvt_lazy_quick_login {
@@ -355,8 +355,10 @@ div#bftt_forum_text {
 }
 @@--
 div#cvt_lazy_login {
-   top:1em;
+   top:2em;
    background: #333333;
+   border:2px ridge #555555;
+   opacity:0.95;
 }
 @@--
 div#bl_login_err {
@@ -395,8 +397,9 @@ form#bl_login_form p#bl_cd_user {
 @@--  Main page
 @@--
 body.main h1 {
-   padding:2em 0 0.5em 0;
-   font-size:2em;
+   font-family:arial,sans-serif;
+   padding:1.2em 0 0.6em 0;
+   font-size:3em;
 }
 @@--
 body.main h2 {
