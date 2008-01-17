@@ -17,10 +17,11 @@
    <p><a class="help" href="/help">En savoir plus.</a></p>
    <p><a class="whatsnew" href="/new">Nouveautés !</a></p>
    </div>
-<?div>
 
-<div id="pm_latest_users"><h2>@_BABEL_LAST_USERS_@</h2>@_LAZY_LATEST_USERS_@</div>
-<div id="pm_latest_posts"><h2>@_BABEL_LAST_USER_PHOTOS_@</h2>@_LAZY_LATEST_POSTS_@</p></div>
+   <div id="pm_latest_users"><h2>@_BABEL_LAST_USERS_@</h2>@_LAZY_LATEST_USERS_@</div>
+   <div id="pm_latest_posts"><h2>@_BABEL_LAST_USER_PHOTOS_@</h2>@_LAZY_LATEST_POSTS_@</div>
+   <hr id="pm_eop" /> @@-- Fix ie6 bug, yes again !
+</div>
 
 @@IF@@ @_V2P_ERROR_@ /= ""
   @_V2P_ERROR_@

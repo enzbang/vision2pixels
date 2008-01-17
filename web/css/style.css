@@ -33,18 +33,17 @@ body {
 }
 @@--
 #cvt_contents {
+   @@--  Hack for having centered block in ie6
+   text-align:center;
+   @@--  End of hack
    left:0;
    position:absolute;
    top:0;
 }
 @@--
-#cve_footer {
-   background-color:#222;
-   bottom:0;
-   padding:0;
-   position:absolute;
-   text-align:center;
-   width:100%;
+#pm_eop {
+   visibility:hidden;
+   clear:both;
 }
 @@--
 #cvt_main {
@@ -132,11 +131,10 @@ h1 {
 @@--  Blocks
 @@--
 div#pfe_image_block {
-   left:50%;
-   margin:40px 0 0 -@_DIV(2):MAX_IMAGE_SIZE_@px;
    position:relative;
    padding:0;
    width:@_ADD(70):MAX_IMAGE_SIZE_@px;
+   margin:1em auto;
 }
 @@--
 @@--  Navigation links
@@ -168,6 +166,7 @@ ul#bft_navigate li.nav_info {
 @@--  forum_entry
 @@--
 #pfe_image_infos {
+   text-align:left;
    margin:2em 0;
    padding:1em 2em;
    background-color: @_LIGHT_BORDER_COLOR_@;
@@ -344,6 +343,8 @@ div#cvt_lazy_login, div#cvt_lazy_quick_login {
    top:0px;
    right:0px;
    z-index:5000;
+   width:40em;
+   padding:0 1em;
 }
 @@--
 div#bftt_forum_text {
@@ -405,7 +406,12 @@ body.main h1 {
 #pm_main_content {
    max-width:1000px;
    width:80%;
+   @@--  Hack for ie6
+   width: expression(Math.max((document.documentElement ? document.documentElement.clientWidth : document.body.clientWidth) * 0.8, 1000)+'px');
+   @@--  End of hack
    margin:0 auto;
+   left:0;
+   right:0;
 }
 @@--
 body.main h2 {
@@ -416,6 +422,7 @@ body.main h2 {
 }
 @@--
 #pm_presentation {
+   text-align:left;
    border: thin solid @_LIGHT_BORDER_COLOR_@;
    margin-left:450px;
    position:relative;
@@ -446,12 +453,16 @@ body.main h2 {
 #pm_photo_of_the_week img {
    margin:0;
    max-width:400px;
-   max-height:400px
+   max-height:400px;
+   @@--  Hack for IE6
+   width: expression(Math.max((document.documentElement ? document.documentElement.clientWidth : document.body.clientWidth), 400)+'px');
+   @@--  End of hack
    border:thin solid @_LIGHT_BORDER_COLOR_@;
 }
 
 @@--
 #pm_latest_users {
+   text-align:left;
    border: thin solid @_LIGHT_BORDER_COLOR_@;
    margin-left:450px;
    position:relative;
@@ -464,13 +475,22 @@ body.main h2 {
 }
 @@--
 #pm_latest_posts {
+   text-align:center;
+   clear:left;
    border: thin solid @_LIGHT_BORDER_COLOR_@;
    float:left;
-   left:-400px;
-   margin:4em 0pt 2em 50%;
+   margin:2em 0;
    padding:0.3em;
-   position:relative;
+   width:100%;
+}
+@@--
+#pm_latest_posts ul {
    width:800px;
+   margin:0 auto;
+}
+@@--
+#pm_latest_posts h2 {
+   text-align:left;
 }
 @@--
 @@--  Footpage
@@ -482,7 +502,9 @@ body.main h2 {
 @@--  Forum list
 @@--
 ul#bfl_navcontainer {
+   text-align:left;
    top:5px;
+   left:0;
    position:absolute;
    width:80%;
 }

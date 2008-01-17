@@ -1,5 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
+@@IF@@ @_EXIST:EXIF_ISO_@ or @_EXIST:EXIF_CREATE_DATE_@ or @_EXIST:EXIF_MAKE_@ or @_EXIST:EXIF_CAMERA_MODEL_NAME_@ or @_EXIST:EXIF_SHUTTER_SPEED_VALUE_@ or @_EXIST:EXIF_APERTURE_VALUE_@ or @_EXIST:EXIF_FLASH_@ or @_EXIST:EXIF_FOCAL_LENGTH_@ or @_EXIST:EXIF_EXPOSURE_MODE_@ or @_EXIST:EXIF_EXPOSURE_PROGRAM_@ or @_EXIST:EXIF_WHITE_BALANCE_@ or @_EXIST:EXIF_METERING_MODE_@
 <dl class="exif">
   @@IF@@ @_EXIST:EXIF_ISO_@
     <dt><strong>@_BABEL_EXIF_ISO_@</strong></dt>
@@ -96,3 +97,4 @@
     </dd>
   @@END_IF@@
 </dl>
+@@END_IF@@
