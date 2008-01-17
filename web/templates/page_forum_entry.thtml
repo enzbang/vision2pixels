@@ -6,8 +6,8 @@
 @@IF@@ @_NAME_@ /=""
 @@INCLUDE@@ chunk_v2p_top.thtml @_NAME_@ forum_entry yui-t7
 @@--
-  <div id="pfe_image_block">
-   @@-- Navigation links
+<div id="pfe_image_block">
+  @@-- Navigation links
   <ul id="pfe_navigate">
 
     @@IF@@ @_PREVIOUS_@ /= "0"
@@ -35,11 +35,11 @@
   @@IF@@ @_IMAGE_SOURCE_@ /= ""
   <p id="pfe_main_image">
     <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
-     height="@_IMAGE_HEIGHT_@" width="@_IMAGE_WIDTH_@" />
+         height="@_IMAGE_HEIGHT_@" width="@_IMAGE_WIDTH_@" />
   </p>
   @@END_IF@@
-<div id="pfe_image_infos">
-  <p id="pfe_img_author">
+  <div id="pfe_image_infos">
+    <p id="pfe_img_author">
     @@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@
       @@IF@@ @_OWNER_@ /= @_LOGIN_@
          @_OWNER_@
@@ -54,26 +54,26 @@
       @@END_IF@@
     @@END_IF@@
     / @_DATE_POST_@
-  </p>
-  <h2>@_NAME_@ :: @_CATEGORY_@</h2>
-  @@-- Hidden
-  @@IF@@ @_ADMIN_@
-  <p>@_BABEL_HIDDEN_STATUS_@:
-    <a href="#" id="pfe_hidden_status_toggle">
-      <span id="pfe_image_hidden_status">@_OUI_NON:HIDDEN_@</span>
-    </a>
-  </p>
-  @@END_IF@@
-  <p id="pfe_main_image_comment">@_IMAGE_COMMENT_@</p>
-  @@IF@@ @_IMAGE_SOURCE_@ /= ""
-    <p id="global_lazy_metadata">@_LAZY_METADATA_@</p>
+    </p>
+    <h2>@_NAME_@ :: @_CATEGORY_@</h2>
+    @@-- Hidden
+    @@IF@@ @_ADMIN_@
+    <p>@_BABEL_HIDDEN_STATUS_@:
+      <a href="#" id="pfe_hidden_status_toggle">
+        <span id="pfe_image_hidden_status">@_OUI_NON:HIDDEN_@</span>
+      </a>
+    </p>
+    @@END_IF@@
+    <div id="pfe_main_image_comment">@_IMAGE_COMMENT_@</div>
+    @@IF@@ @_IMAGE_SOURCE_@ /= ""
+    <div id="global_lazy_metadata">@_LAZY_METADATA_@</div>
     <div id="pfe_lazy_global_rating">@_LAZY_GLOBAL_RATING_@</div>
-  @@END_IF@@
-</div>
+    @@END_IF@@
+  </div>
   @@-- Vote photo of the week (only for photo forum)
-@@IF@@ @_IMAGE_SOURCE_@ /= ""
-<div id="pfe_lazy_vote_week_photo">@_LAZY_VOTE_WEEK_PHOTO_@</div>
-@@END_IF@@
+  @@IF@@ @_IMAGE_SOURCE_@ /= ""
+  <div id="pfe_lazy_vote_week_photo">@_LAZY_VOTE_WEEK_PHOTO_@</div>
+  @@END_IF@@
   @@-- Comments
   <h2 id="pfe_comments_section">Commentaires</h2>
   @@IF@@ @_COMMENT_ID_@ /= "" @@--  at least one comment
@@ -87,23 +87,20 @@
       @@END_IF@@
 
       @@IF@@ @_TABLE_LINE_@ = @_COMMENT_ID'Length_@
-      <div id="pfe_last_parent_id" style="visibility:hidden">
-        <input name="pfe_PARENT_ID" id="pfe_PARENT_ID" type="hidden"
-               value="pfe_comment_@_COMMENT_ID_@" />
-      </div>
+  </ol>
+  <input name="pfe_PARENT_ID" id="pfe_PARENT_ID" type="hidden"
+         value="pfe_comment_@_COMMENT_ID_@" />
       @@END_IF@@
     @@END_TABLE@@
-  </ol>
   @@ELSE@@
-  <ol id="pfe_comments"><p id="pfe_nocomment">@_BABEL_NO_COMMENT_@</p></ol>
-  <div id="pfe_last_parent_id" style="visibility:hidden">
-    <input name="pfe_PARENT_ID" id="pfe_PARENT_ID" type="hidden" value=""/>
-  </div>
+  <ol id="pfe_comments"><li id="pfe_nocomment">@_BABEL_NO_COMMENT_@</li></ol>
+  <input name="pfe_PARENT_ID" id="pfe_PARENT_ID" type="hidden" value=""/>
   @@END_IF@@
-@@IF@@ @_IMAGE_SOURCE_@ /= ""
+  @@IF@@ @_IMAGE_SOURCE_@ /= ""
   <div id="pfe_lazy_new_vote">@_LAZY_NEW_VOTE_@</div>
-@@END_IF@@
-<div id="pfe_lazy_new_comment">@_LAZY_NEW_COMMENT_@</div>
+  @@END_IF@@
+  <div id="pfe_lazy_new_comment">@_LAZY_NEW_COMMENT_@</div>
+</div>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, pfe_hidden_status_toggle)
 @@INCLUDE@@ chunk_v2p_end.thtml forum_entry

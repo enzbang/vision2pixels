@@ -22,6 +22,6 @@
 </cite>
 @@IF@@ @_COMMENT_IMAGE_SOURCE_@ /= ""
   <div class="comment_photo">
-    <img src="@_IMAGE_SOURCE_PREFIX_@/@_COMMENT_IMAGE_SOURCE_@" /></div>
+    <img alt="Photo" src="@_IMAGE_SOURCE_PREFIX_@/@_COMMENT_IMAGE_SOURCE_@" /></div>
 @@END_IF@@
 <div class="comment_body">@_COMMENT_@</div>
