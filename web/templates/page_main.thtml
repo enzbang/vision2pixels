@@ -3,25 +3,23 @@
 @@-- HTTP_URL(/): Website root
 @@--
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ main
-
 <h1>Vision2Pixels</h1>
 
-<div id="pm_photo_of_the_week"><p>@_LAZY_PHOTO_OF_THE_WEEK_@</p></div>
+<div id="pm_main_content">
+   <div id="pm_photo_of_the_week"><p>@_LAZY_PHOTO_OF_THE_WEEK_@</p></div>
 
-<div id="pm_presentation">
-<p>Vision2pixels est un site communautaire autour de la critique photographique.</p>
+   <div id="pm_presentation">
+   <p>Vision2pixels est un site communautaire autour de la critique photographique.</p>
 
-<p>Vous êtes invités à vous inscrire afin de tester le site et de signaler les
-éventuels disfonctionnements.</p>
+   <p>Vous êtes invités à vous inscrire afin de tester le site et de signaler les
+   éventuels disfonctionnements.</p>
 
-<p><a class="help" href="/help">En savoir plus.</a></p>
-<p><a class="whatsnew" href="/new">Nouveautés !</a></p>
-</div>
+   <p><a class="help" href="/help">En savoir plus.</a></p>
+   <p><a class="whatsnew" href="/new">Nouveautés !</a></p>
+   </div>
+<?div>
 
-<div id="pm_latest_users"><h2>@_BABEL_LAST_USERS_@ :</h2>@_LAZY_LATEST_USERS_@</div>
-
-<p/>
-
+<div id="pm_latest_users"><h2>@_BABEL_LAST_USERS_@</h2>@_LAZY_LATEST_USERS_@</div>
 <div id="pm_latest_posts"><h2>@_BABEL_LAST_USER_PHOTOS_@</h2>@_LAZY_LATEST_POSTS_@</p></div>
 
 @@IF@@ @_V2P_ERROR_@ /= ""
