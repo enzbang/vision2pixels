@@ -932,12 +932,21 @@ body.help li {
 a.help {
    text-decoration:underline;
 }
+@@--
+#ph_tech {
+   margin-top: 5em;
+   text-align: center;
+   border-top:thin solid @_LIGHT_BORDER_COLOR_@;
+}
+@@--
 #bm_map_geoloc_content {
    color:black;
 }
+@@--
 #bm_show_map {
    padding-top:1em;
 }
+@@--
 .whatsnew {
    color:red;
    font-size:1.1em;
