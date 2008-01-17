@@ -71,7 +71,7 @@ sur les photographies "bookmarquées".</li>
 @@END_IF@@
 @@--
 
-<p id="ph_tech">Ce site à été développé en
+<p id="ph_tech">Ce site a été développé en
 <a href="http://en.wikipedia.org/wiki/Ada_(programming_language)"
    target="_blank">Ada</a> avec
 <a href="http://libre.adacore.com/aws/" target="_blank">AWS</a> et
