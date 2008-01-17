@@ -9,6 +9,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+    <meta name="description" content="critique de photo"/>
+    <meta name="keywords" content="photo, photographie, critique, Ada, GNAT, Ajax, AWS, GWIAD"/>
+    <meta name="copyright" content="Pascal Obry, Olivier Ramonat"/>
     <title>@_$1_@</title>
     <link media="screen" type="text/css" rel="stylesheet" href="/css/style.css">
     <script src="/we_js/v2p.tjs" type="text/javascript"></script>
