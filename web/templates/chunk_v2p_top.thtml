@@ -13,7 +13,7 @@
     <meta name="keywords" content="photo, photographie, critique, Ada, GNAT, Ajax, AWS, GWIAD"/>
     <meta name="copyright" content="Pascal Obry, Olivier Ramonat"/>
     <title>@_$1_@</title>
-    <link media="screen" type="text/css" rel="stylesheet" href="/css/style.css">
+    <link media="screen" type="text/css" rel="stylesheet" href="/css/style.css"/>
     <script src="/we_js/v2p.tjs" type="text/javascript"></script>
     @@IF@@ @_$2_@ = forum_new_photo_entry or @_$2_@ = "iframe_map_view"
       <script type="text/javascript"
