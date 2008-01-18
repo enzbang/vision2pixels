@@ -257,6 +257,7 @@ body.forum_entry p#pfe_main_image {
 body.forum_entry #pfe_comments {
    border :thin solid @_LIGHT_BORDER_COLOR_@;
    padding:1em;
+   text-align: left;
 }
 @@--
 body.forum_entry #pfe_comments li {
@@ -264,7 +265,7 @@ body.forum_entry #pfe_comments li {
    padding:1em;
 }
 @@--
-body.forum_entry #pfe_comments p#pfe_nocomment {
+body.forum_entry #pfe_comments li#pfe_nocomment {
    @@-- When no comments
    font-size:1.4em;
    text-align:center;
@@ -279,6 +280,10 @@ body.forum_entry #pfe_comments p#pfe_nocomment {
 @@--
 body.forum_entry #pfe_new_comment {
    width:@_MIN_IMAGE_SIZE_@px;
+}
+@@--
+#pfe_comments_section {
+   text-align: left;
 }
 @@--
 body.forum_entry #pfe_new_comment legend {
