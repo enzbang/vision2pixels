@@ -44,7 +44,6 @@ with V2P.Template_Defs.Block_Forum_Threads_Text;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Latest_Posts;
 with V2P.Template_Defs.Block_Latest_Users;
-with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Comment_List;
@@ -1657,25 +1656,6 @@ package body V2P.Database is
 
       return To_String (Filename);
    end Get_Thumbnail;
-
-   --------------
-   -- Get_User --
-   --------------
-
-   function Get_User (Uid : in String) return Templates.Translate_Set is
-      use type Templates.Tag;
-
-      U_Data : constant User_Data := Get_User_Data (Uid);
-      Set    : Templates.Translate_Set;
-   begin
-      Templates.Insert
-        (Set, Templates.Assoc (Block_Login.HTTP.PASSWORD, U_Data.Password));
-      Templates.Insert
-        (Set, Templates.Assoc (Set_Global.ADMIN, U_Data.Admin));
-      Templates.Insert
-        (Set, Templates.Assoc (Block_Login.LOGIN, Uid));
-      return Set;
-   end Get_User;
 
    ----------------------
    -- Get_User_Comment --

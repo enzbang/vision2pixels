@@ -5,11 +5,11 @@
   <fieldset>
     <legend>@_BABEL_ASK_AUTHENTICATION_@</legend>
     <p>
-      <label for="login_input">Login</label>
-      <input id="bl_login_input" name="LOGIN" type="text"
+      <label for="bl_login_input">Login</label>
+      <input id="bl_login_input" name="bl_login_input" type="text"
       value="@_BABEL_LOGIN_DEFAULT_VALUE_@" size="15"/></p>
-    <p><label for="password_input">Password</label>
-      <input id="bl_password_input" name="PASSWORD" type="password"
+    <p><label for="bl_password_input">Password</label>
+      <input id="bl_password_input" name="bl_password_input" type="password"
              value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/>
     </p>
     <p><input name="ENTER" id="bl_login_form_enter" type="submit" value="OK"/></p>
