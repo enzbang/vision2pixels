@@ -52,6 +52,7 @@ with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Photo_Of_The_Week;
 with V2P.Template_Defs.Block_User_Voted_Photos_List;
+with V2P.Template_Defs.Page_Rss_Recent_Photos;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.R_Block_Forum_List;
 
@@ -826,30 +827,54 @@ package body V2P.Database is
    ----------------------
 
    function Get_Latest_Posts
-     (Limit : in Positive) return Templates.Translate_Set
+     (Limit    : in Positive;
+      Add_Date : in Boolean := False)
+      return Templates.Translate_Set
    is
       use type Templates.Tag;
-      DBH   : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      SQL   : constant String := "select post.id, post.name, filename "
-                                   & "from post, forum, photo, category "
-                                   & "where post.photo_id = photo.id "
-                                   & "and post.category_id = category.id "
-                                   & "and category.forum_id = forum.id "
-                                   & "and forum.for_photo = 'TRUE' "
-                                   & "order by post.date_post DESC "
-                                   & "limit" & Positive'Image (Limit);
-      Iter  : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line  : DB.String_Vectors.Vector;
-      Id    : Templates.Tag;
-      Name  : Templates.Tag;
-      Thumb : Templates.Tag;
-      Set   : Templates.Translate_Set;
+      DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line   : DB.String_Vectors.Vector;
+      Id     : Templates.Tag;
+      Name   : Templates.Tag;
+      Date   : Templates.Tag;
+      Thumb  : Templates.Tag;
+      Set    : Templates.Translate_Set;
+
+      function Select_Date return String;
+      --  Adds date selection if required
+
+      -----------------
+      -- Select_Date --
+      -----------------
+
+      function Select_Date return String is
+      begin
+         if Add_Date then
+            return ", post.date_post";
+         else
+            return "";
+         end if;
+      end Select_Date;
+
    begin
       Connect (DBH);
 
       --  Get entry information
 
-      DBH.Handle.Prepare_Select (Iter, SQL);
+      Prepare_Select : declare
+         SQL   : constant String := "select post.id, post.name, filename"
+           & Select_Date
+           & " from post, forum, photo, category "
+           & "where post.photo_id = photo.id "
+           & "and post.category_id = category.id "
+           & "and category.forum_id = forum.id "
+           & "and forum.for_photo = 'TRUE' "
+           & "order by post.date_post DESC "
+           & "limit" & Positive'Image (Limit);
+      begin
+         DBH.Handle.Prepare_Select (Iter, SQL);
+      end Prepare_Select;
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -857,6 +882,10 @@ package body V2P.Database is
          Id    := Id    & DB.String_Vectors.Element (Line, 1);
          Name  := Name  & DB.String_Vectors.Element (Line, 2);
          Thumb := Thumb & DB.String_Vectors.Element (Line, 3);
+
+         if Add_Date then
+            Date  := Date  & DB.String_Vectors.Element (Line, 4);
+         end if;
 
          Line.Clear;
       end loop;
@@ -867,6 +896,11 @@ package body V2P.Database is
       Templates.Insert (Set, Templates.Assoc (Block_Latest_Posts.NAME, Name));
       Templates.Insert
         (Set, Templates.Assoc (Block_Latest_Posts.THUMB_SOURCE, Thumb));
+
+      if Add_Date then
+         Templates.Insert
+           (Set, Templates.Assoc (Page_Rss_Recent_Photos.DATE, Date));
+      end if;
 
       return Set;
    end Get_Latest_Posts;

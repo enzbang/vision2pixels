@@ -107,3 +107,6 @@
 @@SET@@ BABEL_COMPOSITION="Composition"
 @@SET@@ BABEL_FOCUS="Focus"
 @@SET@@ BABEL_LIGHTING="Lumière"
+@@-- RSS
+@@SET@@ BABEL_RSS_RECENT_PHOTOS="Photographies récentes"
+@@SET@@ BABEL_RSS_RECENT_PHOTOS_DESC="Les dernières photographie arrivée sur le site de Vision2Pixels"
