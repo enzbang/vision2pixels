@@ -87,13 +87,13 @@
       @@END_IF@@
 
       @@IF@@ @_TABLE_LINE_@ = @_COMMENT_ID'Length_@
-        <div id="pfe_last_parent_id" style="visibility:hidden">
-          <input name="pfe_PARENT_ID" id="pfe_PARENT_ID" type="hidden"
-                 value="pfe_comment_@_COMMENT_ID_@" />
-        </div>
+  </ol>
+  <div id="pfe_last_parent_id" style="visibility:hidden">
+    <input name="pfe_PARENT_ID" id="pfe_PARENT_ID" type="hidden"
+           value="pfe_comment_@_COMMENT_ID_@" />
+  </div>
       @@END_IF@@
     @@END_TABLE@@
-    </ol>
   @@ELSE@@
   <ol id="pfe_comments"><li id="pfe_nocomment">@_BABEL_NO_COMMENT_@</li></ol>
   <div id="pfe_last_parent_id" style="visibility:hidden">
