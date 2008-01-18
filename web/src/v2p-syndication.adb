@@ -89,8 +89,6 @@ package body V2P.Syndication is
              (Filename     => Template_Defs.Page_Rss_Recent_Photos.Template,
               Translations  => Translations));
 
-      Put_Line ("Generated file " & Filename);
-
       Close (File);
    end Update_RSS_Last_Photos;
 

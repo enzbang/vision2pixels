@@ -29,39 +29,29 @@ with AWS.Messages;
 with AWS.MIME;
 with AWS.Response.Set;
 with AWS.Services.Dispatchers.URI;
+with AWS.Services.Web_Block.Context;
 with AWS.Services.Web_Block.Registry;
 with AWS.Session;
 with AWS.Status;
 with AWS.Templates;
 
-with Gwiad.Web.Virtual_Host;
 with Gwiad.Plugins.Websites.Registry;
-with Morzhol.OS;
+with Gwiad.Web.Virtual_Host;
+
 with Morzhol.Logs;
+with Morzhol.OS;
 
 with V2P.Cache;
-with V2P.Context;
 with V2P.Callbacks.Page;
 with V2P.Callbacks.Ajax;
+with V2P.Context;
 with V2P.Settings;
 with V2P.Syndication;
 with V2P.URL;
 with V2P.Version;
 
-with V2P.Template_Defs.Page_Forum_Entry;
-with V2P.Template_Defs.Page_Forum_Threads;
-with V2P.Template_Defs.Page_Admin;
-with V2P.Template_Defs.Page_User;
-with V2P.Template_Defs.Page_Main;
-with V2P.Template_Defs.Page_New;
-with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
-with V2P.Template_Defs.Page_Forum_New_Text_Entry;
-with V2P.Template_Defs.Page_Google_Map_View;
-with V2P.Template_Defs.Page_Error;
-with V2P.Template_Defs.Page_Fatal_Error;
-with V2P.Template_Defs.Page_Help;
-with V2P.Template_Defs.Set_Global;
-with V2P.Template_Defs.Page_Photo_Post;
+with V2P.Template_Defs.Block_User_Page;
+with V2P.Template_Defs.Block_Forum_Threads;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Vote;
@@ -70,29 +60,40 @@ with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Forum_Category_Filter;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
+
 with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Chunk_New_Comment_Photo;
 with V2P.Template_Defs.Chunk_V2p_Top;
-with V2P.Template_Defs.Block_User_Page;
-with V2P.Template_Defs.Block_Forum_Threads;
+
+with V2P.Template_Defs.Page_Admin;
+with V2P.Template_Defs.Page_Error;
+with V2P.Template_Defs.Page_Fatal_Error;
+with V2P.Template_Defs.Page_Forum_Entry;
+with V2P.Template_Defs.Page_Forum_Threads;
+with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
+with V2P.Template_Defs.Page_Forum_New_Text_Entry;
+with V2P.Template_Defs.Page_Google_Map_View;
+with V2P.Template_Defs.Page_Help;
+with V2P.Template_Defs.Page_Main;
+with V2P.Template_Defs.Page_New;
+with V2P.Template_Defs.Page_Photo_Post;
+with V2P.Template_Defs.Page_User;
+
+with V2P.Template_Defs.Set_Global;
+
+with V2P.Template_Defs.R_Block_Comment_Form_Enter;
+with V2P.Template_Defs.R_Block_Fatal_Error;
+with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Forum_List;
-with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Hidden_Status;
 with V2P.Template_Defs.R_Block_Login;
-with V2P.Template_Defs.R_Block_Rate;
-with V2P.Template_Defs.R_Block_Forum_Filter;
-with V2P.Template_Defs.R_Block_Comment_Form_Enter;
-with V2P.Template_Defs.R_Block_Post_Form_Enter;
+with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Metadata_Form_Enter;
+with V2P.Template_Defs.R_Block_Post_Form_Enter;
+with V2P.Template_Defs.R_Block_Rate;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
-with V2P.Template_Defs.R_Block_Fatal_Error;
 with V2P.Template_Defs.R_Block_Vote_Week_Photo;
 with V2P.Template_Defs.R_Context_Error;
-
-with Gwiad.Plugins.Websites;
-
-with AWS.Services.Web_Block.Context;
-with Templates_Parser;
 
 package body V2P.Web_Server is
 
@@ -128,30 +129,21 @@ package body V2P.Web_Server is
    --  Standard Callbacks --
    -------------------------
 
-   function Default_XML_Callback
-     (Request : in Status.Data) return String;
-   --  Default callback for xml action
+   function CSS_Callback (Request : in Status.Data) return Response.Data;
+   --  Web Element CSS callback
 
    function Default_Callback
      (Request : in Status.Data) return Response.Data;
    --  Default callback
 
-   function RSS_Callback (Request : in Status.Data) return Response.Data;
-   --  RSS callback
-
-   function Website_Data (Request : in Status.Data) return Response.Data;
-   --  Website data (images, ...) callback
-
-   function WEJS_Callback (Request : in Status.Data) return Response.Data;
-   --  Web Element JavaScript callback
-
-   function CSS_Callback (Request : in Status.Data) return Response.Data;
-   --  Web Element CSS callback
+   function Default_XML_Callback
+     (Request : in Status.Data) return String;
+   --  Default callback for xml action
 
    function Float_Mult_Filter
      (Value      : in String;
       Parameters : in String;
-      Context    : in Templates_Parser.Filter_Context) return String;
+      Context    : in Templates.Filter_Context) return String;
    --  Mult filter (template parser user filter)
 
    function IMG_Callback (Request : in Status.Data) return Response.Data;
@@ -160,8 +152,17 @@ package body V2P.Web_Server is
    function Photos_Callback (Request : in Status.Data) return Response.Data;
    --  Photos callback
 
+   function RSS_Callback (Request : in Status.Data) return Response.Data;
+   --  RSS callback
+
    function Thumbs_Callback (Request : in Status.Data) return Response.Data;
    --  Thumbs callback
+
+   function Website_Data (Request : in Status.Data) return Response.Data;
+   --  Website data (images, ...) callback
+
+   function WEJS_Callback (Request : in Status.Data) return Response.Data;
+   --  Web Element JavaScript callback
 
    -------------
    --  Gwiad  --
@@ -397,7 +398,7 @@ package body V2P.Web_Server is
    function Float_Mult_Filter
      (Value      : in String;
       Parameters : in String;
-      Context    : in Templates_Parser.Filter_Context) return String
+      Context    : in Templates.Filter_Context) return String
    is
       pragma Unreferenced (Context);
       N, V : Float;
