@@ -125,6 +125,7 @@ package body V2P.Navigation_Links is
 
       if Current /= No_Element then
          return Element (Current);
+
       else
          --  Try harder to find next post id
 
@@ -150,10 +151,10 @@ package body V2P.Navigation_Links is
                   Page_Size => Page_Size * 2);
 
                --  Recursive call to Next_Post as the next element has been
-               --  loaded in Links
+               --  loaded in Links.
 
-               return Next_Post (Context => Context,
-                                 Id      => Id);
+               return Next_Post (Context => Context, Id => Id);
+
             else
                --  End of post ids list. Abort
 
@@ -188,8 +189,8 @@ package body V2P.Navigation_Links is
 
       if Current /= No_Element then
          return Element (Current);
-      else
 
+      else
          --  Try harder to find previous post id
 
          Try_Harder : declare
@@ -202,7 +203,6 @@ package body V2P.Navigation_Links is
                             (Context => Context.all,
                              Name    => Set_Global.NAV_FROM);
          begin
-
             if Nav_From /= 1 then
 
                if Nav_From > Page_Size then
@@ -212,15 +212,17 @@ package body V2P.Navigation_Links is
                end if;
 
                --  Fetch more post ids
-               Load_Pages (Context   => Context,
-                           From      => Nav_From,
-                           Page_Size => Page_Size * 2);
+
+               Load_Pages
+                 (Context   => Context,
+                  From      => Nav_From,
+                  Page_Size => Page_Size * 2);
 
                --  Recursive call to Previous_Post as the previous element
-               --  has been loaded in Links
+               --  has been loaded in Links.
 
-               return Previous_Post (Context => Context,
-                                     Id      => Id);
+               return Previous_Post (Context => Context, Id => Id);
+
             else
                --  Begin of post ids list. Abort
 
@@ -230,14 +232,18 @@ package body V2P.Navigation_Links is
       end if;
    end Previous_Post;
 
+   ---------
+   -- Set --
+   ---------
+
    procedure Set
      (Context : access Services.Web_Block.Context.Object;
-      Posts   : in Post_Ids.Vector)
-   is
+      Posts   : in Post_Ids.Vector) is
    begin
-      Links.Set_Value (Context => Context.all,
-                       Name    => Navigation_Links_Name,
-                       Value   => Posts);
+      Links.Set_Value
+        (Context => Context.all,
+         Name    => Navigation_Links_Name,
+         Value   => Posts);
    end Set;
 
 end V2P.Navigation_Links;
