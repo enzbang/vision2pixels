@@ -141,11 +141,13 @@ package body V2P.Navigation_Links is
                             (Context => Context.all,
                              Name    => Set_Global.NAV_FROM);
          begin
-            if Nav_From + Page_Size < Total then
+            if Nav_From + Page_Size <= Total then
                --  Fetch more post ids
-               Load_Pages (Context   => Context,
-                           From      => Nav_From,
-                           Page_Size => Page_Size * 2);
+
+               Load_Pages
+                 (Context   => Context,
+                  From      => Nav_From + Page_Size - 1,
+                  Page_Size => Page_Size * 2);
 
                --  Recursive call to Next_Post as the next element has been
                --  loaded in Links
