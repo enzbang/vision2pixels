@@ -21,7 +21,7 @@
 
 package V2P.Syndication is
 
-   procedure Update_RSS_Last_Photos;
+   procedure Update_RSS_Last_Photos (Create_Only : in Boolean := False);
    --  Update last photos RSS feed
 
 end V2P.Syndication;

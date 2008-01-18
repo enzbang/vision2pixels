@@ -42,7 +42,7 @@ package body V2P.Syndication is
    -- Update_RSS_Last_Photos --
    ----------------------------
 
-   procedure Update_RSS_Last_Photos is
+   procedure Update_RSS_Last_Photos (Create_Only : in Boolean := False) is
       Filename     : constant String := Morzhol.OS.Compose
         (Settings.RSS_Path,
          Directories.Simple_Name
@@ -51,6 +51,12 @@ package body V2P.Syndication is
       File         : File_Type;
 
    begin
+
+      if Create_Only and then Directories.Exists (Filename) then
+
+         --  Nothing to do. Quit
+         return;
+      end if;
 
       Templates.Insert
         (Translations,

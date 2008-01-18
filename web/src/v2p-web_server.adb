@@ -824,4 +824,9 @@ begin  -- V2P.Web_Server : register vision2pixels website
    --  Init Ten_Year_From_Now
 
    In_Ten_Year := Clock + (3_650.0 * 86_400.0);
+
+   --  Generate RSS if don't exist
+
+   Syndication.Update_RSS_Last_Photos (Create_Only => True);
+
 end V2P.Web_Server;
