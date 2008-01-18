@@ -452,3 +452,10 @@ insert into user_photo_of_the_week values ("enzbang", 61, 0);
 insert into user_photo_of_the_week values ("enzbang", 140, 0);
 insert into user_photo_of_the_week values ("test", 141, 0);
 insert into user_photo_of_the_week values ("test", 140, 0);
+
+--  EXIF
+
+insert into photo_exif values
+  (36, "2006:06:09 18:41:29", "NIKON CORPORATION", "NIKON D200", "1/160", "6.3", "No Flash", "105.0mm", "Auto", "Program AE", "Auto", "Multi-segment", "400");
+insert into photo_exif values
+  (14, "2006:06:09 18:41:29", "NIKON CORPORATION", "NIKON D200", "1/160", "2.8", "No Flash", "105.0mm", "Auto", "Program AE", "Auto", "Multi-segment", "200");
