@@ -31,6 +31,7 @@ with Morzhol.Logs;
 with V2P.Database;
 with V2P.Wiki;
 with V2P.Context;
+with V2P.Syndication;
 
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_New_Text_Entry;
@@ -667,6 +668,12 @@ package body V2P.Callbacks.Ajax is
                         Page_Forum_Entry.URL & '?' &
                         Page_Forum_Entry.HTTP.TID & '='
                         & Database.To_String (Post_Id)));
+
+                  if PID /= Database.Empty_Id then
+                     --  Regenerate RSS feed
+
+                     Syndication.Update_RSS_Last_Photos;
+                  end if;
 
                else
                   Templates.Insert
