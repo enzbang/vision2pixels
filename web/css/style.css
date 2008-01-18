@@ -976,5 +976,42 @@ a.help {
    font-weight:lighter;
    text-decoration:underline;
 }
+@@--
+.exif {
+   height: 8em;
+}
+@@--
+.exif dt
+{
+   background-color: #131210;
+   color: #959289;
+   padding: 0.1em;
+   font-weight: bold;
+   text-align: center;
+   text-transform: uppercase;
+   border-left: 1px solid #131210;
+   border-right: 1px solid #131210;
+   border-top: 1px solid #131210;
+   width: 15em;
+   float: left;
+}
+@@--
+.exif dd
+{
+   margin: 1pt;
+   background: #444444;
+   text-align: center;
+   padding: 0.1em;
+   font-style: italic;
+   border-left: 1px solid #131210;
+   border-right: 1px solid #131210;
+   border-bottom: 1px solid #131210;
+   width: 20em;
+   float: left;
+}
+#bm_exif_metadata {
+   padding: 1em;
+   font-size: 0.8em;
+}
 @@-- Include rating.css
 @@INCLUDE@@ rating.css
