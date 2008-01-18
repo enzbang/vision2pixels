@@ -134,9 +134,6 @@ package V2P.Database is
    function Get_Comment (Cid : in Id) return Templates.Translate_Set;
    --  Returns a comment for the given comment id
 
-   function Get_User (Uid : in String) return Templates.Translate_Set;
-   --  Returns user's Id information
-
    function Get_User_Data (Uid : in String) return User_Data;
    --  Returns the user's data. Returns the No_User_Data if User cannot be
    --  found into the database.

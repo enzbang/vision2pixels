@@ -37,6 +37,7 @@ with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_New_Text_Entry;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Set_Global;
+with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Metadata;
@@ -69,12 +70,13 @@ package body V2P.Callbacks.Ajax is
       SID       : constant Session.Id := Status.Session (Request);
       P         : constant Parameters.List := Status.Parameters (Request);
       Login     : constant String :=
-                    Parameters.Get (P, Template_Defs.Set_Global.LOGIN);
+                    Parameters.Get
+                      (P, Template_Defs.Block_Login.HTTP.bl_login_input);
       User_Data : constant Database.User_Data :=
                     Database.Get_User_Data (Login);
    begin
       if To_String (User_Data.Password) =
-        Parameters.Get (P, Template_Defs.Set_Global.PASSWORD)
+        Parameters.Get (P, Template_Defs.Block_Login.HTTP.bl_password_input)
       then
          Session.Set (SID, Template_Defs.Set_Global.LOGIN, Login);
          Session.Set

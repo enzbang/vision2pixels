@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                             --
+--                         Copyright (C) 2006-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -221,8 +221,8 @@ package body Web_Tests is
 
       function Login_Parameters (Login, Password : in String) return String is
       begin
-         return '&' & Block_Login.HTTP.LOGIN & '=' & Login &
-           '&' & Block_Login.HTTP.PASSWORD & '=' & Password;
+         return '&' & Block_Login.HTTP.bl_login_input & '=' & Login &
+           '&' & Block_Login.HTTP.bl_password_input & '=' & Password;
       end Login_Parameters;
 
       Result : Response.Data;
