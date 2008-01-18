@@ -21,20 +21,22 @@
 
 with AWS.Parameters;
 
+with Image.Data;
+
 with V2P.Context;
-with V2P.Navigation_Links;
 with V2P.Database;
+with V2P.Navigation_Links;
 with V2P.Settings;
 with V2P.URL;
+
+with V2P.Template_Defs.Block_Forum_Navigate;
 
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
-with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.Page_Photo_Post;
-with V2P.Template_Defs.Block_Forum_Navigate;
 
-with Image.Data;
+with V2P.Template_Defs.Set_Global;
 
 package body V2P.Callbacks.Page is
 
