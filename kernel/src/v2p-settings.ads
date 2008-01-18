@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                         Copyright (C) 2006-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -103,5 +103,14 @@ package V2P.Settings is
 
    function Cache_Path return String;
    --  Path for the cached files
+
+   function RSS_Host_URL return String;
+   --  RSS host url http://hostname:port
+
+   function RSS_Path return String;
+   --  Path for the RSS files
+
+   function RSS_Prefix return String;
+   --  Returns RSS prefix
 
 end V2P.Settings;

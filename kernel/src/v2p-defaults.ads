@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                         Copyright (C) 2006-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -65,6 +65,8 @@ package V2P.Defaults is
 
    Virtual_Host             : constant String := "127.0.0.10";
 
+   RSS_Host_URL             : constant String := "http://127.0.0.10:8080";
+
    Number_Latest_Posts      : constant Positive := 6;
 
    Number_Latest_Users      : constant Positive := 5;
@@ -74,5 +76,9 @@ package V2P.Defaults is
    Log_Path                 : constant String := "./";
 
    Cache_Path               : constant String := "./";
+
+   RSS_Path                 : constant String := "./";
+
+   RSS_Prefix               : constant String := "/rss";
 
 end V2P.Defaults;

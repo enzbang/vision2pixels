@@ -44,6 +44,7 @@ with V2P.Context;
 with V2P.Callbacks.Page;
 with V2P.Callbacks.Ajax;
 with V2P.Settings;
+with V2P.Syndication;
 with V2P.URL;
 with V2P.Version;
 
@@ -134,6 +135,9 @@ package body V2P.Web_Server is
    function Default_Callback
      (Request : in Status.Data) return Response.Data;
    --  Default callback
+
+   function RSS_Callback (Request : in Status.Data) return Response.Data;
+   --  RSS callback
 
    function Website_Data (Request : in Status.Data) return Response.Data;
    --  Website data (images, ...) callback
@@ -482,6 +486,12 @@ package body V2P.Web_Server is
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
+         Settings.RSS_Prefix,
+         Action => Dispatchers.Callback.Create (RSS_Callback'Access),
+         Prefix => True);
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
          Settings.Thumbs_Source_Prefix,
          Action => Dispatchers.Callback.Create (Thumbs_Callback'Access),
          Prefix => True);
@@ -698,6 +708,23 @@ package body V2P.Web_Server is
       --  All URLs starting with XML_Prefix_URI are handled by a specific
       --  callback returning the corresponding file in the xml directory.
    end Register_Callbacks;
+
+   ------------------
+   -- RSS_Callback --
+   ------------------
+
+   function RSS_Callback (Request : in Status.Data) return Response.Data is
+      URI  : constant String := Status.URI (Request);
+      File : constant String := Compose
+        (V2P.Settings.RSS_Path,
+         URI (URI'First + Settings.RSS_Prefix'Length + 1 .. URI'Last));
+
+      Result : AWS.Response.Data;
+   begin
+      Result := Response.File (MIME.Text_XML, File);
+
+      return Result;
+   end RSS_Callback;
 
    ---------------------
    -- Thumbs_Callback --
