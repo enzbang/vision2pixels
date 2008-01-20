@@ -40,7 +40,7 @@ package body V2P.Settings is
       Thumbnail_Maximum_Width, Thumbnail_Maximum_Height, Virtual_Host,
       Website_Data_Path, Website_Data_Prefix, Wiki_Service_Name,
       Number_Latest_Posts, Number_Latest_Users, Google_Map_Key,
-      Log_Path, Cache_Path, RSS_Host_URL, RSS_Path, RSS_Prefix);
+      Log_Path, Cache_Path, RSS_Host_URL, RSS_Path, RSS_Prefix, Compression);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -81,6 +81,15 @@ package body V2P.Settings is
    begin
       return Conf.Get_Value (Cache_Path);
    end Cache_Path;
+
+   -----------------
+   -- Compression --
+   -----------------
+
+   function Compression return Boolean is
+   begin
+      return Conf.Get_Value (Compression);
+   end Compression;
 
    ----------------------
    -- Descending_Order --
@@ -339,6 +348,7 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (RSS_Host_URL, Defaults.RSS_Host_URL);
    Conf.Set_Value (RSS_Path, Defaults.RSS_Path);
    Conf.Set_Value (RSS_Prefix, Defaults.RSS_Prefix);
+   Conf.Set_Value (Compression, Defaults.Compression);
 
    --  Now read the config file if any
 

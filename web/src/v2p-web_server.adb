@@ -193,10 +193,13 @@ package body V2P.Web_Server is
             Templates.Assoc (Template_Defs.Set_Global.LOGIN,
               String'(Session.Get (SID, Template_Defs.Set_Global.LOGIN))));
 
-         Cache.Create (File, Templates.Parse (File, Translations), True);
+         Cache.Create
+           (File, Templates.Parse (File, Translations), Settings.Compression);
       end if;
 
-      if Status.Is_Supported (Request, Encoding => Messages.GZip) then
+      if Settings.Compression
+        and then Status.Is_Supported (Request, Encoding => Messages.GZip)
+      then
          return Response.File
            (MIME.Content_Type (File), Cache.Name_Compressed (File),
             Encoding => Messages.GZip);
@@ -809,10 +812,13 @@ package body V2P.Web_Server is
       Translations : Templates.Translate_Set;
    begin
       if not Directories.Exists (C_File) then
-         Cache.Create (File, Templates.Parse (File, Translations), True);
+         Cache.Create
+           (File, Templates.Parse (File, Translations), Settings.Compression);
       end if;
 
-      if Status.Is_Supported (Request, Encoding => Messages.GZip) then
+      if Settings.Compression
+        and then Status.Is_Supported (Request, Encoding => Messages.GZip)
+      then
          return Response.File
            (MIME.Content_Type (File), Cache.Name_Compressed (File),
             Encoding => Messages.GZip);
