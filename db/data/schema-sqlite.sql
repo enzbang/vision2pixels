@@ -7,6 +7,13 @@ create table "user" (
    "last_logged" date default current_timestamp
 );
 
+create table "user_to_validate" (
+   "login" varchar(50) not null primary key,
+   "password" varchar(20) not null,
+   "email" varchar(50) not null unique,
+   "created" date default current_timestamp
+);
+
 create trigger add_user_page after insert on user
    begin
       insert into user_page (user_login) values (new.login);

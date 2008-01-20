@@ -1,0 +1,42 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@SET@@ SET_URL = /register_user
+@@--
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_REGISTER_USER_@ user_register_page
+<div id="pur_user_register">
+<h1>Enregistrement sur Vision2Pixels</h1>
+
+<p>Cette page vous permet de vous enregister sur le site de critique photo
+  Vision2Pixels.</p>
+<p>Vous devez entrer un e-mail valide pour la validation de votre
+  compte.</p>
+<p>Après avoir complété le formulaire suivant appuyez sur [m'enregister],
+  vous recevrez un mail pour confirmation.</p>
+
+<form id="pur_register_user" action="#" method="POST">
+<fieldset>
+  <p>
+    <label for="user_login">@_BABEL_LOGIN_@</label>
+    <input name="USER_LOGIN" id="pur_user_login" type="text"/>
+  </p>
+
+  <p>
+    <label for="user_password">@_BABEL_PASSWORD_@</label>
+    <input name="USER_PASSWORD" id="pur_user_password" type="password"/>
+  </p>
+  <p>
+    <label for="user_email">@_BABEL_EMAIL_@</label>
+    <input name="USER_EMAIL" id="pur_user_email" type="text"/>
+  </p>
+  <p>
+    <input name="ENTER" id="pur_register_user_enter"
+	   type="submit" value="@_BABEL_REGISTER_ME_@"/>
+  </p>
+</fieldset>
+</form>
+</div>
+<div id="pur_register_message"></div>
+@@--
+@@INCLUDE@@ chunk_v2p_end.thtml
+@@--
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, pur_register_user, 4=>pur_register_user)

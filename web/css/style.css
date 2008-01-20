@@ -1035,3 +1035,22 @@ a.help {
 }
 @@-- Include rating.css
 @@INCLUDE@@ rating.css
+@@-- user register page
+body.user_register_page p {
+   margin:0 auto;
+   padding-left:1em;
+   line-height:3em;
+   width:80%;
+   text-align:justify;
+}
+@@--
+body.user_register_page label {
+   width:10em;
+}
+@@--
+#pur_register_message {
+   padding: 2em;
+   text-align:center;
+   color: @_ERROR_COLOR_@;
+   font-size: 1.5em;
+}

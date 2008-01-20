@@ -23,19 +23,22 @@ with Ada.Strings.Unbounded;
 
 with AWS.Parameters;
 with AWS.Session;
+with AWS.SMTP.Client;
 
 with Image.Metadata.Geographic;
 
 with Morzhol.Logs;
 
-with V2P.Database;
-with V2P.Wiki;
 with V2P.Context;
+with V2P.Database;
+with V2P.User_Validation;
+with V2P.Wiki;
 with V2P.Syndication;
 
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_New_Text_Entry;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
+with V2P.Template_Defs.Page_User_Register;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
@@ -44,12 +47,14 @@ with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Forum_Category_Filter;
-with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Block_User_Page;
+with V2P.Template_Defs.Chunk_Forum_List_Select;
+with V2P.Template_Defs.Email_User_Validation;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
+with V2P.Template_Defs.R_Page_User_Register;
 
 package body V2P.Callbacks.Ajax is
 
@@ -79,7 +84,7 @@ package body V2P.Callbacks.Ajax is
       if User_Data /= Database.No_User_Data
         and then
           To_String (User_Data.Password) =
-          Parameters.Get (P, Template_Defs.Block_Login.HTTP.Bl_Password_Input)
+          Parameters.Get (P, Template_Defs.Block_Login.HTTP.bl_password_input)
       then
          Session.Set (SID, Template_Defs.Set_Global.LOGIN, Login);
          Session.Set
@@ -697,6 +702,77 @@ package body V2P.Callbacks.Ajax is
          end if;
       end if;
    end Onsubmit_Post_Form_Enter;
+
+   --------------------------------
+   -- Onsubmit_Pur_Register_User --
+   --------------------------------
+
+   procedure Onsubmit_Pur_Register_User
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      use Template_Defs;
+      P        : constant Parameters.List := Status.Parameters (Request);
+      Login    : constant String :=
+                   Parameters.Get
+                     (P, Page_User_Register.HTTP.USER_LOGIN);
+      Password : constant String :=
+                   Parameters.Get
+                     (P, Page_User_Register.HTTP.USER_PASSWORD);
+      Email    : constant String :=
+                   Parameters.Get
+                     (P, Page_User_Register.HTTP.USER_EMAIL);
+   begin
+      --  Record registration request into the database
+
+      if Login = "" or else Password = "" or else Email = ""
+        or else not Database.Register_User (Login, Password, Email)
+      then
+         --  Display error message on the login page, a single error for now
+         --  (duplicate login).
+         Templates.Insert
+           (Translations, Templates.Assoc (R_Page_User_Register.ERROR, True));
+         return;
+      end if;
+
+      --  Send the e-mail for confirmation
+
+      Send_Mail : declare
+         Localhost : constant SMTP.Receiver :=
+                       SMTP.Client.Initialize ("localhost");
+         Key       : constant String :=
+                       User_Validation.Key (Login, Password, Email);
+         Result    : SMTP.Status;
+         Set       : Templates.Translate_Set;
+      begin
+         Templates.Insert (Set, Templates.Assoc ("USER_LOGIN", Login));
+         Templates.Insert (Set, Templates.Assoc ("USER_EMAIL", Email));
+         Templates.Insert (Set, Templates.Assoc ("KEY", Key));
+
+         SMTP.Client.Send
+           (Server  => Localhost,
+            From    => SMTP.E_Mail ("V2P", "no-reply"),
+            To      => SMTP.E_Mail (Email, Email),
+            Subject => "Enregistrement sur Vision2Pixels",
+            Message => Templates.Parse
+              (Template_Defs.Email_User_Validation.Template, Set),
+            Status  => Result);
+
+      exception
+         when others =>
+            Morzhol.Logs.Write
+              (Name    => Module,
+               Content =>
+               "(Onsubmit_Pur_Register_User) : sending e-mail failed for "
+               & Login & ", email " & Email & ", password " & Password,
+               Kind    => Morzhol.Logs.Error);
+            Templates.Insert
+              (Translations,
+               Templates.Assoc (R_Page_User_Register.ERROR, True));
+      end Send_Mail;
+   end Onsubmit_Pur_Register_User;
 
    -------------------
    -- Onsubmit_Rate --

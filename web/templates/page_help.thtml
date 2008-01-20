@@ -1,6 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
 @@SET@@ SET_URL = /help
+@@SET@@ SET_URL_ALIAS = /aide
 @@--
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ help
 

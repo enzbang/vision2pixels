@@ -239,6 +239,13 @@ package V2P.Database is
    --  Returns the translate table with the list of all voted photos for the
    --  given user.
 
+   function Register_User (Login, Password, Email : in String) return Boolean;
+   --  Register a new user before validation. Returns False if the user cannot
+   --  be registered (duplicate login).
+
+   function Validate_User (Login, Key : in String) return Boolean;
+   --  Validate a registered user
+
 private
 
    No_User_Data : constant User_Data :=

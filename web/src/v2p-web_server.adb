@@ -50,15 +50,15 @@ with V2P.Syndication;
 with V2P.URL;
 with V2P.Version;
 
-with V2P.Template_Defs.Block_User_Page;
-with V2P.Template_Defs.Block_Forum_Threads;
-with V2P.Template_Defs.Block_Login;
-with V2P.Template_Defs.Block_New_Comment;
-with V2P.Template_Defs.Block_New_Vote;
-with V2P.Template_Defs.Block_Metadata;
+with V2P.Template_Defs.Block_Forum_Category_Filter;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
-with V2P.Template_Defs.Block_Forum_Category_Filter;
+with V2P.Template_Defs.Block_Forum_Threads;
+with V2P.Template_Defs.Block_Login;
+with V2P.Template_Defs.Block_Metadata;
+with V2P.Template_Defs.Block_New_Comment;
+with V2P.Template_Defs.Block_New_Vote;
+with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
 
 with V2P.Template_Defs.Chunk_Forum_List_Select;
@@ -69,15 +69,17 @@ with V2P.Template_Defs.Page_Admin;
 with V2P.Template_Defs.Page_Error;
 with V2P.Template_Defs.Page_Fatal_Error;
 with V2P.Template_Defs.Page_Forum_Entry;
-with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Page_Forum_New_Text_Entry;
+with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Google_Map_View;
 with V2P.Template_Defs.Page_Help;
 with V2P.Template_Defs.Page_Main;
 with V2P.Template_Defs.Page_New;
 with V2P.Template_Defs.Page_Photo_Post;
 with V2P.Template_Defs.Page_User;
+with V2P.Template_Defs.Page_User_Register;
+with V2P.Template_Defs.Page_Validate_User;
 
 with V2P.Template_Defs.Set_Global;
 
@@ -94,6 +96,7 @@ with V2P.Template_Defs.R_Block_Rate;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 with V2P.Template_Defs.R_Block_Vote_Week_Photo;
 with V2P.Template_Defs.R_Context_Error;
+with V2P.Template_Defs.R_Page_User_Register;
 
 package body V2P.Web_Server is
 
@@ -562,8 +565,22 @@ package body V2P.Web_Server is
          Callbacks.Page.New_Photo_Entry'Access);
 
       Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Validate_User.Set.URL,
+         Template_Defs.Page_Validate_User.Template,
+         Callbacks.Page.Validate_User'Access);
+
+      Services.Web_Block.Registry.Register
         (Template_Defs.Page_Help.Set.URL,
          Template_Defs.Page_Help.Template,
+         null);
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Help.Set.URL_ALIAS,
+         Template_Defs.Page_Help.Template,
+         null);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_User_Register.Set.URL,
+         Template_Defs.Page_User_Register.Template,
          null);
 
       Services.Web_Block.Registry.Register
@@ -692,6 +709,13 @@ package body V2P.Web_Server is
         (Template_Defs.Block_Vote_Week_Photo.Ajax.onclick_bvwp_vote_button,
          Template_Defs.R_Block_Vote_Week_Photo.Template,
          Callbacks.Ajax.Onclick_Vote_Week_Photo'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_User_Register.Ajax.onsubmit_pur_register_user,
+         Template_Defs.R_Page_User_Register.Template,
+         Callbacks.Ajax.Onsubmit_Pur_Register_User'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

@@ -1,0 +1,10 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+@@IF@@ @_ERROR_@
+   <replace id="pur_register_message">@_BABEL_LOGIN_EXISTS_@</replace>
+@@ELSE@@
+   <location url="/"/>
+@@END_IF@@
+</response>
