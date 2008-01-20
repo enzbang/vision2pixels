@@ -2512,16 +2512,18 @@ package body V2P.Database is
       if Iter.More then
          --  Need update
          Iter.End_Select;
-         DBH.Handle.Execute ("update rating set post_rating = " & Q (Value)
-                             & "where user_login="
-                             & Q (Uid) & " and post_id=" & To_String (Tid)
-                             & " and criteria_id=" & Q (Criteria));
+         DBH.Handle.Execute
+           ("update rating set post_rating = " & Q (Value)
+            & "where user_login="
+            & Q (Uid) & " and post_id=" & To_String (Tid)
+            & " and criteria_id=" & Q (Criteria));
       else
          --  Insert new rating
          Iter.End_Select;
-         DBH.Handle.Execute ("insert into rating values (" & Q (Uid)
-                             & ", " & To_String (Tid) & ", " & Q (Criteria)
-                             & ", " & Q (Value) & ")");
+         DBH.Handle.Execute
+           ("insert into rating values (" & Q (Uid)
+            & ", " & To_String (Tid) & ", " & Q (Criteria)
+            & ", " & Q (Value) & ")");
       end if;
    end Update_Rating;
 
