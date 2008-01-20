@@ -915,6 +915,22 @@ body.user_page ul#bucl_lastusercommentlist {
    width:30em;
    height:2em;
 }
+@@--
+#bm_address_go {
+   display:inline;
+   padding:0;
+   margin:0;
+   position:relative;
+   top:-0.8em;
+}
+@@--
+#bm_address_example {
+   width:30em;
+   padding:0.6em;
+   text-align:center;
+   border:thin solid @_LIGHT_BORDER_COLOR_@;
+   margin:1em auto;
+}
 @@-- help page
 body.new h2, body.new h3, body.new h1, body.help h2 {
    text-transform:none;
@@ -960,6 +976,10 @@ a.help {
    margin-top: 5em;
    text-align: center;
    border-top:thin solid @_LIGHT_BORDER_COLOR_@;
+}
+@@--
+#bm_map {
+   margin:0 auto;
 }
 @@--
 #bm_map_geoloc_content {

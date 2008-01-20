@@ -50,15 +50,15 @@
       <form action="#" id="bm_metadata_edition_form">
           <textarea name="bm_address"
 	            id="bm_address"></textarea>
-
-          <p id="address_example">11, avenue du Père Lachaise,
-          Paris, France <a href="#" id="bm_metadata_edition_form_go"
-          onclick="return false;">Go!</a></p>
-        <a href="#" onclick="return false;" id="bm_centermarker">Center marker</a>
-        <p id="bm_gmap_error"></p>
-        <div id="bm_map" style="width: 500px; height: 300px"></div>
-        <div id="message"></div>
-        <div id="message2"></div>
+          <p id="bm_address_go"><a href="#" id="bm_metadata_edition_form_go"
+                onclick="return false;">Go!</a></p>
+          <p id="bm_address_example">ex: 11, avenue du Père Lachaise,
+            Paris, France</p>
+          <p><a href="#" onclick="return false;" id="bm_centermarker">Center marker</a></p>
+          <p id="bm_gmap_error"></p>
+          <div id="bm_map" style="width: 500px; height: 300px"></div>
+          <div id="message"></div>
+          <div id="message2"></div>
       </form>
       @@END_IF@@
 
