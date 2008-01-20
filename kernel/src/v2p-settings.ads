@@ -113,4 +113,7 @@ package V2P.Settings is
    function RSS_Prefix return String;
    --  Returns RSS prefix
 
+   function Compression return Boolean;
+   --  Returns True if the HTTP content compression can be used
+
 end V2P.Settings;

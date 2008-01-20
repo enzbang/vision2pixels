@@ -139,9 +139,9 @@ package body V2P.Cache is
             --  Deflate File
 
             ZLib.Deflate_Init
-              (Filter   => Filter,
-               Level    => ZLib.Best_Compression,
-               Header   => ZLib.GZip);
+              (Filter => Filter,
+               Level  => ZLib.Best_Compression,
+               Header => ZLib.GZip);
 
             Translate (Filter);
             ZLib.Close (Filter);

@@ -81,4 +81,6 @@ package V2P.Defaults is
 
    RSS_Prefix               : constant String := "/rss";
 
+   Compression              : constant Boolean := False;
+
 end V2P.Defaults;
