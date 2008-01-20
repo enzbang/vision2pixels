@@ -242,6 +242,7 @@ package body @_PACKAGE_@ is
              Callbacks.Web_Block.@_CAPITALIZE:REPLACE_ALL(LAZY_/):VARIABLE_LIST_@'Access);
      @@END_IF@@
   @@END_TABLE@@
+         null;
       end Register;
 
    begin  -- Lazy

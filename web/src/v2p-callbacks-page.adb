@@ -34,8 +34,8 @@ with V2P.Template_Defs.Block_Forum_Navigate;
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
+with V2P.Template_Defs.Page_Validate_User;
 with V2P.Template_Defs.Page_Photo_Post;
-
 with V2P.Template_Defs.Set_Global;
 
 package body V2P.Callbacks.Page is
@@ -325,5 +325,28 @@ package body V2P.Callbacks.Page is
          Templates.Insert (Translations, Database.Get_User_Last_Photo (Login));
       end if;
    end Post_Photo;
+
+   -------------------
+   -- Validate_User --
+   -------------------
+
+   procedure Validate_User
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      P     : constant Parameters.List := Status.Parameters (Request);
+      Login : constant String :=
+                Parameters.Get (P, Template_Defs.Set_Global.LOGIN);
+      Key   : constant String :=
+                Parameters.Get (P, Template_Defs.Set_Global.KEY);
+   begin
+      if not Database.Validate_User (Login, Key) then
+         Templates.Insert
+           (Translations, Templates.Assoc
+              (Template_Defs.Page_Validate_User.ERROR, True));
+      end if;
+   end Validate_User;
 
 end V2P.Callbacks.Page;

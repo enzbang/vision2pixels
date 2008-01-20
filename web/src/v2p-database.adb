@@ -34,6 +34,8 @@ with Morzhol.Strings;
 
 with V2P.DB_Handle;
 with V2P.Settings;
+with V2P.User_Validation;
+
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
@@ -108,6 +110,10 @@ package body V2P.Database is
 
    function "+"
      (Str : in String) return Unbounded_String renames To_Unbounded_String;
+
+   Lock_Register : Utils.Semaphore;
+   --  Lock the application when registering a new user. We want to avoid two
+   --  users registering under the same login.
 
    -------------
    -- Connect --
@@ -2332,6 +2338,62 @@ package body V2P.Database is
       return Q (Boolean'Image (Bool));
    end Q;
 
+   -------------------
+   -- Register_User --
+   -------------------
+
+   function Register_User
+     (Login, Password, Email : in String) return Boolean
+   is
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+   begin
+      Lock_Register.Seize;
+
+      Connect (DBH);
+
+      --  Check already validated users
+
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "select * from user "
+         & "where login=" & Q (Login) & " or email=" & Q (Email));
+
+      if Iter.More then
+         Iter.End_Select;
+         Lock_Register.Release;
+         return False;
+      end if;
+
+      --  Check registered but not yet validated  users
+
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "select * from user_to_validate "
+         & "where login=" & Q (Login) & " or email=" & Q (Email));
+
+      if Iter.More then
+         Iter.End_Select;
+         Lock_Register.Release;
+         return False;
+      end if;
+
+      --  The login and e-mail are free, register user
+
+      DBH.Handle.Execute
+        ("insert into user_to_validate ('login', 'password', 'email') "
+         & "values ("
+         & Q (Login) & ", " & Q (Password) & ", " & Q (Email) & ')');
+
+      Lock_Register.Release;
+      return True;
+
+   exception
+      when others =>
+         Lock_Register.Release;
+         return False;
+   end Register_User;
+
    ---------------
    -- To_String --
    ---------------
@@ -2462,5 +2524,60 @@ package body V2P.Database is
                              & ", " & Q (Value) & ")");
       end if;
    end Update_Rating;
+
+   -------------------
+   -- Validate_User --
+   -------------------
+
+   function Validate_User (Login, Key : in String) return Boolean is
+      DBH             : constant TLS_DBH_Access :=
+                          TLS_DBH_Access (DBH_TLS.Reference);
+      Iter            : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line            : DB.String_Vectors.Vector;
+      Password, Email : Unbounded_String;
+   begin
+      Connect (DBH);
+
+      --  Read user's data from user_to_validate
+
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "select password, email from user_to_validate "
+         & "where login=" & Q (Login));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+         Password := +DB.String_Vectors.Element (Line, 1);
+         Email    := +DB.String_Vectors.Element (Line, 2);
+         Line.Clear;
+
+      else
+         --  User not found, could be due to an obsolete registration URL sent
+         return False;
+      end if;
+
+      Iter.End_Select;
+
+      --  Check key now
+
+      if User_Validation.Key (Login, -Password, -Email) /= Key then
+         --  Key does not match
+         return False;
+      end if;
+
+      --  Create corresponding entry into user table
+
+      DBH.Handle.Execute
+        ("insert into user ('login', 'password', 'email', 'admin') values ("
+         & Q (Login) & ", " & Q (-Password)
+         & ", " & Q (-Email) & ", 'false')");
+
+      --  Now we can remove the user from user_to_validate
+
+      DBH.Handle.Execute
+        ("delete from user_to_validate where login=" & Q (Login));
+
+      return True;
+   end Validate_User;
 
 end V2P.Database;
