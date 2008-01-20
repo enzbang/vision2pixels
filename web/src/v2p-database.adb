@@ -1113,9 +1113,9 @@ package body V2P.Database is
          DBH.Handle.Prepare_Select
            (Iter, "select post.name, post.comment, post.hidden, "
             & "filename, width, height, user.login, post.date_post, "
-            & "datetime(post.date_post, '+"
+            & " (julianday(post.date_post, '+"
             & Utils.Image (Settings.Anonymity_Hours)
-            & " hour') < datetime('now'), category.name "
+            & " hour') - julianday('now')) * 24, category.name "
             & "from post, user, user_post, photo, category "
             & "where post.id=" & To_String (Tid)
             & " and user.login = user_post.user_login"
@@ -1165,11 +1165,39 @@ package body V2P.Database is
                  (Page_Forum_Entry.DATE_POST,
                   DB.String_Vectors.Element (Line, 8)));
 
-            Templates.Insert
-              (Set,
-               Templates.Assoc
-                 (Page_Forum_Entry.REVEALED,
-                  DB.String_Vectors.Element (Line, 9)));
+            Is_Revealed : declare
+               Hours : constant Float :=
+                         Float'Value (DB.String_Vectors.Element (Line, 9));
+               Revealed : Boolean;
+            begin
+               if Hours >= 0.0 then
+                  Revealed := False;
+
+                  Compute_Delay : declare
+                     Delay_Hours : constant Natural :=
+                                     Natural (Float'Floor (Hours));
+                     Hours_Diff  : constant Float   :=
+                                     Hours - Float'Floor (Hours);
+                  begin
+                     Templates.Insert
+                       (Set, Templates.Assoc
+                          (Page_Forum_Entry.DATE_REVEALED_HOURS,
+                           Natural'Image (Delay_Hours)));
+                     Templates.Insert
+                       (Set, Templates.Assoc
+                          (Page_Forum_Entry.DATE_REVEALED_MINUTES,
+                           Natural'Image
+                             (Natural (Hours_Diff * 60.0))));
+                  end Compute_Delay;
+
+               else
+                  Revealed := True;
+               end if;
+               Templates.Insert
+                 (Set,
+                  Templates.Assoc
+                    (Page_Forum_Entry.REVEALED, Boolean'Image (Revealed)));
+            end Is_Revealed;
 
             Templates.Insert
               (Set, Templates.Assoc
