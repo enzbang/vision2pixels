@@ -67,6 +67,7 @@ package body V2P.Callbacks.Ajax is
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
+      use type Database.User_Data;
       SID       : constant Session.Id := Status.Session (Request);
       P         : constant Parameters.List := Status.Parameters (Request);
       Login     : constant String :=
@@ -75,8 +76,10 @@ package body V2P.Callbacks.Ajax is
       User_Data : constant Database.User_Data :=
                     Database.Get_User_Data (Login);
    begin
-      if To_String (User_Data.Password) =
-        Parameters.Get (P, Template_Defs.Block_Login.HTTP.bl_password_input)
+      if User_Data /= Database.No_User_Data
+        and then
+          To_String (User_Data.Password) =
+          Parameters.Get (P, Template_Defs.Block_Login.HTTP.Bl_Password_Input)
       then
          Session.Set (SID, Template_Defs.Set_Global.LOGIN, Login);
          Session.Set
