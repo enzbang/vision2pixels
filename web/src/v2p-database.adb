@@ -1188,11 +1188,11 @@ package body V2P.Database is
                      Templates.Insert
                        (Set, Templates.Assoc
                           (Page_Forum_Entry.DATE_REVEALED_HOURS,
-                           Natural'Image (Delay_Hours)));
+                           Utils.Image (Delay_Hours)));
                      Templates.Insert
                        (Set, Templates.Assoc
                           (Page_Forum_Entry.DATE_REVEALED_MINUTES,
-                           Natural'Image
+                           Utils.Image
                              (Natural (Hours_Diff * 60.0))));
                   end Compute_Delay;
 
