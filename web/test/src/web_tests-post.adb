@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                             --
+--                         Copyright (C) 2007-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -78,7 +78,7 @@ package body Web_Tests.Post is
       Check
         (Response.Message_Body (Result),
          Word_Set'(+"Un_Troll", +"Un_Troll", +"troll.jpg",
-           +"non révélé", +"un<em>petit</em>troll"),
+           +"révélé dans 71", +"un<em>petit</em>troll"),
          "wrong entry for post 142" & Response.Message_Body (Result));
    end Check_New_Post;
 
@@ -98,7 +98,7 @@ package body Web_Tests.Post is
       Check
         (Response.Message_Body (Result),
          Word_Set'(+"Invasion", +"Portrait",
-           +"non révélé", +"commentaire pour invasion",
+           +"révélé dans 71", +"commentaire pour invasion",
            +"L'auteur", +"Alors qu'en pensez-vous?",
            +"enzbang", +"Bof!",
            +"L'auteur", +"Mais encore ?"),
@@ -161,7 +161,8 @@ package body Web_Tests.Post is
       begin
          Check
            (Page,
-            Word_Set'(1 => +"Vous devez être connecté pour poster un message"),
+            Word_Set'
+              (1 => +"Vous devez être connecté pour poster un message"),
             "Must be connected to upload a photo");
       end Check_Anonymous_Upload_Page;
 
@@ -273,7 +274,8 @@ package body Web_Tests.Post is
       begin
          Check
            (Page,
-            Word_Set'(1 => +"Vous devez être connecté pour poster un message"),
+            Word_Set'
+              (1 => +"Vous devez être connecté pour poster un message"),
             "Must be connected to upload a photo");
       end Check_Anonymous_Post_Page;
 
