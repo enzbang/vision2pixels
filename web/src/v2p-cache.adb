@@ -64,6 +64,15 @@ package body V2P.Cache is
 
          elsif '.' & Extension (SN) = Cache_Ext then
             Delete_File (Directories.Full_Name (Directory_Entry));
+
+         elsif '.' & Extension (SN) = Compress_Ext then
+            declare
+               Name : constant String := Base_Name (SN);
+            begin
+               if Name /= "" and then '.' & Extension (Name) = Cache_Ext then
+                  Delete_File (Directories.Full_Name (Directory_Entry));
+               end if;
+            end;
          end if;
       end Delete;
 
