@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                             --
+--                         Copyright (C) 2007-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -55,6 +55,6 @@ package V2P.Navigation_Links is
 
 private
 
-      Default_Page_Size : constant Page_Size := 10;
+   Default_Page_Size : constant Page_Size := 10;
 
 end V2P.Navigation_Links;

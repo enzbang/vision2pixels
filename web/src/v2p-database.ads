@@ -37,8 +37,7 @@ package V2P.Database is
    Parameter_Error : exception;
    --  Raise if the given parameter value does not exist in database
 
-   type Filter_Mode is
-     (Today, Two_Days, Seven_Days, All_Messages);
+   type Filter_Mode is (Today, Two_Days, Seven_Days, All_Messages);
    --  Kind of filter to apply when returning the list of posts, see
    --  Get_Threads.
 
@@ -98,8 +97,7 @@ package V2P.Database is
 
    function Get_Latest_Posts
      (Limit    : in Positive;
-      Add_Date : in Boolean := False)
-      return Templates.Translate_Set;
+      Add_Date : in Boolean := False) return Templates.Translate_Set;
    --  Returns the Limit latest posts from all photo based forums
 
    function Get_Latest_Users
@@ -121,14 +119,12 @@ package V2P.Database is
 
    function Get_Post
      (Tid        : in Id;
-      Forum_Type : in V2P.Database.Forum_Type)
-      return Templates.Translate_Set;
+      Forum_Type : in V2P.Database.Forum_Type) return Templates.Translate_Set;
    --  Returns the post information (no comments)
 
    function Get_Entry
      (Tid        : in Id;
-      Forum_Type : in V2P.Database.Forum_Type)
-      return Templates.Translate_Set;
+      Forum_Type : in V2P.Database.Forum_Type) return Templates.Translate_Set;
    --  Returns the full content of the entry Id. As above with comments
 
    function Get_Comment (Cid : in Id) return Templates.Translate_Set;
@@ -139,8 +135,8 @@ package V2P.Database is
    --  found into the database.
 
    function Get_User_Comment
-     (Uid : in String; Textify : in Boolean := False)
-      return Templates.Translate_Set;
+     (Uid     : in String;
+      Textify : in Boolean := False) return Templates.Translate_Set;
    --  Returns user's comments
 
    function Get_User_Last_Photo

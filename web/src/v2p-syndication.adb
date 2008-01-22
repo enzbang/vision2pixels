@@ -79,14 +79,12 @@ package body V2P.Syndication is
            (Limit    => 15,
             Add_Date => True));
 
-      Create (File => File,
-              Mode => Out_File,
-              Name => Filename);
+      Create (File => File, Mode => Out_File, Name => Filename);
 
       Put (File => File,
            Item => Templates.Parse
              (Filename     => Template_Defs.Page_Rss_Recent_Photos.Template,
-              Translations  => Translations));
+              Translations => Translations));
 
       Close (File);
    end Update_RSS_Last_Photos;
