@@ -1,7 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 @@-- HTTP_GET(TID): Thread Id
 @@-- HTTP_GET(FID): Forum Id
-@@-- HTTP_URL(/forum/entry): Forum Entry URL
+@@SET@@ SET_URL = /forum/entry
 @@--
 @@IF@@ @_NAME_@ /=""
 @@INCLUDE@@ chunk_v2p_top.thtml @_NAME_@ forum_entry yui-t7

@@ -675,7 +675,7 @@ package body V2P.Callbacks.Ajax is
                     (Translations,
                      Templates.Assoc
                        (R_Block_Post_Form_Enter.URL,
-                        Page_Forum_Entry.URL & '?' &
+                        Page_Forum_Entry.Set.URL & '?' &
                         Page_Forum_Entry.HTTP.TID & '='
                         & Database.To_String (Post_Id)));
 

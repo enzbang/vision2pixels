@@ -270,31 +270,31 @@ package body V2P.Web_Server is
         (Translations,
          Templates.Assoc
            (Template_Defs.Set_Global.FORUM_THREAD_URL,
-            Template_Defs.Page_Forum_Threads.URL));
+            Template_Defs.Page_Forum_Threads.Set.URL));
 
       Templates.Insert
         (Translations,
          Templates.Assoc
            (Template_Defs.Set_Global.FORUM_POST_URL,
-            Template_Defs.Page_Forum_New_Text_Entry.URL));
+            Template_Defs.Page_Forum_New_Text_Entry.Set.URL));
 
       Templates.Insert
         (Translations,
          Templates.Assoc
            (Template_Defs.Set_Global.FORUM_NEW_PHOTO_URL,
-            Template_Defs.Page_Photo_Post.URL));
+            Template_Defs.Page_Photo_Post.Set.URL));
 
       Templates.Insert
         (Translations,
          Templates.Assoc
            (Template_Defs.Set_Global.FORUM_ENTRY_URL,
-            Template_Defs.Page_Forum_Entry.URL));
+            Template_Defs.Page_Forum_Entry.Set.URL));
 
       Templates.Insert
         (Translations,
          Templates.Assoc
            (Template_Defs.Set_Global.ADMIN_URL,
-            Template_Defs.Page_Admin.URL));
+            Template_Defs.Page_Admin.Set.URL));
 
       --  Insert global options
 
@@ -324,7 +324,7 @@ package body V2P.Web_Server is
       if Response.Status_Code (Web_Page) = Messages.S404 then
          --  Page not found
          Web_Page := Services.Web_Block.Registry.Build
-           (Template_Defs.Page_Error.URL, C_Request, Translations);
+           (Template_Defs.Page_Error.Set.URL, C_Request, Translations);
       end if;
 
       return Web_Page;
@@ -517,48 +517,48 @@ package body V2P.Web_Server is
       --  Register Web_Block pages
 
       Services.Web_Block.Registry.Register
-        (Key      => Template_Defs.Page_User.URL,
+        (Key      => Template_Defs.Page_User.Set.URL,
          Template => Template_Defs.Page_User.Template,
          Data_CB  => null,
          Prefix   => True);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Page_Forum_Entry.URL,
+        (Template_Defs.Page_Forum_Entry.Set.URL,
          Template_Defs.Page_Forum_Entry.Template,
          Callbacks.Page.Forum_Entry'Access);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Page_Forum_Threads.URL,
+        (Template_Defs.Page_Forum_Threads.Set.URL,
          Template_Defs.Page_Forum_Threads.Template,
          Callbacks.Page.Forum_Threads'Access);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Page_Main.URL,
+        (Template_Defs.Page_Main.Set.URL,
          Template_Defs.Page_Main.Template,
          Callbacks.Page.Main'Access);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Page_Error.URL,
+        (Template_Defs.Page_Error.Set.URL,
          Template_Defs.Page_Error.Template,
          null);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Page_Admin.URL,
+        (Template_Defs.Page_Admin.Set.URL,
          Template_Defs.Page_Admin.Template,
          null);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Page_Photo_Post.URL,
+        (Template_Defs.Page_Photo_Post.Set.URL,
          Template_Defs.Page_Photo_Post.Template,
          Callbacks.Page.Post_Photo'Access);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Page_Forum_New_Text_Entry.URL,
+        (Template_Defs.Page_Forum_New_Text_Entry.Set.URL,
          Template_Defs.Page_Forum_New_Text_Entry.Template,
          null);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Page_Forum_New_Photo_Entry.URL,
+        (Template_Defs.Page_Forum_New_Photo_Entry.Set.URL,
          Template_Defs.Page_Forum_New_Photo_Entry.Template,
          Callbacks.Page.New_Photo_Entry'Access);
 
@@ -592,7 +592,7 @@ package body V2P.Web_Server is
          null);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Page_Google_Map_View.URL,
+        (Template_Defs.Page_Google_Map_View.Set.URL,
          Template_Defs.Page_Google_Map_View.Template,
          null);
 

@@ -61,7 +61,7 @@ package body V2P.Syndication is
         (Translations,
          Templates.Assoc
            (Template_Defs.Set_Global.FORUM_ENTRY_URL,
-            Template_Defs.Page_Forum_Entry.URL));
+            Template_Defs.Page_Forum_Entry.Set.URL));
 
       Templates.Insert
         (Translations, Templates.Assoc

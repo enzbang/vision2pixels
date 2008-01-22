@@ -1,6 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 @@-- HTTP_GET(FID): forum Id
-@@-- HTTP_URL(/forum/threads): Forum Threads URL
+@@--
+@@SET@@ SET_URL = /forum/threads
 @@--
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_THREAD_LIST_@ forum_threads yui-t7
 @@--
