@@ -55,7 +55,13 @@
     @@END_IF@@
     / @_DATE_POST_@
     </p>
-    <h2>@_NAME_@ :: @_CATEGORY_@</h2>
+    @@INLINE@@
+    <h2>@_NAME_@
+    @@IF@@ @_EXIST:CATEGORY_@
+    :: @_CATEGORY_@
+    @@END_IF@@
+    </h2>
+    @@END_INLINE@@
     @@-- Hidden
     @@IF@@ @_ADMIN_@
     <p>@_BABEL_HIDDEN_STATUS_@:
