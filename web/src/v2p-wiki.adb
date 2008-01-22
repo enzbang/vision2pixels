@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                             --
+--                         Copyright (C) 2007-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -114,6 +114,5 @@ package body V2P.Wiki is
          return Wiki_Interface.HTML_Preview (Get_Service, S);
       end Render;
    end Wiki_To_HTML;
-
 
 end V2P.Wiki;

@@ -1,8 +1,8 @@
 ------------------------------------------------------------------------------
---                                Vision2Pixels                             --
+--                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007-2008                        --
---                        Pascal Obry - Olivier Ramonat                     --
+--                         Copyright (C) 2007-2008                          --
+--                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
 --  it under the terms of the GNU General Public License as published by    --
@@ -23,20 +23,20 @@ with Ada.Streams.Stream_IO;
 with Ada.Text_IO;
 
 with Morzhol.OS;
+with ZLib;
 
 with V2P.Settings;
-
-with ZLib;
 
 package body V2P.Cache is
 
    use Ada;
    use Ada.Streams;
 
-   Cache_Ext : constant String := ".cached";
+   Cache_Ext    : constant String := ".cached";
    --  Cache filename extension
 
    Compress_Ext : constant String := ".gz";
+   --  Extension for compressed cache files
 
    -----------
    -- Clear --
@@ -86,10 +86,13 @@ package body V2P.Cache is
       C_Dir  : constant String := Directories.Containing_Directory (C_File);
       File   : Text_IO.File_Type;
    begin
+      --  Create full path if needed
+
       Directories.Create_Path (C_Dir);
-      Text_IO.Create (File => File,
-                      Mode => Text_IO.Out_File,
-                      Name => C_File);
+
+      --  Write file
+
+      Text_IO.Create (File => File, Mode => Text_IO.Out_File, Name => C_File);
       Text_IO.Put_Line (File, Content);
       Text_IO.Close (File);
 

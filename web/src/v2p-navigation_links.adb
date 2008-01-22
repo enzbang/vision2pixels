@@ -53,6 +53,7 @@ package body V2P.Navigation_Links is
       Page_Size : in     Positive;
       From      : in     Positive)
    is
+      use Template_Defs;
       Admin     : constant Boolean :=
                     Context.Exist (Template_Defs.Set_Global.ADMIN)
                   and then Context.Get_Value
@@ -66,16 +67,15 @@ package body V2P.Navigation_Links is
       Database.Get_Threads
         (FID         => V2P.Context.Counter.Get_Value
            (Context => Context.all,
-            Name    => Template_Defs.Set_Global.FID),
+            Name    => Set_Global.FID),
          From        => Nav_From,
          Admin       => Admin,
-         Filter      => Database.Filter_Mode'Value (Context.Get_Value
-           (Template_Defs.Set_Global.FILTER)),
-         Filter_Cat  => Context.Get_Value
-           (Template_Defs.Set_Global.FILTER_CATEGORY),
+         Filter      => Database.Filter_Mode'Value
+           (Context.Get_Value (Set_Global.FILTER)),
+         Filter_Cat  => Context.Get_Value (Set_Global.FILTER_CATEGORY),
          Page_Size   => Page_Size,
          Order_Dir   => Database.Order_Direction'Value
-           (Context.Get_Value (Template_Defs.Set_Global.ORDER_DIR)),
+           (Context.Get_Value (Set_Global.ORDER_DIR)),
          Navigation  => Nav_Links,
          Set         => Set,
          Nb_Lines    => Nb_Lines,
@@ -87,17 +87,17 @@ package body V2P.Navigation_Links is
 
       V2P.Context.Not_Null_Counter.Set_Value
         (Context => Context.all,
-         Name    => Template_Defs.Set_Global.NAV_FROM,
+         Name    => Set_Global.NAV_FROM,
          Value   => Nav_From);
 
       V2P.Context.Counter.Set_Value
         (Context => Context.all,
-         Name    => Template_Defs.Set_Global.NAV_NB_LINES_RETURNED,
+         Name    => Set_Global.NAV_NB_LINES_RETURNED,
          Value   => Nb_Lines);
 
       V2P.Context.Counter.Set_Value
         (Context => Context.all,
-         Name    => Template_Defs.Set_Global.NAV_NB_LINES_TOTAL,
+         Name    => Set_Global.NAV_NB_LINES_TOTAL,
          Value   => Total);
    end Load_Pages;
 
@@ -134,9 +134,10 @@ package body V2P.Navigation_Links is
                           V2P.Context.Not_Null_Counter.Get_Value
                             (Context => Context.all,
                              Name    => Set_Global.FILTER_PAGE_SIZE);
-            Total     : constant Natural := V2P.Context.Counter.Get_Value
-              (Context => Context.all,
-               Name    => Template_Defs.Set_Global.NAV_NB_LINES_TOTAL);
+            Total     : constant Natural :=
+                          V2P.Context.Counter.Get_Value
+                            (Context => Context.all,
+                             Name    => Set_Global.NAV_NB_LINES_TOTAL);
             Nav_From  : constant Positive :=
                           V2P.Context.Not_Null_Counter.Get_Value
                             (Context => Context.all,
