@@ -1,5 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
-@@-- HTTP_URL(/forum/new_entry): Forum New Entry URL
+@@--
+@@SET@@ SET_URL = /forum/new_entry
+@@--
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_FORUM_NEW_ENTRY_@ forum_new_entry yui-t7
 
 <div class="posting_form">

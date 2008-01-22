@@ -1,5 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
-@@-- HTTP_URL(/forum/new_photo_entry): Forum Photo New Entry URL
+@@--
+@@SET@@ SET_URL = /forum/new_photo_entry
+@@--
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_FORUM_NEW_ENTRY_@ forum_new_photo_entry yui-t7
 
 @@IF@@ @_V2P_ERROR_@ /= ""

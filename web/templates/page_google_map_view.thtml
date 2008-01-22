@@ -1,4 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
-@@-- HTTP_URL(/gmap_photo_entry_view): Page google map view url
+@@--
+@@SET@@ SET_URL = /gmap_photo_entry_view
+@@--
 @@INCLUDE@@ chunk_v2p_top.thtml googlemap iframe_map_view
 @@INCLUDE@@ chunk_v2p_end.thtml

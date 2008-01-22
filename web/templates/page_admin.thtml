@@ -1,5 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
-@@-- HTTP_URL(/admin): Forum Post URL
+@@--
+@@SET@@ SET_URL = /admin
 @@--
 @@INCLUDE@@ chunk_v2p_top.thtml (1=>@_BABEL_ADMIN_@, 2=>admin_page, 4=>"notebook")
 <div id="pa_admin_page">

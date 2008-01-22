@@ -51,7 +51,8 @@ package body V2P.URL is
 
    function User_Name (URL : in String) return String is
    begin
-      return URL (URL'First + Template_Defs.Page_User.URL'Length .. URL'Last);
+      return URL
+        (URL'First + Template_Defs.Page_User.Set.URL'Length .. URL'Last);
    end User_Name;
 
 end V2P.URL;
