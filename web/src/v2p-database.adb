@@ -552,6 +552,7 @@ package body V2P.Database is
    ---------------
 
    function Get_Forum (Fid, Tid : in Id) return Templates.Translate_Set is
+
       function Get_Fid
         (DBH      : in TLS_DBH_Access;
          Fid, Tid : in Id) return Id;
