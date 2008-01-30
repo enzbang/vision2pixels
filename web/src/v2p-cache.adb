@@ -99,7 +99,7 @@ package body V2P.Cache is
 
       Directories.Create_Path (C_Dir);
 
-      --  Write file
+      --  Write file content
 
       Text_IO.Create (File => File, Mode => Text_IO.Out_File, Name => C_File);
       Text_IO.Put_Line (File, Content);
