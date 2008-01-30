@@ -7,7 +7,6 @@ function ask_gwiad_root () {
     read ARGWIAD_ROOT
 }
 
-
 if [ -z $ARGWIAD_ROOT ]
 then
     ask_gwiad_root;
@@ -32,7 +31,7 @@ echo "Installing plugin in $ARGWIAD_ROOT"
 cd $ARGWIAD_ROOT
 tar --extract --verbose --file $DIST
 
-# If aws.ini exists, remove current settings
+#  If aws.ini exists, remove current settings
 
 if [ -f "aws.ini" ];
 then
@@ -42,6 +41,9 @@ then
 fi
 
 echo "max_connection 30" >> aws.ini
+
+#  3 months for the session lifetime
+echo "session_lifetime 7776000" >> aws.ini
 
 echo
 echo "Done ! You should run argwiadctl restart (or reload)"
