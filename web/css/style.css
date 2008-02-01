@@ -894,6 +894,10 @@ body.user_page ul#bucl_lastusercommentlist {
    padding:2em;
    margin-left: 5%;
    width: 90%;
+   text-align: left;
+}
+body.user_page #bucl_lastusercommentlist li {
+   padding:0.1em;
 }
 @@--
 #buvpl_no_vote {
