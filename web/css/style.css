@@ -705,7 +705,7 @@ li.type_0
 table.forum_text {
    margin-top: 2em;
    margin-bottom: 2em;
-   width: 80%;
+   width: 95%;
 }
 @@--
 td {
@@ -716,20 +716,24 @@ td.table_title {
    width: 50%;
 }
 @@--
-tr.table_header
-{
+tr.table_header {
    background-color: #1b1b1b;
    color: @_PHOTOTITLECOLOR_@;
    font-size: 1.1em;
    font-weight: bold;
    text-decoration: none;
 }
-tr.table_line_0
-{
+tr.table_header th {
+   padding: 0.1em 1em;
+   font-weight: bold;
+   text-align: center;
+}
+@@--
+tr.table_line_0 {
    background-color: #1b1b1b;
 }
-tr.table_line_1
-{
+@@--
+tr.table_line_1 {
    background-color: black;
 }
 @@--
