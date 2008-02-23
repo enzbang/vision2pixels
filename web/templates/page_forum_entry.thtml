@@ -42,15 +42,15 @@
     <p id="pfe_img_author">
     @@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@
       @@IF@@ @_OWNER_@ /= @_LOGIN_@
-         @_OWNER_@
+         <a href="/~@_OWNER_@">@_OWNER_@</a>
       @@ELSE@@
-        @_BABEL_YOU_@
+         <a href="/~@_OWNER_@">@_BABEL_YOU_@</a>
       @@END_IF@@
     @@ELSE@@
       @@IF@@ @_OWNER_@ /= @_LOGIN_@
         @_BABEL_REVEALED_WITHIN_@ @_DATE_REVEALED_HOURS_@ @_BABEL_HOURS_@ @_DATE_REVEALED_MINUTES_@ @_BABEL_MINUTES_@
       @@ELSE@@
-        @_BABEL_YOU_@ (@_BABEL_REVEALED_WITHIN_@ @_DATE_REVEALED_HOURS_@ @_BABEL_HOURS_@ @_DATE_REVEALED_MINUTES_@ @_BABEL_MINUTES_@)
+        <a href="/~@_OWNER_@">@_BABEL_YOU_@ (@_BABEL_REVEALED_WITHIN_@ @_DATE_REVEALED_HOURS_@ @_BABEL_HOURS_@ @_DATE_REVEALED_MINUTES_@ @_BABEL_MINUTES_@)</a>
       @@END_IF@@
     @@END_IF@@
     / @_DATE_POST_@

@@ -64,15 +64,15 @@
     <li class="photoauthor">
       @@IF@@ @_REVEALED_@
         @@IF@@ @_OWNER_@ /= @_LOGIN_@
-           @_OWNER_@
+           <a href="/~@_OWNER_@">@_OWNER_@</a>
         @@ELSE@@
-          @_BABEL_YOU_@
+          <a href="/~@_OWNER_@">@_BABEL_YOU_@</a>
         @@END_IF@@
       @@ELSE@@
         @@IF@@ @_OWNER_@ /= @_LOGIN_@
           @_BABEL_NOT_REVEALED_@
         @@ELSE@@
-          @_BABEL_YOU_@ (@_BABEL_NOT_REVEALED_@)
+                  <a href="/~@_OWNER_@">@_BABEL_YOU_@ (@_BABEL_NOT_REVEALED_@)</a>
         @@END_IF@@
       @@END_IF@@
     </li>
