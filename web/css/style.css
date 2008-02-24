@@ -369,6 +369,10 @@ div#bl_logged_box {
     z-index:5000;
 }
 @@--
+div#bl_logged_box ul li {
+    background-color:black;
+}
+@@--
 div#cvt_lazy_login ul li {
     margin-bottom: 1em;
 }
