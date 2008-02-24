@@ -55,12 +55,11 @@ package body V2P.Callbacks.Page is
                       Database.Id'Value
                         (Parameters.Get
                            (P, Template_Defs.Page_Forum_Entry.HTTP.TID));
-      From_Main   : constant Boolean
-        := Parameters.Exist
+      From_Main   : constant Boolean := Parameters.Exist
         (P, Template_Defs.Page_Forum_Entry.HTTP.From_Main)
         and then Boolean'Value
-        (Parameters.Get
-           (P, Template_Defs.Page_Forum_Entry.HTTP.From_Main));
+          (Parameters.Get
+               (P, Template_Defs.Page_Forum_Entry.HTTP.From_Main));
 
       Login       : constant String :=
                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
