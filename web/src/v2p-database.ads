@@ -62,6 +62,9 @@ package V2P.Database is
 
    type Order_Direction is (DESC, ASC);
 
+   type Forum_Sort is
+     (Last_Posted, Last_Commented, Best_Noted, Need_Attention);
+
    function Get_Forums
      (Filter : in Forum_Filter) return Templates.Translate_Set;
    --  Returns the forum list
@@ -88,6 +91,7 @@ package V2P.Database is
       Filter        : in     Filter_Mode := All_Messages;
       Filter_Cat    : in     String      := "";
       Order_Dir     : in     Order_Direction := DESC;
+      Sorting       : in     Forum_Sort := Last_Posted;
       Only_Revealed : in     Boolean := False;
       From          : in out Positive;
       Navigation    :    out Navigation_Links.Post_Ids.Vector;

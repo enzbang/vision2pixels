@@ -1293,6 +1293,7 @@ package body V2P.Database is
       Filter        : in     Filter_Mode := All_Messages;
       Filter_Cat    : in     String      := "";
       Order_Dir     : in     Order_Direction := DESC;
+      Sorting       : in     Forum_Sort := Last_Posted;
       Only_Revealed : in     Boolean := False;
       From          : in out Positive;
       Navigation    :    out Navigation_Links.Post_Ids.Vector;
@@ -1371,21 +1372,36 @@ package body V2P.Database is
       ------------------
 
       function Build_Select
-        (Count_Only : in Boolean := False) return String is
+        (Count_Only : in Boolean := False) return String
+      is
+         Select_Stmt : Unbounded_String;
       begin
          if Count_Only then
-            return "select count(post.id) ";
+            Select_Stmt := +"select count(post.id)";
 
          else
-            return "select post.id, post.name, post.date_post, "
+            Select_Stmt := +"select post.id, post.name, post.date_post, "
               & "datetime(date_post, '+"
               & Utils.Image (Settings.Anonymity_Hours)
               & " hour') < datetime('now'), "
-              & "(select filename from photo "
-              & "where Id = Post.Photo_Id), "
+              & "(select filename from photo where Id = Post.Photo_Id), "
               & "category.name, comment_counter,"
-              & "visit_counter, post.hidden, user_post.user_login ";
+              & "visit_counter, post.hidden, user_post.user_login";
+
+            case Sorting is
+               when Last_Posted | Last_Commented | Need_Attention =>
+                  null;
+
+               when Best_Noted =>
+                  Append
+                    (Select_Stmt,
+                     ", (select sum(global_rating.post_rating)"
+                     & " from global_rating"
+                     & " where post.id=global_rating.post_id) as sum_rating");
+            end case;
          end if;
+
+         return -Select_Stmt;
       end Build_Select;
 
       -----------------
@@ -1544,10 +1560,6 @@ package body V2P.Database is
                             Filter     => Filter,
                             Filter_Cat => Filter_Cat,
                             Forum      => Forum);
-         Ordering    : constant String :=
-                         " order by post.date_post "
-                           & Order_Direction'Image (Order_Dir);
-
          Select_Stmt : Unbounded_String :=
                          +SQL_Select & SQL_From & SQL_Where;
       begin
@@ -1557,7 +1569,24 @@ package body V2P.Database is
 
          --  Add filtering into the select statement
 
-         Append (Select_Stmt, Ordering);
+         case Sorting is
+            when Last_Posted =>
+               Append (Select_Stmt, " order by post.date_post");
+               Append (Select_Stmt, ' ' & Order_Direction'Image (Order_Dir));
+
+            when Last_Commented =>
+               Append (Select_Stmt, " order by post.last_comment_id");
+               Append (Select_Stmt, ' ' & Order_Direction'Image (Order_Dir));
+
+            when Best_Noted =>
+               Append (Select_Stmt, " order by sum_rating");
+               Append (Select_Stmt, ' ' & Order_Direction'Image (Order_Dir));
+
+            when Need_Attention =>
+               --  No comment and oldest first
+               Append (Select_Stmt, " order by post.comment_counter ASC");
+               Append (Select_Stmt, "  , order by post.date_post ASC");
+         end case;
 
          if Limit /= 0 then
             Append (Select_Stmt,

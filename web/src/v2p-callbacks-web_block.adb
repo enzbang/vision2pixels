@@ -154,6 +154,24 @@ package body V2P.Callbacks.Web_Block is
          Database.Get_Forums (Filter => Database.Forum_Photo));
    end Forum_Photo_List_Select;
 
+   ----------------
+   -- Forum_Sort --
+   ----------------
+
+   procedure Forum_Sort
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+   begin
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.FORUM_SORT,
+            Context.Get_Value (Template_Defs.Set_Global.FORUM_SORT)));
+   end Forum_Sort;
+
    ----------------------------
    -- Forum_Text_List_Select --
    ----------------------------
@@ -219,6 +237,8 @@ package body V2P.Callbacks.Web_Block is
          Page_Size   => Page_Size,
          Order_Dir   => Database.Order_Direction'Value
            (Context.Get_Value (Template_Defs.Set_Global.ORDER_DIR)),
+         Sorting     => Database.Forum_Sort'Value
+           (Context.Get_Value (Template_Defs.Set_Global.FORUM_SORT)),
          Navigation  => Nav_Links,
          Set         => Translations,
          Nb_Lines    => Nb_Lines,

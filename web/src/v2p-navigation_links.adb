@@ -76,6 +76,8 @@ package body V2P.Navigation_Links is
          Page_Size   => Page_Size,
          Order_Dir   => Database.Order_Direction'Value
            (Context.Get_Value (Set_Global.ORDER_DIR)),
+         Sorting     => Database.Forum_Sort'Value
+           (Context.Get_Value (Template_Defs.Set_Global.FORUM_SORT)),
          Navigation  => Nav_Links,
          Set         => Set,
          Nb_Lines    => Nb_Lines,

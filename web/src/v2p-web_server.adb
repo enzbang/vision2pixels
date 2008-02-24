@@ -53,6 +53,7 @@ with V2P.Version;
 with V2P.Template_Defs.Block_Forum_Category_Filter;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
+with V2P.Template_Defs.Block_Forum_Sort;
 with V2P.Template_Defs.Block_Forum_Threads;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_Metadata;
@@ -652,6 +653,13 @@ package body V2P.Web_Server is
            Ajax.onchange_bffps_forum_filter_pagesize,
          Template_Defs.R_Block_Forum_Filter.Template,
          Callbacks.Ajax.Onchange_Filter_Forum_Page_Size'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Forum_Sort.Ajax.onchange_bfs_forum_sort_set,
+         Template_Defs.R_Block_Forum_Filter.Template,
+         Callbacks.Ajax.Onchange_Forum_Sort'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 
