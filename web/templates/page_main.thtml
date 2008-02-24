@@ -9,11 +9,13 @@
 <div id="pm_main_content">
    <div id="pm_photo_of_the_week"><p>@_LAZY_PHOTO_OF_THE_WEEK_@</p></div>
 
-   <div id="pm_presentation">
-   <p>Vision2pixels est un site communautaire autour de la critique photographique.</p>
+   <div id="pm_presentation"> <p>Vision2pixels est un site
+   communautaire autour de la critique photographique.</p>
 
-   <p>Vous êtes invités à vous <a class="link" href="/register_user">inscrire</a> afin de tester le site et de signaler les
-   éventuels disfonctionnements.</p>
+   <p>Vous êtes invités à vous <a class="link"
+   href="/register_user">inscrire</a> afin de tester le site et de <a
+   class="link" href="mailto:v2p-users@googlegroups.com">signaler</a>
+   les éventuels disfonctionnements.</p>
 
    <p><a class="help" href="/help">En savoir plus.</a></p>
    <p><a class="help" href="/termsofuse">Condition d'utilisations</a></p>

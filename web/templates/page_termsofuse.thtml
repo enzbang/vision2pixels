@@ -24,8 +24,8 @@ site ansi que de supprimer tout compte dont l'utilisation lui
 semblerait détournée.</p>
 
 <p>Si une photographie ou un commentaire vous semble contenir des
-propos diffamatoires, racistes, etc, veuillez nous en avertir dès que
-possible.</p>
+propos diffamatoires, racistes, etc, veuillez nous en <a
+href="mailto:v2p-users@googlegroups.com" class="link">avertir</a> dès que possible.</p>
 
 @@IF@@ @_V2P_ERROR_@ /= ""
   @_V2P_ERROR_@
