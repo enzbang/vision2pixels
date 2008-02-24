@@ -10,6 +10,15 @@
   rapports d'erreur ou des demandes de fonctionnalités. Le site ne peut
   évoluer sans vous.</p>
 
+<h2>Version 1.0-rc5</h2>
+
+<h3>Flux RSS</h3>
+
+<p>Nouveauté de cette rc5 : un flux RSS des dernières
+photographies. Vous pouvez vous y <a
+href="/rss/lastphotos.xml">abonner</a> pour surveiller l'arrivée de
+nouvelles photographies.</a></p>
+
 <h2>Version 1.0-rc4</h2>
 
 <p>Ce nom barbare signifie que la version que vous avez sous les yeux est
