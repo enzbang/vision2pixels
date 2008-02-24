@@ -346,6 +346,7 @@ div#cvt_lazy_login, div#cvt_lazy_quick_login {
    margin:5px;
    top:0px;
    right:0px;
+   z-index:5000;
 }
 @@--
 form#bl_login_form {
@@ -353,7 +354,6 @@ form#bl_login_form {
    background: #333333;
    border:2px ridge #555555;
    opacity:0.95;
-   z-index:5000;
    padding:1em 1.5em 0.4em 0pt;
    width:40em;
 }
@@ -366,7 +366,6 @@ div#bl_logged_box {
     right:0pt;
     top:2em;
     width:17em;
-    z-index:5000;
 }
 @@--
 div#bl_logged_box ul li {
