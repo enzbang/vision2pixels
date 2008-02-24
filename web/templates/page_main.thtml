@@ -23,7 +23,12 @@
    </div>
 
    <div id="pm_latest_users"><h2>@_BABEL_LAST_USERS_@</h2>@_LAZY_LATEST_USERS_@</div>
-   <div id="pm_latest_posts"><h2>@_BABEL_LAST_USER_PHOTOS_@</h2>@_LAZY_LATEST_POSTS_@</div>
+   <div id="pm_latest_posts">
+     <h2>@_BABEL_LAST_USER_PHOTOS_@
+        <a href="/rss/lastphotos.xml"
+           title="@_BABEL_RSS_RECENT_PHOTOS_DESC_@">
+           <img class="rss_link" src="/css/img/rss.png" /></a>
+      </h2>@_LAZY_LATEST_POSTS_@</div>
    <hr id="pm_eop" /> @@-- Fix ie6 bug, yes again !
 </div>
 
