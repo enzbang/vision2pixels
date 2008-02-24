@@ -1,6 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 @@-- HTTP_GET(TID): Thread Id
 @@-- HTTP_GET(FID): Forum Id
+@@-- HTTP_GET(From_Main): The referer is the main page
 @@SET@@ SET_URL = /forum/entry
 @@--
 @@IF@@ @_NAME_@ /=""
