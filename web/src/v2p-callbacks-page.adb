@@ -23,6 +23,7 @@ with AWS.Parameters;
 
 with Image.Data;
 
+with V2P.Callbacks.Web_Block;
 with V2P.Context;
 with V2P.Database;
 with V2P.Navigation_Links;
@@ -54,6 +55,13 @@ package body V2P.Callbacks.Page is
                       Database.Id'Value
                         (Parameters.Get
                            (P, Template_Defs.Page_Forum_Entry.HTTP.TID));
+      From_Main   : constant Boolean
+        := Parameters.Exist
+        (P, Template_Defs.Page_Forum_Entry.HTTP.From_Main)
+        and then Boolean'Value
+        (Parameters.Get
+           (P, Template_Defs.Page_Forum_Entry.HTTP.From_Main));
+
       Login       : constant String :=
                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       Count_Visit : Boolean := True;
@@ -84,6 +92,19 @@ package body V2P.Callbacks.Page is
 
          if Count_Visit then
             Database.Increment_Visit_Counter (TID);
+         end if;
+
+         if From_Main then
+            --  This is a link from the latest photo list
+            --  Generate navigations links
+
+            V2P.Context.Counter.Set_Value
+              (Context => Context.all,
+               Name    => Template_Defs.Set_Global.FID,
+               Value   => Database.Get_Forum_Id (TID));
+
+            V2P.Callbacks.Web_Block.Forum_Threads (Request,
+                                                   Context, Translations);
          end if;
 
          --  Insert navigation links (previous and next post)

@@ -90,6 +90,12 @@ package body V2P.Database is
    pragma Inline (F);
    --  Returns float image
 
+   function Get_Fid
+     (DBH      : in TLS_DBH_Access;
+      Fid, Tid : in Id) return Id;
+   pragma Inline (Get_Fid);
+   --  Returns Fid is not empty otherwise compute it using Tid
+
    function I (Int : in Integer) return String;
    pragma Inline (I);
    --  Returns Integer image
@@ -547,65 +553,58 @@ package body V2P.Database is
       return Set;
    end Get_Exif;
 
+   -------------
+   -- Get_Fid --
+   -------------
+
+   function Get_Fid
+     (DBH      : in TLS_DBH_Access;
+      Fid, Tid : in Id) return Id
+   is
+      Line : DB.String_Vectors.Vector;
+   begin
+      if Fid = Empty_Id then
+         --  Get the Fid using Tid
+         Check_Fid : declare
+            Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+         begin
+            DBH.Handle.Prepare_Select
+              (Iter,
+               "select forum_id from category, post "
+                 & "where category.id = post.category_id "
+                 & "and post.id = " & To_String (Tid));
+            if Iter.More then
+               Iter.Get_Line (Line);
+
+               Fid : declare
+                  Fid : constant Id :=
+                    Id'Value (DB.String_Vectors.Element (Line, 1));
+               begin
+                  Line.Clear;
+                  Iter.End_Select;
+                  return Fid;
+               end Fid;
+
+            else
+               Logs.Write
+                 (Name    => Module,
+                  Kind    => Logs.Error,
+                  Content => "Get_Id, Fid and Tid empty, "
+                    & "raise Database_Error");
+               raise Database_Error;
+            end if;
+         end Check_Fid;
+
+      else
+         return Fid;
+      end if;
+   end Get_Fid;
+
    ---------------
    -- Get_Forum --
    ---------------
 
    function Get_Forum (Fid, Tid : in Id) return Templates.Translate_Set is
-
-      function Get_Fid
-        (DBH      : in TLS_DBH_Access;
-         Fid, Tid : in Id) return Id;
-      pragma Inline (Get_Fid);
-      --  Returns Fid is not empty otherwise compute it using Tid
-
-      -------------
-      -- Get_Fid --
-      -------------
-
-      function Get_Fid
-        (DBH      : in TLS_DBH_Access;
-         Fid, Tid : in Id) return Id
-      is
-         Line : DB.String_Vectors.Vector;
-      begin
-         if Fid = Empty_Id then
-            --  Get the Fid using Tid
-            Check_Fid : declare
-               Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
-            begin
-               DBH.Handle.Prepare_Select
-                 (Iter,
-                  "select forum_id from category, post "
-                  & "where category.id = post.category_id "
-                  & "and post.id = " & To_String (Tid));
-               if Iter.More then
-                  Iter.Get_Line (Line);
-
-                  Fid : declare
-                     Fid : constant Id :=
-                             Id'Value (DB.String_Vectors.Element (Line, 1));
-                  begin
-                     Line.Clear;
-                     Iter.End_Select;
-                     return Fid;
-                  end Fid;
-
-               else
-                  Logs.Write
-                    (Name    => Module,
-                     Kind    => Logs.Error,
-                     Content => "Get_Id, Fid and Tid empty, "
-                     & "raise Database_Error");
-                  raise Database_Error;
-               end if;
-            end Check_Fid;
-
-         else
-            return Fid;
-         end if;
-      end Get_Fid;
-
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
@@ -658,6 +657,17 @@ package body V2P.Database is
 
       return Set;
    end Get_Forum;
+
+   ------------------
+   -- Get_Forum_Id --
+   ------------------
+
+   function Get_Forum_Id (Tid : in Id) return Id is
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+   begin
+      Connect (DBH);
+      return Get_Fid (DBH, Empty_Id, Tid);
+   end Get_Forum_Id;
 
    --------------------
    -- Get_Forum_Type --

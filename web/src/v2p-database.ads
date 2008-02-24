@@ -72,6 +72,9 @@ package V2P.Database is
    --  Returns the DB line for the given forum. If Fid is empty it uses the Tid
    --  information to get the corresponding forum Id.
 
+   function Get_Forum_Id (Tid : in Id) return Id;
+   --  Returns the FID corresponding to the given Tid
+
    function Get_Forum_Type (Tid : in Id) return V2P.Database.Forum_Type;
    --  Returns the forum type from a Tid
 
