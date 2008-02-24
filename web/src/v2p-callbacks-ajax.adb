@@ -203,7 +203,6 @@ package body V2P.Callbacks.Ajax is
       Filter : constant String          :=
                  Parameters.Get (P, HTTP.bffps_forum_filter_pagesize);
    begin
-
       --  Keep the sorting scheme into the session
       --  ?? we need to add this into the user's preferences
 
