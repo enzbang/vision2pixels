@@ -23,8 +23,10 @@
     <iframe id="iframe_gmap_view" name="iframe_gmap_view" class="iframe_visible"></iframe>
     @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, bm_show_toggle, V2P.Map.geodisplay.view)
   @@ELSE@@
-    @@IF@@ @_LOGIN_@ = @_OWNER_@ or @_IS_OWNER_@ or @_OWNER_@ = ""
-    @@--  If OWNER is empty, the current page if a photo post page
+@@--    @@IF@@ @_LOGIN_@ = @_OWNER_@ or @_IS_OWNER_@ or @_OWNER_@ = ""
+@@--  Temporary disable edition on photo entry page
+      @@IF@@ @_OWNER_@ = ""
+      @@--  If OWNER is empty, the current page if a photo post page
 
       <form enctype="multipart/form-data" id="bm_metadata_post"
             action="#" method="POST">
