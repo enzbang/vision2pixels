@@ -1,10 +1,17 @@
 @@INCLUDE@@ set_babel.thtml
+@@--
 <select name="bfcf_forum_category_filter_set"
         id="bfcf_forum_category_filter_set">
-        <option value="">@_BABEL_ALL_CATEGORIES_@</option>
+    <option value="">@_BABEL_ALL_CATEGORIES_@</option>
   @@TABLE@@
-    <option value="@_CATEGORY_ID_@">@_CATEGORY_@</option>
+    @@INLINE@@
+    <option value="@_CATEGORY_ID_@"
+    @@IF@@ @_FILTER_CATEGORY_@ = @_CATEGORY_ID_@
+       selected="selected"
+    @@END_IF@@
+    >@_CATEGORY_@</option>
+    @@END_INLINE@@
   @@END_TABLE@@
 </select>
-
+@@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bfcf_forum_category_filter_set, 4=>bfcf_forum_category_filter_set)

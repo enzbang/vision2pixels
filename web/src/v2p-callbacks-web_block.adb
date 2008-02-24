@@ -77,6 +77,12 @@ package body V2P.Callbacks.Web_Block is
                  (Context => Context.all,
                   Name    => Template_Defs.Set_Global.FID)));
       end if;
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.FILTER_CATEGORY,
+            Context.Get_Value (Template_Defs.Set_Global.FILTER_CATEGORY)));
    end Forum_Category_Filter;
 
    ------------------
