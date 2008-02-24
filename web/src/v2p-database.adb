@@ -573,6 +573,7 @@ package body V2P.Database is
                "select forum_id from category, post "
                  & "where category.id = post.category_id "
                  & "and post.id = " & To_String (Tid));
+
             if Iter.More then
                Iter.Get_Line (Line);
 
@@ -663,7 +664,7 @@ package body V2P.Database is
    ------------------
 
    function Get_Forum_Id (Tid : in Id) return Id is
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
    begin
       Connect (DBH);
       return Get_Fid (DBH, Empty_Id, Tid);
