@@ -24,7 +24,6 @@ with V2P.Database;
 with V2P.Context;
 with V2P.Navigation_Links;
 with V2P.Settings;
-with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
@@ -300,20 +299,8 @@ package body V2P.Callbacks.Web_Block is
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
-
-      Login : constant String :=
-                Context.Get_Value (Template_Defs.Set_Global.LOGIN);
    begin
       if Context.Exist (Template_Defs.Set_Global.TID) then
-         Templates.Insert
-           (Translations,
-            Templates.Assoc
-              (V2P.Template_Defs.Block_Metadata.IS_OWNER,
-               Boolean'Image (V2P.Database.Is_Author
-                 (Login, V2P.Context.Counter.Get_Value
-                    (Context => Context.all,
-                     Name    => Template_Defs.Set_Global.TID)))));
-
          if Context.Exist
            (V2P.Template_Defs.Set_Global.ERROR_METADATA_NULL_METADATA) then
             Templates.Insert
