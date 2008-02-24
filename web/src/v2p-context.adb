@@ -33,7 +33,6 @@ package body V2P.Context is
 
    procedure Update (Context : access Object; SID : in AWS.Session.Id) is
    begin
-
       --  Set LOGIN and ADMIN in session
 
       if AWS.Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then

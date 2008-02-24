@@ -49,7 +49,7 @@ package V2P.Callbacks.Ajax is
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
-   --  Called when changing the forum sorting
+   --  Called when changing the forum filter
 
    procedure Onchange_Filter_Forum_Page_Size
      (Request      : in     Status.Data;

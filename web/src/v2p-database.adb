@@ -1364,7 +1364,7 @@ package body V2P.Database is
             Append (From_Stmt, ", forum");
          end if;
 
-         return To_String (From_Stmt) & ' ';
+         return To_String (From_Stmt);
       end Build_From;
 
       ------------------
@@ -1417,37 +1417,37 @@ package body V2P.Database is
          Count_Only : in Boolean := False) return String
       is
          Where_Stmt : Unbounded_String :=
-                        +" where post.category_id = category.id ";
+                        +" where post.category_id = category.id";
       begin
          if not Count_Only or else User /= "" then
             --  if count_only is false, join with user_post table
             --  as we want to display the user_name
             --  if count_only is true and user is not null then
             --  join in needed to restrict to the given user
-            Append (Where_Stmt, " and user_post.post_id = post.id ");
+            Append (Where_Stmt, " and user_post.post_id = post.id");
          end if;
 
          if Fid /= Empty_Id then
             --  Restrict query to the given forum id
             Append (Where_Stmt,
-                    " and category.forum_id = " & To_String (Fid) & " ");
+                    " and category.forum_id = " & To_String (Fid));
          end if;
 
          if User /= "" then
                --  Restrict to a specific user
             Append (Where_Stmt,
-                    " and user_post.user_login = " & Q (User) & " ");
+                    " and user_post.user_login = " & Q (User));
          end if;
 
          if Filter_Cat /= "" then
             Append (Where_Stmt,
-                    " and category.id = " & Q (Filter_Cat) & " ");
+                    " and category.id = " & Q (Filter_Cat));
          end if;
 
          case Filter is
             when Today =>
                Append (Where_Stmt,
-                 " and date(post.date_post) = date(current_date) ");
+                 " and date(post.date_post) = date(current_date)");
 
             when Two_Days =>
                Append (Where_Stmt,
@@ -1456,7 +1456,7 @@ package body V2P.Database is
             when Seven_Days =>
                Append (Where_Stmt,
                        " and date(post.date_post) "
-                       & "> date(current_date, '-7 days') ");
+                       & "> date(current_date, '-7 days')");
 
             when All_Messages =>
                null;
@@ -1467,13 +1467,13 @@ package body V2P.Database is
                Append
                  (Where_Stmt,
                   " and forum.for_photo='TRUE' "
-                  &  " and forum.id=category.forum_id ");
+                  &  " and forum.id=category.forum_id");
 
             when Forum_Text =>
                Append
                  (Where_Stmt,
                   " and forum.for_photo='FALSE' "
-                  &  " and forum.id=category.forum_id ");
+                  &  " and forum.id=category.forum_id");
 
             when Forum_All =>
                null;
@@ -1564,7 +1564,7 @@ package body V2P.Database is
                          +SQL_Select & SQL_From & SQL_Where;
       begin
          if not Admin then
-            Append (Select_Stmt, " and post.hidden='FALSE' ");
+            Append (Select_Stmt, " and post.hidden='FALSE'");
          end if;
 
          --  Add filtering into the select statement
@@ -2106,9 +2106,7 @@ package body V2P.Database is
       -- Insert_Table_post_Comment --
       --------------------------------
 
-      procedure Insert_Table_Post_Comment
-        (Post_Id, Comment_Id : in Id)
-      is
+      procedure Insert_Table_Post_Comment (Post_Id, Comment_Id : in Id) is
          SQL : constant String :=
                  "insert into post_comment values ("
                    & To_String (Post_Id) & "," & To_String (Comment_Id) & ')';
