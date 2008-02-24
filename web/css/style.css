@@ -421,10 +421,11 @@ body.main h1 {
 }
 @@--
 body.main h2 {
-   padding:1em;
    font-size:1.3em;
    font-style:italic;
    font-weight:bolder;
+   margin-top:-1em;
+   padding-bottom:1em;
 }
 @@--
 #pm_presentation {
