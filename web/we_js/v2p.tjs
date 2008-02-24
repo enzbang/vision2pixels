@@ -295,10 +295,12 @@ V2P.Map = new function () {
 
         if (V2P.Objects.geo_view == null && GBrowserIsCompatible()) {
            V2P.Objects.geo_view = true;
-           var map = new GMap2(parent.document.getElementById("bm_map_canvas"));
+           var map = new GMap2
+             (parent.document.getElementById("bm_map_canvas"));
 
-           var point = new GLatLng(parent.document.getElementById('bm_latitude').title,
-                                   parent.document.getElementById('bm_longitude').title);
+           var point = new GLatLng
+             (parent.document.getElementById('bm_latitude').title,
+              parent.document.getElementById('bm_longitude').title);
 
            map.setCenter (point, 7);
 
@@ -310,11 +312,12 @@ V2P.Map = new function () {
            map.addControl(new GMapTypeControl());
            map.setMapType(G_SATELLITE_MAP);
 
-           map.openInfoWindowHtml(map.getCenter(),parent.document.getElementById('bm_map_geoloc_content'));
-
+           map.openInfoWindowHtml
+             (map.getCenter(),
+              parent.document.getElementById('bm_map_geoloc_content'));
         }
-
      }
+
      this.view = function ()
      {
         @@--  Toggle map canvas
