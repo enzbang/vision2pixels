@@ -11,7 +11,7 @@
    <div id="pm_presentation">
    <p>Vision2pixels est un site communautaire autour de la critique photographique.</p>
 
-   <p>Vous êtes invités à vous inscrire afin de tester le site et de signaler les
+   <p>Vous êtes invités à vous <a class="link" href="/register_user">inscrire</a> afin de tester le site et de signaler les
    éventuels disfonctionnements.</p>
 
    <p><a class="help" href="/help">En savoir plus.</a></p>
