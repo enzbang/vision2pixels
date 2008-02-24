@@ -14,6 +14,7 @@
 @@SET@@ LIGHT_BORDER_COLOR=#333
 @@SET@@ ERROR_COLOR=#CBCBFF
 @@SET@@ PAGETITLE_COLOR=#CBCBFF
+@@SET@@ IMPORTANT_TEXT_COLOR=#FF7B2B
 @@--
 @@-- Position
 @@--
@@ -976,7 +977,7 @@ body.help li {
    list-style:square;
 }
 @@--
-a.help {
+a.help, a.link {
    text-decoration:underline;
 }
 @@--
@@ -1061,4 +1062,26 @@ body.user_register_page label {
    text-align:center;
    color: @_ERROR_COLOR_@;
    font-size: 1.5em;
+}
+@@--
+#pur_rules li {
+   padding-top: 0.2em;
+   padding-left: 1em;
+   text-align:left;
+   color: @_IMPORTANT_TEXT_COLOR_@;
+   width: 80%;
+   margin: 0pt 12em;
+}
+@@--
+#pur_rules ol, #pur_rules li {
+   list-style-type: decimal;
+}
+@@--
+#pur_register_user label {
+   width: 8em;
+   float: left;
+}
+@@--
+#pur_register_user p {
+   padding-top: 1em;
 }

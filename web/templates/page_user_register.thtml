@@ -4,6 +4,7 @@
 @@--
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_REGISTER_USER_@ user_register_page
 <div id="pur_user_register">
+
 <h1>Enregistrement sur Vision2Pixels</h1>
 
 <p>Cette page vous permet de vous enregister sur le site de critique photo
@@ -12,6 +13,17 @@
   compte.</p>
 <p>Après avoir complété le formulaire suivant appuyez sur [m'enregister],
   vous recevrez un mail pour confirmation.</p>
+
+<p id="pur_rules">Règles importantes:</p>
+
+<ol id="pur_rules">
+<li id="pur_rules">Vous ne devez poster que <strong>vos propres</strong> photos.</li>
+<li>Une <strong>seule inscription</strong> par personne est autorisée.</li>
+<li>Les échanges sur les forums doivent restés <strong>respectueux</strong></li>
+</ol>
+
+<p>Tout manquement à l'une de ces règles peut entraîner l'exclusion de la
+  personne.</p>
 
 <form id="pur_register_user" action="#" method="POST">
 <fieldset>
