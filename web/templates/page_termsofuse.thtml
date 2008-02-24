@@ -1,0 +1,34 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@--
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ new
+@@--  Use same layout as "new" page
+@@SET@@ SET_URL = /termsofuse
+
+<h1>Vision2Pixels - Conditions d'utilisation</h1>
+
+<h2>Photographies</h2>
+
+<p>Les droits des photographies de ce site appartiennent à leur auteur
+respectif. L'utilisateur qui publie une photographie sur le site
+Vision2Pixels certifie être l'auteur de la photographie et avoir tous
+les droits requis pour la publier.</p>
+
+<h2>Données personnelles</h2>
+
+<p>L'adresse email renseignée lors de l'enregistrement sur le site
+Vision2Pixels n'est et ne sera jamais publiée.</p>
+
+<p>L'équipe Vision2Pixels se réserve le droit de refuser l'accès au
+site ansi que de supprimer tout compte dont l'utilisation lui
+semblerait détournée.</p>
+
+<p>Si une photographie ou un commentaire vous semble contenir des
+propos diffamatoires, racistes, etc, veuillez nous en avertir dès que
+possible.</p>
+
+@@IF@@ @_V2P_ERROR_@ /= ""
+  @_V2P_ERROR_@
+@@END_IF@@
+@@--
+@@INCLUDE@@ chunk_v2p_end.thtml
