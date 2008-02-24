@@ -77,6 +77,7 @@ with V2P.Template_Defs.Page_Help;
 with V2P.Template_Defs.Page_Main;
 with V2P.Template_Defs.Page_New;
 with V2P.Template_Defs.Page_Photo_Post;
+with V2P.Template_Defs.Page_Termsofuse;
 with V2P.Template_Defs.Page_User;
 with V2P.Template_Defs.Page_User_Register;
 with V2P.Template_Defs.Page_Validate_User;
@@ -589,6 +590,11 @@ package body V2P.Web_Server is
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_New.Set.URL,
          Template_Defs.Page_New.Template,
+         null);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Termsofuse.Set.URL,
+         Template_Defs.Page_Termsofuse.Template,
          null);
 
       Services.Web_Block.Registry.Register
