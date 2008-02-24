@@ -1586,7 +1586,7 @@ package body V2P.Database is
             when Need_Attention =>
                --  No comment and oldest first
                Append (Select_Stmt, " order by post.comment_counter ASC");
-               Append (Select_Stmt, "  , order by post.date_post ASC");
+               Append (Select_Stmt, ", post.date_post ASC");
          end case;
 
          if Limit /= 0 then
