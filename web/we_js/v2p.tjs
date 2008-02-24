@@ -294,24 +294,24 @@ V2P.Map = new function () {
      {
 
         if (V2P.Objects.geo_view == null && GBrowserIsCompatible()) {
-           V2P.Objects.geo_view = new GMap2(parent.document.getElementById("bm_map_canvas"));
+           V2P.Objects.geo_view = true;
+           var map = new GMap2(parent.document.getElementById("bm_map_canvas"));
 
-           V2P.Objects.geo_view.setCenter
-           (new GLatLng(parent.document.getElementById('bm_latitude').title,
-           parent.document.getElementById('bm_longitude').title), 7);
+           var point = new GLatLng(parent.document.getElementById('bm_latitude').title,
+                                   parent.document.getElementById('bm_longitude').title);
 
-           V2P.Objects.geo_view.openInfoWindowHtml
-           (V2P.Objects.geo_view.getCenter(),
-            parent.document.getElementById('bm_map_geoloc_content'));
+           map.setCenter (point, 7);
 
-           V2P.Objects.geo_view.addControl(new GLargeMapControl());
-           V2P.Objects.geo_view.addControl(new GScaleControl(),
-                                           new GControlPosition(G_ANCHOR_BOTTOM_LEFT,
-                                                                new GSize(50, 50)));
-           V2P.Objects.geo_view.addControl(new GOverviewMapControl());
-           V2P.Objects.geo_view.addControl(new GMapTypeControl(),
-                                           new GControlPosition(G_ANCHOR_BOTTOM_LEFT,
-                                                                new GSize(5, 5)));
+           var marker = new GMarker(point);
+           map.addOverlay(marker);
+
+           map.addControl(new GSmallMapControl());
+           map.addControl(new GOverviewMapControl());
+           map.addControl(new GMapTypeControl());
+           map.setMapType(G_SATELLITE_MAP);
+
+           map.openInfoWindowHtml(map.getCenter(),parent.document.getElementById('bm_map_geoloc_content'));
+
         }
 
      }
