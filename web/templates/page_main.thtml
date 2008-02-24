@@ -4,6 +4,7 @@
 @@--
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ main
 <h1>Vision2Pixels</h1>
+<h2>Club Photo sur Toile</h2>
 
 <div id="pm_main_content">
    <div id="pm_photo_of_the_week"><p>@_LAZY_PHOTO_OF_THE_WEEK_@</p></div>
