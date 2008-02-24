@@ -54,7 +54,7 @@ images/thumbs that goes with it.
 To create the database:
 
    $ cd db/data
-   $ ./create_database.sh 
+   $ ./create_database.sh
 
 This will create the demo database named "testing.db".
 
@@ -66,6 +66,15 @@ on http://code.google.com/p/vision2pixels.
 
 Running with Gwiad
 ------------------
+
+Check that your gwiad installation has upload_directory configured or
+edit ~/opt/gwiad/aws.ini to set upload_directory. For example :
+
+   reuse_address true
+   upload_directory /tmp/upload
+
+Note that you should not set reuse_address in production mode for
+security reason. Use it only in your testing environment.
 
    $ cd ~/opt/gwiad
    $ bin/argwiad
@@ -112,7 +121,7 @@ Building libraries
    Note also that we build only the static libraries. Shared libraries are
    not supported for now.
 
-   V2P requires at least the JPEG support. 
+   V2P requires at least the JPEG support.
 
    - building jpegsrc.v6b.tar.gz :
 
