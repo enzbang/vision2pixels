@@ -2051,6 +2051,9 @@ package body V2P.Database is
       procedure Insert_Table_Post_Comment (Post_Id, Comment_Id : in Id);
       --  Insert row into post_Comment table
 
+      procedure Update_Last_Comment_Id (Post_Id, Comment_Id : in Id);
+      --  Update corresponding last comment id in post table
+
       DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
 
       --------------------------
@@ -2084,6 +2087,19 @@ package body V2P.Database is
          DBH.Handle.Execute (SQL);
       end Insert_Table_Post_Comment;
 
+      ----------------------------
+      -- Update_Last_Comment_Id --
+      ----------------------------
+
+      procedure Update_Last_Comment_Id (Post_Id, Comment_Id : in Id) is
+         SQL : constant String :=
+                 "update post set last_comment_id = "
+                   & To_String (Comment_Id)
+                   &  " where id = " & To_String (Post_Id);
+      begin
+         DBH.Handle.Execute (SQL);
+      end Update_Last_Comment_Id;
+
    begin
       Connect (DBH);
       DBH.Handle.Begin_Transaction;
@@ -2093,6 +2109,7 @@ package body V2P.Database is
          Cid : constant Id := Id'Value (DBH.Handle.Last_Insert_Rowid);
       begin
          Insert_Table_Post_Comment (Thread, Cid);
+         Update_Last_Comment_Id (Thread, Cid);
          DBH.Handle.Commit;
          return Cid;
       end Row_Id;
