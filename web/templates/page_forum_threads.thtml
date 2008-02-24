@@ -12,6 +12,7 @@
 @_LAZY_FORUM_CATEGORY_FILTER_@</div>
 <div id="pft_lazy_forum_filter">@_LAZY_FORUM_FILTER_@</div>
 <div id="pft_lazy_forum_filter_page_size">@_LAZY_FORUM_FILTER_PAGE_SIZE_@</div>
+<div id="pft_lazy_forum_sort">@_LAZY_FORUM_SORT_@</div>
 </div>
 @@--  FORUM THREADS CONTENT
 @@IF@@ @_FORUM_FOR_PHOTO_@

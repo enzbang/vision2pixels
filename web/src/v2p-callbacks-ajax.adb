@@ -44,9 +44,10 @@ with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Metadata;
+with V2P.Template_Defs.Block_Forum_Category_Filter;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
-with V2P.Template_Defs.Block_Forum_Category_Filter;
+with V2P.Template_Defs.Block_Forum_Sort;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Email_User_Validation;
@@ -241,6 +242,39 @@ package body V2P.Callbacks.Ajax is
          Name    => Template_Defs.Set_Global.FID,
          Value   => Fid);
    end Onchange_Forum_List;
+
+   -------------------------
+   -- Onchange_Forum_Sort --
+   -------------------------
+
+   procedure Onchange_Forum_Sort
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      package HTTP renames Template_Defs.Block_Forum_Sort.HTTP;
+      P    : constant Parameters.List := Status.Parameters (Request);
+      Sort : constant String := Parameters.Get (P, HTTP.bfs_forum_sort_set);
+   begin
+      --  Keep the sorting scheme into the session
+      --  ?? we need to add this into the user's preferences
+      Context.Set_Value (Template_Defs.Set_Global.FORUM_SORT, Sort);
+
+      Templates.Insert
+        (Translations,
+         Database.Get_Forum
+           (V2P.Context.Counter.Get_Value
+              (Context => Context.all,
+               Name    => Template_Defs.Set_Global.FID),
+            Tid => Database.Empty_Id));
+
+      --  Reset FROM
+
+      V2P.Context.Not_Null_Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NAV_FROM,
+         Value   => 1);
+   end Onchange_Forum_Sort;
 
    ----------------------------
    -- Onclick_Goto_Next_Page --

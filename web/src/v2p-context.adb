@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                             --
+--                         Copyright (C) 2007-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -62,6 +62,10 @@ package body V2P.Context is
 
          Context.Set_Value
            (Template_Defs.Set_Global.FILTER_CATEGORY, "");
+
+         Context.Set_Value
+           (Template_Defs.Set_Global.FORUM_SORT,
+            Database.Forum_Sort'Image (Database.Last_Posted));
 
          Not_Null_Counter.Set_Value
            (Context => Context.all,

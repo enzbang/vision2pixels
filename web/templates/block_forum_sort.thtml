@@ -1,0 +1,32 @@
+<select name="bfs_forum_sort_set" id="bfs_forum_sort_set">
+@@INLINE@@
+  <option value="LAST_POSTED"
+  @@IF@@ @_FORUM_SORT_@ = "LAST_POSTED"
+    selected="selected"
+  @@END_IF@@
+  >Dernièrement postées</option>
+@@END_INLINE@@
+@@INLINE@@
+  <option value="LAST_COMMENTED"
+  @@IF@@ @_FORUM_SORT_@ = "LAST_COMMENTED"
+    selected="selected"
+  @@END_IF@@
+  >Dernièrement commentées</option>
+@@END_INLINE@@
+@@INLINE@@
+  <option value="BEST_NOTED"
+  @@IF@@ @_FORUM_SORT_@ = "BEST_NOTED"
+    selected="selected"
+  @@END_IF@@
+  >Les mieux notées</option>
+@@END_INLINE@@
+@@INLINE@@
+  <option value="NEED_ATTENTION"
+  @@IF@@ @_FORUM_SORT_@ = "NEED_ATTENTION"
+    selected="selected"
+  @@END_IF@@
+  >Demande votre attention</option>
+@@END_INLINE@@
+</select>
+@@--
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bfs_forum_sort_set, 4=>bfs_forum_sort_set)
