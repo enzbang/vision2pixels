@@ -539,6 +539,15 @@ package body V2P.Callbacks.Ajax is
       end Get;
 
    begin
+
+      Morzhol.Logs.Write
+        (Name    => Module,
+         Content =>
+           "(Onsubmit_Metadata_Form_Enter) : Get Metadata "
+            & Parameters.Get (P, Template_Defs.Block_Metadata.HTTP.bm_latitude)
+            & " " & Parameters.Get
+              (P, Template_Defs.Block_Metadata.HTTP.bm_longitude));
+
       Insert_Metadata : declare
          Latitude_Coord      : constant Geo_Coordinate := Get
            (Template_Defs.Block_Metadata.HTTP.bm_latitude);
