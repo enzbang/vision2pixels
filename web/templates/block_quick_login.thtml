@@ -1,10 +1,15 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-<a href="#" id="bql_show_rel_login" rel="cvt_lazy_login">
+@@IF@@ @_LOGIN_@ /= ""
+  <strong>@_LOGIN_@</strong> |
+  <a href="/~@_LOGIN_@" class="link">@_BABEL_YOUR_PAGE_@</a> |
+@@END_IF@@
+
+<a href="#" class="link" id="bql_show_rel_login" rel="cvt_lazy_login">
   @@IF@@ @_LOGIN_@ = ""
-    @_BABEL_NOT_LOGGED_@
+    @_BABEL_ASK_LOGIN_@
   @@ELSE@@
-    @_LOGIN_@
+    @_BABEL_MENU_PLUS_@ ▼
   @@END_IF@@
 </a>
 @@--

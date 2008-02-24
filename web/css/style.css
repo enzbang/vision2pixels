@@ -338,19 +338,39 @@ div#pft_filters div select, div#pft_filters div select option {
    border:black;
    margin:0;
 }
-@@--
 div#cvt_lazy_login, div#cvt_lazy_quick_login {
    float:right;
-   margin-right:1em;
-   font-size:0.8em;
+   font-size:0.9em;
    text-align:right;
    position:absolute;
    margin:5px;
    top:0px;
    right:0px;
+}
+@@--
+form#bl_login_form {
+   top:2em;
+   background: #333333;
+   border:2px ridge #555555;
+   opacity:0.95;
    z-index:5000;
+   padding:1em 1.5em 0.4em 0pt;
    width:40em;
-   padding:0 1em;
+}
+@@--
+div#bl_logged_box {
+    color:white;
+    font-weight:bold;
+    padding:0pt 1pt;
+    position:absolute;
+    right:0pt;
+    top:2em;
+    width:17em;
+    z-index:5000;
+}
+@@--
+div#cvt_lazy_login ul li {
+    margin-bottom: 1em;
 }
 @@--
 div#bftt_forum_text {
@@ -359,13 +379,6 @@ div#bftt_forum_text {
    margin-left: 2em;
    margin-top: 2em;
    padding: 1em;
-}
-@@--
-div#cvt_lazy_login {
-   top:2em;
-   background: #333333;
-   border:2px ridge #555555;
-   opacity:0.95;
 }
 @@--
 div#bl_login_err {
@@ -398,7 +411,7 @@ form#bl_login_form p#bl_cd_user {
 }
 @@--
 #bl_logged_box {
-   padding:2em;
+   padding-top:1em;
 }
 @@--
 @@--  Main page
@@ -521,7 +534,6 @@ ul#bfl_navcontainer li {
    margin-right:1em;
    font-family:arial,sans-serif;
    font-size:0.9em;
-   font-size:0.8em;
    font-weight:bold;
    padding:0.2em;
 }
