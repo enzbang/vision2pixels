@@ -470,7 +470,7 @@ body.main h2 {
 #pm_latest_users {
    text-align:left;
    border: thin solid @_LIGHT_BORDER_COLOR_@;
-   margin-left:450px;
+   margin: 0 0 1em 450px;
    position:relative;
    top:2em;
    padding:0 0 1em 0;
@@ -510,7 +510,7 @@ body.main h2 {
 ul#bfl_navcontainer {
    text-align:left;
    top:5px;
-   left:0;
+   left:10pt;
    position:absolute;
    width:80%;
 }
