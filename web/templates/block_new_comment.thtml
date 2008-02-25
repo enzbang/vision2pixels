@@ -3,6 +3,7 @@
 @@IF@@ @_LOGIN_@ /= "" or @_OPTION_ANONYMOUS_COMMENT_@
 @@SET@@ SET_FORM_POST_COMMENT_PHOTO = /bnc_add_photo
 @@--
+@@--
 <form enctype="multipart/form-data" id="bnc_add_photo_form"
       action="@_SET_FORM_POST_COMMENT_PHOTO_@"
       method="POST" target="bnc_photo_post_target">
@@ -17,7 +18,7 @@
     </div>
   </fieldset>
 </form>
-
+@@--
 <form enctype="multipart/form-data" id="bnc_comment_form" action="#" method="post">
   <fieldset>
     @@-- Is user logged
