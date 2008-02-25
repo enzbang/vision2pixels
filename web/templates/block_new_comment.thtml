@@ -12,7 +12,8 @@
              type="submit" value="@_BABEL_UPLOAD_@"/>
     </p>
     <div id="bnc_add_photo">
-      <iframe name="bnc_photo_post_target" id="bnc_photo_post_target"></iframe>
+      <iframe name="bnc_photo_post_target"
+              id="bnc_photo_post_target" scrolling="no"></iframe>
     </div>
   </fieldset>
 </form>
