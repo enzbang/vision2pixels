@@ -932,6 +932,14 @@ body.user_page #bucl_lastusercommentlist li {
    text-align: center;
    padding: 3em;
 }
+@@--
+.error_small {
+   font-size: 1em;
+   color: @_ERROR_COLOR_@;
+   text-align: center;
+   padding: 3em;
+}
+@@--
 .errorinline {
    color: red;
 }
