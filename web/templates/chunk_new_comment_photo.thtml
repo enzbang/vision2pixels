@@ -1,5 +1,29 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@--  This is a chunk inside a iframe, we need to load the CSS manually
+@@--  otherwise the default font color is black which is not visible on top
+@@--  of a black background.
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link media="screen" type="text/css" rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+@@IF@@ @_V2P_ERROR_@ /= ""
+  @@IF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_IMAGE_DIMENSION_@
+    <p class="error_small">@_BABEL_WARN_EXCEED_MAX_DIMENSION_@</p>
+  @@ELSIF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_SIZE_@
+    <p class="error_small">@_BABEL_WARN_EXCEED_MAX_SIZE_@</p>
+  @@END_IF@@
+@@ELSE@@
 @@IF@@ @_IMAGE_SOURCE_@ /= ""
 <img src='@_THUMB_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@' />
+@@END_IF@@
+@@END_IF@@
+@@--
+@@IF@@ @_V2P_ERROR_@ /= "" or @_IMAGE_SOURCE_@ /= ""
 <script type="text/javascript">
 <!--
    parent.document.getElementById('bnc_comment_pid').value = "@_PID_@";
@@ -12,3 +36,5 @@
 -->
 </script>
 @@END_IF@@
+</body>
+</html>
