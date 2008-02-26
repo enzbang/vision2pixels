@@ -459,3 +459,7 @@ insert into photo_exif values
   (36, "2006:06:09 18:41:29", "NIKON CORPORATION", "NIKON D200", "1/160", "6.3", "No Flash", "105.0mm", "Auto", "Program AE", "Auto", "Multi-segment", "400");
 insert into photo_exif values
   (14, "2006:06:09 18:41:29", "NIKON CORPORATION", "NIKON D200", "1/160", "2.8", "No Flash", "105.0mm", "Auto", "Program AE", "Auto", "Multi-segment", "200");
+
+--  Instert metadata
+
+insert into photo_metadata values (88, 46.2573, 4.30196, "N 46° 15' 26", "E 4° 18' 7");
