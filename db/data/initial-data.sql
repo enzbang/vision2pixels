@@ -7,9 +7,10 @@ insert into user ("login", "password", "email", "admin", created)
 
 --  Create forums
 
-insert into forum values (1, "Forum photographies", "TRUE", "TRUE");
-insert into forum values (2, "Forum matériel", "FALSE", "FALSE");
-insert into forum values (3, "Forum site v2p", "FALSE", "FALSE");
+insert into forum values (1, "Photographies", "TRUE", "TRUE");
+insert into forum values (2, "Techniques", "FALSE", "FALSE");
+insert into forum values (3, "Matériels", "FALSE", "FALSE");
+insert into forum values (4, "Site v2p", "FALSE", "FALSE");
 
 --  Create categories
 
@@ -26,6 +27,8 @@ insert into category values (9, 2, 'Discussion');
 
 insert into category values (10, 3, 'Bug');
 insert into category values (11, 3, 'Idée');
+
+insert into category values (12, 2, 'Divers');
 
 --  Create criteria
 
