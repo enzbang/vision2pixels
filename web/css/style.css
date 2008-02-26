@@ -1088,7 +1088,7 @@ body.user_register_page label {
    font-size: 1.5em;
 }
 @@--
-#pur_rules li {
+#ppp_rules li, #pur_rules li {
    padding-top: 0.2em;
    padding-left: 1em;
    text-align:left;
@@ -1097,7 +1097,7 @@ body.user_register_page label {
    margin: 0pt 12em;
 }
 @@--
-#pur_rules ol, #pur_rules li {
+#ppp_rules ol, #ppp_rules li, #pur_rules ol, #pur_rules li {
    list-style-type: decimal;
 }
 @@--
