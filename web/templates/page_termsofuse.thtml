@@ -7,14 +7,16 @@
 
 <h1>Vision2Pixels - Conditions d'utilisation</h1>
 
-<h2>Photographies</h2>
+<h2 id="photo">Photographies</h2>
 
 <p>Les droits des photographies de ce site appartiennent à leur auteur
 respectif. L'utilisateur qui publie une photographie sur le site
 Vision2Pixels certifie être l'auteur de la photographie et avoir tous
-les droits requis pour la publier.</p>
+les droits requis pour la publier. Pour poster une photographie,
+celle-ci doit avoir une taille inférieure à @_BABEL_MAXDIM_@. Les
+informations EXIFs embarquées seront affichées sur le site.</p>
 
-<h2>Données personnelles</h2>
+<h2 id="privacy">Données personnelles</h2>
 
 <p>L'adresse email renseignée lors de l'enregistrement sur le site
 Vision2Pixels n'est et ne sera jamais publiée.</p>
