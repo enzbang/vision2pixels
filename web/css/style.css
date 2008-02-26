@@ -949,6 +949,11 @@ body.user_page #bucl_lastusercommentlist li {
    height:2em;
 }
 @@--
+#bm_geo_metadata {
+    margin-top:1em;
+    font-weight:bold;
+}
+@@--
 #bm_address_go {
    display:inline;
    padding:0;
