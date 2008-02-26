@@ -9,7 +9,7 @@
 
 <h2>Un projet libre</h2>
 
-<p>Vision2pixels est un projet GPL développé par Pascal Obry et
+<p>Vision2Pixels est un projet GPL développé par Pascal Obry et
 Olivier Ramonat visant à construire un outil de gestion de site
 communautaire autour de la critique photographique. Ce project est
 pour l'instant entièrement tourné vers la réalisation du site que vous
@@ -28,23 +28,24 @@ critiquant les photographies des autres.</p>
 <h2>Avec des coup de cœur</h2>
 
 <p>Régulièrement, une photographie sera choisie comme coup de cœur du
-site. Cette photographie sera élue par vous : pour chaque coup de cœur
-vous pouvez voter pour jusqu'à 7 photographies. Plus vous êtes
-indécis, c'est à dire plus vous avez voté pour le coup de cœur, moins
-votre vote comptera.</p>
+site. Cette photographie sera élue par vous. Pour chaque coup de coeur vous
+avez la possibilité de voter pour une ou plusieurs photographies avec un
+maximum de sept votes. Plus vous êtes indécis, c'est à dire plus vous avez
+voté pour le coup de cœur, moins votre vote comptera pour chacune des
+photographies.</p>
 
-<h2>Des auteurs non revelés pendant trois jours</h2>
+<h2>Des auteurs non révélés pendant trois jours</h2>
 
 <p>Ce site est tourné vers la critique photographique. Ce n'est pas un
-site de gallerie photo. Vous ne pouvez donc pas poster plus d'une
-photo tous les trois jours. Pendant cette période, la dernière
+site de galerie de photographie. Vous ne pouvez donc pas poster plus d'une
+photographie tous les trois jours. Pendant cette période, la dernière
 photographie que vous avez posté n'aura pas son champs "auteur" de
 mis-à-jour. L'auteur sera "non-révelé". Ceci afin que les notes et
-commentaires portent vraiment sur la photo et non sur l'auteur.</p>
+commentaires portent vraiment sur la photographie et non sur l'auteur.</p>
 
-<h2>La possibilité de noter des photos</h2>
+<h2>La possibilité de noter des photographies</h2>
 
-<p>Lorsque vous êtes connecté, vous pouvez noter chaque photo (sauf
+<p>Lorsque vous êtes connecté, vous pouvez noter chaque photographie (sauf
 les votres !) à l'aide de différents critères : Composition, Focus
 (mise au point), Lumiére. La note que vous donnerez (de 1 à 5) pourra
 être changée à tout moment en revenant sur la photographie.</p>
@@ -53,17 +54,17 @@ les votres !) à l'aide de différents critères : Composition, Focus
 
 <p>Lorsque vous postez une photographie, les informations EXIF sont
 récupérées si elles existent. Vous avez aussi la possibilité de
-géolocaliser votre photo en la positionnant sur une carte ou en
+géolocaliser votre photographie en la positionnant sur une carte ou en
 entrant directement la latitude et la longitude.</p>
 
 <h2>A suivre...</h2>
 
 <p>Nous souhaitons apporter de nombreuses améliorations : </p>
 <ul>
-<li>Des flux RSS/Atom pour suivre l'actualité.</li>
-<li>La notification de nouveaux commentaires sur ces propres photos ou
+<li>Plus de flux RSS/Atom pour suivre l'actualité.</li>
+<li>La notification de nouveaux commentaires sur ces propres photographies ou
 sur les photographies "bookmarquées".</li>
-<li>La possibilité de tagger des photos.</li>
+<li>La possibilité de tagger des photographies.</li>
 <li>Et de nombreuses autres fonctionnalités...</li>
 </ul>
 
