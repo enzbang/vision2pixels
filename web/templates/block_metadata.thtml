@@ -2,7 +2,8 @@
 @@--
 <div id="bm_geo_metadata">
   @@IF@@ @_METADATA_LATITUDE_@ /= ""
-    <a href="/gmap_photo_entry_view" id="bm_show_toggle" rel="bm_show_map" target="iframe_gmap_view">Voir sur une carte</a>
+    <a href="/gmap_photo_entry_view" id="bm_show_toggle" class="link"
+       rel="bm_show_map" target="iframe_gmap_view">@_BABEL_CLICK_TO_VIEW_MAP_@</a>
    <div id="bm_map_canvas" style="width:600px; height:300px; display:none"></div>
    <div id="bm_map_geoloc_content" style="display:none">
      <dl class="geo">
