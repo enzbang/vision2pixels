@@ -104,12 +104,13 @@ create table "post_comment" (
    foreign key ("comment_id") references comment("id")
 );
 
---  Comment counter
+--  Comment counter and last_comment_id
 
-create trigger update_comment_counter insert on post_comment
+create trigger update_post_status after insert on post_comment
    begin
       update post
-         set comment_counter=comment_counter + 1
+         set comment_counter=comment_counter + 1,
+	     last_comment_id=new.comment_id
          where id = new.post_id;
    end;
 
