@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                          Copyright (C) 2007                              --
+--                         Copyright (C) 2007-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -81,7 +81,7 @@ package body Image_Tests.Embedded_Metadata is
         (Data.Flash = "No Flash",
          "Wrong flash : " & To_String (Data.Flash));
       Assert
-        (Data.Focal_Length = "260.0mm",
+        (Data.Focal_Length = "260.0 mm",
          "Wrong focal length : " & To_String (Data.Focal_Length));
       Assert
         (Data.Exposure_Mode = "Auto",
