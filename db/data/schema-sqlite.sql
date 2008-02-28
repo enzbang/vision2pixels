@@ -97,6 +97,19 @@ create table "post" (
    foreign key ("photo_id") references photo("id")
 );
 
+--  We want the last_comment_id to be just one above the current
+--  last_comment_id this is needed for proper ordering for lastest commented
+--  photos. We want to have the new posted photos into the flow. Note that
+--  this last_comment_id has meaningful value only when comment_counter is
+--  not zero.
+
+create trigger set_last_comment_id after insert on post
+   begin
+      update post
+         set last_comment_id=(select max(comment_id) from post_comment) + 1
+         where id = new.id;
+   end;
+
 create table "post_comment" (
    "post_id" integer not null,
    "comment_id" integer not null unique,
