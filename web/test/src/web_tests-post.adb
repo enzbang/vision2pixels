@@ -110,8 +110,7 @@ package body Web_Tests.Post is
    ---------------
 
    procedure Main_Page (T : in out AUnit.Test_Cases.Test_Case'Class) is
-      R_Context : constant String := "div id=""CTX_WB""[^>]+>([^<]+)";
-      Result    : Response.Data;
+      Result : Response.Data;
    begin
       Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
 
@@ -126,9 +125,9 @@ package body Web_Tests.Post is
             Word_Set'(1 => +"Forum photographies", 2 => +"Forum mat"),
             "cannot get the first page");
 
-         Context := +Get (Page, R_Context, 1);
+         Set_Context (Page);
 
-         Assert (Context /= Null_Unbounded_String, "No context found!");
+         Assert (URL_Context /= Null_Unbounded_String, "No context found!");
       end Check_Page;
    end Main_Page;
 
@@ -347,7 +346,7 @@ package body Web_Tests.Post is
 
    overriding procedure Set_Up_Case (T : in out Test_Case) is
    begin
-      Context := Null_Unbounded_String;
-   end;
+      Set_Context;
+   end Set_Up_Case;
 
 end Web_Tests.Post;

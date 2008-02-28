@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                             --
+--                         Copyright (C) 2006-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -49,13 +49,10 @@ package Web_Tests is
       renames To_Unbounded_String;
 
    function "not" (Word : in String) return Unbounded_String;
-   -- A word that should not be found into the results, this is intended to be
-   -- used to build a Word_Set.
+   --  A word that should not be found into the results, this is intended to be
+   --  used to build a Word_Set.
 
    --  V2P common routines
-
-   Context : Unbounded_String;
-   --  The context Id to be passed with each request
 
    procedure Login
      (Connection     : in out Client.HTTP_Connection;
@@ -64,6 +61,10 @@ package Web_Tests is
 
    procedure Logout (Connection : in out Client.HTTP_Connection);
    --  Logout current connected user
+
+   procedure Set_Context (Page : in String := "");
+   --  Set context from page content, if Page is empty string the context is
+   --  deleted.
 
    function URL_Context return String;
    --  Returns the context as an HTTP URL parameter

@@ -34,6 +34,11 @@ package body Web_Tests is
 
    use Ada;
 
+   R_Context : constant String := "div id=""CTX_WB""[^>]+>([^<]+)";
+
+   Context : Unbounded_String;
+   --  The context Id to be passed with each request
+
    function "-"
      (Str : in Unbounded_String)
       return String
@@ -246,6 +251,19 @@ package body Web_Tests is
         (Connection, Result,
          URI => Block_Login.Ajax.onclick_bl_logout_enter & '?' & URL_Context);
    end Logout;
+
+   -----------------
+   -- Set_Context --
+   -----------------
+
+   procedure Set_Context (Page : in String := "") is
+   begin
+      if Page = "" then
+         Context := Null_Unbounded_String;
+      else
+         Context := +Get (Page, R_Context, 1);
+      end if;
+   end Set_Context;
 
    -----------------
    -- URL_Context --

@@ -76,17 +76,11 @@ package body Web_Tests.Forum_Entry is
    -------------
 
    procedure Connect (T : in out AUnit.Test_Cases.Test_Case'Class) is
-      R_Context : constant String := "div id=""CTX_WB""[^>]+>([^<]+)";
-      Result    : Response.Data;
+      Result : Response.Data;
    begin
       Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
       Client.Get (Connection, Result, URI => "/");
-
-      declare
-         Page : constant String := Response.Message_Body (Result);
-      begin
-         Context := +Get (Page, R_Context, 1);
-      end;
+      Set_Context (Response.Message_Body (Result));
    end Connect;
 
    ----------
@@ -116,7 +110,7 @@ package body Web_Tests.Forum_Entry is
 
    overriding procedure Set_Up_Case (T : in out Test_Case) is
    begin
-      Context := Null_Unbounded_String;
-   end;
+      Set_Context;
+   end Set_Up_Case;
 
 end Web_Tests.Forum_Entry;
