@@ -79,11 +79,11 @@ package body Web_Tests.User is
       Client.Get
         (Connection, Result,
          URI => Block_Login.Ajax.onclick_bl_login_form_enter &
-         '?' & Login_Parameters ("turbo", "password"));
+         '?' & Login_Parameters ("turbo", "password") & "&" & URL_Context);
 
       Check
         (Response.Message_Body (Result),
-         Word_Set'(+"apply_style", +"login_err", +"display", +"block",
+         Word_Set'(+"apply_style", +"bl_login_err", +"display", +"block",
            +"apply_style", +"forum_post", +"display", +"none",
            +"apply_style", +"new_comment", +"display", +"none"),
          "login should have failed for turbo");
@@ -91,7 +91,7 @@ package body Web_Tests.User is
       Client.Get
         (Connection, Result,
          URI => Block_Login.Ajax.onclick_bl_login_form_enter &
-         '?' & Login_Parameters ("turbo", "turbopass"));
+         '?' & Login_Parameters ("turbo", "turbopass") & "&" & URL_Context);
 
       Check
         (Response.Message_Body (Result),
@@ -109,6 +109,8 @@ package body Web_Tests.User is
       Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
 
       Client.Get (Connection, Result, URI => "/");
+
+      Set_Context (Response.Message_Body (Result));
 
       Check
         (Response.Message_Body (Result),
@@ -143,7 +145,7 @@ package body Web_Tests.User is
 
    overriding procedure Set_Up_Case (T : in out Test_Case) is
    begin
-      Context := Null_Unbounded_String;
-   end;
+      Set_Context;
+   end Set_Up_Case;
 
 end Web_Tests.User;

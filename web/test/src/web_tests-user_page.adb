@@ -62,6 +62,9 @@ package body Web_Tests.User_Page is
    begin
       Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
 
+      Client.Get (Connection, Result, URI => "/");
+      Set_Context (Response.Message_Body (Result));
+
       Web_Tests.Login (Connection, "turbo", "turbopass");
 
       Client.Get (Connection, Result, URI => "/~turbo?" & URL_Context);
@@ -93,7 +96,7 @@ package body Web_Tests.User_Page is
 
    overriding procedure Set_Up_Case (T : in out Test_Case) is
    begin
-      Context := Null_Unbounded_String;
-   end;
+      Set_Context;
+   end Set_Up_Case;
 
 end Web_Tests.User_Page;

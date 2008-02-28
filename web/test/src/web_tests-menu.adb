@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                             --
+--                         Copyright (C) 2007-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -59,9 +59,12 @@ package body Web_Tests.Menu is
    begin
       Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
 
+      Client.Get (Connection, Result, URI => "/");
+      Set_Context (Response.Message_Body (Result));
+
       Login (Connection, "turbo", "turbopass");
 
-      Client.Get (Connection, Result, URI => "/");
+      Client.Get (Connection, Result, URI => "/?" & URL_Context);
 
       Check_Page : declare
          use AUnit.Assertions;
@@ -70,7 +73,7 @@ package body Web_Tests.Menu is
          Check
            (Page,
             Word_Set'
-              (1 => +"Votre page personnelle",
+              (1 => +"Votre page",
                2 => +"Poster une nouvelle photo",
                3 => +"Poster un nouveau message",
                4 => +"Se déconnecter",
@@ -106,7 +109,7 @@ package body Web_Tests.Menu is
 
    overriding procedure Set_Up_Case (T : in out Test_Case) is
    begin
-      Context := Null_Unbounded_String;
-   end;
+      Set_Context;
+   end Set_Up_Case;
 
 end Web_Tests.Menu;
