@@ -478,7 +478,8 @@ body.main h2 {
    max-width:400px;
    max-height:400px;
    @@--  Hack for IE6
-   width: expression(Math.max((document.documentElement ? document.documentElement.clientWidth : document.body.clientWidth), 400)+'px');
+   width: expression( this.height > this.width ? "auto" : "400px" );
+   height: expression( this.height > this.width ? "400px" : "auto" );
    @@--  End of hack
    border:thin solid @_LIGHT_BORDER_COLOR_@;
 }
