@@ -577,9 +577,13 @@ ul#bfl_navcontainer li.index a {
 @@--
 ul.slides {
    list-style-type: none;
-   margin:0 auto;
    width:100%;
    text-align:center;
+}
+@@--
+ul.slides p.entry_name a, ul.thumb_metadata li.photoauthor a,
+ul.thumb_metadata li.photocat a {
+    overflow:visible;
 }
 @@--
 ul.thumb_metadata {
@@ -588,11 +592,10 @@ ul.thumb_metadata {
 @@--
 li.thumbs, li.small_thumbs {
    float: left;
-   overflow:hidden;
    width:200px;
    height:210px;
    text-align: center;
-   margin: 30px;
+   margin: 15px 30px;
 }
 @@--
 li.small_thumbs {
