@@ -4,6 +4,7 @@
 @@SET@@ SET_FORM_POST_COMMENT_PHOTO = /bnc_add_photo
 @@--
 @@--
+@@IF@@ @_FORUM_FOR_PHOTO_@
 <form enctype="multipart/form-data" id="bnc_add_photo_form"
       action="@_SET_FORM_POST_COMMENT_PHOTO_@"
       method="POST" target="bnc_photo_post_target">
@@ -18,6 +19,7 @@
     </div>
   </fieldset>
 </form>
+@@END_IF@@
 @@--
 <form enctype="multipart/form-data" id="bnc_comment_form" action="#" method="post">
   <fieldset>
