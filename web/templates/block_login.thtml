@@ -34,7 +34,7 @@
 @@-- Events
 @@-- Login
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bl_login_form_enter, 4=>bl_login_form)
-@@INCLUDE@@ ../we_js/aws_action_clear.tjs (onfocus, bl_login_input, bl_login_input)
-@@INCLUDE@@ ../we_js/aws_action_clear.tjs (onfocus, bl_password_input, bl_password_input)
+@@INCLUDE@@ ../we_js/aws_action_js.tjs (onfocus, bl_login_input, V2P.Tools.select_field)
+@@INCLUDE@@ ../we_js/aws_action_js.tjs (onfocus, bl_password_input, V2P.Tools.select_field)
 @@-- Logout
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bl_logout_enter)
