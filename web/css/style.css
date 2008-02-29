@@ -648,6 +648,11 @@ span.imgcontainer, span.small_imgcontainer {
    overflow:hidden;
 }
 @@--
+span.imgcontainer:hover {
+    opacity:0.9;
+    border: 1px solid #fff;
+}
+
 span.small_imgcontainer {
    width:120px;
    margin:12px 10px 10px 10px;
