@@ -514,6 +514,9 @@ body.main h2 {
 @@--
 #pm_latest_posts h2 {
    text-align:left;
+   @@--  Hack for IE6/IE7 for the text to be displayed on top
+   position: relative;
+   @@--  End of hack
 }
 @@--
 @@--  Footpage
