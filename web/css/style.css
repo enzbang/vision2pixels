@@ -508,7 +508,9 @@ body.main h2 {
 }
 @@--
 #pm_latest_posts ul {
-   width:800px;
+   width:860px;
+   max-width:800px;
+@@--  Hack for IE6
    margin:0 auto;
 }
 @@--
