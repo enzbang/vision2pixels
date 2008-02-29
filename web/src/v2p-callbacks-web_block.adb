@@ -582,9 +582,9 @@ package body V2P.Callbacks.Web_Block is
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
-      URI        : constant String := Status.URI (Request);
-      User_Name  : constant String := URL.User_Name (URI);
-      Set        : Templates.Translate_Set;
+      URI       : constant String := Status.URI (Request);
+      User_Name : constant String := URL.User_Name (URI);
+      Set       : Templates.Translate_Set;
    begin
       Set := Database.Get_User_Voted_Photos (User_Name);
       Templates.Insert (Translations, Set);
