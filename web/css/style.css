@@ -1020,8 +1020,12 @@ body.help li {
    list-style:square;
 }
 @@--
-a.help, a.link {
+a.help, a.link, a:hover {
    text-decoration:underline;
+}
+@@--
+a.link:hover {
+    text-decoration:none;
 }
 @@--
 #ph_tech {
