@@ -47,6 +47,7 @@ with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Latest_Posts;
 with V2P.Template_Defs.Block_Latest_Users;
 with V2P.Template_Defs.Block_Metadata;
+with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Comment_List;
 with V2P.Template_Defs.Block_Global_Rating;
@@ -346,6 +347,10 @@ package body V2P.Database is
       Connect (DBH);
 
       Templates.Insert (Set, Get_Post (Tid, Forum_Type));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Block_New_Comment.FORUM_FOR_PHOTO,
+            Forum_Type =  Forum_Photo));
 
       Get_All_Comments : declare
          Comment_Id         : Templates.Tag;
@@ -759,8 +764,6 @@ package body V2P.Database is
       Templates.Insert (Set, Templates.Assoc (Block_Forum_List.FID, Id));
       Templates.Insert
         (Set, Templates.Assoc (Block_Forum_List.FORUM_NAME, Name));
-      Templates.Insert
-        (Set, Templates.Assoc (Page_Forum_Threads.FORUM_FOR_PHOTO, Name));
 
       if Filter /= Forum_All and then Nb_Lines = 1 then
 
