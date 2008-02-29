@@ -62,6 +62,15 @@ V2P.Tools = new function () {
          Element.hide(this.rel);
          return false;
    }
+
+   @@----------------------------------
+   @@--  Auto-focus a form element
+
+   this.select_field = function ()
+   {
+      this.select();
+      return true;
+   }
 }
 
 @@---------------------------------------------------------------- THUMBPREVIEW
