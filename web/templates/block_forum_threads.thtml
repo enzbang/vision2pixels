@@ -47,7 +47,7 @@
     </span>
   </span>
   @@END_IF@@
-  <p><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@"
+  <p class="entry_name"><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@"
   @@IF@@ @_ADMIN_@ and @_HIDDEN_@
     class="hidden_entry"
   @@END_IF@@
@@ -60,7 +60,9 @@
   </a></p>
   <ul class="thumb_metadata">
     <li class="photocat">@_CATEGORY_@</li>
-    <li>@_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@</li>
+    <li title="@_BABEL_COMMENT_COUNTER_@ / @_BABEL_VISIT_COUNTER_@">
+       @_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@
+    </li>
     <li class="photoauthor">
       @@IF@@ @_REVEALED_@
         @@IF@@ @_OWNER_@ /= @_LOGIN_@
