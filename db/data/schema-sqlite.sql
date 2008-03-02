@@ -123,7 +123,7 @@ create trigger update_post_status after insert on post_comment
    begin
       update post
          set comment_counter=comment_counter + 1,
-	     last_comment_id=new.comment_id
+             last_comment_id=new.comment_id
          where id = new.post_id;
    end;
 
