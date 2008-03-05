@@ -176,26 +176,31 @@ package body V2P.Callbacks.Page is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      P   : constant Parameters.List := Status.Parameters (Request);
-      FID : constant Database.Id :=
-              Database.Id'Value
-                (Parameters.Get
-                   (P, Template_Defs.Page_Forum_Threads.HTTP.FID));
+      P       : constant Parameters.List := Status.Parameters (Request);
+      FID     : constant Database.Id :=
+                  Database.Id'Value
+                    (Parameters.Get
+                       (P, Template_Defs.Page_Forum_Threads.HTTP.FID));
+      Cur_FID : constant Natural :=
+                  V2P.Context.Counter.Get_Value
+                    (Context => Context.all,
+                     Name    => Template_Defs.Set_Global.FID);
    begin
-      --  Set forum Id into the context
-
-      V2P.Context.Counter.Set_Value
-        (Context => Context.all,
-         Name    => Template_Defs.Set_Global.FID,
-         Value   => FID);
-
       if Context.Exist (Template_Defs.Set_Global.TID) then
          Context.Remove (Template_Defs.Set_Global.TID);
       end if;
 
-      --  Clear current filter
+      --  Set forum Id into the context, and clear current filter if changing
+      --  forum.
 
-      Context.Remove (Template_Defs.Set_Global.FILTER_CATEGORY);
+      if Cur_FID /= FID then
+         V2P.Context.Counter.Set_Value
+           (Context => Context.all,
+            Name    => Template_Defs.Set_Global.FID,
+            Value   => FID);
+
+         Context.Remove (Template_Defs.Set_Global.FILTER_CATEGORY);
+      end if;
 
       if Parameters.Exist (P, Template_Defs.Block_Forum_List.HTTP.FROM) then
          Set_First_Post : declare
