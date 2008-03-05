@@ -47,7 +47,7 @@ install: create_db
 	(cd data; $(CP) $(DBNAME) $(GWIAD_ROOT)/plugins/vision2pixels/db)
 
 create_db:
-	(cd data; rm -f $(DBNAME); ./$(BSCRIPT))
+	(cd data; ./$(BSCRIPT))
 
 run_tests:
 	(cd test; ../obj/db_harness > $(LOGFILE))
@@ -58,4 +58,4 @@ runtests: create_db run_tests
 
 clean:
 	-$(GNAT) clean -XPRJ_Build=$(MODE) -Pdb_test
-	-$(RM) test/*.res test/db_harness.log.*
+	-$(RM) test/*.res test/db_harness.log.* data/*.db
