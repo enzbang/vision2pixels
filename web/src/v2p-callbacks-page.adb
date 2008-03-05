@@ -193,6 +193,10 @@ package body V2P.Callbacks.Page is
          Context.Remove (Template_Defs.Set_Global.TID);
       end if;
 
+      --  Clear current filter
+
+      Context.Remove (Template_Defs.Set_Global.FILTER_CATEGORY);
+
       if Parameters.Exist (P, Template_Defs.Block_Forum_List.HTTP.FROM) then
          Set_First_Post : declare
             From : Positive;
