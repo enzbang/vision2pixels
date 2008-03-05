@@ -1,5 +1,32 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
+<p class="threads_page_info"></p>
+
+@@-- Navigation links
+<ul id="bftt_navigate">
+  <li class="prev_link"
+  @@IF@@ @_NAV_FROM_@ = 1
+  style="visibility:hidden"
+  @@END_IF@@
+  >
+    <a href="#" id="bftt_goto_previous_page">@_BABEL_PREVIOUS_PAGE_@</a>
+  </li>
+  @@IF@@ @_TOTAL_NB_THREADS_@ /= 0
+  <li class="nav_info">@_NAV_FROM_@ .. @_SUB(1):ADD(NB_LINE_RETURNED):NAV_FROM_@ / @_TOTAL_NB_THREADS_@</li>
+  @@END_IF@@
+  <li class="next_link"
+  @@IF@@ @_ADD(NB_LINE_RETURNED):NAV_FROM_@ >= @_TOTAL_NB_THREADS_@
+     style="visibility:hidden"
+  @@END_IF@@
+  >
+    <a href="#" id="bftt_goto_next_page">@_BABEL_NEXT_PAGE_@</a>
+  </li>
+
+</ul>
+
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bftt_goto_previous_page)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bftt_goto_next_page)
+
 <div id="bftt_forum_text">
 <table class="forum_text">
 <tr class="table_header">

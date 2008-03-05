@@ -41,6 +41,30 @@ insert into post
     values (2, 'vends nikon D200', 0, 'en tres mauvais état', 6, datetime(current_timestamp, '-2.0008 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
     values (3, 'vends pentax', 0, 'avec des pellicules Kodacolor 100 - 24 poses', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+insert into post
+    values (4, 'vends 4', 0, '4', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+insert into post
+    values (5, 'vends 5', 0, '5', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+insert into post
+    values (6, 'vends 6', 0, '6', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+insert into post
+    values (7, 'vends 7', 0, '7', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+insert into post
+    values (8, 'vends 8', 0, '8', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+insert into post
+    values (9, 'vends 9', 0, '9', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+insert into post
+    values (10, 'vends 10', 0, '10', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+insert into post
+    values (11, 'vends 11', 0, '11', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+insert into post
+    values (12, 'vends 12', 0, '12', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+insert into post
+    values (13, 'vends 13', 0, '13', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+insert into post
+    values (14, 'vends 14', 0, '14', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+insert into post
+    values (15, 'vends 15', 0, '15', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 
 insert into post
     values (54, 'un camion', 1, 'commentaire du camion', 2, datetime(current_timestamp, '-2.0010 days'), NULL, 1, 0, 0, "FALSE");
@@ -173,6 +197,18 @@ insert into post values (141, 'Hissez haut...', 88, NULL, 2, datetime(current_ti
 insert into user_post values ('enzbang', 1);
 insert into user_post values ('turbo', 2);
 insert into user_post values ('turbo', 3);
+insert into user_post values ('turbo', 4);
+insert into user_post values ('turbo', 5);
+insert into user_post values ('turbo', 6);
+insert into user_post values ('turbo', 7);
+insert into user_post values ('turbo', 8);
+insert into user_post values ('turbo', 9);
+insert into user_post values ('turbo', 10);
+insert into user_post values ('turbo', 11);
+insert into user_post values ('turbo', 12);
+insert into user_post values ('turbo', 13);
+insert into user_post values ('turbo', 14);
+insert into user_post values ('turbo', 15);
 
 insert into user_post values ('turbo', 54);
 insert into user_post values ('turbo', 55);

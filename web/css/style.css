@@ -140,14 +140,14 @@ div#pfe_image_block {
 @@--
 @@--  Navigation links
 @@--
-ul#bft_navigate li, ul#pfe_navigate li {
+ul#bft_navigate li, ul#pfe_navigate li, ul#bftt_navigate li {
    display:inline;
    font-variant:small-caps;
    font-size:0.9em;
    padding-right:1em;
 }
 @@--
-ul#bft_navigate {
+ul#bft_navigate, ul#bftt_navigate {
    margin: 0 auto;
    text-align:center;
 }
@@ -160,7 +160,7 @@ ul#pfe_navigate li img {
    display:none;
 }
 @@--
-ul#bft_navigate li.nav_info {
+ul#bft_navigate li.nav_info, ul#bftt_navigate li.nav_info {
    font-size:0.7em;
 }
 @@--
