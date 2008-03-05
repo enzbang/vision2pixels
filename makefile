@@ -113,7 +113,6 @@ check_tests:
 runtests: init_tests runtests-default check_tests
 
 install_db:
-	$(MKDIR) $(GWIAD_ROOT)/plugins/vision2pixels/db
 	$(MAKE) -C db install $(OPTIONS)
 
 install_gwiad_plugin: install_db

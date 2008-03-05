@@ -9,9 +9,19 @@ DO_VOTE="vote.sql"
 
 SQLITE=sqlite3
 
-rm -f ${DATABASE_NAME}
+BUILD=1
 
-${SQLITE} ${DATABASE_NAME} < ${SCHEMA_DB}
-${SQLITE} ${DATABASE_NAME} < ${INITIAL_DATA}
-${SQLITE} ${DATABASE_NAME} < ${VOTE_PONDERATED}
-${SQLITE} ${DATABASE_NAME} < ${DO_VOTE}
+if [ -f files.md5 ]; then
+    md5sum --status --check files.md5
+    BUILD=$?
+fi;
+
+if [ $BUILD == 1 -o ! -f $DATABASE_NAME ]; then
+    rm -f ${DATABASE_NAME}
+
+    ${SQLITE} ${DATABASE_NAME} < ${SCHEMA_DB}
+    ${SQLITE} ${DATABASE_NAME} < ${INITIAL_DATA}
+    ${SQLITE} ${DATABASE_NAME} < ${VOTE_PONDERATED}
+    ${SQLITE} ${DATABASE_NAME} < ${DO_VOTE}
+    md5sum *.sql > files.md5
+fi;
