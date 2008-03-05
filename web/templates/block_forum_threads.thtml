@@ -1,7 +1,3 @@
-@@-- @_LAZY_FORUM_NAVIGATE_@
-@@-- ??? no navigation for now, this will be added later when the number
-@@-- of post on a single page will be limited to some value
-@@--
 @@INCLUDE@@ set_babel.thtml
 @@--
 

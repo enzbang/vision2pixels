@@ -30,8 +30,6 @@ with V2P.Navigation_Links;
 with V2P.Settings;
 with V2P.URL;
 
-with V2P.Template_Defs.Block_Forum_Navigate;
-
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
@@ -180,7 +178,10 @@ package body V2P.Callbacks.Page is
       P    : constant Parameters.List := Status.Parameters (Request);
       FID  : constant Database.Id := Database.Id'Value
                (Parameters.Get (P, Template_Defs.Page_Forum_Threads.HTTP.FID));
-      From : Positive := 1;
+      From : constant Positive := 1;
+      --  Always start to first post when entering a forum
+      --  ??? would be nice to set this to the current entry being displayed
+      --  when going back to the forum when in a forum entry.
    begin
       --  Set forum Id into the context
 
@@ -191,13 +192,6 @@ package body V2P.Callbacks.Page is
 
       if Context.Exist (Template_Defs.Set_Global.TID) then
          Context.Remove (Template_Defs.Set_Global.TID);
-      end if;
-
-      if Parameters.Exist
-        (P, Template_Defs.Block_Forum_Navigate.HTTP.FROM)
-      then
-         From := Positive'Value
-           (Parameters.Get (P, Template_Defs.Block_Forum_Navigate.HTTP.FROM));
       end if;
 
       V2P.Context.Not_Null_Counter.Set_Value
