@@ -30,6 +30,7 @@ with V2P.Navigation_Links;
 with V2P.Settings;
 with V2P.URL;
 
+with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
@@ -175,13 +176,11 @@ package body V2P.Callbacks.Page is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      P    : constant Parameters.List := Status.Parameters (Request);
-      FID  : constant Database.Id := Database.Id'Value
-               (Parameters.Get (P, Template_Defs.Page_Forum_Threads.HTTP.FID));
-      From : constant Positive := 1;
-      --  Always start to first post when entering a forum
-      --  ??? would be nice to set this to the current entry being displayed
-      --  when going back to the forum when in a forum entry.
+      P   : constant Parameters.List := Status.Parameters (Request);
+      FID : constant Database.Id :=
+              Database.Id'Value
+                (Parameters.Get
+                   (P, Template_Defs.Page_Forum_Threads.HTTP.FID));
    begin
       --  Set forum Id into the context
 
@@ -194,8 +193,22 @@ package body V2P.Callbacks.Page is
          Context.Remove (Template_Defs.Set_Global.TID);
       end if;
 
-      V2P.Context.Not_Null_Counter.Set_Value
-        (Context.all, Template_Defs.Set_Global.NAV_FROM, From);
+      if Parameters.Exist (P, Template_Defs.Block_Forum_List.HTTP.FROM) then
+         Set_First_Post : declare
+            From : Positive;
+         begin
+            From := Positive'Value
+              (Parameters.Get
+                 (P, Template_Defs.Block_Forum_List.HTTP.FROM));
+            V2P.Context.Not_Null_Counter.Set_Value
+              (Context.all, Template_Defs.Set_Global.NAV_FROM, From);
+         end Set_First_Post;
+
+      elsif not Context.Exist (Template_Defs.Set_Global.NAV_FROM) then
+         --  Default is to start to first post when entering a forum
+         V2P.Context.Not_Null_Counter.Set_Value
+           (Context.all, Template_Defs.Set_Global.NAV_FROM, 1);
+      end if;
 
       Templates.Insert
         (Translations, Database.Get_Forum (FID, Tid => Database.Empty_Id));
