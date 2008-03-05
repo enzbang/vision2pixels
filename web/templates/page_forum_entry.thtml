@@ -13,9 +13,14 @@
 
     @@IF@@ @_PREVIOUS_@ /= "0"
     <li class="prev_link">
+      @@INLINE@@
       <a href="@_FORUM_ENTRY_URL_@?TID=@_PREVIOUS_@">
+        @@IF@@ @_PREVIOUS_THUMB_@ /= ""
         <img alt="previous"
-             src="@_THUMB_SOURCE_PREFIX_@/@_PREVIOUS_THUMB_@" />@_BABEL_PREVIOUS_@</a>
+             src="@_THUMB_SOURCE_PREFIX_@/@_PREVIOUS_THUMB_@" />
+        @@END_IF@@
+        @_BABEL_PREVIOUS_@</a>
+      @@END_INLINE@@
     </li>
     @@END_IF@@
     <li id="pfe_go_to_list">
@@ -23,9 +28,14 @@
     </li>
     @@IF@@ @_NEXT_@ /= "0"
     <li class="next_link">
+      @@INLINE@@
       <a href="@_FORUM_ENTRY_URL_@?TID=@_NEXT_@">
+        @@IF@@ @_NEXT_THUMB_@ /= ""
         <img alt="next"
-	     src="@_THUMB_SOURCE_PREFIX_@/@_NEXT_THUMB_@" />@_BABEL_NEXT_@</a>
+	     src="@_THUMB_SOURCE_PREFIX_@/@_NEXT_THUMB_@" />
+        @@END_IF@@
+        @_BABEL_NEXT_@</a>
+      @@END_INLINE@@
     </li>
     @@END_IF@@
     @@IF@@ @_PREVIOUS_@ = "0" and @_NEXT_@ = "0"
