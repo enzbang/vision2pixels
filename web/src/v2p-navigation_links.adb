@@ -113,10 +113,10 @@ package body V2P.Navigation_Links is
    is
       use Post_Ids;
       use Template_Defs;
+
       Posts   : constant Vector :=
                   Links.Get_Value
-                    (Context => Context.all,
-                     Name    => Navigation_Links_Name);
+                    (Context => Context.all, Name => Navigation_Links_Name);
       Current : Cursor := Find (Posts, Id);
    begin
       if Current = No_Element then
@@ -177,11 +177,10 @@ package body V2P.Navigation_Links is
    is
       use Post_Ids;
       use Template_Defs;
+
       Posts   : constant Vector :=
                   Links.Get_Value
-                    (Context => Context.all,
-                     Name    => Navigation_Links_Name);
-
+                    (Context => Context.all, Name => Navigation_Links_Name);
       Current : Cursor := Find (Posts, Id);
    begin
       if Current = No_Element then

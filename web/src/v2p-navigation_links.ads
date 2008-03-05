@@ -35,22 +35,21 @@ package V2P.Navigation_Links is
 
    function Previous_Post
      (Context : access Services.Web_Block.Context.Object;
-      Id      : in Positive) return Natural;
+      Id      : in     Positive) return Natural;
    --  Returns previous post stored in Post_Ids.Vector
 
    function Next_Post
      (Context : access Services.Web_Block.Context.Object;
-      Id      : in Positive) return Natural;
+      Id      : in      Positive) return Natural;
    --  Returns next post stored in Post_Ids.Vector
 
-   package Post_Ids is
-     new Containers.Indefinite_Vectors
-       (Index_Type => Positive, Element_Type => Positive);
+   package Post_Ids is new Containers.Indefinite_Vectors
+     (Index_Type => Positive, Element_Type => Positive);
    --  Post_Ids stores all visible post ids in forum threads page
 
    procedure Set
      (Context : access Services.Web_Block.Context.Object;
-      Posts   : in Post_Ids.Vector);
+      Posts   : in     Post_Ids.Vector);
    --  Stores the given post ids in context
 
 private
