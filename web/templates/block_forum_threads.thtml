@@ -1,8 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-
-<p class="threads_page_info">
-</p>
+<p class="threads_page_info"></p>
 
 <!-- @_NB_LINE_RETURNED_@ -->
 
