@@ -6,7 +6,12 @@
   <li class="index"><a href="/">@_BABEL_V2P_WEBSITE_NAME_@</a></li>
   @@TABLE@@
   <li class="fc_@_FID_@">
-    <a href="@_FORUM_THREAD_URL_@?FID=@_FID_@&FROM=1">@_FORUM_NAME_@</a>
+    @@IF@@ @_FID_@ = @_Current_FID_@
+      <a class="selected"
+          href="@_FORUM_THREAD_URL_@?FID=@_FID_@">@_FORUM_NAME_@</a>
+    @@ELSE@@
+      <a href="@_FORUM_THREAD_URL_@?FID=@_FID_@&FROM=1">@_FORUM_NAME_@</a>
+    @@END_IF@@
   </li>
   @@END_TABLE@@
 </ul>
