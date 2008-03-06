@@ -1139,3 +1139,6 @@ body.user_register_page label {
 .rss_link {
     vertical-align:middle;
 }
+#bfl_navcontainer a.selected {
+    color:white;
+}
