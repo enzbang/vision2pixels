@@ -1976,20 +1976,20 @@ package body V2P.Database is
    is
       use type AWS.Templates.Tag;
 
-      DBH          : constant TLS_DBH_Access :=
-                       TLS_DBH_Access (DBH_TLS.Reference);
-      SQL          : constant String :=
-                       "select w.post_id, photo.filename "
-                         & "from user_photo_of_the_week w, photo, post "
-                         & "where w.post_id = post.id "
-                         & "and post.photo_id = photo.id "
-                         & "and week_id=0 "
-                         & "and w.user_login = " & Q (Uid);
+      DBH         : constant TLS_DBH_Access :=
+                      TLS_DBH_Access (DBH_TLS.Reference);
+      SQL         : constant String :=
+                      "select w.post_id, photo.filename "
+                        & "from user_photo_of_the_week w, photo, post "
+                        & "where w.post_id = post.id "
+                        & "and post.photo_id = photo.id "
+                        & "and week_id=0 "
+                        & "and w.user_login = " & Q (Uid);
 
-      Set          : Templates.Translate_Set;
-      Iter         : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line         : DB.String_Vectors.Vector;
-      Ids, Thumbs  : Templates.Tag;
+      Set         : Templates.Translate_Set;
+      Iter        : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line        : DB.String_Vectors.Vector;
+      Ids, Thumbs : Templates.Tag;
    begin
       Connect (DBH);
       DBH.Handle.Prepare_Select (Iter, SQL);
