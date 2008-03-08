@@ -1,0 +1,59 @@
+
+Note for developpers
+====================
+
+Releases
+--------
+
+When a new release is ready.
+
+1. create a tag
+
+   $ git tag -a v1.0
+
+2. create the corresponding archive
+
+   $ make && make install-distrib
+
+The distribution tarball will be named using the last tag found on the
+master branch. So there is nothing special to do.
+
+Release Branches
+----------------
+
+All commits goes to the master branch.
+
+Bug fixes are merged back into the appropriate branch after approval
+from all maintainers.
+
+If the branch is not yet created it needs to be created stating from the last
+release tag:
+
+   $ git branch v1.1 v1.0
+
+Which create the branch named v1.1 starting from release tag v1.0.
+
+Developpers Branches
+--------------------
+
+As Git permits to create branches locally for whatever reasons there is no
+specific rules to follow except if the branch is to be shared with others.
+
+In the case the branch must be named starting with the developper initial,
+a slash and then the branch name. For example, Pascal Obry will create the
+branches as follow:
+
+   $ git co -b po/new-topic
+
+Style Guide
+-----------
+
+We follow closely the AWS's Style Guide for the Ada code. You can find a
+copy of this document on the AWS Subversion archive.
+
+Using style_check pre-commit hook will catch many mistakes. It is strongly
+encouraged to setup it.
+
+See ready to use pre-commit hook in the git-scripts repository:
+
+   $ git clone git://repo.or.cz/git-scripts.git
