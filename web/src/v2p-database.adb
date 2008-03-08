@@ -1983,8 +1983,7 @@ package body V2P.Database is
                          & "from user_photo_of_the_week w, photo, post "
                          & "where w.post_id = post.id "
                          & "and post.photo_id = photo.id "
-                         & "and week_id = "
-                         & "(select max(id) from photo_of_the_week) "
+                         & "and week_id=0 "
                          & "and w.user_login = " & Q (Uid);
 
       Set          : Templates.Translate_Set;
