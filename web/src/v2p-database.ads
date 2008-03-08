@@ -141,6 +141,9 @@ package V2P.Database is
    --  Returns the user's data. Returns the No_User_Data if User cannot be
    --  found into the database.
 
+   procedure Set_Last_Logged (Uid : in String);
+   --  Set last logged status in the database
+
    function Get_User_Comment
      (Uid     : in String;
       Textify : in Boolean := False) return Templates.Translate_Set;
