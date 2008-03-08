@@ -93,6 +93,10 @@ package body V2P.Callbacks.Ajax is
             Template_Defs.Set_Global.PASSWORD, To_String (User_Data.Password));
          Session.Set (SID, Template_Defs.Set_Global.ADMIN, User_Data.Admin);
 
+         --  Set last logged status
+
+         Database.Set_Last_Logged (Login);
+
          --  Set user's filtering preference
          --  ??? to be done when user's preferences are implemented
 

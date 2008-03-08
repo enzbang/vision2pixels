@@ -2437,6 +2437,18 @@ package body V2P.Database is
          return False;
    end Register_User;
 
+   ---------------------
+   -- Set_Last_Logged --
+   ---------------------
+
+   procedure Set_Last_Logged (Uid : in String) is
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+   begin
+      Connect (DBH);
+      DBH.Handle.Execute
+        ("update user set last_logged=datetime('now') where login=" & Q (Uid));
+   end Set_Last_Logged;
+
    ---------------
    -- To_String --
    ---------------
