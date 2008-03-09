@@ -1207,13 +1207,13 @@ package body V2P.Database is
                      Templates.Insert
                        (Set, Templates.Assoc
                           (Page_Forum_Entry.DATE_REVEALED_MINUTES,
-                           Utils.Image
-                             (Natural (Hours_Diff * 60.0))));
+                           Utils.Image (Natural (Hours_Diff * 60.0))));
                   end Compute_Delay;
 
                else
                   Revealed := True;
                end if;
+
                Templates.Insert
                  (Set,
                   Templates.Assoc
@@ -1315,8 +1315,7 @@ package body V2P.Database is
       function Build_From
         (User       : in String;
          Forum      : in Forum_Filter;
-         Count_Only : in Boolean := False)
-         return String;
+         Count_Only : in Boolean := False) return String;
       --  Returns the SQL from
 
       function Build_Where
@@ -2169,11 +2168,11 @@ package body V2P.Database is
    ------------------
 
    function Insert_Photo
-     (Uid         : in String;
-      Filename    : in String;
-      Height      : in Integer;
-      Width       : in Integer;
-      Size        : in Integer) return String
+     (Uid      : in String;
+      Filename : in String;
+      Height   : in Integer;
+      Width    : in Integer;
+      Size     : in Integer) return String
    is
 
       procedure Insert_Table_Photo
@@ -2196,11 +2195,12 @@ package body V2P.Database is
         (Filename : in String;
          Height   : in Integer;
          Width    : in Integer;
-         Size     : in Integer) is
+         Size     : in Integer)
+      is
          SQL : constant String :=
-           "insert into photo ('filename', 'height', 'width', 'size') "
-           & "values (" & Q (Filename) & ',' & I (Height) & ','
-           & I (Width) & ',' & I (Size) & ')';
+                 "insert into photo ('filename', 'height', 'width', 'size') "
+                   & "values (" & Q (Filename) & ',' & I (Height) & ','
+                   & I (Width) & ',' & I (Size) & ')';
       begin
          DBH.Handle.Execute (SQL);
       end Insert_Table_Photo;
