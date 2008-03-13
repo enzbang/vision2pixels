@@ -10,6 +10,16 @@
   rapports d'erreur ou des demandes de fonctionnalités. Le site ne peut
   évoluer sans vous.</p>
 
+<h2>Version 1.2 (mars 2008)</h2>
+
+<p>Correction de l'affichage des votes pour la photo de la semaine dans la
+  page utilisateur.</p>
+
+<p>Amélioration de l'affichages des photos lors de l'utilisation du tri
+  "Dernièrement commentées" conjointement avec un filtre sur les dates.</p>
+
+<p>Corrections de bugs mineurs.</p>
+
 <h2>Version 1.1 (mars 2008)</h2>
 
 <p>Quelques ajustements dans la gestion de la navigation et des filtres.</p>
