@@ -1437,7 +1437,7 @@ package body V2P.Database is
          end if;
 
          if User /= "" then
-               --  Restrict to a specific user
+            --  Restrict to a specific user
             Append (Where_Stmt,
                     " and user_post.user_login = " & Q (User));
          end if;
