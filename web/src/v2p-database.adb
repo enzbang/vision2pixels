@@ -1368,6 +1368,14 @@ package body V2P.Database is
             Append (From_Stmt, ", forum");
          end if;
 
+         case Sorting is
+            when Last_Commented =>
+               Append (From_Stmt, ", comment");
+
+            when Last_Posted | Best_Noted | Need_Attention =>
+               null;
+         end case;
+
          return To_String (From_Stmt);
       end Build_From;
 
@@ -1393,8 +1401,11 @@ package body V2P.Database is
               & "visit_counter, post.hidden, user_post.user_login";
 
             case Sorting is
-               when Last_Posted | Last_Commented | Need_Attention =>
+               when Last_Posted | Need_Attention =>
                   null;
+
+               when Last_Commented =>
+                  Append (Select_Stmt, ", comment.date");
 
                when Best_Noted =>
                   Append
@@ -1448,19 +1459,39 @@ package body V2P.Database is
                     " and category.id = " & Q (Filter_Cat));
          end if;
 
+         --  Sorting and filters
+
+         case Sorting is
+            when Last_Commented =>
+               Append (Where_Stmt, " and comment.id = post.last_comment_id");
+
+               case Filter is
+                  when Today | Two_Days | Seven_Days =>
+                     Append (Where_Stmt, " and date(comment.date)");
+
+                  when All_Messages =>
+                     null;
+               end case;
+
+            when Last_Posted | Best_Noted | Need_Attention =>
+               case Filter is
+                  when Today | Two_Days | Seven_Days =>
+                     Append (Where_Stmt, " and date(post.date_post)");
+
+                  when All_Messages =>
+                     null;
+               end case;
+         end case;
+
          case Filter is
             when Today =>
-               Append (Where_Stmt,
-                 " and date(post.date_post) = date(current_date)");
+               Append (Where_Stmt, " = date(current_date)");
 
             when Two_Days =>
-               Append (Where_Stmt,
-                 " and date(post.date_post) > date(current_date, '-2 days')");
+               Append (Where_Stmt, " > date(current_date, '-2 days')");
 
             when Seven_Days =>
-               Append (Where_Stmt,
-                       " and date(post.date_post) "
-                       & "> date(current_date, '-7 days')");
+               Append (Where_Stmt, " > date(current_date, '-7 days')");
 
             when All_Messages =>
                null;
