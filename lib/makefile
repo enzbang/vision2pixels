@@ -20,7 +20,7 @@
 #
 ###########################################################################
 
-MODULES = g2f_io
+MODULES = g2f_io gnadelite
 
 include ../mk.modules
 
