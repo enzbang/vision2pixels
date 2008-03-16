@@ -73,6 +73,10 @@ create table "photo" (
    "filename" varchar(512) unique,
    "height" integer,
    "width" integer,
+   "medium_height" integer,
+   "medium_width" integer,
+   "thumb_height" integer,
+   "thumb_width" integer,
    "size" integer
 );
 

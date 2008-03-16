@@ -349,7 +349,7 @@ package body V2P.Callbacks.Page is
                   Filename           : constant String := New_Image.Filename;
 
                   New_Photo_Filename : constant String := Filename
-                    (Filename'First + Images_Full_Prefix'Length + 1
+                    (Filename'First + Big_Images_Full_Prefix'Length + 1
                      .. Filename'Last);
                   Pid                : constant String
                     := Database.Insert_Photo
@@ -357,6 +357,14 @@ package body V2P.Callbacks.Page is
                        Filename => New_Photo_Filename,
                        Height   => Natural (New_Image.Dimension.Height),
                        Width    => Natural (New_Image.Dimension.Width),
+                       Medium_Height =>
+                         Natural (New_Image.Dimension.Medium_Height),
+                       Medium_Width  =>
+                         Natural (New_Image.Dimension.Medium_Width),
+                       Thumb_Height =>
+                         Natural (New_Image.Dimension.Thumb_Height),
+                       Thumb_Width  =>
+                         Natural (New_Image.Dimension.Thumb_Width),
                        Size     => Natural (New_Image.Dimension.Size));
                begin
                   Templates.Insert

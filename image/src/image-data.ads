@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                         Copyright (C) 2006-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -36,9 +36,13 @@ package Image.Data is
    type Image_Data is tagged private;
 
    type Image_Dimension is record
-      Width  : G2F.IO.Image_Size_T;
-      Height : G2F.IO.Image_Size_T;
-      Size   : Directories.File_Size;
+      Width         : G2F.IO.Image_Size_T;
+      Height        : G2F.IO.Image_Size_T;
+      Medium_Width  : G2F.IO.Image_Size_T;
+      Medium_Height : G2F.IO.Image_Size_T;
+      Thumb_Width   : G2F.IO.Image_Size_T;
+      Thumb_Height  : G2F.IO.Image_Size_T;
+      Size          : Directories.File_Size;
    end record;
 
    Null_Dimension : constant Image_Dimension;
@@ -53,19 +57,11 @@ package Image.Data is
    --  Set image filename, read image info and create thumbnail
    --  Generate image and thumb filename under Root_Dir.
 
-   procedure Init
-     (Img                    : in out Image_Data;
-      Original_Filename      : in     String;
-      Out_Filename           : in     String := "";
-      Out_Thumbnail_Filename : in     String := "";
-      Out_Max_Dimension      : in     Image_Dimension := Null_Dimension);
-   --  Set image filename, read image info and create thumbnail
-
    function Filename (Img : in Image_Data) return String;
    --  Returns image filename
 
    function Dimension (Img : in Image_Data) return Image_Dimension;
-   --  Returns image dimension
+   --  Returns image max dimension
 
    function Init_Status (Img : in Image_Data) return Image_Init_Status;
    --  Returns image init_status
@@ -76,7 +72,10 @@ package Image.Data is
 private
 
    Null_Dimension : constant Image_Dimension :=
-                      Image_Dimension'(Width => 0, Height => 0, Size => 0);
+                      Image_Dimension'(Width => 0, Height => 0,
+                                       Medium_Width => 0, Medium_Height => 0,
+                                       Thumb_Width => 0, Thumb_Height => 0,
+                                       Size => 0);
 
    type Image_Data is new Finalization.Controlled with record
       Info_Ptr    : G2F.Image_Info_Ptr;

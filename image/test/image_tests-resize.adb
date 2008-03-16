@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                        Copyright (C) 2006-2007                           --
+--                            Copyright (C) 2008                            --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -29,7 +29,7 @@ with V2P.Settings;
 with G2F;
 with Image.Data;
 
-package body Image_Tests.Thumbnails is
+package body Image_Tests.Resize is
 
    use Ada;
    use Ada.Directories;
@@ -38,14 +38,16 @@ package body Image_Tests.Thumbnails is
    use AUnit.Test_Cases.Registration;
    use AUnit.Assertions;
 
-   procedure Create_Thumbnail (T : in out AUnit.Test_Cases.Test_Case'Class);
-   --  Create Thumbnails
+   procedure Create_Resized_Image
+     (T : in out AUnit.Test_Cases.Test_Case'Class);
+   --  Create Resized Images
 
-   ----------------------
-   -- Create_Thumbnail --
-   ----------------------
+   --------------------------
+   -- Create_Resized_Image --
+   --------------------------
 
-   procedure Create_Thumbnail (T : in out AUnit.Test_Cases.Test_Case'Class) is
+   procedure Create_Resized_Image
+     (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
       use Image.Data;
       S_Name          : constant String := "gnu.jpg";
@@ -62,7 +64,7 @@ package body Image_Tests.Thumbnails is
       Test_Image      : Image.Data.Image_Data;
 
    begin
-      --  Read image info and create thumbnail
+      --  Read image info and create resized image
 
       Image.Data.Init (Img => Test_Image, Root_Dir => ".", Filename => S_Name);
 
@@ -72,7 +74,7 @@ package body Image_Tests.Thumbnails is
       Assert
         (Ada.Directories.Exists (Thumb_Name),
          Thumb_Name & "does not exist");
-   end Create_Thumbnail;
+   end Create_Resized_Image;
 
    ----------
    -- Name --
@@ -81,7 +83,7 @@ package body Image_Tests.Thumbnails is
    function Name (T : in Test_Case) return Message_String is
       pragma Unreferenced (T);
    begin
-      return New_String ("Create image thumbnails");
+      return New_String ("Create medium image size");
    end Name;
 
    --------------------
@@ -90,7 +92,8 @@ package body Image_Tests.Thumbnails is
 
    procedure Register_Tests (T : in out Test_Case) is
    begin
-      Register_Routine (T, Create_Thumbnail'Access, "Create Thumbnails");
+      Register_Routine (T, Create_Resized_Image'Access,
+                        "Create medium size images");
    end Register_Tests;
 
    ---------------
@@ -104,4 +107,4 @@ package body Image_Tests.Thumbnails is
    end Tear_Down;
 
 
-end Image_Tests.Thumbnails;
+end Image_Tests.Resize;

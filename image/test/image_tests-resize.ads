@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2008                          --
+--                           Copyright (C) 2008                             --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,24 +19,23 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-package V2P.URL is
+with AUnit;
 
-   function User_Name (URL : in String) return String;
-   --  Returns User_Name from URL
+package Image_Tests.Resize is
 
-   function Big_Images_Full_Prefix return String;
-   --  Returns images full prefix : Vision2Pixels plugin path + image path
-   --  or image path if it is an absolute path.
-   --  Removes the trailing '/' if it exists.
+   use AUnit;
+   use AUnit.Test_Cases;
+   use AUnit.Message_Strings;
 
-   function Medium_Images_Full_Prefix return String;
-   --  Returns images full prefix : Vision2Pixels plugin path + image path
-   --  or image path if it is an absolute path.
-   --  Removes the trailing '/' if it exists.
+   type Test_Case is new AUnit.Test_Cases.Test_Case with null record;
 
-   function Thumbs_Full_Prefix return String;
-   --  Returns thumbs full prefix : Vision2Pixels plugin path + thumbs path
-   --  or thumbs path if it is an absolute path
-   --  Removes the trailing '/' if it exists.
+   procedure Register_Tests (T : in out Test_Case);
+   --  Register routines to be run
 
-end V2P.URL;
+   procedure Tear_Down (T : in out Test_Case);
+   --  Releases all resources
+
+   function Name (T : in Test_Case) return Message_String;
+   --  Returns name identifying the test case
+
+end Image_Tests.Resize;

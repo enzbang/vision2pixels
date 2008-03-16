@@ -170,9 +170,6 @@ package body V2P.Web_Server is
    function RSS_Callback (Request : in Status.Data) return Response.Data;
    --  RSS callback
 
-   function Thumbs_Callback (Request : in Status.Data) return Response.Data;
-   --  Thumbs callback
-
    function Website_Data (Request : in Status.Data) return Response.Data;
    --  Website data (images, ...) callback
 
@@ -325,7 +322,12 @@ package body V2P.Web_Server is
       Templates.Insert
         (Translations, Templates.Assoc
            (Template_Defs.Set_Global.IMAGE_SOURCE_PREFIX,
-            Settings.Images_Source_Prefix));
+            Settings.Big_Images_Source_Prefix));
+
+      Templates.Insert
+        (Translations, Templates.Assoc
+           (Template_Defs.Set_Global.MEDIUM_IMAGE_SOURCE_PREFIX,
+            Settings.Medium_Images_Source_Prefix));
 
       Web_Page := Services.Web_Block.Registry.Build
         (URI, C_Request, Translations,
@@ -456,13 +458,54 @@ package body V2P.Web_Server is
 
    function Photos_Callback (Request : in Status.Data) return Response.Data is
       URI  : constant String := Status.URI (Request);
-      File : constant String := Compose
-        (V2P.URL.Images_Full_Prefix,
-         URI
-           (URI'First + Settings.Images_Source_Prefix'Length + 1 .. URI'Last));
+
+      function Filename return String;
+      --  Returns image filename
+
+      function Filename return String is
+      begin
+         if URI (URI'First .. Settings.Medium_Images_Source_Prefix'Length)
+           = Settings.Medium_Images_Source_Prefix then
+            Logs.Write
+              (Name    => Module,
+               Kind    => Logs.Error,
+               Content =>
+                 (Compose
+                    (V2P.URL.Medium_Images_Full_Prefix,
+                     URI (URI'First +
+                            Settings.Medium_Images_Source_Prefix'Length
+                            + 1 .. URI'Last))));
+            return Compose
+              (V2P.URL.Medium_Images_Full_Prefix,
+               URI (URI'First + Settings.Medium_Images_Source_Prefix'Length
+                      + 1 .. URI'Last));
+
+         elsif URI (URI'First .. Settings.Big_Images_Source_Prefix'Length)
+           = Settings.Big_Images_Source_Prefix then
+            return Compose
+              (V2P.URL.Big_Images_Full_Prefix,
+               URI (URI'First + Settings.Big_Images_Source_Prefix'Length
+                      + 1 .. URI'Last));
+
+         else
+            return Compose
+              (V2P.URL.Thumbs_Full_Prefix,
+               URI (URI'First + Settings.Thumbs_Source_Prefix'Length
+                      + 1 .. URI'Last));
+         end if;
+
+      exception
+         when others =>
+            Logs.Write
+              (Name    => Module,
+               Kind    => Logs.Error,
+               Content => "Exception");
+            raise;
+      end Filename;
+
       Result : AWS.Response.Data;
    begin
-      Result := Response.File (MIME.Content_Type (File), File);
+      Result := Response.File (MIME.Content_Type (Filename), Filename);
 
       AWS.Response.Set.Add_Header
         (Result,
@@ -498,7 +541,13 @@ package body V2P.Web_Server is
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         Settings.Images_Source_Prefix,
+         Settings.Big_Images_Source_Prefix,
+         Action => Dispatchers.Callback.Create (Photos_Callback'Access),
+         Prefix => True);
+
+      Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         Settings.Medium_Images_Source_Prefix,
          Action => Dispatchers.Callback.Create (Photos_Callback'Access),
          Prefix => True);
 
@@ -511,7 +560,7 @@ package body V2P.Web_Server is
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
          Settings.Thumbs_Source_Prefix,
-         Action => Dispatchers.Callback.Create (Thumbs_Callback'Access),
+         Action => Dispatchers.Callback.Create (Photos_Callback'Access),
          Prefix => True);
 
       Services.Dispatchers.URI.Register
@@ -840,26 +889,6 @@ package body V2P.Web_Server is
 
       return Result;
    end RSS_Callback;
-
-   ---------------------
-   -- Thumbs_Callback --
-   ---------------------
-
-   function Thumbs_Callback (Request : in Status.Data) return Response.Data is
-      URI  : constant String := Status.URI (Request);
-      File : constant String := Compose
-        (V2P.URL.Thumbs_Full_Prefix,
-         URI
-           (URI'First + Settings.Thumbs_Source_Prefix'Length + 1 .. URI'Last));
-      Result : AWS.Response.Data;
-   begin
-      Result := Response.File (MIME.Content_Type (File), File);
-      AWS.Response.Set.Add_Header
-        (Result,
-         AWS.Messages.Expires_Token,
-         AWS.Messages.To_HTTP_Date (In_Ten_Year));
-      return Result;
-   end Thumbs_Callback;
 
    ----------------
    -- Unregister --

@@ -61,7 +61,7 @@ package body V2P.Wiki is
               (S              =>
                  GW_Service'Class (Wiki_World_Service_Access.all),
                Base_URL       => "/",
-               Img_Base_URL   => Settings.Images_Source_Prefix,
+               Img_Base_URL   => Settings.Big_Images_Source_Prefix,
                Text_Directory => "");
 
             Wiki_Id := Set (Wiki_Service_Name,

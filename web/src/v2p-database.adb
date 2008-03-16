@@ -562,7 +562,7 @@ package body V2P.Database is
             Iter.Get_Line (Line);
 
             Exif := Image.Metadata.Embedded.Get
-              (Settings.Get_Images_Path & Directory_Separator
+              (Settings.Get_Big_Images_Path & Directory_Separator
                & DB.String_Vectors.Element (Line, 1));
          end if;
 
@@ -1209,8 +1209,9 @@ package body V2P.Database is
       if Forum_Type = Forum_Photo then
          DBH.Handle.Prepare_Select
            (Iter, "SELECT post.name, post.comment, post.hidden, "
-            & "filename, width, height, user.login, post.date_post, "
-            & " (JULIANDAY(post.date_post, '+"
+            & "filename, width, height, medium_width, medium_height, "
+            & "thumb_width, thumb_height, user.login, post.date_post, "
+            & " (julianday(post.date_post, '+"
             & Utils.Image (Settings.Anonymity_Hours)
             & " hour') - JULIANDAY('NOW')) * 24, category.name, category.id, "
             & "(SELECT id FROM photo_of_the_week AS cdc "
@@ -1256,17 +1257,37 @@ package body V2P.Database is
 
             Templates.Insert
               (Set, Templates.Assoc
-                 (Page_Forum_Entry.OWNER,
+                 (Page_Forum_Entry.MEDIUM_IMAGE_WIDTH,
                   DB.String_Vectors.Element (Line, 7)));
 
             Templates.Insert
               (Set, Templates.Assoc
-                 (Page_Forum_Entry.DATE_POST,
+                 (Page_Forum_Entry.MEDIUM_IMAGE_HEIGHT,
                   DB.String_Vectors.Element (Line, 8)));
+
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Page_Forum_Entry.THUMB_IMAGE_WIDTH,
+                  DB.String_Vectors.Element (Line, 9)));
+
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Page_Forum_Entry.THUMB_IMAGE_HEIGHT,
+                  DB.String_Vectors.Element (Line, 10)));
+
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Page_Forum_Entry.OWNER,
+                  DB.String_Vectors.Element (Line, 11)));
+
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Page_Forum_Entry.DATE_POST,
+                  DB.String_Vectors.Element (Line, 12)));
 
             Is_Revealed : declare
                Hours : constant Float :=
-                         Float'Value (DB.String_Vectors.Element (Line, 9));
+                         Float'Value (DB.String_Vectors.Element (Line, 13));
                Revealed : Boolean;
             begin
                if Hours >= 0.0 then
@@ -1301,7 +1322,7 @@ package body V2P.Database is
             Templates.Insert
               (Set, Templates.Assoc
                  (Page_Forum_Entry.CATEGORY,
-                  DB.String_Vectors.Element (Line, 10)));
+                  DB.String_Vectors.Element (Line, 14)));
 
             Templates.Insert
               (Set, Templates.Assoc
@@ -2345,6 +2366,10 @@ package body V2P.Database is
       Filename : in String;
       Height   : in Integer;
       Width    : in Integer;
+      Medium_Height : in Integer;
+      Medium_Width : in Integer;
+      Thumb_Height : in Integer;
+      Thumb_Width : in Integer;
       Size     : in Integer) return String
    is
 
@@ -2352,6 +2377,10 @@ package body V2P.Database is
         (Filename : in String;
          Height   : in Integer;
          Width    : in Integer;
+         Medium_Height : in Integer;
+         Medium_Width : in Integer;
+         Thumb_Height : in Integer;
+         Thumb_Width : in Integer;
          Size     : in Integer);
       --  Insert row into the photo table
 
@@ -2368,12 +2397,21 @@ package body V2P.Database is
         (Filename : in String;
          Height   : in Integer;
          Width    : in Integer;
+         Medium_Height : in Integer;
+         Medium_Width : in Integer;
+         Thumb_Height : in Integer;
+         Thumb_Width : in Integer;
          Size     : in Integer)
       is
          SQL : constant String :=
-                 "INSERT INTO photo ('filename', 'height', 'width', 'size') "
-                   & "VALUES (" & Q (Filename) & ',' & I (Height) & ','
-                   & I (Width) & ',' & I (Size) & ')';
+           "INSERT INTO photo ('filename', 'height', 'width', "
+           & "'medium_height', 'medium_width', "
+           & "'thumb_height', 'thumb_width', 'size') "
+           & "VALUES (" & Q (Filename) & ','
+           & I (Height) & ',' & I (Width) & ','
+           & I (Medium_Height) & ',' & I (Medium_Width) & ','
+           & I (Thumb_Height) & ',' & I (Thumb_Width) & ','
+           & I (Size) & ')';
       begin
          DBH.Handle.Execute (SQL);
       end Insert_Table_Photo;
@@ -2395,7 +2433,8 @@ package body V2P.Database is
 
       DBH.Handle.Begin_Transaction;
 
-      Insert_Table_Photo (Filename, Height, Width, Size);
+      Insert_Table_Photo (Filename, Height, Width, Medium_Height, Medium_Width,
+                          Thumb_Height, Thumb_Width, Size);
 
       Row_Id : declare
          Pid : constant String := DBH.Handle.Last_Insert_Rowid;

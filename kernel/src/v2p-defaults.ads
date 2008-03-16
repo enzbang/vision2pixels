@@ -29,11 +29,15 @@ package V2P.Defaults is
 
    Images_Path              : constant String := "images";
 
+   Medium_Path              : constant String := "images_medium";
+
    Thumbs_Path              : constant String := "thumbs";
 
    Website_Data_Path        : constant String := "web_data";
 
-   Images_Source_Prefix     : constant String := "/photos";
+   Big_Images_Source_Prefix    : constant String := "/photos";
+
+   Medium_Images_Source_Prefix : constant String := "/photos-m";
 
    Thumbs_Source_Prefix     : constant String := "/thumbs";
 
@@ -51,15 +55,19 @@ package V2P.Defaults is
 
    Limit_Image_Size         : constant Boolean := True;
 
-   Image_Maximum_Height     : constant Integer := 800;
+   Image_Maximum_Height     : constant Positive := 1000;
 
-   Image_Maximum_Width      : constant Integer := 800;
+   Image_Maximum_Width      : constant Positive := 1000;
 
    Image_Maximum_Size       : constant Integer := 1_000_000;
 
-   Thumbnail_Maximum_Width  : constant Integer := 150;
+   Thumbnail_Maximum_Width  : constant Positive := 150;
 
-   Thumbnail_Maximum_Height : constant Integer := 150;
+   Thumbnail_Maximum_Height : constant Positive := 150;
+
+   Medium_Maximum_Width     : constant Positive := 800;
+
+   Medium_Maximum_Height    : constant Positive := 800;
 
    Descending_Order         : constant Boolean := True;
 

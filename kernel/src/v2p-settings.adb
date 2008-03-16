@@ -33,12 +33,15 @@ package body V2P.Settings is
    Config_Filename : constant String := "plugins/vision2pixels/v2p.ini";
 
    type Attributes is
-     (DB, DB_Name, Images_Path, Thumbs_Path, Images_Source_Prefix,
-      Thumbs_Source_Prefix, Anonymous_Visit_Counter, Anonymous_Comment,
+     (DB, DB_Name, Images_Path, Thumbs_Path, Medium_Image_Path,
+      Images_Source_Prefix, Thumbs_Source_Prefix, Medium_Images_Source_Prefix,
+      Anonymous_Visit_Counter, Anonymous_Comment,
       Anonymity_Hours, Posting_Delay_Hours, Descending_Order,
-      Ignore_Author_Click, Limit_Image_Size, Image_Maximum_Width,
-      Image_Maximum_Height, Image_Maximum_Size, Thumbnail_Maximum_Width,
-      Thumbnail_Maximum_Height, Virtual_Host, Website_Data_Path,
+      Ignore_Author_Click, Limit_Image_Size,
+      Image_Maximum_Width, Image_Maximum_Height, Image_Maximum_Size,
+      Medium_Maximum_Width, Medium_Maximum_Height,
+      Thumbnail_Maximum_Width, Thumbnail_Maximum_Height,
+      Virtual_Host, Website_Data_Path,
       Website_Data_Prefix, Wiki_Service_Name, Number_Latest_Posts,
       Number_Latest_Users, Google_Map_Key, Log_Path, Cache_Path, RSS_Host_URL,
       RSS_Path, RSS_Prefix, Compression, Max_Search_Results);
@@ -74,6 +77,15 @@ package body V2P.Settings is
       return Conf.Get_Value (Anonymous_Visit_Counter);
    end Anonymous_Visit_Counter;
 
+   ------------------------------
+   -- Big_Images_Source_Prefix --
+   ------------------------------
+
+   function Big_Images_Source_Prefix return String is
+   begin
+      return Conf.Get_Value (Images_Source_Prefix);
+   end Big_Images_Source_Prefix;
+
    ----------------
    -- Cache_Path --
    ----------------
@@ -101,6 +113,15 @@ package body V2P.Settings is
       return Conf.Get_Value (Descending_Order);
    end Descending_Order;
 
+   -------------------------
+   -- Get_Big_Images_Path --
+   -------------------------
+
+   function Get_Big_Images_Path return String is
+   begin
+      return Conf.Get_Value (Images_Path);
+   end Get_Big_Images_Path;
+
    ------------
    -- Get_DB --
    ------------
@@ -119,14 +140,14 @@ package body V2P.Settings is
       return Conf.Get_Value (DB_Name);
    end Get_DB_Name;
 
-   ---------------------
-   -- Get_Images_Path --
-   ---------------------
+   ----------------------------
+   -- Get_Medium_Images_Path --
+   ----------------------------
 
-   function Get_Images_Path return String is
+   function Get_Medium_Images_Path return String is
    begin
-      return Conf.Get_Value (Images_Path);
-   end Get_Images_Path;
+      return Conf.Get_Value (Medium_Image_Path);
+   end Get_Medium_Images_Path;
 
    ---------------------
    -- Get_Thumbs_Path --
@@ -182,14 +203,6 @@ package body V2P.Settings is
       return Conf.Get_Value (Image_Maximum_Width);
    end Image_Maximum_Width;
 
-   -------------------------
-   -- Image_Source_Prefix --
-   -------------------------
-
-   function Images_Source_Prefix return String is
-   begin
-      return Conf.Get_Value (Images_Source_Prefix);
-   end Images_Source_Prefix;
 
    ----------------------
    -- Limit_Image_Size --
@@ -217,6 +230,33 @@ package body V2P.Settings is
    begin
       return Conf.Get_Value (Max_Search_Results);
    end Max_Search_Results;
+
+   ---------------------------------
+   -- Medium_Images_Source_Prefix --
+   ---------------------------------
+
+   function Medium_Images_Source_Prefix return String is
+   begin
+      return Conf.Get_Value (Medium_Images_Source_Prefix);
+   end Medium_Images_Source_Prefix;
+
+   --------------------------
+   -- Medium_Maximum_Height --
+   --------------------------
+
+   function Medium_Maximum_Height return Natural is
+   begin
+      return Conf.Get_Value (Medium_Maximum_Height);
+   end Medium_Maximum_Height;
+
+   --------------------------
+   -- Medium_Maximum_Width --
+   --------------------------
+
+   function Medium_Maximum_Width return Natural is
+   begin
+      return Conf.Get_Value (Medium_Maximum_Width);
+   end Medium_Maximum_Width;
 
    -------------------------
    -- Number_Latest_Posts --
@@ -276,7 +316,7 @@ package body V2P.Settings is
    -- Thumbnail_Maximum_Height --
    ------------------------------
 
-   function Thumbnail_Maximum_Height return Integer is
+   function Thumbnail_Maximum_Height return Natural is
    begin
       return Conf.Get_Value (Thumbnail_Maximum_Height);
    end Thumbnail_Maximum_Height;
@@ -285,7 +325,7 @@ package body V2P.Settings is
    -- Thumbnail_Maximum_Width --
    -----------------------------
 
-   function Thumbnail_Maximum_Width return Integer is
+   function Thumbnail_Maximum_Width return Natural is
    begin
       return Conf.Get_Value (Thumbnail_Maximum_Width);
    end Thumbnail_Maximum_Width;
@@ -340,8 +380,11 @@ begin --  V2P.Settings : Set default values
    DB_Conf.Set_Value (DB, Defaults.DB);
    Conf.Set_Value (DB_Name, Defaults.DB_Name);
    Conf.Set_Value (Images_Path, Defaults.Images_Path);
+   Conf.Set_Value (Medium_Image_Path, Defaults.Medium_Path);
    Conf.Set_Value (Thumbs_Path, Defaults.Thumbs_Path);
-   Conf.Set_Value (Images_Source_Prefix, Defaults.Images_Source_Prefix);
+   Conf.Set_Value (Images_Source_Prefix, Defaults.Big_Images_Source_Prefix);
+   Conf.Set_Value (Medium_Images_Source_Prefix,
+                   Defaults.Medium_Images_Source_Prefix);
    Conf.Set_Value (Thumbs_Source_Prefix, Defaults.Thumbs_Source_Prefix);
    Conf.Set_Value (Anonymous_Visit_Counter, Defaults.Anonymous_Visit_Counter);
    Conf.Set_Value (Anonymous_Comment, Defaults.Anonymous_Comment);
@@ -352,6 +395,8 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (Limit_Image_Size, Defaults.Limit_Image_Size);
    Conf.Set_Value (Image_Maximum_Height, Defaults.Image_Maximum_Height);
    Conf.Set_Value (Image_Maximum_Width, Defaults.Image_Maximum_Width);
+   Conf.Set_Value (Medium_Maximum_Width, Defaults.Medium_Maximum_Width);
+   Conf.Set_Value (Medium_Maximum_Height, Defaults.Medium_Maximum_Height);
    Conf.Set_Value (Image_Maximum_Size, Defaults.Image_Maximum_Size);
    Conf.Set_Value (Thumbnail_Maximum_Width, Defaults.Thumbnail_Maximum_Width);
    Conf.Set_Value (Thumbnail_Maximum_Height,

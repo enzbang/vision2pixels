@@ -26,6 +26,33 @@ package body Image.Magick is
    use G2F.Image_Resize;
    use G2F.IO;
 
+   ------------
+   -- Resize --
+   ------------
+
+   function Resize
+     (Img  : in G2F.Image_Ptr;
+      Size : in G2F.IO.Image_Size) return G2F.Image_Ptr
+   is
+      Original_Size : constant Image_Size := Get_Image_Size (Img);
+      X_Length      : Image_Size_T;
+      Y_Length      : Image_Size_T;
+      Resized_Image : G2F.Image_Ptr;
+   begin
+      if Original_Size.X / Size.X > Original_Size.Y / Size.Y then
+         X_Length := Size.X;
+         Y_Length := Original_Size.Y * X_Length / Original_Size.X;
+      else
+         Y_Length := Size.Y;
+         X_Length := Original_Size.X * Y_Length / Original_Size.Y;
+      end if;
+
+      Resized_Image := G2F.Image_Resize.Resize_Image
+        (Img, Image_Size'(X => X_Length, Y => Y_Length));
+
+      return Resized_Image;
+   end Resize;
+
    ---------------
    -- Thumbnail --
    ---------------

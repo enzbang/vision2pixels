@@ -27,14 +27,25 @@ package body V2P.URL is
 
    use V2P;
 
-   ------------------------
-   -- Images_Full_Prefix --
-   ------------------------
+   ----------------------------
+   -- Big_Images_Full_Prefix --
+   ----------------------------
 
-   function Images_Full_Prefix return String is
+   function Big_Images_Full_Prefix return String is
    begin
-      return Morzhol.OS.Compose (Gwiad_Plugin_Path, Settings.Get_Images_Path);
-   end Images_Full_Prefix;
+      return Morzhol.OS.Compose
+        (Gwiad_Plugin_Path, Settings.Get_Big_Images_Path);
+   end Big_Images_Full_Prefix;
+
+   -------------------------------
+   -- Medium_Images_Full_Prefix --
+   -------------------------------
+
+   function Medium_Images_Full_Prefix return String is
+   begin
+      return Morzhol.OS.Compose
+        (Gwiad_Plugin_Path, Settings.Get_Medium_Images_Path);
+   end Medium_Images_Full_Prefix;
 
    ------------------------
    -- Thumbs_Full_Prefix --

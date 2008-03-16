@@ -205,6 +205,10 @@ package V2P.Database is
       Filename : in String;
       Height   : in Integer;
       Width    : in Integer;
+      Medium_Height : in Integer;
+      Medium_Width : in Integer;
+      Thumb_Height : in Integer;
+      Thumb_Width : in Integer;
       Size     : in Integer) return String;
    --  Insert a new photo into the database, returns photo id
 

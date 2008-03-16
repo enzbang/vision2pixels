@@ -23,6 +23,12 @@ package V2P.Settings is
 
    type DB_Kind is (SQLite3, ODBC);
 
+   function Big_Images_Source_Prefix return String;
+   --  Source prefix used to reference images in URL
+
+   function Get_Big_Images_Path return String;
+   --  Returns the path to the images
+
    function Get_DB return DB_Kind;
    --  Returns the DB kind to use
 
@@ -30,14 +36,14 @@ package V2P.Settings is
    --  The database name, either the ODBC name or the path to the SQLite
    --  filename.
 
-   function Get_Images_Path return String;
-   --  Returns the path to the images
-
    function Get_Thumbs_Path return String;
    --  Returns the path to the thumbnails
 
-   function Images_Source_Prefix return String;
-   --  Source prefix used to reference images in URL
+   function Get_Medium_Images_Path return String;
+   --  Returns the path to the medium size images
+
+   function Medium_Images_Source_Prefix return String;
+   --  Source prefix used to reference medium size images in URL
 
    function Thumbs_Source_Prefix return String;
    --  Source prefix used to reference thumbs in URL
@@ -69,11 +75,17 @@ package V2P.Settings is
    function Image_Maximum_Size return Natural;
    --  Limit, in bytes, of an uploaded image size
 
-   function Thumbnail_Maximum_Width return Integer;
+   function Thumbnail_Maximum_Width return Natural;
    --  Maximum width dimension of a thumbnail image
 
-   function Thumbnail_Maximum_Height return Integer;
+   function Thumbnail_Maximum_Height return Natural;
    --  Maximum height dimension of a thumbnail image
+
+   function Medium_Maximum_Width return Natural;
+   --  Maximum width dimension of a medium size image
+
+   function Medium_Maximum_Height return Natural;
+   --  Maximum height dimension of a medium size image
 
    function Descending_Order return Boolean;
    --  Returns true is the threads view must be sorted in descending order
