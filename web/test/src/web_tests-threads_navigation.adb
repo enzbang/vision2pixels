@@ -74,7 +74,8 @@ package body Web_Tests.Threads_Navigation is
 
       Check
         (Response.Message_Body (Result),
-         Word_Set'(+"TID=89", +"Invasion", +"Portrait",
+         Word_Set'(+"TID=141", +"Hissez haut...", +"Paysage",
+           +"TID=89", +"Invasion", +"Portrait",
            +"TID=88", +"On ne pousse pas", +"Paysage",
            +"TID=87", +"Désséché", +"Abstrait",
            +"TID=140", +"Rides", +"Nature morte",
@@ -131,7 +132,6 @@ package body Web_Tests.Threads_Navigation is
            +"TID=86", +"Notre guide", +"Paysage",
            +"TID=85", +"Port", +"Paysage",
            +"TID=84", +"Perdu ?", +"Macro/Animaux",
-           +"TID=141", +"Hissez haut...", +"Paysage",
            +"TID=63", +"Fleurs", +"Macro/Animaux",
            +"TID=62", +"Fire", +"Nature morte",
            +"TID=61", +"Stylo", +"Nature morte",
@@ -176,6 +176,7 @@ package body Web_Tests.Threads_Navigation is
       Check
         (Response.Message_Body (Result),
          Word_Set'(+"<response>",
+           +"TID=141", +"Hissez haut...", +"Paysage",
            +"TID=89", +"Invasion", +"Portrait",
            +"TID=88", +"On ne pousse pas", +"Paysage",
            +"TID=87", +"Désséché", +"Abstrait",
@@ -194,6 +195,7 @@ package body Web_Tests.Threads_Navigation is
       Check
         (Response.Message_Body (Result),
          Word_Set'(+"<response>",
+           +"TID=141", +"Hissez haut...", +"Paysage",
            +"TID=89", +"Invasion", +"Portrait",
            +"TID=88", +"On ne pousse pas", +"Paysage",
            +"TID=87", +"Désséché", +"Abstrait",
@@ -251,7 +253,6 @@ package body Web_Tests.Threads_Navigation is
            +"TID=86", +"Notre guide", +"Paysage",
            +"TID=85", +"Port", +"Paysage",
            +"TID=84", +"Perdu ?", +"Macro/Animaux",
-           +"TID=141", +"Hissez haut...", +"Paysage",
            not "TID=63", +"</ul>", +"</response>"),
          "wrong set of images in thread FID=1 (tow days posts)");
 
@@ -267,6 +268,7 @@ package body Web_Tests.Threads_Navigation is
       Check
         (Response.Message_Body (Result),
          Word_Set'(+"<response>",
+           +"TID=141", +"Hissez haut...", +"Paysage",
            +"TID=89", +"Invasion", +"Portrait",
            +"TID=88", +"On ne pousse pas", +"Paysage",
            +"TID=87", +"Désséché", +"Abstrait",
@@ -324,7 +326,6 @@ package body Web_Tests.Threads_Navigation is
            +"TID=86", +"Notre guide", +"Paysage",
            +"TID=85", +"Port", +"Paysage",
            +"TID=84", +"Perdu ?", +"Macro/Animaux",
-           +"TID=141", +"Hissez haut...", +"Paysage",
            +"TID=63", +"Fleurs", +"Macro/Animaux",
            +"TID=62", +"Fire", +"Nature morte",
            +"TID=61", +"Stylo", +"Nature morte",
@@ -356,7 +357,8 @@ package body Web_Tests.Threads_Navigation is
 
       Check
         (Response.Message_Body (Result),
-         Word_Set'(+"TID=89", +"Invasion", +"Portrait",
+         Word_Set'(+"TID=141", +"Hissez haut...", +"Paysage",
+           +"TID=89", +"Invasion", +"Portrait",
            +"TID=88", +"On ne pousse pas", +"Paysage",
            +"TID=87", +"Désséché", +"Abstrait",
            not "TID=140"),

@@ -190,7 +190,6 @@ insert into post values (137, 'Un éléphant ça trompe...', 84, NULL, 3, dateti
 insert into post values (138, 'Ah Parisssse', 85, NULL, 2, datetime(current_timestamp, '-1.0002 days'), NULL, 1, 0, 0, "FALSE");
 insert into post values (139, 'Coucher de soleil', 86, NULL, 2, datetime(current_timestamp, '-1.0001 days'), NULL, 1, 0, 0, "FALSE");
 insert into post values (140, 'Rides', 87, NULL, 4, datetime(current_timestamp, '-1.0000 days'), NULL, 1, 0, 0, "FALSE");
-insert into post values (141, 'Hissez haut...', 88, NULL, 2, datetime(current_timestamp, '-1.0100 days'), NULL, 1, 0, 0, "FALSE");
 
 --  User post
 
@@ -496,6 +495,9 @@ insert into photo_exif values
 insert into photo_exif values
   (14, "2006:06:09 18:41:29", "NIKON CORPORATION", "NIKON D200", "1/160", "2.8", "No Flash", "105.0mm", "Auto", "Program AE", "Auto", "Multi-segment", "200");
 
---  Instert metadata
+--  Insert metadata
 
 insert into photo_metadata values (88, 46.2573, 4.30196, "N 46° 15' 26", "E 4° 18' 7");
+
+--  Insert last photo
+insert into post values (141, 'Hissez haut...', 88, NULL, 2, datetime(current_timestamp, '-0.003 days'), NULL, 1, 0, 0, "FALSE");
