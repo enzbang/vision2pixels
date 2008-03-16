@@ -428,25 +428,25 @@ insert into photo values (88, '2007/Forum photographies/Paysage/200702012203-50.
 
 --  Comments
 
-insert into comment values (1, '2007-02-01 19:29:21', NULL, 'enzbang', NULL, '<p>See <a href=''http://en.wikipedia.org/wiki/Rubik%27s_cube'' rel=''nofollow''>http://en.wikipedia.org/wiki/Rubik%27s_cube</a> if you''re interested...</p>', NULL);
-insert into comment values (2, '2007-02-01 19:30:22', NULL, 'enzbang', NULL, '<p>Quel est cet animal ?</p>', NULL);
-insert into comment values (3, '2007-02-01 19:33:57', NULL, 'enzbang', NULL, '<p>Parque Nacional de Monegros ?</p>', NULL);
-insert into comment values (4, '2007-02-01 19:34:19', NULL, 'enzbang', NULL, '<p>Filtre polarisant ?</p>', NULL);
-insert into comment values (5, '2007-02-01 19:34:54', NULL, 'enzbang', NULL, '<p>Id&#195;&#169;e originale ! <em>bravo</em> </p>', NULL);
-insert into comment values (6, '2007-02-01 19:35:45', NULL, 'enzbang', NULL, '<p>Tiens les accents ne passent pas ? &#195;&#169;&#195;&#160;&#195;&#185;&#195;&#179;</p>', NULL);
-insert into comment values (7, '2007-02-01 19:36:06', NULL, 'enzbang', NULL, '<p>Hum... sans moi</p>', NULL);
-insert into comment values (8, '2007-02-01 19:36:59', NULL, 'enzbang', NULL, '<p>&#195;&#167;a penche !</p>', NULL);
-insert into comment values (9, '2007-02-01 19:38:19', NULL, 'enzbang', NULL, '<p>la m&#195;&#170;me avec un cadre ?</p>', NULL);
-insert into comment values (10, '2007-02-01 19:39:02', NULL, 'enzbang', NULL, '<p>J''aurais cadr&#195;&#169; l&#195;&#169;g&#195;&#168;rement plus &#195;&#160; droite</p>', NULL);
-insert into comment values (11, '2007-02-01 19:39:31', NULL, 'enzbang', NULL, '<p>D&#195;&#169;sol&#195;&#169; mais je n''accroche pas</p>', NULL);
-insert into comment values (12, '2007-02-01 19:40:30', NULL, 'enzbang', NULL, '<p>Good idea 4 this picture</p>', NULL);
-insert into comment values (13, '2007-02-01 19:40:54', NULL, 'enzbang', NULL, '<p>Un classique</p>', NULL);
-insert into comment values (14, '2007-02-01 19:41:28', NULL, 'enzbang', NULL, '<p>^_^</p>', NULL);
-insert into comment values (15, '2007-02-01 19:41:50', NULL, 'enzbang', NULL, '<p>Unlocked ?</p>', NULL);
-insert into comment values (16, '2007-02-01 19:42:27', NULL, 'enzbang', NULL, '<p>L''envie de fraise d&#195;&#169;j&#195;&#160; !</p>', NULL);
-insert into comment values (17, '2007-02-01 21:42:27', NULL, 'turbo', NULL, '<p>Alors qu''en pensez-vous?</p>', NULL);
-insert into comment values (18, '2007-02-01 22:42:27', NULL, 'enzbang', NULL, '<p>Bof!</p>', NULL);
-insert into comment values (19, '2007-02-01 23:10:27', NULL, 'turbo', NULL, '<p>Mais encore ?</p>', NULL);
+insert into comment values (1, datetime(current_timestamp, '-5.0009 days'), NULL, 'enzbang', NULL, '<p>See <a href=''http://en.wikipedia.org/wiki/Rubik%27s_cube'' rel=''nofollow''>http://en.wikipedia.org/wiki/Rubik%27s_cube</a> if you''re interested...</p>', NULL);
+insert into comment values (2, datetime(current_timestamp, '-4.0700 days'), NULL, 'enzbang', NULL, '<p>Quel est cet animal ?</p>', NULL);
+insert into comment values (3, datetime(current_timestamp, '-4.0009 days'), NULL, 'enzbang', NULL, '<p>Parque Nacional de Monegros ?</p>', NULL);
+insert into comment values (4, datetime(current_timestamp, '-3.0809 days'), NULL, 'enzbang', NULL, '<p>Filtre polarisant ?</p>', NULL);
+insert into comment values (5, datetime(current_timestamp, '-3.0009 days'), NULL, 'enzbang', NULL, '<p>Id&#195;&#169;e originale ! <em>bravo</em> </p>', NULL);
+insert into comment values (6, datetime(current_timestamp, '-2.0709 days'), NULL, 'enzbang', NULL, '<p>Tiens les accents ne passent pas ? &#195;&#169;&#195;&#160;&#195;&#185;&#195;&#179;</p>', NULL);
+insert into comment values (7, datetime(current_timestamp, '-2.0009 days'), NULL, 'enzbang', NULL, '<p>Hum... sans moi</p>', NULL);
+insert into comment values (8, datetime(current_timestamp, '-1.0809 days'), NULL, 'enzbang', NULL, '<p>&#195;&#167;a penche !</p>', NULL);
+insert into comment values (9, datetime(current_timestamp, '-1.0609 days'), NULL, 'enzbang', NULL, '<p>la m&#195;&#170;me avec un cadre ?</p>', NULL);
+insert into comment values (10, datetime(current_timestamp, '-1.0509 days'), NULL, 'enzbang', NULL, '<p>J''aurais cadr&#195;&#169; l&#195;&#169;g&#195;&#168;rement plus &#195;&#160; droite</p>', NULL);
+insert into comment values (11, datetime(current_timestamp, '-1.0409 days'), NULL, 'enzbang', NULL, '<p>D&#195;&#169;sol&#195;&#169; mais je n''accroche pas</p>', NULL);
+insert into comment values (12, datetime(current_timestamp, '-1.0309 days'), NULL, 'enzbang', NULL, '<p>Good idea 4 this picture</p>', NULL);
+insert into comment values (13, datetime(current_timestamp, '-0.0809 days'), NULL, 'enzbang', NULL, '<p>Un classique</p>', NULL);
+insert into comment values (14, datetime(current_timestamp, '-0.0900 days'), NULL, 'enzbang', NULL, '<p>^_^</p>', NULL);
+insert into comment values (15, datetime(current_timestamp, '-0.0505 days'), NULL, 'enzbang', NULL, '<p>Unlocked ?</p>', NULL);
+insert into comment values (16, datetime(current_timestamp, '-0.0500 days'), NULL, 'enzbang', NULL, '<p>L''envie de fraise d&#195;&#169;j&#195;&#160; !</p>', NULL);
+insert into comment values (17, datetime(current_timestamp, '-0.0009 days'), NULL, 'turbo', NULL, '<p>Alors qu''en pensez-vous?</p>', NULL);
+insert into comment values (18, datetime(current_timestamp, '-0.0007 days'), NULL, 'enzbang', NULL, '<p>Bof!</p>', NULL);
+insert into comment values (19, datetime(current_timestamp, '-0.0003 days'), NULL, 'turbo', NULL, '<p>Mais encore ?</p>', NULL);
 
 insert into post_comment values (60, 1);
 insert into post_comment values (84, 2);
