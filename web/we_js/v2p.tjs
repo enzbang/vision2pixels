@@ -71,6 +71,16 @@ V2P.Tools = new function () {
       this.select();
       return true;
    }
+
+   @@----------------------------------
+   @@--  Do nothing and return false
+   @@--  Use this to prevent a form to
+   @@--  be submitted
+
+   this.void = function ()
+   {
+      return false;
+   }
 }
 
 @@---------------------------------------------------------------- THUMBPREVIEW
