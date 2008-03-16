@@ -1612,6 +1612,8 @@ package body V2P.Database is
             when Last_Commented =>
                Append (Select_Stmt, " order by post.last_comment_id");
                Append (Select_Stmt, ' ' & Order_Direction'Image (Order_Dir));
+               Append (Select_Stmt, ", post.date_post");
+               Append (Select_Stmt, ' ' & Order_Direction'Image (Order_Dir));
 
             when Best_Noted =>
                Append (Select_Stmt, " order by sum_rating");
