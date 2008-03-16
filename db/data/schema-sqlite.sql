@@ -106,7 +106,7 @@ create table "post" (
 create trigger set_last_comment_id after insert on post
    begin
       update post
-         set last_comment_id=(select max(comment_id) from post_comment) + 1
+         set last_comment_id=(select max(comment_id) from post_comment)
          where id = new.id;
    end;
 
