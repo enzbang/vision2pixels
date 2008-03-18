@@ -45,6 +45,8 @@ package V2P.Defaults is
 
    Anonymity_Hours          : constant Natural := 3 * 24;
 
+   Posting_Delay_Hours      : constant Natural := 3 * 24;
+
    Ignore_Author_Click      : constant Boolean := True;
 
    Limit_Image_Size         : constant Boolean := True;

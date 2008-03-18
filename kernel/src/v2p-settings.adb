@@ -34,13 +34,14 @@ package body V2P.Settings is
 
    type Attributes is
      (DB, DB_Name, Images_Path, Thumbs_Path, Images_Source_Prefix,
-      Thumbs_Source_Prefix, Anonymous_Visit_Counter, Anonymous_Comment,
-      Anonymity_Hours, Descending_Order, Ignore_Author_Click, Limit_Image_Size,
-      Image_Maximum_Width, Image_Maximum_Height, Image_Maximum_Size,
-      Thumbnail_Maximum_Width, Thumbnail_Maximum_Height, Virtual_Host,
-      Website_Data_Path, Website_Data_Prefix, Wiki_Service_Name,
-      Number_Latest_Posts, Number_Latest_Users, Google_Map_Key,
-      Log_Path, Cache_Path, RSS_Host_URL, RSS_Path, RSS_Prefix, Compression);
+     Thumbs_Source_Prefix, Anonymous_Visit_Counter, Anonymous_Comment,
+     Anonymity_Hours, Posting_Delay_Hours, Descending_Order,
+     Ignore_Author_Click, Limit_Image_Size, Image_Maximum_Width,
+     Image_Maximum_Height, Image_Maximum_Size, Thumbnail_Maximum_Width,
+     Thumbnail_Maximum_Height, Virtual_Host, Website_Data_Path,
+     Website_Data_Prefix, Wiki_Service_Name, Number_Latest_Posts,
+     Number_Latest_Users, Google_Map_Key, Log_Path, Cache_Path, RSS_Host_URL,
+     RSS_Path, RSS_Prefix, Compression);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -226,6 +227,15 @@ package body V2P.Settings is
       return Conf.Get_Value (Number_Latest_Users);
    end Number_Latest_Users;
 
+   -------------------------
+   -- Posting_Delay_Hours --
+   -------------------------
+
+   function Posting_Delay_Hours return Natural is
+   begin
+      return Conf.Get_Value (Posting_Delay_Hours);
+   end Posting_Delay_Hours;
+
    ------------------
    -- RSS_Host_URL --
    ------------------
@@ -327,6 +337,7 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (Anonymous_Visit_Counter, Defaults.Anonymous_Visit_Counter);
    Conf.Set_Value (Anonymous_Comment, Defaults.Anonymous_Comment);
    Conf.Set_Value (Anonymity_Hours, Defaults.Anonymity_Hours);
+   Conf.Set_Value (Posting_Delay_Hours, Defaults.Posting_Delay_Hours);
    Conf.Set_Value (Descending_Order, Defaults.Descending_Order);
    Conf.Set_Value (Ignore_Author_Click, Defaults.Ignore_Author_Click);
    Conf.Set_Value (Limit_Image_Size, Defaults.Limit_Image_Size);

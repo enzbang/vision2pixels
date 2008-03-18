@@ -1029,14 +1029,14 @@ package body V2P.Database is
      (Uid : in String) return Templates.Translate_Set
    is
       SQL : constant String := "select julianday (p.date_post, '+"
-        & Utils.Image (Settings.Anonymity_Hours)
+        & Utils.Image (Settings.Posting_Delay_Hours)
         & " hour') - julianday ('now'), datetime (p.date_post, '+"
-        & Utils.Image (Settings.Anonymity_Hours)
+        & Utils.Image (Settings.Posting_Delay_Hours)
         & " hour') "
         & "from user_post up, post p "
         & "where up.post_id = p.id and p.photo_id != 0 "
         & "and datetime(p.date_post, '+"
-        & Utils.Image (Settings.Anonymity_Hours)
+        & Utils.Image (Settings.Posting_Delay_Hours)
         & " hour') > datetime('now') and up.user_login=" & Q (Uid);
 
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
