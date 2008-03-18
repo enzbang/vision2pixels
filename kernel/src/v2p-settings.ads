@@ -54,6 +54,9 @@ package V2P.Settings is
    function Anonymity_Hours return Natural;
    --  Number of hours that a post stay anonymous
 
+   function Posting_Delay_Hours return Natural;
+   --  Number of hours between two posts of the same user
+
    function Limit_Image_Size return Boolean;
    --  If set, check image size on creation
 
