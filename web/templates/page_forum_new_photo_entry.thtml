@@ -53,7 +53,7 @@
 </form>
 @@-- Disable pfnpe_form_image_infos form submit action. This can only
 @@-- be posted via pfnpe_new_entry_form_submit
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, pfnpe_form_image_infos, V2P.Tools.void)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, pfnpe_form_image_infos, V2P.Tools.always_false)
 @@--
 @@-- Submit all data
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, pfnpe_new_entry_form_submit, 4=>pfnpe_form_image_infos, 5=>bm_metadata_post)
