@@ -9,7 +9,7 @@ When a new release is ready.
 
 1. create a tag
 
-   $ git tag -a v1.0
+   $ git tag -a v1.0.0
 
 2. create the corresponding archive
 
@@ -29,9 +29,25 @@ from all maintainers.
 If the branch is not yet created it needs to be created stating from the last
 release tag:
 
-   $ git branch v1.1 v1.0
+   $ git branch v1.0 v1.0.0
 
-Which create the branch named v1.1 starting from release tag v1.0.
+Which create the branch named 1.0 starting from release tag v1.0.
+
+After fixing the issues a new corrective release is ready. It will be named
+v1.0.1. Just create the appropriate tag into the v1.0 branch.
+
+   $ git co v1.0
+   $ git tag -a v1.0.1
+
+Naming convention
+-----------------
+
+   branches: v<major>.<minor>
+   tags:     v<major>.<minor>.<micro>
+
+So branches are named v<major>.<minor> whereas the tags are named
+v<major>.<minor>.<micro>. <micro> is 0 for the initial version and
+incremented for each corrective releases.
 
 Developpers Branches
 --------------------
