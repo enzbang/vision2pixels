@@ -13,7 +13,7 @@
              value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/>
     </p>
     <p><input name="ENTER" id="bl_login_form_enter" type="submit" value="OK"/></p>
-    <p id="bl_cd_user"><a href="my">Créer/Modifier votre compte</a>
+    <p id="bl_cd_user"><a href="/register_user">Créer votre compte</a>
     </p>
   </fieldset>
 </form>
