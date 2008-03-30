@@ -1,28 +1,33 @@
+@@SET@@ SET_TODAY = TODAY
+@@SET@@ SET_TWO_DAYS = TWO_DAYS
+@@SET@@ SET_SEVEN_DAYS = SEVEN_DAYS
+@@SET@@ SET_ALL_MESSAGES = ALL_MESSAGES
+@@--
 <select name="bff_forum_filter_set" id="bff_forum_filter_set">
 @@INLINE@@
-  <option value="TODAY"
-  @@IF@@ @_FILTER_@ = "TODAY"
+  <option value="@_SET_TODAY_@"
+  @@IF@@ @_FILTER_@ = @_SET_TODAY_@
     selected="selected"
   @@END_IF@@
   >Aujourd'hui</option>
 @@END_INLINE@@
 @@INLINE@@
-  <option value="TWO_DAYS"
-  @@IF@@ @_FILTER_@ = "TWO_DAYS"
+  <option value="@_SET_TWO_DAYS_@"
+  @@IF@@ @_FILTER_@ = @_SET_TWO_DAYS_@
     selected="selected"
   @@END_IF@@
   >2 derniers jours</option>
 @@END_INLINE@@
 @@INLINE@@
-  <option value="SEVEN_DAYS"
-  @@IF@@ @_FILTER_@ = "SEVEN_DAYS"
+  <option value="@_SET_SEVEN_DAYS_@"
+  @@IF@@ @_FILTER_@ = @_SET_SEVEN_DAYS_@
     selected="selected"
   @@END_IF@@
   >7 derniers jours</option>
 @@END_INLINE@@
 @@INLINE@@
-  <option value="ALL_MESSAGES"
-  @@IF@@ @_FILTER_@ = "ALL_MESSAGES"
+  <option value="@_SET_ALL_MESSAGES_@"
+  @@IF@@ @_FILTER_@ = @_SET_ALL_MESSAGES_@
     selected="selected"
   @@END_IF@@
   >Tous les posts</option>

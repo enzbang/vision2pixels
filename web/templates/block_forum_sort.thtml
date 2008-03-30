@@ -1,28 +1,33 @@
+@@SET@@ SET_LAST_POSTED = LAST_POSTED
+@@SET@@ SET_LAST_COMMENTED = LAST_COMMENTED
+@@SET@@ SET_BEST_NOTED = BEST_NOTED
+@@SET@@ SET_NEED_ATTENTION = NEED_ATTENTION
+@@--
 <select name="bfs_forum_sort_set" id="bfs_forum_sort_set">
 @@INLINE@@
-  <option value="LAST_POSTED"
-  @@IF@@ @_FORUM_SORT_@ = "LAST_POSTED"
+  <option value="@_SET_LAST_POSTED_@"
+  @@IF@@ @_FORUM_SORT_@ = @_SET_LAST_POSTED_@
     selected="selected"
   @@END_IF@@
   >Dernièrement postées</option>
 @@END_INLINE@@
 @@INLINE@@
-  <option value="LAST_COMMENTED"
-  @@IF@@ @_FORUM_SORT_@ = "LAST_COMMENTED"
+  <option value="@_SET_LAST_COMMENTED_@"
+  @@IF@@ @_FORUM_SORT_@ = @_SET_LAST_COMMENTED_@
     selected="selected"
   @@END_IF@@
   >Dernièrement commentées</option>
 @@END_INLINE@@
 @@INLINE@@
-  <option value="BEST_NOTED"
-  @@IF@@ @_FORUM_SORT_@ = "BEST_NOTED"
+  <option value="@_SET_BEST_NOTED_@"
+  @@IF@@ @_FORUM_SORT_@ = @_SET_BEST_NOTED_@
     selected="selected"
   @@END_IF@@
   >Les mieux notées</option>
 @@END_INLINE@@
 @@INLINE@@
-  <option value="NEED_ATTENTION"
-  @@IF@@ @_FORUM_SORT_@ = "NEED_ATTENTION"
+  <option value="@_SET_NEED_ATTENTION_@"
+  @@IF@@ @_FORUM_SORT_@ = @_SET_NEED_ATTENTION_@
     selected="selected"
   @@END_IF@@
   >Demande votre attention</option>
