@@ -51,6 +51,7 @@ with V2P.Template_Defs.Block_Forum_Sort;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Email_User_Validation;
+with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
@@ -183,6 +184,8 @@ package body V2P.Callbacks.Ajax is
       --  ?? we need to add this into the user's preferences
       Context.Set_Value (Template_Defs.Set_Global.FILTER, Filter);
 
+      Context.Remove (Template_Defs.Set_Global.PREVIOUS_FILTER);
+
       Templates.Insert
         (Translations,
          Database.Get_Forum
@@ -262,6 +265,45 @@ package body V2P.Callbacks.Ajax is
       --  Keep the sorting scheme into the session
       --  ?? we need to add this into the user's preferences
       Context.Set_Value (Template_Defs.Set_Global.FORUM_SORT, Sort);
+
+      --  Set the context filter to seven days if the sorting is set to
+      --  NEED_ATTENTION.
+
+      if Sort = Template_Defs.Block_Forum_Sort.Set.NEED_ATTENTION then
+         --  Store current filter
+
+         Context.Set_Value
+           (Template_Defs.Set_Global.PREVIOUS_FILTER,
+            Context.Get_Value (Template_Defs.Set_Global.FILTER));
+
+         Context.Set_Value
+           (Template_Defs.Set_Global.FILTER,
+            Template_Defs.Block_Forum_Filter.Set.SEVEN_DAYS);
+
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.R_Block_Forum_Filter.FORCE_FILTER,
+               Template_Defs.Block_Forum_Filter.Set.SEVEN_DAYS));
+
+      elsif Context.Exist (Template_Defs.Set_Global.PREVIOUS_FILTER) then
+         --  Restore previous filter if found
+
+         declare
+            P_Filter : constant String :=
+                         Context.Get_Value
+                           (Template_Defs.Set_Global.PREVIOUS_FILTER);
+         begin
+            Templates.Insert
+              (Translations,
+               Templates.Assoc
+                 (Template_Defs.R_Block_Forum_Filter.FORCE_FILTER, P_Filter));
+
+            Context.Set_Value (Template_Defs.Set_Global.FILTER, P_Filter);
+
+            Context.Remove (Template_Defs.Set_Global.PREVIOUS_FILTER);
+         end;
+      end if;
 
       Templates.Insert
         (Translations,

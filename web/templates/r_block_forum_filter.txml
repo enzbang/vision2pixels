@@ -5,4 +5,8 @@
   @@ELSE@@
   <replace id="pft_lazy_forum_threads"><![CDATA[@_LAZY_FORUM_THREADS_TEXT_@]]></replace>
   @@END_IF@@
+  @@IF@@ @_FORCE_FILTER_@ /= ""
+  <select action="select"
+	  id="bff_forum_filter_set" option_value="@_FORCE_FILTER_@"/>
+  @@END_IF@@
 </response>
