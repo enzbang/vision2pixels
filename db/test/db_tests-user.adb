@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                         Copyright (C) 2006-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -98,7 +98,7 @@ package body DB_Tests.User is
       end Check;
 
    begin
-      DB.SQLite.Connect (H, "../data/testing.db");
+      DB.SQLite.Connect (H, "./testing.db");
 
       DB.SQLite.Execute
         (H, "insert into user ('login', 'password', 'email', 'admin')" &

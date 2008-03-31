@@ -50,7 +50,9 @@ create_db:
 	(cd data; ./$(BSCRIPT))
 
 run_tests:
+	$(CP) data/testing.db test/
 	(cd test; ../obj/db_harness > $(LOGFILE))
+	$(RM) -f test/testing.db
 	-grep "Failed Assertions" $(LOGFILE) >> $(LOG)
 	-grep "Unexpected Errors" $(LOGFILE) >> $(LOG)
 
