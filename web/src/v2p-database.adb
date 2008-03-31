@@ -2065,7 +2065,10 @@ package body V2P.Database is
       SQL    : constant String :=
                  "select * from user_photo_of_the_week "
                    & "where user_login=" & Q (Uid)
-                   & " and post_id=" & To_String (Tid);
+                   & " and post_id=" & To_String (Tid)
+                   & " and week_id=0";
+      --  week_id=0 as we want only the photo for which the user has voted for
+      --  the current open vote.
       Result : Boolean := False;
    begin
       Connect (DBH);
