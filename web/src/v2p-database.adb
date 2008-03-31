@@ -1775,11 +1775,18 @@ package body V2P.Database is
      (Uid : in String; Textify : in Boolean := False)
       return Templates.Translate_Set
    is
-      SQL        : constant String :=
-                     "select p.post_id, c.id, comment "
-                       & "from comment as c, post_comment as p "
-                       & "where user_login = " & Q (Uid)
-                       & " and p.comment_id = c.id";
+         SQL        : constant String :=
+                     "select pc.post_id, c.id, c.comment "
+                       & "from comment as c, post_comment as pc, post as p,"
+                       & " user_post as u "
+                       & "where c.user_login = " & Q (Uid)
+                       & " and pc.comment_id = c.id"
+                       & " and p.id = pc.post_id"
+                       & " and u.post_id = p.id"
+                       & " and (datetime(p.date_post, '+"
+                       & Utils.Image (V2P.Settings.Anonymity_Hours)
+                       & " hour') < datetime('now') "
+                       & " or u.user_login != " & Q (Uid) & ')';
       DBH        : constant TLS_DBH_Access :=
                      TLS_DBH_Access (DBH_TLS.Reference);
       Set        : Templates.Translate_Set;

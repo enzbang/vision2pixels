@@ -447,6 +447,8 @@ insert into comment values (16, datetime(current_timestamp, '-0.0500 days'), NUL
 insert into comment values (17, datetime(current_timestamp, '-0.0009 days'), NULL, 'turbo', NULL, '<p>Alors qu''en pensez-vous?</p>', NULL);
 insert into comment values (18, datetime(current_timestamp, '-0.0007 days'), NULL, 'enzbang', NULL, '<p>Bof!</p>', NULL);
 insert into comment values (19, datetime(current_timestamp, '-0.0003 days'), NULL, 'turbo', NULL, '<p>Mais encore ?</p>', NULL);
+insert into comment values (20, datetime(current_timestamp, '-0.0003 days'), NULL, 'turbo', NULL, '<p>j''aime!</p>', NULL);
+insert into comment values (21, datetime(current_timestamp, '-0.0003 days'), NULL, 'turbo', NULL, '<p>Superbe</p>', NULL);
 
 insert into post_comment values (60, 1);
 insert into post_comment values (84, 2);
@@ -467,6 +469,8 @@ insert into post_comment values (56, 16);
 insert into post_comment values (89, 17);
 insert into post_comment values (89, 18);
 insert into post_comment values (89, 19);
+insert into post_comment values (71, 20);
+insert into post_comment values (141, 21);
 
 --  Insert rating
 
