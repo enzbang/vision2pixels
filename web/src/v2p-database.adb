@@ -1136,7 +1136,9 @@ package body V2P.Database is
             & "filename, width, height, user.login, post.date_post, "
             & " (julianday(post.date_post, '+"
             & Utils.Image (Settings.Anonymity_Hours)
-            & " hour') - julianday('now')) * 24, category.name "
+            & " hour') - julianday('now')) * 24, category.name, "
+            & "(select id from photo_of_the_week as cdc "
+            & " where cdc.post_id = post.id) "
             & "from post, user, user_post, photo, category "
             & "where post.id=" & To_String (Tid)
             & " and user.login = user_post.user_login"
@@ -1224,6 +1226,11 @@ package body V2P.Database is
               (Set, Templates.Assoc
                  (Page_Forum_Entry.CATEGORY,
                   DB.String_Vectors.Element (Line, 10)));
+
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Page_Forum_Entry.CDC,
+                  DB.String_Vectors.Element (Line, 11) /= ""));
 
             Line.Clear;
          end if;

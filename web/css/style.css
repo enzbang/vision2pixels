@@ -249,6 +249,17 @@ a#bvwp_vote_button {
    font-size: 1.2em;
 }
 @@--
+#pfe_cdc {
+   text-align: center;
+   color: #019bbd;
+   font-size: 1.2em;
+}
+a#pfe_cdclink {
+   color: #FF1111;
+   font-size: 1.3em;
+   padding-right: 0.5em;
+}
+@@--
 body.forum_entry p#pfe_main_image {
    margin:0px auto;
    text-align:center;
