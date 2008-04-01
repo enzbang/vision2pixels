@@ -1,0 +1,12 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@SET@@ SET_URL = /cdc
+@@--
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_USER_PAGE_@ user_page
+
+<h1>@_BABEL_CDC_@</h1>
+
+<div id="pc_cdc">
+@_LAZY_CDC_@
+</div>
+@@INCLUDE@@ chunk_v2p_end.thtml

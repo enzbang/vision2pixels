@@ -40,6 +40,7 @@ with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Chunk_Comment;
+with V2P.Template_Defs.Block_Cdc;
 with V2P.Template_Defs.Block_Exif;
 with V2P.Template_Defs.Block_Forum_Threads;
 with V2P.Template_Defs.Block_Forum_Threads_Text;
@@ -260,6 +261,68 @@ package body V2P.Database is
 
       return To_String (Name);
    end Get_Category_Full_Name;
+
+   -------------
+   -- Get_CdC --
+   -------------
+
+   function Get_CdC return Templates.Translate_Set is
+      DBH        : constant TLS_DBH_Access :=
+                     TLS_DBH_Access (DBH_TLS.Reference);
+      SQL        : constant String :=
+                     "select q.post_id, p.filename, q.elected_on, "
+                       & "o.comment_counter, o.visit_counter, c.name, o.name "
+                       & "from photo_of_the_week q, photo p, post o, "
+                       & "category c "
+                       & "where q.post_id = o.id"
+                       & " and p.id = o.photo_id and o.category_id = c.id"
+                       & " order by q.elected_on DESC";
+      Set        : Templates.Translate_Set;
+      Iter       : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line       : DB.String_Vectors.Vector;
+      TIDs       : Templates.Tag;
+      Thumbs     : Templates.Tag;
+      Date       : Templates.Tag;
+      Visits     : Templates.Tag;
+      Comments   : Templates.Tag;
+      Categories : Templates.Tag;
+      Names      : Templates.Tag;
+   begin
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+
+         Templates.Append (TIDs, DB.String_Vectors.Element (Line, 1));
+         Templates.Append (Thumbs, DB.String_Vectors.Element (Line, 2));
+         Templates.Append (Date, DB.String_Vectors.Element (Line, 3));
+         Templates.Append (Comments, DB.String_Vectors.Element (Line, 4));
+         Templates.Append (Visits, DB.String_Vectors.Element (Line, 5));
+         Templates.Append (Categories, DB.String_Vectors.Element (Line, 6));
+         Templates.Append (Names,  DB.String_Vectors.Element (Line, 7));
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Block_Cdc.TID, TIDs));
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Block_Cdc.THUMB_SOURCE, Thumbs));
+      Templates.Insert
+        (Set,
+         Templates.Assoc (Template_Defs.Block_Cdc.ELECTED_ON, Date));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Block_Cdc.COMMENT_COUNTER, Comments));
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Block_Cdc.VISIT_COUNTER, Visits));
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Block_Cdc.CATEGORY, Categories));
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Block_Cdc.NAME, Names));
+      return Set;
+   end Get_CdC;
 
    -----------------
    -- Get_Comment --

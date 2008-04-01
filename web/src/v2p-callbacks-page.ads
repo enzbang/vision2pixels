@@ -65,4 +65,9 @@ package V2P.Callbacks.Page is
       Translations : in out Templates.Translate_Set);
    --  Validate a user (receive a confirmation URL)
 
+   procedure CdC
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set) is null;
+
 end V2P.Callbacks.Page;

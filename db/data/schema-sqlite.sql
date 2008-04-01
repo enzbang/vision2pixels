@@ -241,6 +241,7 @@ create table photo_of_the_week (
    "id" integer not null primary key autoincrement,
    "post_id" integer,
    "val" real,
+   "elected_on" date default current_timestamp,
    foreign key ("post_id") references post("id")
 );
 

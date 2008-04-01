@@ -153,6 +153,9 @@ package V2P.Database is
      (Uid : in String) return Templates.Translate_Set;
    --  Returns user's last photo (in the user photo queue)
 
+   function Get_CdC return Templates.Translate_Set;
+   --  Returns all CdC photos
+
    function Get_Metadata (Tid : in Id) return Templates.Translate_Set;
    --  Returns photo geographic metadata from thread if
 

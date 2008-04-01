@@ -68,6 +68,7 @@ with V2P.Template_Defs.Chunk_New_Comment_Photo;
 with V2P.Template_Defs.Chunk_V2p_Top;
 
 with V2P.Template_Defs.Page_Admin;
+with V2P.Template_Defs.Page_Cdc;
 with V2P.Template_Defs.Page_Error;
 with V2P.Template_Defs.Page_Fatal_Error;
 with V2P.Template_Defs.Page_Forum_Entry;
@@ -574,6 +575,11 @@ package body V2P.Web_Server is
         (Template_Defs.Page_Validate_User.Set.URL,
          Template_Defs.Page_Validate_User.Template,
          Callbacks.Page.Validate_User'Access);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Cdc.Set.URL,
+         Template_Defs.Page_Cdc.Template,
+         Callbacks.Page.CdC'Access);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Help.Set.URL,

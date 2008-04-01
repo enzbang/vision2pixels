@@ -27,6 +27,11 @@ package V2P.Callbacks.Web_Block is
 
    use AWS;
 
+   procedure CdC
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
    procedure Exif
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;

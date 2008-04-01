@@ -38,6 +38,20 @@ package body V2P.Callbacks.Web_Block is
       Translations : in out Templates.Translate_Set;
       Forum        : in     Database.Forum_Filter);
 
+   ---------
+   -- CdC --
+   ---------
+
+   procedure CdC
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context);
+   begin
+      Templates.Insert (Translations, Database.Get_CdC);
+   end CdC;
+
    ----------
    -- Exif --
    ----------

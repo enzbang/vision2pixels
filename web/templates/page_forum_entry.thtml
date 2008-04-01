@@ -90,7 +90,7 @@
   @@-- Vote photo of the week (only for photo forum)
   @@IF@@ @_IMAGE_SOURCE_@ /= ""
   @@IF@@ @_CDC_@
-  <div id="pfe_cdc"><a href="#" id="pfe_cdclink">&hearts;</a>@_BABEL_HAS_BEEN_CDC_@</div>
+  <div id="pfe_cdc"><a href="/cdc" id="pfe_cdclink">&hearts;</a>@_BABEL_HAS_BEEN_CDC_@</div>
   @@ELSE@@
   <div id="pfe_lazy_vote_week_photo">@_LAZY_VOTE_WEEK_PHOTO_@</div>
   @@END_IF@@

@@ -478,7 +478,7 @@ insert into rating values ("turbo", 141, 1, 5);
 insert into rating values ("enzbang", 141, 1, 1);
 insert into rating values ("test", 141, 1, 4);
 
-insert into photo_of_the_week values (0, 0, 0);
+insert into photo_of_the_week values (0, 0, 0, datetime(current_timestamp));
 insert into user_photo_of_the_week values ("turbo", 141, 0);
 insert into user_photo_of_the_week values ("enzbang", 54, 0);
 insert into user_photo_of_the_week values ("enzbang", 55, 0);
@@ -491,6 +491,12 @@ insert into user_photo_of_the_week values ("enzbang", 61, 0);
 insert into user_photo_of_the_week values ("enzbang", 140, 0);
 insert into user_photo_of_the_week values ("test", 141, 0);
 insert into user_photo_of_the_week values ("test", 140, 0);
+
+insert into photo_of_the_week values (1, 67, 2.0, datetime(current_timestamp, '-0.0003 days'));
+insert into photo_of_the_week values (2, 87, 2.0, datetime(current_timestamp, '-7.0003 days'));
+insert into photo_of_the_week values (3, 90, 2.0, datetime(current_timestamp, '-14.0003 days'));
+insert into photo_of_the_week values (4, 99, 2.0, datetime(current_timestamp, '-21.0003 days'));
+insert into photo_of_the_week values (5, 134, 2.0, datetime(current_timestamp, '-28.0003 days'));
 
 --  EXIF
 
