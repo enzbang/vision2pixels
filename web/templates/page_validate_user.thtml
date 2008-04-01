@@ -7,7 +7,7 @@
 <h1>Validation sur Vision2Pixels</h1>
 
 @@IF@@ @_ERROR_@
-<p>Impossible de valider cette utilisateur. La clé n'est pas valide.
+<p>Impossible de valider cet utilisateur. La clé n'est pas valide.
 Vérifiez que l'URL copié dans votre navigateur est complète.</p>
 @@ELSE@@
 <p>Votre compte est maintenant validé sur Vision2Pixels.</p>
