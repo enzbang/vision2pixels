@@ -1842,7 +1842,9 @@ package body V2P.Database is
    ----------------------
 
    function Get_User_Comment
-     (Uid : in String; Textify : in Boolean := False)
+     (Uid     : in String;
+      Limit   : in Positive;
+      Textify : in Boolean := False)
       return Templates.Translate_Set
    is
       SQL        : constant String :=
@@ -1856,7 +1858,8 @@ package body V2P.Database is
                        & " and (datetime(p.date_post, '+"
                        & Utils.Image (V2P.Settings.Anonymity_Hours)
                        & " hour') < datetime('now') "
-                       & " or u.user_login != " & Q (Uid) & ')';
+                       & " or u.user_login != " & Q (Uid) & ')'
+                       & " limit" & Positive'Image (Limit);
       DBH        : constant TLS_DBH_Access :=
                      TLS_DBH_Access (DBH_TLS.Reference);
       Set        : Templates.Translate_Set;

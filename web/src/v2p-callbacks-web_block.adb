@@ -502,7 +502,8 @@ package body V2P.Callbacks.Web_Block is
    begin
       Templates.Insert
         (Translations,
-         Database.Get_User_Comment (Uid => User_Name, Textify => True));
+         Database.Get_User_Comment
+           (Uid => User_Name, Limit => 50, Textify => True));
    end User_Comment_List;
 
    -----------------------

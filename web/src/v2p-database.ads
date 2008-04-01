@@ -146,6 +146,7 @@ package V2P.Database is
 
    function Get_User_Comment
      (Uid     : in String;
+      Limit   : in Positive;
       Textify : in Boolean := False) return Templates.Translate_Set;
    --  Returns user's comments
 
