@@ -2,7 +2,7 @@
 @@--
 @@SET@@ SET_URL = /cdc
 @@--
-@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_USER_PAGE_@ user_page
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_CDC_@ cdc_page
 
 <h1>@_BABEL_CDC_@</h1>
 
