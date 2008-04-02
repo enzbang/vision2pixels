@@ -22,6 +22,7 @@
 with V2P.DB_Handle;
 
 with V2P.Template_Defs.Chunk_Search_User;
+with V2P.Template_Defs.Chunk_Search_Comment;
 
 package body V2P.Database.Search is
 
@@ -32,6 +33,58 @@ package body V2P.Database.Search is
      (Field   : in String;
       Pattern : in Word_Set) return String;
    --  Returns the DB filter on Field to match the given patterns
+
+   --------------
+   -- Comments --
+   --------------
+
+   function Comments (Pattern : in Word_Set) return Templates.Translate_Set is
+      DBH     : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      SQL     : constant String :=
+                  "SELECT id, date, user_login, comment, post_id"
+                  & " FROM comment, post_comment "
+                  & " WHERE post_comment.comment_id=comment.id"
+                  & " AND " & Pattern_DB ("comment", Pattern)
+                  & " ORDER BY date DESC";
+      Set     : Templates.Translate_Set;
+      Iter    : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line    : DB.String_Vectors.Vector;
+      Tid, Id : Templates.Tag;
+      Date    : Templates.Tag;
+      Login   : Templates.Tag;
+      Comment : Templates.Tag;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+
+         Id      := Id & DB.String_Vectors.Element (Line, 1);
+         Date    := Date & DB.String_Vectors.Element (Line, 2);
+         Login   := Login & DB.String_Vectors.Element (Line, 3);
+         Comment := Comment & DB.String_Vectors.Element (Line, 4);
+         Tid     := Tid & DB.String_Vectors.Element (Line, 5);
+
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert
+        (Set, Templates.Assoc (Chunk_Search_Comment.ID, Id));
+      Templates.Insert
+        (Set, Templates.Assoc (Chunk_Search_Comment.DATE, Date));
+      Templates.Insert
+        (Set, Templates.Assoc (Chunk_Search_Comment.USER_LOGIN, Login));
+      Templates.Insert
+        (Set, Templates.Assoc (Chunk_Search_Comment.COMMENT, Comment));
+      Templates.Insert
+        (Set, Templates.Assoc (Chunk_Search_Comment.COMMENT_TID, Tid));
+
+      return Set;
+   end Comments;
 
    ----------------
    -- Pattern_DB --

@@ -9,6 +9,12 @@ insert into user ("login", "password", "email", "admin", created)
 
 --  User page
 
+--  A trigger creates empty user pages, delete them first
+
+delete from user_page where user_login='turbo';
+delete from user_page where user_login='enzbang';
+delete from user_page where user_login='test';
+
 insert into user_page ("user_login", "content", "content_html")
    values ('turbo',
            'web page for turbo photographer using Nikon.',
@@ -21,7 +27,7 @@ insert into user_page ("user_login", "content", "content_html")
 
 insert into user_page ("user_login", "content", "content_html")
    values ('test',
-           'web page for test photographer using Nikon and Canon.',
+           'web page for test photographer using Nikon and Canon. animal',
            '<p>web page for test photographer using Nikon and Canon.</p>');
 
 --  Create forums

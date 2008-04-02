@@ -343,6 +343,7 @@ div#ps_search {
    color:#C1C7C7;
    border:thin solid #C1C7C7;
    padding:0.3em;
+   display: none;
 }
 @@--
 .ps_search_block h2 {

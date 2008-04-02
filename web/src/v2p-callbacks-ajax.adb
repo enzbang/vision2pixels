@@ -54,6 +54,7 @@ with V2P.Template_Defs.Block_Forum_Sort;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Chunk_Search_User;
+with V2P.Template_Defs.Chunk_Search_Comment;
 with V2P.Template_Defs.Email_User_Validation;
 with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Login;
@@ -920,7 +921,7 @@ package body V2P.Callbacks.Ajax is
                                 (Template_Defs.Set_Global.LOGIN);
       User, Post, Comment : Boolean := False;
       S_Split             : String_Split.Slice_Set;
-      pragma Unreferenced (Post, Comment);
+      pragma Unreferenced (Post);
    begin
       --  Check if logged
 
@@ -956,10 +957,11 @@ package body V2P.Callbacks.Ajax is
             Separators => " ");
 
          declare
-            W_Set    : Database.Search.Word_Set
+            W_Set   : Database.Search.Word_Set
               (1 .. Natural (String_Split.Slice_Count (S_Split)));
-            Last     : Natural := 0;
-            Result_U : Unbounded_String;
+            Last    : Natural := 0;
+            T       : Templates.Translate_Set;
+            Results : Unbounded_String;
          begin
             --  Get all words from the HTTP.PATTERN entry with more than 2
             --  characters.
@@ -976,20 +978,42 @@ package body V2P.Callbacks.Ajax is
                end;
             end loop;
 
+            Templates.Insert (T, Translations);
+
             if Last > 0 then
                if User then
-                  Append
-                    (Result_U,
-                     Unbounded_String'(Templates.Parse
-                       (Template_Defs.Chunk_Search_User.Template,
-                          Database.Search.Users (W_Set (1 .. Last)))));
-               end if;
-            end if;
+                  Templates.Insert
+                    (T, Database.Search.Users (W_Set (1 .. Last)));
 
-            Templates.Insert
-              (Translations,
-               Templates.Assoc
-                 (Template_Defs.R_Page_Search.SEARCH_RESULTS_USERS, Result_U));
+                  Append
+                    (Results,
+                     Unbounded_String'(Templates.Parse
+                       (Template_Defs.Chunk_Search_User.Template, T)));
+               end if;
+
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc
+                    (Template_Defs.R_Page_Search.SEARCH_RESULTS_USERS,
+                     Results));
+
+               Results := Null_Unbounded_String;
+
+               if Comment then
+                  Templates.Insert
+                    (T, Database.Search.Comments (W_Set (1 .. Last)));
+                  Append
+                    (Results,
+                     Unbounded_String'(Templates.Parse
+                       (Template_Defs.Chunk_Search_Comment.Template, T)));
+               end if;
+
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc
+                    (Template_Defs.R_Page_Search.SEARCH_RESULTS_COMMENTS,
+                     Results));
+            end if;
          end;
       end if;
    end Onsubmit_Search_Form;

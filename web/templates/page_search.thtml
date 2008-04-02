@@ -32,17 +32,17 @@
 @@--
 <div id="ps_search_error"></div>
 @@--
-<div class="ps_search_block">
+<div class="ps_search_block" id="ps_search_users_block">
   <h2>@_BABEL_USERS_@</h2>
   <div id="ps_search_results_users"></div>
 </div>
 @@--
-<div class="ps_search_block">
+<div class="ps_search_block" id="ps_search_posts_block">
   <h2>@_BABEL_PHOTOS_@</h2>
   <div id="ps_search_results_posts"></div>
 </div>
 @@--
-<div class="ps_search_block">
+<div class="ps_search_block" id="ps_search_comments_block">
   <h2>@_BABEL_COMMENTS_@</h2>
   <div id="ps_search_results_comments"></div>
 </div>

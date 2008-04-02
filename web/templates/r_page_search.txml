@@ -6,14 +6,41 @@
   <replace id="ps_search_error">@_BABEL_NOT_LOGGED_@</replace>
 @@ELSE@@
   <clear id="ps_search_error"/>
+@@IF@@ @_SEARCH_RESULTS_USERS_@ = ""
+  <apply_style id="ps_search_users_block">
+    <attribute id="display" value="none"/>
+  </apply_style>
+@@ELSE@@
   <replace id="ps_search_results_users">
     <![CDATA[@_SEARCH_RESULTS_USERS_@]]>
   </replace>
+  <apply_style id="ps_search_users_block">
+    <attribute id="display" value="block"/>
+  </apply_style>
+@@END_IF@@
+@@IF@@ @_SEARCH_RESULTS_POSTS_@ = ""
+  <apply_style id="ps_search_posts_block">
+    <attribute id="display" value="none"/>
+  </apply_style>
+@@ELSE@@
   <replace id="ps_search_results_posts">
     <![CDATA[@_SEARCH_RESULTS_POSTS_@]]>
   </replace>
+  <apply_style id="ps_search_posts_block">
+    <attribute id="display" value="block"/>
+  </apply_style>
+@@END_IF@@
+@@IF@@ @_SEARCH_RESULTS_COMMENTS_@ = ""
+  <apply_style id="ps_search_comments_block">
+    <attribute id="display" value="none"/>
+  </apply_style>
+@@ELSE@@
   <replace id="ps_search_results_comments">
     <![CDATA[@_SEARCH_RESULTS_COMMENTS_@]]>
   </replace>
+  <apply_style id="ps_search_comments_block">
+    <attribute id="display" value="block"/>
+  </apply_style>
+@@END_IF@@
 @@END_IF@@
 </response>
