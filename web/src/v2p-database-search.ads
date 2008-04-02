@@ -29,4 +29,7 @@ package V2P.Database.Search is
    function Comments (Pattern : in Word_Set) return Templates.Translate_Set;
    --  Returns comments information matching pattern
 
+   function Posts (Pattern : in Word_Set) return Templates.Translate_Set;
+   --  Returns posts matching pattern
+
 end V2P.Database.Search;

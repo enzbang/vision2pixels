@@ -38,6 +38,7 @@ with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Chunk_Comment;
+with V2P.Template_Defs.Chunk_Threads_List;
 with V2P.Template_Defs.Block_Cdc;
 with V2P.Template_Defs.Block_Exif;
 with V2P.Template_Defs.Block_Forum_Threads;
@@ -1759,26 +1760,26 @@ package body V2P.Database is
       Iter.End_Select;
 
       Templates.Insert
-        (Set, Templates.Assoc (Block_Forum_Threads.THUMB_SOURCE, Thumb));
+        (Set, Templates.Assoc (Chunk_Threads_List.THUMB_SOURCE, Thumb));
 
-      Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.TID, Id));
-      Templates.Insert (Set, Templates.Assoc (Block_Forum_Threads.NAME, Name));
+      Templates.Insert (Set, Templates.Assoc (Chunk_Threads_List.TID, Id));
+      Templates.Insert (Set, Templates.Assoc (Chunk_Threads_List.NAME, Name));
       Templates.Insert
         (Set, Templates.Assoc (Block_Forum_Threads_Text.DATE_POST, Date_Post));
       Templates.Insert
-        (Set, Templates.Assoc (Block_Forum_Threads.CATEGORY, Category));
+        (Set, Templates.Assoc (Chunk_Threads_List.CATEGORY, Category));
       Templates.Insert
         (Set, Templates.Assoc
-           (Block_Forum_Threads.COMMENT_COUNTER, Comment_Counter));
+           (Chunk_Threads_List.COMMENT_COUNTER, Comment_Counter));
       Templates.Insert
         (Set, Templates.Assoc
-           (Block_Forum_Threads.VISIT_COUNTER, Visit_Counter));
+           (Chunk_Threads_List.VISIT_COUNTER, Visit_Counter));
       Templates.Insert
-        (Set, Templates.Assoc (Block_Forum_Threads.REVEALED, Revealed));
+        (Set, Templates.Assoc (Chunk_Threads_List.REVEALED, Revealed));
       Templates.Insert
-        (Set, Templates.Assoc (Block_Forum_Threads.OWNER, Owner));
+        (Set, Templates.Assoc (Chunk_Threads_List.OWNER, Owner));
       Templates.Insert
-        (Set, Templates.Assoc (Block_Forum_Threads.HIDDEN, Hidden));
+        (Set, Templates.Assoc (Chunk_Threads_List.HIDDEN, Hidden));
       Templates.Insert
         (Set, Templates.Assoc
            (Block_Forum_Threads.TOTAL_NB_THREADS, Total_Lines));

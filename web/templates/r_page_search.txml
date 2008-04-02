@@ -6,7 +6,7 @@
   <replace id="ps_search_error">@_BABEL_NOT_LOGGED_@</replace>
 @@ELSE@@
   <clear id="ps_search_error"/>
-@@IF@@ @_SEARCH_RESULTS_USERS_@ = ""
+@@IF@@ @_TRIM:SEARCH_RESULTS_USERS_@ = ""
   <apply_style id="ps_search_users_block">
     <attribute id="display" value="none"/>
   </apply_style>
@@ -18,7 +18,7 @@
     <attribute id="display" value="block"/>
   </apply_style>
 @@END_IF@@
-@@IF@@ @_SEARCH_RESULTS_POSTS_@ = ""
+@@IF@@ @_TRIM:SEARCH_RESULTS_POSTS_@ = ""
   <apply_style id="ps_search_posts_block">
     <attribute id="display" value="none"/>
   </apply_style>
@@ -30,7 +30,7 @@
     <attribute id="display" value="block"/>
   </apply_style>
 @@END_IF@@
-@@IF@@ @_SEARCH_RESULTS_COMMENTS_@ = ""
+@@IF@@ @_TRIM:SEARCH_RESULTS_COMMENTS_@ = ""
   <apply_style id="ps_search_comments_block">
     <attribute id="display" value="none"/>
   </apply_style>
