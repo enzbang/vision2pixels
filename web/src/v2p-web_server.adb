@@ -80,6 +80,7 @@ with V2P.Template_Defs.Page_Help;
 with V2P.Template_Defs.Page_Main;
 with V2P.Template_Defs.Page_New;
 with V2P.Template_Defs.Page_Photo_Post;
+with V2P.Template_Defs.Page_Search;
 with V2P.Template_Defs.Page_Termsofuse;
 with V2P.Template_Defs.Page_User;
 with V2P.Template_Defs.Page_User_Register;
@@ -100,6 +101,7 @@ with V2P.Template_Defs.R_Block_Rate;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 with V2P.Template_Defs.R_Block_Vote_Week_Photo;
 with V2P.Template_Defs.R_Context_Error;
+with V2P.Template_Defs.R_Page_Search;
 with V2P.Template_Defs.R_Page_User_Register;
 
 package body V2P.Web_Server is
@@ -582,6 +584,11 @@ package body V2P.Web_Server is
          Callbacks.Page.CdC'Access);
 
       Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Search.Set.URL,
+         Template_Defs.Page_Search.Template,
+         Callbacks.Page.Search'Access);
+
+      Services.Web_Block.Registry.Register
         (Template_Defs.Page_Help.Set.URL,
          Template_Defs.Page_Help.Template,
          null);
@@ -756,6 +763,13 @@ package body V2P.Web_Server is
         (Template_Defs.Page_User_Register.Ajax.onsubmit_pur_register_user,
          Template_Defs.R_Page_User_Register.Template,
          Callbacks.Ajax.Onsubmit_Pur_Register_User'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Search.Ajax.onsubmit_ps_search_form,
+         Template_Defs.R_Page_Search.Template,
+         Callbacks.Ajax.Onsubmit_Search_Form'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

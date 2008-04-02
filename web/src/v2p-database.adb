@@ -21,12 +21,10 @@
 
 with Ada.Directories;
 with Ada.Exceptions;
-with Ada.Task_Attributes;
 with Ada.Text_IO;
 
 with AWS.Utils;
 
-with DB;
 with Image.Metadata.Embedded;
 with Morzhol.Logs;
 with Morzhol.OS;
@@ -71,22 +69,6 @@ package body V2P.Database is
    use V2P.Template_Defs;
 
    Module : constant Logs.Module_Name := "Database";
-
-   type TLS_DBH is record
-      Handle    : access DB.Handle'Class;
-      Connected : Boolean;
-   end record;
-
-   type TLS_DBH_Access is access all TLS_DBH;
-
-   Null_DBH : constant TLS_DBH :=
-                TLS_DBH'(Handle => null, Connected => False);
-
-   package DBH_TLS is
-     new Task_Attributes (Attribute => TLS_DBH, Initial_Value => Null_DBH);
-
-   procedure Connect (DBH : in TLS_DBH_Access);
-   --  Connect to the database if needed
 
    function F (F : in Float) return String;
    pragma Inline (F);

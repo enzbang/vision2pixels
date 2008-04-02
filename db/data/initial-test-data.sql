@@ -7,6 +7,23 @@ insert into user ("login", "password", "email", "admin", created)
 insert into user ("login", "password", "email", "admin", created)
        values ('test', 'test', 'test@whatever.fr', "FALSE", datetime(current_timestamp));
 
+--  User page
+
+insert into user_page ("user_login", "content", "content_html")
+   values ('turbo',
+           'web page for turbo photographer using Nikon.',
+           '<p>web page for turbo photographer using Nikon.</p>');
+
+insert into user_page ("user_login", "content", "content_html")
+   values ('enzbang',
+           'web page for enzbang photographer using Canon.',
+           '<p>web page for enzbang photographer using Canon.</p>');
+
+insert into user_page ("user_login", "content", "content_html")
+   values ('test',
+           'web page for test photographer using Nikon and Canon.',
+           '<p>web page for test photographer using Nikon and Canon.</p>');
+
 --  Create forums
 
 insert into forum values (1, "Forum photographies", "TRUE", "TRUE");

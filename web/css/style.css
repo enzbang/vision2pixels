@@ -325,6 +325,44 @@ div#bnc_comment_login em {
    font-size:1.1em;
 }
 @@--
+@@--  Search
+@@--
+div#ps_search {
+   margin:2em auto 0;
+   width:90%;
+   color:#C1C7C7;
+   font-weight:bold;
+   border:thin solid #C1C7C7;
+   padding:0.3em;
+   text-align:center;
+}
+@@--
+.ps_search_block {
+   margin:2em auto 0;
+   width:90%;
+   color:#C1C7C7;
+   border:thin solid #C1C7C7;
+   padding:0.3em;
+}
+@@--
+.ps_search_block h2 {
+   font-size: 1.5em;
+   font-weight:bold;
+}
+@@--
+#ps_search_results_users {
+   text-align: left;
+   margin-left: 5em;
+}
+@@--
+#ps_search_results_posts {
+}
+@@--
+#ps_search_results_comments {
+   text-align: left;
+   margin-left: 5em;
+}
+@@--
 @@--  Forum threads
 @@--
 div#pft_filters {

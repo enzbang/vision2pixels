@@ -25,6 +25,9 @@ with AWS.Templates;
 
 with V2P.Navigation_Links;
 
+private with Ada.Task_Attributes;
+private with DB;
+
 package V2P.Database is
 
    use AWS;
@@ -263,5 +266,23 @@ private
                                Null_Unbounded_String,
                                False);
    Empty_Id     : constant Id := 0;
+
+   --  Connection
+
+   type TLS_DBH is record
+      Handle    : access DB.Handle'Class;
+      Connected : Boolean;
+   end record;
+
+   type TLS_DBH_Access is access all TLS_DBH;
+
+   Null_DBH : constant TLS_DBH :=
+                TLS_DBH'(Handle => null, Connected => False);
+
+   package DBH_TLS is
+     new Ada.Task_Attributes (Attribute => TLS_DBH, Initial_Value => Null_DBH);
+
+   procedure Connect (DBH : in TLS_DBH_Access);
+   --  Connect to the database if needed
 
 end V2P.Database;

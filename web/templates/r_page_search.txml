@@ -1,0 +1,19 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+@@IF@@ @_EXIST:ERROR_@
+  <replace id="ps_search_error">@_BABEL_NOT_LOGGED_@</replace>
+@@ELSE@@
+  <clear id="ps_search_error"/>
+  <replace id="ps_search_results_users">
+    <![CDATA[@_SEARCH_RESULTS_USERS_@]]>
+  </replace>
+  <replace id="ps_search_results_posts">
+    <![CDATA[@_SEARCH_RESULTS_POSTS_@]]>
+  </replace>
+  <replace id="ps_search_results_comments">
+    <![CDATA[@_SEARCH_RESULTS_COMMENTS_@]]>
+  </replace>
+@@END_IF@@
+</response>

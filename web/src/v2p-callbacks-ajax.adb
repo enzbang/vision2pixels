@@ -21,6 +21,8 @@
 
 with Ada.Strings.Unbounded;
 
+with GNAT.String_Split;
+
 with AWS.Parameters;
 with AWS.Session;
 with AWS.SMTP.Client;
@@ -30,7 +32,7 @@ with Image.Metadata.Geographic;
 with Morzhol.Logs;
 
 with V2P.Context;
-with V2P.Database;
+with V2P.Database.Search;
 with V2P.User_Validation;
 with V2P.Wiki;
 with V2P.Syndication;
@@ -38,6 +40,7 @@ with V2P.Syndication;
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_New_Text_Entry;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
+with V2P.Template_Defs.Page_Search;
 with V2P.Template_Defs.Page_User_Register;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.Block_Login;
@@ -50,17 +53,20 @@ with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Forum_Sort;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
+with V2P.Template_Defs.Chunk_Search_User;
 with V2P.Template_Defs.Email_User_Validation;
 with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
+with V2P.Template_Defs.R_Page_Search;
 with V2P.Template_Defs.R_Page_User_Register;
 
 package body V2P.Callbacks.Ajax is
 
    use Ada.Strings.Unbounded;
+   use GNAT;
 
    Module : constant Morzhol.Logs.Module_Name := "Ajax";
 
@@ -897,6 +903,96 @@ package body V2P.Callbacks.Ajax is
         (Translations,
          Templates.Assoc (Block_New_Vote.IN_RATE_CB, "t"));
    end Onsubmit_Rate;
+
+   --------------------------
+   -- Onsubmit_Search_Form --
+   --------------------------
+
+   procedure Onsubmit_Search_Form
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      P                   : constant Parameters.List :=
+                              Status.Parameters (Request);
+      Login               : constant String :=
+                              Context.Get_Value
+                                (Template_Defs.Set_Global.LOGIN);
+      User, Post, Comment : Boolean := False;
+      S_Split             : String_Split.Slice_Set;
+      pragma Unreferenced (Post, Comment);
+   begin
+      --  Check if logged
+
+      if Login = "" then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc (Template_Defs.R_Page_Search.ERROR, True));
+
+      else
+         for K in
+           1 ..
+             Parameters.Count (P, Template_Defs.Page_Search.Set.SNAME)
+         loop
+            if Parameters.Get (P, Template_Defs.Page_Search.Set.SNAME, K)
+              = Template_Defs.Page_Search.Set.SN_USERS
+            then
+               User := True;
+            elsif Parameters.Get (P, Template_Defs.Page_Search.Set.SNAME, K)
+              = Template_Defs.Page_Search.Set.SN_POSTS
+            then
+               Post := True;
+            elsif Parameters.Get (P, Template_Defs.Page_Search.Set.SNAME, K)
+              = Template_Defs.Page_Search.Set.SN_COMMENTS
+            then
+               Comment := True;
+            end if;
+         end loop;
+
+         String_Split.Create
+           (S_Split,
+            From       =>
+              Parameters.Get (P, Template_Defs.Page_Search.HTTP.PATTERN),
+            Separators => " ");
+
+         declare
+            W_Set    : Database.Search.Word_Set
+              (1 .. Natural (String_Split.Slice_Count (S_Split)));
+            Last     : Natural := 0;
+            Result_U : Unbounded_String;
+         begin
+            --  Get all words from the HTTP.PATTERN entry with more than 2
+            --  characters.
+
+            for K in 1 .. String_Split.Slice_Number (W_Set'Last) loop
+               declare
+                  Word : constant String :=
+                           String (String_Split.Slice (S_Split, K));
+               begin
+                  if Word'Length > 2 then
+                     Last := Last + 1;
+                     W_Set (Last) := To_Unbounded_String (Word);
+                  end if;
+               end;
+            end loop;
+
+            if Last > 0 then
+               if User then
+                  Append
+                    (Result_U,
+                     Unbounded_String'(Templates.Parse
+                       (Template_Defs.Chunk_Search_User.Template,
+                          Database.Search.Users (W_Set (1 .. Last)))));
+               end if;
+            end if;
+
+            Templates.Insert
+              (Translations,
+               Templates.Assoc
+                 (Template_Defs.R_Page_Search.SEARCH_RESULTS_USERS, Result_U));
+         end;
+      end if;
+   end Onsubmit_Search_Form;
 
    ----------------------------------------
    -- Onsubmit_User_Page_Edit_Form_Enter --

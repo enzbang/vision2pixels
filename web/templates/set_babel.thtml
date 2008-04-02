@@ -63,6 +63,8 @@
 @@SET@@ BABEL_HIDDEN="cachée"
 @@SET@@ BABEL_ADMIN="Administration"
 @@SET@@ BABEL_USERS="Utilisateurs"
+@@SET@@ BABEL_PHOTOS="Photographies"
+@@SET@@ BABEL_COMMENTS="Commentaires"
 @@SET@@ BABEL_NOT_REVEALED="non révélé"
 @@SET@@ BABEL_REVEALED_WITHIN="révélé dans"
 @@SET@@ BABEL_HOURS="heures"
@@ -127,3 +129,4 @@
 @@SET@@ BABEL_PHOTO_POST_RULES_YOUR_PHOTO="Vous ne devez poster que vos propres photos."
 @@SET@@ BABEL_PHOTO_POST_RULES_DISPLAY_RSS="Les informations EXIFs seront affichées sur le site lorsque vous serez révelé."
 @@SET@@ BABEL_CLICK_TO_VIEW_MAP="Cliquez pour localiser sur une carte"
+@@SET@@ BABEL_SEARCH="Recherche"
