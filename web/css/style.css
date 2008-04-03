@@ -740,6 +740,11 @@ span.small_imgcontainer {
    color: #ff0000;
 }
 @@--
+#buml_content {
+   margin-left: 6em;
+   width: 90%;
+}
+@@--
 iframe {
 @@--  display: none;
 @@--  It is not possible to use the display property here as IE7 will
