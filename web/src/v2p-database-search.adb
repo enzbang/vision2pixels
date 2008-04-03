@@ -20,6 +20,7 @@
 ------------------------------------------------------------------------------
 
 with V2P.DB_Handle;
+with V2P.Settings;
 
 with V2P.Template_Defs.Chunk_Search_User;
 with V2P.Template_Defs.Chunk_Search_Comment;
@@ -46,7 +47,8 @@ package body V2P.Database.Search is
                   & " FROM comment, post_comment "
                   & " WHERE post_comment.comment_id=comment.id"
                   & " AND " & Pattern_DB ("comment", Pattern)
-                  & " ORDER BY date DESC";
+                  & " ORDER BY date DESC"
+                  & " LIMIT" & Positive'Image (Settings.Max_Search_Results);
       Set     : Templates.Translate_Set;
       Iter    : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line    : DB.String_Vectors.Vector;
@@ -127,7 +129,8 @@ package body V2P.Database.Search is
                     & " AND forum.id=category.forum_id"
                     & " AND ((" & Pattern_DB ("post.name", Pattern) & ") "
                     & " OR (" & Pattern_DB ("post.comment", Pattern) & "))"
-                    & " ORDER BY post.date_post DESC";
+                    & " ORDER BY post.date_post DESC"
+                    & " LIMIT" & Positive'Image (Settings.Max_Search_Results);
       Set       : Templates.Translate_Set;
       Iter      : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line      : DB.String_Vectors.Vector;
@@ -200,7 +203,8 @@ package body V2P.Database.Search is
                     & " AND forum.id=category.forum_id"
                     & " AND ((" & Pattern_DB ("post.name", Pattern) & ") "
                     & " OR (" & Pattern_DB ("post.comment", Pattern) & "))"
-                    & " ORDER BY post.date_post DESC";
+                    & " ORDER BY post.date_post DESC"
+                    & " LIMIT" & Positive'Image (Settings.Max_Search_Results);
       Set       : Templates.Translate_Set;
       Iter      : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line      : DB.String_Vectors.Vector;
@@ -260,7 +264,8 @@ package body V2P.Database.Search is
                   & " WHERE user.login = user_page.user_login "
                   & " AND ((" & Pattern_DB ("user_page.content", Pattern)
                   & ") OR (" & Pattern_DB ("user.login", Pattern) & "))"
-                  & " ORDER BY user.created DESC";
+                  & " ORDER BY user.created DESC"
+                  & " LIMIT" & Positive'Image (Settings.Max_Search_Results);
       Set     : Templates.Translate_Set;
       Iter    : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line    : DB.String_Vectors.Vector;

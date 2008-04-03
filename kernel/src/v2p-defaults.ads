@@ -85,4 +85,6 @@ package V2P.Defaults is
 
    Compression              : constant Boolean := False;
 
+   Max_Search_Results       : constant Positive := 100;
+
 end V2P.Defaults;

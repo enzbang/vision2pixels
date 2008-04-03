@@ -119,4 +119,7 @@ package V2P.Settings is
    function Compression return Boolean;
    --  Returns True if the HTTP content compression can be used
 
+   function Max_Search_Results return Positive;
+   --  Returns the maximum number of match to return in the search page
+
 end V2P.Settings;
