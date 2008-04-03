@@ -32,4 +32,7 @@ package V2P.Database.Search is
    function Posts (Pattern : in Word_Set) return Templates.Translate_Set;
    --  Returns posts matching pattern
 
+   function Text_Posts (Pattern : in Word_Set) return Templates.Translate_Set;
+   --  Returns posts in text based forums matching pattern
+
 end V2P.Database.Search;

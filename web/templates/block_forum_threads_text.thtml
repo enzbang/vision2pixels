@@ -39,29 +39,6 @@
   <th>@_BABEL_VISIBLE_@</th>
   @@END_IF@@
 </tr>
-@@TABLE@@
-  <tr class="table_line_@_MOD(2):TABLE_LINE_@">
-    <td>
-      @@IF@@ @_OWNER_@ /= @_LOGIN_@
-         @_OWNER_@
-      @@ELSE@@
-        @_BABEL_YOU_@
-      @@END_IF@@
-    </td>
-    <td class="table_title"><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">@_NAME_@</a></td>
-    <td>@_DATE_POST_@</td>
-    <td>@_COMMENT_COUNTER_@</td>
-    <td>@_VISIT_COUNTER_@</td>
-    @@IF@@ @_ADMIN_@
-      <td class="hidden_entry" id="bftt_hidden_entry">
-      @@IF@@ @_HIDDEN_@
-        @_BABEL_NO_@
-      @@ELSE@@
-        @_BABEL_YES_@
-      @@END_IF@@
-      </td>
-    @@END_IF@@
-  </tr>
-@@END_TABLE@@
+@@INCLUDE@@ chunk_threads_text_list.thtml
 </table>
 </div>

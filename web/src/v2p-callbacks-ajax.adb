@@ -56,6 +56,7 @@ with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Chunk_Search_User;
 with V2P.Template_Defs.Chunk_Search_Comment;
 with V2P.Template_Defs.Chunk_Search_Post;
+with V2P.Template_Defs.Chunk_Search_Text_Post;
 with V2P.Template_Defs.Email_User_Validation;
 with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Login;
@@ -957,10 +958,9 @@ package body V2P.Callbacks.Ajax is
             Separators => " ");
 
          declare
-            W_Set   : Database.Search.Word_Set
+            W_Set : Database.Search.Word_Set
               (1 .. Natural (String_Split.Slice_Count (S_Split)));
-            Last    : Natural := 0;
-            Results : Unbounded_String;
+            Last  : Natural := 0;
          begin
             --  Get all words from the HTTP.PATTERN entry with more than 2
             --  characters.
@@ -980,7 +980,8 @@ package body V2P.Callbacks.Ajax is
             if Last > 0 then
                if User then
                   Get_Users : declare
-                     T : Templates.Translate_Set;
+                     T       : Templates.Translate_Set;
+                     Results : Unbounded_String;
                   begin
                      Templates.Insert (T, Translations);
 
@@ -990,20 +991,19 @@ package body V2P.Callbacks.Ajax is
                        (Results,
                         Unbounded_String'(Templates.Parse
                           (Template_Defs.Chunk_Search_User.Template, T)));
+
+                     Templates.Insert
+                       (Translations,
+                        Templates.Assoc
+                          (Template_Defs.R_Page_Search.SEARCH_RESULTS_USERS,
+                           Results));
                   end Get_Users;
                end if;
 
-               Templates.Insert
-                 (Translations,
-                  Templates.Assoc
-                    (Template_Defs.R_Page_Search.SEARCH_RESULTS_USERS,
-                     Results));
-
-               Results := Null_Unbounded_String;
-
                if Comment then
                   Get_Comments : declare
-                     T : Templates.Translate_Set;
+                     T       : Templates.Translate_Set;
+                     Results : Unbounded_String;
                   begin
                      Templates.Insert (T, Translations);
 
@@ -1013,20 +1013,19 @@ package body V2P.Callbacks.Ajax is
                        (Results,
                         Unbounded_String'(Templates.Parse
                           (Template_Defs.Chunk_Search_Comment.Template, T)));
+
+                     Templates.Insert
+                       (Translations,
+                        Templates.Assoc
+                          (Template_Defs.R_Page_Search.SEARCH_RESULTS_COMMENTS,
+                           Results));
                   end Get_Comments;
                end if;
 
-               Templates.Insert
-                 (Translations,
-                  Templates.Assoc
-                    (Template_Defs.R_Page_Search.SEARCH_RESULTS_COMMENTS,
-                     Results));
-
-               Results := Null_Unbounded_String;
-
                if Post then
                   Get_Posts : declare
-                     T : Templates.Translate_Set;
+                     T       : Templates.Translate_Set;
+                     Results : Unbounded_String;
                   begin
                      Templates.Insert (T, Translations);
 
@@ -1036,14 +1035,36 @@ package body V2P.Callbacks.Ajax is
                        (Results,
                         Unbounded_String'(Templates.Parse
                           (Template_Defs.Chunk_Search_Post.Template, T)));
+
+                     Templates.Insert
+                       (Translations,
+                        Templates.Assoc
+                          (Template_Defs.R_Page_Search.SEARCH_RESULTS_POSTS,
+                           Results));
                   end Get_Posts;
+
+                  Get_Text_Posts : declare
+                     T       : Templates.Translate_Set;
+                     Results : Unbounded_String;
+                  begin
+                     Templates.Insert (T, Translations);
+
+                     Templates.Insert
+                       (T, Database.Search.Text_Posts (W_Set (1 .. Last)));
+                     Append
+                       (Results,
+                        Unbounded_String'(Templates.Parse
+                          (Template_Defs.Chunk_Search_Text_Post.Template, T)));
+
+                     Templates.Insert
+                       (Translations,
+                        Templates.Assoc
+                          (Template_Defs.R_Page_Search.
+                             SEARCH_RESULTS_TEXT_POSTS,
+                           Results));
+                  end Get_Text_Posts;
                end if;
 
-               Templates.Insert
-                 (Translations,
-                  Templates.Assoc
-                    (Template_Defs.R_Page_Search.SEARCH_RESULTS_POSTS,
-                     Results));
             end if;
          end;
       end if;

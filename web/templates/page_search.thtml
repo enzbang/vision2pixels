@@ -42,6 +42,11 @@
   <div id="ps_search_results_comments"></div>
 </div>
 @@--
+<div class="ps_search_block" id="ps_search_text_posts_block">
+  <h2>@_BABEL_FORUMS_@</h2>
+  <div id="ps_search_results_text_posts"></div>
+</div>
+@@--
 <div class="ps_search_block" id="ps_search_posts_block">
   <h2>@_BABEL_PHOTOS_@</h2>
   <div id="ps_search_results_posts"></div>

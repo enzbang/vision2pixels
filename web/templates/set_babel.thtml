@@ -65,6 +65,7 @@
 @@SET@@ BABEL_USERS="Utilisateurs"
 @@SET@@ BABEL_PHOTOS="Photographies"
 @@SET@@ BABEL_COMMENTS="Commentaires"
+@@SET@@ BABEL_FORUMS="Forums"
 @@SET@@ BABEL_NOT_REVEALED="non révélé"
 @@SET@@ BABEL_REVEALED_WITHIN="révélé dans"
 @@SET@@ BABEL_HOURS="heures"

@@ -39,10 +39,10 @@ with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Chunk_Comment;
 with V2P.Template_Defs.Chunk_Threads_List;
+with V2P.Template_Defs.Chunk_Threads_Text_List;
 with V2P.Template_Defs.Block_Cdc;
 with V2P.Template_Defs.Block_Exif;
 with V2P.Template_Defs.Block_Forum_Threads;
-with V2P.Template_Defs.Block_Forum_Threads_Text;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Latest_Posts;
 with V2P.Template_Defs.Block_Latest_Users;
@@ -1765,7 +1765,7 @@ package body V2P.Database is
       Templates.Insert (Set, Templates.Assoc (Chunk_Threads_List.TID, Id));
       Templates.Insert (Set, Templates.Assoc (Chunk_Threads_List.NAME, Name));
       Templates.Insert
-        (Set, Templates.Assoc (Block_Forum_Threads_Text.DATE_POST, Date_Post));
+        (Set, Templates.Assoc (Chunk_Threads_Text_List.DATE_POST, Date_Post));
       Templates.Insert
         (Set, Templates.Assoc (Chunk_Threads_List.CATEGORY, Category));
       Templates.Insert

@@ -181,6 +181,75 @@ package body V2P.Database.Search is
       return Set;
    end Posts;
 
+   ----------------
+   -- Text_Posts --
+   ----------------
+
+   function Text_Posts
+     (Pattern : in Word_Set) return Templates.Translate_Set
+   is
+      DBH       : constant TLS_DBH_Access :=
+                    TLS_DBH_Access (DBH_TLS.Reference);
+      SQL       : constant String := "SELECT post.name, post.id,"
+                    & " user_post.user_login, category.name, comment_counter,"
+                    & " visit_counter, post.hidden "
+                    & "FROM post, category, user_post, forum "
+                    & " WHERE post.id=user_post.post_id"
+                    & " AND post.category_id=category.id"
+                    & " AND forum.for_photo='FALSE'"
+                    & " AND forum.id=category.forum_id"
+                    & " AND ((" & Pattern_DB ("post.name", Pattern) & ") "
+                    & " OR (" & Pattern_DB ("post.comment", Pattern) & "))"
+                    & " ORDER BY post.date_post DESC";
+      Set       : Templates.Translate_Set;
+      Iter      : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line      : DB.String_Vectors.Vector;
+      Name      : Templates.Tag;
+      Tid       : Templates.Tag;
+      Owner     : Templates.Tag;
+      Category  : Templates.Tag;
+      Comment_C : Templates.Tag;
+      Visit_C   : Templates.Tag;
+      Hidden    : Templates.Tag;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+
+         Name      := Name      & DB.String_Vectors.Element (Line, 1);
+         Tid       := Tid       & DB.String_Vectors.Element (Line, 2);
+         Owner     := Owner     & DB.String_Vectors.Element (Line, 3);
+         Category  := Category  & DB.String_Vectors.Element (Line, 4);
+         Comment_C := Comment_C & DB.String_Vectors.Element (Line, 5);
+         Visit_C   := Visit_C   & DB.String_Vectors.Element (Line, 6);
+         Hidden    := Hidden    & DB.String_Vectors.Element (Line, 7);
+
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert
+        (Set, Templates.Assoc (Chunk_Threads_List.NAME, Name));
+      Templates.Insert
+        (Set, Templates.Assoc (Chunk_Threads_List.TID, Tid));
+      Templates.Insert
+        (Set, Templates.Assoc (Chunk_Threads_List.OWNER, Owner));
+      Templates.Insert
+        (Set, Templates.Assoc (Chunk_Threads_List.CATEGORY, Category));
+      Templates.Insert
+        (Set, Templates.Assoc (Chunk_Threads_List.VISIT_COUNTER, Visit_C));
+      Templates.Insert
+        (Set, Templates.Assoc (Chunk_Threads_List.COMMENT_COUNTER, Comment_C));
+      Templates.Insert
+        (Set, Templates.Assoc (Chunk_Threads_List.HIDDEN, Hidden));
+
+      return Set;
+   end Text_Posts;
+
    -----------
    -- Users --
    -----------
