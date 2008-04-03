@@ -156,8 +156,8 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "select id, name from category"
-         & " where forum_id=" & To_String (Fid));
+        (Iter, "SELECT id, name FROM category"
+         & " WHERE forum_id=" & To_String (Fid));
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -194,8 +194,9 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "select id, name from category"
-         & " where post.category_id=category.id post.id=" & To_String (Tid));
+        (Iter, "SELECT id, name FROM category"
+         & " WHERE post.category_id=category.id "
+         & " AND post.id=" & To_String (Tid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -227,8 +228,8 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "select f.name, c.name from category c, "
-         & "forum f where f.id = c.forum_id and c.id = " & Q (CID));
+        (Iter, "SELECT f.name, c.name FROM category c, forum f "
+         & "WHERE f.id=c.forum_id AND c.id=" & Q (CID));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -253,13 +254,13 @@ package body V2P.Database is
       DBH        : constant TLS_DBH_Access :=
                      TLS_DBH_Access (DBH_TLS.Reference);
       SQL        : constant String :=
-                     "select q.post_id, p.filename, q.elected_on, "
+                     "SELECT q.post_id, p.filename, q.elected_on, "
                        & "o.comment_counter, o.visit_counter, c.name, o.name "
-                       & "from photo_of_the_week q, photo p, post o, "
+                       & "FROM photo_of_the_week q, photo p, post o, "
                        & "category c "
-                       & "where q.post_id = o.id"
-                       & " and p.id = o.photo_id and o.category_id = c.id"
-                       & " order by q.elected_on DESC";
+                       & "WHERE q.post_id=o.id"
+                       & " AND p.id=o.photo_id AND o.category_id=c.id"
+                       & " ORDER BY q.elected_on DESC";
       Set        : Templates.Translate_Set;
       Iter       : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line       : DB.String_Vectors.Vector;
@@ -323,12 +324,12 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter,
-         "select strftime('%Y-%m-%dT%H:%M:%SZ', date), "
-         & "date(date, 'localtime'), time(date, 'localtime'), "
+         "SELECT strftime('%Y-%m-%dT%H:%M:%SZ', date), "
+         & "DATE(date, 'localtime'), time(date, 'localtime'), "
          & "user_login, anonymous_user, "
          & "comment, "
-         & "(select filename from photo where id=comment.photo_id) "
-         & " from comment where id=" & To_String (Cid));
+         & "(SELECT filename FROM photo WHERE id=comment.photo_id) "
+         & " FROM comment WHERE id=" & To_String (Cid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -412,14 +413,14 @@ package body V2P.Database is
       begin
          DBH.Handle.Prepare_Select
            (Iter,
-            "select comment.id, strftime('%Y-%m-%dT%H:%M:%SZ', date), "
-            & "date(date, 'localtime'), time(date, 'localtime'), "
+            "SELECT comment.id, strftime('%Y-%m-%dT%H:%M:%SZ', date), "
+            & "DATE(date, 'localtime'), time(date, 'localtime'), "
             & "user_login, anonymous_user, "
             & "comment, "
-            & "(select filename from photo where id=comment.photo_id) "
-            & " from comment, post_comment"
-            & " where post_id=" & To_String (Tid)
-            & " and post_comment.comment_id=comment.id");
+            & "(SELECT filename FROM photo WHERE id=comment.photo_id) "
+            & " FROM comment, post_comment"
+            & " WHERE post_id=" & To_String (Tid)
+            & " AND post_comment.comment_id=comment.id");
 
          while Iter.More loop
             Iter.Get_Line (Line);
@@ -509,11 +510,11 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "select create_date, make, camera_model_name, "
+        (Iter, "SELECT create_date, make, camera_model_name, "
          & "shutter_speed_value, aperture_value, flash, focal_length, "
          & "exposure_mode, exposure_program, white_balance, metering_mode, "
-         & "iso from photo_exif "
-         & "where photo_id = (select photo_id from post where id="
+         & "iso FROM photo_exif "
+         & "WHERE photo_id=(SELECT photo_id FROM post WHERE id="
          & To_String (Tid)
          & ')');
 
@@ -539,8 +540,8 @@ package body V2P.Database is
       else
          --  No exif metadata recorded for this photo, get them now
          DBH.Handle.Prepare_Select
-           (Iter, "select filename from photo where id="
-            & "(select photo_id from post where id="
+           (Iter, "SELECT filename FROM photo WHERE id="
+            & "(SELECT photo_id FROM post WHERE id="
             & To_String (Tid)
             & ')');
 
@@ -553,12 +554,12 @@ package body V2P.Database is
          end if;
 
          DBH.Handle.Execute
-           ("insert into photo_exif " &
+           ("INSERT INTO photo_exif " &
             "('photo_id', 'create_date', 'make', 'camera_model_name', "
             & "'shutter_speed_value', 'aperture_value', 'flash', "
             & "'focal_length', 'exposure_mode', 'exposure_program', "
             & "'white_balance', 'metering_mode', 'iso')"
-            & "values ((select photo_id from post where id="
+            & "VALUES ((SELECT photo_id FROM post WHERE id="
             & To_String (Tid) & ")," & Q (Exif.Create_Date)
             & ',' & Q (Exif.Make) & ','
             & Q (Exif.Camera_Model_Name) & ',' & Q (Exif.Shutter_Speed_Value)
@@ -621,9 +622,9 @@ package body V2P.Database is
          begin
             DBH.Handle.Prepare_Select
               (Iter,
-               "select forum_id from category, post "
-                 & "where category.id = post.category_id "
-                 & "and post.id = " & To_String (Tid));
+               "SELECT forum_id FROM category, post "
+                 & "WHERE category.id=post.category_id "
+                 & "AND post.id=" & To_String (Tid));
 
             if Iter.More then
                Iter.Get_Line (Line);
@@ -670,7 +671,7 @@ package body V2P.Database is
       begin
          DBH.Handle.Prepare_Select
            (Iter,
-            "select name, anonymity, for_photo from forum where id="
+            "SELECT name, anonymity, for_photo FROM forum WHERE id="
             & To_String (L_Fid));
 
          if Iter.More then
@@ -736,10 +737,10 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter,
-         "select for_photo from category, post, forum "
-         & "where category.id = post.category_id "
-         & "and forum.id = category.forum_id "
-         & "and post.id = " & To_String (Tid));
+         "SELECT for_photo FROM category, post, forum "
+         & "WHERE category.id=post.category_id "
+         & "AND forum.id=category.forum_id "
+         & "AND post.id=" & To_String (Tid));
 
       if not Iter.More then
          Logs.Write
@@ -771,7 +772,7 @@ package body V2P.Database is
    is
       use type Templates.Tag;
 
-      SQL       : constant String := "select id, name, for_photo from forum";
+      SQL       : constant String := "SELECT id, name, for_photo FROM forum";
       DBH       : constant TLS_DBH_Access :=
                     TLS_DBH_Access (DBH_TLS.Reference);
 
@@ -788,7 +789,7 @@ package body V2P.Database is
 
       if Filter /= Forum_All then
          DBH.Handle.Prepare_Select
-           (Iter, SQL & " where for_photo = '"
+           (Iter, SQL & " WHERE for_photo='"
             & Boolean'Image (Filter = Forum_Photo) & "'");
       else
          DBH.Handle.Prepare_Select (Iter, SQL);
@@ -847,9 +848,9 @@ package body V2P.Database is
       --  Get entry information
 
       DBH.Handle.Prepare_Select
-        (Iter, "select post_rating, criteria_id, "
-           & "(select name from criteria where id=criteria_id), "
-           & "nb_vote from global_rating where post_id=" & To_String (Tid));
+        (Iter, "SELECT post_rating, criteria_id, "
+           & "(SELECT name FROM criteria WHERE id=criteria_id), "
+           & "nb_vote FROM global_rating WHERE post_id=" & To_String (Tid));
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -929,15 +930,15 @@ package body V2P.Database is
       --  Get entry information
 
       Prepare_Select : declare
-         SQL   : constant String := "select post.id, post.name, filename"
+         SQL   : constant String := "SELECT post.id, post.name, filename"
            & Select_Date
-           & " from post, forum, photo, category "
-           & "where post.photo_id = photo.id "
-           & "and post.category_id = category.id "
-           & "and category.forum_id = forum.id "
-           & "and forum.for_photo = 'TRUE' "
-           & "order by post.date_post DESC "
-           & "limit" & Positive'Image (Limit);
+           & " FROM post, forum, photo, category "
+           & "WHERE post.photo_id=photo.id "
+           & "AND post.category_id=category.id "
+           & "AND category.forum_id=forum.id "
+           & "AND forum.for_photo='TRUE' "
+           & "ORDER BY post.date_post DESC "
+           & "LIMIT " & Utils.Image (Limit);
       begin
          DBH.Handle.Prepare_Select (Iter, SQL);
       end Prepare_Select;
@@ -980,9 +981,9 @@ package body V2P.Database is
    is
       use type Templates.Tag;
       DBH   : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      SQL   : constant String := "select login from user "
-                                   & " order by created DESC "
-                                   & " limit " & Positive'Image (Limit);
+      SQL   : constant String := "SELECT login FROM user "
+                                   & " ORDER BY created DESC "
+                                   & " LIMIT " & Positive'Image (Limit);
       Iter  : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line  : DB.String_Vectors.Vector;
       User  : Templates.Tag;
@@ -1030,10 +1031,10 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "select geo_latitude, geo_longitude, "
+        (Iter, "SELECT geo_latitude, geo_longitude, "
          & "geo_latitude_formatted, geo_longitude_formatted "
-         & "from photo_metadata "
-         & "where photo_id = (select photo_id from post where id="
+         & "FROM photo_metadata "
+         & "WHERE photo_id = (SELECT photo_id FROM post WHERE id="
          & To_String (Tid)
          & ')');
 
@@ -1074,16 +1075,16 @@ package body V2P.Database is
    function Get_New_Post_Delay
      (Uid : in String) return Templates.Translate_Set
    is
-      SQL : constant String := "select julianday (p.date_post, '+"
+      SQL : constant String := "SELECT JULIANDAY(p.date_post,'+"
         & Utils.Image (Settings.Posting_Delay_Hours)
-        & " hour') - julianday ('now'), datetime (p.date_post, '+"
+        & " hour') - JULIANDAY('NOW'), DATETIME(p.date_post,'+"
         & Utils.Image (Settings.Posting_Delay_Hours)
         & " hour') "
-        & "from user_post up, post p "
-        & "where up.post_id = p.id and p.photo_id != 0 "
-        & "and datetime(p.date_post, '+"
+        & "FROM user_post up, post p "
+        & "WHERE up.post_id=p.id AND p.photo_id!=0 "
+        & "AND DATETIME(p.date_post, '+"
         & Utils.Image (Settings.Posting_Delay_Hours)
-        & " hour') > datetime('now') and up.user_login=" & Q (Uid);
+        & " hour')>DATETIME('NOW') AND up.user_login=" & Q (Uid);
 
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Set  : Templates.Translate_Set;
@@ -1131,10 +1132,10 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "select val, w.post_id, photo.filename"
-         & " from photo_of_the_week w, post, photo"
-         & " where post.id = w.post_id and post.photo_id = photo.id"
-         & " order by w.id desc limit 1");
+        (Iter, "SELECT val, w.post_id, photo.filename"
+         & " FROM photo_of_the_week w, post, photo"
+         & " WHERE post.id=w.post_id AND post.photo_id=photo.id"
+         & " ORDER BY w.id DESC LIMIT 1");
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -1178,19 +1179,19 @@ package body V2P.Database is
 
       if Forum_Type = Forum_Photo then
          DBH.Handle.Prepare_Select
-           (Iter, "select post.name, post.comment, post.hidden, "
+           (Iter, "SELECT post.name, post.comment, post.hidden, "
             & "filename, width, height, user.login, post.date_post, "
-            & " (julianday(post.date_post, '+"
+            & " (JULIANDAY(post.date_post, '+"
             & Utils.Image (Settings.Anonymity_Hours)
-            & " hour') - julianday('now')) * 24, category.name, "
-            & "(select id from photo_of_the_week as cdc "
-            & " where cdc.post_id = post.id) "
-            & "from post, user, user_post, photo, category "
-            & "where post.id=" & To_String (Tid)
-            & " and user.login = user_post.user_login"
-            & " and user_post.post_id = post.id"
-            & " and photo.id = post.photo_id"
-            & " and category.id = post.category_id");
+            & " hour') - JULIANDAY('NOW')) * 24, category.name, "
+            & "(SELECT id FROM photo_of_the_week AS cdc "
+            & " WHERE cdc.post_id=post.id) "
+            & "FROM post, user, user_post, photo, category "
+            & "WHERE post.id=" & To_String (Tid)
+            & " AND user.login=user_post.user_login"
+            & " AND user_post.post_id=post.id"
+            & " AND photo.id=post.photo_id"
+            & " AND category.id=post.category_id");
 
          if Iter.More then
             Iter.Get_Line (Line);
@@ -1283,15 +1284,15 @@ package body V2P.Database is
 
       else
          DBH.Handle.Prepare_Select
-           (Iter, "select post.name, post.comment, post.hidden, "
+           (Iter, "SELECT post.name, post.comment, post.hidden, "
             & "user.login, post.date_post, "
-            & "datetime(post.date_post, '+"
+            & "DATETIME(post.date_post, '+"
             & Utils.Image (Settings.Anonymity_Hours)
-            & " hour') < datetime('now') "
-            & "from post, user, user_post "
-            & "where post.id=" & To_String (Tid)
-            & " and user.login = user_post.user_login"
-            & " and user_post.post_id = post.id");
+            & " hour')<DATETIME('NOW') "
+            & "FROM post, user, user_post "
+            & "WHERE post.id=" & To_String (Tid)
+            & " AND user.login=user_post.user_login"
+            & " AND user_post.post_id=post.id");
 
          if Iter.More then
             Iter.Get_Line (Line);
@@ -1409,7 +1410,7 @@ package body V2P.Database is
          Forum      : in Forum_Filter;
          Count_Only : in Boolean := False) return String
       is
-         From_Stmt : Unbounded_String := +" from post, category";
+         From_Stmt : Unbounded_String := +" FROM post, category";
       begin
          if not Count_Only or else User /= "" then
             --  Needed the user_post table for join
@@ -1441,14 +1442,14 @@ package body V2P.Database is
          Select_Stmt : Unbounded_String;
       begin
          if Count_Only then
-            Select_Stmt := +"select count(post.id)";
+            Select_Stmt := +"SELECT COUNT(post.id)";
 
          else
-            Select_Stmt := +"select post.id, post.name, post.date_post, "
-              & "datetime(date_post, '+"
+            Select_Stmt := +"SELECT post.id, post.name, post.date_post, "
+              & "DATETIME(date_post, '+"
               & Utils.Image (Settings.Anonymity_Hours)
-              & " hour') < datetime('now'), "
-              & "(select filename from photo where Id = Post.Photo_Id), "
+              & " hour') < DATETIME('NOW'), "
+              & "(SELECT filename FROM photo WHERE id=post.photo_id), "
               & "category.name, comment_counter,"
               & "visit_counter, post.hidden, user_post.user_login";
 
@@ -1462,9 +1463,9 @@ package body V2P.Database is
                when Best_Noted =>
                   Append
                     (Select_Stmt,
-                     ", (select sum(global_rating.post_rating)"
-                     & " from global_rating"
-                     & " where post.id=global_rating.post_id) as sum_rating");
+                     ", (SELECT SUM(global_rating.post_rating)"
+                     & " FROM global_rating"
+                     & " WHERE post.id=global_rating.post_id) AS sum_rating");
             end case;
          end if;
 
@@ -1484,42 +1485,42 @@ package body V2P.Database is
          Count_Only : in Boolean := False) return String
       is
          Where_Stmt : Unbounded_String :=
-                        +" where post.category_id = category.id";
+                        +" WHERE post.category_id=category.id";
       begin
          if not Count_Only or else User /= "" then
             --  if count_only is false, join with user_post table
             --  as we want to display the user_name
             --  if count_only is true and user is not null then
             --  join in needed to restrict to the given user
-            Append (Where_Stmt, " and user_post.post_id = post.id");
+            Append (Where_Stmt, " AND user_post.post_id=post.id");
          end if;
 
          if Fid /= Empty_Id then
             --  Restrict query to the given forum id
             Append (Where_Stmt,
-                    " and category.forum_id = " & To_String (Fid));
+                    " AND category.forum_id=" & To_String (Fid));
          end if;
 
          if User /= "" then
             --  Restrict to a specific user
             Append (Where_Stmt,
-                    " and user_post.user_login = " & Q (User));
+                    " AND user_post.user_login=" & Q (User));
          end if;
 
          if Filter_Cat /= "" then
             Append (Where_Stmt,
-                    " and category.id = " & Q (Filter_Cat));
+                    " AND category.id=" & Q (Filter_Cat));
          end if;
 
          --  Sorting and filters
 
          case Sorting is
             when Last_Commented =>
-               Append (Where_Stmt, " and comment.id = post.last_comment_id");
+               Append (Where_Stmt, " AND comment.id=post.last_comment_id");
 
                case Filter is
                   when Today | Two_Days | Seven_Days =>
-                     Append (Where_Stmt, " and date(comment.date)");
+                     Append (Where_Stmt, " AND DATE(comment.date)");
 
                   when All_Messages =>
                      null;
@@ -1528,7 +1529,7 @@ package body V2P.Database is
             when Last_Posted | Best_Noted | Need_Attention =>
                case Filter is
                   when Today | Two_Days | Seven_Days =>
-                     Append (Where_Stmt, " and date(post.date_post)");
+                     Append (Where_Stmt, " AND DATE(post.date_post)");
 
                   when All_Messages =>
                      null;
@@ -1537,13 +1538,13 @@ package body V2P.Database is
 
          case Filter is
             when Today =>
-               Append (Where_Stmt, " = date(current_date)");
+               Append (Where_Stmt, " =DATE(current_date)");
 
             when Two_Days =>
-               Append (Where_Stmt, " > date(current_date, '-2 days')");
+               Append (Where_Stmt, " >DATE(current_date, '-2 days')");
 
             when Seven_Days =>
-               Append (Where_Stmt, " > date(current_date, '-7 days')");
+               Append (Where_Stmt, " >DATE(current_date, '-7 days')");
 
             when All_Messages =>
                null;
@@ -1553,14 +1554,14 @@ package body V2P.Database is
             when Forum_Photo =>
                Append
                  (Where_Stmt,
-                  " and forum.for_photo='TRUE' "
-                  &  " and forum.id=category.forum_id");
+                  " AND forum.for_photo='TRUE' "
+                  &  " AND forum.id=category.forum_id");
 
             when Forum_Text =>
                Append
                  (Where_Stmt,
-                  " and forum.for_photo='FALSE' "
-                  &  " and forum.id=category.forum_id");
+                  " AND forum.for_photo='FALSE' "
+                  &  " AND forum.id=category.forum_id");
 
             when Forum_All =>
                null;
@@ -1569,9 +1570,9 @@ package body V2P.Database is
          if Only_Revealed then
             Append
               (Where_Stmt,
-               " and datetime(post.date_post, '+"
+               " AND DATETIME(post.date_post, '+"
                & Utils.Image (V2P.Settings.Anonymity_Hours)
-               & " hour') < datetime('now') ");
+               & " hour')<DATETIME('NOW') ");
          end if;
 
          return -Where_Stmt;
@@ -1651,36 +1652,36 @@ package body V2P.Database is
                          +SQL_Select & SQL_From & SQL_Where;
       begin
          if not Admin then
-            Append (Select_Stmt, " and post.hidden='FALSE'");
+            Append (Select_Stmt, " AND post.hidden='FALSE'");
          end if;
 
          --  Add filtering into the select statement
 
          case Sorting is
             when Last_Posted =>
-               Append (Select_Stmt, " order by post.date_post");
+               Append (Select_Stmt, " ORDER BY post.date_post");
                Append (Select_Stmt, ' ' & Order_Direction'Image (Order_Dir));
 
             when Last_Commented =>
-               Append (Select_Stmt, " order by post.last_comment_id");
+               Append (Select_Stmt, " ORDER BY post.last_comment_id");
                Append (Select_Stmt, ' ' & Order_Direction'Image (Order_Dir));
                Append (Select_Stmt, ", post.date_post");
                Append (Select_Stmt, ' ' & Order_Direction'Image (Order_Dir));
 
             when Best_Noted =>
-               Append (Select_Stmt, " order by sum_rating");
+               Append (Select_Stmt, " ORDER BY sum_rating");
                Append (Select_Stmt, ' ' & Order_Direction'Image (Order_Dir));
 
             when Need_Attention =>
                --  No comment and oldest first
-               Append (Select_Stmt, " order by post.comment_counter ASC");
+               Append (Select_Stmt, " ORDER BY post.comment_counter ASC");
                Append (Select_Stmt, ", post.date_post ASC");
          end case;
 
          if Limit /= 0 then
             Append (Select_Stmt,
-                    " limit " & Natural'Image (Limit)
-                    & " offset" & Natural'Image (From - 1));
+                    " LIMIT " & Utils.Image (Limit)
+                    & " OFFSET " & Utils.Image (From - 1));
          end if;
 
          return Select_Stmt;
@@ -1804,8 +1805,8 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "select filename from photo, post "
-         & "where photo.id = post.photo_id and post.id = " & To_String (Post));
+        (Iter, "SELECT filename FROM photo, post "
+         & "WHERE photo.id=post.photo_id AND post.id=" & To_String (Post));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -1831,19 +1832,19 @@ package body V2P.Database is
       return Templates.Translate_Set
    is
       SQL        : constant String :=
-                     "select pc.post_id, c.id, c.comment "
-                       & "from comment as c, post_comment as pc, post as p,"
-                       & " user_post as u "
-                       & "where c.user_login = " & Q (Uid)
-                       & " and pc.comment_id = c.id"
-                       & " and p.id = pc.post_id"
-                       & " and u.post_id = p.id"
-                       & " and (datetime(p.date_post, '+"
+                     "SELECT pc.post_id, c.id, c.comment "
+                       & "FROM comment AS c, post_comment AS pc, post AS p,"
+                       & " user_post AS u "
+                       & "WHERE c.user_login=" & Q (Uid)
+                       & " AND pc.comment_id=c.id"
+                       & " AND p.id=pc.post_id"
+                       & " AND u.post_id=p.id"
+                       & " AND (DATETIME(p.date_post, '+"
                        & Utils.Image (V2P.Settings.Anonymity_Hours)
-                       & " hour') < datetime('now') "
-                       & " or u.user_login != " & Q (Uid) & ')'
-                       & " order by c.date DESC"
-                       & " limit" & Positive'Image (Limit);
+                       & " hour')<DATETIME('NOW') "
+                       & " OR u.user_login!=" & Q (Uid) & ')'
+                       & " ORDER BY c.date DESC"
+                       & " LIMIT " & Utils.Image (Limit);
       DBH        : constant TLS_DBH_Access :=
                      TLS_DBH_Access (DBH_TLS.Reference);
       Set        : Templates.Translate_Set;
@@ -1905,7 +1906,7 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "select password, admin from user where login=" & Q (Uid));
+        (Iter, "SELECT password, admin FROM user WHERE login=" & Q (Uid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -1935,10 +1936,10 @@ package body V2P.Database is
       DBH  : constant TLS_DBH_Access :=
                TLS_DBH_Access (DBH_TLS.Reference);
       SQL  : constant String :=
-               "select q.photo_id, p.filename "
-                 & "from user_photo_queue q, photo p "
-                 & "where q.photo_id = p.id "
-                 & "and user_login = " & Q (Uid);
+               "SELECT q.photo_id, p.filename "
+                 & "FROM user_photo_queue q, photo p "
+                 & "WHERE q.photo_id=p.id "
+                 & "AND user_login=" & Q (Uid);
       Set  : Templates.Translate_Set;
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
@@ -1970,8 +1971,8 @@ package body V2P.Database is
 
    function Get_User_Page (Uid : in String) return Templates.Translate_Set is
       SQL          : constant String :=
-                       "select content, content_html from user_page "
-                         & "where user_login=" & Q (Uid);
+                       "SELECT content, content_html FROM user_page "
+                         & "WHERE user_login=" & Q (Uid);
       DBH          : constant TLS_DBH_Access :=
                        TLS_DBH_Access (DBH_TLS.Reference);
       Set          : Templates.Translate_Set;
@@ -2029,10 +2030,10 @@ package body V2P.Database is
       --  Get entry information
 
       DBH.Handle.Prepare_Select
-        (Iter, "select id, name, (select post_rating from rating r "
-         & "where r.post_id=" & To_String (Tid)
-         & " and r.user_login=" & Q (Uid)
-         & " and criteria_id=id) from criteria");
+        (Iter, "SELECT id, name, (SELECT post_rating FROM rating r "
+         & "WHERE r.post_id=" & To_String (Tid)
+         & " AND r.user_login=" & Q (Uid)
+         & " AND criteria_id=id) FROM criteria");
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -2076,12 +2077,12 @@ package body V2P.Database is
       DBH         : constant TLS_DBH_Access :=
                       TLS_DBH_Access (DBH_TLS.Reference);
       SQL         : constant String :=
-                      "select w.post_id, photo.filename "
-                        & "from user_photo_of_the_week w, photo, post "
-                        & "where w.post_id = post.id "
-                        & "and post.photo_id = photo.id "
-                        & "and week_id=0 "
-                        & "and w.user_login = " & Q (Uid);
+                      "SELECT w.post_id, photo.filename "
+                        & "FROM user_photo_of_the_week w, photo, post "
+                        & "WHERE w.post_id = post.id "
+                        & "AND post.photo_id = photo.id "
+                        & "AND week_id=0 "
+                        & "AND w.user_login = " & Q (Uid);
 
       Set         : Templates.Translate_Set;
       Iter        : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -2120,10 +2121,10 @@ package body V2P.Database is
       DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
       SQL    : constant String :=
-                 "select * from user_photo_of_the_week "
-                   & "where user_login=" & Q (Uid)
-                   & " and post_id=" & To_String (Tid)
-                   & " and week_id=0";
+                 "SELECT * FROM user_photo_of_the_week "
+                   & "WHERE user_login=" & Q (Uid)
+                   & " AND post_id=" & To_String (Tid)
+                   & " AND week_id=0";
       --  week_id=0 as we want only the photo for which the user has voted for
       --  the current open vote.
       Result : Boolean := False;
@@ -2156,8 +2157,8 @@ package body V2P.Database is
    procedure Increment_Visit_Counter (Pid : in Id) is
       DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       SQL : constant String :=
-              "update post set visit_counter = visit_counter + 1 where "
-                & "id = " & To_String (Pid);
+              "UPDATE post SET visit_counter=visit_counter+1"
+                & " WHERE id=" & To_String (Pid);
    begin
       Connect (DBH);
       DBH.Handle.Execute (SQL);
@@ -2194,9 +2195,9 @@ package body V2P.Database is
         (User_Login, Anonymous, Comment : in String)
       is
          SQL : constant String :=
-                 "insert into comment ('user_login', 'anonymous_user', "
+                 "INSERT INTO comment ('user_login', 'anonymous_user', "
                    & "'comment', 'photo_id')"
-                   & " values ("
+                   & " VALUES ("
                    & Q (User_Login) & ',' & Q (Anonymous) & ',' & Q (Comment)
                    & ',' & To_String (Pid) & ')';
       begin
@@ -2209,7 +2210,7 @@ package body V2P.Database is
 
       procedure Insert_Table_Post_Comment (Post_Id, Comment_Id : in Id) is
          SQL : constant String :=
-                 "insert into post_comment values ("
+                 "INSERT INTO post_comment VALUES ("
                    & To_String (Post_Id) & "," & To_String (Comment_Id) & ')';
       begin
          DBH.Handle.Execute (SQL);
@@ -2245,10 +2246,10 @@ package body V2P.Database is
       Geo_Latitude_Formatted  : in String;
       Geo_Longitude_Formatted : in String)
    is
-      SQL : constant String := "insert into photo_metadata (photo_id, "
+      SQL : constant String := "INSERT INTO photo_metadata (photo_id, "
         & "geo_latitude, geo_longitude, geo_latitude_formatted, "
-        & "geo_longitude_formatted) values ("
-        & "(select photo_id from post where id=" & To_String (Pid) & "), "
+        & "geo_longitude_formatted) VALUES ("
+        & "(SELECT photo_id FROM post WHERE id=" & To_String (Pid) & "), "
         & F (Geo_Latitude) & ", " & F (Geo_Longitude) & ", "
         & Q (Geo_Latitude_Formatted) & ", "
         & Q (Geo_Longitude_Formatted) & ")";
@@ -2297,8 +2298,8 @@ package body V2P.Database is
          Size     : in Integer)
       is
          SQL : constant String :=
-                 "insert into photo ('filename', 'height', 'width', 'size') "
-                   & "values (" & Q (Filename) & ',' & I (Height) & ','
+                 "INSERT INTO photo ('filename', 'height', 'width', 'size') "
+                   & "VALUES (" & Q (Filename) & ',' & I (Height) & ','
                    & I (Width) & ',' & I (Size) & ')';
       begin
          DBH.Handle.Execute (SQL);
@@ -2310,8 +2311,8 @@ package body V2P.Database is
 
       procedure User_Tmp_Photo (Uid, Pid : in String) is
          SQL : constant String :=
-                 "update user_photo_queue set photo_id = " & Pid
-                   & " where user_login = " & Q (Uid);
+                 "UPDATE user_photo_queue SET photo_id=" & Pid
+                   & " WHERE user_login=" & Q (Uid);
       begin
          DBH.Handle.Execute (SQL);
       end User_Tmp_Photo;
@@ -2364,9 +2365,9 @@ package body V2P.Database is
         (Name, Category_Id, Comment, Photo_Id : in String)
       is
          SQL : constant String :=
-                 "insert into post ('name', 'comment', 'category_id',"
+                 "INSERT INTO post ('name', 'comment', 'category_id',"
                    & "'template_id', 'visit_counter', 'comment_counter',"
-                   & "'photo_id') values (" & Q (Name) &  ',' & Q (Comment)
+                   & "'photo_id') VALUES (" & Q (Name) &  ',' & Q (Comment)
                    & ',' & Category_Id & ", 1, 0, 0," & Photo_Id & ')';
       begin
          DBH.Handle.Execute (SQL);
@@ -2378,7 +2379,7 @@ package body V2P.Database is
 
       procedure Insert_Table_User_Post (Uid : in String; Post_Id : in Id) is
          SQL : constant String :=
-                 "insert into user_post values ("
+                 "INSERT INTO user_post VALUES ("
                    & Q (Uid) & ',' & To_String (Post_Id) & ")";
       begin
          DBH.Handle.Execute (SQL);
@@ -2430,8 +2431,8 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter,
-         "select * from user_post where post_id  = "
-           & To_String (Pid) & " and user_login = " & Q (Uid));
+         "SELECT * FROM user_post WHERE post_id  = "
+           & To_String (Pid) & " AND user_login = " & Q (Uid));
 
       if Iter.More then
          Result := True;
@@ -2499,8 +2500,8 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter,
-         "select * from user "
-         & "where login=" & Q (Login) & " or email=" & Q (Email));
+         "SELECT * FROM user "
+         & "WHERE login=" & Q (Login) & " or email=" & Q (Email));
 
       if Iter.More then
          Iter.End_Select;
@@ -2512,8 +2513,8 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter,
-         "select * from user_to_validate "
-         & "where login=" & Q (Login) & " or email=" & Q (Email));
+         "SELECT * FROM user_to_validate "
+         & "WHERE login=" & Q (Login) & " or email=" & Q (Email));
 
       if Iter.More then
          Iter.End_Select;
@@ -2524,8 +2525,8 @@ package body V2P.Database is
       --  The login and e-mail are free, register user
 
       DBH.Handle.Execute
-        ("insert into user_to_validate ('login', 'password', 'email') "
-         & "values ("
+        ("INSERT INTO user_to_validate ('login', 'password', 'email') "
+         & "VALUES ("
          & Q (Login) & ", " & Q (Password) & ", " & Q (Email) & ')');
 
       Lock_Register.Release;
@@ -2546,7 +2547,7 @@ package body V2P.Database is
    begin
       Connect (DBH);
       DBH.Handle.Execute
-        ("update user set last_logged=datetime('now') where login=" & Q (Uid));
+        ("UPDATE user SET last_logged=DATETIME('NOW') WHERE login=" & Q (Uid));
    end Set_Last_Logged;
 
    ---------------
@@ -2576,7 +2577,7 @@ package body V2P.Database is
       --  Get current hidden status
 
       DBH.Handle.Prepare_Select
-        (Iter, "select hidden from post where post.id=" & To_String (Tid));
+        (Iter, "SELECT hidden FROM post WHERE post.id=" & To_String (Tid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -2591,8 +2592,8 @@ package body V2P.Database is
       Hidden := not Hidden;
 
       DBH.Handle.Execute
-        ("update post set hidden="
-         & Q (Hidden) & " where id=" & To_String (Tid));
+        ("UPDATE post SET hidden="
+         & Q (Hidden) & " WHERE id=" & To_String (Tid));
 
       Templates.Insert
         (Set, Templates.Assoc
@@ -2615,13 +2616,13 @@ package body V2P.Database is
    begin
       if Has_Vote then
          DBH.Handle.Execute
-           ("delete from user_photo_of_the_week "
-              & "where user_login=" & Q (Uid)
-              & " and post_id=" & To_String  (Tid));
+           ("DELETE FROM user_photo_of_the_week "
+              & "WHERE user_login=" & Q (Uid)
+              & " AND post_id=" & To_String  (Tid));
       else
          DBH.Handle.Execute
-           ("insert into user_photo_of_the_week "
-              & "values (" & Q (Uid) & ", " & To_String (Tid) & ", 0)");
+           ("INSERT INTO user_photo_of_the_week "
+              & "VALUES (" & Q (Uid) & ", " & To_String (Tid) & ", 0)");
       end if;
    end Toggle_Vote_Week_Photo;
 
@@ -2633,8 +2634,8 @@ package body V2P.Database is
      (Uid : in String; Content : in String; Content_HTML : in String)
    is
       SQL : constant String :=
-              "update user_page set content_html =  " & Q (Content_HTML)
-              & ", content=" & Q (Content) & " where user_login=" & Q (Uid);
+              "UPDATE user_page SET content_html=" & Q (Content_HTML)
+              & ", content=" & Q (Content) & " WHERE user_login=" & Q (Uid);
 
       DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
    begin
@@ -2653,9 +2654,9 @@ package body V2P.Database is
       Value    : in String)
    is
       SQL  : constant String :=
-               "select 1 from rating where user_login="
-                 & Q (Uid) & " and post_id="
-                 & To_String (Tid) & " and criteria_id="
+               "SELECT 1 FROM rating WHERE user_login="
+                 & Q (Uid) & " AND post_id="
+                 & To_String (Tid) & " AND criteria_id="
                  & Q (Criteria);
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -2668,15 +2669,15 @@ package body V2P.Database is
          --  Need update
          Iter.End_Select;
          DBH.Handle.Execute
-           ("update rating set post_rating = " & Q (Value)
-            & "where user_login="
-            & Q (Uid) & " and post_id=" & To_String (Tid)
-            & " and criteria_id=" & Q (Criteria));
+           ("UPDATE rating SET post_rating = " & Q (Value)
+            & "WHERE user_login="
+            & Q (Uid) & " AND post_id=" & To_String (Tid)
+            & " AND criteria_id=" & Q (Criteria));
       else
          --  Insert new rating
          Iter.End_Select;
          DBH.Handle.Execute
-           ("insert into rating values (" & Q (Uid)
+           ("INSERT INTO rating VALUES (" & Q (Uid)
             & ", " & To_String (Tid) & ", " & Q (Criteria)
             & ", " & Q (Value) & ")");
       end if;
@@ -2699,8 +2700,8 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter,
-         "select password, email from user_to_validate "
-         & "where login=" & Q (Login));
+         "SELECT password, email FROM user_to_validate "
+         & "WHERE login=" & Q (Login));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -2725,14 +2726,14 @@ package body V2P.Database is
       --  Create corresponding entry into user table
 
       DBH.Handle.Execute
-        ("insert into user ('login', 'password', 'email', 'admin') values ("
+        ("INSERT INTO user ('login', 'password', 'email', 'admin') VALUES ("
          & Q (Login) & ", " & Q (-Password)
-         & ", " & Q (-Email) & ", 'false')");
+         & ", " & Q (-Email) & ", 'FALSE')");
 
       --  Now we can remove the user from user_to_validate
 
       DBH.Handle.Execute
-        ("delete from user_to_validate where login=" & Q (Login));
+        ("DELETE FROM user_to_validate WHERE login=" & Q (Login));
 
       return True;
    end Validate_User;

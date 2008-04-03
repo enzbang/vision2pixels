@@ -19,6 +19,8 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with AWS.Utils;
+
 with V2P.DB_Handle;
 with V2P.Settings;
 
@@ -48,7 +50,7 @@ package body V2P.Database.Search is
                   & " WHERE post_comment.comment_id=comment.id"
                   & " AND " & Pattern_DB ("comment", Pattern)
                   & " ORDER BY date DESC"
-                  & " LIMIT" & Positive'Image (Settings.Max_Search_Results);
+                  & " LIMIT " & Utils.Image (Settings.Max_Search_Results);
       Set     : Templates.Translate_Set;
       Iter    : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line    : DB.String_Vectors.Vector;
@@ -120,7 +122,7 @@ package body V2P.Database.Search is
       SQL       : constant String := "SELECT post.name, post.id,"
                     & " user_post.user_login, category.name, comment_counter,"
                     & " visit_counter, "
-                    & " (select filename from photo where Id = Post.Photo_Id),"
+                    & " (SELECT filename FROM photo WHERE id=post.photo_id),"
                     & " post.hidden "
                     & "FROM post, category, user_post, forum "
                     & " WHERE post.id=user_post.post_id"
@@ -130,7 +132,7 @@ package body V2P.Database.Search is
                     & " AND ((" & Pattern_DB ("post.name", Pattern) & ") "
                     & " OR (" & Pattern_DB ("post.comment", Pattern) & "))"
                     & " ORDER BY post.date_post DESC"
-                    & " LIMIT" & Positive'Image (Settings.Max_Search_Results);
+                    & " LIMIT " & Utils.Image (Settings.Max_Search_Results);
       Set       : Templates.Translate_Set;
       Iter      : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line      : DB.String_Vectors.Vector;
@@ -204,7 +206,7 @@ package body V2P.Database.Search is
                     & " AND ((" & Pattern_DB ("post.name", Pattern) & ") "
                     & " OR (" & Pattern_DB ("post.comment", Pattern) & "))"
                     & " ORDER BY post.date_post DESC"
-                    & " LIMIT" & Positive'Image (Settings.Max_Search_Results);
+                    & " LIMIT " & Utils.Image (Settings.Max_Search_Results);
       Set       : Templates.Translate_Set;
       Iter      : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line      : DB.String_Vectors.Vector;
@@ -261,11 +263,11 @@ package body V2P.Database.Search is
    function Users (Pattern : in Word_Set) return Templates.Translate_Set is
       DBH     : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       SQL     : constant String := "SELECT login, content FROM user, user_page"
-                  & " WHERE user.login = user_page.user_login "
+                  & " WHERE user.login=user_page.user_login "
                   & " AND ((" & Pattern_DB ("user_page.content", Pattern)
                   & ") OR (" & Pattern_DB ("user.login", Pattern) & "))"
                   & " ORDER BY user.created DESC"
-                  & " LIMIT" & Positive'Image (Settings.Max_Search_Results);
+                  & " LIMIT " & Utils.Image (Settings.Max_Search_Results);
       Set     : Templates.Translate_Set;
       Iter    : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line    : DB.String_Vectors.Vector;
