@@ -1,7 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
-
+@@--
 <h2>@_BABEL_LAST_USER_COMMENT_@</h2>
-
+@@--
 <ul id="bucl_lastusercommentlist">
 @@TABLE@@
   <li>
