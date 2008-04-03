@@ -1859,6 +1859,7 @@ package body V2P.Database is
                        & Utils.Image (V2P.Settings.Anonymity_Hours)
                        & " hour') < datetime('now') "
                        & " or u.user_login != " & Q (Uid) & ')'
+                       & " order by c.date DESC"
                        & " limit" & Positive'Image (Limit);
       DBH        : constant TLS_DBH_Access :=
                      TLS_DBH_Access (DBH_TLS.Reference);
