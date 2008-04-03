@@ -340,15 +340,19 @@ div#ps_search {
 .ps_search_block {
    margin:2em auto 0;
    width:90%;
-   color:#C1C7C7;
-   border:thin solid #C1C7C7;
    padding:0.3em;
    display: none;
 }
 @@--
 .ps_search_block h2 {
-   font-size: 1.5em;
-   font-weight:bold;
+   font-size: 1.2em;
+   font-weight: bold;
+   background: @_PHOTOTITLE_COLOR_@;
+   text-decoration: none;
+   width: 100%;
+   align: center;
+   padding: 0.2em;
+   color: black;
 }
 @@--
 #ps_search_results_users {
