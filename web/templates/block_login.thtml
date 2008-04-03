@@ -25,6 +25,7 @@
     @@IF@@ @_ADMIN_@
       <li><a href="@_ADMIN_URL_@">@_BABEL_ADMIN_@</a><li>
     @@END_IF@@
+    <li><a href="/search">@_BABEL_SEARCH_@</a></li>
     <li><a id="bl_logout_enter" href="#">@_BABEL_LOGOUT_@</a></li>
   </ul>
 </div>
