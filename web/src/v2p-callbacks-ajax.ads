@@ -82,6 +82,12 @@ package V2P.Callbacks.Ajax is
       Translations : in out Templates.Translate_Set);
    --  Called when changing the forum sorting
 
+   procedure Onchange_Image_Size_Preference
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Called when changing the image size preference in user's page
+
    procedure Onchange_Category_Filter_Forum
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;

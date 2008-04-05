@@ -60,10 +60,13 @@ package V2P.Database is
    type Forum_Sort is
      (Last_Posted, Last_Commented, Best_Noted, Need_Attention);
 
+   type Image_Size is (Thumb_Size, Medium_Size, Max_Size);
+
    type User_Settings is record
-      Page_Size : Positive;
-      Filter    : Filter_Mode;
-      Sort      : Forum_Sort;
+      Page_Size  : Positive;
+      Filter     : Filter_Mode;
+      Sort       : Forum_Sort;
+      Image_Size : Database.Image_Size;
    end record;
 
    type User_Data is record
@@ -301,6 +304,11 @@ package V2P.Database is
       Sort  : in Forum_Sort);
    --  Set sort preference for the given user
 
+   procedure Set_Image_Size_Preferences
+     (Login      : in String;
+      Image_Size : in Database.Image_Size);
+   --  Set image size preference for the given user
+
 private
 
    No_User_Data : constant User_Data :=
@@ -308,7 +316,8 @@ private
                       (Null_Unbounded_String,
                        Null_Unbounded_String,
                        False,
-                       User_Settings'(1, All_Messages, Last_Commented));
+                       User_Settings'(1, All_Messages,
+                                      Last_Commented, Max_Size));
    Empty_Id     : constant Id := 0;
 
    --  Connection

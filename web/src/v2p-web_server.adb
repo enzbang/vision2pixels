@@ -44,6 +44,7 @@ with Morzhol.OS;
 with V2P.Cache;
 with V2P.Callbacks.Page;
 with V2P.Callbacks.Ajax;
+with V2P.Callbacks.Web_Block;
 with V2P.Context;
 with V2P.Settings;
 with V2P.Syndication;
@@ -64,6 +65,7 @@ with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Pref_Forum_Filter;
 with V2P.Template_Defs.Block_Pref_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Pref_Forum_Sort;
+with V2P.Template_Defs.Block_Pref_Image_Size;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
 
@@ -328,6 +330,9 @@ package body V2P.Web_Server is
         (Translations, Templates.Assoc
            (Template_Defs.Set_Global.MEDIUM_IMAGE_SOURCE_PREFIX,
             Settings.Medium_Images_Source_Prefix));
+
+      V2P.Callbacks.Web_Block.Pref_Image_Size
+        (C_Request, Context'Access, Translations);
 
       Web_Page := Services.Web_Block.Registry.Build
         (URI, C_Request, Translations,
@@ -722,6 +727,14 @@ package body V2P.Web_Server is
            Ajax.onchange_bfcf_forum_category_filter_set,
          Template_Defs.R_Block_Forum_Filter.Template,
          Callbacks.Ajax.Onchange_Category_Filter_Forum'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Pref_Image_Size.Ajax.
+           onchange_bpims_image_size,
+         Template_Defs.R_Block_User_Preferences.Template,
+         Callbacks.Ajax.Onchange_Image_Size_Preference'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

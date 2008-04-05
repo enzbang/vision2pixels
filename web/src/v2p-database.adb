@@ -2717,6 +2717,18 @@ package body V2P.Database is
       Set_Preferences (Login, "sort", Q (Forum_Sort'Image (Sort)));
    end Set_Filter_Sort_Preferences;
 
+   --------------------------------
+   -- Set_Image_Size_Preferences --
+   --------------------------------
+
+   procedure Set_Image_Size_Preferences
+     (Login      : in String;
+      Image_Size : in Database.Image_Size) is
+   begin
+      Set_Preferences (Login, "image_size",
+                       Q (Database.Image_Size'Image (Image_Size)));
+   end Set_Image_Size_Preferences;
+
    ---------------------
    -- Set_Last_Logged --
    ---------------------
@@ -2895,7 +2907,7 @@ package body V2P.Database is
       Preferences :    out User_Settings)
    is
       SQL  : constant String :=
-               "SELECT photo_per_page, filter, sort "
+               "SELECT photo_per_page, filter, sort, image_size "
                  & "FROM user_preferences WHERE user_login=" & Q (Login);
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -2915,13 +2927,16 @@ package body V2P.Database is
               Filter    => Filter_Mode'Value
                 (DB.String_Vectors.Element (Line, 2)),
               Sort      => Forum_Sort'Value
-                (DB.String_Vectors.Element (Line, 3)));
+                (DB.String_Vectors.Element (Line, 3)),
+              Image_Size => Image_Size'Value
+                (DB.String_Vectors.Element (Line, 4)));
 
       else
          Preferences :=
-           User_Settings'(Page_Size => 10,
-                          Filter    => Seven_Days,
-                          Sort      => Last_Commented);
+           User_Settings'(Page_Size  => 10,
+                          Filter     => Seven_Days,
+                          Sort       => Last_Commented,
+                          Image_Size => Max_Size);
       end if;
 
       Iter.End_Select;

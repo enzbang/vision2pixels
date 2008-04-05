@@ -12,7 +12,7 @@ create table "user_preferences" (
    "photo_per_page" integer default 10,
    "filter" varchar(15) default "SEVEN_DAYS",
    "sort" varchar(15) default "LAST_COMMENTED",
-   "large_image" boolean default TRUE
+   "image_size" varchar(15) default "MAX_SIZE"
 );
 
 create table "user_to_validate" (

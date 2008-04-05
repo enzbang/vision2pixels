@@ -564,6 +564,29 @@ package body V2P.Callbacks.Web_Block is
             Database.Forum_Sort'Image (Preferences.Sort)));
    end Pref_Forum_Sort;
 
+   ---------------------
+   -- Pref_Image_Size --
+   ---------------------
+
+   procedure Pref_Image_Size
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      Login       : constant String :=
+                      Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      Preferences : Database.User_Settings;
+   begin
+      Database.User_Preferences (Login, Preferences);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.PREF_IMAGE_SIZE,
+            Database.Image_Size'Image (Preferences.Image_Size)));
+   end Pref_Image_Size;
+
    -----------------
    -- Quick_Login --
    -----------------

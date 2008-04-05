@@ -55,6 +55,7 @@ with V2P.Template_Defs.Block_Forum_Sort;
 with V2P.Template_Defs.Block_Pref_Forum_Filter;
 with V2P.Template_Defs.Block_Pref_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Pref_Forum_Sort;
+with V2P.Template_Defs.Block_Pref_Image_Size;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Chunk_Search_User;
@@ -460,6 +461,43 @@ package body V2P.Callbacks.Ajax is
          Name    => Template_Defs.Set_Global.NAV_FROM,
          Value   => 1);
    end Onchange_Forum_Sort;
+
+   ------------------------------------
+   -- Onchange_Image_Size_Preference --
+   ------------------------------------
+
+   procedure Onchange_Image_Size_Preference
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      package HTTP renames Template_Defs.Block_Pref_Image_Size.HTTP;
+
+      SID    : constant Session.Id := Status.Session (Request);
+      Login  : constant String :=
+                 Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+      P      : constant Parameters.List := Status.Parameters (Request);
+      Size   : constant String :=
+                 Parameters.Get (P, HTTP.bpims_image_size);
+   begin
+      Morzhol.Logs.Write
+        (Name    => Module,
+         Content => Size);
+
+      Context.Set_Value (Template_Defs.Set_Global.PREF_IMAGE_SIZE, Size);
+
+      Morzhol.Logs.Write
+        (Name    => Module,
+         Content => "CONTENT IS " & Size);
+
+      Database.Set_Image_Size_Preferences
+        (Login, Database.Image_Size'Value (Size));
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.R_Block_User_Preferences.FILTER, Size));
+   end Onchange_Image_Size_Preference;
 
    ----------------------------
    -- Onclick_Goto_Next_Page --
