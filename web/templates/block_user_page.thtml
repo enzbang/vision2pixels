@@ -33,6 +33,10 @@
 @@END_IF@@
 </div>
 
+@@IF@@ @_LOGIN_@ = @_USER_NAME_@
+   @_LAZY_USER_PREFERENCES_@
+@@END_IF@@
+
 @_LAZY_USER_PHOTO_LIST_@
 
 @_LAZY_USER_MESSAGE_LIST_@

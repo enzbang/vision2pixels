@@ -1,0 +1,4 @@
+@@-- HTTP_GET(bpfs_forum_sort_set)
+@@--
+@@INCLUDE@@ chunk_forum_sort.thtml  bpfs_forum_sort_set
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bpfs_forum_sort_set, 4=>bpfs_forum_sort_set)

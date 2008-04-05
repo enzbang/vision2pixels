@@ -106,6 +106,17 @@ package body V2P.Database is
    --  Lock the application when registering a new user. We want to avoid two
    --  users registering under the same login.
 
+   procedure User_Preferences
+     (Login     : in     String;
+      Filter    :    out Filter_Mode;
+      Page_Size :    out Positive;
+      Sort      :    out Forum_Sort);
+   --  Returns the user's preferences for the given user. If no preferences are
+   --  set, use the default values.
+
+   function Preferences_Exist (Uid : in String) return Boolean;
+   --  Returns True if a current set of user's preferences exist
+
    -------------
    -- Connect --
    -------------
@@ -1912,13 +1923,21 @@ package body V2P.Database is
          Iter.Get_Line (Line);
 
          Password_Value : declare
-            Password : constant String := DB.String_Vectors.Element (Line, 1);
-            Admin    : constant String := DB.String_Vectors.Element (Line, 2);
+            Password  : constant String := DB.String_Vectors.Element (Line, 1);
+            Admin     : constant String := DB.String_Vectors.Element (Line, 2);
+            Page_Size : Positive;
+            Filter    : Filter_Mode;
+            Sort      : Forum_Sort;
          begin
             Line.Clear;
-            return User_Data'(Uid      => +Uid,
-                              Password => +Password,
-                              Admin    => Boolean'Value (Admin));
+            User_Preferences (Uid, Filter, Page_Size, Sort);
+
+            return User_Data'(Uid       => +Uid,
+                              Password  => +Password,
+                              Admin     => Boolean'Value (Admin),
+                              Page_Size => Page_Size,
+                              Filter    => Filter,
+                              Sort      => Sort);
          end Password_Value;
 
       else
@@ -2443,6 +2462,26 @@ package body V2P.Database is
       return Result;
    end Is_Author;
 
+   -----------------------
+   -- Preferences_Exist --
+   -----------------------
+
+   function Preferences_Exist (Uid : in String) return Boolean is
+      SQL    : constant String :=
+                 "SELECT 1 FROM user_preferences WHERE user_login=" & Q (Uid);
+      DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Result : Boolean;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      Result := Iter.More;
+      Iter.End_Select;
+      return Result;
+   end Preferences_Exist;
+
    -------
    -- Q --
    -------
@@ -2537,6 +2576,84 @@ package body V2P.Database is
          Lock_Register.Release;
          return False;
    end Register_User;
+
+   --------------------------------------
+   -- Set_Filter_Page_Size_Preferences --
+   --------------------------------------
+
+   procedure Set_Filter_Page_Size_Preferences
+     (Login     : in String;
+      Page_Size : in Positive)
+   is
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+   begin
+      Connect (DBH);
+
+      if Preferences_Exist (Login) then
+         DBH.Handle.Execute
+           ("UPDATE user_preferences SET photo_per_page="
+            & Utils.Image (Page_Size)
+            & " WHERE user_login=" & Q (Login));
+      else
+         DBH.Handle.Execute
+           ("INSERT INTO user_preferences ('user_login', 'photo_per_page') "
+            & "VALUES (" & Q (Login) & ", "
+            & Utils.Image (Page_Size) & ")");
+      end if;
+   end Set_Filter_Page_Size_Preferences;
+
+   ----------------------------
+   -- Set_Filter_Preferences --
+   ----------------------------
+
+   procedure Set_Filter_Preferences
+     (Login  : in String;
+      Filter : in Filter_Mode)
+   is
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+   begin
+      Connect (DBH);
+
+      if Preferences_Exist (Login) then
+         DBH.Handle.Execute
+           ("UPDATE user_preferences SET filter="
+            & Q (Filter_Mode'Image (Filter))
+            & " WHERE user_login=" & Q (Login));
+      else
+         DBH.Handle.Execute
+           ("INSERT INTO user_preferences ('user_login', 'filter') "
+            & "VALUES (" & Q (Login) & ", '"
+            & Filter_Mode'Image (Filter) & "')");
+      end if;
+   end Set_Filter_Preferences;
+
+   ---------------------------------
+   -- Set_Filter_Sort_Preferences --
+   ---------------------------------
+
+   procedure Set_Filter_Sort_Preferences
+     (Login : in String;
+      Sort  : in Forum_Sort)
+   is
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+   begin
+      Connect (DBH);
+
+      if Preferences_Exist (Login) then
+         DBH.Handle.Execute
+           ("UPDATE user_preferences SET sort="
+            & Q (Forum_Sort'Image (Sort))
+            & " WHERE user_login=" & Q (Login));
+      else
+         DBH.Handle.Execute
+           ("INSERT INTO user_preferences ('user_login', 'sort') "
+            & "VALUES (" & Q (Login) & ", '"
+            & Forum_Sort'Image (Sort) & "')");
+      end if;
+   end Set_Filter_Sort_Preferences;
 
    ---------------------
    -- Set_Last_Logged --
@@ -2682,6 +2799,41 @@ package body V2P.Database is
             & ", " & Q (Value) & ")");
       end if;
    end Update_Rating;
+
+   ----------------------
+   -- User_Preferences --
+   ----------------------
+
+   procedure User_Preferences
+     (Login     : in     String;
+      Filter    :    out Filter_Mode;
+      Page_Size :    out Positive;
+      Sort      :    out Forum_Sort)
+   is
+      SQL  : constant String :=
+               "SELECT photo_per_page, filter, sort "
+                 & "FROM user_preferences WHERE user_login=" & Q (Login);
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+         Page_Size := Positive'Value (DB.String_Vectors.Element (Line, 1));
+         Filter    := Filter_Mode'Value (DB.String_Vectors.Element (Line, 2));
+         Sort      := Forum_Sort'Value (DB.String_Vectors.Element (Line, 3));
+      else
+         Page_Size := 10;
+         Filter    := Seven_Days;
+         Sort      := Last_Commented;
+      end if;
+
+      Iter.End_Select;
+   end User_Preferences;
 
    -------------------
    -- Validate_User --

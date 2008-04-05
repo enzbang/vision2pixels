@@ -1,0 +1,37 @@
+@@INCLUDE@@ set_babel.thtml
+@@INCLUDE@@ set_values.incl
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+@@INLINE@@
+  <replace id="bup_notify">@_BABEL_PREFERENCE_SET_TO_@
+@@IF@@ @_FILTER_@ = @_SET_TODAY_@
+  @_BABEL_TODAY_@
+@@ELSIF@@ @_FILTER_@ = @_SET_TWO_DAYS_@
+  @_BABEL_TWO_DAYS_@
+@@ELSIF@@ @_FILTER_@ = @_SET_SEVEN_DAYS_@
+  @_BABEL_SEVEN_DAYS_@
+@@ELSIF@@ @_FILTER_@ = @_SET_ALL_MESSAGES_@
+  @_BABEL_ALL_MESSAGES_@
+@@--
+@@ELSIF@@ @_FILTER_@ = @_SET_TEN_@
+  @_BABEL_TEN_@
+@@ELSIF@@ @_FILTER_@ = @_SET_TWENTY_@
+  @_BABEL_TWENTY_@
+@@ELSIF@@ @_FILTER_@ = @_SET_FIFTY_@
+  @_BABEL_FIFTY_@
+@@ELSIF@@ @_FILTER_@ = @_SET_HUNDRED_@
+  @_BABEL_HUNDRED_@
+@@--
+@@ELSIF@@ @_FILTER_@ = @_SET_LAST_POSTED_@
+  @_BABEL_LAST_POSTED_@
+@@ELSIF@@ @_FILTER_@ = @_SET_LAST_COMMENTED_@
+  @_BABEL_LAST_COMMENTED_@
+@@ELSIF@@ @_FILTER_@ = @_SET_BEST_NOTED_@
+  @_BABEL_BEST_NOTED_@
+@@ELSIF@@ @_FILTER_@ = @_SET_NEED_ATTENTION_@
+  @_BABEL_NEED_ATTENTION_@
+@@END_IF@@
+  </replace>
+@@END_INLINE@@
+</response>

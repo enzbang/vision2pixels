@@ -60,6 +60,9 @@ with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Vote;
+with V2P.Template_Defs.Block_Pref_Forum_Filter;
+with V2P.Template_Defs.Block_Pref_Forum_Filter_Page_Size;
+with V2P.Template_Defs.Block_Pref_Forum_Sort;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
 
@@ -99,6 +102,7 @@ with V2P.Template_Defs.R_Block_Metadata_Form_Enter;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_Rate;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
+with V2P.Template_Defs.R_Block_User_Preferences;
 with V2P.Template_Defs.R_Block_Vote_Week_Photo;
 with V2P.Template_Defs.R_Context_Error;
 with V2P.Template_Defs.R_Page_Search;
@@ -637,6 +641,29 @@ package body V2P.Web_Server is
         (Template_Defs.Block_Forum_Filter.Ajax.onchange_bff_forum_filter_set,
          Template_Defs.R_Block_Forum_Filter.Template,
          Callbacks.Ajax.Onchange_Filter_Forum'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Pref_Forum_Filter.Ajax.
+           onchange_bpff_forum_filter_set,
+         Template_Defs.R_Block_User_Preferences.Template,
+         Callbacks.Ajax.Onchange_Filter_Forum_Preference'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Pref_Forum_Filter_Page_Size.Ajax.
+           onchange_bpffps_forum_filter_pagesize_set,
+         Template_Defs.R_Block_User_Preferences.Template,
+         Callbacks.Ajax.Onchange_Filter_Forum_Page_Size_Preference'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Pref_Forum_Sort.Ajax.onchange_bpfs_forum_sort_set,
+         Template_Defs.R_Block_User_Preferences.Template,
+         Callbacks.Ajax.Onchange_Filter_Sort_Preference'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

@@ -1,0 +1,4 @@
+@@-- HTTP_GET(bpff_forum_filter_set)
+@@--
+@@INCLUDE@@ chunk_forum_filter.thtml bpff_forum_filter_set
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bpff_forum_filter_set, 4=>bpff_forum_filter_set)

@@ -1,0 +1,10 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<h2>@_BABEL_PREFERENCES_@</h2>
+<div id="bup_pref_block">
+@_LAZY_PREF_FORUM_FILTER_@
+@_LAZY_PREF_FORUM_FILTER_PAGE_SIZE_@
+@_LAZY_PREF_FORUM_SORT_@
+@@-- notification area
+<div id="bup_notify"></div>
+</div>

@@ -55,18 +55,21 @@ package V2P.Database is
 
    type Forum_Type is new Forum_Filter range Forum_Text .. Forum_Photo;
 
-   type User_Data is record
-      UID      : Unbounded_String;
-      Password : Unbounded_String;
-      Admin    : Boolean;
-   end record;
-
-   No_User_Data : constant User_Data;
-
    type Order_Direction is (DESC, ASC);
 
    type Forum_Sort is
      (Last_Posted, Last_Commented, Best_Noted, Need_Attention);
+
+   type User_Data is record
+      UID       : Unbounded_String;
+      Password  : Unbounded_String;
+      Admin     : Boolean;
+      Page_Size : Positive;
+      Filter    : Filter_Mode;
+      Sort      : Forum_Sort;
+   end record;
+
+   No_User_Data : constant User_Data;
 
    function Get_Forums
      (Filter : in Forum_Filter) return Templates.Translate_Set;
@@ -259,12 +262,27 @@ package V2P.Database is
    function Validate_User (Login, Key : in String) return Boolean;
    --  Validate a registered user
 
+   procedure Set_Filter_Preferences
+     (Login  : in String;
+      Filter : in Filter_Mode);
+   --  Set filter preference for the given user
+
+   procedure Set_Filter_Page_Size_Preferences
+     (Login     : in String;
+      Page_Size : in Positive);
+   --  Set filter preference for the given user
+
+   procedure Set_Filter_Sort_Preferences
+     (Login : in String;
+      Sort  : in Forum_Sort);
+   --  Set sort preference for the given user
+
 private
 
    No_User_Data : constant User_Data :=
                     User_Data'(Null_Unbounded_String,
                                Null_Unbounded_String,
-                               False);
+                               False, 1, All_Messages, Last_Commented);
    Empty_Id     : constant Id := 0;
 
    --  Connection

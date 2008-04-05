@@ -51,6 +51,9 @@ with V2P.Template_Defs.Block_Forum_Category_Filter;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Forum_Sort;
+with V2P.Template_Defs.Block_Pref_Forum_Filter;
+with V2P.Template_Defs.Block_Pref_Forum_Filter_Page_Size;
+with V2P.Template_Defs.Block_Pref_Forum_Sort;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Chunk_Search_User;
@@ -65,6 +68,8 @@ with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 with V2P.Template_Defs.R_Page_Search;
 with V2P.Template_Defs.R_Page_User_Register;
+with V2P.Template_Defs.R_Block_User_Preferences;
+with V2P.Template_Defs.Set_Values;
 
 package body V2P.Callbacks.Ajax is
 
@@ -82,7 +87,6 @@ package body V2P.Callbacks.Ajax is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
       use type Database.User_Data;
       SID       : constant Session.Id := Status.Session (Request);
       P         : constant Parameters.List := Status.Parameters (Request);
@@ -108,7 +112,19 @@ package body V2P.Callbacks.Ajax is
          Database.Set_Last_Logged (Login);
 
          --  Set user's filtering preference
-         --  ??? to be done when user's preferences are implemented
+
+         Context.Set_Value
+           (Template_Defs.Set_Global.FILTER,
+            Database.Filter_Mode'Image (User_Data.Filter));
+
+         V2P.Context.Not_Null_Counter.Set_Value
+           (Context => Context.all,
+            Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
+            Value   => User_Data.Page_Size);
+
+         Context.Set_Value
+           (Template_Defs.Set_Global.FORUM_SORT,
+            Database.Forum_Sort'Image (User_Data.Sort));
 
          Templates.Insert
            (Translations,
@@ -236,6 +252,97 @@ package body V2P.Callbacks.Ajax is
             Tid => Database.Empty_Id));
    end Onchange_Filter_Forum_Page_Size;
 
+   ------------------------------------------------
+   -- Onchange_Filter_Forum_Page_Size_Preference --
+   ------------------------------------------------
+
+   procedure Onchange_Filter_Forum_Page_Size_Preference
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      package HTTP renames
+        Template_Defs.Block_Pref_Forum_Filter_Page_Size.HTTP;
+
+      SID    : constant Session.Id := Status.Session (Request);
+      Login  : constant String :=
+                 Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+      P      : constant Parameters.List := Status.Parameters (Request);
+      Filter : constant String :=
+                 Parameters.Get (P, HTTP.bpffps_forum_filter_pagesize_set);
+   begin
+      V2P.Context.Not_Null_Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
+         Value   => Positive'Value (Filter));
+
+      Database.Set_Filter_Page_Size_Preferences
+        (Login, Positive'Value (Filter));
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.R_Block_User_Preferences.FILTER, Filter));
+   end Onchange_Filter_Forum_Page_Size_Preference;
+
+   --------------------------------------
+   -- Onchange_Filter_Forum_Preference --
+   --------------------------------------
+
+   procedure Onchange_Filter_Forum_Preference
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      package HTTP renames Template_Defs.Block_Pref_Forum_Filter.HTTP;
+
+      SID    : constant Session.Id := Status.Session (Request);
+      Login  : constant String :=
+                 Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+      P      : constant Parameters.List := Status.Parameters (Request);
+      Filter : constant String :=
+                 Parameters.Get (P, HTTP.bpff_forum_filter_set);
+   begin
+      Context.Set_Value (Template_Defs.Set_Global.FILTER, Filter);
+
+      Database.Set_Filter_Preferences
+        (Login, Database.Filter_Mode'Value (Filter));
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.R_Block_User_Preferences.FILTER, Filter));
+   end Onchange_Filter_Forum_Preference;
+
+   -------------------------------------
+   -- Onchange_Filter_Sort_Preference --
+   -------------------------------------
+
+   procedure Onchange_Filter_Sort_Preference
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      package HTTP renames Template_Defs.Block_Pref_Forum_Sort.HTTP;
+
+      SID    : constant Session.Id := Status.Session (Request);
+      Login  : constant String :=
+                 Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+      P      : constant Parameters.List := Status.Parameters (Request);
+      Filter : constant String :=
+                 Parameters.Get (P, HTTP.bpfs_forum_sort_set);
+   begin
+      Context.Set_Value (Template_Defs.Set_Global.FORUM_SORT, Filter);
+
+      Database.Set_Filter_Sort_Preferences
+        (Login, Database.Forum_Sort'Value (Filter));
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.R_Block_User_Preferences.FILTER, Filter));
+   end Onchange_Filter_Sort_Preference;
+
    -------------------------
    -- Onchange_Forum_List --
    -------------------------
@@ -278,7 +385,7 @@ package body V2P.Callbacks.Ajax is
       --  Set the context filter to seven days if the sorting is set to
       --  NEED_ATTENTION.
 
-      if Sort = Template_Defs.Block_Forum_Sort.Set.NEED_ATTENTION then
+      if Sort = Template_Defs.Set_Values.Set.NEED_ATTENTION then
          --  Store current filter
 
          Context.Set_Value
@@ -287,13 +394,13 @@ package body V2P.Callbacks.Ajax is
 
          Context.Set_Value
            (Template_Defs.Set_Global.FILTER,
-            Template_Defs.Block_Forum_Filter.Set.SEVEN_DAYS);
+            Template_Defs.Set_Values.Set.SEVEN_DAYS);
 
          Templates.Insert
            (Translations,
             Templates.Assoc
               (Template_Defs.R_Block_Forum_Filter.FORCE_FILTER,
-               Template_Defs.Block_Forum_Filter.Set.SEVEN_DAYS));
+               Template_Defs.Set_Values.Set.SEVEN_DAYS));
 
       elsif Context.Exist (Template_Defs.Set_Global.PREVIOUS_FILTER) then
          --  Restore previous filter if found

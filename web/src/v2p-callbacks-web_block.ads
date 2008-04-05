@@ -158,6 +158,11 @@ package V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
 
+   procedure User_Preferences
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set) is null;
+
    procedure User_Voted_Photos_List
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
@@ -167,5 +172,21 @@ package V2P.Callbacks.Web_Block is
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
+
+   procedure Pref_Forum_Filter
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set) renames Forum_Filter;
+
+   procedure Pref_Forum_Filter_Page_Size
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+      renames Forum_Filter_Page_Size;
+
+   procedure Pref_Forum_Sort
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set) renames Forum_Sort;
 
 end V2P.Callbacks.Web_Block;

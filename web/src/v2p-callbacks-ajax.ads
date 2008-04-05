@@ -51,6 +51,25 @@ package V2P.Callbacks.Ajax is
       Translations : in out Templates.Translate_Set);
    --  Called when changing the forum filter
 
+   procedure Onchange_Filter_Forum_Preference
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Called when changing the forum filter preference in user's page
+
+   procedure Onchange_Filter_Forum_Page_Size_Preference
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Called when changing the forum filter page size preference in user's
+   --  page.
+
+   procedure Onchange_Filter_Sort_Preference
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Called when changing the forum sort preference in user's page
+
    procedure Onchange_Filter_Forum_Page_Size
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;

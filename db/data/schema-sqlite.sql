@@ -7,6 +7,14 @@ create table "user" (
    "last_logged" date default current_timestamp
 );
 
+create table "user_preferences" (
+   "user_login" varchar(50) not null primary key,
+   "photo_per_page" integer default 10,
+   "filter" varchar(15) default "SEVEN_DAYS",
+   "sort" varchar(15) default "LAST_COMMENTED",
+   "large_image" boolean default TRUE
+);
+
 create table "user_to_validate" (
    "login" varchar(50) not null primary key,
    "password" varchar(20) not null,

@@ -978,6 +978,13 @@ body.user_page #bup_user_page_content {
    border:thin solid @_LIGHT_BORDER_COLOR_@;
 }
 @@--
+#bup_pref_block {
+   padding: 1em;
+}
+#bup_notify {
+   padding-top: 1em;
+}
+@@--
 body.user_page h2 {
    clear:both;
    font-size: 1.1em;

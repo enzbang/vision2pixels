@@ -1,0 +1,4 @@
+@@-- HTTP_GET(bpffps_forum_filter_pagesize_set)
+@@--
+@@INCLUDE@@ chunk_forum_filter_page_size.thtml  bpffps_forum_filter_pagesize_set
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bpffps_forum_filter_pagesize_set, 4=>bpffps_forum_filter_pagesize_set)
