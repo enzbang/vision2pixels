@@ -19,6 +19,8 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with AWS.Utils;
+
 with V2P.URL;
 with V2P.Database;
 with V2P.Context;
@@ -466,6 +468,75 @@ package body V2P.Callbacks.Web_Block is
    begin
       Templates.Insert (Translations, Database.Get_Photo_Of_The_Week);
    end Photo_Of_The_Week;
+
+   -----------------------
+   -- Pref_Forum_Filter --
+   -----------------------
+
+   procedure Pref_Forum_Filter
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      Login       : constant String :=
+                      Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      Preferences : Database.User_Settings;
+   begin
+      Database.User_Preferences (Login, Preferences);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.FILTER,
+            Database.Filter_Mode'Image (Preferences.Filter)));
+   end Pref_Forum_Filter;
+
+   ---------------------------------
+   -- Pref_Forum_Filter_Page_Size --
+   ---------------------------------
+
+   procedure Pref_Forum_Filter_Page_Size
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      Login       : constant String :=
+                      Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      Preferences : Database.User_Settings;
+   begin
+      Database.User_Preferences (Login, Preferences);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.FILTER_PAGE_SIZE,
+            Utils.Image (Preferences.Page_Size)));
+   end Pref_Forum_Filter_Page_Size;
+
+   ---------------------
+   -- Pref_Forum_Sort --
+   ---------------------
+
+   procedure Pref_Forum_Sort
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      Login       : constant String :=
+                      Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      Preferences : Database.User_Settings;
+   begin
+      Database.User_Preferences (Login, Preferences);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.FORUM_SORT,
+            Database.Forum_Sort'Image (Preferences.Sort)));
+   end Pref_Forum_Sort;
 
    -----------------
    -- Quick_Login --

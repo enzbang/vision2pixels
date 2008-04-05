@@ -106,14 +106,6 @@ package body V2P.Database is
    --  Lock the application when registering a new user. We want to avoid two
    --  users registering under the same login.
 
-   procedure User_Preferences
-     (Login     : in     String;
-      Filter    :    out Filter_Mode;
-      Page_Size :    out Positive;
-      Sort      :    out Forum_Sort);
-   --  Returns the user's preferences for the given user. If no preferences are
-   --  set, use the default values.
-
    function Preferences_Exist (Uid : in String) return Boolean;
    --  Returns True if a current set of user's preferences exist
 
@@ -1933,19 +1925,15 @@ package body V2P.Database is
          Password_Value : declare
             Password  : constant String := DB.String_Vectors.Element (Line, 1);
             Admin     : constant String := DB.String_Vectors.Element (Line, 2);
-            Page_Size : Positive;
-            Filter    : Filter_Mode;
-            Sort      : Forum_Sort;
+            Prefs     : User_Settings;
          begin
             Line.Clear;
-            User_Preferences (Uid, Filter, Page_Size, Sort);
+            User_Preferences (Uid, Prefs);
 
-            return User_Data'(Uid       => +Uid,
-                              Password  => +Password,
-                              Admin     => Boolean'Value (Admin),
-                              Page_Size => Page_Size,
-                              Filter    => Filter,
-                              Sort      => Sort);
+            return User_Data'(Uid         => +Uid,
+                              Password    => +Password,
+                              Admin       => Boolean'Value (Admin),
+                              Preferences => Prefs);
          end Password_Value;
 
       else
@@ -2792,10 +2780,8 @@ package body V2P.Database is
    ----------------------
 
    procedure User_Preferences
-     (Login     : in     String;
-      Filter    :    out Filter_Mode;
-      Page_Size :    out Positive;
-      Sort      :    out Forum_Sort)
+     (Login       : in     String;
+      Preferences :    out User_Settings)
    is
       SQL  : constant String :=
                "SELECT photo_per_page, filter, sort "
@@ -2810,13 +2796,21 @@ package body V2P.Database is
 
       if Iter.More then
          Iter.Get_Line (Line);
-         Page_Size := Positive'Value (DB.String_Vectors.Element (Line, 1));
-         Filter    := Filter_Mode'Value (DB.String_Vectors.Element (Line, 2));
-         Sort      := Forum_Sort'Value (DB.String_Vectors.Element (Line, 3));
+
+         Preferences :=
+           User_Settings'
+             (Page_Size => Positive'Value
+                  (DB.String_Vectors.Element (Line, 1)),
+              Filter    => Filter_Mode'Value
+                (DB.String_Vectors.Element (Line, 2)),
+              Sort      => Forum_Sort'Value
+                (DB.String_Vectors.Element (Line, 3)));
+
       else
-         Page_Size := 10;
-         Filter    := Seven_Days;
-         Sort      := Last_Commented;
+         Preferences :=
+           User_Settings'(Page_Size => 10,
+                          Filter    => Seven_Days,
+                          Sort      => Last_Commented);
       end if;
 
       Iter.End_Select;

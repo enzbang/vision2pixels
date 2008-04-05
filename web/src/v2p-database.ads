@@ -60,13 +60,17 @@ package V2P.Database is
    type Forum_Sort is
      (Last_Posted, Last_Commented, Best_Noted, Need_Attention);
 
-   type User_Data is record
-      UID       : Unbounded_String;
-      Password  : Unbounded_String;
-      Admin     : Boolean;
+   type User_Settings is record
       Page_Size : Positive;
       Filter    : Filter_Mode;
       Sort      : Forum_Sort;
+   end record;
+
+   type User_Data is record
+      UID         : Unbounded_String;
+      Password    : Unbounded_String;
+      Admin       : Boolean;
+      Preferences : User_Settings;
    end record;
 
    No_User_Data : constant User_Data;
@@ -262,6 +266,12 @@ package V2P.Database is
    function Validate_User (Login, Key : in String) return Boolean;
    --  Validate a registered user
 
+   procedure User_Preferences
+     (Login       : in     String;
+      Preferences :    out User_Settings);
+   --  Returns the user's preferences for the given user. If no preferences are
+   --  set, use the default values.
+
    procedure Set_Filter_Preferences
      (Login  : in String;
       Filter : in Filter_Mode);
@@ -280,9 +290,11 @@ package V2P.Database is
 private
 
    No_User_Data : constant User_Data :=
-                    User_Data'(Null_Unbounded_String,
-                               Null_Unbounded_String,
-                               False, 1, All_Messages, Last_Commented);
+                    User_Data'
+                      (Null_Unbounded_String,
+                       Null_Unbounded_String,
+                       False,
+                       User_Settings'(1, All_Messages, Last_Commented));
    Empty_Id     : constant Id := 0;
 
    --  Connection

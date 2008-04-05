@@ -115,16 +115,16 @@ package body V2P.Callbacks.Ajax is
 
          Context.Set_Value
            (Template_Defs.Set_Global.FILTER,
-            Database.Filter_Mode'Image (User_Data.Filter));
+            Database.Filter_Mode'Image (User_Data.Preferences.Filter));
 
          V2P.Context.Not_Null_Counter.Set_Value
            (Context => Context.all,
             Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
-            Value   => User_Data.Page_Size);
+            Value   => User_Data.Preferences.Page_Size);
 
          Context.Set_Value
            (Template_Defs.Set_Global.FORUM_SORT,
-            Database.Forum_Sort'Image (User_Data.Sort));
+            Database.Forum_Sort'Image (User_Data.Preferences.Sort));
 
          Templates.Insert
            (Translations,

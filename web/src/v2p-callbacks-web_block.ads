@@ -176,17 +176,16 @@ package V2P.Callbacks.Web_Block is
    procedure Pref_Forum_Filter
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set) renames Forum_Filter;
+      Translations : in out Templates.Translate_Set);
 
    procedure Pref_Forum_Filter_Page_Size
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
-      renames Forum_Filter_Page_Size;
+      Translations : in out Templates.Translate_Set);
 
    procedure Pref_Forum_Sort
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set) renames Forum_Sort;
+      Translations : in out Templates.Translate_Set);
 
 end V2P.Callbacks.Web_Block;
