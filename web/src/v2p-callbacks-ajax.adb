@@ -441,12 +441,12 @@ package body V2P.Callbacks.Ajax is
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Translations);
-      Login        : constant String :=
-                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
-      TID          : constant Database.Id :=
-                       V2P.Context.Counter.Get_Value
-                         (Context => Context.all,
-                          Name    => Template_Defs.Set_Global.TID);
+      Login : constant String :=
+                Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      TID   : constant Database.Id :=
+                V2P.Context.Counter.Get_Value
+                  (Context => Context.all,
+                   Name    => Template_Defs.Set_Global.TID);
    begin
       Database.Toggle_Vote_Week_Photo (Login, TID);
    end Onclick_Vote_Week_Photo;
