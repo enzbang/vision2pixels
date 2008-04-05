@@ -57,7 +57,7 @@ package body V2P.Context is
       if not Context.Exist (Template_Defs.Set_Global.FILTER) then
          Context.Set_Value
            (Template_Defs.Set_Global.FILTER,
-            Database.Filter_Mode'Image (Database.All_Messages));
+            Database.Filter_Mode'Image (Database.Seven_Days));
 
          Context.Set_Value
            (Template_Defs.Set_Global.FILTER_CATEGORY, "");
