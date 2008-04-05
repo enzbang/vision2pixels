@@ -130,8 +130,8 @@
 @@-- RSS
 @@SET@@ BABEL_RSS_RECENT_PHOTOS="Photographies récentes"
 @@SET@@ BABEL_RSS_RECENT_PHOTOS_DESC="Les dernières photographies arrivées sur le site de Vision2Pixels"
-@@SET@@ BABEL_MAXDIM="800x800"
-@@SET@@ BABEL_PHOTO_POST_RULES_MAX_DIM="La taille maximum d'une photographie ne doit pas dépasser 800x800 pixels. Toute photographie de taille supérieure sera rejetée."
+@@SET@@ BABEL_MAXDIM="1000x1000"
+@@SET@@ BABEL_PHOTO_POST_RULES_MAX_DIM="La taille maximum d'une photographie ne doit pas dépasser 1000x1000 pixels. Toute photographie de taille supérieure sera rejetée."
 @@SET@@ BABEL_PHOTO_POST_RULES_YOUR_PHOTO="Vous ne devez poster que vos propres photos."
 @@SET@@ BABEL_PHOTO_POST_RULES_DISPLAY_RSS="Les informations EXIFs seront affichées sur le site lorsque vous serez révelé."
 @@SET@@ BABEL_CLICK_TO_VIEW_MAP="Cliquez pour localiser sur une carte"
@@ -153,3 +153,6 @@
 @@SET@@ BABEL_BEST_NOTED="Les mieux notées"
 @@SET@@ BABEL_NEED_ATTENTION="Demande votre attention"
 @@SET@@ BABEL_MANDATORY_FIELDS="Champs obligatoires"
+@@SET@@ BABEL_MAX_SIZE="Taille d'image maximum"
+@@SET@@ BABEL_MEDIUM_SIZE="Taille d'image 800x800"
+@@SET@@ BABEL_THUMB_SIZE="Taille d'image vignette"
