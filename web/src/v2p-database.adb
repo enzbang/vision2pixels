@@ -117,6 +117,14 @@ package body V2P.Database is
    function Preferences_Exist (Uid : in String) return Boolean;
    --  Returns True if a current set of user's preferences exist
 
+   procedure Set_Preferences
+     (Login       : in String;
+      Name, Value : in String);
+   --  Update the user preferences named Name with the given Value. If not
+   --  preferences are registered for the given user a new set of preferences
+   --  are inserted. This code is used by all procedure which need to set a
+   --  preferences.
+
    -------------
    -- Connect --
    -------------
@@ -2583,24 +2591,9 @@ package body V2P.Database is
 
    procedure Set_Filter_Page_Size_Preferences
      (Login     : in String;
-      Page_Size : in Positive)
-   is
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Page_Size : in Positive) is
    begin
-      Connect (DBH);
-
-      if Preferences_Exist (Login) then
-         DBH.Handle.Execute
-           ("UPDATE user_preferences SET photo_per_page="
-            & Utils.Image (Page_Size)
-            & " WHERE user_login=" & Q (Login));
-      else
-         DBH.Handle.Execute
-           ("INSERT INTO user_preferences ('user_login', 'photo_per_page') "
-            & "VALUES (" & Q (Login) & ", "
-            & Utils.Image (Page_Size) & ")");
-      end if;
+      Set_Preferences (Login, "photo_per_page", Utils.Image (Page_Size));
    end Set_Filter_Page_Size_Preferences;
 
    ----------------------------
@@ -2609,24 +2602,9 @@ package body V2P.Database is
 
    procedure Set_Filter_Preferences
      (Login  : in String;
-      Filter : in Filter_Mode)
-   is
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Filter : in Filter_Mode) is
    begin
-      Connect (DBH);
-
-      if Preferences_Exist (Login) then
-         DBH.Handle.Execute
-           ("UPDATE user_preferences SET filter="
-            & Q (Filter_Mode'Image (Filter))
-            & " WHERE user_login=" & Q (Login));
-      else
-         DBH.Handle.Execute
-           ("INSERT INTO user_preferences ('user_login', 'filter') "
-            & "VALUES (" & Q (Login) & ", '"
-            & Filter_Mode'Image (Filter) & "')");
-      end if;
+      Set_Preferences (Login, "filter", Q (Filter_Mode'Image (Filter)));
    end Set_Filter_Preferences;
 
    ---------------------------------
@@ -2635,24 +2613,9 @@ package body V2P.Database is
 
    procedure Set_Filter_Sort_Preferences
      (Login : in String;
-      Sort  : in Forum_Sort)
-   is
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Sort  : in Forum_Sort) is
    begin
-      Connect (DBH);
-
-      if Preferences_Exist (Login) then
-         DBH.Handle.Execute
-           ("UPDATE user_preferences SET sort="
-            & Q (Forum_Sort'Image (Sort))
-            & " WHERE user_login=" & Q (Login));
-      else
-         DBH.Handle.Execute
-           ("INSERT INTO user_preferences ('user_login', 'sort') "
-            & "VALUES (" & Q (Login) & ", '"
-            & Forum_Sort'Image (Sort) & "')");
-      end if;
+      Set_Preferences (Login, "sort", Q (Forum_Sort'Image (Sort)));
    end Set_Filter_Sort_Preferences;
 
    ---------------------
@@ -2666,6 +2629,30 @@ package body V2P.Database is
       DBH.Handle.Execute
         ("UPDATE user SET last_logged=DATETIME('NOW') WHERE login=" & Q (Uid));
    end Set_Last_Logged;
+
+   ---------------------
+   -- Set_Preferences --
+   ---------------------
+
+   procedure Set_Preferences
+     (Login       : in String;
+      Name, Value : in String)
+   is
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+   begin
+      Connect (DBH);
+
+      if Preferences_Exist (Login) then
+         DBH.Handle.Execute
+           ("UPDATE user_preferences SET " & Name & '=' & Value
+            & " WHERE user_login=" & Q (Login));
+      else
+         DBH.Handle.Execute
+           ("INSERT INTO user_preferences ('user_login', '" & Name & "') "
+            & "VALUES (" & Q (Login) & ", " & Value & ')');
+      end if;
+   end Set_Preferences;
 
    ---------------
    -- To_String --
