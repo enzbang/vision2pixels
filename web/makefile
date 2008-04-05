@@ -53,6 +53,12 @@ setup:
 	templates2ada -d templates/ -o gen/templates.cds -e .tmplt \
 		-t templates/templates.tads
 	gnat chop -wpq gen/templates.cds gen/
+	$(RM) gen/templates.cds
+	$(CP) gen/v2p-template_defs-* tsrc/
+	$(RM) gen/*
+	templates2ada -d templates/ -o gen/templates.cds -e .incl \
+		-t templates/templates.tads
+	gnat chop -wpq gen/templates.cds gen/
 	$(CP) gen/v2p-template_defs-* tsrc/
 	$(RM) -r gen
 
@@ -72,6 +78,7 @@ install-plugin: install-plugin-dir
 	$(CP) css/img/*.gif $(INSTALL)/css/img
 	$(CP) templates/*.*html $(INSTALL)/templates
 	$(CP) templates/*.txml $(INSTALL)/templates
+	$(CP) templates/*.incl $(INSTALL)/templates
 	$(CP) we_js/*js $(INSTALL)/we_js
 	$(CP) xml/*xml $(INSTALL)/xml
 

@@ -1,37 +1,7 @@
-@@SET@@ SET_LAST_POSTED = LAST_POSTED
-@@SET@@ SET_LAST_COMMENTED = LAST_COMMENTED
-@@SET@@ SET_BEST_NOTED = BEST_NOTED
-@@SET@@ SET_NEED_ATTENTION = NEED_ATTENTION
+@@-- HTTP_GET(bfs_forum_sort_set)
+@@INCLUDE@@ set_values.incl
 @@--
-<select name="bfs_forum_sort_set" id="bfs_forum_sort_set">
-@@INLINE@@
-  <option value="@_SET_LAST_POSTED_@"
-  @@IF@@ @_FORUM_SORT_@ = @_SET_LAST_POSTED_@
-    selected="selected"
-  @@END_IF@@
-  >Dernièrement postées</option>
-@@END_INLINE@@
-@@INLINE@@
-  <option value="@_SET_LAST_COMMENTED_@"
-  @@IF@@ @_FORUM_SORT_@ = @_SET_LAST_COMMENTED_@
-    selected="selected"
-  @@END_IF@@
-  >Dernièrement commentées</option>
-@@END_INLINE@@
-@@INLINE@@
-  <option value="@_SET_BEST_NOTED_@"
-  @@IF@@ @_FORUM_SORT_@ = @_SET_BEST_NOTED_@
-    selected="selected"
-  @@END_IF@@
-  >Les mieux notées</option>
-@@END_INLINE@@
-@@INLINE@@
-  <option value="@_SET_NEED_ATTENTION_@"
-  @@IF@@ @_FORUM_SORT_@ = @_SET_NEED_ATTENTION_@
-    selected="selected"
-  @@END_IF@@
-  >Demande votre attention</option>
-@@END_INLINE@@
-</select>
+@@--
+@@INCLUDE@@ chunk_forum_sort.thtml bfs_forum_sort_set
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bfs_forum_sort_set, 4=>bfs_forum_sort_set)

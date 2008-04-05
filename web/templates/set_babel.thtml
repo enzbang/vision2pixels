@@ -98,6 +98,7 @@
 @@SET@@ BABEL_LAST_USERS="Derniers Inscrits"
 @@SET@@ BABEL_USER_VOTED_PHOTOS="Votes pour la photo de la semaine"
 @@SET@@ BABEL_NO_VOTE="Pas de vote pour le moment"
+@@SET@@ BABEL_PREFERENCES="Préférences"
 @@-- Metadata
 @@SET@@ BABEL_GEO_LATITUDE="Latitude"
 @@SET@@ BABEL_GEO_LONGITUDE="Longitude"
@@ -131,3 +132,19 @@
 @@SET@@ BABEL_PHOTO_POST_RULES_DISPLAY_RSS="Les informations EXIFs seront affichées sur le site lorsque vous serez révelé."
 @@SET@@ BABEL_CLICK_TO_VIEW_MAP="Cliquez pour localiser sur une carte"
 @@SET@@ BABEL_SEARCH="Recherche"
+@@--
+@@--  Preferences
+@@--
+@@SET@@ BABEL_PREFERENCE_SET_TO="Préférence positionnée à"
+@@SET@@ BABEL_TODAY="Aujourd'hui"
+@@SET@@ BABEL_TWO_DAYS="Deux derniers jours"
+@@SET@@ BABEL_SEVEN_DAYS="Sept derniers jours"
+@@SET@@ BABEL_ALL_MESSAGES="Tous les messages"
+@@SET@@ BABEL_TEN="Dix"
+@@SET@@ BABEL_TWENTY="Vingt"
+@@SET@@ BABEL_FIFTY="Cinquante"
+@@SET@@ BABEL_HUNDRED="Cent"
+@@SET@@ BABEL_LAST_POSTED="Dernièrement postées"
+@@SET@@ BABEL_LAST_COMMENTED="Dernièrement commentées"
+@@SET@@ BABEL_BEST_NOTED="Les mieux notées"
+@@SET@@ BABEL_NEED_ATTENTION="Demande votre attention"

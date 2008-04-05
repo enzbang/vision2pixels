@@ -1,0 +1,33 @@
+@@INCLUDE@@ set_babel.thtml
+@@INCLUDE@@ set_values.incl
+@@--
+<select name="@_$1_@" id="@_$1_@">
+@@INLINE@@
+  <option value="@_SET_LAST_POSTED_@"
+  @@IF@@ @_FORUM_SORT_@ = @_SET_LAST_POSTED_@
+    selected="selected"
+  @@END_IF@@
+  >@_BABEL_LAST_POSTED_@</option>
+@@END_INLINE@@
+@@INLINE@@
+  <option value="@_SET_LAST_COMMENTED_@"
+  @@IF@@ @_FORUM_SORT_@ = @_SET_LAST_COMMENTED_@
+    selected="selected"
+  @@END_IF@@
+  >@_BABEL_LAST_COMMENTED_@</option>
+@@END_INLINE@@
+@@INLINE@@
+  <option value="@_SET_BEST_NOTED_@"
+  @@IF@@ @_FORUM_SORT_@ = @_SET_BEST_NOTED_@
+    selected="selected"
+  @@END_IF@@
+  >@_BABEL_BEST_NOTED_@</option>
+@@END_INLINE@@
+@@INLINE@@
+  <option value="@_SET_NEED_ATTENTION_@"
+  @@IF@@ @_FORUM_SORT_@ = @_SET_NEED_ATTENTION_@
+    selected="selected"
+  @@END_IF@@
+  >@_BABEL_NEED_ATTENTION_@</option>
+@@END_INLINE@@
+</select>

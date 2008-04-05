@@ -1,0 +1,19 @@
+@@--
+@@--  These are values not used in the interface, it contains the values of
+@@--  select for example that can be used on the Ada side and in some HTML
+@@--  chunk.
+@@--
+@@SET@@ SET_TODAY = TODAY
+@@SET@@ SET_TWO_DAYS = TWO_DAYS
+@@SET@@ SET_SEVEN_DAYS = SEVEN_DAYS
+@@SET@@ SET_ALL_MESSAGES = ALL_MESSAGES
+@@--
+@@SET@@ SET_TEN = 10
+@@SET@@ SET_TWENTY = 20
+@@SET@@ SET_FIFTY = 50
+@@SET@@ SET_HUNDRED = 100
+@@--
+@@SET@@ SET_LAST_POSTED = LAST_POSTED
+@@SET@@ SET_LAST_COMMENTED = LAST_COMMENTED
+@@SET@@ SET_BEST_NOTED = BEST_NOTED
+@@SET@@ SET_NEED_ATTENTION = NEED_ATTENTION

@@ -131,6 +131,8 @@ install_gwiad_plugin: install_db
 		$(GWIAD_ROOT)/plugins/vision2pixels/templates/
 	$(CP) -r web/templates/*.txml \
 		$(GWIAD_ROOT)/plugins/vision2pixels/templates/
+	$(CP) -r web/templates/*.incl \
+		$(GWIAD_ROOT)/plugins/vision2pixels/templates/
 	$(CP) -r web/xml/*xml \
 		$(GWIAD_ROOT)/plugins/vision2pixels/xml/
 	$(CP) -r web/we_js/*js \

@@ -1,0 +1,33 @@
+@@INCLUDE@@ set_babel.thtml
+@@INCLUDE@@ set_values.incl
+@@--
+<select name="@_$1_@" id="@_$1_@">
+@@INLINE@@
+  <option value="@_SET_TODAY_@"
+  @@IF@@ @_FILTER_@ = @_SET_TODAY_@
+    selected="selected"
+  @@END_IF@@
+  >@_BABEL_TODAY_@</option>
+@@END_INLINE@@
+@@INLINE@@
+  <option value="@_SET_TWO_DAYS_@"
+  @@IF@@ @_FILTER_@ = @_SET_TWO_DAYS_@
+    selected="selected"
+  @@END_IF@@
+  >@_BABEL_TWO_DAYS_@</option>
+@@END_INLINE@@
+@@INLINE@@
+  <option value="@_SET_SEVEN_DAYS_@"
+  @@IF@@ @_FILTER_@ = @_SET_SEVEN_DAYS_@
+    selected="selected"
+  @@END_IF@@
+  >@_BABEL_SEVEN_DAYS_@</option>
+@@END_INLINE@@
+@@INLINE@@
+  <option value="@_SET_ALL_MESSAGES_@"
+  @@IF@@ @_FILTER_@ = @_SET_ALL_MESSAGES_@
+    selected="selected"
+  @@END_IF@@
+  >@_BABEL_ALL_MESSAGES_@</option>
+@@END_INLINE@@
+</select>

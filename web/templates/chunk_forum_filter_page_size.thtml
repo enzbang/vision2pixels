@@ -1,0 +1,28 @@
+@@INCLUDE@@ set_babel.thtml
+@@INCLUDE@@ set_values.incl
+@@--
+<select name="@_$1_@" id="@_$1_@">
+  <option value="10"
+  @@IF@@ @_FILTER_PAGE_SIZE_@ = @_SET_TEN_@
+    selected="selected"
+  @@END_IF@@
+  >@_SET_TEN_@ @_BABEL_PER_PAGE_@</option>
+
+  <option value="20"
+  @@IF@@ @_FILTER_PAGE_SIZE_@ = @_SET_TWENTY_@
+     selected="selected"
+   @@END_IF@@
+   >@_SET_TWENTY_@ @_BABEL_PER_PAGE_@</option>
+
+   <option value="50"
+   @@IF@@ @_FILTER_PAGE_SIZE_@ = @_SET_FIFTY_@
+     selected="selected"
+   @@END_IF@@
+   >@_SET_FIFTY_@ @_BABEL_PER_PAGE_@</option>
+
+   <option value="100"
+   @@IF@@ @_FILTER_PAGE_SIZE_@ = @_SET_HUNDRED_@
+     selected="selected"
+   @@END_IF@@
+   >@_SET_HUNDRED_@ @_BABEL_PER_PAGE_@</option>
+</select>
