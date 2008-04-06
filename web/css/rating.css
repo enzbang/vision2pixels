@@ -10,7 +10,7 @@ for the original php script
 --------------------------------------------------------- */
 
 #pfe_lazy_global_rating {
-  padding: 1em;
+  padding: 1em 0em 0em;
 }
 
 .criterianame, ul.unit-rating, ul.unit-global-rating {

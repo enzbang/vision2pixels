@@ -194,7 +194,8 @@ ul#bft_navigate li.nav_info, ul#bftt_navigate li.nav_info {
 @@--
 #pfe_main_image_comment {
    font-size:1.1em;
-   text-align:center;
+   text-align:left;
+   padding: 1em 0em 0em;
 }
 @@--
 textarea#global_comment_input {
