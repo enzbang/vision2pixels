@@ -1,12 +1,39 @@
-@@-- HTTP_GET(bpims_image_size)
+@@-- HTTP_GET(bpis_image_size)
 @@--
 @@INCLUDE@@ set_values.incl
 @@INCLUDE@@ set_babel.thtml
-<select name="bpims_image_size" id="bpims_image_size">
-   <option value="@_SET_MAX_SIZE_@" selected="selected">@_SET_MAX_SIZE_@ @_BABEL_MAX_SIZE_@</option>
-   <option value="@_SET_MEDIUM_SIZE_@">@_SET_MEDIUM_SIZE_@ @_BABEL_MEDIUM_SIZE_@</option>
-   <option value="@_SET_THUMB_SIZE_@">@_BABEL_THUMB_SIZE_@</option>
-</selected>
-
-
-@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bpims_image_size, 4=>bpims_image_size)
+@@--
+<select name="bpis_image_size" id="bpis_image_size">
+@@--
+@@INLINE@@
+   <option value="@_SET_MAX_SIZE_@"
+@@IF@@ @_PREF_IMAGE_SIZE_@ = @_SET_MAX_SIZE_@
+   selected="selected">
+@@ELSE@@
+   >
+@@END_IF@@
+@_BABEL_MAX_SIZE_@</option>
+@@END_INLINE@@
+@@--
+@@INLINE@@
+   <option value="@_SET_MEDIUM_SIZE_@"
+@@IF@@ @_PREF_IMAGE_SIZE_@ = @_SET_MEDIUM_SIZE_@
+   selected="selected">
+@@ELSE@@
+   >
+@@END_IF@@
+@_BABEL_MEDIUM_SIZE_@</option>
+@@END_INLINE@@
+@@--
+@@INLINE@@
+   <option value="@_SET_THUMB_SIZE_@"
+@@IF@@ @_PREF_IMAGE_SIZE_@ = @_SET_THUMB_SIZE_@
+   selected="selected">
+@@ELSE@@
+   >
+@@END_IF@@
+@_BABEL_THUMB_SIZE_@</option>
+@@END_INLINE@@
+</select>
+@@--
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bpis_image_size, 4=>bpis_image_size)

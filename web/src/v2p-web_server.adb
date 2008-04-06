@@ -732,7 +732,7 @@ package body V2P.Web_Server is
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Block_Pref_Image_Size.Ajax.
-           onchange_bpims_image_size,
+           onchange_bpis_image_size,
          Template_Defs.R_Block_User_Preferences.Template,
          Callbacks.Ajax.Onchange_Image_Size_Preference'Access,
          Content_Type     => MIME.Text_XML,

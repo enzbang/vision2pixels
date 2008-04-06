@@ -478,7 +478,7 @@ package body V2P.Callbacks.Ajax is
                  Session.Get (SID, Template_Defs.Set_Global.LOGIN);
       P      : constant Parameters.List := Status.Parameters (Request);
       Size   : constant String :=
-                 Parameters.Get (P, HTTP.bpims_image_size);
+                 Parameters.Get (P, HTTP.bpis_image_size);
    begin
       Morzhol.Logs.Write
         (Name    => Module,
