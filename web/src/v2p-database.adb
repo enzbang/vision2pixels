@@ -714,8 +714,7 @@ package body V2P.Database is
          else
             Iter.End_Select;
             raise Parameter_Error with "Can not find forum FID= "
-              & To_String (Fid)
-              & " TID=" & To_String (Tid);
+              & To_String (Fid) & " TID=" & To_String (Tid);
          end if;
       end Get_Forum_Data;
 

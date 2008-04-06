@@ -99,17 +99,17 @@ package body V2P.Callbacks.Page is
             --  Reset category filter as we do not know the category
             --  And set forum sort to last posted photo
             Context.Set_Value (Template_Defs.Set_Global.FILTER_CATEGORY, "");
-            Context.Set_Value (Template_Defs.Set_Global.FORUM_SORT,
-                               Database.Forum_Sort'Image
-                                 (Database.Last_Posted));
+            Context.Set_Value
+              (Template_Defs.Set_Global.FORUM_SORT,
+               Database.Forum_Sort'Image (Database.Last_Posted));
 
             V2P.Context.Counter.Set_Value
               (Context => Context.all,
                Name    => Template_Defs.Set_Global.FID,
                Value   => Database.Get_Forum_Id (TID));
 
-            V2P.Callbacks.Web_Block.Forum_Threads (Request,
-                                                   Context, Translations);
+            V2P.Callbacks.Web_Block.Forum_Threads
+              (Request, Context, Translations);
          end if;
 
          --  Insert navigation links (previous and next post)
