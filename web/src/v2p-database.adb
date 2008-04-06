@@ -1211,7 +1211,7 @@ package body V2P.Database is
            (Iter, "SELECT post.name, post.comment, post.hidden, "
             & "filename, width, height, medium_width, medium_height, "
             & "thumb_width, thumb_height, user.login, post.date_post, "
-            & " (julianday(post.date_post, '+"
+            & " (JULIANDAY(post.date_post, '+"
             & Utils.Image (Settings.Anonymity_Hours)
             & " hour') - JULIANDAY('NOW')) * 24, category.name, category.id, "
             & "(SELECT id FROM photo_of_the_week AS cdc "
@@ -2362,26 +2362,26 @@ package body V2P.Database is
    ------------------
 
    function Insert_Photo
-     (Uid      : in String;
-      Filename : in String;
-      Height   : in Integer;
-      Width    : in Integer;
+     (Uid           : in String;
+      Filename      : in String;
+      Height        : in Integer;
+      Width         : in Integer;
       Medium_Height : in Integer;
-      Medium_Width : in Integer;
-      Thumb_Height : in Integer;
-      Thumb_Width : in Integer;
-      Size     : in Integer) return String
+      Medium_Width  : in Integer;
+      Thumb_Height  : in Integer;
+      Thumb_Width   : in Integer;
+      Size          : in Integer) return String
    is
 
       procedure Insert_Table_Photo
-        (Filename : in String;
-         Height   : in Integer;
-         Width    : in Integer;
+        (Filename      : in String;
+         Height        : in Integer;
+         Width         : in Integer;
          Medium_Height : in Integer;
-         Medium_Width : in Integer;
-         Thumb_Height : in Integer;
-         Thumb_Width : in Integer;
-         Size     : in Integer);
+         Medium_Width  : in Integer;
+         Thumb_Height  : in Integer;
+         Thumb_Width   : in Integer;
+         Size          : in Integer);
       --  Insert row into the photo table
 
       procedure User_Tmp_Photo (Uid, Pid : in String);
@@ -2394,24 +2394,24 @@ package body V2P.Database is
       ------------------------
 
       procedure Insert_Table_Photo
-        (Filename : in String;
-         Height   : in Integer;
-         Width    : in Integer;
+        (Filename      : in String;
+         Height        : in Integer;
+         Width         : in Integer;
          Medium_Height : in Integer;
-         Medium_Width : in Integer;
-         Thumb_Height : in Integer;
-         Thumb_Width : in Integer;
-         Size     : in Integer)
+         Medium_Width  : in Integer;
+         Thumb_Height  : in Integer;
+         Thumb_Width   : in Integer;
+         Size          : in Integer)
       is
          SQL : constant String :=
-           "INSERT INTO photo ('filename', 'height', 'width', "
-           & "'medium_height', 'medium_width', "
-           & "'thumb_height', 'thumb_width', 'size') "
-           & "VALUES (" & Q (Filename) & ','
-           & I (Height) & ',' & I (Width) & ','
-           & I (Medium_Height) & ',' & I (Medium_Width) & ','
-           & I (Thumb_Height) & ',' & I (Thumb_Width) & ','
-           & I (Size) & ')';
+                 "INSERT INTO photo ('filename', 'height', 'width', "
+                  & "'medium_height', 'medium_width', "
+                  & "'thumb_height', 'thumb_width', 'size') "
+                  & "VALUES (" & Q (Filename) & ','
+                  & I (Height) & ',' & I (Width) & ','
+                  & I (Medium_Height) & ',' & I (Medium_Width) & ','
+                  & I (Thumb_Height) & ',' & I (Thumb_Width) & ','
+                  & I (Size) & ')';
       begin
          DBH.Handle.Execute (SQL);
       end Insert_Table_Photo;
@@ -2725,8 +2725,8 @@ package body V2P.Database is
      (Login      : in String;
       Image_Size : in Database.Image_Size) is
    begin
-      Set_Preferences (Login, "image_size",
-                       Q (Database.Image_Size'Image (Image_Size)));
+      Set_Preferences
+        (Login, "image_size", Q (Database.Image_Size'Image (Image_Size)));
    end Set_Image_Size_Preferences;
 
    ---------------------

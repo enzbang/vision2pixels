@@ -61,7 +61,7 @@ package body Image.Data is
          Medium_Height => Image_Size_T (Settings.Medium_Maximum_Height),
          Thumb_Width   => Image_Size_T (Settings.Thumbnail_Maximum_Width),
          Thumb_Height  => Image_Size_T (Settings.Thumbnail_Maximum_Height),
-         Size   => File_Size (Settings.Image_Maximum_Size));
+         Size          => File_Size (Settings.Image_Maximum_Size));
    end Default_Max_Dimension;
 
    ---------------
@@ -108,18 +108,17 @@ package body Image.Data is
       Out_Max_Dimension   : in     Image_Dimension := Null_Dimension)
    is
       Thumb_Size : constant G2F.IO.Image_Size :=
-      Image_Size'
-      (X => Image_Size_T (Settings.Thumbnail_Maximum_Width),
-      Y => Image_Size_T (Settings.Thumbnail_Maximum_Height));
+                     Image_Size'
+                       (X => Image_Size_T (Settings.Thumbnail_Maximum_Width),
+                        Y => Image_Size_T (Settings.Thumbnail_Maximum_Height));
       Thumb      : Image_Ptr;
       Thumb_Info : Image_Info_Ptr;
 
       Width : constant Natural := Settings.Medium_Maximum_Width;
 
       Medium_Size : constant G2F.IO.Image_Size :=
-                     Image_Size'
-                   (X => Image_Size_T (Width),
-                    Y => Image_Size_T (800));
+                      Image_Size'(X => Image_Size_T (Width),
+                                  Y => Image_Size_T (800));
       Medium      : Image_Ptr;
       Medium_Info : Image_Info_Ptr;
 

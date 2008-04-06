@@ -467,10 +467,15 @@ package body V2P.Web_Server is
       function Filename return String;
       --  Returns image filename
 
+      --------------
+      -- Filename --
+      --------------
+
       function Filename return String is
       begin
          if URI (URI'First .. Settings.Medium_Images_Source_Prefix'Length)
-           = Settings.Medium_Images_Source_Prefix then
+           = Settings.Medium_Images_Source_Prefix
+         then
             Logs.Write
               (Name    => Module,
                Kind    => Logs.Error,
@@ -478,33 +483,32 @@ package body V2P.Web_Server is
                  (Compose
                     (V2P.URL.Medium_Images_Full_Prefix,
                      URI (URI'First +
-                            Settings.Medium_Images_Source_Prefix'Length
-                            + 1 .. URI'Last))));
+                            Settings.Medium_Images_Source_Prefix'Length + 1
+                            .. URI'Last))));
             return Compose
               (V2P.URL.Medium_Images_Full_Prefix,
-               URI (URI'First + Settings.Medium_Images_Source_Prefix'Length
-                      + 1 .. URI'Last));
+               URI (URI'First + Settings.Medium_Images_Source_Prefix'Length + 1
+                      .. URI'Last));
 
          elsif URI (URI'First .. Settings.Big_Images_Source_Prefix'Length)
-           = Settings.Big_Images_Source_Prefix then
+           = Settings.Big_Images_Source_Prefix
+         then
             return Compose
               (V2P.URL.Big_Images_Full_Prefix,
-               URI (URI'First + Settings.Big_Images_Source_Prefix'Length
-                      + 1 .. URI'Last));
+               URI (URI'First + Settings.Big_Images_Source_Prefix'Length + 1
+                      .. URI'Last));
 
          else
             return Compose
               (V2P.URL.Thumbs_Full_Prefix,
-               URI (URI'First + Settings.Thumbs_Source_Prefix'Length
-                      + 1 .. URI'Last));
+               URI (URI'First + Settings.Thumbs_Source_Prefix'Length + 1
+                      .. URI'Last));
          end if;
 
       exception
          when others =>
             Logs.Write
-              (Name    => Module,
-               Kind    => Logs.Error,
-               Content => "Exception");
+              (Name => Module, Kind => Logs.Error, Content => "Exception");
             raise;
       end Filename;
 

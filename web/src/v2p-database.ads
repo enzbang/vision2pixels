@@ -204,15 +204,15 @@ package V2P.Database is
    --  Returns Comment Id.
 
    function Insert_Photo
-     (Uid      : in String;
-      Filename : in String;
-      Height   : in Integer;
-      Width    : in Integer;
+     (Uid           : in String;
+      Filename      : in String;
+      Height        : in Integer;
+      Width         : in Integer;
       Medium_Height : in Integer;
-      Medium_Width : in Integer;
-      Thumb_Height : in Integer;
-      Thumb_Width : in Integer;
-      Size     : in Integer) return String;
+      Medium_Width  : in Integer;
+      Thumb_Height  : in Integer;
+      Thumb_Width   : in Integer;
+      Size          : in Integer) return String;
    --  Insert a new photo into the database, returns photo id
 
    procedure Insert_Metadata
