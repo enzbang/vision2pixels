@@ -38,5 +38,6 @@
   <clear id="global_comment_input" />
   <clear id="bnc_photo_filename" />
   <clear id="bnc_photo_post_target" />
+  <clear id="bnc_comment_pid" />
 @@END_IF@@
 </response>
