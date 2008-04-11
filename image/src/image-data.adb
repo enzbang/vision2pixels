@@ -170,7 +170,9 @@ package body Image.Data is
 
    exception
       when G2F.Image_IO.Read_Image_Error =>
-         Put_Line ("Read image error - Thumbnail has not been created");
+         Put_Line
+           ("Read image error - Thumbnail has not been created for "
+            & Original_Filename);
    end Init;
 
    ----------
