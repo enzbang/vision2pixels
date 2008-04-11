@@ -19,7 +19,11 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Directories;
+with Ada.Strings.Fixed;
+
 with AWS.Parameters;
+with Morzhol.OS;
 
 with Image.Data;
 
@@ -258,28 +262,62 @@ package body V2P.Callbacks.Page is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
+      use Ada;
       use Image.Data;
+
       package Post_Entry renames Template_Defs.Page_Forum_New_Photo_Entry;
 
-      P        : constant Parameters.List := Status.Parameters (Request);
-      Filename : constant String :=
-                   Parameters.Get
-                     (P, Template_Defs.Page_Photo_Post.HTTP.FILENAME);
+      function Clean_Mapping (From : in Character) return Character;
+      --  Removes character that the underlying image manipulation tool will
+      --  not support.
 
-      Login    : constant String :=
-                   Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      -------------------
+      -- Clean_Mapping --
+      -------------------
+
+      function Clean_Mapping (From : in Character) return Character is
+      begin
+         if From in 'a' .. 'z'
+           or else From in 'A' .. 'Z'
+           or else From in '0' .. '9'
+           or else Morzhol.OS.Is_Directory_Separator (From)
+           or else From = '.'
+         then
+            return From;
+         else
+            return 'x';
+         end if;
+      end Clean_Mapping;
+
+      P          : constant Parameters.List := Status.Parameters (Request);
+      Filename   : constant String :=
+                     Parameters.Get
+                       (P, Template_Defs.Page_Photo_Post.HTTP.FILENAME);
+      C_Filename : constant String :=
+                     Ada.Strings.Fixed.Translate
+                       (Source  => Filename,
+                        Mapping => Clean_Mapping'Unrestricted_Access);
+
+      Login      : constant String :=
+                     Context.Get_Value (Template_Defs.Set_Global.LOGIN);
 
    begin
+      --  First rename the file to be compatible with ImageMagick
+
+      Directories.Rename
+        (Old_Name => Filename,
+         New_Name => C_Filename);
+
       --  If a new photo has been uploaded, insert it in the database
 
-      if Filename /= "" then
+      if C_Filename /= "" then
          New_Photo :
          declare
             New_Image : Image_Data;
          begin
             Init (Img      => New_Image,
                   Root_Dir => Gwiad_Plugin_Path,
-                  Filename => Filename);
+                  Filename => C_Filename);
 
             if New_Image.Init_Status /= Image_Created then
                Templates.Insert
