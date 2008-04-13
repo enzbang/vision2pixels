@@ -443,8 +443,6 @@ package body Web_Tests.Threads_Navigation is
 
       Result : Response.Data;
    begin
-      Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
-
       Client.Get
         (Connection, Result,
          URI => Block_Forum_Filter_Page_Size.Ajax.
