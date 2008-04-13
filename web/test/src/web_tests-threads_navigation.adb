@@ -43,6 +43,10 @@ package body Web_Tests.Threads_Navigation is
    procedure Set_Page_Size (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  Set page size to 500
 
+   procedure Set_All_Messages (T : in out AUnit.Test_Cases.Test_Case'Class);
+   --  Set filter to all messages which is expected to be the initial setting
+   --  for the test.
+
    Connection : Client.HTTP_Connection;
    --  Server connection used by all tests
 
@@ -409,9 +413,26 @@ package body Web_Tests.Threads_Navigation is
    begin
       Register_Routine (T, Main_Page'Access, "main page");
       Register_Routine (T, Set_Page_Size'Access, "Set page size");
+      Register_Routine (T, Set_All_Messages'Access, "Set all messages");
       Register_Routine (T, List_Forum_Threads'Access, "list post");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
+
+   ----------------------
+   -- Set_All_Messages --
+   ----------------------
+
+   procedure Set_All_Messages (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      use V2P.Template_Defs;
+
+      Result : Response.Data;
+   begin
+      Client.Get
+        (Connection, Result,
+         URI => Block_Forum_Filter.Ajax.onchange_bff_forum_filter_set
+         & "?" & Block_Forum_Filter.HTTP.bff_forum_filter_set
+         & "=ALL_MESSAGES&" & URL_Context);
+   end Set_All_Messages;
 
    -------------------
    -- Set_Page_Size --
