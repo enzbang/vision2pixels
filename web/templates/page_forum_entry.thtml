@@ -97,30 +97,7 @@
   @@END_IF@@
   @@-- Comments
   <h2 id="pfe_comments_section">Commentaires</h2>
-  @@IF@@ @_COMMENT_ID_@ /= "" @@--  at least one comment
-  <ol id="pfe_comments">
-    @@TABLE@@
-    <li id="pfe_comment_@_COMMENT_ID_@"
-        class="level_@_COMMENT_LEVEL_@ type_@_MOD(2):TABLE_LINE_@">
-      @@INCLUDE@@ chunk_comment.thtml
-      @@IF@@ @_NB_LEVELS_TO_CLOSE_@ > 0
-      @_REPEAT("</li>"):NB_LEVELS_TO_CLOSE_@
-      @@END_IF@@
-
-      @@IF@@ @_TABLE_LINE_@ = @_COMMENT_ID'Length_@
-  </ol>
-  <div id="pfe_last_parent_id" style="visibility:hidden">
-    <input name="pfe_PARENT_ID" id="pfe_PARENT_ID" type="hidden"
-           value="pfe_comment_@_COMMENT_ID_@" />
-  </div>
-      @@END_IF@@
-    @@END_TABLE@@
-  @@ELSE@@
-  <ol id="pfe_comments"><li id="pfe_nocomment">@_BABEL_NO_COMMENT_@</li></ol>
-  <div id="pfe_last_parent_id" style="visibility:hidden">
-    <input name="pfe_PARENT_ID" id="pfe_PARENT_ID" type="hidden" value=""/>
-  </div>
-  @@END_IF@@
+  <div id="pfe_post_comments">@_LAZY_COMMENTS_@</div>
   @@IF@@ @_IMAGE_SOURCE_@ /= ""
   <div id="pfe_lazy_new_vote">@_LAZY_NEW_VOTE_@</div>
   @@END_IF@@

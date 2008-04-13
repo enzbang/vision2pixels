@@ -582,8 +582,6 @@ package body V2P.Callbacks.Ajax is
       Get_Photo_ID : constant String :=
                        Parameters.Get
                          (P, Block_New_Comment.HTTP.bnc_comment_pid);
-      Parent_Id    : constant String :=
-                       Parameters.Get (P, Page_Forum_Entry.HTTP.pfe_PARENT_ID);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
       Last_Comment : constant String :=
                        Context.Get_Value (Set_Global.CONTEXT_LAST_COMMENT);
@@ -673,15 +671,6 @@ package body V2P.Callbacks.Ajax is
                Comment & '@' & Database.To_String (TID));
 
             Templates.Insert (Translations, Database.Get_Comment (Cid));
-            Templates.Insert
-              (Translations,
-               Templates.Assoc
-                 (R_Block_Comment_Form_Enter.PARENT_ID, Parent_Id));
-            Templates.Insert
-              (Translations,
-               Templates.Assoc
-                 (R_Block_Comment_Form_Enter.COMMENT_LEVEL, "1"));
-            --  Does not support threaded view for now
 
             Templates.Insert
               (Translations,

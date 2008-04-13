@@ -108,10 +108,15 @@ package V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set);
 
+   procedure Comments
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+
    procedure New_Comment
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set) is null;
+      Translations : in out Templates.Translate_Set);
 
    procedure New_Vote
      (Request      : in     Status.Data;

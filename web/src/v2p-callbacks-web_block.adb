@@ -27,6 +27,7 @@ with V2P.Context;
 with V2P.Navigation_Links;
 with V2P.Settings;
 with V2P.Template_Defs.Block_Forum_List;
+with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
@@ -53,6 +54,27 @@ package body V2P.Callbacks.Web_Block is
    begin
       Templates.Insert (Translations, Database.Get_CdC);
    end CdC;
+
+   --------------
+   -- Comments --
+   --------------
+
+   procedure Comments
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+   begin
+      if Context.Exist (Template_Defs.Set_Global.TID) then
+         Templates.Insert
+           (Translations,
+            Database.Get_Comments
+              (Tid =>  V2P.Context.Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Template_Defs.Set_Global.TID)));
+      end if;
+   end Comments;
 
    ----------
    -- Exif --
@@ -394,6 +416,30 @@ package body V2P.Callbacks.Web_Block is
          end if;
       end if;
    end Metadata;
+
+   -----------------
+   -- New_Comment --
+   -----------------
+
+   procedure New_Comment
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      use type Database.Forum_Type;
+   begin
+      if Context.Exist (Template_Defs.Set_Global.TID) then
+         Templates.Insert
+           (Translations, Templates.Assoc
+              (Template_Defs.Block_New_Comment.FORUM_FOR_PHOTO,
+               Database.Get_Forum_Type
+                 (V2P.Context.Counter.Get_Value
+                    (Context => Context.all,
+                     Name    => Template_Defs.Set_Global.TID))
+               = Database.Forum_Photo));
+      end if;
+   end New_Comment;
 
    --------------
    -- New_Post --
