@@ -304,9 +304,11 @@ package body V2P.Callbacks.Page is
    begin
       --  First rename the file to be compatible with ImageMagick
 
-      Directories.Rename
-        (Old_Name => Filename,
-         New_Name => C_Filename);
+      if Filename /= C_Filename then
+         Directories.Rename
+           (Old_Name => Filename,
+            New_Name => C_Filename);
+      end if;
 
       --  If a new photo has been uploaded, insert it in the database
 
