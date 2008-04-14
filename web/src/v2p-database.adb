@@ -824,12 +824,10 @@ package body V2P.Database is
         (Set, Templates.Assoc (Block_Forum_List.FORUM_NAME, Name));
 
       if Filter /= Forum_All and then Nb_Lines = 1 then
-
          --  Only one forum matched. Returns the categories too
 
          Templates.Insert
            (Set, Get_Categories (Database.Id'Value (Templates.Item (Id, 1))));
-
       end if;
 
       return Set;
