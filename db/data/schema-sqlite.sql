@@ -56,6 +56,7 @@ create table "comment" (
 create table "forum" (
    "id" integer not null primary key autoincrement,
    "name" varchar(100) not null,
+   "last_activity" date,
    "anonymity" boolean default TRUE,
    "for_photo" boolean default TRUE
 );
@@ -111,11 +112,17 @@ create table "post" (
 --  this last_comment_id has meaningful value only when comment_counter is
 --  not zero.
 
-create trigger set_last_comment_id after insert on post
+create trigger after_post_insert after insert on post
    begin
       update post
          set last_comment_id=(select max(comment_id) from post_comment)
          where id = new.id;
+      update forum
+         set last_activity=datetime(current_timestamp)
+         where forum.id =
+	       (select category.forum_id
+	        from category
+		where category.id = new.category_id);
    end;
 
 create table "post_comment" (
@@ -127,12 +134,19 @@ create table "post_comment" (
 
 --  Comment counter and last_comment_id
 
-create trigger update_post_status after insert on post_comment
+create trigger after_post_comment_insert after insert on post_comment
    begin
       update post
          set comment_counter=comment_counter + 1,
              last_comment_id=new.comment_id
          where id = new.post_id;
+      update forum
+         set last_activity=datetime(current_timestamp)
+         where forum.id =
+	       (select category.forum_id
+	        from category, post
+		where new.post_id = post.id
+		  and post.category_id = category.id);
    end;
 
 create table "user_post" (

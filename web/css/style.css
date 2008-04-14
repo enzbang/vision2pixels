@@ -616,9 +616,7 @@ a {
    color:white;
 }
 @@--
-input:hoover,
-   textarea:hoover
-{
+input:hoover, textarea:hoover {
    color:white;
 }
 @@--
@@ -628,6 +626,11 @@ ul#bfl_navcontainer li a {
 @@--
 ul#bfl_navcontainer li.index a {
    color:#436EEE;
+}
+@@--
+#bfl_timestamp {
+   font-size: 0.9em;
+   font-weight:lighter;
 }
 @@--
 .right {
@@ -1047,28 +1050,28 @@ body.user_page #bucl_lastusercommentlist li {
 }
 @@--
 #bm_address_example {
-   width:30em;
-   padding:0.6em;
-   text-align:center;
-   border:thin solid @_LIGHT_BORDER_COLOR_@;
-   margin:1em auto;
+   width: 30em;
+   padding: 0.6em;
+   text-align: center;
+   border: thin solid @_LIGHT_BORDER_COLOR_@;
+   margin: 1em auto;
 }
 @@-- help page
 body.new h2, body.new h3, body.new h1, body.help h2 {
-   text-transform:none;
-   margin:2em 0 0.5em 0;
-   padding-top:0.7em;
-   font-weight:bold;
-   text-align:center;
+   text-transform: none;
+   margin: 2em 0 0.5em 0;
+   padding-top: 0.7em;
+   font-weight: bold;
+   text-align: center;
 }
 @@--
 body.new h2, body.help h2 {
-   font-size:1.3em;
-   border-top:thin solid @_LIGHT_BORDER_COLOR_@;
+   font-size: 1.3em;
+   border-top: thin solid @_LIGHT_BORDER_COLOR_@;
 }
 @@--
 body.new h1 {
-   font-size:2em;
+   font-size: 2em;
 }
 @@--
 body.new h2 {
@@ -1101,7 +1104,7 @@ a.link:hover {
 #ph_tech {
    margin-top: 5em;
    text-align: center;
-   border-top:thin solid @_LIGHT_BORDER_COLOR_@;
+   border-top: thin solid @_LIGHT_BORDER_COLOR_@;
 }
 @@--
 #bm_map {

@@ -783,7 +783,10 @@ package body V2P.Database is
    is
       use type Templates.Tag;
 
-      SQL       : constant String := "SELECT id, name, for_photo FROM forum";
+      SQL       : constant String :=
+                    "SELECT id, name, for_photo, "
+                      & "date(last_activity), time(last_activity) "
+                      & " FROM forum";
       DBH       : constant TLS_DBH_Access :=
                     TLS_DBH_Access (DBH_TLS.Reference);
 
@@ -793,6 +796,8 @@ package body V2P.Database is
       Id        : Templates.Tag;
       Name      : Templates.Tag;
       For_Photo : Templates.Tag;
+      Date      : Templates.Tag;
+      Time      : Templates.Tag;
       Nb_Lines  : Natural := 0;
 
    begin
@@ -813,6 +818,8 @@ package body V2P.Database is
          Id        := Id        & DB.String_Vectors.Element (Line, 1);
          Name      := Name      & DB.String_Vectors.Element (Line, 2);
          For_Photo := For_Photo & DB.String_Vectors.Element (Line, 3);
+         Date      := Date      & DB.String_Vectors.Element (Line, 4);
+         Time      := Time      & DB.String_Vectors.Element (Line, 5);
 
          Line.Clear;
       end loop;
@@ -822,6 +829,10 @@ package body V2P.Database is
       Templates.Insert (Set, Templates.Assoc (Block_Forum_List.FID, Id));
       Templates.Insert
         (Set, Templates.Assoc (Block_Forum_List.FORUM_NAME, Name));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Forum_List.F_DATE, Date));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Forum_List.F_TIME, Time));
 
       if Filter /= Forum_All and then Nb_Lines = 1 then
          --  Only one forum matched. Returns the categories too

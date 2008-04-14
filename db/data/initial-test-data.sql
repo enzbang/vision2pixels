@@ -32,8 +32,10 @@ insert into user_page ("user_login", "content", "content_html")
 
 --  Create forums
 
-insert into forum values (1, "Forum photographies", "TRUE", "TRUE");
-insert into forum values (2, "Forum matériel", "FALSE", "FALSE");
+insert into forum values (1, "Forum photographies",
+       datetime(current_timestamp), "TRUE", "TRUE");
+insert into forum values (2, "Forum matériel",
+       datetime(current_timestamp, '-5.0003 days'), "FALSE", "FALSE");
 
 --  Create categories
 
@@ -534,3 +536,7 @@ insert into photo_metadata values (88, 46.2573, 4.30196, "N 46° 15' 26", "E 4°
 
 --  Insert last photo
 insert into post values (141, 'Hissez haut...', 88, NULL, 2, datetime(current_timestamp, '-0.003 days'), NULL, 1, 0, 0, "FALSE");
+
+update forum
+       set last_activity = datetime(current_timestamp, '-5.0003 days')
+       where forum.id = 2;

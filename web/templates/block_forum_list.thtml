@@ -12,6 +12,13 @@
       class="selected"
       @@END_IF@@
     href="@_FORUM_THREAD_URL_@?FID=@_FID_@&FROM=1">@_FORUM_NAME_@</a>
+    <span id="bfl_timestamp">
+    @@IF@@ @_F_DATE_@ = @_FORMAT_DATE("%Y-%m-%d"):NOW_@
+    (@_SLICE(1..5):F_TIME_@)
+    @@ELSE@@
+    (@_F_DATE_@)
+    @@END_IF@@
+    </span>
     @@END_INLINE@@
   </li>
   @@END_TABLE@@

@@ -7,10 +7,14 @@ insert into user ("login", "password", "email", "admin", created)
 
 --  Create forums
 
-insert into forum values (1, "Photographies", "TRUE", "TRUE");
-insert into forum values (2, "Techniques", "FALSE", "FALSE");
-insert into forum values (3, "Matériels", "FALSE", "FALSE");
-insert into forum values (4, "Site v2p", "FALSE", "FALSE");
+insert into forum
+       values (1, "Photographies", datetime(current_timestamp), "TRUE", "TRUE");
+insert into forum
+       values (2, "Techniques", datetime(current_timestamp), "FALSE", "FALSE");
+insert into forum
+       values (3, "Matériels", datetime(current_timestamp), "FALSE", "FALSE");
+insert into forum
+       values (4, "Site v2p", datetime(current_timestamp), "FALSE", "FALSE");
 
 --  Create categories
 
