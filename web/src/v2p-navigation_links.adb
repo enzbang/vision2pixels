@@ -19,8 +19,6 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AWS.Templates;
-
 with V2P.Context;
 with V2P.Database;
 with V2P.Template_Defs.Set_Global;
@@ -36,22 +34,30 @@ package body V2P.Navigation_Links is
                        Null_Data => Post_Ids.Empty_Vector);
    --  Adds Post_Ids.Vector to context value data
 
-   procedure Load_Pages
-     (Context   : access Services.Web_Block.Context.Object;
-      Page_Size : in     Positive;
-      From      : in     Positive);
-   --  Load post ids in context
-   --  If Previous_Id or Next_Id are null, check if it is possible
-   --  to retrieve further ids according to the current filter
+   procedure Get_Threads
+     (Context      : access Services.Web_Block.Context.Object;
+      Page_Size    : in     Positive;
+      From         : in     Positive;
+      Mode         : in     Database.Select_Mode;
+      Translations : in out Templates.Translate_Set);
+   --  Internal version which handle all modes
 
-   ----------------
-   -- Load_Pages --
-   ----------------
+   procedure Set_Navigation
+     (Context      : access Services.Web_Block.Context.Object;
+      Page_Size    : in     Positive;
+      From         : in     Positive);
+   --  Set only the navigation into the context
 
-   procedure Load_Pages
-     (Context   : access Services.Web_Block.Context.Object;
-      Page_Size : in     Positive;
-      From      : in     Positive)
+   -----------------
+   -- Get_Threads --
+   -----------------
+
+   procedure Get_Threads
+     (Context      : access Services.Web_Block.Context.Object;
+      Page_Size    : in     Positive;
+      From         : in     Positive;
+      Mode         : in     Database.Select_Mode;
+      Translations : in out Templates.Translate_Set)
    is
       use Template_Defs;
       Admin     : constant Boolean :=
@@ -60,7 +66,6 @@ package body V2P.Navigation_Links is
                     (Template_Defs.Set_Global.ADMIN) = "TRUE";
       Nav_From  : Positive := From;
       Nav_Links : Post_Ids.Vector;
-      Set       : AWS.Templates.Translate_Set;
       Nb_Lines  : Natural;
       Total     : Natural;
    begin
@@ -78,14 +83,16 @@ package body V2P.Navigation_Links is
            (Context.Get_Value (Set_Global.ORDER_DIR)),
          Sorting     => Database.Forum_Sort'Value
            (Context.Get_Value (Template_Defs.Set_Global.FORUM_SORT)),
+         Mode        => Mode,
          Navigation  => Nav_Links,
-         Set         => Set,
+         Set         => Translations,
          Nb_Lines    => Nb_Lines,
          Total_Lines => Total);
 
-      Links.Set_Value (Context => Context.all,
-                       Name    => Navigation_Links_Name,
-                       Value   => Nav_Links);
+      Links.Set_Value
+        (Context => Context.all,
+         Name    => Navigation_Links_Name,
+         Value   => Nav_Links);
 
       V2P.Context.Not_Null_Counter.Set_Value
         (Context => Context.all,
@@ -101,7 +108,17 @@ package body V2P.Navigation_Links is
         (Context => Context.all,
          Name    => Set_Global.NAV_NB_LINES_TOTAL,
          Value   => Total);
-   end Load_Pages;
+   end Get_Threads;
+
+   procedure Get_Threads
+     (Context      : access Services.Web_Block.Context.Object;
+      Page_Size    : in     Positive;
+      From         : in     Positive;
+      Translations : in out Templates.Translate_Set) is
+   begin
+      Get_Threads
+        (Context, Page_Size, From, Database.Everything, Translations);
+   end Get_Threads;
 
    ---------------
    -- Next_Post --
@@ -148,10 +165,10 @@ package body V2P.Navigation_Links is
             if Nav_From + Page_Size <= Total then
                --  Fetch more post ids
 
-               Load_Pages
-                 (Context   => Context,
-                  From      => Nav_From + Page_Size - 1,
-                  Page_Size => Page_Size * 2);
+               Set_Navigation
+                 (Context      => Context,
+                  From         => Nav_From + Page_Size - 1,
+                  Page_Size    => Page_Size * 2);
 
                --  Recursive call to Next_Post as the next element has been
                --  loaded in Links.
@@ -215,10 +232,10 @@ package body V2P.Navigation_Links is
 
                --  Fetch more post ids
 
-               Load_Pages
-                 (Context   => Context,
-                  From      => Nav_From,
-                  Page_Size => Page_Size * 2);
+               Set_Navigation
+                 (Context      => Context,
+                  From         => Nav_From,
+                  Page_Size    => Page_Size * 2);
 
                --  Recursive call to Previous_Post as the previous element
                --  has been loaded in Links.
@@ -234,18 +251,20 @@ package body V2P.Navigation_Links is
       end if;
    end Previous_Post;
 
-   ---------
-   -- Set --
-   ---------
+   --------------------
+   -- Set_Navigation --
+   --------------------
 
-   procedure Set
-     (Context : access Services.Web_Block.Context.Object;
-      Posts   : in Post_Ids.Vector) is
+   procedure Set_Navigation
+     (Context      : access Services.Web_Block.Context.Object;
+      Page_Size    : in     Positive;
+      From         : in     Positive)
+   is
+      Set : Templates.Translate_Set;
    begin
-      Links.Set_Value
-        (Context => Context.all,
-         Name    => Navigation_Links_Name,
-         Value   => Posts);
-   end Set;
+      Get_Threads
+        (Context, Page_Size, From,
+         Mode => Database.Navigation_Only, Translations => Set);
+   end Set_Navigation;
 
 end V2P.Navigation_Links;

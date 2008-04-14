@@ -247,68 +247,17 @@ package body V2P.Callbacks.Web_Block is
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
-      use V2P.Context;
-
-      Admin     : constant Boolean :=
-                    Context.Exist (Template_Defs.Set_Global.ADMIN)
-                  and then Context.Get_Value
-                    (Template_Defs.Set_Global.ADMIN) = "T";
       Page_Size : constant Navigation_Links.Page_Size :=
                     V2P.Context.Not_Null_Counter.Get_Value
                       (Context => Context.all,
                        Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE);
-      Nav_From  : Positive :=
+      Nav_From  : constant Positive :=
                     V2P.Context.Not_Null_Counter.Get_Value
                       (Context => Context.all,
                        Name    => Template_Defs.Set_Global.NAV_FROM);
-      Nav_Links : Navigation_Links.Post_Ids.Vector;
-      Nb_Lines  : Natural;
-      Total     : Natural;
    begin
-      --  ??? This function does exactly the same thing as
-      --  V2P.Navigation_Links.Load_Pages
-      --  This need some refactoring :
-      --        - Split Get_Threads so that the procedure can returns
-      --            * only the Post_Ids vector
-      --             (as needed by V2P.Navigation_Links.Load_Pages)
-      --            * and only the Template Set ?
-
-      Database.Get_Threads
-        (FID         => V2P.Context.Counter.Get_Value
-           (Context => Context.all,
-            Name    => Template_Defs.Set_Global.FID),
-         From        => Nav_From,
-         Admin       => Admin,
-         Filter      => Database.Filter_Mode'Value (Context.Get_Value
-           (Template_Defs.Set_Global.FILTER)),
-         Filter_Cat  => Context.Get_Value
-           (Template_Defs.Set_Global.FILTER_CATEGORY),
-         Page_Size   => Page_Size,
-         Order_Dir   => Database.Order_Direction'Value
-           (Context.Get_Value (Template_Defs.Set_Global.ORDER_DIR)),
-         Sorting     => Database.Forum_Sort'Value
-           (Context.Get_Value (Template_Defs.Set_Global.FORUM_SORT)),
-         Navigation  => Nav_Links,
-         Set         => Translations,
-         Nb_Lines    => Nb_Lines,
-         Total_Lines => Total);
-
-      Navigation_Links.Set (Context, Nav_Links);
-
-      V2P.Context.Not_Null_Counter.Set_Value
-        (Context => Context.all,
-         Name    => Template_Defs.Set_Global.NAV_FROM,
-         Value   => Nav_From);
-
-      V2P.Context.Counter.Set_Value
-        (Context => Context.all,
-         Name    => Template_Defs.Set_Global.NAV_NB_LINES_RETURNED,
-         Value   => Nb_Lines);
-
-      V2P.Context.Counter.Set_Value
-        (Context => Context.all,
-         Name    => Template_Defs.Set_Global.NAV_NB_LINES_TOTAL,
-         Value   => Total);
+      Navigation_Links.Get_Threads
+        (Context, Page_Size, Nav_From, Translations);
    end Forum_Threads;
 
    -------------------

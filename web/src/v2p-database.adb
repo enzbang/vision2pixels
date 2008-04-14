@@ -1365,13 +1365,14 @@ package body V2P.Database is
       Sorting       : in     Forum_Sort := Last_Posted;
       Only_Revealed : in     Boolean := False;
       From          : in out Positive;
+      Mode          : in     Select_Mode := Everything;
       Navigation    :    out Navigation_Links.Post_Ids.Vector;
       Set           :    out Templates.Translate_Set;
       Nb_Lines      :    out Natural;
       Total_Lines   :    out Natural)
    is
       use type Templates.Tag;
-      use type V2P.Navigation_Links.Post_Ids.Vector;
+      use type Navigation_Links.Post_Ids.Vector;
 
       function Build_Select
         (Count_Only : in Boolean := False) return String;
@@ -1456,27 +1457,34 @@ package body V2P.Database is
             Select_Stmt := +"SELECT COUNT(post.id)";
 
          else
-            Select_Stmt := +"SELECT post.id, post.name, post.date_post, "
-              & "DATETIME(date_post, '+"
-              & Utils.Image (Settings.Anonymity_Hours)
-              & " hour') < DATETIME('NOW'), "
-              & "(SELECT filename FROM photo WHERE id=post.photo_id), "
-              & "category.name, comment_counter,"
-              & "visit_counter, post.hidden, user_post.user_login";
+            case Mode is
+               when Everything =>
+                  Select_Stmt := +"SELECT post.id, post.name, post.date_post, "
+                    & "DATETIME(date_post, '+"
+                    & Utils.Image (Settings.Anonymity_Hours)
+                    & " hour') < DATETIME('NOW'), "
+                    & "(SELECT filename FROM photo WHERE id=post.photo_id), "
+                    & "category.name, comment_counter,"
+                    & "visit_counter, post.hidden, user_post.user_login";
 
-            case Sorting is
-               when Last_Posted | Need_Attention =>
-                  null;
+                  case Sorting is
+                     when Last_Posted | Need_Attention =>
+                        null;
 
-               when Last_Commented =>
-                  Append (Select_Stmt, ", comment.date");
+                     when Last_Commented =>
+                        Append (Select_Stmt, ", comment.date");
 
-               when Best_Noted =>
-                  Append
-                    (Select_Stmt,
-                     ", (SELECT SUM(global_rating.post_rating)"
-                     & " FROM global_rating"
-                     & " WHERE post.id=global_rating.post_id) AS sum_rating");
+                     when Best_Noted =>
+                        Append
+                          (Select_Stmt,
+                           ", (SELECT SUM(global_rating.post_rating)"
+                           & " FROM global_rating"
+                           & " WHERE post.id=global_rating.post_id)"
+                           & " AS sum_rating");
+                  end case;
+
+               when Navigation_Only =>
+                  Select_Stmt := +"SELECT post.id";
             end case;
          end if;
 
@@ -1749,19 +1757,22 @@ package body V2P.Database is
          Iter.Get_Line (Line);
          Nb_Lines := Nb_Lines + 1; --  ??? Maybe a smarter way to do this
 
-         Id              := Id        & DB.String_Vectors.Element (Line, 1);
-         Name            := Name      & DB.String_Vectors.Element (Line, 2);
-         Date_Post       := Date_Post & DB.String_Vectors.Element (Line, 3);
-         Revealed        := Revealed  & DB.String_Vectors.Element (Line, 4);
-         Thumb           := Thumb     & DB.String_Vectors.Element (Line, 5);
-         Category        := Category  & DB.String_Vectors.Element (Line, 6);
-         Comment_Counter := Comment_Counter
-           & DB.String_Vectors.Element (Line, 7);
-         Visit_Counter   := Visit_Counter
-           & DB.String_Vectors.Element (Line, 8);
-         Hidden          := Hidden    & DB.String_Vectors.Element (Line, 9);
-         Owner           := Owner     & DB.String_Vectors.Element (Line, 10);
-         --  Insert this post id in navigation links
+         if Mode = Everything then
+            Id              := Id        & DB.String_Vectors.Element (Line, 1);
+            Name            := Name      & DB.String_Vectors.Element (Line, 2);
+            Date_Post       := Date_Post & DB.String_Vectors.Element (Line, 3);
+            Revealed        := Revealed  & DB.String_Vectors.Element (Line, 4);
+            Thumb           := Thumb     & DB.String_Vectors.Element (Line, 5);
+            Category        := Category  & DB.String_Vectors.Element (Line, 6);
+            Comment_Counter := Comment_Counter
+              & DB.String_Vectors.Element (Line, 7);
+            Visit_Counter   := Visit_Counter
+              & DB.String_Vectors.Element (Line, 8);
+            Hidden          := Hidden    & DB.String_Vectors.Element (Line, 9);
+            Owner           := Owner
+              & DB.String_Vectors.Element (Line, 10);
+            --  Insert this post id in navigation links
+         end if;
 
          Navigation := Navigation & Database.Id'Value
            (DB.String_Vectors.Element (Line, 1));
@@ -1771,33 +1782,38 @@ package body V2P.Database is
 
       Iter.End_Select;
 
-      Templates.Insert
-        (Set, Templates.Assoc (Chunk_Threads_List.THUMB_SOURCE, Thumb));
+      if Mode = Everything then
+         Templates.Insert
+           (Set, Templates.Assoc (Chunk_Threads_List.THUMB_SOURCE, Thumb));
 
-      Templates.Insert (Set, Templates.Assoc (Chunk_Threads_List.TID, Id));
-      Templates.Insert (Set, Templates.Assoc (Chunk_Threads_List.NAME, Name));
-      Templates.Insert
-        (Set, Templates.Assoc (Chunk_Threads_Text_List.DATE_POST, Date_Post));
-      Templates.Insert
-        (Set, Templates.Assoc (Chunk_Threads_List.CATEGORY, Category));
-      Templates.Insert
-        (Set, Templates.Assoc
-           (Chunk_Threads_List.COMMENT_COUNTER, Comment_Counter));
-      Templates.Insert
-        (Set, Templates.Assoc
-           (Chunk_Threads_List.VISIT_COUNTER, Visit_Counter));
-      Templates.Insert
-        (Set, Templates.Assoc (Chunk_Threads_List.REVEALED, Revealed));
-      Templates.Insert
-        (Set, Templates.Assoc (Chunk_Threads_List.OWNER, Owner));
-      Templates.Insert
-        (Set, Templates.Assoc (Chunk_Threads_List.HIDDEN, Hidden));
-      Templates.Insert
-        (Set, Templates.Assoc
-           (Block_Forum_Threads.TOTAL_NB_THREADS, Total_Lines));
-      Templates.Insert
-        (Set, Templates.Assoc
-           (Block_Forum_Threads.NB_LINE_RETURNED, Nb_Lines));
+         Templates.Insert (Set, Templates.Assoc (Chunk_Threads_List.TID, Id));
+         Templates.Insert
+           (Set, Templates.Assoc (Chunk_Threads_List.NAME, Name));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Chunk_Threads_Text_List.DATE_POST, Date_Post));
+         Templates.Insert
+           (Set, Templates.Assoc (Chunk_Threads_List.CATEGORY, Category));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Chunk_Threads_List.COMMENT_COUNTER, Comment_Counter));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Chunk_Threads_List.VISIT_COUNTER, Visit_Counter));
+         Templates.Insert
+           (Set, Templates.Assoc (Chunk_Threads_List.REVEALED, Revealed));
+         Templates.Insert
+           (Set, Templates.Assoc (Chunk_Threads_List.OWNER, Owner));
+         Templates.Insert
+           (Set, Templates.Assoc (Chunk_Threads_List.HIDDEN, Hidden));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_Forum_Threads.TOTAL_NB_THREADS, Total_Lines));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_Forum_Threads.NB_LINE_RETURNED, Nb_Lines));
+      end if;
+
       Templates.Insert
         (Set, Templates.Assoc (Set_Global.NAV_FROM, From));
    end Get_Threads;

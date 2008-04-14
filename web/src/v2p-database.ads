@@ -73,6 +73,8 @@ package V2P.Database is
       Preferences : User_Settings;
    end record;
 
+   type Select_Mode is (Everything, Navigation_Only);
+
    No_User_Data : constant User_Data;
 
    function Get_Forums
@@ -104,6 +106,7 @@ package V2P.Database is
       Sorting       : in     Forum_Sort := Last_Posted;
       Only_Revealed : in     Boolean := False;
       From          : in out Positive;
+      Mode          : in     Select_Mode := Everything;
       Navigation    :    out Navigation_Links.Post_Ids.Vector;
       Set           :    out Templates.Translate_Set;
       Nb_Lines      :    out Natural;
