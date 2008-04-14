@@ -810,9 +810,9 @@ package body V2P.Database is
          Nb_Lines := Nb_Lines + 1;
          Iter.Get_Line (Line);
 
-         Id        := Id & DB.String_Vectors.Element (Line, 1);
-         Name      := Name & DB.String_Vectors.Element (Line, 2);
-         For_Photo := For_Photo & DB.String_Vectors.Element (Line, 2);
+         Id        := Id        & DB.String_Vectors.Element (Line, 1);
+         Name      := Name      & DB.String_Vectors.Element (Line, 2);
+         For_Photo := For_Photo & DB.String_Vectors.Element (Line, 3);
 
          Line.Clear;
       end loop;
