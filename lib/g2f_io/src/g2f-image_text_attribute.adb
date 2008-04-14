@@ -29,7 +29,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Characters.Handling;
-with Ada.Unchecked_Deallocation;
 with Interfaces.C.Strings;
 
 package body G2F.Image_Text_Attribute is
@@ -41,7 +40,7 @@ package body G2F.Image_Text_Attribute is
    ------------------------------
 
    procedure Set_Image_Text_Attribute
-     (I     : in out Image_Ptr;
+     (I     : in Image_Ptr;
       Key   : in Tag_Attribute;
       Value : in String)
    is
@@ -73,7 +72,7 @@ package body G2F.Image_Text_Attribute is
    ------------------------------
 
    procedure Set_Image_Text_Attribute
-     (I          : in out Image_Ptr;
+     (I          : in Image_Ptr;
       Key, Value : in String)
    is
       use C;

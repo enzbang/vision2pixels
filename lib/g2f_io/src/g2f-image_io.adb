@@ -28,13 +28,10 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-
 with G2F.IO;
 
 package body G2F.Image_IO is
 
-   use Ada.Text_IO;
    use G2F.IO;
 
    ----------------------
@@ -61,7 +58,7 @@ package body G2F.Image_IO is
    -- Destroy_Image_Info --
    ------------------------
 
-   procedure Destroy_Image_Info (Image_Info_In : in out Image_Info_Ptr) is
+   procedure Destroy_Image_Info (Image_Info_In : in Image_Info_Ptr) is
       procedure C_DestroyImageInfo (Image_Info_In : in Image_Info_Ptr);
       pragma Import (C, C_DestroyImageInfo, "DestroyImageInfo");
    begin
@@ -134,7 +131,7 @@ package body G2F.Image_IO is
    -- Destroy_Image --
    -------------------
 
-   procedure Destroy_Image (Image_In : in out Image_Ptr) is
+   procedure Destroy_Image (Image_In : in Image_Ptr) is
       procedure C_DestroyImage (Image_In : in Image_Ptr);
       pragma Import (C, C_DestroyImage, "DestroyImage");
    begin

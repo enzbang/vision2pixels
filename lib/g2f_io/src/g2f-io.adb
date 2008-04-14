@@ -28,7 +28,6 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;
 with Interfaces.C.Strings;
 with Ada.Strings.Fixed;
 
@@ -78,7 +77,7 @@ package body G2F.IO is
          end if;
       end loop;
 
-      if Prefix = True then
+      if Prefix then
          Strings.Fixed.Delete (Res, 1, Count);
       end if;
       return Res;
@@ -133,7 +132,7 @@ package body G2F.IO is
          end if;
       end loop;
 
-      if Prefix = False and then Suffix = True then
+      if Prefix = False and then Suffix then
          I.all.Filename
             (size_t (Res'First) .. size_t (Res'Last + 1 + Name'Last + 1)) :=
             To_C (Res & ':' & Name);

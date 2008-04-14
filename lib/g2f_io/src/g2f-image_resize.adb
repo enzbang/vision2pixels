@@ -28,10 +28,6 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-
-with G2F.IO;
-
 package body G2F.Image_Resize is
 
    -------------------

@@ -40,7 +40,7 @@ package G2F.Image_IO is
    --  Makes a duplicate of the given image info, or if image info is NULL, a
    --  new one.
 
-   procedure Destroy_Image_Info (Image_Info_In : in out Image_Info_Ptr);
+   procedure Destroy_Image_Info (Image_Info_In : in Image_Info_Ptr);
    --  Deallocates memory associated with an ImageInfo structure.
 
    function Read_Image (I : in Image_Info_Ptr) return Image_Ptr;
@@ -59,7 +59,7 @@ package G2F.Image_IO is
    --  requirements of the image format. For example, DirectClass images must
    --  be color-reduced to PseudoClass if the format is GIF.
 
-   procedure Destroy_Image (Image_In : in out Image_Ptr);
+   procedure Destroy_Image (Image_In : in Image_Ptr);
    --  Deallocates memory associated with an image.
 
    function Ping_Image (I : in Image_Info_Ptr) return Image_Ptr;

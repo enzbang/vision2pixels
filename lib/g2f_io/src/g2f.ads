@@ -29,7 +29,6 @@
 ------------------------------------------------------------------------------
 
 with Interfaces.C;
-with Interfaces.C.Pointers;
 with Interfaces.C_Streams;
 with Interfaces.C.Extensions;
 with System;

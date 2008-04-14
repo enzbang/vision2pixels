@@ -58,16 +58,16 @@ package G2F.Image_Text_Attribute is
       SceneType);
 
    procedure Set_Image_Text_Attribute
-     (I     : in out Image_Ptr;
-      Key   : in     Tag_Attribute;
-      Value : in     String);
+     (I     : in Image_Ptr;
+      Key   : in Tag_Attribute;
+      Value : in String);
    --  Searches the list of image attributes and replaces the attribute value.
    --  If it is not found in the list, the attribute name and value is added to
    --  the list.
 
    procedure Set_Image_Text_Attribute
-     (I          : in out Image_Ptr;
-      Key, Value : in     String);
+     (I          : in Image_Ptr;
+      Key, Value : in String);
    --  Searches the list of image attributes and replaces the attribute value.
    --  If it is not found in the list, the attribute name and value is added to
    --  the list.

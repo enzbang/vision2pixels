@@ -28,8 +28,6 @@
 --  covered by the  GNU Public License.                                     --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-
 package body G2F.Image_Enhance is
 
    --------------------
@@ -37,7 +35,7 @@ package body G2F.Image_Enhance is
    --------------------
 
    procedure Contrast_Image
-     (I       : in out Image_Ptr;
+     (I       : in Image_Ptr;
       Sharpen : in Sharpen_T;
       Factor  : in Positive := 1)
    is
@@ -70,7 +68,7 @@ package body G2F.Image_Enhance is
    -- Equalize_Image --
    --------------------
 
-   procedure Equalize_Image (I : in out Image_Ptr) is
+   procedure Equalize_Image (I : in Image_Ptr) is
       use C;
       function C_Equalize_Image (I : in Image_Ptr) return C.int;
       pragma Import (C, C_Equalize_Image, "EqualizeImage");
@@ -88,7 +86,7 @@ package body G2F.Image_Enhance is
    -----------------
 
    procedure Gamma_Image
-     (I                : in out Image_Ptr;
+     (I                : in Image_Ptr;
       Red, Green, Blue : in Gamma_Parameter := 1.0)
    is
       use C;
@@ -118,7 +116,7 @@ package body G2F.Image_Enhance is
    -----------------
 
    procedure Level_Image
-     (I                            : in out Image_Ptr;
+     (I                            : in Image_Ptr;
       Black_Percent, White_Percent : in Persent_Level;
       Gamma                        : in Gamma_Parameter := 1.0)
    is
@@ -151,7 +149,7 @@ package body G2F.Image_Enhance is
    -------------------------
 
    procedure Level_Image_Channel
-     (I                        : in out Image_Ptr;
+     (I                        : in Image_Ptr;
       Channel                  : in Channel_T;
       Black_Point, White_Point : in Max_Rgb;
       Gamma                    : in Gamma_Parameter := 1.0)
@@ -178,7 +176,7 @@ package body G2F.Image_Enhance is
    --------------------
 
    procedure Modulate_Image
-     (I                           : in out Image_Ptr;
+     (I                           : in Image_Ptr;
       Brightness, Saturation, Hue : in Persent_Level)
    is
       use C;
@@ -208,7 +206,7 @@ package body G2F.Image_Enhance is
    ------------------
 
    procedure Negate_Image
-     (I              : in out Image_Ptr;
+     (I              : in Image_Ptr;
       Only_Grayscale : in Boolean := False)
    is
       use C;
@@ -233,7 +231,7 @@ package body G2F.Image_Enhance is
    -- Normalize_Image --
    ---------------------
 
-   procedure Normalize_Image (I : in out Image_Ptr) is
+   procedure Normalize_Image (I : in Image_Ptr) is
       use C;
       function C_Normalize_Image (I : in Image_Ptr) return C.int;
       pragma Import (C, C_Normalize_Image, "NormalizeImage");
