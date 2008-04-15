@@ -97,8 +97,8 @@ package body V2P.Callbacks.Page is
          end if;
 
          if From_Main then
-            --  This is a link from the latest photo list
-            --  Generate navigations links
+            --  This is a link from the latest photo list or the CdC
+            --  Generate navigations links.
 
             --  Reset category filter as we do not know the category
             --  And set forum sort to last posted photo
