@@ -171,7 +171,7 @@ package body V2P.Callbacks.Ajax is
                  Parameters.Get (P, HTTP.bfcf_forum_category_filter_set);
    begin
       --  Keep the sorting scheme into the session
-      --  ?? we need to add this into the user's preferences
+
       Context.Set_Value (Template_Defs.Set_Global.FILTER_CATEGORY, Filter);
 
       Templates.Insert
@@ -206,7 +206,7 @@ package body V2P.Callbacks.Ajax is
                  Parameters.Get (P, HTTP.bff_forum_filter_set);
    begin
       --  Keep the sorting scheme into the session
-      --  ?? we need to add this into the user's preferences
+
       Context.Set_Value (Template_Defs.Set_Global.FILTER, Filter);
 
       Context.Remove (Template_Defs.Set_Global.PREVIOUS_FILTER);
@@ -236,7 +236,6 @@ package body V2P.Callbacks.Ajax is
                  Parameters.Get (P, HTTP.bffps_forum_filter_pagesize);
    begin
       --  Keep the sorting scheme into the session
-      --  ?? we need to add this into the user's preferences
 
       V2P.Context.Not_Null_Counter.Set_Value
         (Context => Context.all,
