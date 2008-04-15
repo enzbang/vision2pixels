@@ -132,7 +132,7 @@ package body G2F.IO is
          end if;
       end loop;
 
-      if Prefix = False and then Suffix then
+      if not Prefix and then Suffix then
          I.all.Filename
             (size_t (Res'First) .. size_t (Res'Last + 1 + Name'Last + 1)) :=
             To_C (Res & ':' & Name);
