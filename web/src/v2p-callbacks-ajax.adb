@@ -48,6 +48,7 @@ with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_Forum_Category_Filter;
+with V2P.Template_Defs.Block_Forum_Category_Set;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Forum_Sort;
@@ -189,6 +190,30 @@ package body V2P.Callbacks.Ajax is
          Name    => Template_Defs.Set_Global.NAV_FROM,
          Value   => 1);
    end Onchange_Category_Filter_Forum;
+
+   ---------------------------
+   -- Onchange_Category_Set --
+   ---------------------------
+
+   procedure Onchange_Category_Set
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Translations);
+      package HTTP renames Template_Defs.Block_Forum_Category_Set.HTTP;
+
+      P   : constant Parameters.List := Status.Parameters (Request);
+      TID : constant Database.Id :=
+              V2P.Context.Counter.Get_Value
+                (Context => Context.all,
+                 Name    => Template_Defs.Set_Global.TID);
+      CID  : constant Database.Id :=
+               Database.Id'Value
+                 (Parameters.Get (P, HTTP.bfcs_forum_category_set));
+   begin
+      Database.Set_Category (TID, CID);
+   end Onchange_Category_Set;
 
    ---------------------------
    -- Onchange_Filter_Forum --

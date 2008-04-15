@@ -51,6 +51,7 @@ with V2P.URL;
 with V2P.Version;
 
 with V2P.Template_Defs.Block_Forum_Category_Filter;
+with V2P.Template_Defs.Block_Forum_Category_Set;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Forum_Sort;
@@ -93,6 +94,7 @@ with V2P.Template_Defs.Set_Global;
 
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_Fatal_Error;
+with V2P.Template_Defs.R_Block_Forum_Category_Set;
 with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Forum_List;
 with V2P.Template_Defs.R_Block_Hidden_Status;
@@ -717,6 +719,14 @@ package body V2P.Web_Server is
         (Template_Defs.Block_Forum_Sort.Ajax.onchange_bfs_forum_sort_set,
          Template_Defs.R_Block_Forum_Filter.Template,
          Callbacks.Ajax.Onchange_Forum_Sort'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Forum_Category_Set.
+           Ajax.onchange_bfcs_forum_category_set,
+         Template_Defs.R_Block_Forum_Category_Set.Template,
+         Callbacks.Ajax.Onchange_Category_Set'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

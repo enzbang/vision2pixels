@@ -326,6 +326,11 @@ div#bnc_comment_login em {
    font-size:1.1em;
 }
 @@--
+select#bfcs_forum_category_set {
+   background-color: #333333;
+   border: 0px;
+}
+@@--
 @@--  Search
 @@--
 div#ps_search {

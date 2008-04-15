@@ -1,0 +1,5 @@
+@@-- HTTP_GET(bfcs_forum_category_set)
+@@--
+@@INCLUDE@@ chunk_forum_category.thtml bfcs_forum_category_set FALSE
+@@--
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bfcs_forum_category_set, 4=>bfcs_forum_category_set)

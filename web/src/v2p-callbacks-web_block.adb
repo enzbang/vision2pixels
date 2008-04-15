@@ -31,6 +31,7 @@ with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
+with V2P.Template_Defs.Chunk_Forum_Category;
 with V2P.Template_Defs.Set_Global;
 
 package body V2P.Callbacks.Web_Block is
@@ -123,6 +124,32 @@ package body V2P.Callbacks.Web_Block is
            (Template_Defs.Set_Global.FILTER_CATEGORY,
             Context.Get_Value (Template_Defs.Set_Global.FILTER_CATEGORY)));
    end Forum_Category_Filter;
+
+   ------------------------
+   -- Forum_Category_Set --
+   ------------------------
+
+   procedure Forum_Category_Set
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+   begin
+      if Context.Exist (Template_Defs.Set_Global.FID) then
+         Templates.Insert
+           (Translations,
+            Database.Get_Categories
+              (V2P.Context.Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Template_Defs.Set_Global.FID)));
+      end if;
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Chunk_Forum_Category.CATEGORY_SET, True));
+   end Forum_Category_Set;
 
    ------------------
    -- Forum_Filter --

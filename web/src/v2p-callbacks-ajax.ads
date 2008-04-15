@@ -88,6 +88,12 @@ package V2P.Callbacks.Ajax is
       Translations : in out Templates.Translate_Set);
    --  Called when changing the forum category filter
 
+   procedure Onchange_Category_Set
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set);
+   --  Called when changing the category of a post
+
    procedure Onclick_Goto_Next_Page
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;

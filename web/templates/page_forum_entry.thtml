@@ -70,7 +70,12 @@
     @@INLINE@@
     <h2>@_NAME_@
     @@IF@@ @_EXIST:CATEGORY_@
-    :: @_CATEGORY_@
+      ::
+      @@IF@@ @_OWNER_@ = @_LOGIN_@ or @_ADMIN_@
+        @_LAZY_FORUM_CATEGORY_SET_@
+      @@ELSE@@
+        @_CATEGORY_@
+      @@END_IF@@
     @@END_IF@@
     </h2>
     @@END_INLINE@@

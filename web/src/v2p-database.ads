@@ -134,6 +134,9 @@ package V2P.Database is
    function Get_Category (Tid : in Id) return Templates.Translate_Set;
    --  Returns the category for the given thread
 
+   procedure Set_Category (Tid : in Id; Category_Id : in Id);
+   --  Set the category of the given post
+
    function Get_Category_Full_Name (CID : in String) return String;
    --  Returns a category name "Forum/Category" for the given id
 

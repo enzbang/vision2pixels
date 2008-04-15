@@ -38,6 +38,7 @@ with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Chunk_Comment;
+with V2P.Template_Defs.Chunk_Forum_Category;
 with V2P.Template_Defs.Chunk_Threads_List;
 with V2P.Template_Defs.Chunk_Threads_Text_List;
 with V2P.Template_Defs.Block_Cdc;
@@ -1203,7 +1204,7 @@ package body V2P.Database is
             & "filename, width, height, user.login, post.date_post, "
             & " (JULIANDAY(post.date_post, '+"
             & Utils.Image (Settings.Anonymity_Hours)
-            & " hour') - JULIANDAY('NOW')) * 24, category.name, "
+            & " hour') - JULIANDAY('NOW')) * 24, category.name, category.id, "
             & "(SELECT id FROM photo_of_the_week AS cdc "
             & " WHERE cdc.post_id=post.id) "
             & "FROM post, user, user_post, photo, category "
@@ -1296,8 +1297,13 @@ package body V2P.Database is
 
             Templates.Insert
               (Set, Templates.Assoc
+                 (Chunk_Forum_Category.CID,
+                  DB.String_Vectors.Element (Line, 11)));
+
+            Templates.Insert
+              (Set, Templates.Assoc
                  (Page_Forum_Entry.CDC,
-                  DB.String_Vectors.Element (Line, 11) /= ""));
+                  DB.String_Vectors.Element (Line, 12) /= ""));
 
             Line.Clear;
          end if;
@@ -2597,6 +2603,20 @@ package body V2P.Database is
          Lock_Register.Release;
          return False;
    end Register_User;
+
+   ------------------
+   -- Set_Category --
+   ------------------
+
+   procedure Set_Category (Tid : in Id; Category_Id : in Id) is
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      SQL : constant String :=
+              "UPDATE post SET category_id=" & To_String (Category_Id)
+              & " WHERE post.id=" & To_String (Tid);
+   begin
+      Connect (DBH);
+      DBH.Handle.Execute (SQL);
+   end Set_Category;
 
    --------------------------------------
    -- Set_Filter_Page_Size_Preferences --
