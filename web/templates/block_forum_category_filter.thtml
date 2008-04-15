@@ -1,7 +1,5 @@
 @@-- HTTP_GET(bfcf_forum_category_filter_set)
 @@--
-@@INCLUDE@@ set_babel.thtml
-@@--
 @@INCLUDE@@ chunk_forum_category.thtml bfcf_forum_category_filter_set TRUE
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bfcf_forum_category_filter_set, 4=>bfcf_forum_category_filter_set)

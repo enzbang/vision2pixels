@@ -1,7 +1,5 @@
 @@-- HTTP_GET(bffps_forum_filter_pagesize)
 @@--
-@@INCLUDE@@ set_babel.thtml
-@@--
 @@INCLUDE@@ chunk_forum_filter_page_size.thtml bffps_forum_filter_pagesize
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, bffps_forum_filter_pagesize, 4=>bffps_forum_filter_pagesize)
