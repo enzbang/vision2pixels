@@ -2693,7 +2693,7 @@ package body V2P.Database is
 
    function To_String (Id : in Database.Id) return String is
    begin
-      return Natural'Image (Id);
+      return Utils.Image (Id);
    end To_String;
 
    --------------------------
