@@ -1,0 +1,16 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<select name="@_$1_@" id="@_$1_@">
+  @@IF@@ @_$2_@
+    <option value="">@_BABEL_ALL_CATEGORIES_@</option>
+  @@END_IF@@
+  @@TABLE@@
+    @@INLINE@@
+    <option value="@_CATEGORY_ID_@"
+    @@IF@@ @_FILTER_CATEGORY_@ = @_CATEGORY_ID_@
+       selected="selected"
+    @@END_IF@@
+    >@_CATEGORY_@</option>
+    @@END_INLINE@@
+  @@END_TABLE@@
+</select>
