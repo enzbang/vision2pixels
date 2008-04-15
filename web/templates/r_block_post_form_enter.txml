@@ -3,7 +3,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <response>
   @@IF@@ @_ERROR_@ = "" and @_URL_@ /= ""
-    <location url="@_URL_@"/>
+    <location url="@_URL_@&#38;From_Main=True"/>
   @@ELSE@@
     <replace id="pfnpe_post_error">
     <![CDATA[
