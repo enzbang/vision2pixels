@@ -1,7 +1,7 @@
 @@----------------------------------------------------------------------------
 @@--                              Ada Web Server
 @@--
-@@--                            Copyright (C) 2007
+@@--                         Copyright (C) 2007-2008
 @@--                                 AdaCore
 @@--
 @@--  This library is free software; you can redistribute it and/or modify
@@ -159,7 +159,7 @@ AWS.Context = new function() {
       @@IF@@ @_AWS_CONTEXT_PER_WINDOW_@ = true
       @@--  Check if context has to be renewed
 
-      if (!is_new_context && history.length == 1) {
+      if (!is_new_context && !document.referrer) {
 	 @@--  This is a new page in the browser
 	 @@--  Renew the context
 
