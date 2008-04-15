@@ -26,30 +26,30 @@ with V2P.Template_Defs.Set_Global;
 package body V2P.Context is
 
    use V2P;
+   use AWS;
 
    ------------
    -- Update --
    ------------
 
-   procedure Update (Context : access Object; SID : in AWS.Session.Id) is
+   procedure Update (Context : access Object; SID : in Session.Id) is
    begin
       --  Set LOGIN and ADMIN in session
 
-      if AWS.Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then
+      if Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then
+         Context.Set_Value
+           (Template_Defs.Set_Global.LOGIN,
+            Session.Get (SID, Template_Defs.Set_Global.LOGIN));
+      else
+         Context.Remove (Template_Defs.Set_Global.LOGIN);
+      end if;
 
-         if not Context.Exist (Template_Defs.Set_Global.LOGIN) then
-            Context.Set_Value
-              (Template_Defs.Set_Global.LOGIN,
-               AWS.Session.Get (SID, Template_Defs.Set_Global.LOGIN));
-         end if;
-
-         if AWS.Session.Exist (SID, Template_Defs.Set_Global.ADMIN) then
-            if not Context.Exist (Template_Defs.Set_Global.ADMIN) then
-               Context.Set_Value
-                 (Template_Defs.Set_Global.ADMIN,
-                  AWS.Session.Get (SID, Template_Defs.Set_Global.ADMIN));
-            end if;
-         end if;
+      if Session.Exist (SID, Template_Defs.Set_Global.ADMIN) then
+         Context.Set_Value
+           (Template_Defs.Set_Global.ADMIN,
+            Session.Get (SID, Template_Defs.Set_Global.ADMIN));
+      else
+         Context.Remove (Template_Defs.Set_Global.ADMIN);
       end if;
 
       --  Set default filter
