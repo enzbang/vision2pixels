@@ -330,8 +330,7 @@ package body V2P.Web_Server is
       Web_Page := Services.Web_Block.Registry.Build
         (URI, C_Request, Translations,
          Cache_Control => Messages.Prevent_Cache,
-         Context_Error =>
-           Template_Defs.R_Context_Error.Set.CONTEXT_ERROR_URL);
+         Context_Error => Template_Defs.R_Context_Error.Set.CONTEXT_ERROR_URL);
 
       if Response.Status_Code (Web_Page) = Messages.S404 then
          --  Page not found
