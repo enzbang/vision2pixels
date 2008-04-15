@@ -1120,6 +1120,14 @@ a.link:hover {
    color:black;
 }
 @@--
+#bm_map span, #bm_map_canvas span {
+   font-size: 0.5em;
+}
+@@--
+#bm_map a, #bm_map_canvas a {
+   font-size: 0.5em;
+}
+@@--
 #bm_show_map {
    padding-top:1em;
 }
