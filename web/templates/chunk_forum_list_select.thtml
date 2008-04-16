@@ -16,5 +16,5 @@
     <option value="@_CATEGORY_ID_@">@_CATEGORY_@</option>
   @@END_TABLE@@
 </select>
-
+@@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onchange, cfls_sel_forum_list, 4=>cfls_sel_forum_list)

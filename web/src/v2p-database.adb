@@ -571,7 +571,7 @@ package body V2P.Database is
             "('photo_id', 'create_date', 'make', 'camera_model_name', "
             & "'shutter_speed_value', 'aperture_value', 'flash', "
             & "'focal_length', 'exposure_mode', 'exposure_program', "
-            & "'white_balance', 'metering_mode', 'iso')"
+            & "'white_balance', 'metering_mode', 'iso') "
             & "VALUES ((SELECT photo_id FROM post WHERE id="
             & To_String (Tid) & ")," & Q (Exif.Create_Date)
             & ',' & Q (Exif.Make) & ','
@@ -1055,9 +1055,8 @@ package body V2P.Database is
         (Iter, "SELECT geo_latitude, geo_longitude, "
          & "geo_latitude_formatted, geo_longitude_formatted "
          & "FROM photo_metadata "
-         & "WHERE photo_id = (SELECT photo_id FROM post WHERE id="
-         & To_String (Tid)
-         & ')');
+         & "WHERE photo_id=(SELECT photo_id FROM post WHERE id="
+         & To_String (Tid) & ')');
 
       if Iter.More then
          Iter.Get_Line (Line);
