@@ -10,8 +10,8 @@
 
 <form enctype="multipart/form-data"
       id="pfnte_form_image_infos" action="#" method="POST">
-  <fieldset>
-    <p id="pfnte_lazy_forum_list_select">Sélection du forum : @_LAZY_FORUM_TEXT_LIST_SELECT_@
+  <fieldset id="pfnpe_mandatory_fields">
+    <p id="pfnte_lazy_forum_list_select">@_BABEL_SELECT_FORUM_@ : @_LAZY_FORUM_TEXT_LIST_SELECT_@
       <input name="TID" id="pfnte_TID" type="hidden" value="" />
     </p>
 
@@ -19,10 +19,9 @@
       <label for="new_entry_name_input">@_BABEL_POST_NAME_@</label>
       <input name="NAME" id="pfnte_new_entry_name_input" type="entry" value=""/>
     </p>
-  <p id="pfnte_img_author">
-    @_LOGIN_@
-  </p>
 
+  </fieldset>
+  <fieldset>
     <p id="pfnte_entry_comment">
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
       <textarea name="comment_input" rows="3" cols="40"

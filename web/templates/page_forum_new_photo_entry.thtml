@@ -36,6 +36,7 @@
     </p>
   </fieldset>
 
+  <fieldset>
     <p id="pfnpe_entry_comment">
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>
       <textarea name="comment_input" rows="3" cols="40"
