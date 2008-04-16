@@ -18,21 +18,23 @@
 
 <form enctype="multipart/form-data"
       id="pfnpe_form_image_infos" action="#" method="POST">
-  <fieldset>
-    <p id="pfnpe_lazy_forum_list_select">@_BABEL_SELECT_FORUM_@ : @_LAZY_FORUM_PHOTO_LIST_SELECT_@
-      <input name="TID" id="pfnpe_TID" type="hidden" value="" />
-    </p>
 
     <p id="pfnpe_main_image">
       <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"/>
       <input name="PID" id="pfnpe_PID" type="hidden" value="@_PID_@" />
     </p>
 
+  <fieldset id="pfnpe_mandatory_fields">
+    <legend>@_BABEL_MANDATORY_FIELDS_@</legend>
+    <p id="pfnpe_lazy_forum_list_select">@_BABEL_SELECT_FORUM_@ : @_LAZY_FORUM_PHOTO_LIST_SELECT_@
+      <input name="TID" id="pfnpe_TID" type="hidden" value="" />
+    </p>
+
     <p id="pfnpe_new_entry_name">
       <label for="new_entry_name_input">@_BABEL_POST_NAME_@</label>
       <input name="NAME" id="pfnpe_new_entry_name_input" type="entry" value=""/>
     </p>
-    <p id="pfnpe_img_author">@_LOGIN_@</p>
+  </fieldset>
 
     <p id="pfnpe_entry_comment">
       <label for="comment_input">@_BABEL_ENTER_COMMENT_@</label>

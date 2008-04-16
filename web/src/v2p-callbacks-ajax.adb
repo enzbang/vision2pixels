@@ -822,10 +822,9 @@ package body V2P.Callbacks.Ajax is
       Comment      : constant String :=
                        Parameters.Get
                          (P, Page_Forum_New_Text_Entry.HTTP.comment_input);
-      CID          : constant Database.Id :=
-                       Database.Id'Value
-                         (Parameters.Get
-                            (P, Chunk_Forum_List_Select.HTTP.CATEGORY));
+      Category     : constant String :=
+                       Parameters.Get
+                         (P, Chunk_Forum_List_Select.HTTP.CATEGORY);
       Last_Name    : constant String :=
                        Context.Get_Value (Set_Global.CONTEXT_LAST_POST_NAME);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
@@ -843,80 +842,88 @@ package body V2P.Callbacks.Ajax is
 
       --  Check for empty fields
 
-      if Login = ""
-        or else CID = Database.Empty_Id
-        or else Name = ""
-      then
+      if Login = "" then
          Templates.Insert
            (Translations,
             Templates.Assoc
               (Template_Defs.R_Block_Post_Form_Enter.ERROR,
-               "POST SUBMIT ERROR"));
-         --  ??? Adds an error message
+               Template_Defs.R_Block_Post_Form_Enter.Set.ERROR_LOGIN));
+
+      elsif Category = "" then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.R_Block_Post_Form_Enter.ERROR,
+               Template_Defs.R_Block_Post_Form_Enter.Set.ERROR_CATEGORY));
+
+      elsif Name = "" then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.R_Block_Post_Form_Enter.ERROR,
+               Template_Defs.R_Block_Post_Form_Enter.Set.ERROR_TITLE));
+
+      elsif Last_Name = Name then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.R_Block_Post_Form_Enter.ERROR,
+               Template_Defs.R_Block_Post_Form_Enter.Set.ERROR_DUPLICATED));
 
       else
-         if Last_Name = Name then
-            Templates.Insert
-              (Translations,
-               Templates.Assoc
-                 (Template_Defs.R_Block_Post_Form_Enter.ERROR_DUPLICATED,
-                  "ERROR_DUPLICATE_POST"));
+         Insert_Post : declare
+            CID     : constant Database.Id := Database.Id'Value (Category);
+            Post_Id : constant Database.Id :=
+                        Database.Insert_Post
+                          (Uid         => Login,
+                           Category_Id => CID,
+                           Name        => Name,
+                           Comment     => Comment_Wiki,
+                           Pid         => PID);
+         begin
+            if Post_Id /= Database.Empty_Id then
+               --  Set new context TID (needed by
+               --  Onsubmit_Metadata_Form_Enter_Callback)
 
-         else
+               V2P.Context.Counter.Set_Value
+                 (Context => Context.all,
+                  Name    => Set_Global.TID,
+                  Value   => Post_Id);
 
-            Insert_Post : declare
-               Post_Id : constant Database.Id :=
-                           Database.Insert_Post
-                             (Uid         => Login,
-                              Category_Id => CID,
-                              Name        => Name,
-                              Comment     => Comment_Wiki,
-                              Pid         => PID);
-            begin
-               if Post_Id /= Database.Empty_Id then
-                  --  Set new context TID (needed by
-                  --  Onsubmit_Metadata_Form_Enter_Callback)
+               Context.Set_Value (Set_Global.CONTEXT_LAST_POST_NAME, Name);
 
-                  V2P.Context.Counter.Set_Value
-                    (Context => Context.all,
-                     Name    => Set_Global.TID,
-                     Value   => Post_Id);
-
-                  Context.Set_Value (Set_Global.CONTEXT_LAST_POST_NAME, Name);
-
-                  if Context.Exist (Set_Global.FID) then
-                     Context.Remove (Set_Global.FID);
-                  end if;
-
-                  Templates.Insert
-                    (Translations,
-                     Templates.Assoc
-                       (R_Block_Post_Form_Enter.URL,
-                        Page_Forum_Entry.Set.URL & '?' &
-                        Page_Forum_Entry.HTTP.TID & '='
-                        & Database.To_String (Post_Id)));
-
-                  if PID /= Database.Empty_Id then
-                     --  Regenerate RSS feed
-
-                     Syndication.Update_RSS_Last_Photos;
-                  end if;
-
-               else
-                  Templates.Insert
-                    (Translations,
-                     Templates.Assoc
-                       (R_Block_Post_Form_Enter.ERROR,
-                        "DATABASE INSERT FAILED"));
+               if Context.Exist (Set_Global.FID) then
+                  Context.Remove (Set_Global.FID);
                end if;
-            end Insert_Post;
-         end if;
 
-         if PID /= Database.Empty_Id
-           and then Context.Exist (Set_Global.TID)
-         then
-            Onsubmit_Metadata_Form_Enter (Request, Context, Translations);
-         end if;
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc
+                    (R_Block_Post_Form_Enter.URL,
+                     Page_Forum_Entry.Set.URL & '?' &
+                     Page_Forum_Entry.HTTP.TID & '='
+                     & Database.To_String (Post_Id)));
+
+               if PID /= Database.Empty_Id then
+                  --  Regenerate RSS feed
+
+                  Syndication.Update_RSS_Last_Photos;
+               end if;
+
+            else
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc
+                    (R_Block_Post_Form_Enter.ERROR,
+                     "DATABASE INSERT FAILED"));
+            end if;
+         end Insert_Post;
+      end if;
+
+      if PID /= Database.Empty_Id
+        and then Context.Exist (Set_Global.TID)
+      then
+         Onsubmit_Metadata_Form_Enter (Request, Context, Translations);
       end if;
    end Onsubmit_Post_Form_Enter;
 

@@ -34,9 +34,9 @@
         <fieldset>
           <p>
             <label for="bm_latitude">@_BABEL_GEO_LATITUDE_@</label>
-            <input id="bm_latitude" name="bm_latitude" type="entry" value=""/>
-          </p>
-          <p>
+            <input id="bm_latitude" name="bm_latitude" type="entry"
+            value=""/>
+
             <label for="bm_longitude">@_BABEL_GEO_LONGITUDE_@</label>
             <input id="bm_longitude" name="bm_longitude" type="entry" value=""/>
           </p>

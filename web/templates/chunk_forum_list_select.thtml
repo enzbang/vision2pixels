@@ -1,3 +1,5 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
 @@IF@@ @_FID'LENGTH_@ = 1
   @_FORUM_NAME_@
 @@ELSE@@
@@ -9,6 +11,7 @@
   </select>
 @@END_IF@@
 <select name="CATEGORY" id="cfls_sel_category">
+  <option value="">-- @_BABEL_SELECT_@ --</option>
   @@TABLE@@
     <option value="@_CATEGORY_ID_@">@_CATEGORY_@</option>
   @@END_TABLE@@

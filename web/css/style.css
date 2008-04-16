@@ -192,6 +192,19 @@ ul#bft_navigate li.nav_info, ul#bftt_navigate li.nav_info {
    color:@_PHOTOAUTHOR_COLOR_@;
 }
 @@--
+#pfnpe_mandatory_fields {
+   border: 2px solid red;
+}
+@@--
+#pfnpe_entry_comment {
+   text-align: left;
+}
+@@--
+#pfnpe_post_error, #pfnte_post_error {
+   color: red;
+   font-size: 1.3em;
+}
+@@--
 #pfe_main_image_comment {
    font-size:1.1em;
    text-align:left;

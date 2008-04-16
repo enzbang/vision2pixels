@@ -1,5 +1,10 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
+@@SET@@ SET_ERROR_LOGIN = ERROR_LOGIN
+@@SET@@ SET_ERROR_CATEGORY = ERROR_CATEGORY
+@@SET@@ SET_ERROR_TITLE = ERROR_TITLE
+@@SET@@ SET_ERROR_DUPLICATED = ERROR_DUPLICATED
+@@--
 <?xml version="1.0" encoding="utf-8"?>
 <response>
   @@IF@@ @_ERROR_@ = "" and @_URL_@ /= ""
@@ -7,9 +12,13 @@
   @@ELSE@@
     <replace id="pfnpe_post_error">
     <![CDATA[
-    @@IF@@ @_ERROR_@ /= ""
-      @_ERROR_@
-    @@ELSIF@@ @_ERROR_DUPLICATED_@ /= ""
+    @@IF@@ @_ERROR_@ = @_SET_ERROR_LOGIN_@
+      @_BABEL_ERROR_LOGIN_@
+    @@ELSIF@@ @_ERROR_@ = @_SET_ERROR_CATEGORY_@
+      @_BABEL_ERROR_CATEGORY_@
+    @@ELSIF@@ @_ERROR_@ = @_SET_ERROR_TITLE_@
+      @_BABEL_ERROR_TITLE_@
+    @@ELSIF@@ @_ERROR_@ = @_SET_ERROR_DUPLICATED_@
       @_BABEL_ERROR_POST_DUPLICATED_@
     @@ELSE@@
       @_BABEL_UNKNOWN_ERROR_@
@@ -18,10 +27,13 @@
     </replace>
     <replace id="pfnte_post_error">
     <![CDATA[
-    @@IF@@ @_ERROR_@ /= ""
-      @_BABEL_UNKNOWN_ERROR_@
-      <!--  (@_ERROR_@)  -->
-    @@ELSIF@@ @_ERROR_DUPLICATED_@ /= ""
+    @@IF@@ @_ERROR_@ = @_SET_ERROR_LOGIN_@
+      @_BABEL_ERROR_LOGIN_@
+    @@ELSIF@@ @_ERROR_@ = @_SET_ERROR_CATEGORY_@
+      @_BABEL_ERROR_CATEGORY_@
+    @@ELSIF@@ @_ERROR_@ = @_SET_ERROR_TITLE_@
+      @_BABEL_ERROR_TITLE_@
+    @@ELSIF@@ @_ERROR_@ = @_SET_ERROR_DUPLICATED_@
       @_BABEL_ERROR_POST_DUPLICATED_@
     @@ELSE@@
       @_BABEL_UNKNOWN_ERROR_@
