@@ -1313,11 +1313,12 @@ package body V2P.Database is
             & "user.login, post.date_post, "
             & "DATETIME(post.date_post, '+"
             & Utils.Image (Settings.Anonymity_Hours)
-            & " hour')<DATETIME('NOW') "
-            & "FROM post, user, user_post "
+            & " hour')<DATETIME('NOW'), category.name, category.id "
+            & "FROM post, user, user_post, category "
             & "WHERE post.id=" & To_String (Tid)
             & " AND user.login=user_post.user_login"
-            & " AND user_post.post_id=post.id");
+            & " AND user_post.post_id=post.id"
+            & " AND category.id=post.category_id");
 
          if Iter.More then
             Iter.Get_Line (Line);
@@ -1353,6 +1354,17 @@ package body V2P.Database is
                Templates.Assoc
                  (Page_Forum_Entry.REVEALED,
                   DB.String_Vectors.Element (Line, 6)));
+
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Page_Forum_Entry.CATEGORY,
+                  DB.String_Vectors.Element (Line, 7)));
+
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Chunk_Forum_Category.CID,
+                  DB.String_Vectors.Element (Line, 8)));
+
             Line.Clear;
          end if;
       end if;
