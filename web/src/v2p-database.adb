@@ -916,6 +916,7 @@ package body V2P.Database is
 
    function Get_Latest_Posts
      (Limit    : in Positive;
+      Admin    : in     Boolean;
       Add_Date : in Boolean := False)
       return Templates.Translate_Set
    is
@@ -952,17 +953,24 @@ package body V2P.Database is
       --  Get entry information
 
       Prepare_Select : declare
-         SQL   : constant String := "SELECT post.id, post.name, filename"
-           & Select_Date
-           & " FROM post, forum, photo, category "
-           & "WHERE post.photo_id=photo.id "
-           & "AND post.category_id=category.id "
-           & "AND category.forum_id=forum.id "
-           & "AND forum.for_photo='TRUE' "
-           & "ORDER BY post.date_post DESC "
-           & "LIMIT " & Utils.Image (Limit);
+         SQL : Unbounded_String :=
+                      +"SELECT post.id, post.name, filename"
+                        & Select_Date
+                        & " FROM post, forum, photo, category "
+                        & "WHERE post.photo_id=photo.id "
+                        & "AND post.category_id=category.id "
+                        & "AND category.forum_id=forum.id "
+                        & "AND forum.for_photo='TRUE' ";
       begin
-         DBH.Handle.Prepare_Select (Iter, SQL);
+         if not Admin then
+            Append (SQL, " AND post.hidden='FALSE'");
+         end if;
+
+         Append
+           (SQL, "ORDER BY post.date_post DESC "
+            & "LIMIT " & Utils.Image (Limit));
+
+         DBH.Handle.Prepare_Select (Iter, -SQL);
       end Prepare_Select;
 
       while Iter.More loop

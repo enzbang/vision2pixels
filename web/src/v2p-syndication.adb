@@ -77,7 +77,8 @@ package body V2P.Syndication is
         (Translations,
          Database.Get_Latest_Posts
            (Limit    => 15,
-            Add_Date => True));
+            Add_Date => True,
+            Admin    => False));
 
       Create (File => File, Mode => Out_File, Name => Filename);
 

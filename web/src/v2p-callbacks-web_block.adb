@@ -317,11 +317,15 @@ package body V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set)
    is
-      pragma Unreferenced (Request, Context);
+      pragma Unreferenced (Request);
+      Admin : constant Boolean :=
+                Context.Exist (Template_Defs.Set_Global.ADMIN)
+              and then Context.Get_Value
+                (Template_Defs.Set_Global.ADMIN) = "TRUE";
    begin
       Templates.Insert
         (Translations,
-         Database.Get_Latest_Posts (Settings.Number_Latest_Posts));
+         Database.Get_Latest_Posts (Settings.Number_Latest_Posts, Admin));
    end Latest_Posts;
 
    ------------------

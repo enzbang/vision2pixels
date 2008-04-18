@@ -117,6 +117,7 @@ package V2P.Database is
 
    function Get_Latest_Posts
      (Limit    : in Positive;
+      Admin    : in     Boolean;
       Add_Date : in Boolean := False) return Templates.Translate_Set;
    --  Returns the Limit latest posts from all photo based forums
 
