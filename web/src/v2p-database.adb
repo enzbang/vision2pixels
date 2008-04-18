@@ -920,14 +920,15 @@ package body V2P.Database is
       return Templates.Translate_Set
    is
       use type Templates.Tag;
-      DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line   : DB.String_Vectors.Vector;
-      Id     : Templates.Tag;
-      Name   : Templates.Tag;
-      Date   : Templates.Tag;
-      Thumb  : Templates.Tag;
-      Set    : Templates.Translate_Set;
+
+      DBH   : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter  : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line  : DB.String_Vectors.Vector;
+      Id    : Templates.Tag;
+      Name  : Templates.Tag;
+      Date  : Templates.Tag;
+      Thumb : Templates.Tag;
+      Set   : Templates.Translate_Set;
 
       function Select_Date return String;
       --  Adds date selection if required
