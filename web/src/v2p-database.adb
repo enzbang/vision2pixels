@@ -1413,6 +1413,7 @@ package body V2P.Database is
       function Build_Where
         (Fid        : in Id;
          User       : in String;
+         Admin      : in Boolean;
          Filter     : in Filter_Mode;
          Filter_Cat : in String;
          Forum      : in Forum_Filter;
@@ -1422,6 +1423,7 @@ package body V2P.Database is
       function Count_Threads
         (Fid        : in Id;
          User       : in String;
+         Admin      : in Boolean;
          Filter     : in Filter_Mode;
          Filter_Cat : in String;
          Forum      : in Forum_Filter) return Natural;
@@ -1524,6 +1526,7 @@ package body V2P.Database is
       function Build_Where
         (Fid        : in Id;
          User       : in String;
+         Admin      : in Boolean;
          Filter     : in Filter_Mode;
          Filter_Cat : in String;
          Forum      : in Forum_Filter;
@@ -1620,6 +1623,10 @@ package body V2P.Database is
                & " hour')<DATETIME('NOW') ");
          end if;
 
+         if not Admin then
+            Append (Where_Stmt, " AND post.hidden='FALSE'");
+         end if;
+
          return -Where_Stmt;
       end Build_Where;
 
@@ -1630,6 +1637,7 @@ package body V2P.Database is
       function Count_Threads
         (Fid        : in Id;
          User       : in String;
+         Admin      : in Boolean;
          Filter     : in Filter_Mode;
          Filter_Cat : in String;
          Forum      : in Forum_Filter) return Natural
@@ -1646,6 +1654,7 @@ package body V2P.Database is
             & Build_Where
               (Fid        => Fid,
                User       => User,
+               Admin      => Admin,
                Filter     => Filter,
                Filter_Cat => Filter_Cat,
                Forum      => Forum,
@@ -1690,16 +1699,13 @@ package body V2P.Database is
                          Build_Where
                            (Fid        => Fid,
                             User       => User,
+                            Admin      => Admin,
                             Filter     => Filter,
                             Filter_Cat => Filter_Cat,
                             Forum      => Forum);
          Select_Stmt : Unbounded_String :=
                          +SQL_Select & SQL_From & SQL_Where;
       begin
-         if not Admin then
-            Append (Select_Stmt, " AND post.hidden='FALSE'");
-         end if;
-
          --  Add filtering into the select statement
 
          case Sorting is
@@ -1752,6 +1758,7 @@ package body V2P.Database is
       Total_Lines := Count_Threads
         (Fid        => Fid,
          User       => User,
+         Admin      => Admin,
          Filter     => Filter,
          Filter_Cat => Filter_Cat,
          Forum      => Forum);
