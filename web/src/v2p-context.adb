@@ -47,7 +47,8 @@ package body V2P.Context is
       if Session.Exist (SID, Template_Defs.Set_Global.ADMIN) then
          Context.Set_Value
            (Template_Defs.Set_Global.ADMIN,
-            Session.Get (SID, Template_Defs.Set_Global.ADMIN));
+            Boolean'Image
+              (Boolean'(Session.Get (SID, Template_Defs.Set_Global.ADMIN))));
       else
          Context.Remove (Template_Defs.Set_Global.ADMIN);
       end if;
