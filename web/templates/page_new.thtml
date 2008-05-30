@@ -10,25 +10,31 @@
   rapports d'erreur ou des demandes de fonctionnalitÃ©s. Le site ne peut
   Ã©voluer sans vous.</p>
 
-<h2>Version X.Y (mars 2008)</h2>
+<h2>Version 2.0 (mai 2008)</h2>
 
 <p>Une interface de recherche est maintenant disponible. Elle permet de
    retrouver des messages, des photographies ou des utilisateurs.</p>
 
 <p>Les Coups de Coeurs on maintenant leur page.</p>
 
-<p>Afin de préserver l'anonymat, les commentaires de l'auteur sur ses
-  propres photographies ne sont plus listés sur la page de son profil.</p>
+<p>Afin de prÃ©server l'anonymat, les commentaires de l'auteur sur ses
+  propres photographies ne sont plus listÃ©s sur la page de son profil.</p>
 
-<p>Lorsque l'on sélection le filtre "Demande votre attention" uniquement
-  les photographies des 7 derniers jours sont affichées par défaut.</p>
+<p>Lorsque l'on sÃ©lection le filtre "Demande votre attention" uniquement
+  les photographies des 7 derniers jours sont affichÃ©es par dÃ©faut.</p>
 
-<p>L'auteur peut maintenant changer la catégorie de ses photographies et de
+<p>L'auteur peut maintenant changer la catÃ©gorie de ses photographies et de
   ses messages.</p>
 
-<p>Le formulaire pour poster une photographie ou un message a été amélioré.
-  La catégorie n'est plus selectionnée par défaut et les messages d'erreur
-  ont été améliorerés.</p>
+<p>Le formulaire pour poster une photographie ou un message a Ã©tÃ© amÃ©liorÃ©.
+  La catÃ©gorie n'est plus selectionnÃ©e par dÃ©faut et les messages d'erreur
+  ont Ã©tÃ© amÃ©liorerÃ©s.</p>
+
+<p>La taille maximum des photographies est passÃ©e de 800x800 Ã  1000x1000.</p>
+
+<p>Un ensemble de prÃ©fÃ©rences a Ã©tÃ© ajoutÃ©, voir la page utilisateur.</p>
+
+<p>La date du dernier message de chaque forum est indiquÃ©e Ã  cotÃ© du lien.</p>
 
 <p>Corrections de bugs mineurs.</p>
 
