@@ -23,6 +23,7 @@ with Ada.Calendar;
 with Ada.Directories;
 with Ada.Exceptions;
 with Ada.Float_Text_IO;
+with Ada.Strings.Fixed;
 
 with AWS.Dispatchers.Callback;
 with AWS.Messages;
@@ -472,37 +473,50 @@ package body V2P.Web_Server is
       --------------
 
       function Filename return String is
-      begin
-         if URI (URI'First .. Settings.Medium_Images_Source_Prefix'Length)
-           = Settings.Medium_Images_Source_Prefix
-         then
-            Logs.Write
-              (Name    => Module,
-               Kind    => Logs.Error,
-               Content =>
-                 (Compose
-                    (V2P.URL.Medium_Images_Full_Prefix,
-                     URI (URI'First +
-                            Settings.Medium_Images_Source_Prefix'Length + 1
-                            .. URI'Last))));
-            return Compose
-              (V2P.URL.Medium_Images_Full_Prefix,
-               URI (URI'First + Settings.Medium_Images_Source_Prefix'Length + 1
-                      .. URI'Last));
 
-         elsif URI (URI'First .. Settings.Big_Images_Source_Prefix'Length)
-           = Settings.Big_Images_Source_Prefix
+         function URI_Prefix return String;
+         --  Returns the prefix for the current URI, this is the string before
+         --  the second /.
+
+         ----------------
+         -- URI_Prefix --
+         ----------------
+
+         function URI_Prefix return String is
+            K : constant Natural :=
+                  Strings.Fixed.Index (URI, "/", From => URI'First + 1);
+         begin
+            return URI (URI'First .. K - 1);
+         end URI_Prefix;
+
+         Medium : constant String :=
+                    Compose
+                      (V2P.URL.Medium_Images_Full_Prefix,
+                       URI (URI'First +
+                           Settings.Medium_Images_Source_Prefix'Length + 1
+                         .. URI'Last));
+
+         Prefix : constant String := URI_Prefix;
+
+      begin
+         --  For compatibility with older version, if the medium sized image
+         --  does not exist we return the full one. This was indeed a photo
+         --  with medium size anyway.
+
+         if Prefix = Settings.Big_Images_Source_Prefix
+           or else not Directories.Exists (Medium)
          then
             return Compose
               (V2P.URL.Big_Images_Full_Prefix,
-               URI (URI'First + Settings.Big_Images_Source_Prefix'Length + 1
-                      .. URI'Last));
+               URI (URI'First + Prefix'Length + 1 .. URI'Last));
+
+         elsif Prefix = Settings.Medium_Images_Source_Prefix then
+            return Medium;
 
          else
             return Compose
               (V2P.URL.Thumbs_Full_Prefix,
-               URI (URI'First + Settings.Thumbs_Source_Prefix'Length + 1
-                      .. URI'Last));
+               URI (URI'First + Prefix'Length + 1 .. URI'Last));
          end if;
 
       exception
