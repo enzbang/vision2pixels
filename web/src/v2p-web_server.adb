@@ -441,10 +441,10 @@ package body V2P.Web_Server is
    ------------------
 
    function IMG_Callback (Request : in Status.Data) return Response.Data is
-      URI  : constant String := Status.URI (Request);
-      File : constant String :=
-               Gwiad_Plugin_Path & Directory_Separator
-                 & URI (URI'First + 1 .. URI'Last);
+      URI    : constant String := Status.URI (Request);
+      File   : constant String :=
+                 Gwiad_Plugin_Path & Directory_Separator
+                   & URI (URI'First + 1 .. URI'Last);
       Result : AWS.Response.Data;
    begin
       Result := Response.File (MIME.Content_Type (File), File);
@@ -462,7 +462,7 @@ package body V2P.Web_Server is
    ---------------------
 
    function Photos_Callback (Request : in Status.Data) return Response.Data is
-      URI  : constant String := Status.URI (Request);
+      URI : constant String := Status.URI (Request);
 
       function Filename return String;
       --  Returns image filename

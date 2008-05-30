@@ -23,76 +23,76 @@ with V2P.Settings;
 
 package V2P.Defaults is
 
-   DB                       : V2P.Settings.DB_Kind := V2P.Settings.SQLite3;
+   DB                          : V2P.Settings.DB_Kind := V2P.Settings.SQLite3;
 
-   DB_Name                  : constant String := "v2p.db";
+   DB_Name                     : constant String := "v2p.db";
 
-   Images_Path              : constant String := "images";
+   Images_Path                 : constant String := "images";
 
-   Medium_Path              : constant String := "images_medium";
+   Medium_Path                 : constant String := "images_medium";
 
-   Thumbs_Path              : constant String := "thumbs";
+   Thumbs_Path                 : constant String := "thumbs";
 
-   Website_Data_Path        : constant String := "web_data";
+   Website_Data_Path           : constant String := "web_data";
 
    Big_Images_Source_Prefix    : constant String := "/photos";
 
    Medium_Images_Source_Prefix : constant String := "/photos-m";
 
-   Thumbs_Source_Prefix     : constant String := "/thumbs";
+   Thumbs_Source_Prefix        : constant String := "/thumbs";
 
-   Website_Data_Prefix      : constant String := "/web";
+   Website_Data_Prefix         : constant String := "/web";
 
-   Anonymous_Visit_Counter  : constant Boolean := False;
+   Anonymous_Visit_Counter     : constant Boolean := False;
 
-   Anonymous_Comment        : constant Boolean := False;
+   Anonymous_Comment           : constant Boolean := False;
 
-   Anonymity_Hours          : constant Natural := 3 * 24;
+   Anonymity_Hours             : constant Natural := 3 * 24;
 
-   Posting_Delay_Hours      : constant Natural := 3 * 24;
+   Posting_Delay_Hours         : constant Natural := 3 * 24;
 
-   Ignore_Author_Click      : constant Boolean := True;
+   Ignore_Author_Click         : constant Boolean := True;
 
-   Limit_Image_Size         : constant Boolean := True;
+   Limit_Image_Size            : constant Boolean := True;
 
-   Image_Maximum_Height     : constant Positive := 1000;
+   Image_Maximum_Height        : constant Positive := 1000;
 
-   Image_Maximum_Width      : constant Positive := 1000;
+   Image_Maximum_Width         : constant Positive := 1000;
 
-   Image_Maximum_Size       : constant Integer := 1_000_000;
+   Image_Maximum_Size          : constant Integer := 1_000_000;
 
-   Thumbnail_Maximum_Width  : constant Positive := 150;
+   Thumbnail_Maximum_Width     : constant Positive := 150;
 
-   Thumbnail_Maximum_Height : constant Positive := 150;
+   Thumbnail_Maximum_Height    : constant Positive := 150;
 
-   Medium_Maximum_Width     : constant Positive := 800;
+   Medium_Maximum_Width        : constant Positive := 800;
 
-   Medium_Maximum_Height    : constant Positive := 800;
+   Medium_Maximum_Height       : constant Positive := 800;
 
-   Descending_Order         : constant Boolean := True;
+   Descending_Order            : constant Boolean := True;
 
-   Wiki_Service_Name        : constant String := "wiki_service";
+   Wiki_Service_Name           : constant String := "wiki_service";
 
-   Virtual_Host             : constant String := "127.0.0.10";
+   Virtual_Host                : constant String := "127.0.0.10";
 
-   RSS_Host_URL             : constant String := "http://127.0.0.10:8080";
+   RSS_Host_URL                : constant String := "http://127.0.0.10:8080";
 
-   Number_Latest_Posts      : constant Positive := 6;
+   Number_Latest_Posts         : constant Positive := 6;
 
-   Number_Latest_Users      : constant Positive := 5;
+   Number_Latest_Users         : constant Positive := 5;
 
-   Google_Map_Key           : constant String := "";
+   Google_Map_Key              : constant String := "";
 
-   Log_Path                 : constant String := "./";
+   Log_Path                    : constant String := "./";
 
-   Cache_Path               : constant String := "./";
+   Cache_Path                  : constant String := "./";
 
-   RSS_Path                 : constant String := "./";
+   RSS_Path                    : constant String := "./";
 
-   RSS_Prefix               : constant String := "/rss";
+   RSS_Prefix                  : constant String := "/rss";
 
-   Compression              : constant Boolean := False;
+   Compression                 : constant Boolean := False;
 
-   Max_Search_Results       : constant Positive := 100;
+   Max_Search_Results          : constant Positive := 100;
 
 end V2P.Defaults;
