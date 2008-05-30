@@ -786,7 +786,8 @@ package body V2P.Database is
 
       SQL       : constant String :=
                     "SELECT id, name, for_photo, "
-                      & "date(last_activity), time(last_activity) "
+                      & "date(last_activity, 'localtime'), "
+                      & "time (last_activity, 'localtime') "
                       & " FROM forum";
       DBH       : constant TLS_DBH_Access :=
                     TLS_DBH_Access (DBH_TLS.Reference);
