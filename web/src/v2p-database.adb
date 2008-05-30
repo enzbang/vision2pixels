@@ -1286,8 +1286,8 @@ package body V2P.Database is
                   DB.String_Vectors.Element (Line, 12)));
 
             Is_Revealed : declare
-               Hours : constant Float :=
-                         Float'Value (DB.String_Vectors.Element (Line, 13));
+               Hours    : constant Float :=
+                            Float'Value (DB.String_Vectors.Element (Line, 13));
                Revealed : Boolean;
             begin
                if Hours >= 0.0 then
