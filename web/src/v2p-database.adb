@@ -1327,12 +1327,12 @@ package body V2P.Database is
             Templates.Insert
               (Set, Templates.Assoc
                  (Chunk_Forum_Category.CID,
-                  DB.String_Vectors.Element (Line, 11)));
+                  DB.String_Vectors.Element (Line, 15)));
 
             Templates.Insert
               (Set, Templates.Assoc
                  (Page_Forum_Entry.CDC,
-                  DB.String_Vectors.Element (Line, 12) /= ""));
+                  DB.String_Vectors.Element (Line, 16) /= ""));
 
             Line.Clear;
          end if;
