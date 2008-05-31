@@ -335,10 +335,19 @@ package body V2P.Web_Server is
       V2P.Callbacks.Web_Block.Pref_Image_Size
         (C_Request, Context'Access, Translations);
 
-      Web_Page := Services.Web_Block.Registry.Build
-        (URI, C_Request, Translations,
-         Cache_Control => Messages.Prevent_Cache,
-         Context_Error => Template_Defs.R_Context_Error.Set.CONTEXT_ERROR_URL);
+      if Services.Web_Block.Registry.Content_Type (URI) = MIME.Text_HTML then
+         --  The HTML case, we just redirect to the Web root
+         Web_Page := Services.Web_Block.Registry.Build
+           (URI, C_Request, Translations,
+            Cache_Control => Messages.Prevent_Cache,
+            Context_Error => "/");
+      else
+         Web_Page := Services.Web_Block.Registry.Build
+           (URI, C_Request, Translations,
+            Cache_Control => Messages.Prevent_Cache,
+            Context_Error =>
+              Template_Defs.R_Context_Error.Set.CONTEXT_ERROR_URL);
+      end if;
 
       if Response.Status_Code (Web_Page) = Messages.S404 then
          --  Page not found
@@ -643,12 +652,14 @@ package body V2P.Web_Server is
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Forum_New_Photo_Entry.Set.URL,
          Template_Defs.Page_Forum_New_Photo_Entry.Template,
-         Callbacks.Page.New_Photo_Entry'Access);
+         Callbacks.Page.New_Photo_Entry'Access,
+         Context_Required => True);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Block_New_Comment.Set.FORM_POST_COMMENT_PHOTO,
          Template_Defs.Chunk_New_Comment_Photo.Template,
-         Callbacks.Page.New_Photo_Entry'Access);
+         Callbacks.Page.New_Photo_Entry'Access,
+         Context_Required => True);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Validate_User.Set.URL,
