@@ -159,7 +159,7 @@ AWS.Context = new function() {
       @@IF@@ @_AWS_CONTEXT_PER_WINDOW_@ = true
       @@--  Check if context has to be renewed
 
-      if (!is_new_context && !document.referrer) {
+      if (!is_new_context && (!document.referrer || history.length == 1)) {
 	 @@--  This is a new page in the browser
 	 @@--  Renew the context
 
