@@ -159,14 +159,8 @@ AWS.Context = new function() {
       @@IF@@ @_AWS_CONTEXT_PER_WINDOW_@ = true
       @@--  Check if context has to be renewed
 
-      var browser = navigator.appName;
-      var history_first = 1;
-
-      if (browser.indexOf("Microsoft") >= 0) {
-         history_first = 0;
-      }
-
-      if (!is_new_context && (!document.referrer || history.length == history_first)) {
+      if (!is_new_context
+          && (!document.referrer || history.length == history_first)) {
 	 @@--  This is a new page in the browser
 	 @@--  Renew the context
 
@@ -306,7 +300,16 @@ AWS.Context = new function() {
 
    @@--
 
+   is_msie = navigator.appName.indexOf("Microsoft") >= 0;
+
    var is_new_context = false;
+   var history_first;
+
+   if (is_msie) {
+      history_first = 0;
+   } else {
+      history_first = 1;
+   }
 }
 
 @@---------------------------------------------------------------- AJAX
