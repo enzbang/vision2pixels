@@ -27,6 +27,9 @@
 
 include mk.config
 
+# Force library type to relocatable
+export LIBRARY_TYPE=relocatable
+
 LOG := ${shell pwd}/log.${shell date +%Y%m%d-%H%M%S}
 
 OPTIONS = INSTALL="$(INSTALL)" EXEXT="$(EXEXT)" MODE="$(MODE)" \
