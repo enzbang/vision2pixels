@@ -11,7 +11,8 @@ create table "user_preferences" (
 
 --  Add date/time of forum last_activity
 
-alter table forum add "last_activity" date default datetime(current_timestamp);
+alter table forum add "last_activity" date;
+update forum set last_activity=datetime(current_timestamp);
 
 drop trigger set_last_comment_id;
 
