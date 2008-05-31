@@ -70,7 +70,7 @@ package body V2P.Navigation_Links is
       Total     : Natural;
    begin
       Database.Get_Threads
-        (FID         => V2P.Context.Counter.Get_Value
+        (Fid         => V2P.Context.Counter.Get_Value
            (Context => Context.all,
             Name    => Set_Global.FID),
          From        => Nav_From,
