@@ -154,6 +154,7 @@ ul#bft_navigate, ul#bftt_navigate {
 @@--
 ul#pfe_navigate {
    text-align:center;
+   padding-top:1em;
 }
 @@--
 ul#pfe_navigate li img {
@@ -405,7 +406,7 @@ div#pft_filters div, div#pft_filters h2 {
 }
 @@--
 div#pft_filters div select, div#pft_filters div select option {
-   padding:0.4pt 0;
+   padding:0.4pt 3pt;
    color:#C1C7C7;
    font-weight:bold;
    border:black;
@@ -666,6 +667,10 @@ ul.slides {
 ul.slides p.entry_name a, ul.thumb_metadata li.photoauthor a,
 ul.thumb_metadata li.photocat a {
     overflow:visible;
+}
+p.entry_name {
+   font-variant:small-caps;
+   text-transform:lowercase;
 }
 @@--
 ul.thumb_metadata {
@@ -1017,13 +1022,14 @@ body.user_page h2 {
 }
 @@--
 body.user_page ul#bucl_lastusercommentlist {
-   padding:2em;
-   margin-left: 5%;
-   width: 90%;
+   padding:2em 0;
+   margin-left: 15%;
+   width: 70%;
    text-align: left;
+   font-size:1.1em;
 }
 body.user_page #bucl_lastusercommentlist li {
-   padding:0.1em;
+   padding:0.4em;
 }
 @@--
 #buvpl_no_vote {
@@ -1237,4 +1243,9 @@ body.user_register_page label {
 }
 #bfl_navcontainer a.selected {
     color:white;
+}
+@@--
+.commentid {
+    padding-right:1em;
+    color:@_HIGHLIGHT_COLOR_@;
 }
