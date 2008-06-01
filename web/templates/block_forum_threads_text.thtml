@@ -28,17 +28,5 @@
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bftt_goto_next_page)
 
 <div id="bftt_forum_text">
-<table class="forum_text">
-<tr class="table_header">
-  <th>@_BABEL_AUTHOR_@</th>
-  <th>@_BABEL_COMMENT_TITLE_@</th>
-  <th>@_BABEL_DATE_POST_@</th>
-  <th>@_BABEL_COMMENT_COUNTER_@</th>
-  <th>@_BABEL_VISIT_COUNTER_@</th>
-  @@IF@@ @_ADMIN_@
-  <th>@_BABEL_VISIBLE_@</th>
-  @@END_IF@@
-</tr>
 @@INCLUDE@@ chunk_threads_text_list.thtml
-</table>
 </div>

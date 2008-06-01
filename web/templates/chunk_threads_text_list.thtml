@@ -1,7 +1,17 @@
 @@IF@@ @_TID'LENGTH_@ > 0
 <table class="forum_text">
+<tr class="table_header">
+  <th>@_BABEL_AUTHOR_@</th>
+  <th>@_BABEL_COMMENT_TITLE_@</th>
+  <th>@_BABEL_DATE_POST_@</th>
+  <th>@_BABEL_COMMENT_COUNTER_@</th>
+  <th>@_BABEL_VISIT_COUNTER_@</th>
+  @@IF@@ @_ADMIN_@
+  <th>@_BABEL_VISIBLE_@</th>
+  @@END_IF@@
+</tr>
 @@ELSE@@
-<tr><td colspan="5" class="table_empty">@_BABEL_NOTHING_MATCHED_@</td></tr>
+<p class="table_empty">@_BABEL_NOTHING_MATCHED_@</p>
 @@END_IF@@
 @@TABLE@@
   <tr class="table_line_@_MOD(2):TABLE_LINE_@">
