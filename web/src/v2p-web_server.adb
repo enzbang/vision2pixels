@@ -474,14 +474,14 @@ package body V2P.Web_Server is
    function Photos_Callback (Request : in Status.Data) return Response.Data is
       URI : constant String := Status.URI (Request);
 
-      function Filename return String;
+      function Get_Filename return String;
       --  Returns image filename
 
       --------------
       -- Filename --
       --------------
 
-      function Filename return String is
+      function Get_Filename return String is
 
          function URI_Prefix return String;
          --  Returns the prefix for the current URI, this is the string before
@@ -533,9 +533,10 @@ package body V2P.Web_Server is
             Logs.Write
               (Name => Module, Kind => Logs.Error, Content => "Exception");
             raise;
-      end Filename;
+      end Get_Filename;
 
-      Result : AWS.Response.Data;
+      Filename : constant String := Get_Filename;
+      Result   : AWS.Response.Data;
    begin
       Result := Response.File (MIME.Content_Type (Filename), Filename);
 
