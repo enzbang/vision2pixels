@@ -513,7 +513,8 @@ package body V2P.Web_Server is
          --  with medium size anyway.
 
          if Prefix = Settings.Big_Images_Source_Prefix
-           or else not Directories.Exists (Medium)
+           or else (Prefix = Settings.Medium_Images_Source_Prefix and then
+                      not Directories.Exists (Medium))
          then
             return Compose
               (V2P.URL.Big_Images_Full_Prefix,
