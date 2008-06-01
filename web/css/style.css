@@ -1249,3 +1249,8 @@ body.user_register_page label {
     padding-right:1em;
     color:@_HIGHLIGHT_COLOR_@;
 }
+.table_empty {
+    padding:1em;
+    color:@_HIGHLIGHT_COLOR_@;
+    font-size:1.5em;
+}

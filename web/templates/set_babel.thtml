@@ -92,6 +92,7 @@
 @@SET@@ BABEL_HAS_BEEN_CDC="A été élu coup-de-cœur"
 @@SET@@ BABEL_CDC="Vos Coups de Cœurs"
 @@SET@@ BABEL_UPLOAD="Ajouter"
+@@SET@@ BABEL_NOTHING_MATCHED="Aucun résultat. <em>Filtres trop restrictifs ?</em>"
 @@--  User page
 @@SET@@ BABEL_USER_EDIT_YOUR_PAGE="Éditer votre page"
 @@SET@@ BABEL_USER_PAGE="Page utilisateur"
