@@ -12,29 +12,35 @@
 
 <h2>Version 2.0 (mai 2008)</h2>
 
-<p>Une interface de recherche est maintenant disponible. Elle permet de
-   retrouver des messages, des photographies ou des utilisateurs.</p>
+<h3>Des photographies mises en valeur</h3>
+
+<p>La taille maximum des photographies est passée de 800x800 à 1000x1000.</p>
 
 <p>Les Coups de Coeurs on maintenant leur page.</p>
 
-<p>Afin de préserver l'anonymat, les commentaires de l'auteur sur ses
-  propres photographies ne sont plus listés sur la page de son profil.</p>
+<h3>Amélioration de l'interface</h3>
 
-<p>Lorsque l'on sélection le filtre "Demande votre attention" uniquement
-  les photographies des 7 derniers jours sont affichées par défaut.</p>
-
-<p>L'auteur peut maintenant changer la catégorie de ses photographies et de
-  ses messages.</p>
-
-<p>Le formulaire pour poster une photographie ou un message a été amélioré.
-  La catégorie n'est plus selectionnée par défaut et les messages d'erreur
-  ont été améliorerés.</p>
-
-<p>La taille maximum des photographies est passée de 800x800 à 1000x1000.</p>
+<p>Une interface de recherche est maintenant disponible. Elle permet de
+   retrouver des messages, des photographies ou des utilisateurs.</p>
 
 <p>Un ensemble de préférences a été ajouté, voir la page utilisateur.</p>
 
 <p>La date du dernier message de chaque forum est indiquée à coté du lien.</p>
+
+<p>L'auteur peut maintenant changer la catégorie de ses photographies et de
+  ses messages.</p>
+
+<p>Lorsque l'on sélectionne le filtre "Demande votre attention" uniquement
+  les photographies des 7 derniers jours sont affichées par défaut.</p>
+
+<p>Le formulaire pour poster une photographie ou un message a été amélioré.
+  La catégorie n'est plus selectionnée par défaut et les messages d'erreur
+  sont plus clairs.</p>
+
+<h3>Corrections de bugs</h3>
+
+<p>Afin de préserver l'anonymat, les commentaires de l'auteur sur ses
+  propres photographies ne sont plus listés sur la page de son profil.</p>
 
 <p>Corrections de bugs mineurs.</p>
 
