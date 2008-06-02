@@ -45,7 +45,11 @@
                 id="global_comment_input"></textarea>
     </p>
     <p>
-      <input name="ENTER" id="bnc_comment_form_enter" type="submit" value="OK"/>
+      <input name="ENTER" id="bnc_comment_form_enter" type="submit"
+@@--  Workaround to avoid a bug in Safari when posting a photo in comment
+      onclick="call_bnc_comment_form();"
+@--
+      value="OK"/>
     </p>
     <p id="bnc_new_comment_error"></p>
     @@--    <p><input name="FILENAME" type="file"/>
