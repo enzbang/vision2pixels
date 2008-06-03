@@ -12,7 +12,13 @@ create table "user_preferences" (
 --  Add date/time of forum last_activity
 
 alter table forum add "last_activity" date;
-update forum set last_activity=datetime(current_timestamp);
+
+update forum set last_activity=
+  (select max(comment.date) from category, post_comment, post, comment
+   where post_comment.post_id = post.id
+     and post.category_id = category.id
+     and category.forum_id = forum.id
+     and post.last_comment_id=comment.id);
 
 drop trigger set_last_comment_id;
 
@@ -51,4 +57,3 @@ alter table photo add "medium_height" integer;
 alter table photo add "medium_width" integer;
 alter table photo add "thumb_height" integer;
 alter table photo add "thumb_width" integer;
-
