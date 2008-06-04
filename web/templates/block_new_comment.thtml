@@ -21,6 +21,10 @@
 </form>
 @@END_IF@@
 @@--
+@@--  ??? Set outside the form to work around a Safari bug
+@@IF@@ @_IMAGE_SOURCE_@ /= ""
+  <input name="bnc_comment_pid" id="bnc_comment_pid" type="hidden" value=""/>
+@@END_IF@@
 <form enctype="multipart/form-data" id="bnc_comment_form" action="#" method="post">
   <fieldset>
     @@-- Is user logged
@@ -34,7 +38,6 @@
     <p>
       @@IF@@ @_IMAGE_SOURCE_@ /= ""
         <input name="forum_photo" id="bnc_forum_photo" type="hidden" value="t" />
-        <input name="bnc_comment_pid" id="bnc_comment_pid" type="hidden" value="" />
       @@ELSE@@
         <input name="forum_photo" id="bnc_forum_photo" type="hidden" value="" />
       @@END_IF@@
