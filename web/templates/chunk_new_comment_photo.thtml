@@ -26,7 +26,7 @@
 @@IF@@ @_V2P_ERROR_@ /= "" or @_IMAGE_SOURCE_@ /= ""
 <script type="text/javascript">
 <!--
-   parent.document.getElementById('bnc_comment_pid').value = "@_PID_@";
+   parent.document.getElementById('bnc_comment_pid').value = '@_PID_@';
    parent.document.getElementById('bnc_photo_post_target').style['left'] = '0';
    parent.document.getElementById('bnc_photo_post_target').style['position'] = 'relative';
    parent.document.getElementById('bnc_photo_post_target').style['width'] = '40%';
