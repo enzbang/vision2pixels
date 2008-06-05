@@ -1253,3 +1253,7 @@ body.user_register_page label {
     color:@_HIGHLIGHT_COLOR_@;
     font-size:1.5em;
 }
+@@--
+.hidden {
+   visibility:hidden;
+}
