@@ -151,6 +151,7 @@ install_gwiad_plugin: install_db
 	$(CP) lib/gnadelite/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) -f $(DIOUZHTU_DYNAMIC_LIB)/*wiki_service$(SOEXT) \
 		$(GWIAD_ROOT)/lib/services
+	$(CP) web/tools/wmaint$(EXEXT) $(GWIAD_ROOT)/bin
 
 install-distrib: clean-distrib create-plugin-dist-dir
 	(cd $(DISTRIB)/dist; $(TAR_DIR) ../dist.tgz .)

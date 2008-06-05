@@ -32,6 +32,7 @@ build:
 	-chmod a+w lib_ali/*
 	$(GNAT) make -XPRJ_BUILD=$(MODE) -Pweb
 	$(GNAT) make -XPRJ_BUILD=$(MODE) -Pweb_test
+	$(GNAT) make -XPRJ_BUILD=$(MODE) -Ptools
 
 check:
 	$(GNAT) check -dd -Pweb -rules -from=../v2p.check

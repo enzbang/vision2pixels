@@ -36,3 +36,4 @@ web/lib_ali
 web/obj
 web/test/bin
 web/test/obj
+web/tools/wmaint
