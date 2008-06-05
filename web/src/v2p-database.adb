@@ -21,7 +21,6 @@
 
 with Ada.Directories;
 with Ada.Exceptions;
-with Ada.Strings.Fixed;
 with Ada.Text_IO;
 
 with AWS.Utils;
@@ -2439,9 +2438,7 @@ package body V2P.Database is
                           Thumb_Height, Thumb_Width, Size);
 
       Row_Id : declare
-         Pid : constant String :=
-                 Ada.Strings.Fixed.Trim
-                   (DBH.Handle.Last_Insert_Rowid, Side => Ada.Strings.Both);
+         Pid : constant String := DBH.Handle.Last_Insert_Rowid;
       begin
          User_Tmp_Photo (Uid, Pid);
          DBH.Handle.Commit;
