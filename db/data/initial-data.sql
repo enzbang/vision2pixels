@@ -33,6 +33,7 @@ insert into category values (10, 3, 'Bug');
 insert into category values (11, 3, 'Idée');
 
 insert into category values (12, 2, 'Divers');
+insert into category values (13, 1, 'Nature');
 
 --  Create criteria
 
