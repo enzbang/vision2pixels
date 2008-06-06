@@ -169,7 +169,8 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter, "SELECT id, name FROM category"
-         & " WHERE forum_id=" & To_String (Fid));
+         & " WHERE forum_id=" & To_String (Fid)
+         & " ORDER BY name");
 
       while Iter.More loop
          Iter.Get_Line (Line);
