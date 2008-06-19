@@ -81,6 +81,10 @@ package V2P.Defaults is
 
    Number_Latest_Users         : constant Positive := 5;
 
+   Number_Latest_User_Posts    : constant Positive := 100;
+
+   Number_Latest_User_Messages : constant Positive := 100;
+
    Google_Map_Key              : constant String := "";
 
    Log_Path                    : constant String := "./";

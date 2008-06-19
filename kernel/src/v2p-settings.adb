@@ -34,17 +34,16 @@ package body V2P.Settings is
 
    type Attributes is
      (DB, DB_Name, Images_Path, Thumbs_Path, Medium_Image_Path,
-      Images_Source_Prefix, Thumbs_Source_Prefix, Medium_Images_Source_Prefix,
-      Anonymous_Visit_Counter, Anonymous_Comment,
-      Anonymity_Hours, Posting_Delay_Hours, Descending_Order,
-      Ignore_Author_Click, Limit_Image_Size,
-      Image_Maximum_Width, Image_Maximum_Height, Image_Maximum_Size,
-      Medium_Maximum_Width, Medium_Maximum_Height,
-      Thumbnail_Maximum_Width, Thumbnail_Maximum_Height,
-      Virtual_Host, Website_Data_Path,
-      Website_Data_Prefix, Wiki_Service_Name, Number_Latest_Posts,
-      Number_Latest_Users, Google_Map_Key, Log_Path, Cache_Path, RSS_Host_URL,
-      RSS_Path, RSS_Prefix, Compression, Max_Search_Results);
+     Images_Source_Prefix, Thumbs_Source_Prefix, Medium_Images_Source_Prefix,
+     Anonymous_Visit_Counter, Anonymous_Comment, Anonymity_Hours,
+     Posting_Delay_Hours, Descending_Order, Ignore_Author_Click,
+     Limit_Image_Size, Image_Maximum_Width, Image_Maximum_Height,
+     Image_Maximum_Size, Medium_Maximum_Width, Medium_Maximum_Height,
+     Thumbnail_Maximum_Width, Thumbnail_Maximum_Height, Virtual_Host,
+     Website_Data_Path, Number_Latest_User_Posts, Number_Latest_User_Messages,
+     Website_Data_Prefix, Wiki_Service_Name, Number_Latest_Posts,
+     Number_Latest_Users, Google_Map_Key, Log_Path, Cache_Path, RSS_Host_URL,
+     RSS_Path, RSS_Prefix, Compression, Max_Search_Results);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -267,6 +266,24 @@ package body V2P.Settings is
       return Conf.Get_Value (Number_Latest_Posts);
    end Number_Latest_Posts;
 
+   ---------------------------------
+   -- Number_Latest_User_Messages --
+   ---------------------------------
+
+   function Number_Latest_User_Messages return Positive is
+   begin
+      return Conf.Get_Value (Number_Latest_User_Messages);
+   end Number_Latest_User_Messages;
+
+   ------------------------------
+   -- Number_Latest_User_Posts --
+   ------------------------------
+
+   function Number_Latest_User_Posts return Positive is
+   begin
+      return Conf.Get_Value (Number_Latest_User_Posts);
+   end Number_Latest_User_Posts;
+
    -------------------------
    -- Number_Latest_Users --
    -------------------------
@@ -407,6 +424,10 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (Wiki_Service_Name, Defaults.Wiki_Service_Name);
    Conf.Set_Value (Number_Latest_Posts, Defaults.Number_Latest_Posts);
    Conf.Set_Value (Number_Latest_Users, Defaults.Number_Latest_Users);
+   Conf.Set_Value (Number_Latest_User_Posts,
+                   Defaults.Number_Latest_User_Posts);
+   Conf.Set_Value (Number_Latest_User_Messages,
+                   Defaults.Number_Latest_User_Messages);
    Conf.Set_Value (Google_Map_Key, Defaults.Google_Map_Key);
    Conf.Set_Value (Log_Path, Defaults.Log_Path);
    Conf.Set_Value (Cache_Path, Defaults.Cache_Path);
