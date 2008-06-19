@@ -202,7 +202,6 @@ package body V2P.Settings is
       return Conf.Get_Value (Image_Maximum_Width);
    end Image_Maximum_Width;
 
-
    ----------------------
    -- Limit_Image_Size --
    ----------------------
