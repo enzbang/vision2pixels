@@ -40,7 +40,8 @@ package body V2P.Callbacks.Web_Block is
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set;
-      Forum        : in     Database.Forum_Filter);
+      Forum        : in     Database.Forum_Filter;
+      Limit        : in     Positive);
 
    ---------
    -- CdC --
@@ -635,7 +636,9 @@ package body V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set) is
    begin
-      User_Post_List (Request, Context, Translations, Database.Forum_Text);
+      User_Post_List
+        (Request, Context, Translations, Database.Forum_Text,
+         Limit => Settings.Number_Latest_User_Messages);
    end User_Message_List;
 
    ---------------
@@ -669,7 +672,9 @@ package body V2P.Callbacks.Web_Block is
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set) is
    begin
-      User_Post_List (Request, Context, Translations, Database.Forum_Photo);
+      User_Post_List
+        (Request, Context, Translations, Database.Forum_Photo,
+         Limit => Settings.Number_Latest_User_Posts);
    end User_Photo_List;
 
    --------------------
@@ -680,7 +685,8 @@ package body V2P.Callbacks.Web_Block is
      (Request      : in     Status.Data;
       Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set;
-      Forum        : in     Database.Forum_Filter)
+      Forum        : in     Database.Forum_Filter;
+      Limit        : in     Positive)
    is
 
       Admin      : constant Boolean :=
@@ -704,7 +710,8 @@ package body V2P.Callbacks.Web_Block is
          Nb_Lines      => Nb_Lines,
          Total_Lines   => Total,
          Forum         => Forum,
-         Only_Revealed => True);
+         Only_Revealed => True,
+         Page_Size     => Limit);
 
       Templates.Insert (Translations, Set);
 
