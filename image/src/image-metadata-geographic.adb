@@ -27,7 +27,7 @@ package body Image.Metadata.Geographic is
 
    function "=" (Left, Right : in Geo_Coordinate) return Boolean is
    begin
-      return (abs (Left - Right) < 0.0002);
+      return (abs (Left - Right) < 2 * Geo_Coordinate'Small);
    end "=";
 
    ------------
@@ -55,10 +55,10 @@ package body Image.Metadata.Geographic is
 
       Diff := Diff - Geo_Coordinate (Position.C_Degree);
 
-      Position.C_Minute := Minute (Float'Truncation (Float (Diff * 60)));
+      Position.C_Minute := Minute (Float'Truncation (Float (Diff * 60.0)));
       Diff := Diff - Geo_Coordinate (Position.C_Minute) / 60.0;
 
-      Position.C_Second := Second (Diff * 3600);
+      Position.C_Second := Second (Diff * 3600.0);
    end Format;
 
    ----------------------
