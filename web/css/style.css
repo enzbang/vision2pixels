@@ -1002,6 +1002,7 @@ body.user_page #bup_user_page_content {
    padding:2em;
    margin: 4em 4em 0;
    border:thin solid @_LIGHT_BORDER_COLOR_@;
+   text-align:left;
 }
 @@--
 #bup_pref_block {
