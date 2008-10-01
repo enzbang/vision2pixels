@@ -1527,24 +1527,24 @@ package body V2P.Database is
                     & "category.name, comment_counter,"
                     & "visit_counter, post.hidden, user_post.user_login";
 
-                  case Sorting is
-                     when Last_Posted | Need_Attention =>
-                        null;
-
-                     when Last_Commented =>
-                        Append (Select_Stmt, ", comment.date");
-
-                     when Best_Noted =>
-                        Append
-                          (Select_Stmt,
-                           ", (SELECT SUM(global_rating.post_rating)"
-                           & " FROM global_rating"
-                           & " WHERE post.id=global_rating.post_id)"
-                           & " AS sum_rating");
-                  end case;
-
                when Navigation_Only =>
                   Select_Stmt := +"SELECT post.id";
+            end case;
+
+            case Sorting is
+               when Last_Posted | Need_Attention =>
+                  null;
+
+               when Last_Commented =>
+                  Append (Select_Stmt, ", comment.date");
+
+               when Best_Noted =>
+                  Append
+                    (Select_Stmt,
+                     ", (SELECT SUM(global_rating.post_rating)"
+                       & " FROM global_rating"
+                       & " WHERE post.id=global_rating.post_id)"
+                       & " AS sum_rating");
             end case;
          end if;
 
