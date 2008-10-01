@@ -707,6 +707,16 @@ package body V2P.Callbacks.Web_Block is
          Only_Revealed => True);
 
       Templates.Insert (Translations, Set);
+
+      --  Set IS_USER_PAGE template boolean
+      --  This avoid to set alarm on restrictive filter on user page
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.IS_USER_PAGE,
+            "True"));
+
       V2P.Context.Counter.Set_Value
         (Context => Context.all,
          Name    => Template_Defs.Set_Global.NAV_NB_LINES_RETURNED,
