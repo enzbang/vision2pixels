@@ -126,6 +126,8 @@ package body V2P.Web_Server is
    use AWS.Services.Web_Block.Registry;
    use Gwiad.Plugins.Websites;
 
+   use type Ada.Directories.File_Kind;
+
    Module          : constant Logs.Module_Name := "V2P.Web_Server";
    XML_Path        : constant String :=
                        Directories.Compose
@@ -199,6 +201,20 @@ package body V2P.Web_Server is
       C_File       : constant String := Cache.Name (File);
       Translations : Templates.Translate_Set;
    begin
+      if not Directories.Exists (File)
+        or else Directories.Kind (File) /= Directories.Ordinary_File
+      then
+         Does_Not_Exist : declare
+            Translations : Templates.Translate_Set;
+         begin
+            return Response.Build
+              (Content_Type => MIME.Text_HTML,
+               Message_Body => String'(Templates.Parse
+                                         (Template_Defs.Page_Error.Template,
+                                          Translations)));
+         end Does_Not_Exist;
+      end if;
+
       if not Directories.Exists (C_File) then
          Templates.Insert
            (Translations,
@@ -457,6 +473,20 @@ package body V2P.Web_Server is
                    & URI (URI'First + 1 .. URI'Last);
       Result : AWS.Response.Data;
    begin
+      if not Directories.Exists (File)
+        or else Directories.Kind (File) /= Directories.Ordinary_File
+      then
+         Does_Not_Exist : declare
+            Translations : Templates.Translate_Set;
+         begin
+            return Response.Build
+              (Content_Type => MIME.Text_HTML,
+               Message_Body => String'(Templates.Parse
+                                         (Template_Defs.Page_Error.Template,
+                                          Translations)));
+         end Does_Not_Exist;
+      end if;
+
       Result := Response.File (MIME.Content_Type (File), File);
 
       AWS.Response.Set.Add_Header
@@ -539,14 +569,29 @@ package body V2P.Web_Server is
       Filename : constant String := Get_Filename;
       Result   : AWS.Response.Data;
    begin
-      Result := Response.File (MIME.Content_Type (Filename), Filename);
+      if not Directories.Exists (Filename)
+        or else Directories.Kind (Filename) /= Directories.Ordinary_File
+      then
+         Does_Not_Exist : declare
+            Translations : Templates.Translate_Set;
+         begin
+            return Response.Build
+              (Content_Type => MIME.Text_HTML,
+               Message_Body => String'(Templates.Parse
+                                         (Template_Defs.Page_Error.Template,
+                                          Translations)));
+         end Does_Not_Exist;
 
-      AWS.Response.Set.Add_Header
-        (Result,
-         AWS.Messages.Expires_Token,
-         AWS.Messages.To_HTTP_Date (In_Ten_Year));
+      else
+         Result := Response.File (MIME.Content_Type (Filename), Filename);
 
-      return Result;
+         AWS.Response.Set.Add_Header
+           (Result,
+            AWS.Messages.Expires_Token,
+            AWS.Messages.To_HTTP_Date (In_Ten_Year));
+
+         return Result;
+      end if;
    end Photos_Callback;
 
    ------------------------
@@ -929,6 +974,21 @@ package body V2P.Web_Server is
 
       Result : AWS.Response.Data;
    begin
+      if not Directories.Exists (File)
+        or else Directories.Kind (File) /= Directories.Ordinary_File
+      then
+         Does_Not_Exist : declare
+            Translations : Templates.Translate_Set;
+         begin
+            return Response.Build
+              (Content_Type => MIME.Text_HTML,
+               Message_Body => String'(Templates.Parse
+                                         (Template_Defs.Page_Error.Template,
+                                          Translations)));
+         end Does_Not_Exist;
+      end if;
+
+
       Result := Response.File (MIME.Text_XML, File);
 
       return Result;
@@ -956,6 +1016,20 @@ package body V2P.Web_Server is
          & URI
            (URI'First + Settings.Website_Data_Prefix'Length + 1 .. URI'Last));
    begin
+      if not Directories.Exists (File)
+        or else Directories.Kind (File) /= Directories.Ordinary_File
+      then
+         Does_Not_Exist : declare
+            Translations : Templates.Translate_Set;
+         begin
+            return Response.Build
+              (Content_Type => MIME.Text_HTML,
+               Message_Body => String'(Templates.Parse
+                                         (Template_Defs.Page_Error.Template,
+                                          Translations)));
+         end Does_Not_Exist;
+      end if;
+
       return Response.File
         (Content_Type => MIME.Content_Type (File), Filename => File);
    end Website_Data;
@@ -971,6 +1045,20 @@ package body V2P.Web_Server is
       C_File       : constant String := Cache.Name (File);
       Translations : Templates.Translate_Set;
    begin
+      if not Directories.Exists (File)
+        or else Directories.Kind (File) /= Directories.Ordinary_File
+      then
+         Does_Not_Exist : declare
+            Translations : Templates.Translate_Set;
+         begin
+            return Response.Build
+              (Content_Type => MIME.Text_HTML,
+               Message_Body => String'(Templates.Parse
+                                         (Template_Defs.Page_Error.Template,
+                                          Translations)));
+         end Does_Not_Exist;
+      end if;
+
       if not Directories.Exists (C_File) then
          Cache.Create
            (File, Templates.Parse (File, Translations), Settings.Compression);
