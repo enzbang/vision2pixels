@@ -1,7 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
 @@IF@@ @_USER_NAME_@ = ""
-@@INCLUDE page_error.thtml
+@@INCLUDE@@ page_error.thtml
 @@ELSE@@
 @@IF@@ @_LOGIN_@ = @_USER_NAME_@
 <h1>@_BABEL_YOUR_PAGE_@</h1>
