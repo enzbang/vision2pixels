@@ -251,7 +251,7 @@ div#pfe_lazy_new_comment {
 div#bnv_new_vote {
    border: thin solid @_LIGHT_BORDER_COLOR_@;
    padding: 1em 2em 2em;
-   margin-top: 1em;
+   margin: 1em 0;
    background: #111111;
 }
 @@--
