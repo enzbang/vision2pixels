@@ -113,13 +113,11 @@
   @@ELSE@@
   <div id="pfe_lazy_vote_week_photo">@_LAZY_VOTE_WEEK_PHOTO_@</div>
   @@END_IF@@
+  <div id="pfe_lazy_new_vote">@_LAZY_NEW_VOTE_@</div>
   @@END_IF@@
   @@-- Comments
   <h2 id="pfe_comments_section">Commentaires</h2>
   <div id="pfe_post_comments">@_LAZY_COMMENTS_@</div>
-  @@IF@@ @_IMAGE_SOURCE_@ /= ""
-  <div id="pfe_lazy_new_vote">@_LAZY_NEW_VOTE_@</div>
-  @@END_IF@@
   <div id="pfe_lazy_new_comment">@_LAZY_NEW_COMMENT_@</div>
 </div>
 @@--
