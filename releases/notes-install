@@ -1,0 +1,25 @@
+
+Notes on installing v2p
+-----------------------
+
+On the machine. Installation is as follow:
+
+application :  /usr/local/lib/v2p/
+db, images  :  /var/lib/v2p/
+logs        :  /var/log/v2p/
+
+When installtion a new version only the application is updated.
+
+   $ cd /usr/local/lib/v2p/
+
+At this location run the prepare-install.sh script with the version of current
+server and the version of new sever as parameter:
+
+   $ ./prepare-install.sh 2.0.0 2.1.0
+
+The new version must match a file named:
+
+   $HOME/v2p-linux-i686-v2.1.0.tgz
+
+Note that the first time v2p is installed a set of external libraries must be
+installed. See releases/package-externals.sh script.

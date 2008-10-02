@@ -1,0 +1,71 @@
+
+Vision2Pixels
+http://v2p.fr.eu.org
+
+Pascal Obry and Olivier Ramonat are pleased to announce the launch of
+Vision2Pixels Web application. This application is oriented toward
+photography critics.
+
+As photographers we used another Web application some time ago, the
+maintainers have decided to close it, and as the code was not Open Source,
+nobody was able to take the maintenance back. So we decided two years ago
+to launch this project and to start for good as a GPL project. At least
+this project won't depend on our will or energy to continue it or not.
+
+The Web interface is in French and oriented toward French critics only.
+
+This project is built in Ada (hence the post in this forum) and is using
+AWS/Ajax support (the new AWS's Web_Block Ajax support is born while
+building Vision2Pixels as the templates2ada tool) and Gwiad dynamic
+plug-in project from Olivier.
+
+We just put out the first release, please bear with us, it is not perfect
+and is missing many features (like searching). We plan to continue working
+on this project of course, even if the goal is more to used it to post our
+own pictures.
+
+We take the opportunity to call for contributions. We have no designer on
+the project and needs help on the core Ada too. The code comments and issue
+tracker are all in English.
+
+In any case this is a good show-case for Ada and Ajax.
+
+It builds fine with latest GNAT GPL 2007.
+
+During the project we have switched from Subversion to Mercurial then to
+Git. Git is really wonderful but this is another story.
+
+Vision2Pixels code is on a Git archive:
+
+     $ git clone git://git.savannah.nongnu.org/v2p.git
+
+It depends on some other projects:
+
+   > gnadelite (simple GNADE distribution supporting only Sqlite3):
+
+     $ git clone git://repo.or.cz/gnadelite.git
+
+   > Dynamic Plug-in support, Vision2Pixels is a plug-in:
+
+     $ git clone git://repo.or.cz/gwiad.git
+
+   > A support library:
+
+     $ git clone git://repo.or.cz/morzhol.git
+
+   > A Wiki:
+
+     $ git clone git://repo.or.cz/diouzhut.git
+
+   > ImageMagick Ada binding from Ali Bendriss (distributed with Vision2Pixels):
+
+     $ https://gna.org/projects/g2f/
+
+The issue tracker:
+
+   http://code.google.com/p/vision2pixels/issues/list
+
+Thanks to everyone for the help received, notably to host the project.
+And thanks also to AdaCore for the GNAT GPL compiler.
+
+Visions2Pixels Team.

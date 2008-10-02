@@ -1,0 +1,35 @@
+
+Notes on the releases handling.
+-------------------------------
+
+Every commits are done on master.
+
+When a release is about to be ready a branch is created (vX.Y):
+
+   $ git co -b v2.0
+
+If important fixes are made (committed on master) they are merged into this
+branch:
+
+   $ git cherry-pick <sha1>
+
+When the release is fully ready a corresponding tag is created (vX.Y.Z):
+
+   $ git tag v2.0.0
+
+Then the package is created with:
+
+   $ make distrib
+
+The resulting tarball will be named using the latest tag.
+
+If interim releases are needed to fix some important bug, as before they are
+committed to master and merged into the branch. The numbering will be either
+2.1.0 or 2.0.1 depending of the importance of the fixes.
+
+Let's say a very small clean up of the layout of a page has been done. Now
+that it is merged into the v2.0 branch we are ready to create the interim
+release:
+
+   $ git tag v2.0.1
+   $ make distrib

@@ -1,7 +1,7 @@
 ###########################################################################
 #                              Vision2Pixels
 #
-#                         Copyright (C) 2006-2007
+#                         Copyright (C) 2006-2008
 #                       Pascal Obry - Olivier Ramonat
 #
 #   This library is free software; you can redistribute it and/or modify
@@ -21,13 +21,13 @@
 #  Simple makefile to build Vision2Pixels
 ###########################################################################
 
-# Options
+#  Options
 
 .SILENT: check_tests
 
 include mk.config
 
-# Force library type to relocatable
+#  Force library type to relocatable
 export LIBRARY_TYPE=relocatable
 
 LOG := ${shell pwd}/log.${shell date +%Y%m%d-%H%M%S}
@@ -39,7 +39,7 @@ OPTIONS = INSTALL="$(INSTALL)" EXEXT="$(EXEXT)" MODE="$(MODE)" \
 	DIOUZHTU_DYNAMIC_LIB="$(DIOUZHTU_DYNAMIC_LIB)" \
 	DISTRIB="$(DISTRIB)"
 
-# Version
+#  Version
 
 VERSION     = $(shell git describe --abbrev=0 2>/dev/null)
 VERSION_ALL = $(shell git describe 2>/dev/null)
@@ -49,7 +49,7 @@ all: setup-default build-default
 setup: setup-version setup-default
 
 setup-version:
-# If git is not present then use the version.ads provided in distrib
+#  If git is not present then use the version.ads provided in distrib
 ifneq ("$(VERSION)", "")
 	sed -e 's,\$$VERSION\$$,$(VERSION),g' \
 	-e 's,\$$VERSION_ALL\$$,$(VERSION_ALL),g' \
@@ -63,13 +63,13 @@ distrib:
 
 build: build-default
 
-# Modules support
+#  Modules support
 
 MODULES = lib image db web
 
 include mk.modules
 
-# Set LD_LIBRARY_PATH or PATH on Windows
+#  Set LD_LIBRARY_PATH or PATH on Windows
 
 export LD_LIBRARY_PATH:=$(GWIAD_INSTALL)
 export PATH:=$(GWIAD_INSTALL):$(shell pwd)/runtime:$(PATH)
@@ -82,7 +82,7 @@ endif
 
 DISTRIB = $(shell pwd)/v2p-$(DISTRIB_OS)-$(VERSION_ALL)
 
-# Targets
+#  Targets
 
 clean: clean-default
 
@@ -156,8 +156,8 @@ install_gwiad_plugin: install_db
 install-distrib: clean-distrib create-plugin-dist-dir
 	(cd $(DISTRIB)/dist; $(TAR_DIR) ../dist.tgz .)
 	$(RM) -r $(DISTRIB)/dist
-	$(CP) scripts/do-install.sh $(DISTRIB)
-	$(CP) scripts/adduser.sh $(DISTRIB)
+	$(CP) releases/do-install.sh $(DISTRIB)
+	$(CP) releases/adduser.sh $(DISTRIB)
 	$(TAR_DIR) $(shell basename $(DISTRIB)).tgz $(shell basename $(DISTRIB))
 	$(RM) -r $(DISTRIB)
 
