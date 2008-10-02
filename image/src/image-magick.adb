@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                         Copyright (C) 2006-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -39,12 +39,20 @@ package body Image.Magick is
       Y_Length      : Image_Size_T;
       Resized_Image : G2F.Image_Ptr;
    begin
-      if Original_Size.X / Size.X > Original_Size.Y / Size.Y then
-         X_Length := Size.X;
-         Y_Length := Original_Size.Y * X_Length / Original_Size.X;
+      --  Resize only if bigger than expected
+
+      if Original_Size.X < Size.X and then Original_Size.Y < Size.Y then
+         X_Length := Original_Size.X;
+         Y_Length := Original_Size.Y;
+
       else
-         Y_Length := Size.Y;
-         X_Length := Original_Size.X * Y_Length / Original_Size.Y;
+         if Original_Size.X / Size.X > Original_Size.Y / Size.Y then
+            X_Length := Size.X;
+            Y_Length := Original_Size.Y * X_Length / Original_Size.X;
+         else
+            Y_Length := Size.Y;
+            X_Length := Original_Size.X * Y_Length / Original_Size.Y;
+         end if;
       end if;
 
       Resized_Image := G2F.Image_Resize.Resize_Image
