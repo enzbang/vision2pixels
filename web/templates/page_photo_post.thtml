@@ -14,6 +14,7 @@
     <h1>@_BABEL_ADD_NEW_PHOTO_@</h1>
 
     <ul id="ppp_rules">
+       <li>@_BABEL_PHOTO_POST_RULES_FORMAT_@</li>
        <li>@_BABEL_PHOTO_POST_RULES_MAX_DIM_@</li>
        <li>@_BABEL_PHOTO_POST_RULES_YOUR_PHOTO_@</li>
        <li>@_BABEL_PHOTO_POST_RULES_DISPLAY_RSS_@</li>
