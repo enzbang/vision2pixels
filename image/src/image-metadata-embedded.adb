@@ -42,118 +42,162 @@ package body Image.Metadata.Embedded is
    Cmd_Option   : aliased String := "/c";
    Sh_Option    : aliased String := "sh";
 
-   Suffix              : constant String := "  [^:]*: (.+)";
+   Suffix              : constant String := "  [^:]*: ([^\n]*)";
 
-   Make                : aliased String := "\nMake" & Suffix;
-   Camera_Model_Name   : aliased String := "\nCamera Model Name" & Suffix;
-   Shutter_Speed_Value : aliased String := "\nShutter Speed Value" & Suffix;
-   Aperture_Value      : aliased String := "\nAperture Value" & Suffix;
-   Exposure_Program    : aliased String := "\nExposure Program" & Suffix;
-   ISO                 : aliased String := "\nISO" & Suffix;
-   Create_Date         : aliased String := "\nCreate Date" & Suffix;
-   Metering_Mode       : aliased String := "\nMetering Mode" & Suffix;
-   Flash               : aliased String := "\nFlash" & Suffix;
-   Focal_Length        : aliased String := "\nFocal Length " & Suffix;
-   Exposure_Mode       : aliased String := "\nExposure Mode" & Suffix;
-   White_Balance       : aliased String := "\nWhite Balance" & Suffix;
+   Make                : aliased constant String :=
+                           "\n(Make)" & Suffix;
+   Camera_Model_Name   : aliased constant String :=
+                           "\n(Camera Model Name)" & Suffix;
+   Shutter_Speed_Value : aliased constant String :=
+                           "\n(Shutter Speed Value|Exposure Time)" & Suffix;
+   Aperture_Value      : aliased constant String :=
+                           "\n(Aperture Value|F Number)" & Suffix;
+   Exposure_Program    : aliased constant String :=
+                           "\n(Exposure Program)" & Suffix;
+   ISO                 : aliased constant String :=
+                           "\n(ISO)" & Suffix;
+   Create_Date         : aliased constant String :=
+                           "\n(Create Date)" & Suffix;
+   Metering_Mode       : aliased constant String :=
+                           "\n(Metering Mode)" & Suffix;
+   Flash               : aliased constant String :=
+                           "\n(Flash)" & Suffix;
+   Focal_Length        : aliased constant String :=
+                           "\n(Focal Length)" & Suffix;
+   Exposure_Mode       : aliased constant String :=
+                           "\n(Exposure Mode)" & Suffix;
+   White_Balance       : aliased constant String :=
+                           "\n(White Balance)" & Suffix;
 
    --  Note that the pattern order in Regpat_Array is important as it must
    --  match the output of the exiftool.
 
-   Regpat_Array        : constant Expect.Regexp_Array
-     := Expect.Regexp_Array'(1 => Make'Access,
-                             2 => Camera_Model_Name'Access,
-                             3 => Shutter_Speed_Value'Access,
-                             4 => Aperture_Value'Access,
-                             5 => Exposure_Program'Access,
-                             6 => ISO'Access,
-                             7 => Create_Date'Access,
-                             8 => Metering_Mode'Access,
-                             9 => Flash'Access,
-                             10 => Focal_Length'Access,
-                             11 => Exposure_Mode'Access,
-                             12 => White_Balance'Access);
-
+   R_Make                : constant Regpat.Pattern_Matcher :=
+                             Regpat.Compile (Make);
+   R_Camera_Model_Name   : constant Regpat.Pattern_Matcher :=
+                             Regpat.Compile (Camera_Model_Name);
+   R_Shutter_Speed_Value : constant Regpat.Pattern_Matcher :=
+                             Regpat.Compile (Shutter_Speed_Value);
+   R_Aperture_Value      : constant Regpat.Pattern_Matcher :=
+                             Regpat.Compile (Aperture_Value);
+   R_Exposure_Program    : constant Regpat.Pattern_Matcher :=
+                             Regpat.Compile (Exposure_Program);
+   R_ISO                 : constant Regpat.Pattern_Matcher :=
+                             Regpat.Compile (ISO);
+   R_Create_Date         : constant Regpat.Pattern_Matcher :=
+                             Regpat.Compile (Create_Date);
+   R_Metering_Mode       : constant Regpat.Pattern_Matcher :=
+                             Regpat.Compile (Metering_Mode);
+   R_Flash               : constant Regpat.Pattern_Matcher :=
+                             Regpat.Compile (Flash);
+   R_Focal_Length        : constant Regpat.Pattern_Matcher :=
+                             Regpat.Compile (Focal_Length);
+   R_Exposure_Mode       : constant Regpat.Pattern_Matcher :=
+                             Regpat.Compile (Exposure_Mode);
+   R_White_Balance       : constant Regpat.Pattern_Matcher :=
+                             Regpat.Compile (White_Balance);
    ---------
    -- Get --
    ---------
 
    function Get (Filename : in String) return Data is
 
-      function First return Unbounded_String;
-      --  Returns first matching string
+      function Run_Exiftool return String;
+      --  Returns the output of exiftool
 
-      Five_Secs : constant := 5_000;
-      File      : aliased String := Filename;
-      Pd        : Expect.Process_Descriptor;
-      Matched   : Regpat.Match_Array (Regpat.Match_Count range 0 .. 3);
-      Result    : Expect.Expect_Match;
-      Metadata  : Data;
+      procedure Check_Set
+        (Output  : in     String;
+         Result  :    out Unbounded_String;
+         Pattern : in     Regpat.Pattern_Matcher);
+      --  Check pattern in Output, set Result with corresponding value
 
-      -----------
-      -- First --
-      -----------
+      ---------------
+      -- Check_Set --
+      ---------------
 
-      function First return Unbounded_String is
+      procedure Check_Set
+        (Output  : in     String;
+         Result  :    out Unbounded_String;
+         Pattern : in     Regpat.Pattern_Matcher)
+      is
+         use type Regpat.Match_Location;
+         Matches : Regpat.Match_Array (Regpat.Match_Count range 0 .. 3);
       begin
-         return To_Unbounded_String
-           (Expect.Expect_Out (Pd) (Matched (1).First .. Matched (1).Last));
-      end First;
+         Regpat.Match (Pattern, Output, Matches);
 
-   begin
-      Launch_External : begin
+         if Matches (0) /= Regpat.No_Match then
+            Result := To_Unbounded_String
+              (Output (Matches (2).First .. Matches (2).Last));
+         end if;
+      end Check_Set;
+
+      ------------------
+      -- Run_Exiftool --
+      ------------------
+
+      function Run_Exiftool return String is
+         File   : aliased String := Filename;
+         Status : aliased Integer;
+      begin
          if Is_Windows then
-            Expect.Non_Blocking_Spawn
-              (Pd, Cmd,
+            return Expect.Get_Command_Output
+              (Cmd,
                OS_Lib.Argument_List'(1 => Cmd_Option'Access,
                                      2 => Sh_Option'Access,
                                      3 => Exiftool'Access,
                                      4 => Exiftool_Opt'Access,
-                                     5 => File'Unchecked_Access));
+                                     5 => File'Unchecked_Access),
+               Input  => "",
+               Status => Status'Access);
          else
-            Expect.Non_Blocking_Spawn
-              (Pd, Exiftool,
+            return Expect.Get_Command_Output
+              (Exiftool,
                OS_Lib.Argument_List'(1 => Exiftool_Opt'Access,
-                                     2 => File'Unchecked_Access));
+                                     2 => File'Unchecked_Access),
+               Input  => "",
+               Status => Status'Access);
          end if;
       exception
          when Expect.Invalid_Process =>
             --  Exiftool not installed, ignore
-            return Metadata;
+            return "";
+      end Run_Exiftool;
+
+      Metadata : Data;
+
+   begin
+      Launch_External : declare
+         Output : constant String := Run_Exiftool;
+      begin
+         if Output = "" then
+            return No_Data;
+
+         else
+            Check_Set (Output, Metadata.Make, R_Make);
+            Check_Set
+              (Output, Metadata.Camera_Model_Name, R_Camera_Model_Name);
+            Check_Set
+              (Output, Metadata.Shutter_Speed_Value, R_Shutter_Speed_Value);
+            Check_Set
+              (Output, Metadata.Aperture_Value, R_Aperture_Value);
+            Check_Set
+              (Output, Metadata.Exposure_Program, R_Exposure_Program);
+            Check_Set
+              (Output, Metadata.ISO, R_ISO);
+            Check_Set
+              (Output, Metadata.Create_Date, R_Create_Date);
+            Check_Set
+              (Output, Metadata.Metering_Mode, R_Metering_Mode);
+            Check_Set
+              (Output, Metadata.Flash, R_Flash);
+            Check_Set
+              (Output, Metadata.Focal_Length, R_Focal_Length);
+            Check_Set
+              (Output, Metadata.Exposure_Mode, R_Exposure_Mode);
+            Check_Set
+              (Output, Metadata.White_Balance, R_White_Balance);
+         end if;
       end Launch_External;
-
-      Read_Metadata : loop
-         Read_Out : begin
-            Expect.Expect
-              (Pd, Result, Regpat_Array, Matched, Timeout => Five_Secs);
-         exception
-            when Expect.Process_Died =>
-               exit Read_Metadata;
-         end Read_Out;
-
-         case Result is
-            when  1 => Metadata.Make := First;
-            when  2 => Metadata.Camera_Model_Name := First;
-            when  3 => Metadata.Shutter_Speed_Value := First;
-            when  4 => Metadata.Aperture_Value := First;
-            when  5 => Metadata.Exposure_Program := First;
-            when  6 => Metadata.ISO := First;
-            when  7 => Metadata.Create_Date := First;
-            when  8 => Metadata.Metering_Mode := First;
-            when  9 => Metadata.Flash := First;
-            when 10 => Metadata.Focal_Length := First;
-            when 11 => Metadata.Exposure_Mode := First;
-            when 12 => Metadata.White_Balance := First;
-
-            when Expect.Expect_Timeout =>
-               exit Read_Metadata;
-
-            when others =>
-               null;
-         end case;
-      end loop Read_Metadata;
-
-      Expect.Close (Pd);
 
       return Metadata;
    end Get;

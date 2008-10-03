@@ -49,46 +49,104 @@ package body Image_Tests.Embedded_Metadata is
 
    procedure Read (T : in out AUnit.Test_Cases.Test_Case'Class) is
       pragma Unreferenced (T);
-      Data : Metadata.Embedded.Data;
-   begin
-      Data := Metadata.Embedded.Get ("chat.jpg");
 
-      Assert
-        (Data.Make = "NIKON CORPORATION",
-         "Wrong make : " & To_String (Data.Make));
-      Assert
-        (Data.Camera_Model_Name = "NIKON D200",
-         "Wrong camera model : " & To_String (Data.Camera_Model_Name));
-      Assert
-        (Data.Shutter_Speed_Value = "1/100",
-         "Wrong shutter speed : " & To_String (Data.Shutter_Speed_Value));
-      Assert
-        (Data.Aperture_Value = "5.6",
-         "Wrong aperture : " & To_String (Data.Aperture_Value));
-      Assert
-        (Data.Exposure_Program = "Program AE",
-         "Wrong exposure program : " & To_String (Data.Exposure_Program));
-      Assert
-        (Data.ISO = "800",
-         "Wrong ISO : " & To_String (Data.ISO));
-      Assert
-        (Data.Create_Date = "2007:01:27 16:42:34",
-         "Wrong create date : " & To_String (Data.Create_Date));
-      Assert
-        (Data.Metering_Mode = "Multi-segment",
-         "Wrong metering mode : " & To_String (Data.Metering_Mode));
-      Assert
-        (Data.Flash = "No Flash",
-         "Wrong flash : " & To_String (Data.Flash));
-      Assert
-        (Data.Focal_Length = "260.0 mm",
-         "Wrong focal length : " & To_String (Data.Focal_Length));
-      Assert
-        (Data.Exposure_Mode = "Auto",
-         "Wrong exposure mode : " & To_String (Data.Exposure_Mode));
-      Assert
-        (Data.White_Balance = "Auto",
-         "Wrong white balance : " & To_String (Data.White_Balance));
+      procedure Check_Expected
+        (Photo : in String;
+         Make, Model, Shutter_Speed, Aperture, Exposure_Program,
+         ISO, Create_Date, Metering_Mode,
+         Flash, Focal, Exposure_Mode, White_Balance : in String);
+
+      --------------------
+      -- Check_Expected --
+      --------------------
+
+      procedure Check_Expected
+        (Photo : in String;
+         Make, Model, Shutter_Speed, Aperture, Exposure_Program,
+         ISO, Create_Date, Metering_Mode,
+         Flash, Focal, Exposure_Mode, White_Balance : in String)
+      is
+         Data : Metadata.Embedded.Data;
+      begin
+         Data := Metadata.Embedded.Get (Photo);
+
+         Assert
+           (Data.Make = Make,
+            Photo & " - Wrong make : " & To_String (Data.Make));
+         Assert
+           (Data.Camera_Model_Name = Model,
+            Photo & " - Wrong camera model : "
+            & To_String (Data.Camera_Model_Name));
+         Assert
+           (Data.Shutter_Speed_Value = Shutter_Speed,
+            Photo & " - Wrong shutter speed : "
+            & To_String (Data.Shutter_Speed_Value));
+         Assert
+           (Data.Aperture_Value = Aperture,
+            Photo & " - Wrong aperture : " & To_String (Data.Aperture_Value));
+         Assert
+           (Data.Exposure_Program = Exposure_Program,
+            Photo & " - Wrong exposure program : "
+            & To_String (Data.Exposure_Program));
+         Assert
+           (Data.ISO = ISO,
+            Photo & " - Wrong ISO : " & To_String (Data.ISO));
+         Assert
+           (Data.Create_Date = Create_Date,
+            Photo & " - Wrong create date : " & To_String (Data.Create_Date));
+         Assert
+           (Data.Metering_Mode = Metering_Mode,
+            Photo & " - Wrong metering mode : "
+            & To_String (Data.Metering_Mode));
+         Assert
+           (Data.Flash = Flash,
+            Photo & " - Wrong flash : " & To_String (Data.Flash));
+         Assert
+           (Data.Focal_Length = Focal,
+            Photo & " - Wrong focal length : "
+            & To_String (Data.Focal_Length));
+         Assert
+           (Data.Exposure_Mode = Exposure_Mode,
+            Photo & " - Wrong exposure mode : "
+            & To_String (Data.Exposure_Mode));
+         Assert
+           (Data.White_Balance = White_Balance,
+            Photo & " - Wrong white balance : "
+            & To_String (Data.White_Balance));
+      end Check_Expected;
+
+   begin
+      Check_Expected
+        (Photo            => "chat.jpg",
+         Make             => "NIKON CORPORATION",
+         Model            => "NIKON D200",
+         Shutter_Speed    => "1/100",
+         Aperture         => "5.6",
+         Exposure_Program => "Program AE",
+         ISO              => "800",
+         Create_Date      => "2007:01:27 16:42:34",
+         Metering_Mode    => "Multi-segment",
+         Flash            => "No Flash",
+         Focal            => "260.0 mm",
+         Exposure_Mode    => "Auto",
+         White_Balance    => "Auto");
+
+      --  pbexif.jpg
+
+      Check_Expected
+        (Photo            => "pbsexif.jpg",
+         Make             => "NIKON CORPORATION",
+         Model            => "NIKON D80",
+         Shutter_Speed    => "30",
+         Aperture         => "16.0",
+         Exposure_Program => "Aperture-priority AE",
+         ISO              => "100",
+         Create_Date      => "2008:08:21 20:33:42",
+         Metering_Mode    => "Multi-segment",
+         Flash            => "0",
+         Focal            => "18.0 mm",
+         Exposure_Mode    => "Auto",
+         White_Balance    => "Auto");
    end Read;
 
    --------------------
