@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                             --
+--                         Copyright (C) 2007-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -27,7 +27,6 @@ with GNAT.Regpat;
 with GNAT.OS_Lib;
 
 with Morzhol.OS;
-
 
 package body Image.Metadata.Embedded is
 
