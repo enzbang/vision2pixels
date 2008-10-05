@@ -10,10 +10,18 @@
   rapports d'erreur ou des demandes de fonctionnalités. Le site ne peut
   évoluer sans vous.</p>
 
-<h2>Version 2.2 (???? 2008)</h2>
+<h2>Version 2.2 (octobre 2008)</h2>
 
 <p>Le nombre d'images et de messages listés dans la page utilisateur n'est
    plus limité à 10.</p>
+
+<p>Ré-écriture complète de la récupération des EXIF, plus stable et
+   récupère plus d'information.</p>
+
+<p>Les images ne sont re-taillées que si elles sont plus grandes et jamais
+   lorsqu'elles sont plus petites.</p>
+
+<p>Quelques ajustements dans le style pour une meilleure lisibilité.</p>
 
 <h2>Version 2.1 (juin 2008)</h2>
 
