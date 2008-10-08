@@ -392,11 +392,11 @@ div#ps_search {
 @@--
 div#pft_filters {
    margin:4em auto 0;
-   width:90%;
+   width:95%;
    color:#C1C7C7;
    font-weight:bold;
    border:thin solid #C1C7C7;
-   padding:0.3em;
+   padding:0.2em;
    text-align:center;
 }
 @@--
