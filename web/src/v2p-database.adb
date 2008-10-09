@@ -1651,9 +1651,9 @@ package body V2P.Database is
          if Only_Revealed then
             Append
               (Where_Stmt,
-               " AND DATETIME(post.date_post, '+"
+               " AND (DATETIME(post.date_post, '+"
                & Utils.Image (V2P.Settings.Anonymity_Hours)
-               & " hour')<DATETIME('NOW') ");
+               & " hour')<DATETIME('NOW') OR forum.anonymity='FALSE') ");
          end if;
 
          if not Admin then
