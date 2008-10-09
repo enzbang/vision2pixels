@@ -688,7 +688,6 @@ package body V2P.Callbacks.Web_Block is
       Forum        : in     Database.Forum_Filter;
       Limit        : in     Positive)
    is
-
       Admin      : constant Boolean :=
                      Context.Exist (Template_Defs.Set_Global.ADMIN)
                    and then Context.Get_Value
@@ -721,8 +720,7 @@ package body V2P.Callbacks.Web_Block is
       Templates.Insert
         (Translations,
          Templates.Assoc
-           (Template_Defs.Set_Global.IS_USER_PAGE,
-            "True"));
+           (Template_Defs.Set_Global.IS_USER_PAGE, "True"));
 
       V2P.Context.Counter.Set_Value
         (Context => Context.all,
