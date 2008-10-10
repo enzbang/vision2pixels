@@ -1525,7 +1525,9 @@ package body V2P.Database is
                     & " hour') < DATETIME('NOW'), "
                     & "(SELECT filename FROM photo WHERE id=post.photo_id), "
                     & "category.name, comment_counter,"
-                    & "visit_counter, post.hidden, user_post.user_login";
+                    & "visit_counter, post.hidden, user_post.user_login, "
+                    & "(SELECT comment.date FROM comment "
+                    & "WHERE post.last_comment_id = comment.id)";
 
                when Navigation_Only =>
                   Select_Stmt := +"SELECT post.id";
@@ -1784,6 +1786,7 @@ package body V2P.Database is
       Thumb           : Templates.Tag;
       Hidden          : Templates.Tag;
       Owner           : Templates.Tag;
+      Date_Last_Com   : Templates.Tag;
       Select_Stmt     : Unbounded_String;
 
    begin
@@ -1836,6 +1839,8 @@ package body V2P.Database is
             Hidden          := Hidden    & DB.String_Vectors.Element (Line, 9);
             Owner           := Owner
               & DB.String_Vectors.Element (Line, 10);
+            Date_Last_Com   := Date_Last_Com
+              & DB.String_Vectors.Element (Line, 11);
             --  Insert this post id in navigation links
          end if;
 
@@ -1869,6 +1874,10 @@ package body V2P.Database is
            (Set, Templates.Assoc (Chunk_Threads_List.REVEALED, Revealed));
          Templates.Insert
            (Set, Templates.Assoc (Chunk_Threads_List.OWNER, Owner));
+         Templates.Insert
+           (Set, Templates.
+              Assoc (Chunk_Threads_List.DATE_LAST_COMMENT,
+                Date_Last_Com));
          Templates.Insert
            (Set, Templates.Assoc (Chunk_Threads_List.HIDDEN, Hidden));
          Templates.Insert

@@ -3,7 +3,7 @@
 <tr class="table_header">
   <th>@_BABEL_AUTHOR_@</th>
   <th>@_BABEL_COMMENT_TITLE_@</th>
-  <th>@_BABEL_DATE_POST_@</th>
+  <th>@_BABEL_DATE_UPDATE_@</th>
   <th>@_BABEL_COMMENT_COUNTER_@</th>
   <th>@_BABEL_VISIT_COUNTER_@</th>
   @@IF@@ @_ADMIN_@
@@ -25,7 +25,11 @@
       @@END_IF@@
     </td>
     <td class="table_title"><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">@_NAME_@</a></td>
+@@IF@@ @_DATE_LAST_COMMENT_@ = ""
     <td>@_DATE_POST_@</td>
+@@ELSE@@
+    <td title="@_BABEL_DATE_POST_@ @_DATE_POST_@">@_DATE_LAST_COMMENT_@</td>
+@@END_IF@@
     <td>@_COMMENT_COUNTER_@</td>
     <td>@_VISIT_COUNTER_@</td>
     @@IF@@ @_ADMIN_@
