@@ -80,6 +80,7 @@
 @@SET@@ BABEL_VISIT_COUNTER="Vue"
 @@SET@@ BABEL_COMMENT_COUNTER="Commentaire"
 @@SET@@ BABEL_DATE_POST="Posté le"
+@@SET@@ BABEL_DATE_UPDATE="Modifié le"
 @@SET@@ BABEL_HAVE_TO_WAIT="Vous devez attendre jusqu'au"
 @@SET@@ BABEL_PER_PAGE="par page"
 @@SET@@ BABEL_IN_THIS_CATEGORY="posts dans cette catégorie"

@@ -6,7 +6,8 @@
   @@IF@@ @_THUMB_SOURCE_@ /= ""
   <span class="imgcontainer">
     <span class="nooverflowimage">
-      <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
+      <a title="@_BABEL_DATE_POST_@ @_DATE_POST_@"
+         href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
         <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
       </a>
     </span>
@@ -25,8 +26,15 @@
   </a></p>
   <ul class="thumb_metadata">
     <li class="photocat">@_CATEGORY_@</li>
-    <li title="@_BABEL_COMMENT_COUNTER_@ / @_BABEL_VISIT_COUNTER_@">
-       @_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@
+    <li title="@_BABEL_COMMENT_COUNTER_@ / @_BABEL_VISIT_COUNTER_@ / @_BABEL_DATE_UPDATE_@">
+@@INLINE@@
+       @_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@ /
+@@IF@@ @_DATE_LAST_COMMENT_@ = ""
+    @_DATE_POST_@
+@@ELSE@@
+    @_DATE_LAST_COMMENT_@
+@@END_IF@@
+@@END_INLINE@@
     </li>
     <li class="photoauthor">
       @@IF@@ @_REVEALED_@
