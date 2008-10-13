@@ -1150,6 +1150,10 @@ a.link:hover {
 #bm_show_map {
    padding-top:1em;
 }
+@@-- Do not display GMarker with the grey background
+.gmnoscreen {
+   display:none;
+}
 @@--
 .whatsnew {
    color:red;
