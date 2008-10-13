@@ -412,6 +412,10 @@ package body V2P.Callbacks.Page is
 
          Templates.Insert (Translations, Database.Get_New_Post_Delay (Login));
          Templates.Insert (Translations, Database.Get_User_Last_Photo (Login));
+
+         if Context.Exist (Template_Defs.Set_Global.TID) then
+            Context.Remove (Template_Defs.Set_Global.TID);
+         end if;
       end if;
    end Post_Photo;
 
