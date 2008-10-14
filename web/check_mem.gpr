@@ -63,12 +63,7 @@ Project Check_Mem is
 
    package Linker is
 
-      case Shared.OS is
-         when "Windows_NT" =>
-            for Default_Switches ("Ada") use Lib_Paths;
-         when others =>
-            for Default_Switches ("Ada") use Lib_Paths & ("-lodbc");
-      end case;
+      for Default_Switches ("Ada") use Lib_Paths;
 
       case Shared.Build is
          when "Debug" | "Profile" =>
