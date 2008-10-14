@@ -36,6 +36,8 @@ insert into category values (12, 2, 'Divers');
 insert into category values (13, 1, 'Nature');
 insert into category values (14, 1, 'Scène de rue');
 insert into category values (15, 1, 'Architecture/Monuments');
+insert into category values (16, 1, 'Sport');
+insert into category values (17, 1, 'Reportage');
 
 --  Create criteria
 
