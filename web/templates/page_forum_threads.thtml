@@ -7,7 +7,6 @@
 @@--
 @@--  FILTERS
 <div id="pft_filters">
-<h2>@_BABEL_FILTER_@ : </h2>
 <div id="pft_lazy_forum_category_filter_set">
 @_LAZY_FORUM_CATEGORY_FILTER_@</div>
 <div id="pft_lazy_forum_filter">@_LAZY_FORUM_FILTER_@</div>
