@@ -120,7 +120,7 @@
   <div id="pfe_post_comments">@_LAZY_COMMENTS_@</div>
   <div id="pfe_lazy_new_comment">@_LAZY_NEW_COMMENT_@</div>
   @@-- Bottom Navigation links
-  <ul id="pfe_navigate">
+  <ul id="pfe_navigate_bottom">
 
     @@IF@@ @_PREVIOUS_@ /= "0"
     <li class="prev_link">

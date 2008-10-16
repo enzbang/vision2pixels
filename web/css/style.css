@@ -140,7 +140,7 @@ div#pfe_image_block {
 @@--
 @@--  Navigation links
 @@--
-ul#bft_navigate li, ul#pfe_navigate li, ul#bftt_navigate li {
+ul#bft_navigate li, ul#pfe_navigate li, ul#pfe_navigate_bottom li, ul#bftt_navigate li {
    display:inline;
    font-variant:small-caps;
    font-size:0.9em;
@@ -152,17 +152,25 @@ ul#bft_navigate, ul#bftt_navigate {
    text-align:center;
 }
 @@--
-ul#pfe_navigate {
+ul#pfe_navigate, ul#pfe_navigate_bottom {
    text-align:center;
    padding-top:1em;
 }
 @@--
-ul#pfe_navigate li img {
+ul#pfe_navigate li img, ul#pfe_navigate_bottom li img {
    display:none;
 }
 @@--
-ul#bft_navigate li.nav_info, ul#bftt_navigate li.nav_info {
+ul#pfe_navigate_bottom li, ul#bft_navigate li.nav_info, ul#bftt_navigate li.nav_info {
    font-size:0.7em;
+}
+@@--
+ul#pfe_navigate_bottom li a {
+   color:#555;
+}
+@@--
+ul#pfe_navigate_bottom li a:hover {
+   color:#fff;
 }
 @@--
 @@--  forum_entry
