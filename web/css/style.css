@@ -1270,3 +1270,41 @@ body.user_register_page label {
 .hidden {
    visibility:hidden;
 }
+@@-- blockquote
+blockquote p {
+   padding:0 1em;
+   font-style:italique;
+   color:LightBlue;
+}
+@@--
+p.help_formatting {
+   text-align:right;
+   padding-right:1em;
+}
+p.help_formatting a {
+   color:LightBlue;
+}
+@@--
+dl.bnc_comment_formatting {
+   text-align:left;
+   width:30em;
+   margin:0 auto;
+   border:1px dashed LightBlue;
+   padding:1em;
+}
+@@--
+dl.bnc_comment_formatting dt {
+   font-size:1.1em;
+   text-align:left;
+}
+@@--
+dl.bnc_comment_formatting dd {
+   padding-left:6em;
+   text-align:left;
+}
+@@--
+strong.emptyligne {
+   font-size:0.7em;
+   font-style:italique;
+   color:#555;
+}
