@@ -9,7 +9,7 @@
 <div id="pm_main_content">
    <div id="pm_photo_of_the_week">
      <p>@_LAZY_PHOTO_OF_THE_WEEK_@</p>
-     <p><a href="/cdc" id="pm_cdc" class="link">@_BABEL_CDC_@</a></p>
+     <p><a href="/cdc" id="pm_cdc" class="link">@_BABEL_CDC_@</a> &hearts;</p>
    </div>
 
    <div id="pm_presentation"> <p>Vision2pixels est un site

@@ -1,15 +1,14 @@
-@@IF@@ @_NAME'LENGTH_@ > 0
-<ul class="slides">
-@@END_IF@@
 @@TABLE@@
-  <li class="thumbs">
+  <span class="thumbs">
   @@IF@@ @_THUMB_SOURCE_@ /= ""
   <span class="imgcontainer">
-    <span class="nooverflowimage">
-      <a title="@_BABEL_DATE_POST_@ @_DATE_POST_@"
-         href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
-        <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
-      </a>
+    <span class="outernooverflow">
+      <span class="nooverflowimage">
+        <a title="@_BABEL_DATE_POST_@ @_DATE_POST_@"
+           href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
+          <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
+        </a>
+      </span>
     </span>
   </span>
   @@END_IF@@
@@ -52,8 +51,5 @@
       @@END_IF@@
     </li>
     </ul>
-  </li>
+  </span>
 @@END_TABLE@@
-@@IF@@ @_NAME'LENGTH_@ > 0
-</ul>
-@@END_IF@@
