@@ -47,7 +47,8 @@ package body Image_Tests.Resize is
    --------------------------
 
    procedure Create_Resized_Image
-     (T : in out AUnit.Test_Cases.Test_Case'Class) is
+     (T : in out AUnit.Test_Cases.Test_Case'Class)
+   is
       pragma Unreferenced (T);
       use Image.Data;
       S_Name          : constant String := "gnu.jpg";
@@ -105,6 +106,5 @@ package body Image_Tests.Resize is
    begin
       G2F.Destroy_Magick;
    end Tear_Down;
-
 
 end Image_Tests.Resize;
