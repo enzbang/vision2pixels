@@ -36,11 +36,16 @@ package body Image.Metadata.Embedded is
 
    use Morzhol.OS;
 
-   Exiftool     : aliased String := "exiftool";
-   Exiftool_Opt : aliased String := "-e";
+   Exiftool     : constant String := "exiftool";
+   Exiftool_Opt : constant String := "-e";
    Cmd          : constant String := "cmd.exe";
-   Cmd_Option   : aliased String := "/c";
-   Sh_Option    : aliased String := "sh";
+   Cmd_Option   : constant String := "/c";
+   Sh_Option    : constant String := "sh";
+
+   Exiftool_Exe : constant OS_Lib.String_Access :=
+                    OS_Lib.Locate_Exec_On_Path (Exiftool);
+   Cmd_Exe      : constant OS_Lib.String_Access :=
+                    OS_Lib.Locate_Exec_On_Path (Cmd);
 
    Suffix              : constant String := "  [^:]*: ([^\n]*)";
 
@@ -136,27 +141,63 @@ package body Image.Metadata.Embedded is
       ------------------
 
       function Run_Exiftool return String is
-         File   : aliased String := Filename;
+
+         procedure Free_Args (Args : in out OS_Lib.Argument_List);
+
+         ---------------
+         -- Frea_Args --
+         ---------------
+
+         procedure Free_Args (Args : in out OS_Lib.Argument_List) is
+         begin
+            for K in Args'Range loop
+               OS_Lib.Free (Args (K));
+            end loop;
+         end Free_Args;
+
          Status : aliased Integer;
+         Res    : Unbounded_String;
+
       begin
          if Is_Windows then
-            return Expect.Get_Command_Output
-              (Cmd,
-               OS_Lib.Argument_List'(1 => Cmd_Option'Access,
-                                     2 => Sh_Option'Access,
-                                     3 => Exiftool'Access,
-                                     4 => Exiftool_Opt'Access,
-                                     5 => File'Unchecked_Access),
-               Input  => "",
-               Status => Status'Access);
+            declare
+               Args : OS_Lib.Argument_List (1 .. 5);
+            begin
+               Args := (1 => new String'(Cmd_Option),
+                        2 => new String'(Sh_Option),
+                        3 => new String'(Exiftool),
+                        4 => new String'(Exiftool_Opt),
+                        5 => new String'(Filename));
+
+               Res := To_Unbounded_String
+                 (Expect.Get_Command_Output
+                    (Cmd_Exe.all, Args,
+                     Input  => "",
+                     Status => Status'Access));
+
+               Free_Args (Args);
+            end;
+
          else
-            return Expect.Get_Command_Output
-              (Exiftool,
-               OS_Lib.Argument_List'(1 => Exiftool_Opt'Access,
-                                     2 => File'Unchecked_Access),
-               Input  => "",
-               Status => Status'Access);
+            declare
+               Args : OS_Lib.Argument_List (1 .. 2);
+            begin
+               Args := (1 => new String'(Exiftool_Opt),
+                        2 => new String'(Filename));
+
+               OS_Lib.Normalize_Arguments (Args);
+
+               Res := To_Unbounded_String
+                 (Expect.Get_Command_Output
+                    (Exiftool_Exe.all, Args,
+                     Input  => "",
+                     Status => Status'Access));
+
+               Free_Args (Args);
+            end;
          end if;
+
+         return To_String (Res);
       exception
          when Expect.Invalid_Process =>
             --  Exiftool not installed, ignore
