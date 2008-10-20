@@ -34,8 +34,11 @@
       </h2>
       @_LAZY_LATEST_POSTS_@</div>
    <hr id="pm_eop" /> @@-- Fix ie6 bug, yes again !
+   <div id="pm_message_area">
+      @@INCLUDE@@ chunk_message_area.thtml
+   </div>
 </div>
-
+@@--
 @@IF@@ @_V2P_ERROR_@ /= ""
   @_V2P_ERROR_@
 @@END_IF@@
