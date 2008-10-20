@@ -157,51 +157,44 @@ package body Image.Metadata.Embedded is
 
          Status : aliased Integer;
          Res    : Unbounded_String;
+         Args   : OS_Lib.Argument_List (1 .. 5);
 
       begin
          if Is_Windows then
-            declare
-               Args : OS_Lib.Argument_List (1 .. 5);
-            begin
-               Args := (1 => new String'(Cmd_Option),
-                        2 => new String'(Sh_Option),
-                        3 => new String'(Exiftool),
-                        4 => new String'(Exiftool_Opt),
-                        5 => new String'(Filename));
+            Args := (1 => new String'(Cmd_Option),
+                     2 => new String'(Sh_Option),
+                     3 => new String'(Exiftool),
+                     4 => new String'(Exiftool_Opt),
+                     5 => new String'(Filename));
 
-               Res := To_Unbounded_String
-                 (Expect.Get_Command_Output
-                    (Cmd_Exe.all, Args,
-                     Input  => "",
-                     Status => Status'Access));
+            OS_Lib.Normalize_Arguments (Args (1 .. 5));
 
-               Free_Args (Args);
-            end;
+            Res := To_Unbounded_String
+              (Expect.Get_Command_Output
+                 (Cmd_Exe.all, Args (1 .. 5),
+                  Input  => "",
+                  Status => Status'Access));
 
          else
-            declare
-               Args : OS_Lib.Argument_List (1 .. 2);
-            begin
-               Args := (1 => new String'(Exiftool_Opt),
-                        2 => new String'(Filename));
+            Args (1 .. 2) := (1 => new String'(Exiftool_Opt),
+                              2 => new String'(Filename));
 
-               OS_Lib.Normalize_Arguments (Args);
+            OS_Lib.Normalize_Arguments (Args (1 .. 2));
 
-               Res := To_Unbounded_String
-                 (Expect.Get_Command_Output
-                    (Exiftool_Exe.all, Args,
-                     Input  => "",
-                     Status => Status'Access));
-
-               Free_Args (Args);
-            end;
+            Res := To_Unbounded_String
+              (Expect.Get_Command_Output
+                 (Exiftool_Exe.all, Args (1 .. 2),
+                  Input  => "",
+                  Status => Status'Access));
          end if;
 
+         Free_Args (Args);
          return To_String (Res);
       exception
          when Expect.Invalid_Process =>
             --  Exiftool not installed, ignore
-            return "";
+         Free_Args (Args);
+         return "";
       end Run_Exiftool;
 
       Metadata : Data;
