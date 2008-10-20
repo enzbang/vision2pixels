@@ -563,8 +563,10 @@ package body V2P.Database is
             Iter.Get_Line (Line);
 
             Exif := Image.Metadata.Embedded.Get
-              (Settings.Get_Big_Images_Path & Directory_Separator
-               & DB.String_Vectors.Element (Line, 1));
+              (Morzhol.OS.Compose
+                 (Gwiad_Plugin_Path,
+                  Settings.Get_Big_Images_Path & Directory_Separator
+                  & DB.String_Vectors.Element (Line, 1)));
          end if;
 
          DBH.Handle.Execute
