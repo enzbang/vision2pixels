@@ -1184,9 +1184,7 @@ a.link:hover {
    text-decoration:underline;
 }
 @@--
-.exif {
-   height: 8em;
-}
+.exif dl { padding: 0.5em; }
 @@--
 .exif dt
 {
@@ -1194,27 +1192,25 @@ a.link:hover {
    color: #959289;
    padding: 0.1em;
    font-weight: bold;
-   text-align: center;
+   text-align: right;
    text-transform: uppercase;
    border-left: 1px solid #131210;
    border-right: 1px solid #131210;
    border-top: 1px solid #131210;
    width: 17em;
    float: left;
+   clear: left;
 }
+dt:after { content: ":"; }
 @@--
 .exif dd
 {
-   margin: 1pt;
+   margin: 0 0 0 17em;
    background: #444444;
    text-align: center;
    padding: 0.1em;
    font-style: italic;
-   border-left: 1px solid #131210;
-   border-right: 1px solid #131210;
    border-bottom: 1px solid #131210;
-   width: 20em;
-   float: left;
 }
 #bm_exif_metadata {
    padding: 1em;
