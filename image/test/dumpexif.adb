@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2008                          --
+--                            Copyright (C) 2008                            --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,38 +19,31 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with "../shared";
-with "../lib/aunit/v2p_aunit";
-with "image";
+with Ada.Command_Line;
+with Ada.Strings.Unbounded;
+with Ada.Text_IO;
 
-project Image_Test is
+with Image.Metadata.Embedded;
 
-   for Source_Dirs use ("test");
-   for Object_Dir use "test";
-   for Main use ("image_harness.adb", "dumpexif.adb");
+procedure DumpExif is
+   use Ada;
+   use Ada.Strings.Unbounded;
 
-   --------------
-   -- Compiler --
-   --------------
+   D : Image.Metadata.Embedded.Data;
+begin
 
-   package Compiler renames Shared.Compiler;
+   D := Image.Metadata.Embedded.Get (Command_Line.Argument (1));
 
-   ------------
-   -- Binder --
-   ------------
-
-   package Binder renames Shared.Binder;
-
-   ------------
-   -- Linker --
-   ------------
-
-   package Linker renames Shared.Linker;
-
-   ---------
-   -- Ide --
-   ---------
-
-   package Ide renames Shared.Ide;
-
-end Image_Test;
+   Text_IO.Put_Line ("Make          : " & To_String (D.Make));
+   Text_IO.Put_Line ("Camera Model  : " & To_String (D.Camera_Model_Name));
+   Text_IO.Put_Line ("Shutter Speed : " & To_String (D.Shutter_Speed_Value));
+   Text_IO.Put_Line ("Aperture      : " & To_String (D.Aperture_Value));
+   Text_IO.Put_Line ("Exposure Prog : " & To_String (D.Exposure_Program));
+   Text_IO.Put_Line ("ISO           : " & To_String (D.ISO));
+   Text_IO.Put_Line ("Create Date   : " & To_String (D.Create_Date));
+   Text_IO.Put_Line ("Metering Mode : " & To_String (D.Metering_Mode));
+   Text_IO.Put_Line ("Flash         : " & To_String (D.Flash));
+   Text_IO.Put_Line ("Focal Length  : " & To_String (D.Focal_Length));
+   Text_IO.Put_Line ("Exposure Mode : " & To_String (D.Exposure_Mode));
+   Text_IO.Put_Line ("White Balance : " & To_String (D.White_Balance));
+end DumpExif;
