@@ -531,16 +531,15 @@ body.main h1 {
 body.main #pm_main_content {
    max-width:90%;
    width:90%;
-   margin:2em auto;
+   margin:1em auto;
 }
-
 @@--
 body.main h2 {
    font-size:1.3em;
    font-style:italic;
    font-weight:bolder;
    margin-top:-1em;
-   padding-bottom:1em;
+   padding-bottom:0.5em;
 }
 @@--
 #pm_presentation {
@@ -550,8 +549,8 @@ body.main h2 {
    top:0pt;
 }
 #pm_presentation p {
-   line-height:1.5em;
-   font-size:1.4em;
+   line-height:1.3em;
+   font-size:1.3em;
    font-family:arial,sans-serif;
    padding:0em 0.5em 0pt 1em;
 }
@@ -577,25 +576,25 @@ body.main h2 {
    margin:0;
    max-width:400px;
    max-height:400px;
+   margin-bottom: 0.5em;
    @@--  Hack for IE6
    width: expression( this.height > this.width ? "auto" : "400px" );
    height: expression( this.height > this.width ? "400px" : "auto" );
    @@--  End of hack
    border:thin solid @_LIGHT_BORDER_COLOR_@;
 }
-
 @@--
-#pm_latest_users ul {
-   padding:0 0 1em 0;
+#pm_latest_users {
+   text-align:left;
+   margin: 4em 5% 1em 450px;
+   position:relative;
 }
 @@--
 #pm_latest_users li {
-   padding:0 0 0 1em;
-   display:inline;
-   font-size:1.2em;
+   padding:0.5em 0 0 1em;
 }
 @@--
-#pm_latest_posts, #pm_latest_users {
+#pm_latest_posts {
    clear:left;
    margin:2em auto;
    padding:4em 0 0 0;
