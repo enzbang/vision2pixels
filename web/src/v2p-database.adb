@@ -1700,7 +1700,7 @@ package body V2P.Database is
             Iter.Get_Line (Line);
             Return_Count : declare
                Count : constant Natural :=
-                 Natural'Value (DB.String_Vectors.Element (Line, 1));
+                         Natural'Value (DB.String_Vectors.Element (Line, 1));
             begin
                Line.Clear;
                Iter.End_Select;
