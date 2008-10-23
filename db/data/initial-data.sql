@@ -26,18 +26,20 @@ insert into category values (5, 1, 'Nu');
 insert into category values (6, 1, 'Paysage');
 insert into category values (7, 1, 'Portrait');
 
-insert into category values (8, 2, 'Vente / Achat');
-insert into category values (9, 2, 'Discussion');
-
-insert into category values (10, 3, 'Bug');
-insert into category values (11, 3, 'Idée');
+insert into category values (8, 3, 'Vente / Achat');
+insert into category values (9, 3, 'Discussion');
 
 insert into category values (12, 2, 'Divers');
+
 insert into category values (13, 1, 'Nature');
 insert into category values (14, 1, 'Scène de rue');
 insert into category values (15, 1, 'Architecture/Monuments');
 insert into category values (16, 1, 'Sport');
 insert into category values (17, 1, 'Reportage');
+
+insert into category values (10, 4, 'Bug');
+insert into category values (11, 4, 'Idée');
+insert into category values (18, 4, 'Divers');
 
 --  Create criteria
 
