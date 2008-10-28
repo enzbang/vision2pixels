@@ -15,7 +15,8 @@ branch:
 
 When the release is fully ready a corresponding tag is created (vX.Y.Z):
 
-   $ git tag v2.0.0
+   $ git tag -a v2.0.0
+   $ git push --tags
 
 Then the package is created with:
 
@@ -31,5 +32,6 @@ Let's say a very small clean up of the layout of a page has been done. Now
 that it is merged into the v2.0 branch we are ready to create the interim
 release:
 
-   $ git tag v2.0.1
+   $ git tag -a v2.0.1
+   $ git push --tags
    $ make distrib
