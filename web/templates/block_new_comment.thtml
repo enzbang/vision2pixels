@@ -55,9 +55,9 @@
         <dd>italique</dd>
         <dt>*strong*</dt>
         <dd><strong>strong</strong></dd>
-        <dt>bq. une citation <strong class='emptyligne'>ligne vide</strong></dt>
+        <dt>bq. une citation <strong class='emptyligne'>[ligne vide]</strong></dt>
         <dd><blockquote><p>une citation</p></blockquote></dd>
-        <dt>un paragraphe <strong class='emptyligne'>ligne vide</strong> un autre</dt>
+        <dt>un paragraphe <strong class='emptyligne'>[ligne vide]</strong> un autre</dt>
         <dd><p>un paragraphe</p>
           <p>un autre</p>
         </dd>
