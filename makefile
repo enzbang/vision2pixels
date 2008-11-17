@@ -153,7 +153,7 @@ install_gwiad_plugin: install_db
 		$(GWIAD_ROOT)/lib/services
 	$(CP) web/tools/wmaint$(EXEXT) $(GWIAD_ROOT)/bin
 
-install-distrib: clean-distrib create-plugin-dist-dir
+install-distrib: clean-distrib create-plugin-dist-dir copy-external-libs
 	(cd $(DISTRIB)/dist; $(TAR_DIR) ../dist.tgz .)
 	$(RM) -r $(DISTRIB)/dist
 	$(CP) releases/do-install.sh $(DISTRIB)
@@ -166,6 +166,12 @@ install-distrib-show-name:
 
 create-plugin-dist-dir: GWIAD_ROOT=$(DISTRIB)/dist
 create-plugin-dist-dir: install_gwiad_plugin
+
+copy-external-libs:
+	$(CP) $(GNAT_ROOT)/lib/aws/relocatable/*aws*$(SOEXT) \
+		$(DISTRIB)/dist/bin
+	$(CP) $(GNAT_ROOT)/lib/aws/relocatable/*z$(SOEXT) \
+		$(DISTRIB)/dist/bin
 
 clean-distrib:
 	$(RM) -r $(DISTRIB)
