@@ -110,14 +110,14 @@ package body Image.Data is
       Thumb_Size  : constant G2F.IO.Image_Size := Image_Size'
         (X => Image_Size_T (Settings.Thumbnail_Maximum_Width),
          Y => Image_Size_T (Settings.Thumbnail_Maximum_Height));
-      Thumb       : Image_Ptr;
-      Thumb_Info  : Image_Info_Ptr;
+      Thumb, R_Thumb : Image_Ptr;
+      Thumb_Info     : Image_Info_Ptr;
 
       Medium_Size : constant G2F.IO.Image_Size := Image_Size'
         (X => Image_Size_T (Settings.Medium_Maximum_Width),
          Y => Image_Size_T (Settings.Medium_Maximum_Height));
-      Medium      : Image_Ptr;
-      Medium_Info : Image_Info_Ptr;
+      Medium, R_Medium : Image_Ptr;
+      Medium_Info      : Image_Info_Ptr;
 
    begin
       --  Read image info
@@ -168,17 +168,18 @@ package body Image.Data is
 
       Set_Filename (Medium, Out_Filename_Medium);
 
-      Medium := Magick.Resize (Medium, Medium_Size);
-      Write_Image (Medium_Info, Medium);
+      R_Medium := Magick.Resize (Medium, Medium_Size);
+      Write_Image (Medium_Info, R_Medium);
 
       Set_Medium_Dimension : declare
-         Dim : constant Image_Size := Get_Image_Size (Medium);
+         Dim : constant Image_Size := Get_Image_Size (R_Medium);
       begin
          Img.Dimension.Medium_Width  := Dim.X;
          Img.Dimension.Medium_Height := Dim.Y;
       end Set_Medium_Dimension;
 
       Destroy_Image (Medium);
+      Destroy_Image (R_Medium);
       Destroy_Image_Info (Medium_Info);
 
       --  Create thumbnail
@@ -188,17 +189,18 @@ package body Image.Data is
 
       Set_Filename (Thumb, Out_Filename_Thumb);
 
-      Thumb := Magick.Thumbnail (Thumb, Thumb_Size);
-      Write_Image (Thumb_Info, Thumb);
+      R_Thumb := Magick.Thumbnail (Thumb, Thumb_Size);
+      Write_Image (Thumb_Info, R_Thumb);
 
       Set_Thumb_Dimension : declare
-         Dim : constant Image_Size := Get_Image_Size (Thumb);
+         Dim : constant Image_Size := Get_Image_Size (R_Thumb);
       begin
          Img.Dimension.Thumb_Width  := Dim.X;
          Img.Dimension.Thumb_Height := Dim.Y;
       end Set_Thumb_Dimension;
 
       Destroy_Image (Thumb);
+      Destroy_Image (R_Thumb);
       Destroy_Image_Info (Thumb_Info);
 
       Img.Init_Status := Image_Created;
