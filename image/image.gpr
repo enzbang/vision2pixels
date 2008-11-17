@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                         Copyright (C) 2006-2008                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -32,6 +32,12 @@ project Image is
    for Library_Dir use "lib";
    for Library_Name use "v2p_image";
    for Library_Kind use "dynamic";
+
+   -------------
+   -- Builder --
+   -------------
+
+   package Builder renames Shared.Builder;
 
    --------------
    -- Compiler --

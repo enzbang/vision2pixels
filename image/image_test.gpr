@@ -29,6 +29,12 @@ project Image_Test is
    for Object_Dir use "test";
    for Main use ("image_harness.adb", "dumpexif.adb");
 
+   -------------
+   -- Builder --
+   -------------
+
+   package Builder renames Shared.Builder;
+
    --------------
    -- Compiler --
    --------------
