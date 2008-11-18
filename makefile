@@ -152,7 +152,7 @@ install_gwiad_plugin: install_db
 	$(CP) -f $(DIOUZHTU_DYNAMIC_LIB)/*wiki_service$(SOEXT) \
 		$(GWIAD_ROOT)/lib/services
 
-install-distrib: clean-distrib create-plugin-dist-dir copy-external-libs
+install-distrib: clean-distrib create-plugin-dist-dir
 	(cd $(DISTRIB)/dist; $(TAR_DIR) ../dist.tgz .)
 	$(RM) -r $(DISTRIB)/dist
 	$(CP) scripts/do-install.sh $(DISTRIB)
@@ -165,12 +165,6 @@ install-distrib-show-name:
 
 create-plugin-dist-dir: GWIAD_ROOT=$(DISTRIB)/dist
 create-plugin-dist-dir: install_gwiad_plugin
-
-copy-external-libs:
-	$(CP) $(GNAT_ROOT)/lib/aws/relocatable/*aws*$(SOEXT) \
-		$(DISTRIB)/dist/bin
-	$(CP) $(GNAT_ROOT)/lib/aws/relocatable/*z$(SOEXT) \
-		$(DISTRIB)/dist/bin
 
 clean-distrib:
 	$(RM) -r $(DISTRIB)
