@@ -653,7 +653,7 @@ package body V2P.Callbacks.Ajax is
                           Name    => Template_Defs.Set_Global.TID);
 
       Forum_Type   : V2P.Database.Forum_Type := V2P.Database.Forum_Text;
-      Photo_Id     : V2P.Database.Id;
+      Photo_Id     : V2P.Database.Id := V2P.Database.Empty_Id;
 
       function Is_Valid_Comment (Comment : in String) return Boolean;
       --  Check if the comment is valid
