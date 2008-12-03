@@ -77,13 +77,17 @@ package body V2P.Cache is
       end Delete;
 
    begin
-      Search
-        (Root_Directory,
-         Pattern => "*",
-         Filter  =>
-           Filter_Type'(Ordinary_File | Directory => True,
-                        Special_File              => False),
-         Process => Delete'Access);
+      if Directories.Exists (Root_Directory) then
+         Search
+           (Root_Directory,
+            Pattern => "*",
+            Filter  =>
+              Filter_Type'(Ordinary_File | Directory => True,
+                           Special_File              => False),
+            Process => Delete'Access);
+      else
+         Directories.Create_Path (Root_Directory);
+      end if;
    end Clear;
 
    ------------
