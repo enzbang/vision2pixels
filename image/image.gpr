@@ -22,7 +22,6 @@
 with "morzhol";
 with "../shared";
 with "../kernel/kernel";
-with "../lib/g2f_io/g2f";
 
 project Image is
 

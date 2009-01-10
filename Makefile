@@ -225,7 +225,6 @@ install_dirs:
 	$(CP) -f $(BUILD_DIR)/web/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/lib/websites
 	$(CP) image/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/bin
 	$(CP) kernel/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/bin
-	$(CP) lib/g2f_io/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/bin
 	$(CP) lib/gnadelite/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/bin
 	$(CP) -f $(DIOUZHTU_DYNAMIC_LIB)/*wiki_service$(LIBEXT) \
 		$(ARGWIAD_ROOT)/lib/services

@@ -27,16 +27,11 @@ with GNAT.Calendar.Time_IO;
 with V2P.Settings;
 
 with Morzhol.OS;
-with G2F.Image_IO;
 with Image.Magick;
 
 package body Image.Data is
 
-   use Ada.Text_IO;
    use Ada.Directories;
-   use G2F;
-   use G2F.Image_IO;
-   use G2F.IO;
    use V2P;
 
    procedure Init
@@ -55,12 +50,18 @@ package body Image.Data is
    function Default_Max_Dimension return Image_Dimension is
    begin
       return Image_Dimension'
-        (Width         => Image_Size_T (Settings.Image_Maximum_Width),
-         Height        => Image_Size_T (Settings.Image_Maximum_Height),
-         Medium_Width  => Image_Size_T (Settings.Medium_Maximum_Width),
-         Medium_Height => Image_Size_T (Settings.Medium_Maximum_Height),
-         Thumb_Width   => Image_Size_T (Settings.Thumbnail_Maximum_Width),
-         Thumb_Height  => Image_Size_T (Settings.Thumbnail_Maximum_Height),
+        (Width         => MagickWand.Size
+           (Settings.Image_Maximum_Width),
+         Height        => MagickWand.Size
+           (Settings.Image_Maximum_Height),
+         Medium_Width  => MagickWand.Size
+           (Settings.Medium_Maximum_Width),
+         Medium_Height => MagickWand.Size
+           (Settings.Medium_Maximum_Height),
+         Thumb_Width   => MagickWand.Size
+           (Settings.Thumbnail_Maximum_Width),
+         Thumb_Height  => MagickWand.Size
+           (Settings.Thumbnail_Maximum_Height),
          Size          => File_Size (Settings.Image_Maximum_Size));
    end Default_Max_Dimension;
 
@@ -82,18 +83,8 @@ package body Image.Data is
 
    function Filename (Img : in Image_Data) return String is
    begin
-      return G2F.IO.Get_Filename (Img.Image_Ptr);
+      return MagickWand.Get_Filename (Img.Image);
    end Filename;
-
-   ----------------
-   --  Finalize  --
-   ----------------
-
-   procedure Finalize (Img : in out Image_Data) is
-   begin
-      Destroy_Image (Img.Image_Ptr);
-      Destroy_Image_Info (Img.Info_Ptr);
-   end Finalize;
 
    ----------
    -- Init --
@@ -107,34 +98,37 @@ package body Image.Data is
       Out_Filename_Thumb  : in     String;
       Out_Max_Dimension   : in     Image_Dimension := Null_Dimension)
    is
-      Thumb_Size  : constant G2F.IO.Image_Size := Image_Size'
-        (X => Image_Size_T (Settings.Thumbnail_Maximum_Width),
-         Y => Image_Size_T (Settings.Thumbnail_Maximum_Height));
-      Thumb, R_Thumb : Image_Ptr;
-      Thumb_Info     : Image_Info_Ptr;
+      Thumb_Size  : constant MagickWand.Image_Size :=
+                      MagickWand.Image_Size'
+                        (Width  => MagickWand.Size
+                           (Settings.Thumbnail_Maximum_Width),
+                         Height => MagickWand.Size
+                           (Settings.Thumbnail_Maximum_Height));
 
-      Medium_Size : constant G2F.IO.Image_Size := Image_Size'
-        (X => Image_Size_T (Settings.Medium_Maximum_Width),
-         Y => Image_Size_T (Settings.Medium_Maximum_Height));
-      Medium, R_Medium : Image_Ptr;
-      Medium_Info      : Image_Info_Ptr;
+      Medium_Size    : constant MagickWand.Image_Size :=
+                         MagickWand.Image_Size'
+                           (Width  => MagickWand.Size
+                              (Settings.Medium_Maximum_Width),
+                            Height => MagickWand.Size
+                              (Settings.Medium_Maximum_Height));
+      Thumb, Medium : MagickWand.Object;
 
    begin
       --  Read image info
-
-      Set_Filename (Img.Info_Ptr, Original_Filename);
-
-      Img.Image_Ptr := Read_Image (Img.Info_Ptr);
+      MagickWand.Read
+        (Img.Image, Filename => Original_Filename);
 
       if Settings.Limit_Image_Size
         or else Out_Max_Dimension /= Null_Dimension
       then
          Check_Size : declare
-            Dim : constant Image_Size := Get_Image_Size (Img.Image_Ptr);
+            Dim : constant MagickWand.Image_Size :=
+                    MagickWand.Image_Size'(Width  => Img.Image.Get_Width,
+                                           Height => Img.Image.Get_Height);
          begin
             Img.Dimension := Image_Dimension'
-              (Width         => Dim.X,
-               Height        => Dim.Y,
+              (Width         => Dim.Width,
+               Height        => Dim.Height,
                Medium_Width  => 0,
                Medium_Height => 0,
                Thumb_Width   => 0,
@@ -158,56 +152,35 @@ package body Image.Data is
 
       --  Save Image in Images_Path/Category
 
-      Set_Filename (Img.Image_Ptr, Out_Filename_Big);
-      Write_Image (Img.Info_Ptr, Img.Image_Ptr);
+      Img.Image.Write (Out_Filename_Big);
 
       --  Create 800x800 image
 
-      Medium_Info := Clone_Image_Info (Img.Info_Ptr);
-      Medium := Read_Image (Medium_Info);
+      Image.Magick.Resize (Medium,
+                           Img  => Img.Image,
+                           Size => Medium_Size);
 
-      Set_Filename (Medium, Out_Filename_Medium);
+      Medium.Write (Out_Filename_Medium);
 
-      R_Medium := Magick.Resize (Medium, Medium_Size);
-      Write_Image (Medium_Info, R_Medium);
-
-      Set_Medium_Dimension : declare
-         Dim : constant Image_Size := Get_Image_Size (R_Medium);
-      begin
-         Img.Dimension.Medium_Width  := Dim.X;
-         Img.Dimension.Medium_Height := Dim.Y;
-      end Set_Medium_Dimension;
-
-      Destroy_Image (Medium);
-      Destroy_Image (R_Medium);
-      Destroy_Image_Info (Medium_Info);
+      Img.Dimension.Medium_Width  := Medium.Get_Width;
+      Img.Dimension.Medium_Height := Medium.Get_Height;
 
       --  Create thumbnail
 
-      Thumb_Info := Clone_Image_Info (Img.Info_Ptr);
-      Thumb := Read_Image (Thumb_Info);
+      Image.Magick.Thumbnail (Thumb,
+                              Img  => Img.Image,
+                              Size => Thumb_Size);
 
-      Set_Filename (Thumb, Out_Filename_Thumb);
+      Thumb.Write (Out_Filename_Thumb);
 
-      R_Thumb := Magick.Thumbnail (Thumb, Thumb_Size);
-      Write_Image (Thumb_Info, R_Thumb);
-
-      Set_Thumb_Dimension : declare
-         Dim : constant Image_Size := Get_Image_Size (R_Thumb);
-      begin
-         Img.Dimension.Thumb_Width  := Dim.X;
-         Img.Dimension.Thumb_Height := Dim.Y;
-      end Set_Thumb_Dimension;
-
-      Destroy_Image (Thumb);
-      Destroy_Image (R_Thumb);
-      Destroy_Image_Info (Thumb_Info);
+      Img.Dimension.Thumb_Width  := Thumb.Get_Width;
+      Img.Dimension.Thumb_Height := Thumb.Get_Height;
 
       Img.Init_Status := Image_Created;
 
    exception
-      when others =>
-         Put_Line
+      when MagickWand.MagickError =>
+         Ada.Text_IO.Put_Line
            ("Read image error - Thumbnail has not been created for "
               & Original_Filename);
    end Init;
@@ -274,14 +247,5 @@ package body Image.Data is
    begin
       return Img.Init_Status;
    end Init_Status;
-
-   ------------------
-   --  Initialize  --
-   ------------------
-
-   procedure Initialize (Img : in out Image_Data) is
-   begin
-      Img.Info_Ptr := Clone_Image_Info (null);
-   end Initialize;
 
 end Image.Data;

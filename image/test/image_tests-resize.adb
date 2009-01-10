@@ -26,8 +26,8 @@ with GNAT.Calendar.Time_IO;
 
 with V2P.Settings;
 
-with G2F;
 with Image.Data;
+with MagickWand;
 
 package body Image_Tests.Resize is
 
@@ -66,7 +66,6 @@ package body Image_Tests.Resize is
 
    begin
       --  Read image info and create resized image
-
       Image.Data.Init (Img => Test_Image, Root_Dir => ".", Filename => S_Name);
 
       Assert (Test_Image.Init_Status = Image_Created,
@@ -104,7 +103,7 @@ package body Image_Tests.Resize is
    procedure Tear_Down (T : in out Test_Case) is
       pragma Unreferenced (T);
    begin
-      G2F.Destroy_Magick;
+      MagickWand.Terminus;
    end Tear_Down;
 
 end Image_Tests.Resize;

@@ -19,73 +19,94 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with G2F.Image_Resize;
+with Ada.Text_IO;
 
 package body Image.Magick is
 
-   use G2F.Image_Resize;
-   use G2F.IO;
+   use type MagickWand.Size;
 
    ------------
    -- Resize --
    ------------
 
-   function Resize
-     (Img  : in G2F.Image_Ptr;
-      Size : in G2F.IO.Image_Size) return G2F.Image_Ptr
+   procedure Resize
+     (Resized_Image : in out MagickWand.Object;
+      Img         : in     MagickWand.Object;
+      Size        : in     MagickWand.Image_Size)
    is
-      Original_Size : constant Image_Size := Get_Image_Size (Img);
-      X_Length      : Image_Size_T;
-      Y_Length      : Image_Size_T;
-      Resized_Image : G2F.Image_Ptr;
+      Original_Size : constant MagickWand.Image_Size
+        := (Width  => Img.Get_Width,
+            Height => Img.Get_Height);
+      X_Length      : MagickWand.Size;
+      Y_Length      : MagickWand.Size;
+
    begin
+      Resized_Image.Clone (From => Img);
+
       --  Resize only if bigger than expected
 
-      if Original_Size.X < Size.X and then Original_Size.Y < Size.Y then
-         X_Length := Original_Size.X;
-         Y_Length := Original_Size.Y;
+      if Original_Size.Width < Size.Width
+        and then Original_Size.Height < Size.Height
+      then
+         X_Length := Original_Size.Width;
+         Y_Length := Original_Size.Height;
 
       else
-         if Original_Size.X / Size.X > Original_Size.Y / Size.Y then
-            X_Length := Size.X;
-            Y_Length := Original_Size.Y * X_Length / Original_Size.X;
+         if Original_Size.Width / Size.Width
+           > Original_Size.Height / Size.Height
+         then
+            X_Length := Size.Width;
+            Y_Length := Original_Size.Height * X_Length / Original_Size.Width;
          else
-            Y_Length := Size.Y;
-            X_Length := Original_Size.X * Y_Length / Original_Size.Y;
+            Y_Length := Size.Height;
+            X_Length := Original_Size.Width * Y_Length / Original_Size.Height;
          end if;
       end if;
 
-      Resized_Image := G2F.Image_Resize.Resize_Image
-        (Img, Image_Size'(X => X_Length, Y => Y_Length));
+      Ada.Text_IO.Put_Line ("resizing");
 
-      return Resized_Image;
+      Resized_Image.Resize
+        (Width  => X_Length,
+         Height => Y_Length,
+         Filter => MagickWand.LanczosFilter,
+         Blur   => 1.0);
    end Resize;
 
    ---------------
    -- Thumbnail --
    ---------------
 
-   function Thumbnail
-     (Img  : in G2F.Image_Ptr;
-      Size : in G2F.IO.Image_Size) return G2F.Image_Ptr
+   procedure Thumbnail
+     (Thumb : in out MagickWand.Object;
+      Img   : in     MagickWand.Object;
+      Size  : in     MagickWand.Image_Size)
    is
-      Original_Size : constant Image_Size := Get_Image_Size (Img);
-      X_Length      : Image_Size_T;
-      Y_Length      : Image_Size_T;
-      Thumb         : G2F.Image_Ptr;
+      Original_Size : constant MagickWand.Image_Size
+        := (Width  => Img.Get_Width,
+            Height => Img.Get_Height);
+      X_Length      : MagickWand.Size;
+      Y_Length      : MagickWand.Size;
    begin
-      if Original_Size.X / Size.X > Original_Size.Y / Size.Y then
-         X_Length := Size.X;
-         Y_Length := Original_Size.Y * X_Length / Original_Size.X;
+      Thumb.Clone (From => Img);
+
+      if Original_Size.Width / Size.Width
+        > Original_Size.Height / Size.Height
+      then
+         X_Length := Size.Height;
+         Y_Length := Original_Size.Height * X_Length / Original_Size.Width;
       else
-         Y_Length := Size.Y;
-         X_Length := Original_Size.X * Y_Length / Original_Size.Y;
+         Y_Length := Size.Height;
+         X_Length := Original_Size.Width * Y_Length / Original_Size.Height;
       end if;
 
-      Thumb := G2F.Image_Resize.Thumbnail_Image
-        (Img, Image_Size'(X => X_Length, Y => Y_Length));
-
-      return Thumb;
+      Thumb.Resize
+        (Width  => X_Length,
+         Height => Y_Length,
+         Filter => MagickWand.LanczosFilter,
+         Blur   => 1.0);
    end Thumbnail;
+
+begin
+   MagickWand.Genesis;
 
 end Image.Magick;

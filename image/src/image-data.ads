@@ -19,11 +19,10 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Finalization;
 with Ada.Strings.Unbounded;
 with Ada.Directories;
 
-with G2F.IO;
+with MagickWand;
 
 package Image.Data is
 
@@ -36,12 +35,12 @@ package Image.Data is
    type Image_Data is tagged private;
 
    type Image_Dimension is record
-      Width         : G2F.IO.Image_Size_T;
-      Height        : G2F.IO.Image_Size_T;
-      Medium_Width  : G2F.IO.Image_Size_T;
-      Medium_Height : G2F.IO.Image_Size_T;
-      Thumb_Width   : G2F.IO.Image_Size_T;
-      Thumb_Height  : G2F.IO.Image_Size_T;
+      Width         : MagickWand.Size;
+      Height        : MagickWand.Size;
+      Medium_Width  : MagickWand.Size;
+      Medium_Height : MagickWand.Size;
+      Thumb_Width   : MagickWand.Size;
+      Thumb_Height  : MagickWand.Size;
       Size          : Directories.File_Size;
    end record;
 
@@ -77,18 +76,11 @@ private
                                        Thumb_Width => 0, Thumb_Height => 0,
                                        Size => 0);
 
-   type Image_Data is new Finalization.Controlled with record
-      Info_Ptr    : G2F.Image_Info_Ptr;
-      Image_Ptr   : G2F.Image_Ptr;
+   type Image_Data is tagged record
+      Image       : MagickWand.Object;
       Category    : Unbounded_String;
       Dimension   : Image_Dimension;
       Init_Status : Image_Init_Status;
    end record;
-
-   overriding procedure Initialize (Img : in out Image_Data);
-   --  Initialize Image_Ptr and Image_Info_Ptr structures
-
-   overriding procedure Finalize (Img : in out Image_Data);
-   --  Destroys Image
 
 end Image.Data;

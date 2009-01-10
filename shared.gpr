@@ -108,13 +108,14 @@ project Shared is
       case Build is
          when "Debug" =>
             for Default_Switches ("Ada") use
-               ("-g", "-L" & ImageMagick_Lib, "-L" & Jpeg_Lib);
+              ("-g", "-L" & ImageMagick_Lib, "-L" & Jpeg_Lib, "-lMagickCore", "-lMagickWand");
          when "Release" =>
             for Default_Switches ("Ada") use
-               ("-L" & ImageMagick_Lib, "-L" & Jpeg_Lib);
+              ("-L" & ImageMagick_Lib, "-L" & Jpeg_Lib, "-lMagickCore", "-lMagickWand");
          when "Profile" =>
             for Default_Switches ("Ada") use
-               ("-g", "-lgmem", "-L" & ImageMagick_Lib, "-L" & Jpeg_Lib);
+              ("-g", "-lgmem", "-L" & ImageMagick_Lib, "-L" & Jpeg_Lib,
+               "-lMagickCore", "-lMagickWand");
       end case;
    end Linker;
 

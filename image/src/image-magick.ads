@@ -19,20 +19,21 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with G2F.IO;
+with MagickWand;
 
 package Image.Magick is
 
-   use G2F;
+   MagickError : exception;
 
-   function Thumbnail
-     (Img  : in G2F.Image_Ptr;
-      Size : in G2F.IO.Image_Size) return G2F.Image_Ptr;
+   procedure Thumbnail
+     (Thumb : in out MagickWand.Object;
+      Img   : in     MagickWand.Object;
+      Size  : in     MagickWand.Image_Size);
    --  Creates an image thumbnail
 
-   function Resize
-     (Img  : in G2F.Image_Ptr;
-      Size : in G2F.IO.Image_Size) return G2F.Image_Ptr;
-   --  Resize an image
+   procedure Resize
+     (Resized_Image : in out MagickWand.Object;
+      Img           : in     MagickWand.Object;
+      Size          : in     MagickWand.Image_Size);
 
 end Image.Magick;
