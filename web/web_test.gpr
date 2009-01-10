@@ -31,8 +31,8 @@ project Web_Test is
    for Languages use ("Ada");
 
    for Source_Dirs use ("test/src");
-   for Object_Dir use "test/obj";
-   for Exec_Dir use "test/bin";
+   for Object_Dir use "../.build/web/test/obj";
+   for Exec_Dir use "../.build/web/test/bin";
    for Main use ("web_harness");
 
    -------------

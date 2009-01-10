@@ -27,7 +27,7 @@ with "../lib/aunit/v2p_aunit";
 project DB_Test is
 
    for Source_Dirs use ("test");
-   for Object_Dir use "obj";
+   for Object_Dir use "../.build/db_test/obj";
    for Main use ("db_harness");
 
    --------------
