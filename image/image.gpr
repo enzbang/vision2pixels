@@ -31,6 +31,7 @@ project Image is
    for Library_Dir use "lib";
    for Library_Name use "v2p_image";
    for Library_Kind use "dynamic";
+   for Library_Options use ("-lMagickWand", "-lMagickCore");
 
    -------------
    -- Builder --
