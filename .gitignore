@@ -12,6 +12,7 @@
 *v2p-testdir*
 *~
 .#*
+.build
 .gpsrcs
 db/data/files.md5
 db/lib
