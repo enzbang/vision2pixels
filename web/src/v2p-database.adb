@@ -1813,6 +1813,28 @@ package body V2P.Database is
          Filter_Cat => Filter_Cat,
          Forum      => Forum);
 
+      if Total_Lines = 0 then
+         --  Nothing to print. Avoid to return an empty page.
+         --  Insert a tag to display a message to the user telling him
+         --  that the requested search fail and has been replaced by another
+         --  filter.
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_Forum_Threads.NEW_FILTER, "NEW FILTER"));
+
+         if Filter /= All_Messages then
+            Restart_With_New_Filter : declare
+               New_Filter : constant Filter_Mode := Filter_Mode'Succ (Filter);
+            begin
+               Get_Threads
+                 (Fid, User, Admin, Forum, Page_Size, New_Filter, Filter_Cat,
+                  Order_Dir, Sorting, Only_Revealed, From, Mode, Navigation,
+                  Set, Nb_Lines, Total_Lines);
+               return;
+            end Restart_With_New_Filter;
+         end if;
+      end if;
+
       if Total_Lines < From then
          From := 1; -- ??? What should be done in this case ?
       end if;
