@@ -404,7 +404,6 @@ package body V2P.Callbacks.Ajax is
       Sort : constant String := Parameters.Get (P, HTTP.bfs_forum_sort_set);
    begin
       --  Keep the sorting scheme into the session
-      --  ?? we need to add this into the user's preferences
       Context.Set_Value (Template_Defs.Set_Global.FORUM_SORT, Sort);
 
       --  Set the context filter to seven days if the sorting is set to
