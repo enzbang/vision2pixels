@@ -213,8 +213,9 @@ $(BUILD_DIR)/web/tsrc/v2p-template_defs.adb::
 web_lib:: $(BUILD_DIR)/web/tsrc/v2p-template_defs.adb bld-web/web
 
 DBNAME = v2p.db
-install_gwiad_plugin:: install_dirs db/data/$(DBNAME)
+install_gwiad_plugin:: install_dirs db/data/$(DBNAME) web/tools/wmaint$(EXEEXT)
 	$(CP) db/data/$(DBNAME) $(ARGWIAD_ROOT)/plugins/vision2pixels/db
+	$(CP) web/tools/wmaint$(EXEXT) $(ARGWIAD_ROOT)/bin
 
 install_dirs:
 	@if test ! "$(ARGWIAD_ROOT)"; then \
@@ -250,10 +251,12 @@ install_dirs:
 	$(CP) -f $(BUILD_DIR)/web/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/lib/websites
 	$(CP) image/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/bin
 	$(CP) kernel/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/bin
-	$(CP) lib/gnadelite/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/bin
+	-$(CP) lib/gnadelite/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/bin
 	$(CP) -f $(DIOUZHTU_DYNAMIC_LIB)/*wiki_service$(LIBEXT) \
 		$(ARGWIAD_ROOT)/lib/services
-	$(CP) web/tools/wmaint$(EXEXT) $(ARGWIAD_ROOT)/bin
+
+web/tools/wmaint$(EXEEXT):
+	$(GNATMAKE) -Pweb/tools -gnat05
 
 db/data/v2p.db:
 	(cd db/data/; ./create_database.sh)
@@ -274,5 +277,5 @@ install-dstrib:
 
 
 .PHONY: all install clean regtests regtests_image regtests_web regtests_db
-.PHONY: db/data/v2p.db db/data/testing.db
+.PHONY: db/data/v2p.db db/data/testing.db web/tools/wmaint$(EXEEXT)
 .PHONY: kernel/src/v2p-version.ads
