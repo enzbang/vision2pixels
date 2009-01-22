@@ -1052,11 +1052,6 @@ package body V2P.Database is
       Set  : Templates.Translate_Set;
 
    begin
-      if Tid = Empty_Id then
-         --  ???
-         return Set;
-      end if;
-
       Connect (DBH);
 
       DBH.Handle.Prepare_Select

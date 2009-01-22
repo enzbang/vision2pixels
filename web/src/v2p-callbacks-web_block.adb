@@ -358,6 +358,7 @@ package body V2P.Callbacks.Web_Block is
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
+      Tid : Database.Id;
    begin
       if Context.Exist (Template_Defs.Set_Global.TID) then
          if Context.Exist
@@ -391,12 +392,13 @@ package body V2P.Callbacks.Web_Block is
               (V2P.Template_Defs.Set_Global.ERROR_METADATA_WRONG_METADATA);
 
          else
-            Templates.Insert
-              (Translations,
-               Database.Get_Metadata
-                 (V2P.Context.Counter.Get_Value
+            Tid := V2P.Context.Counter.Get_Value
                     (Context => Context.all,
-                     Name    => Template_Defs.Set_Global.TID)));
+                     Name    => Template_Defs.Set_Global.TID);
+            if Tid /= Database.Empty_Id then
+               Templates.Insert
+                 (Translations, Database.Get_Metadata (Tid));
+            end if;
          end if;
       end if;
    end Metadata;
