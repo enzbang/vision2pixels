@@ -120,18 +120,43 @@ DB_TEST_LOGFILE = $(BUILD_DIR)/db_harness.log.$(LOG_SUFFIX)
 WEB_TESTDIR = $(BUILD_DIR)/web_testdir
 WEB_TESTPLUGIN  = $(WEB_TESTDIR)/plugins/vision2pixels
 
-regtests: mkdirs bld-image/image_test bld-web/web_test bld-db/db_test
+regtests: mkdirs regtests_db_internal \
+	regtests_image_internal regtests_web_internal
+	@if [ `grep 0 $(LOG) | wc -l` == 6 ]; then \
+	   echo "=====>>>>>> Ok, all tests have passed"; \
+	else \
+	   echo "=====>>>>>> NOk, some tests have failed"; \
+	   cat $(LOG) | grep -v ': 0'; \
+	fi;
+
+regtests_image_internal: bld-image/image_test
+	# Image tests
+	-(cd image/test; ./image_harness > $(IMAGE_TEST_LOGFILE))
+	@echo " * Image regtests" >> $(LOG)
+	@echo "     report file is $(IMAGE_TEST_LOGFILE)" >> $(LOG)
+	@-grep "Failed Assertions" $(IMAGE_TEST_LOGFILE) >> $(LOG)
+	@-grep "Unexpected Errors" $(IMAGE_TEST_LOGFILE) >> $(LOG)
+
+regtests_image: regtests_image_internal
+	@cat $(IMAGE_TEST_LOGFILE)
+
+regtests_db_internal: bld-db/db_test
 	# DB tests
-	$(MAKE) install_gwiad_plugin \
-		DBNAME=testing.db ARGWIAD_ROOT=$(WEB_TESTDIR)
-	$(CP) $(WEB_TESTDIR)/plugins/vision2pixels/db/testing.db \
+	@$(MAKE) install_gwiad_plugin \
+		DBNAME=testing.db ARGWIAD_ROOT=$(WEB_TESTDIR) >/dev/null
+	@$(CP) $(WEB_TESTDIR)/plugins/vision2pixels/db/testing.db \
 		$(BUILD_DIR)/db_test/obj/
 	-(cd $(BUILD_DIR)/db_test/obj/; \
 		./db_harness$(EXEEXT) > $(DB_TEST_LOGFILE))
-	# Image tests
-	-(cd image/test; ./image_harness > $(IMAGE_TEST_LOGFILE))
-	-grep "Failed Assertions" $(IMAGE_TEST_LOGFILE) >> $(LOG)
-	-grep "Unexpected Errors" $(IMAGE_TEST_LOGFILE) >> $(LOG)
+	@echo " * Database regtests" >> $(LOG)
+	@echo "     report file is $(DB_TEST_LOGFILE)" >> $(LOG)
+	@-grep "Failed Assertions" $(DB_TEST_LOGFILE) >> $(LOG)
+	@-grep "Unexpected Errors" $(DB_TEST_LOGFILE) >> $(LOG)
+
+regtests_db: regtests_db_internal
+	@cat $(DB_TEST_LOGFILE)
+
+regtests_web_internal: bld-web/web_test
 	# Web test
 	$(MKDIR) $(WEB_TESTPLUGIN)/db
 	echo "server_port 8042" > $(WEB_TESTDIR)/aws.ini
@@ -141,13 +166,13 @@ regtests: mkdirs bld-image/image_test bld-web/web_test bld-db/db_test
 	$(CP) $(BUILD_DIR)/web/test/bin/web_harness$(EXEEXT)\
 	       	$(WEB_TESTDIR)/bin/
 	-(cd $(WEB_TESTDIR); bin/web_harness$(EXEEXT) > $(WEB_TEST_LOGFILE))
+	@echo " * Web regtests" >> $(LOG)
+	@echo "     report file is $(WEB_TEST_LOGFILE)" >> $(LOG)
 	-grep "Failed Assertions" $(WEB_TEST_LOGFILE) >> $(LOG)
 	-grep "Unexpected Errors" $(WEB_TEST_LOGFILE) >> $(LOG)
-	@if [ `grep 0 $(LOG) | wc -l` == 6 ]; then \
-	   echo "=====>>>>>> Ok, all tests have passed"; \
-	else \
-	   echo "=====>>>>>> NOk, some tests have failed"; \
-	fi;
+
+regtests_web: regtests_web_internal
+	@cat $(WEB_TEST_LOGFILE)
 
 mkdirs:
 	$(MKDIR) $(BUILD_DIR)/web/gen
@@ -248,6 +273,6 @@ install-dstrib:
 	$(RM) -r $(DISTRIB)
 
 
-.PHONY: all install clean regtests
+.PHONY: all install clean regtests regtests_image regtests_web regtests_db
 .PHONY: db/data/v2p.db db/data/testing.db
 .PHONY: kernel/src/v2p-version.ads
