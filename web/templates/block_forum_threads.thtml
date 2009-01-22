@@ -3,6 +3,9 @@
 <p class="threads_page_info"></p>
 
 <!-- @_NB_LINE_RETURNED_@ -->
+@@IF@@ @_NEW_FILTER_@ /= ""
+<p class="warning">@_BABEL_TRY_HARDER_TO_SEARCH_@</p>
+@@END_IF@@
 
 @@-- Navigation links
 <ul id="bft_navigate">
