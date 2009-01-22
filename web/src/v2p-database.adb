@@ -516,11 +516,6 @@ package body V2P.Database is
       Exif : Image.Metadata.Embedded.Data;
 
    begin
-      if Tid = Empty_Id then
-         --  ???
-         return Set;
-      end if;
-
       Connect (DBH);
 
       DBH.Handle.Prepare_Select

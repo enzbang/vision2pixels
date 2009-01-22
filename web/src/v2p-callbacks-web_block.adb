@@ -88,14 +88,17 @@ package body V2P.Callbacks.Web_Block is
       Translations : in out Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
+      Tid : Database.Id;
    begin
       if Context.Exist (Template_Defs.Set_Global.TID) then
-         Templates.Insert
-           (Translations,
-            Database.Get_Exif
-              (V2P.Context.Counter.Get_Value
-                 (Context => Context.all,
-                  Name    => Template_Defs.Set_Global.TID)));
+         Tid := V2P.Context.Counter.Get_Value
+           (Context => Context.all,
+            Name    => Template_Defs.Set_Global.TID);
+
+         if Tid /= Database.Empty_Id then
+            Templates.Insert
+              (Translations, Database.Get_Exif (Tid));
+         end if;
       end if;
    end Exif;
 
