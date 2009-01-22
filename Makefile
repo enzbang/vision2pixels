@@ -197,7 +197,7 @@ install_dirs:
 		exit 1; \
 	fi
 	$(MKDIR) $(ARGWIAD_ROOT)/plugins/vision2pixels/db
-	$(MKDIR) $(ARGWIAD_ROOT)/plugins/vision2pixels/web/templates/
+	$(MKDIR) $(ARGWIAD_ROOT)/plugins/vision2pixels/templates/
 	$(MKDIR) $(ARGWIAD_ROOT)/plugins/vision2pixels/xml
 	$(MKDIR) $(ARGWIAD_ROOT)/plugins/vision2pixels/web_data
 	$(MKDIR) $(ARGWIAD_ROOT)/plugins/vision2pixels/we_js
@@ -207,13 +207,13 @@ install_dirs:
 	$(MKDIR) $(ARGWIAD_ROOT)/lib/services
 	$(MKDIR) $(ARGWIAD_ROOT)/bin
 	$(CP) -r web/templates/*.tmplt \
-		$(ARGWIAD_ROOT)/plugins/vision2pixels/web/templates/
+		$(ARGWIAD_ROOT)/plugins/vision2pixels/templates/
 	$(CP) -r web/templates/*.thtml \
-		$(ARGWIAD_ROOT)/plugins/vision2pixels/web/templates/
+		$(ARGWIAD_ROOT)/plugins/vision2pixels/templates/
 	$(CP) -r web/templates/*.txml \
-		$(ARGWIAD_ROOT)/plugins/vision2pixels/web/templates/
+		$(ARGWIAD_ROOT)/plugins/vision2pixels/templates/
 	$(CP) -r web/templates/*.incl \
-		$(ARGWIAD_ROOT)/plugins/vision2pixels/web/templates/
+		$(ARGWIAD_ROOT)/plugins/vision2pixels/templates/
 	$(CP) -r web/xml/*xml \
 		$(ARGWIAD_ROOT)/plugins/vision2pixels/xml/
 	$(CP) -r web/we_js/*js \
