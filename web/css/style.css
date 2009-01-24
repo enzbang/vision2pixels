@@ -303,6 +303,12 @@ body.forum_entry #pfe_comments li {
    padding:1em 1em 0;
 }
 @@--
+body.forum_entry #pfe_comments li#pfe_has_voted {
+   border: none;
+   padding:1em 1em 0;
+   text-align: center;
+}
+@@--
 body.forum_entry #pfe_comments li#pfe_nocomment {
    @@-- When no comments
    font-size:1.4em;
@@ -898,6 +904,12 @@ span.user_name {
 span.user_name a {
    margin:0px;
    color:#029cbe;
+}
+@@--
+span.user_has_voted {
+   color:white;
+   font-style:italic;
+   font-weight:bold;
 }
 @@--
 ol#rbcfe_comments abbr.comment_date {

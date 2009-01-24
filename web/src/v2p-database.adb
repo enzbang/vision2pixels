@@ -342,7 +342,7 @@ package body V2P.Database is
          & "DATE(date, 'localtime'), time(date, 'localtime'), "
          & "user_login, anonymous_user, "
          & "comment, "
-         & "(SELECT filename FROM photo WHERE id=comment.photo_id) "
+         & "(SELECT filename FROM photo WHERE id=comment.photo_id), has_voted"
          & " FROM comment WHERE id=" & To_String (Cid));
 
       if Iter.More then
@@ -383,6 +383,11 @@ package body V2P.Database is
               (Template_Defs.Chunk_Comment.COMMENT_IMAGE_SOURCE,
                DB.String_Vectors.Element (Line, 7)));
 
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Template_Defs.Chunk_Comment.HAS_VOTED,
+               DB.String_Vectors.Element (Line, 8)));
+
          Line.Clear;
       end if;
 
@@ -411,6 +416,7 @@ package body V2P.Database is
       Time               : Templates.Tag;
       Comment            : Templates.Tag;
       Filename           : Templates.Tag;
+      Has_Voted          : Templates.Tag;
    begin
       DBH.Handle.Prepare_Select
         (Iter,
@@ -418,7 +424,7 @@ package body V2P.Database is
          & "DATE(date, 'localtime'), time(date, 'localtime'), "
          & "user_login, anonymous_user, "
          & "comment, "
-         & "(SELECT filename FROM photo WHERE id=comment.photo_id) "
+         & "(SELECT filename FROM photo WHERE id=comment.photo_id), has_voted "
          & " FROM comment, post_comment"
          & " WHERE post_id=" & To_String (Tid)
          & " AND post_comment.comment_id=comment.id");
@@ -442,6 +448,9 @@ package body V2P.Database is
            & DB.String_Vectors.Element (Line, 7);
          Filename      := Filename
            & DB.String_Vectors.Element (Line, 8);
+         Has_Voted     := Has_Voted
+           & DB.String_Vectors.Element (Line, 9);
+
 
          --  Unthreaded view
 
@@ -481,6 +490,9 @@ package body V2P.Database is
         (Set,
          Templates.Assoc
            (Block_Comments.NB_LEVELS_TO_CLOSE, Nb_Levels_To_Close));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Chunk_Comment.HAS_VOTED, Has_Voted));
 
       return Set;
    end Get_Comments;
