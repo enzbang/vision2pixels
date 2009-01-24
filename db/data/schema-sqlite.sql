@@ -48,6 +48,7 @@ create table "comment" (
    "anonymous_user" vachar(50) null,
    "comment" longtext not null,
    "photo_id" integer null,
+   "has_voted" boolean default FALSE,
    foreign key ("photo_id") references photo("id"),
    foreign key ("user_login") references user("login"),
    foreign key ("parent") references comment("id")
@@ -202,6 +203,14 @@ create table "rating" (
    primary key ("user_login", "post_id", "criteria_id")
 );
 
+create table "user_rating" (
+   "user_login" varchar(50) not null,
+   "post_id" integer not null,
+   constraint unique_entry unique (user_login, post_id),
+   foreign key ("user_login") references user("login"),
+   foreign key ("post_id") references post("id")
+);
+
 create table global_rating (
    "post_id" integer not null,
    "criteria_id" integer not null,
@@ -261,6 +270,18 @@ begin
                     and r.criteria_id = new.criteria_id
                     and r.post_id = new.post_id)
       where criteria_id = new.criteria_id and post_id = new.post_id;
+end;
+
+create trigger insert_has_voted after insert on rating
+begin
+   insert or ignore into user_rating values (new.user_login, new.post_id);
+end;
+
+create trigger insert_has_voted_comment after insert on user_rating
+begin
+   insert into comment ("user_login", "comment", "has_voted")
+          values (new.user_login, "vote", "TRUE");
+   insert into post_comment values (new.post_id, last_insert_rowid());
 end;
 
 create table photo_of_the_week (
