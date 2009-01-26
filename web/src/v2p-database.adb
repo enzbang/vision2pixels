@@ -1937,7 +1937,7 @@ package body V2P.Database is
       return Templates.Translate_Set
    is
       SQL        : constant String :=
-                     "SELECT pc.post_id, c.id, c.comment "
+                     "SELECT pc.post_id, c.id, c.comment, c.has_voted "
                        & "FROM comment AS c, post_comment AS pc, post AS p,"
                        & " user_post AS u "
                        & "WHERE c.user_login=" & Q (Uid)
@@ -1959,6 +1959,7 @@ package body V2P.Database is
       Post_Id    : Templates.Tag;
       Comment_Id : Templates.Tag;
       Comment    : Templates.Tag;
+      Has_Voted  : Templates.Tag;
 
       use type Templates.Tag;
 
@@ -1977,6 +1978,7 @@ package body V2P.Database is
          else
             Comment := Comment & DB.String_Vectors.Element (Line, 3);
          end if;
+         Has_Voted := Has_Voted & DB.String_Vectors.Element (Line, 4);
          Line.Clear;
       end loop;
 
@@ -1989,6 +1991,8 @@ package body V2P.Database is
          Templates.Assoc (Block_User_Comment_List.COMMENT_ID, Comment_Id));
       Templates.Insert
         (Set, Templates.Assoc (Block_User_Comment_List.COMMENT, Comment));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_User_Comment_List.HAS_VOTED, Has_Voted));
 
       return Set;
    end Get_User_Comment;
