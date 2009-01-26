@@ -14,6 +14,8 @@
 -- after to activate all triggers.
 --
 
+delete from rating where user_login is null;
+
 create table "tmp_rating" (
    "user_login" varchar(50) null,
    "post_id" integer not null,
