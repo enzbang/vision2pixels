@@ -264,7 +264,7 @@ db/data/v2p.db:
 db/data/testing.db:
 	(cd db/data; ./create_test_database.sh)
 
-install-dstrib:
+install-distrib:
 	-$(RM) -r $(DISTRIB)
 	$(MAKE) install_gwiad_plugin ARGWIAD_ROOT=$(DISTRIB)/dist
 	(cd $(DISTRIB)/dist; $(TAR_DIR) ../dist.tgz .)
