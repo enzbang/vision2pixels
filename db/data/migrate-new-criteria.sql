@@ -63,3 +63,4 @@ drop table tmp_rating;
 
 update criteria set name="Artistique" where id=1;
 update criteria set name="Technique" where id=2;
+delete from criteria where id=3;
