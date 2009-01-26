@@ -1322,3 +1322,9 @@ strong.emptyligne {
    font-size:1.1em;
    font-weight:bold;
 }
+@@--
+.warning {
+   color:@_HIGHLIGHT_COLOR_@;
+   font-size:1.3em;
+   font-weight:bold;
+}
