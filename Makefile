@@ -141,9 +141,12 @@ regtests_image: regtests_image_internal
 	@cat $(IMAGE_TEST_LOGFILE)
 
 regtests_db_internal: bld-db/db_test
-	# DB tests
-	@$(MAKE) install_gwiad_plugin \
-		DBNAME=testing.db ARGWIAD_ROOT=$(WEB_TESTDIR) >/dev/null
+# DB tests
+# For tests we need to rebuild the database in order to have
+# post in 'today view'
+	@touch db/data/schema-sqlite.sql
+	@$(MAKE) --quiet install_gwiad_plugin \
+		DBNAME=testing.db ARGWIAD_ROOT=$(WEB_TESTDIR)
 	@$(CP) $(WEB_TESTDIR)/plugins/vision2pixels/db/testing.db \
 		$(BUILD_DIR)/db_test/obj/
 	-(cd $(BUILD_DIR)/db_test/obj/; \
@@ -258,10 +261,11 @@ install_dirs:
 web/tools/wmaint$(EXEEXT):
 	$(GNATMAKE) -Pweb/tools -gnat05
 
-db/data/v2p.db:
+db/data/v2p.db: db/data/schema-sqlite.sql
 	(cd db/data/; ./create_database.sh)
 
-db/data/testing.db:
+db/data/testing.db: db/data/schema-sqlite.sql db/data/initial-test-data.sql \
+  db/data/vote_ponderated.sql db/data/vote.sql
 	(cd db/data; ./create_test_database.sh)
 
 install-distrib:
@@ -277,5 +281,5 @@ install-distrib:
 
 
 .PHONY: all install clean regtests regtests_image regtests_web regtests_db
-.PHONY: db/data/v2p.db db/data/testing.db web/tools/wmaint$(EXEEXT)
+.PHONY: web/tools/wmaint$(EXEEXT)
 .PHONY: kernel/src/v2p-version.ads
