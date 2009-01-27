@@ -303,6 +303,12 @@ body.forum_entry #pfe_comments li {
    padding:1em 1em 0;
 }
 @@--
+body.forum_entry #pfe_comments li#pfe_has_voted {
+   border: none;
+   padding:1em 1em 0;
+   text-align: center;
+}
+@@--
 body.forum_entry #pfe_comments li#pfe_nocomment {
    @@-- When no comments
    font-size:1.4em;
@@ -900,6 +906,12 @@ span.user_name a {
    color:#029cbe;
 }
 @@--
+span.user_has_voted {
+   color:white;
+   font-style:italic;
+   font-weight:bold;
+}
+@@--
 ol#rbcfe_comments abbr.comment_date {
    font-size: 0.8em;
    float: right;
@@ -1308,5 +1320,11 @@ strong.emptyligne {
 @@--
 #bql_show_rel_login {
    font-size:1.1em;
+   font-weight:bold;
+}
+@@--
+.warning {
+   color:@_HIGHLIGHT_COLOR_@;
+   font-size:1.3em;
    font-weight:bold;
 }

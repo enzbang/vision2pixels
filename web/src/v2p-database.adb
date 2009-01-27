@@ -341,7 +341,7 @@ package body V2P.Database is
          & "DATE(date, 'localtime'), time(date, 'localtime'), "
          & "user_login, anonymous_user, "
          & "comment, "
-         & "(SELECT filename FROM photo WHERE id=comment.photo_id) "
+         & "(SELECT filename FROM photo WHERE id=comment.photo_id), has_voted"
          & " FROM comment WHERE id=" & To_String (Cid));
 
       if Iter.More then
@@ -382,6 +382,11 @@ package body V2P.Database is
               (Template_Defs.Chunk_Comment.COMMENT_IMAGE_SOURCE,
                DB.String_Vectors.Element (Line, 7)));
 
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Template_Defs.Chunk_Comment.HAS_VOTED,
+               DB.String_Vectors.Element (Line, 8)));
+
          Line.Clear;
       end if;
 
@@ -410,6 +415,7 @@ package body V2P.Database is
       Time               : Templates.Tag;
       Comment            : Templates.Tag;
       Filename           : Templates.Tag;
+      Has_Voted          : Templates.Tag;
    begin
       DBH.Handle.Prepare_Select
         (Iter,
@@ -417,7 +423,7 @@ package body V2P.Database is
          & "DATE(date, 'localtime'), time(date, 'localtime'), "
          & "user_login, anonymous_user, "
          & "comment, "
-         & "(SELECT filename FROM photo WHERE id=comment.photo_id) "
+         & "(SELECT filename FROM photo WHERE id=comment.photo_id), has_voted "
          & " FROM comment, post_comment"
          & " WHERE post_id=" & To_String (Tid)
          & " AND post_comment.comment_id=comment.id");
@@ -441,6 +447,9 @@ package body V2P.Database is
            & DB.String_Vectors.Element (Line, 7);
          Filename      := Filename
            & DB.String_Vectors.Element (Line, 8);
+         Has_Voted     := Has_Voted
+           & DB.String_Vectors.Element (Line, 9);
+
 
          --  Unthreaded view
 
@@ -480,6 +489,9 @@ package body V2P.Database is
         (Set,
          Templates.Assoc
            (Block_Comments.NB_LEVELS_TO_CLOSE, Nb_Levels_To_Close));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Chunk_Comment.HAS_VOTED, Has_Voted));
 
       return Set;
    end Get_Comments;
@@ -1790,6 +1802,28 @@ package body V2P.Database is
          Filter_Cat => Filter_Cat,
          Forum      => Forum);
 
+      if Total_Lines = 0 then
+         --  Nothing to print. Avoid to return an empty page.
+         --  Insert a tag to display a message to the user telling him
+         --  that the requested search fail and has been replaced by another
+         --  filter.
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_Forum_Threads.NEW_FILTER, "NEW FILTER"));
+
+         if Filter /= All_Messages then
+            Restart_With_New_Filter : declare
+               New_Filter : constant Filter_Mode := Filter_Mode'Succ (Filter);
+            begin
+               Get_Threads
+                 (Fid, User, Admin, Forum, Page_Size, New_Filter, Filter_Cat,
+                  Order_Dir, Sorting, Only_Revealed, From, Mode, Navigation,
+                  Set, Nb_Lines, Total_Lines);
+               return;
+            end Restart_With_New_Filter;
+         end if;
+      end if;
+
       if Total_Lines < From then
          From := 1; -- ??? What should be done in this case ?
       end if;
@@ -1925,7 +1959,7 @@ package body V2P.Database is
       return Templates.Translate_Set
    is
       SQL        : constant String :=
-                     "SELECT pc.post_id, c.id, c.comment "
+                     "SELECT pc.post_id, c.id, c.comment, c.has_voted "
                        & "FROM comment AS c, post_comment AS pc, post AS p,"
                        & " user_post AS u "
                        & "WHERE c.user_login=" & Q (Uid)
@@ -1947,6 +1981,7 @@ package body V2P.Database is
       Post_Id    : Templates.Tag;
       Comment_Id : Templates.Tag;
       Comment    : Templates.Tag;
+      Has_Voted  : Templates.Tag;
 
       use type Templates.Tag;
 
@@ -1965,6 +2000,7 @@ package body V2P.Database is
          else
             Comment := Comment & DB.String_Vectors.Element (Line, 3);
          end if;
+         Has_Voted := Has_Voted & DB.String_Vectors.Element (Line, 4);
          Line.Clear;
       end loop;
 
@@ -1977,6 +2013,8 @@ package body V2P.Database is
          Templates.Assoc (Block_User_Comment_List.COMMENT_ID, Comment_Id));
       Templates.Insert
         (Set, Templates.Assoc (Block_User_Comment_List.COMMENT, Comment));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_User_Comment_List.HAS_VOTED, Has_Voted));
 
       return Set;
    end Get_User_Comment;

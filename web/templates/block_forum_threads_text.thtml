@@ -2,6 +2,10 @@
 @@--
 <p class="threads_page_info"></p>
 
+@@IF@@ @_NEW_FILTER_@ /= ""
+<p class="warning">@_BABEL_TRY_HARDER_TO_SEARCH_@</p>
+@@END_IF@@
+
 @@-- Navigation links
 <ul id="bftt_navigate">
   <li class="prev_link"
