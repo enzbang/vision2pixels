@@ -217,7 +217,7 @@ $(BUILD_DIR)/web/tsrc/v2p-template_defs.adb::
 
 web_lib:: $(BUILD_DIR)/web/tsrc/v2p-template_defs.adb bld-web/web
 
-DBNAME = v2p.db
+DBNAME = testing.db
 install_gwiad_plugin:: install_dirs db/data/$(DBNAME) web/tools/wmaint$(EXEEXT)
 	$(CP) db/data/$(DBNAME) $(ARGWIAD_ROOT)/plugins/vision2pixels/db
 	$(CP) web/tools/wmaint$(EXEXT) $(ARGWIAD_ROOT)/bin
