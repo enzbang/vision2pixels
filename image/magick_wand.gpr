@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2009                          --
+--                           Copyright (C) 2009                             --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,38 +19,13 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with "morzhol";
-with "../shared";
-with "../kernel/kernel";
+project Magick_Wand is
 
-with "magick_core";
-with "magick_wand";
+   for Source_Files use ();
 
-project Image is
+   for Library_Dir use "lib_ext";
+   for Library_Name use "MagickWand";
+   for Library_Kind use "static";
+   for Externally_Built use "true";
 
-   for Source_Dirs use ("src");
-   for Object_Dir use "obj";
-
-   for Library_Dir use "lib";
-   for Library_Name use "v2p_image";
-   for Library_Kind use "dynamic";
-
-   -------------
-   -- Builder --
-   -------------
-
-   package Builder renames Shared.Builder;
-
-   --------------
-   -- Compiler --
-   --------------
-
-   package Compiler renames Shared.Compiler;
-
-   ---------
-   -- Ide --
-   ---------
-
-   package Ide renames Shared.Ide;
-
-end Image;
+end Magick_Wand;

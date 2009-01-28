@@ -19,6 +19,7 @@ db/lib
 db/obj
 db/test/db_harness
 image/lib
+image/lib_ext/*.a
 image/test/image_harness
 image/test/images
 image/test/thumbs

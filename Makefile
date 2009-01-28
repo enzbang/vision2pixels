@@ -1,7 +1,7 @@
 ###########################################################################
 #                              Vision2Pixels
 #
-#                         Copyright (C) 2006-2008
+#                         Copyright (C) 2006-2009
 #                       Pascal Obry - Olivier Ramonat
 #
 #   This library is free software; you can redistribute it and/or modify
@@ -57,10 +57,13 @@ VERSION_ALL = $(shell git describe 2>/dev/null)
 
 uname_M := $(shell sh -c 'uname -m 2>/dev/null || echo not')
 
+LIBRARIES =
+
 ifeq (${OS},Windows_NT)
 	LIBEXT = .dll
 	EXEEXT = .exe
 	DISTRIB_OS = win32-$(uname_M)
+	LIBRARIES += ext_lib
 else
 	LIBEXT = .so
 	uname_S       := $(shell sh -c 'uname -s 2>/dev/null || echo not')
@@ -74,7 +77,6 @@ DISTRIB = $(shell pwd)/v2p-$(DISTRIB_OS)-$(VERSION_ALL)
 
 LOG := ${shell pwd}/log.${shell date +%Y%m%d-%H%M%S}
 
-LIBRARIES =
 LIBRARIES += web_lib
 
 GPR =
@@ -279,6 +281,8 @@ install-distrib:
 		$(shell basename $(DISTRIB))
 	$(RM) -r $(DISTRIB)
 
+ext_lib:
+	$(MAKE) -C image/lib_ext
 
 .PHONY: all install clean regtests regtests_image regtests_web regtests_db
 .PHONY: web/tools/wmaint$(EXEEXT)
