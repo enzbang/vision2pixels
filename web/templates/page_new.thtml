@@ -10,6 +10,16 @@
   rapports d'erreur ou des demandes de fonctionnalités. Le site ne peut
   évoluer sans vous.</p>
 
+<h2>Version 2.3 (février 2009)</h2>
+
+<p>Changement des critères du vote en Artistique / Technique.</p>
+
+<p>Plus de vote anonyme, un message "nom_utilisateur a voté" est ajouté
+  automatiquement.</p>
+
+<p>La plage de dates des filtres est étendue automatiquement si aucun
+  résultat n'est retourné.</p>
+
 <h2>Version 2.2.1 (novembre 2008)</h2>
 
 <p>Version corrective.</p>
