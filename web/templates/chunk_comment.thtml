@@ -15,10 +15,14 @@
   </span>
   <span class="user_name">
   @@IF@@ @_USER_@ /= ""
-    @@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@ or @_USER_@ /= @_OWNER_@
+    @@IF@@ @_USER_@ /= @_OWNER_@
        <a href="/~@_USER_@" >@_USER_@</a>
     @@ELSE@@
-      @_BABEL_THE_AUTHOR_@
+       @@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@
+          <a href="/~@_USER_@" >@_USER_@ (@_BABEL_THE_AUTHOR_@)</a>
+       @@ELSE@@
+          @_BABEL_THE_AUTHOR_@
+       @@END_IF@@
     @@END_IF@@
   @@ELSE@@
     <span class="anonymous">@_ANONYMOUS_USER_@</span>
