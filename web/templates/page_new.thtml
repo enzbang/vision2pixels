@@ -22,6 +22,9 @@
 
 <p>Une page permet de récupérer un mot de passe oublié.</p>
 
+<p>Correction d'un bug d'affichage des dernières images postées sur les
+   navigateurs basés sur WebKit (comme Opera et Google Chrome).</p>
+
 <h2>Version 2.2.1 (novembre 2008)</h2>
 
 <p>Version corrective.</p>
