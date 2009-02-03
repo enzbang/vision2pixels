@@ -731,6 +731,7 @@ ul.thumb_metadata {
 .small_nooverflowimage {
    display: table-cell;
    height: 130px;
+   width: 130px;
    vertical-align: middle;
 }
 .small_nooverflowimage *, .nooverflowimage * {

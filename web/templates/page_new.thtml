@@ -20,6 +20,9 @@
 <p>La plage de dates des filtres est étendue automatiquement si aucun
   résultat n'est retourné.</p>
 
+<p>Correction d'un bug d'affichage des dernières images postées sur les
+   navigateurs basés sur WebKit (comme Opera et Google Chrome).</p>
+
 <h2>Version 2.2.1 (novembre 2008)</h2>
 
 <p>Version corrective.</p>
