@@ -31,6 +31,7 @@
 @@SET@@ BABEL_EMAIL="e-mail"
 @@SET@@ BABEL_PASSWORD="password"
 @@SET@@ BABEL_REGISTER_ME="m'enregistrer"
+@@SET@@ BABEL_CREATE_ACCOUNT="Créer votre compte"
 @@SET@@ BABEL_LOGIN_EXISTS="Enregistrement impossible car le pseudo est déja pris"
 @@SET@@ BABEL_YOUR_PAGE="Votre page"
 @@SET@@ BABEL_SELECT_FORUM="Choisir un forum"
