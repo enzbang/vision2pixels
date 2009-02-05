@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2008                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -163,6 +163,10 @@ package V2P.Database is
    function Get_User_Data (Uid : in String) return User_Data;
    --  Returns the user's data. Returns the No_User_Data if User cannot be
    --  found into the database.
+
+   function Get_Password_From_Email (Email : in String) return String;
+   --  Returns the user's password from the given e-mail. Returns the empty
+   --  string if the Email cannot be found into the database.
 
    procedure Set_Last_Logged (Uid : in String);
    --  Set last logged status in the database
