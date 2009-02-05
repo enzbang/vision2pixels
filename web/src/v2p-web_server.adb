@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2008                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -84,6 +84,7 @@ with V2P.Template_Defs.Page_Forum_New_Text_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Google_Map_View;
 with V2P.Template_Defs.Page_Help;
+with V2P.Template_Defs.Page_Lost_Password;
 with V2P.Template_Defs.Page_Main;
 with V2P.Template_Defs.Page_New;
 with V2P.Template_Defs.Page_Photo_Post;
@@ -112,6 +113,7 @@ with V2P.Template_Defs.R_Block_Vote_Week_Photo;
 with V2P.Template_Defs.R_Context_Error;
 with V2P.Template_Defs.R_Page_Search;
 with V2P.Template_Defs.R_Page_User_Register;
+with V2P.Template_Defs.R_Page_Lost_Password;
 
 package body V2P.Web_Server is
 
@@ -738,6 +740,11 @@ package body V2P.Web_Server is
          null);
 
       Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Lost_Password.Set.URL,
+         Template_Defs.Page_Lost_Password.Template,
+         null);
+
+      Services.Web_Block.Registry.Register
         (Template_Defs.Page_New.Set.URL,
          Template_Defs.Page_New.Template,
          null);
@@ -937,6 +944,13 @@ package body V2P.Web_Server is
         (Template_Defs.Page_User_Register.Ajax.onsubmit_pur_register_user,
          Template_Defs.R_Page_User_Register.Template,
          Callbacks.Ajax.Onsubmit_Pur_Register_User'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Lost_Password.Ajax.onsubmit_plp_lost_password,
+         Template_Defs.R_Page_Lost_Password.Template,
+         Callbacks.Ajax.Onsubmit_Plp_Lost_Password'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

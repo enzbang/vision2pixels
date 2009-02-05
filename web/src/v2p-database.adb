@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2008                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -1153,6 +1153,42 @@ package body V2P.Database is
       Iter.End_Select;
       return Set;
    end Get_New_Post_Delay;
+
+   -----------------------------
+   -- Get_Password_From_Email --
+   -----------------------------
+
+   function Get_Password_From_Email (Email : in String) return String is
+      use type Templates.Tag;
+
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+   begin
+      if Email = "" then
+         return "";
+      end if;
+
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select
+        (Iter, "SELECT password FROM user WHERE email=" & Q (Email));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Password_Value : declare
+            Password : constant String := DB.String_Vectors.Element (Line, 1);
+         begin
+            Line.Clear;
+
+            return Password;
+         end Password_Value;
+
+      else
+         return "";
+      end if;
+   end Get_Password_From_Email;
 
    ---------------------------
    -- Get_Photo_Of_The_Week --
