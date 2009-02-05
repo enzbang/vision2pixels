@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2008                          --
+--                         Copyright (C) 2007-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -41,6 +41,7 @@ with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_New_Text_Entry;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Page_Search;
+with V2P.Template_Defs.Page_Lost_Password;
 with V2P.Template_Defs.Page_User_Register;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.Block_Login;
@@ -62,6 +63,7 @@ with V2P.Template_Defs.Chunk_Search_User;
 with V2P.Template_Defs.Chunk_Search_Comment;
 with V2P.Template_Defs.Chunk_Search_Post;
 with V2P.Template_Defs.Chunk_Search_Text_Post;
+with V2P.Template_Defs.Email_Lost_Password;
 with V2P.Template_Defs.Email_User_Validation;
 with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Login;
@@ -69,6 +71,7 @@ with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 with V2P.Template_Defs.R_Page_Search;
+with V2P.Template_Defs.R_Page_Lost_Password;
 with V2P.Template_Defs.R_Page_User_Register;
 with V2P.Template_Defs.R_Block_User_Preferences;
 with V2P.Template_Defs.Set_Values;
@@ -840,6 +843,64 @@ package body V2P.Callbacks.Ajax is
            (V2P.Template_Defs.Set_Global.ERROR_METADATA_WRONG_METADATA,
             "ERROR");
    end Onsubmit_Metadata_Form_Enter;
+
+   --------------------------------
+   -- Onsubmit_Plp_Lost_Password --
+   --------------------------------
+
+   procedure Onsubmit_Plp_Lost_Password
+     (Request      : in     Status.Data;
+      Context      : access Services.Web_Block.Context.Object;
+      Translations : in out Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      use Template_Defs;
+      P        : constant Parameters.List := Status.Parameters (Request);
+      Email    : constant String :=
+                   Parameters.Get
+                     (P, Page_Lost_Password.HTTP.USER_EMAIL);
+      Password : constant String :=
+                   Database.Get_Password_From_Email (Email);
+   begin
+      if Email = "" or else Password = "" then
+         --  Display error message
+         Templates.Insert
+           (Translations, Templates.Assoc (R_Page_Lost_Password.ERROR, True));
+         return;
+      end if;
+
+      --  Send the e-mail with the password
+
+      Send_Mail : declare
+         Localhost : constant SMTP.Receiver :=
+                       SMTP.Client.Initialize ("localhost");
+         Result    : SMTP.Status;
+         Set       : Templates.Translate_Set;
+      begin
+         Templates.Insert (Set, Templates.Assoc ("USER_PASSWORD", Password));
+
+         SMTP.Client.Send
+           (Server  => Localhost,
+            From    => SMTP.E_Mail ("V2P", "no-reply"),
+            To      => SMTP.E_Mail (Email, Email),
+            Subject => "Mot de passe Vision2Pixels",
+            Message => Templates.Parse
+              (Template_Defs.Email_Lost_Password.Template, Set),
+            Status  => Result);
+
+      exception
+         when others =>
+            Morzhol.Logs.Write
+              (Name    => Module,
+               Content =>
+               "(Onsubmit_Plp_Lost_Email) : sending e-mail failed for email "
+               & Email & ", password " & Password,
+               Kind    => Morzhol.Logs.Error);
+            Templates.Insert
+              (Translations,
+               Templates.Assoc (R_Page_Lost_Password.ERROR, True));
+      end Send_Mail;
+   end Onsubmit_Plp_Lost_Password;
 
    ------------------------------
    -- Onsubmit_Post_Form_Enter --
