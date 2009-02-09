@@ -31,6 +31,9 @@ GNATMAKE_OPTIONS  = -XPRJ_BUILD=$(MODE)
 VALGRIND          =
 TAR_DIR           = tar czf
 
+LMODE             = $(shell echo $(MODE) | tr [[:upper:]] [[:lower:]])
+
+
 # Install prefix
 GNAT_ROOT            = $(dir $(shell which gnatls))..
 DIOUZHTU_DYNAMIC_LIB = $(GNAT_ROOT)/share/diouzhtu/dlib
@@ -256,7 +259,7 @@ install_dirs:
 	$(CP) -f $(BUILD_DIR)/web/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/lib/websites
 	$(CP) image/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/bin
 	$(CP) kernel/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/bin
-	-$(CP) lib/gnadelite/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/bin
+	-$(CP) lib/gnadelite/.build/$(LMODE)/lib/*$(LIBEXT) $(ARGWIAD_ROOT)/bin
 	$(CP) -f $(DIOUZHTU_DYNAMIC_LIB)/*wiki_service$(LIBEXT) \
 		$(ARGWIAD_ROOT)/lib/services
 
