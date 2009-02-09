@@ -39,6 +39,8 @@ OPTIONS = INSTALL="$(INSTALL)" EXEXT="$(EXEXT)" MODE="$(MODE)" \
 	DIOUZHTU_DYNAMIC_LIB="$(DIOUZHTU_DYNAMIC_LIB)" \
 	DISTRIB="$(DISTRIB)"
 
+LMODE       = $(shell echo $(MODE) | tr [[:upper:]] [[:lower:]])
+
 # Version
 
 VERSION     = $(shell git describe --abbrev=0 2>/dev/null)
@@ -148,7 +150,7 @@ install_gwiad_plugin: install_db
 	$(CP) image/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) kernel/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) lib/g2f_io/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
-	$(CP) lib/gnadelite/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
+	$(CP) lib/gnadelite/.build/$(LMODE)/lib/*$(SOEXT) $(GWIAD_ROOT)/bin
 	$(CP) -f $(DIOUZHTU_DYNAMIC_LIB)/*wiki_service$(SOEXT) \
 		$(GWIAD_ROOT)/lib/services
 
