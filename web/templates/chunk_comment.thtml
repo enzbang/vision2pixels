@@ -25,8 +25,9 @@
        @@END_IF@@
     @@END_IF@@
   @@ELSE@@
-    <span class="anonymous">@_ANONYMOUS_USER_@</span>
+    <span class="anonymous">@_ANONYMOUS_USER_@
   @@END_IF@@
+    </span>
     </cite>
     @@IF@@ @_COMMENT_IMAGE_SOURCE_@ /= ""
       <div class="comment_photo">
