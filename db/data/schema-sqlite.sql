@@ -120,7 +120,10 @@ create table "post" (
 create trigger after_post_insert after insert on post
    begin
       update post
-         set last_comment_id=(select max(comment_id) from post_comment)
+         set last_comment_id=(select max(comment_id) from post_comment, comment
+                              where comment_id = comment.id
+                              and post_comment.comment_id = comment_id
+                              and comment.has_voted = "FALSE")
          where id = new.id;
       update forum
          set last_activity=datetime(current_timestamp)
@@ -144,7 +147,10 @@ create trigger after_post_comment_insert after insert on post_comment
       update post
          set comment_counter=comment_counter + 1,
              last_comment_id=new.comment_id
-         where id = new.post_id;
+         where id = (select post_id from comment, post_comment
+                     where post_comment.comment_id = new.comment_id
+                     and comment.id = post_comment.comment_id
+                     and comment.has_voted = "FALSE");
       update forum
          set last_activity=datetime(current_timestamp)
          where forum.id =
