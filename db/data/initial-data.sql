@@ -43,9 +43,8 @@ insert into category values (18, 4, 'Divers');
 
 --  Create criteria
 
-insert into criteria values (1, 'Composition');
-insert into criteria values (2, 'Focus');
-insert into criteria values (3, 'Lumière');
+insert into criteria values (1, 'Artistique');
+insert into criteria values (2, 'Technique');
 
 --  Create templates
 
