@@ -36,6 +36,7 @@ insert into category values (14, 1, 'Scène de rue');
 insert into category values (15, 1, 'Architecture/Monuments');
 insert into category values (16, 1, 'Sport');
 insert into category values (17, 1, 'Reportage');
+insert into category values (19, 1, 'Spectacle');
 
 insert into category values (10, 4, 'Bug');
 insert into category values (11, 4, 'Idée');
