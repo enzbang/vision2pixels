@@ -49,9 +49,9 @@ package body V2P.Callbacks.Page is
    -----------------
 
    procedure Forum_Entry
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       P           : constant Parameters.List := Status.Parameters (Request);
       TID         : constant Database.Id :=
@@ -176,9 +176,9 @@ package body V2P.Callbacks.Page is
    -------------------
 
    procedure Forum_Threads
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       P       : constant Parameters.List := Status.Parameters (Request);
       FID     : constant Database.Id :=
@@ -238,9 +238,9 @@ package body V2P.Callbacks.Page is
    ----------
 
    procedure Main
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Translations);
    begin
@@ -258,9 +258,9 @@ package body V2P.Callbacks.Page is
    ---------------------
 
    procedure New_Photo_Entry
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       use Ada;
       use Image.Data;
@@ -396,9 +396,9 @@ package body V2P.Callbacks.Page is
    ----------------
 
    procedure Post_Photo
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
       Login : constant String :=
@@ -424,9 +424,9 @@ package body V2P.Callbacks.Page is
    -------------------
 
    procedure Validate_User
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
       P     : constant Parameters.List := Status.Parameters (Request);

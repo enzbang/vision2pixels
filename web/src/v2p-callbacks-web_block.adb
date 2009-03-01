@@ -48,9 +48,9 @@ package body V2P.Callbacks.Web_Block is
    ---------
 
    procedure CdC
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Context);
    begin
@@ -62,9 +62,9 @@ package body V2P.Callbacks.Web_Block is
    --------------
 
    procedure Comments
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
    begin
@@ -83,9 +83,9 @@ package body V2P.Callbacks.Web_Block is
    ----------
 
    procedure Exif
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
       Tid : Database.Id;
@@ -107,9 +107,9 @@ package body V2P.Callbacks.Web_Block is
    ---------------------------
 
    procedure Forum_Category_Filter
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
    begin
@@ -134,9 +134,9 @@ package body V2P.Callbacks.Web_Block is
    ------------------------
 
    procedure Forum_Category_Set
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
    begin
@@ -160,9 +160,9 @@ package body V2P.Callbacks.Web_Block is
    ------------------
 
    procedure Forum_Filter
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
    begin
@@ -178,9 +178,9 @@ package body V2P.Callbacks.Web_Block is
    ----------------------------
 
    procedure Forum_Filter_Page_Size
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
    begin
@@ -198,9 +198,9 @@ package body V2P.Callbacks.Web_Block is
    ----------------
 
    procedure Forum_List
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
    begin
@@ -223,9 +223,9 @@ package body V2P.Callbacks.Web_Block is
    -----------------------------
 
    procedure Forum_Photo_List_Select
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Context);
    begin
@@ -239,9 +239,9 @@ package body V2P.Callbacks.Web_Block is
    ----------------
 
    procedure Forum_Sort
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
    begin
@@ -257,9 +257,9 @@ package body V2P.Callbacks.Web_Block is
    ----------------------------
 
    procedure Forum_Text_List_Select
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Context);
    begin
@@ -273,9 +273,9 @@ package body V2P.Callbacks.Web_Block is
    -------------------
 
    procedure Forum_Threads
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
       Page_Size : constant Navigation_Links.Page_Size :=
@@ -296,9 +296,9 @@ package body V2P.Callbacks.Web_Block is
    -------------------
 
    procedure Global_Rating
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
    begin
@@ -317,9 +317,9 @@ package body V2P.Callbacks.Web_Block is
    ------------------
 
    procedure Latest_Posts
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
       Admin : constant Boolean :=
@@ -337,9 +337,9 @@ package body V2P.Callbacks.Web_Block is
    ------------------
 
    procedure Latest_Users
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Context);
    begin
@@ -353,9 +353,9 @@ package body V2P.Callbacks.Web_Block is
    --------------
 
    procedure Metadata
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
       Tid : Database.Id;
@@ -408,9 +408,9 @@ package body V2P.Callbacks.Web_Block is
    -----------------
 
    procedure New_Comment
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
       use type Database.Forum_Type;
@@ -432,9 +432,9 @@ package body V2P.Callbacks.Web_Block is
    --------------
 
    procedure New_Post
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Translations);
    begin
@@ -448,9 +448,9 @@ package body V2P.Callbacks.Web_Block is
    --------------
 
    procedure New_Vote
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
       use AWS.Templates;
@@ -492,9 +492,9 @@ package body V2P.Callbacks.Web_Block is
    -----------------------
 
    procedure Photo_Of_The_Week
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Context);
    begin
@@ -506,9 +506,9 @@ package body V2P.Callbacks.Web_Block is
    -----------------------
 
    procedure Pref_Forum_Filter
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
       Login       : constant String :=
@@ -529,9 +529,9 @@ package body V2P.Callbacks.Web_Block is
    ---------------------------------
 
    procedure Pref_Forum_Filter_Page_Size
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
       Login       : constant String :=
@@ -552,9 +552,9 @@ package body V2P.Callbacks.Web_Block is
    ---------------------
 
    procedure Pref_Forum_Sort
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
       Login       : constant String :=
@@ -575,9 +575,9 @@ package body V2P.Callbacks.Web_Block is
    ---------------------
 
    procedure Pref_Image_Size
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
       Login       : constant String :=
@@ -598,9 +598,9 @@ package body V2P.Callbacks.Web_Block is
    -----------------
 
    procedure Quick_Login
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
    begin
@@ -618,9 +618,9 @@ package body V2P.Callbacks.Web_Block is
    -----------------------
 
    procedure User_Comment_List
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
       URI       : constant String := Status.URI (Request);
@@ -637,9 +637,9 @@ package body V2P.Callbacks.Web_Block is
    -----------------------
 
    procedure User_Message_List
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set) is
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set) is
    begin
       User_Post_List
         (Request, Context, Translations, Database.Forum_Text,
@@ -651,9 +651,9 @@ package body V2P.Callbacks.Web_Block is
    ---------------
 
    procedure User_Page
-     (Request      : in Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
       URI       : constant String := Status.URI (Request);
@@ -673,9 +673,9 @@ package body V2P.Callbacks.Web_Block is
    ---------------------
 
    procedure User_Photo_List
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set) is
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set) is
    begin
       User_Post_List
         (Request, Context, Translations, Database.Forum_Photo,
@@ -743,9 +743,9 @@ package body V2P.Callbacks.Web_Block is
    ----------------------------
 
    procedure User_Voted_Photos_List
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
       URI       : constant String := Status.URI (Request);
@@ -761,9 +761,9 @@ package body V2P.Callbacks.Web_Block is
    ---------------------
 
    procedure Vote_Week_Photo
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
    begin

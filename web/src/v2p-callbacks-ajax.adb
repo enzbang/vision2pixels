@@ -88,9 +88,9 @@ package body V2P.Callbacks.Ajax is
    -----------
 
    procedure Login
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       use type Database.User_Data;
       SID       : constant Session.Id := Status.Session (Request);
@@ -144,9 +144,9 @@ package body V2P.Callbacks.Ajax is
    ------------
 
    procedure Logout
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       SID : constant Session.Id := Status.Session (Request);
    begin
@@ -165,9 +165,9 @@ package body V2P.Callbacks.Ajax is
    ------------------------------------
 
    procedure Onchange_Category_Filter_Forum
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       package HTTP renames Template_Defs.Block_Forum_Category_Filter.HTTP;
 
@@ -200,9 +200,9 @@ package body V2P.Callbacks.Ajax is
    ---------------------------
 
    procedure Onchange_Category_Set
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Translations);
       package HTTP renames Template_Defs.Block_Forum_Category_Set.HTTP;
@@ -224,9 +224,9 @@ package body V2P.Callbacks.Ajax is
    ---------------------------
 
    procedure Onchange_Filter_Forum
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       package HTTP renames Template_Defs.Block_Forum_Filter.HTTP;
 
@@ -254,9 +254,9 @@ package body V2P.Callbacks.Ajax is
    -------------------------------------
 
    procedure Onchange_Filter_Forum_Page_Size
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       package HTTP renames Template_Defs.Block_Forum_Filter_Page_Size.HTTP;
 
@@ -285,9 +285,9 @@ package body V2P.Callbacks.Ajax is
    ------------------------------------------------
 
    procedure Onchange_Filter_Forum_Page_Size_Preference
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       package HTTP renames
         Template_Defs.Block_Pref_Forum_Filter_Page_Size.HTTP;
@@ -318,9 +318,9 @@ package body V2P.Callbacks.Ajax is
    --------------------------------------
 
    procedure Onchange_Filter_Forum_Preference
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       package HTTP renames Template_Defs.Block_Pref_Forum_Filter.HTTP;
 
@@ -347,9 +347,9 @@ package body V2P.Callbacks.Ajax is
    -------------------------------------
 
    procedure Onchange_Filter_Sort_Preference
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       package HTTP renames Template_Defs.Block_Pref_Forum_Sort.HTTP;
 
@@ -376,9 +376,9 @@ package body V2P.Callbacks.Ajax is
    -------------------------
 
    procedure Onchange_Forum_List
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       package HTTP renames Template_Defs.Chunk_Forum_List_Select.HTTP;
       P   : constant Parameters.List := Status.Parameters (Request);
@@ -398,9 +398,9 @@ package body V2P.Callbacks.Ajax is
    -------------------------
 
    procedure Onchange_Forum_Sort
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       package HTTP renames Template_Defs.Block_Forum_Sort.HTTP;
       P    : constant Parameters.List := Status.Parameters (Request);
@@ -469,9 +469,9 @@ package body V2P.Callbacks.Ajax is
    ------------------------------------
 
    procedure Onchange_Image_Size_Preference
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       package HTTP renames Template_Defs.Block_Pref_Image_Size.HTTP;
 
@@ -506,9 +506,9 @@ package body V2P.Callbacks.Ajax is
    ----------------------------
 
    procedure Onclick_Goto_Next_Page
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
       use Template_Defs;
@@ -550,9 +550,9 @@ package body V2P.Callbacks.Ajax is
    --------------------------------
 
    procedure Onclick_Goto_Previous_Page
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
       use Template_Defs;
@@ -590,9 +590,9 @@ package body V2P.Callbacks.Ajax is
    ----------------------------------
 
    procedure Onclick_Hidden_Status_Toggle
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
       TID : constant Database.Id := V2P.Context.Counter.Get_Value
@@ -607,9 +607,9 @@ package body V2P.Callbacks.Ajax is
    -----------------------------
 
    procedure Onclick_Vote_Week_Photo
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Translations);
       Login : constant String :=
@@ -627,9 +627,9 @@ package body V2P.Callbacks.Ajax is
    ---------------------------------
 
    procedure Onsubmit_Comment_Form_Enter
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       use Template_Defs;
 
@@ -760,9 +760,9 @@ package body V2P.Callbacks.Ajax is
    ----------------------------------
 
    procedure Onsubmit_Metadata_Form_Enter
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Translations);
       use Image.Metadata.Geographic;
@@ -848,9 +848,9 @@ package body V2P.Callbacks.Ajax is
    --------------------------------
 
    procedure Onsubmit_Plp_Lost_Password
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
       use Template_Defs;
@@ -906,9 +906,9 @@ package body V2P.Callbacks.Ajax is
    ------------------------------
 
    procedure Onsubmit_Post_Form_Enter
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       use Template_Defs;
 
@@ -1030,9 +1030,9 @@ package body V2P.Callbacks.Ajax is
    --------------------------------
 
    procedure Onsubmit_Pur_Register_User
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Context);
       use Template_Defs;
@@ -1101,9 +1101,9 @@ package body V2P.Callbacks.Ajax is
    -------------------
 
    procedure Onsubmit_Rate
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       use Template_Defs;
 
@@ -1137,9 +1137,9 @@ package body V2P.Callbacks.Ajax is
    --------------------------
 
    procedure Onsubmit_Search_Form
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       P                   : constant Parameters.List :=
                               Status.Parameters (Request);
@@ -1300,9 +1300,9 @@ package body V2P.Callbacks.Ajax is
    ----------------------------------------
 
    procedure Onsubmit_User_Page_Edit_Form_Enter
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
-      Translations : in out Templates.Translate_Set)
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
    is
       use Template_Defs;
 
