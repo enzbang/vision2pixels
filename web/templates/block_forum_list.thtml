@@ -2,7 +2,7 @@
 @@--
 @@-- HTTP_GET(FROM)
 @@--
-<ul id="bfl_navcontainer">
+<ul class="bfl_navcontainer">
   <li class="index"><a href="/">@_BABEL_V2P_WEBSITE_NAME_@</a></li>
   @@TABLE@@
   <li class="fc_@_FID_@">
@@ -11,8 +11,8 @@
       @@IF@@ @_FID_@ = @_Current_FID_@
       class="selected"
       @@END_IF@@
-    href="@_FORUM_THREAD_URL_@?FID=@_FID_@&FROM=1">@_FORUM_NAME_@</a>
-    <span id="bfl_timestamp">
+    href="@_FORUM_THREAD_URL_@?FID=@_FID_@&amp;FROM=1">@_FORUM_NAME_@</a>
+    <span class="timestamp">
     @@IF@@ @_F_DATE_@ = @_FORMAT_DATE("%Y-%m-%d"):NOW_@
     (@_SLICE(1..5):F_TIME_@)
     @@ELSE@@

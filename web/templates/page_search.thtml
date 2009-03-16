@@ -19,7 +19,8 @@
       <input type="checkbox" name="@_SET_SNAME_@" value="@_SET_SN_USERS_@">@_BABEL_USERS_@</input>
       <input type="checkbox" name="@_SET_SNAME_@" value="@_SET_SN_POSTS_@" checked="true"/>@_BABEL_PHOTOS_@</input>
       <input type="checkbox" name="@_SET_SNAME_@" value="@_SET_SN_COMMENTS_@"/>@_BABEL_COMMENTS_@</input>
-
+    </p>
+    <p>
       <input name="PATTERN" id="ps_pattern" type="entry" value=""/>
 
       <input type="submit" name="user" value="@_BABEL_SEARCH_@"/>

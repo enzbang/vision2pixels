@@ -60,7 +60,7 @@ entrant directement la latitude et la longitude.</p>
 <h2>A suivre...</h2>
 
 <p>Nous souhaitons apporter de nombreuses améliorations : </p>
-<ul>
+<ul class="squarelist">
 <li>Plus de flux RSS/Atom pour suivre l'actualité.</li>
 <li>La notification de nouveaux commentaires sur ces propres photographies ou
 sur les photographies "bookmarquées".</li>
@@ -77,5 +77,5 @@ sur les photographies "bookmarquées".</li>
 <a href="http://en.wikipedia.org/wiki/Ada_(programming_language)"
    target="_blank">Ada</a> avec
 <a href="http://libre.adacore.com/aws/" target="_blank">AWS</a> et
-<a href="http://repo.or.cz/w/gwiad.git" target="_blank">Gwiad</a><p>
+<a href="http://repo.or.cz/w/gwiad.git" target="_blank">Gwiad</a></p>
 @@INCLUDE@@ chunk_v2p_end.thtml

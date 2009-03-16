@@ -7,7 +7,7 @@
     <span class="small_imgcontainer">
       <span class="small_outernooverflow">
         <span class="small_nooverflowimage">
-          <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@&From_Main=True">
+          <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=True">
             <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
           </a>
         </span>

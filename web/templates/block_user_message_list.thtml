@@ -1,6 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-<h2>@_BABEL_LAST_USER_MESSAGES_@</h2>
+<h2 class="clear">@_BABEL_LAST_USER_MESSAGES_@</h2>
 @@--
 <div id="buml_content">
 @@INCLUDE@@ chunk_threads_text_list.thtml

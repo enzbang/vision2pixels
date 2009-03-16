@@ -47,6 +47,11 @@
       <textarea name="global_comment_input"
                 id="global_comment_input"></textarea>
     </p>
+    <p>
+      <input name="ENTER" id="bnc_comment_form_enter" type="submit" value="Envoyer"/>
+    </p>
+    <p id="bnc_new_comment_error"></p>
+    @@--    <p><input name="FILENAME" type="file"/>
     <p class="help_formatting"><a href="#comment_formatting" class="link"
                                   rel="bnc_comment_formatting_block" id="bnc_formatting_toggle">Voir la syntaxe</a></p>
     <div id="bnc_comment_formatting_block" style="display:none">
@@ -63,11 +68,6 @@
         </dd>
       </dl>
     </div>
-    <p>
-      <input name="ENTER" id="bnc_comment_form_enter" type="submit" value="OK"/>
-    </p>
-    <p id="bnc_new_comment_error"></p>
-    @@--    <p><input name="FILENAME" type="file"/>
   </fieldset>
 </form>
 @@ELSE@@
