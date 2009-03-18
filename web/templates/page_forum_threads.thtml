@@ -3,7 +3,7 @@
 @@--
 @@SET@@ SET_URL = /forum/threads
 @@--
-@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_THREAD_LIST_@ forum_threads yui-t7
+@@INCLUDE@@ chunk_v2p_top.thtml "@_BABEL_V2P_SMALL_WEBSITE_NAME_@ - @_FORUM_NAME_@" forum_threads yui-t7
 @@--
 @@--  FILTERS
 <div id="pft_filters">

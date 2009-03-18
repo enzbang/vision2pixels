@@ -12,7 +12,7 @@
 @@END_IF@@
 
 @@IF@@ @_NAME_@ /=""
-@@INCLUDE@@ chunk_v2p_top.thtml @_NAME_@ @_BODY_CLASS_@ yui-t7
+@@INCLUDE@@ chunk_v2p_top.thtml "@_BABEL_V2P_SMALL_WEBSITE_NAME_@ - @_NAME_@" @_BODY_CLASS_@ yui-t7
 @@--
 @@-- Top Navigation links
 @@INCLUDE@@ chunk_navlink.thtml
