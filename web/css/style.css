@@ -825,8 +825,13 @@ div#pft_filters div select option {
     font-weight: bold;
 }
 
+#bl_login_form label {
+    padding: 2px 0;
+}
+
 #cvt_lazy_login form, #cvt_lazy_login fieldset {
     border: none;
+    width: 15em;
 }
 
 #cvt_lazy_login a {
