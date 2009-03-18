@@ -661,7 +661,12 @@ ul#bucl_lastusercommentlist li a {
 ul#bucl_lastusercommentlist li a em {
     color: #ddd;
     font-size:1.1em;
-    display: block;
+    float: left;
+    width: 10%;
+}
+ul#bucl_lastusercommentlist li a span.commenttext {
+    float: left;
+    width: 90%;
 }
 
 #pfe_mainbox {
