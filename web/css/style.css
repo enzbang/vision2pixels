@@ -234,17 +234,21 @@ iframe {
 }
 
 .nooverflowimage {
-   display: table-cell;
-   width: 150px;
-   height: 150px;
-   text-align: center;
-   vertical-align: middle;
+    display: table-cell;
+    width: 150px;
+    height: 150px;
+    /* line-height is a hack for IE7 vertical-align */
+    line-height: 150px;
+    text-align: center;
+    vertical-align: middle;
 }
 .small_nooverflowimage {
-   display: table-cell;
-   height: 130px;
-   width: 130px;
-   vertical-align: middle;
+    display: table-cell;
+    height: 130px;
+    width: 130px;
+    /* line-height is a hack for IE7 vertical-align */
+    line-height: 130px;
+    vertical-align: middle;
 }
 
 .small_nooverflowimage *,
@@ -252,13 +256,13 @@ iframe {
     vertical-align:middle;
 }
 .thumbs {
-   float: left;
-   width:200px;
-   height:250px;
-   text-align: center;
-   margin: 15px 30px;
-   overflow:hidden;
-   display:inline;
+    float: left;
+    width:200px;
+    height:250px;
+    text-align: center;
+    margin: 15px 30px;
+    overflow:hidden;
+    display:inline;
 }
 
 .thumbs a {
@@ -928,11 +932,10 @@ body.help #cvt_main {
 
 
 body.main h1 {
-    margin-left: 14.575%;
     font-size: 3em;
     color: #CBCBFF;
-    margin-top: 0.6em;
-    margin-bottom: 0.6em;
+    margin: 0 0 0 14.575%;
+    padding: 0.6em 0 1em 0;
 }
 
 body.main h2 {
