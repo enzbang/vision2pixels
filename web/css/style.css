@@ -150,6 +150,17 @@ input[type="password"] {
     -moz-border-radius: 2px;
 }
 
+.up {
+    top: -3em;
+    position: relative;
+    float: right;
+    width: 5em;
+}
+
+.up a {
+    color: #444;
+}
+
 .theader {
     font-weight: bold;
     color: #999999;
