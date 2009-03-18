@@ -392,6 +392,7 @@ ul.thumb_metadata {
     background-color: #222;
     padding: 2em;
     text-align: left;
+    max-width: 1000px;
 }
 #pfe_lazy_global_rating {
   padding-bottom: 1em;
