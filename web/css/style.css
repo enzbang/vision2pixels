@@ -58,7 +58,7 @@ select {
     margin-right:1em;
 }
 dl.table-display {
-    width: 500px;
+    width: 540px;
     margin: 2em 0;
     padding: 0;
     font-family: georgia, times, serif;
@@ -67,7 +67,6 @@ dl.table-display {
 .table-display dt {
     width: 220px;
     float: left;
-    margin: 0 0 0 0;
     padding: .5em;
     border-top: 1px solid #000;
     font-weight: bold;
@@ -82,6 +81,17 @@ dl.table-display {
     padding: .5em;
     border-top: 1px solid #000;
 }
+
+.exif dt {
+    font-size: 0.9em;
+    margin: 0 0 0 80px;
+    padding: 1px;
+}
+.exif dd {
+    font-size: 1em;
+    padding: 1px;
+}
+
 
 .errorinline {
     font-size: 1.3em;
@@ -604,9 +614,9 @@ h2#pfe_comments_section {
 }
 
 #pfe_image_infos td {
-    width: 220px;
-    padding-right: 0.5em;
+    width: 138px;
     margin: 0;
+    padding: 0 0 0 80px;
     height: 1.5em;
 }
 #pm_cdc {
