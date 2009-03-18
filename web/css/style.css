@@ -949,6 +949,9 @@ body.help #cvt_main {
     -moz-border-radius:4px;
     line-height: 1.5em;
 }
+body.user_page #cvt_main {
+    width: 80%;
+}
 
 
 body.main h1 {
