@@ -470,11 +470,16 @@ table.forum_text th {
 
 }
 table.forum_text td {
-    background-color:#333333;
     border: 1px solid #303030;
-    color:#AAAAAA;
     padding: 0.1em 1em;
     vertical-align: middle;
+}
+table.forum_text tr {
+    background-color:#333333;
+    color:#AAAAAA;
+}
+table.forum_text tr.table_line_1 {
+    background-color:#393939;
 }
 
 #pm_presentation p {
