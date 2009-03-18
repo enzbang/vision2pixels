@@ -7,13 +7,13 @@
 @@END_IF@@
 
 @@-- Navigation links
-<ul id="bftt_navigate">
+<ul id="bftt_navigate" class="pagination">
   <li class="prev_link"
   @@IF@@ @_NAV_FROM_@ = 1
   style="visibility:hidden"
   @@END_IF@@
   >
-    <a href="#" id="bftt_goto_previous_page">@_BABEL_PREVIOUS_PAGE_@</a>
+    <a href="#" id="bftt_goto_previous_page" title="@_BABEL_PREVIOUS_PAGE_@">&lt;</a>
   </li>
   @@IF@@ @_TOTAL_NB_THREADS_@ /= 0
   <li class="nav_info">@_NAV_FROM_@ .. @_SUB(1):ADD(NB_LINE_RETURNED):NAV_FROM_@ / @_TOTAL_NB_THREADS_@</li>
@@ -23,7 +23,7 @@
      style="visibility:hidden"
   @@END_IF@@
   >
-    <a href="#" id="bftt_goto_next_page">@_BABEL_NEXT_PAGE_@</a>
+    <a href="#" id="bftt_goto_next_page" title="@_BABEL_NEXT_PAGE_@">&gt;</a>
   </li>
 
 </ul>

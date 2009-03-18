@@ -905,6 +905,12 @@ fieldset#pfnpe_mandatory_fields input[type="entry"],
     text-align: center;
     margin: 0 auto;
 }
+ul#bftt_navigate,
+ul#bft_navigate {
+    text-align: right;
+    padding: 0 1em 0 0;
+}
+
 ul#bft_navigate li, ul#pfe_navigate li, ul#pfe_navigate_bottom li, ul#bftt_navigate li {
    display:inline;
    font-variant:small-caps;
