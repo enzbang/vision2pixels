@@ -640,8 +640,9 @@ h2#pfe_comments_section {
     padding: 0.5em 0 0;
 }
 
+#pfe_cdc a,
 #pm_cdc a {
-    color: #CBCBFF;
+    color: #FA5858;
     border: none;
 }
 
