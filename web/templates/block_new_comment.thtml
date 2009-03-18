@@ -57,7 +57,7 @@
     <div id="bnc_comment_formatting_block" style="display:none">
       <dl class="bnc_comment_formatting">
         <dt>_italique_</dt>
-        <dd>italique</dd>
+        <dd><i>italique</i></dd>
         <dt>*strong*</dt>
         <dd><strong>strong</strong></dd>
         <dt>bq. une citation <strong class='emptyligne'>[ligne vide]</strong></dt>
