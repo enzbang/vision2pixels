@@ -933,6 +933,16 @@ ul#pfe_navigate_bottom li a:hover {
    color:#fff;
 }
 
+#bvwp_vote_week_photo {
+    padding: 1em;
+}
+
+#bvwp_vote_week_photo a {
+    font-style: italic;
+    color: #FA5858;
+    border: none;
+}
+
 /* overwrite placement */
 
 div#pfe_lazy_new_comment label,
