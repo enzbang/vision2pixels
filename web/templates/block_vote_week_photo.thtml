@@ -1,13 +1,13 @@
-@@-- @@INCLUDE@@ set_babel.thtml
+ @@INCLUDE@@ set_babel.thtml
+
+@@IF@@ @_LOGIN_@ /= "" and @_OWNER_@ /= @_LOGIN_@
+  <div id="bvwp_vote_week_photo">
+  @@IF@@ @_HAS_USER_VOTE_@
+     <a id="bvwp_vote_button" href="#">@_BABEL_RESET_VOTE_WEEK_PHOTO_@</a>
+  @@ELSE@@
+     <a id="bvwp_vote_button" href="#">@_BABEL_SET_VOTE_WEEK_PHOTO_@</a>
+  @@END_IF@@
+  </div>
+@@END_IF@@
 @@--
-@@--@@IF@@ @_LOGIN_@ /= "" and @_OWNER_@ /= @_LOGIN_@
-@@--  <div id="bvwp_vote_week_photo">
-@@--  @@IF@@ @_HAS_USER_VOTE_@
-@@--     <a id="bvwp_vote_button" href="#">@_BABEL_RESET_VOTE_WEEK_PHOTO_@</a>
-@@--  @@ELSE@@
-@@--     <a id="bvwp_vote_button" href="#">@_BABEL_SET_VOTE_WEEK_PHOTO_@</a>
-@@--  @@END_IF@@
-@@--  </div>
-@@--@@END_IF@@
-@@--@@--
-@@--@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bvwp_vote_button)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bvwp_vote_button)
