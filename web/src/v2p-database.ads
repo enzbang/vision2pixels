@@ -313,6 +313,9 @@ package V2P.Database is
       Image_Size : in Database.Image_Size);
    --  Set image size preference for the given user
 
+   function Get_Stats return Templates.Translate_Set;
+   --  Returns global stats used in main page
+
 private
 
    No_User_Data : constant User_Data :=

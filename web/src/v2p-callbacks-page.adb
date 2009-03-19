@@ -251,6 +251,8 @@ package body V2P.Callbacks.Page is
       if Context.Exist (Template_Defs.Set_Global.FID) then
          Context.Remove (Template_Defs.Set_Global.FID);
       end if;
+
+      Templates.Insert (Translations, Database.Get_Stats);
    end Main;
 
    ---------------------

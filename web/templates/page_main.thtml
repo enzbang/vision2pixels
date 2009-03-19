@@ -22,9 +22,9 @@
 
          <p>Quelques chiffres après la première année d'activité:</p>
          <ul class="squarelist">
-           <li>208 inscrits</li>
-           <li>675 photographies postées</li>
-           <li>4559 commentaires (soit 6 commentaires par photographie en moyenne)</li>
+           <li>@_NB_USERS_@ inscrits</li>
+           <li>@_NB_PHOTOS_@ photographies postées</li>
+           <li>@_NB_COMMENTS_@ commentaires (soit @_"/"(NB_PHOTOS):NB_COMMENTS_@ commentaires par photographie en moyenne)</li>
            <li>18 000 lignes de code (2 développeurs)</li>
          </ul>
          <p><a class="help" href="/help">En savoir plus</a></p>
