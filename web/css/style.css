@@ -1001,12 +1001,24 @@ body.main #pm_show_forum_list li span.timestamp,
 body.main #pm_show_forum_list li.index {
     display: none;
 }
+body.main #pm_show_forum_list li.copyright {
+    display: inline !important;
+    padding: 0 3em 0 0;
+}
 body.main #pm_show_forum_list li {
-    font-size: 1.6em;
-    padding: 1em;
+    font-size: 1em;
+    padding: 0em;
+    margin: 0;
 }
 body.main #pm_show_forum_list li:hover a {
     color: #eee;
+}
+body.main #pm_show_forum_list li:after {
+    content: '|';
+}
+body.main #pm_show_forum_list li.copyright:after,
+body.main #pm_show_forum_list li.last:after {
+    content: '';
 }
 
 
