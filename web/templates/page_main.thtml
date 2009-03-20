@@ -10,10 +10,10 @@
       <a href="#" id="pm_show_rel_login" rel="cvt_lazy_login">Se connecter</a> ou <a href="/register_user">s'incrire gratuitement</a>
       @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, pm_show_rel_login, V2P.Tools.toggle_show_hide_rel)
    </div>
-   <h1>Vision2Pixels</h1> 
 
    <div id="pm_presentation" class="column-2"> 
       <div class="box">
+         <h1>Vision2Pixels</h1>
          <h2>Un club photo sur toile</h2>
          <p>Vision2pixels est un site communautaire autour de la critique
          photographique.</p>
@@ -30,15 +30,14 @@
          <p><a class="whatsnew" href="/new">Nouveautés !</a></p>
       </div>
 
-      <div class="box">
-         <h2>Derniers inscrits</h2>
-         @_LAZY_LATEST_USERS_@
-         <p><a class="link" title="S'inscrire" href="/register_user">Et vous ?</a></p>
-      </div>
    </div>
    <div id="pm_photo_of_the_week" class="column-2 last">
      <p>@_LAZY_PHOTO_OF_THE_WEEK_@</p>
      <p id="pm_cdc" class="clear"><a href="/cdc" class="link">@_BABEL_CDC_@&nbsp;&hearts;</a></p>
+      <div class="box2">
+         <h2>Derniers inscrits</h2>
+         @_LAZY_LATEST_USERS_@
+      </div>
    </div>
 
    <div id="pm_latest_posts" class="clear">
@@ -53,9 +52,6 @@
    <div id="pm_message_area">
       @@INCLUDE@@ chunk_message_area.thtml
    </div>
-   <div id="pm_show_forum_list" class="clear">
-      @_LAZY_FORUM_LIST_@
-   </div>
 </div>
 
 @@--
@@ -63,4 +59,4 @@
   @_V2P_ERROR_@
 @@END_IF@@
 @@--
-@@INCLUDE@@ chunk_v2p_end.thtml
+@@INCLUDE@@ chunk_v2p_end.thtml add_copyright_footer

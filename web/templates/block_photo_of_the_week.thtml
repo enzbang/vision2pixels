@@ -1,3 +1,7 @@
+
 <a href="@_FORUM_ENTRY_URL_@?TID=@_PHOTO_OF_THE_WEEK_URL_@&amp;From_Main=True" title="Score @_PHOTO_OF_THE_WEEK_SCORE_@">
-  <img alt="Photo of the week" src="@_IMAGE_SOURCE_PREFIX_@/@_PHOTO_OF_THE_WEEK_IMG_SOURCE_@" />
+  <img
+  style="width:@_DIV(2):PHOTO_OF_THE_WEEK_WIDTH_@px;
+         height:@_DIV(2):PHOTO_OF_THE_WEEK_HEIGHT_@px;"
+  alt="Photo of the week" src="@_IMAGE_SOURCE_PREFIX_@/@_PHOTO_OF_THE_WEEK_IMG_SOURCE_@" />
 </a>
