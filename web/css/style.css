@@ -1042,6 +1042,11 @@ body.search_page h2 {
     margin: 2em 0;
 }
 
+body.forum_txt_entry #pfe_entry_page {
+    max-width: 1000px;
+    width: 70%;
+    margin: 0 auto;
+}
 
 /* for admin only */
 

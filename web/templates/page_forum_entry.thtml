@@ -5,11 +5,18 @@
 @@INCLUDE@@ set_values.incl
 @@SET@@ SET_URL = /forum/entry
 @@--
+@@IF@@ @_IMAGE_SOURCE_@ /= ""
+@@SET@@ BODY_CLASS = forum_img_entry
+@@ELSE@@
+@@SET@@ BODY_CLASS = forum_txt_entry
+@@END_IF@@
+
 @@IF@@ @_NAME_@ /=""
-@@INCLUDE@@ chunk_v2p_top.thtml @_NAME_@ forum_entry yui-t7
+@@INCLUDE@@ chunk_v2p_top.thtml @_NAME_@ @_BODY_CLASS_@ yui-t7
 @@--
 @@-- Top Navigation links
 @@INCLUDE@@ chunk_navlink.thtml
+<div id="pfe_entry_page">
 
 @@IF@@ @_IMAGE_SOURCE_@ /= ""
   @@IF@@ @_PREF_IMAGE_SIZE_@ = @_SET_MAX_SIZE_@
@@ -134,6 +141,7 @@
     <li>&nbsp;</li>
     @@END_IF@@
   </ul>
+</div>
 </div>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, pfe_hidden_status_toggle)
