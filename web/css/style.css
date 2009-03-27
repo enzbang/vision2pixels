@@ -588,6 +588,13 @@ h2#pfe_comments_section {
     text-decoration:none;
 }
 
+#pfe_comments li.comment {
+    border-left:2px solid #69ADE0 !important;
+}
+#pfe_comments li.comment cite a {
+    color: #69ADE0;
+}
+
 #pfe_comments li.type_author {
     border-left:2px solid #E0E0FF;
 }
@@ -602,13 +609,6 @@ h2#pfe_comments_section {
 
 #pfe_comments li.type_you cite a {
     color: #333333;
-}
-
-#pfe_comments li.comment {
-    border-left:2px solid #69ADE0 !important;
-}
-#pfe_comments li.comment cite a {
-    color: #69ADE0;
 }
 
 #pfe_comments li.pfe_has_voted {
