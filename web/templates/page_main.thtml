@@ -6,10 +6,12 @@
 
 <div id="pm_main_content">
 
+   @@IF@@ @_LOGIN_@ = ""
    <div id="pm_register">
       <a href="#" id="pm_show_rel_login" rel="cvt_lazy_login">Se connecter</a> ou <a href="/register_user">s'incrire gratuitement</a>
       @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, pm_show_rel_login, V2P.Tools.toggle_show_hide_rel)
    </div>
+   @@END_IF@@
 
    <div id="pm_presentation" class="column-2"> 
       <div class="box">
