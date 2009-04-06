@@ -37,6 +37,7 @@ with V2P.User_Validation;
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
+with V2P.Template_Defs.Page_Main;
 with V2P.Template_Defs.Chunk_Comment;
 with V2P.Template_Defs.Chunk_Forum_Category;
 with V2P.Template_Defs.Chunk_Threads_List;
@@ -1455,6 +1456,53 @@ package body V2P.Database is
 
       return Set;
    end Get_Post;
+
+   ---------------
+   -- Get_Stats --
+   ---------------
+
+   function Get_Stats return Templates.Translate_Set is
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Set  : Templates.Translate_Set;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "SELECT COUNT(DISTINCT user.login), COUNT(DISTINCT photo.id)"
+         & " FROM user, photo");
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Page_Main.NB_USERS, DB.String_Vectors.Element (Line, 1)));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Page_Main.NB_PHOTOS, DB.String_Vectors.Element (Line, 2)));
+      end if;
+
+      Iter.End_Select;
+
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "SELECT SUM(post.comment_counter) FROM post WHERE post.photo_id!=0");
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Page_Main.NB_COMMENTS, DB.String_Vectors.Element (Line, 1)));
+      end if;
+
+      Iter.End_Select;
+
+      return Set;
+   end Get_Stats;
 
    -----------------
    -- Get_Threads --
