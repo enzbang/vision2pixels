@@ -561,6 +561,7 @@ h2#pfe_comments_section {
     margin:2ex;
     margin-bottom:2em;
     padding:1ex;
+    width: 100%;
 }
 
 #pfe_comments li.comment img {
@@ -1001,16 +1002,20 @@ body.main h2 {
     padding: 0.6em 0 0.3em 0;
 }
 
-body.main #pm_show_forum_list ul {
-    position: relative;
-    text-align: center;
-    display:block;
-    width: 50em;
+body.main #pm_show_forum_list {
     clear: both;
-    font-style: italic;
-    margin: 1em 0 0 -25em;
+    position: absolute;
+    text-align: center;
     left: 50%;
+    width: 50em;
+    margin-left: -25em;
+}
+
+body.main #pm_show_forum_list ul {
+    text-align: left;
+    font-style: italic;
     line-height: 4em;
+    margin: 1em 0 0;
     border-bottom: thin solid #bbb;
 }
 body.main #pm_show_forum_list li span.timestamp,
