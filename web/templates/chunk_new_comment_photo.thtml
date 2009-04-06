@@ -6,11 +6,11 @@
 @@--
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html class="transparent" xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <link media="screen" type="text/css" rel="stylesheet" href="/css/style.css"/>
 </head>
-<body>
+<body class="transparent">
 @@IF@@ @_V2P_ERROR_@ /= ""
   @@IF@@ @_V2P_ERROR_@ = @_EXCEED_MAXIMUM_IMAGE_DIMENSION_@
     <p class="error_small">@_BABEL_WARN_EXCEED_MAX_DIMENSION_@</p>
@@ -19,7 +19,7 @@
   @@END_IF@@
 @@ELSE@@
 @@IF@@ @_IMAGE_SOURCE_@ /= ""
-<img src='@_THUMB_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@' />
+<img alt="Posted image" src='@_THUMB_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@' />
 @@END_IF@@
 @@END_IF@@
 @@--

@@ -2,17 +2,22 @@
 @@--
 @@-- HTTP_GET(FROM)
 @@--
-<ul id="bfl_navcontainer">
+<ul class="bfl_navcontainer">
+  <li class="copyright" style="display: none;" >© Vision2Pixels Team, 2008-2009</li>
   <li class="index"><a href="/">@_BABEL_V2P_WEBSITE_NAME_@</a></li>
   @@TABLE@@
-  <li class="fc_@_FID_@">
+  <li class="fc_@_FID_@
+  @@IF@@ @_TABLE_LINE_@ = @_FID'Length_@
+  last
+  @@END_IF@@
+  ">
     @@INLINE@@
     <a
       @@IF@@ @_FID_@ = @_Current_FID_@
       class="selected"
       @@END_IF@@
-    href="@_FORUM_THREAD_URL_@?FID=@_FID_@&FROM=1">@_FORUM_NAME_@</a>
-    <span id="bfl_timestamp">
+    href="@_FORUM_THREAD_URL_@?FID=@_FID_@&amp;FROM=1">@_FORUM_NAME_@</a>
+    <span class="timestamp">
     @@IF@@ @_F_DATE_@ = @_FORMAT_DATE("%Y-%m-%d"):NOW_@
     (@_SLICE(1..5):F_TIME_@)
     @@ELSE@@

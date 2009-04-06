@@ -5,120 +5,106 @@
 @@INCLUDE@@ set_values.incl
 @@SET@@ SET_URL = /forum/entry
 @@--
+@@IF@@ @_IMAGE_SOURCE_@ /= ""
+@@SET@@ BODY_CLASS = forum_img_entry
+@@ELSE@@
+@@SET@@ BODY_CLASS = forum_txt_entry
+@@END_IF@@
+
 @@IF@@ @_NAME_@ /=""
-@@INCLUDE@@ chunk_v2p_top.thtml @_NAME_@ forum_entry yui-t7
+@@INCLUDE@@ chunk_v2p_top.thtml @_NAME_@ @_BODY_CLASS_@ yui-t7
 @@--
+@@-- Top Navigation links
+@@INCLUDE@@ chunk_navlink.thtml
+<div id="pfe_entry_page">
 
-<div id="pfe_image_block">
-  @@-- Top Navigation links
-  <ul id="pfe_navigate">
-
-    @@IF@@ @_PREVIOUS_@ /= "0"
-    <li class="prev_link">
-      @@INLINE@@
-      <a href="@_FORUM_ENTRY_URL_@?TID=@_PREVIOUS_@">
-        @@IF@@ @_PREVIOUS_THUMB_@ /= ""
-        <img alt="previous"
-             src="@_THUMB_SOURCE_PREFIX_@/@_PREVIOUS_THUMB_@" />
-        @@END_IF@@
-        @_BABEL_PREVIOUS_@</a>
-      @@END_INLINE@@
-    </li>
-    @@END_IF@@
-    <li id="pfe_go_to_list">
-      <a href="@_FORUM_THREAD_URL_@?FID=@_FID_@"
-      	 title="@_BABEL_BACK_TO_@ @_FORUM_NAME_@">@_FORUM_NAME_@</a>
-    </li>
-    @@IF@@ @_NEXT_@ /= "0"
-    <li class="next_link">
-      @@INLINE@@
-      <a href="@_FORUM_ENTRY_URL_@?TID=@_NEXT_@">
-        @@IF@@ @_NEXT_THUMB_@ /= ""
-        <img alt="next"
-	     src="@_THUMB_SOURCE_PREFIX_@/@_NEXT_THUMB_@" />
-        @@END_IF@@
-        @_BABEL_NEXT_@</a>
-      @@END_INLINE@@
-    </li>
-    @@END_IF@@
-    @@IF@@ @_PREVIOUS_@ = "0" and @_NEXT_@ = "0"
-    <li>&nbsp;</li>
-    @@END_IF@@
-  </ul>
-
-  @@-- Image
-
-  @@IF@@ @_IMAGE_SOURCE_@ /= ""
-    <p id="pfe_main_image">
-    @@IF@@ @_PREF_IMAGE_SIZE_@ = @_SET_MAX_SIZE_@
-      <img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
-           height="@_IMAGE_HEIGHT_@" width="@_IMAGE_WIDTH_@" />
-    @@ELSIF@@ @_PREF_IMAGE_SIZE_@ = @_SET_MEDIUM_SIZE_@
-      <img alt="@_NAME_@" src="@_MEDIUM_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
-           height="@_MEDIUM_IMAGE_HEIGHT_@" width="@_MEDIUM_IMAGE_WIDTH_@" />
-    @@ELSE@@
-      <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
-           height="@_THUMB_IMAGE_HEIGHT_@" width="@_THUMB_IMAGE_WIDTH_@" />
-    @@END_IF@@
-    </p>
+@@IF@@ @_IMAGE_SOURCE_@ /= ""
+  @@IF@@ @_PREF_IMAGE_SIZE_@ = @_SET_MAX_SIZE_@
+  <div id="pfe_image_block" style="width:@_IMAGE_WIDTH_@px;">
+    <p><img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
+         height="@_IMAGE_HEIGHT_@" width="@_IMAGE_WIDTH_@" /></p>
+  @@ELSIF@@ @_PREF_IMAGE_SIZE_@ = @_SET_MEDIUM_SIZE_@
+    <img alt="@_NAME_@" src="@_MEDIUM_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
+         height="@_MEDIUM_IMAGE_HEIGHT_@" width="@_MEDIUM_IMAGE_WIDTH_@" />
+  @@ELSE@@
+    <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
+         height="@_THUMB_IMAGE_HEIGHT_@" width="@_THUMB_IMAGE_WIDTH_@" />
   @@END_IF@@
+    <div id="pfe_author">
+      <p class="postname">@_NAME_@</p>
+@@ELSE@@
+    <div id="pfe_mainbox">
+      <p class="postname"><span class="category">@_CATEGORY_@</span>@_NAME_@</p>
+@@END_IF@@
 
-  <div id="pfe_image_infos">
-    <p id="pfe_img_author">
-    @@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@
-      @@IF@@ @_OWNER_@ /= @_LOGIN_@
-         <a href="/~@_OWNER_@">@_OWNER_@</a>
+      <p class="by">
+        @@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@
+          @@IF@@ @_OWNER_@ /= @_LOGIN_@
+             <a href="/~@_OWNER_@">@_BABEL_BY_@ @_OWNER_@</a>
+          @@ELSE@@
+             <a href="/~@_OWNER_@">@_BABEL_BY_@ @_BABEL_YOU_@</a>
+          @@END_IF@@
+        @@ELSE@@
+          @@IF@@ @_OWNER_@ /= @_LOGIN_@
+            @_BABEL_AUTHOR_@ @_BABEL_REVEALED_WITHIN_@ @_DATE_REVEALED_HOURS_@ @_BABEL_HOURS_@ @_DATE_REVEALED_MINUTES_@ @_BABEL_MINUTES_@
+          @@ELSE@@
+            <a href="/~@_OWNER_@">@_BABEL_YOU_@ (@_BABEL_REVEALED_WITHIN_@ @_DATE_REVEALED_HOURS_@ @_BABEL_HOURS_@ @_DATE_REVEALED_MINUTES_@ @_BABEL_MINUTES_@)</a>
+          @@END_IF@@
+        @@END_IF@@
+
+        @@IF@@ @_IMAGE_SOURCE_@ = ""
+        <span class="date">. Posté le @_DATE_POST_@</span>
+        @@END_IF@@
+      </p>
+      <div class="comment">@_IMAGE_COMMENT_@</div>
+    </div>
+
+    @@IF@@ @_IMAGE_SOURCE_@ /= ""
+      <div id="pfe_image_infos">
+        <table>
+          <tr>
+            <td class="theader">Categorie :</td>
+            <td class="theader">Date :</td>
+          </tr>
+          <tr>
+            <td>
+              @@IF@@ @_EXIST:CATEGORY_@
+                @@IF@@ @_OWNER_@ = @_LOGIN_@ or @_ADMIN_@
+                  @_LAZY_FORUM_CATEGORY_SET_@
+                @@ELSE@@
+                  @_CATEGORY_@
+                @@END_IF@@
+              @@END_IF@@
+            </td>
+            <td>@_DATE_POST_@</td></tr>
+        </table>
+        @_LAZY_EXIF_@
+        <div id="global_lazy_metadata" class="clear">@_LAZY_METADATA_@</div>
+        <div id="pfe_lazy_global_rating">@_LAZY_GLOBAL_RATING_@</div>
+      </div>
+      @@-- Vote photo of the week (only for photo forum)
+      @@IF@@ @_CDC_@
+        <div id="pfe_cdc"><a href="/cdc" id="pfe_cdclink">&hearts;</a>@_BABEL_HAS_BEEN_CDC_@</div>
       @@ELSE@@
-         <a href="/~@_OWNER_@">@_BABEL_YOU_@</a>
-      @@END_IF@@
-    @@ELSE@@
-      @@IF@@ @_OWNER_@ /= @_LOGIN_@
-        @_BABEL_REVEALED_WITHIN_@ @_DATE_REVEALED_HOURS_@ @_BABEL_HOURS_@ @_DATE_REVEALED_MINUTES_@ @_BABEL_MINUTES_@
-      @@ELSE@@
-        <a href="/~@_OWNER_@">@_BABEL_YOU_@ (@_BABEL_REVEALED_WITHIN_@ @_DATE_REVEALED_HOURS_@ @_BABEL_HOURS_@ @_DATE_REVEALED_MINUTES_@ @_BABEL_MINUTES_@)</a>
+        <div id="pfe_lazy_vote_week_photo">@_LAZY_VOTE_WEEK_PHOTO_@</div>
       @@END_IF@@
     @@END_IF@@
-    / @_DATE_POST_@
-    </p>
-    @@INLINE@@
-    <h2>@_NAME_@
-    @@IF@@ @_EXIST:CATEGORY_@
-      ::
-      @@IF@@ @_OWNER_@ = @_LOGIN_@ or @_ADMIN_@
-        @_LAZY_FORUM_CATEGORY_SET_@
-      @@ELSE@@
-        @_CATEGORY_@
-      @@END_IF@@
-    @@END_IF@@
-    </h2>
-    @@END_INLINE@@
-    @@-- Hidden
+
     @@IF@@ @_ADMIN_@
-    <p>@_BABEL_HIDDEN_STATUS_@:
+    <p class="admin_hidden">@_BABEL_HIDDEN_STATUS_@:
       <a href="#" id="pfe_hidden_status_toggle">
         <span id="pfe_image_hidden_status">@_OUI_NON:HIDDEN_@</span>
       </a>
     </p>
     @@END_IF@@
-    <div id="pfe_main_image_comment">@_IMAGE_COMMENT_@</div>
-    @@IF@@ @_IMAGE_SOURCE_@ /= ""
-    <div id="global_lazy_metadata">@_LAZY_METADATA_@</div>
-    <div id="pfe_lazy_global_rating">@_LAZY_GLOBAL_RATING_@</div>
-    @@END_IF@@
-  </div>
-  @@-- Vote photo of the week (only for photo forum)
-  @@IF@@ @_IMAGE_SOURCE_@ /= ""
-  @@IF@@ @_CDC_@
-  <div id="pfe_cdc"><a href="/cdc" id="pfe_cdclink">&hearts;</a>@_BABEL_HAS_BEEN_CDC_@</div>
-  @@ELSE@@
-  <div id="pfe_lazy_vote_week_photo">@_LAZY_VOTE_WEEK_PHOTO_@</div>
-  @@END_IF@@
-  <div id="pfe_lazy_new_vote">@_LAZY_NEW_VOTE_@</div>
-  @@END_IF@@
+
   @@-- Comments
   <h2 id="pfe_comments_section">Commentaires</h2>
   <div id="pfe_post_comments">@_LAZY_COMMENTS_@</div>
   <div id="pfe_lazy_new_comment">@_LAZY_NEW_COMMENT_@</div>
+  @@IF@@ @_IMAGE_SOURCE_@ /= ""
+      <div id="pfe_lazy_new_vote">@_LAZY_NEW_VOTE_@</div>
+    @@END_IF@@
   @@-- Bottom Navigation links
   <ul id="pfe_navigate_bottom">
 
@@ -126,11 +112,12 @@
     <li class="prev_link">
       @@INLINE@@
       <a href="@_FORUM_ENTRY_URL_@?TID=@_PREVIOUS_@">
+        @_BABEL_PREVIOUS_@
         @@IF@@ @_PREVIOUS_THUMB_@ /= ""
         <img alt="previous"
              src="@_THUMB_SOURCE_PREFIX_@/@_PREVIOUS_THUMB_@" />
         @@END_IF@@
-        @_BABEL_PREVIOUS_@</a>
+        </a>
       @@END_INLINE@@
     </li>
     @@END_IF@@
@@ -144,7 +131,7 @@
       <a href="@_FORUM_ENTRY_URL_@?TID=@_NEXT_@">
         @@IF@@ @_NEXT_THUMB_@ /= ""
         <img alt="next"
-	     src="@_THUMB_SOURCE_PREFIX_@/@_NEXT_THUMB_@" />
+        src="@_THUMB_SOURCE_PREFIX_@/@_NEXT_THUMB_@" />
         @@END_IF@@
         @_BABEL_NEXT_@</a>
       @@END_INLINE@@
@@ -154,6 +141,7 @@
     <li>&nbsp;</li>
     @@END_IF@@
   </ul>
+</div>
 </div>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, pfe_hidden_status_toggle)

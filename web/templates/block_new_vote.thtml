@@ -3,6 +3,7 @@
 @@IF@@ @_LOGIN_@ /= "" or @_OPTION_ANONYMOUS_COMMENT_@
   @@IF@@ @_IN_RATE_CB_@ /= "" or @_OWNER_@ /= @_LOGIN_@
   <div id="bnv_new_vote">
+  <h3 class="criterianame header">Votre vote:</h3>
     @@TABLE@@
       <h3 class="criterianame">@_CRITERIA_NAME_@</h3>
       <ul id="bnv_user_votefor@_CRITERIA_ID_@" class="unit-rating">
@@ -42,6 +43,7 @@
         </script>
       </ul>
     @@END_TABLE@@
+    <hr />
   </div>
   @@END_IF@@
 @@ELSE@@

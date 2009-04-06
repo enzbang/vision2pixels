@@ -3,7 +3,6 @@
 @@IF@@ @_LOGIN_@ = ""
 <form method="post" id="bl_login_form" action="">
   <fieldset>
-    <legend>@_BABEL_ASK_AUTHENTICATION_@</legend>
     <p>
       <label for="bl_login_input">Login</label>
       <input id="bl_login_input" name="bl_login_input" type="text"
@@ -12,7 +11,8 @@
       <input id="bl_password_input" name="bl_password_input" type="password"
              value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/>
     </p>
-    <p><input name="ENTER" id="bl_login_form_enter" type="submit" value="OK"/></p>
+    <p><input name="ENTER" id="bl_login_form_enter"
+              type="submit" value="Envoyer"/></p>
     <p id="bl_cd_user"><a href="/register_user">@_BABEL_CREATE_ACCOUNT_@</a>
      / <a href="/lost_password">@_BABEL_LOST_PASSWORD_@</a>
     </p>
@@ -21,10 +21,10 @@
 @@ELSE@@
 <div id="bl_logged_box">
   <ul>
-    <li><a href="@_FORUM_NEW_PHOTO_URL_@">@_BABEL_FORUM_NEW_PHOTO_ENTRY_@</a><li>
-    <li><a href="@_FORUM_POST_URL_@">@_BABEL_FORUM_NEW_ENTRY_@</a><li>
+    <li><a href="@_FORUM_NEW_PHOTO_URL_@">@_BABEL_FORUM_NEW_PHOTO_ENTRY_@</a></li>
+    <li><a href="@_FORUM_POST_URL_@">@_BABEL_FORUM_NEW_ENTRY_@</a></li>
     @@IF@@ @_ADMIN_@
-      <li><a href="@_ADMIN_URL_@">@_BABEL_ADMIN_@</a><li>
+      <li><a href="@_ADMIN_URL_@">@_BABEL_ADMIN_@</a></li>
     @@END_IF@@
     <li><a href="/search">@_BABEL_SEARCH_@</a></li>
     <li><a id="bl_logout_enter" href="#">@_BABEL_LOGOUT_@</a></li>

@@ -1,7 +1,10 @@
-
-</div> @@--  End of main block (image_block)
-<div id="cve_fatal_error">
-</div>
-</div>
+        </div> @@--  End of main block (image_block)
+        <div id="cve_fatal_error"></div>
+        @@IF@@ @_$1_@ = add_copyright_footer
+        <div id="pm_show_forum_list" class="clear">
+            @_LAZY_FORUM_LIST_@
+        </div>
+        @@END_IF@@
+   </div>
 </body>
 </html>

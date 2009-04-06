@@ -1,5 +1,5 @@
-@@INCLUDE@@ set_babel.thtml
-@@--
+ @@INCLUDE@@ set_babel.thtml
+
 @@IF@@ @_LOGIN_@ /= "" and @_OWNER_@ /= @_LOGIN_@
   <div id="bvwp_vote_week_photo">
   @@IF@@ @_HAS_USER_VOTE_@

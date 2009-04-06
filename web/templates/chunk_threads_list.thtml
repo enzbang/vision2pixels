@@ -1,55 +1,55 @@
 @@TABLE@@
-  <span class="thumbs">
-  @@IF@@ @_THUMB_SOURCE_@ /= ""
-  <span class="imgcontainer">
-    <span class="outernooverflow">
-      <span class="nooverflowimage">
-        <a title="@_BABEL_DATE_POST_@ @_DATE_POST_@"
-           href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
-          <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
-        </a>
+  <div class="thumbs">
+    @@IF@@ @_THUMB_SOURCE_@ /= ""
+    <span class="imgcontainer">
+      <span class="outernooverflow">
+        <span class="nooverflowimage">
+          <a title="@_BABEL_DATE_POST_@ @_DATE_POST_@"
+             href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
+            <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
+          </a>
+        </span>
       </span>
     </span>
-  </span>
-  @@END_IF@@
-  <p class="entry_name"><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@"
-  @@IF@@ @_ADMIN_@ and @_HIDDEN_@
-    class="hidden_entry"
-  @@END_IF@@
-  >
-  @@IF@@ @_SIZE:NAME_@ > 20
-  @_SLICE(1..20):NAME_@...
+    @@END_IF@@
+    <p class="entry_name"><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@"
+    @@IF@@ @_ADMIN_@ and @_HIDDEN_@
+      class="hidden_entry"
+    @@END_IF@@
+    >
+    @@IF@@ @_SIZE:NAME_@ > 20
+    @_SLICE(1..20):NAME_@...
+    @@ELSE@@
+    @_NAME_@
+    @@END_IF@@
+    </a></p>
+    <ul class="thumb_metadata">
+      <li class="photocat">@_CATEGORY_@</li>
+      <li title="@_BABEL_COMMENT_COUNTER_@ / @_BABEL_VISIT_COUNTER_@ / @_BABEL_DATE_UPDATE_@">
+  @@INLINE@@
+         @_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@ /
+  @@IF@@ @_DATE_LAST_COMMENT_@ = ""
+      @_DATE_POST_@
   @@ELSE@@
-  @_NAME_@
+      @_DATE_LAST_COMMENT_@
   @@END_IF@@
-  </a></p>
-  <ul class="thumb_metadata">
-    <li class="photocat">@_CATEGORY_@</li>
-    <li title="@_BABEL_COMMENT_COUNTER_@ / @_BABEL_VISIT_COUNTER_@ / @_BABEL_DATE_UPDATE_@">
-@@INLINE@@
-       @_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@ /
-@@IF@@ @_DATE_LAST_COMMENT_@ = ""
-    @_DATE_POST_@
-@@ELSE@@
-    @_DATE_LAST_COMMENT_@
-@@END_IF@@
-@@END_INLINE@@
-    </li>
-    <li class="photoauthor">
-      @@IF@@ @_REVEALED_@
-        @@IF@@ @_OWNER_@ /= @_LOGIN_@
-           <a href="/~@_OWNER_@">@_OWNER_@</a>
+  @@END_INLINE@@
+      </li>
+      <li class="photoauthor">
+        @@IF@@ @_REVEALED_@
+          @@IF@@ @_OWNER_@ /= @_LOGIN_@
+             <a href="/~@_OWNER_@">@_OWNER_@</a>
+          @@ELSE@@
+            <a href="/~@_OWNER_@">@_BABEL_YOU_@</a>
+          @@END_IF@@
         @@ELSE@@
-          <a href="/~@_OWNER_@">@_BABEL_YOU_@</a>
+          @@IF@@ @_OWNER_@ /= @_LOGIN_@
+            @_BABEL_NOT_REVEALED_@
+          @@ELSE@@
+            <a href="/~@_OWNER_@">@_BABEL_YOU_@ (@_BABEL_NOT_REVEALED_@)</a>
+          @@END_IF@@
         @@END_IF@@
-      @@ELSE@@
-        @@IF@@ @_OWNER_@ /= @_LOGIN_@
-          @_BABEL_NOT_REVEALED_@
-        @@ELSE@@
-          <a href="/~@_OWNER_@">@_BABEL_YOU_@ (@_BABEL_NOT_REVEALED_@)</a>
-        @@END_IF@@
-      @@END_IF@@
-    </li>
-    </ul>
-  </span>
+      </li>
+      </ul>
+  </div>
 @@END_TABLE@@

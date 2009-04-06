@@ -1203,7 +1203,8 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "SELECT val, w.post_id, photo.filename"
+        (Iter, "SELECT val, w.post_id, photo.filename,"
+         & " photo.width, photo.height"
          & " FROM photo_of_the_week w, post, photo"
          & " WHERE post.id=w.post_id AND post.photo_id=photo.id"
          & " ORDER BY w.id DESC LIMIT 1");
@@ -1225,6 +1226,15 @@ package body V2P.Database is
            (Set, Templates.Assoc
               (Block_Photo_Of_The_Week.PHOTO_OF_THE_WEEK_IMG_SOURCE,
                DB.String_Vectors.Element (Line, 3)));
+
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_Photo_Of_The_Week.PHOTO_OF_THE_WEEK_WIDTH,
+               DB.String_Vectors.Element (Line, 4)));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_Photo_Of_The_Week.PHOTO_OF_THE_WEEK_HEIGHT,
+               DB.String_Vectors.Element (Line, 5)));
       end if;
 
       return Set;

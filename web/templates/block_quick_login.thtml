@@ -1,7 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
 @@IF@@ @_LOGIN_@ /= ""
-  <strong>@_LOGIN_@</strong> |
   <a href="/~@_LOGIN_@" class="link">@_BABEL_YOUR_PAGE_@</a> |
 @@END_IF@@
 

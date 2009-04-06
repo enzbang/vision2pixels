@@ -13,6 +13,7 @@
 @@SET@@ BABEL_FORUM_LIST="Liste des forums : "
 @@SET@@ BABEL_THREAD_LIST="Liste des threads"
 @@SET@@ BABEL_WELCOME="Bienvenue"
+@@SET@@ BABEL_BY="par"
 @@SET@@ BABEL_ON_DATE="Le"
 @@SET@@ BABEL_HAS_WRITTEN="a écrit :"
 @@SET@@ BABEL_ENTER_COMMENT="Ajouter un commentaire"
