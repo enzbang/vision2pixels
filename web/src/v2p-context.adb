@@ -19,6 +19,8 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Fixed;
+
 with V2P.Database;
 with V2P.Settings;
 with V2P.Template_Defs.Set_Global;
@@ -32,8 +34,49 @@ package body V2P.Context is
    -- Update --
    ------------
 
-   procedure Update (Context : access Object; SID : in Session.Id) is
+   procedure Update (Context : access Object;
+                     SID     : in Session.Id;
+                     Cookie  : in String) is
+      function Cookie_Content (S : String) return String;
+      --  Returns the part between v2p= and ;
+
+      --------------------
+      -- Cookie_Content --
+      --------------------
+
+      function Cookie_Content (S : String) return String is
+         use Ada.Strings.Fixed;
+
+         Content_Start : constant Natural := Index (S, "v2p=");
+         Content_End   : Natural;
+      begin
+         if Content_Start = 0 then
+            return "";
+         else
+            Content_End := Index (S (Content_Start .. S'Last), ";");
+            if Content_End = 0 then
+               --  No ; after v2p=
+               return S (Content_Start + 4 .. S'Last);
+            end if;
+            return S (Content_Start + 4 .. Content_End - 1);
+         end if;
+      end Cookie_Content;
+
    begin
+      --  Read cookie
+      if not Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then
+         Read_Cookie : declare
+            Cookie_User : constant String :=
+                            Database.Get_User_From_Cookie
+                              (Cookie_Content (Cookie));
+         begin
+            if Cookie_User /= "" then
+               Session.Set (SID, Template_Defs.Set_Global.LOGIN, Cookie_User);
+               Context.Set_Value ("cookie", "set");
+            end if;
+         end Read_Cookie;
+      end if;
+
       --  Set LOGIN and ADMIN in session
 
       if Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then
@@ -52,6 +95,7 @@ package body V2P.Context is
       else
          Context.Remove (Template_Defs.Set_Global.ADMIN);
       end if;
+
 
       --  Set default filter
 

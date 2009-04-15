@@ -309,3 +309,8 @@ create table user_photo_of_the_week (
 create table vote_ponderated (
    val integer not null
 );
+
+create table remember_user (
+    "user_login" varchar(50),
+    "cookie_content" varchar(15),
+);

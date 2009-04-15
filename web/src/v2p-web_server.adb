@@ -20,12 +20,14 @@
 ------------------------------------------------------------------------------
 
 with Ada.Calendar;
+with Ada.Calendar.Arithmetic;
 with Ada.Directories;
 with Ada.Exceptions;
 with Ada.Float_Text_IO;
 with Ada.Strings.Fixed;
 
 with AWS.Dispatchers.Callback;
+with AWS.Headers;
 with AWS.Messages;
 with AWS.MIME;
 with AWS.Response.Set;
@@ -47,6 +49,7 @@ with V2P.Callbacks.Page;
 with V2P.Callbacks.Ajax;
 with V2P.Callbacks.Web_Block;
 with V2P.Context;
+with V2P.Database;
 with V2P.Settings;
 with V2P.Syndication;
 with V2P.URL;
@@ -246,6 +249,9 @@ package body V2P.Web_Server is
       use type Messages.Status_Code;
       URI          : constant String := Status.URI (Request);
       SID          : constant Session.Id := Status.Session (Request);
+      Headers      : constant AWS.Headers.List := AWS.Status.Header (Request);
+      Cookie       : constant String := AWS.Headers.Get_Values
+        (Headers, AWS.Messages.Cookie_Token);
       C_Request    : aliased Status.Data := Request;
       Context      : aliased Services.Web_Block.Context.Object :=
                        Services.Web_Block.Registry.Get_Context
@@ -255,7 +261,7 @@ package body V2P.Web_Server is
    begin
       --  Update the context
 
-      V2P.Context.Update (Context'Access, SID);
+      V2P.Context.Update (Context'Access, SID, Cookie);
       --  Note that the Context is linked to the C_Request object
       --  Do not use Request object anymore
 
@@ -371,6 +377,26 @@ package body V2P.Web_Server is
          --  Page not found
          Web_Page := Services.Web_Block.Registry.Build
            (Template_Defs.Page_Error.Set.URL, C_Request, Translations);
+      end if;
+
+
+      if Session.Exist (SID, Template_Defs.Set_Global.LOGIN)
+        and not Context.Exist ("cookie")
+      then
+         Set_Cookie : declare
+            use type Ada.Calendar.Arithmetic.Day_Count;
+            Valid_Days : constant Ada.Calendar.Arithmetic.Day_Count := 15;
+            HTTP_Date  : constant String := AWS.Messages.To_HTTP_Date
+              (Ada.Calendar.Clock + Valid_Days);
+            GenCookie  : constant String := Database.Gen_Cookie
+              (Login => Session.Get (SID, Template_Defs.Set_Global.LOGIN));
+         begin
+            AWS.Response.Set.Add_Header
+              (Web_Page, AWS.Messages.Set_Cookie_Token,
+               Value => "v2p=" & GenCookie
+               & "; expires=" & HTTP_Date & "; path=/");
+            Context.Set_Value ("cookie", "set");
+         end Set_Cookie;
       end if;
 
       return Web_Page;

@@ -153,6 +153,33 @@ package body V2P.Database is
       return Float'Image (F);
    end F;
 
+   ----------------
+   -- Gen_Cookie --
+   ----------------
+
+   function Gen_Cookie (Login : String) return String is
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select (Iter, "select lower(hex(randomblob(16)));");
+      if not Iter.More then
+         return "";
+      end if;
+      Iter.Get_Line (Line);
+
+      declare
+         Cookie_Value : constant String := DB.String_Vectors.Element (Line, 1);
+      begin
+         Line.Clear;
+         Register_Cookie (Login, Cookie_Value);
+         return Cookie_Value;
+      end;
+   end Gen_Cookie;
+
    --------------------
    -- Get_Categories --
    --------------------
@@ -2155,6 +2182,34 @@ package body V2P.Database is
       end if;
    end Get_User_Data;
 
+   --------------------------
+   -- Get_User_From_Cookie --
+   --------------------------
+
+   function Get_User_From_Cookie (Cookie : String) return String is
+      DBH  : constant TLS_DBH_Access :=
+               TLS_DBH_Access (DBH_TLS.Reference);
+      SQL  : constant String :=
+               "SELECT user_login "
+                 & "FROM remember_user "
+                 & "WHERE cookie_content=" & Q (Cookie);
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+   begin
+      Connect (DBH);
+      DBH.Handle.Prepare_Select (Iter, SQL);
+      if not Iter.More then
+         return "";
+      end if;
+      Iter.Get_Line (Line);
+      declare
+         Result : constant String := DB.String_Vectors.Element (Line, 1);
+      begin
+         Line.Clear;
+         return Result;
+      end;
+   end Get_User_From_Cookie;
+
    -------------------------
    -- Get_User_Last_Photo --
    -------------------------
@@ -2173,6 +2228,7 @@ package body V2P.Database is
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
    begin
+      Connect (DBH);
       DBH.Handle.Prepare_Select (Iter, SQL);
 
       if Iter.More then
@@ -2748,6 +2804,18 @@ package body V2P.Database is
    begin
       return Q (Boolean'Image (Bool));
    end Q;
+
+   ---------------------
+   -- Register_Cookie --
+   ---------------------
+
+   procedure Register_Cookie (Login : in String; Cookie : in String) is
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+   begin
+      DBH.Handle.Execute
+        ("INSERT INTO remember_user VALUES ("
+         & Q (Login) & ", " & Q (Cookie) & ")");
+   end Register_Cookie;
 
    -------------------
    -- Register_User --
