@@ -4,10 +4,10 @@
 <form method="post" id="bl_login_form" action="">
   <fieldset>
     <p>
-      <label for="bl_login_input">Login</label>
+      <label for="bl_login_input">@_BABEL_ASK_LOGIN_NAME_@</label>
       <input id="bl_login_input" name="bl_login_input" type="text"
       value="@_BABEL_LOGIN_DEFAULT_VALUE_@" size="15"/></p>
-    <p><label for="bl_password_input">Password</label>
+    <p><label for="bl_password_input">@_BABEL_ASK_LOGIN_PASSWORD_@</label>
       <input id="bl_password_input" name="bl_password_input" type="password"
              value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/>
     </p>

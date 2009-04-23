@@ -7,6 +7,8 @@
 @@SET@@ BABEL_YOU="Vous"
 @@SET@@ BABEL_CONNECTION_ERROR="Impossible de se connecter"
 @@SET@@ BABEL_ASK_AUTHENTICATION="Authentifiez vous :"
+@@SET@@ BABEL_ASK_LOGIN_NAME="Identifiant"
+@@SET@@ BABEL_ASK_LOGIN_PASSWORD="Mot de passe"
 @@SET@@ BABEL_MENU_PLUS="Plus"
 @@SET@@ BABEL_LOGIN_DEFAULT_VALUE="Pseudo"
 @@SET@@ BABEL_LOGIN_DEFAULT_PASSWORD="Mot de passe"
