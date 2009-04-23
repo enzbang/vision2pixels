@@ -242,7 +242,7 @@ package body V2P.Callbacks.Page is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      pragma Unreferenced (Request, Translations);
+      pragma Unreferenced (Request);
    begin
       if Context.Exist (Template_Defs.Set_Global.TID) then
          Context.Remove (Template_Defs.Set_Global.TID);
