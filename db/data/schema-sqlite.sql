@@ -3,6 +3,7 @@ create table "user" (
    "password" varchar(20) not null,
    "email" varchar(50) not null unique,
    "admin" boolean,
+   "remember" boolean,
    "created" date default current_timestamp,
    "last_logged" date default current_timestamp
 );

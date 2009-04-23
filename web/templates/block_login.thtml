@@ -11,6 +11,9 @@
       <input id="bl_password_input" name="bl_password_input" type="password"
              value="@_BABEL_LOGIN_DEFAULT_PASSWORD_@" size="15"/>
     </p>
+    <p><label for="bl_remember_me">@_BABEL_REMEMBER_ME_@</label>
+      <input name="bl_remember_me" id="bl_remember_me" type="checkbox" value="remember"/>
+    </p>
     <p><input name="ENTER" id="bl_login_form_enter"
               type="submit" value="Envoyer"/></p>
     <p id="bl_cd_user"><a href="/register_user">@_BABEL_CREATE_ACCOUNT_@</a>

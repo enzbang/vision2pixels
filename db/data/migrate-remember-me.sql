@@ -3,3 +3,5 @@ create table remember_user (
     "cookie_content" varchar(15)
 );
 
+alter table user add "remember" boolean;
+

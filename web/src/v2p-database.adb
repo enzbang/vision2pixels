@@ -2190,9 +2190,10 @@ package body V2P.Database is
       DBH  : constant TLS_DBH_Access :=
                TLS_DBH_Access (DBH_TLS.Reference);
       SQL  : constant String :=
-               "SELECT user_login "
-                 & "FROM remember_user "
-                 & "WHERE cookie_content=" & Q (Cookie);
+               "SELECT user_login, remember "
+                 & "FROM remember_user, user "
+                 & "WHERE cookie_content=" & Q (Cookie)
+                 & " AND remember = 'TRUE' AND user.login = user_login";
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
    begin
@@ -2872,6 +2873,20 @@ package body V2P.Database is
          Lock_Register.Release;
          return False;
    end Register_User;
+
+   --------------
+   -- Remember --
+   --------------
+
+   procedure Remember (Login : in String; Status : in Boolean) is
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      SQL : constant String :=
+              "UPDATE user SET remember=" & Q (Status)
+              & " WHERE login=" & Q (Login);
+   begin
+      Connect (DBH);
+      DBH.Handle.Execute (SQL);
+   end Remember;
 
    ------------------
    -- Set_Category --

@@ -116,6 +116,14 @@ package body V2P.Callbacks.Ajax is
 
          Database.Set_Last_Logged (Login);
 
+         --  Maybe remember user
+         if Parameters.Get
+           (P, Template_Defs.Block_Login.HTTP.bl_remember_me) /= "" then
+            Database.Remember (Login, True);
+         else
+            Database.Remember (Login, False);
+         end if;
+
          --  Set user's filtering preference
 
          Context.Set_Value
