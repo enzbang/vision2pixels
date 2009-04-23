@@ -144,6 +144,14 @@ package body V2P.Database is
       end if;
    end Connect;
 
+   procedure Delete_User_Cookies (Login : in String) is
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+   begin
+      Connect (DBH);
+      DBH.Handle.Execute ("DELETE FROM remember_user WHERE user_login="
+                            & Q (Login));
+   end Delete_User_Cookies;
+
    -------
    -- F --
    -------

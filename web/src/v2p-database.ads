@@ -325,6 +325,9 @@ package V2P.Database is
    function Get_User_From_Cookie (Cookie : String) return String;
    --  Return user associated with the given cookie (or "")
 
+   procedure Delete_User_Cookies (Login : in String);
+   --  Delete user cookies
+
    procedure Remember (Login : in String; Status : in Boolean);
    --  Should we remember the user with a cookie ?
 
