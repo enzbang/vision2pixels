@@ -21,6 +21,7 @@
 @@SET@@ BABEL_LOGOUT="Se déconnecter"
 @@SET@@ BABEL_ASK_LOGIN="Connexion"
 @@SET@@ BABEL_NOT_LOGGED="Non connecté"
+@@SET@@ BABEL_REMEMBER_ME="Mémoriser mes informations sur cet ordinateur"
 @@SET@@ BABEL_FORUM_NEW_ENTRY="Poster un nouveau message"
 @@SET@@ BABEL_FORUM_NEW_PHOTO_ENTRY="Poster une nouvelle photo"
 @@SET@@ BABEL_NEW_COMMENT="Commentez !"
