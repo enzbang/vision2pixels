@@ -40,7 +40,6 @@ abbr {
     border: none;
 }
 
-
 a img, form, fieldset {
     border: none;
 }
@@ -124,7 +123,6 @@ textarea {
 textarea:focus {
     border: 1px solid #000;
 }
-
 
 input[type="submit"] {
     -moz-border-radius:3px 3px 3px 3px;
@@ -323,7 +321,6 @@ ul.thumb_metadata {
    margin:0;
    font-weight:bold;
 }
-
 
 /* block specific */
 
@@ -954,7 +951,6 @@ div.posting_form label {
     margin-left: 0;
 }
 
-
 /* page specific */
 
 html.transparent,
@@ -988,7 +984,6 @@ body.help #cvt_main {
 body.user_page #cvt_main {
     width: 80%;
 }
-
 
 body.main h1 {
     font-size: 2em;
@@ -1042,7 +1037,6 @@ body.main #pm_show_forum_list li.last:after {
     content: '';
 }
 
-
 body.search_page h2 {
     margin: 2em 0;
 }
@@ -1059,7 +1053,6 @@ body.forum_txt_entry #pfe_entry_page {
     text-align: right;
     margin-right: 1em;
 }
-
 
 /*  styles for the unit rater
 ---------------------------------------------------------
