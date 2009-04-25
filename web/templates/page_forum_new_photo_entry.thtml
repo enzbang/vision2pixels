@@ -42,13 +42,14 @@
       <textarea name="comment_input" rows="3" cols="40"
                 id="global_comment_input"></textarea>
     </p>
-    <div id="pfnpe_post_error"></div>
   </fieldset>
 </form>
 
 <p id="global_lazy_metadata">@_LAZY_METADATA_@</p>
 
 @@--  One form to rule them all
+
+<div id="pfnpe_post_error" class="errorinline"></div>
 
 <form enctype="multipart/form-data" id="pfnpe_new_entry_form_submit" action="#" method="POST">
   <p><input name="ENTER" id="pfnpe_post_form_enter" type="submit"
