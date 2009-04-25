@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2008                          --
+--                         Copyright (C) 2007-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -381,6 +381,8 @@ package body V2P.Callbacks.Page is
                end Insert_Photo;
             end if;
          end New_Photo;
+
+         Directories.Delete_File (C_Filename);
 
       else
          if Context.Exist (Template_Defs.Set_Global.HAS_POST_PHOTO) then
