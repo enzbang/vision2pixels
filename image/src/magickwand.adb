@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                            Copyright (C) 2008                            --
+--                         Copyright (C) 2008-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -67,7 +67,6 @@ package body MagickWand is
       C_Filename : chars_ptr       := MagickGetImageFilename (O.Wand);
       Filename   : constant String := Strings.Value (C_Filename);
    begin
-      Free (C_Filename);
       return Filename;
    end Get_Filename;
 
