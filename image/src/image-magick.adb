@@ -63,8 +63,6 @@ package body Image.Magick is
          end if;
       end if;
 
-      Ada.Text_IO.Put_Line ("resizing");
-
       Resized_Image.Resize
         (Width  => X_Length,
          Height => Y_Length,
