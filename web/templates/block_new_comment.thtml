@@ -4,7 +4,6 @@
 @@SET@@ SET_FORM_POST_COMMENT_PHOTO = /bnc_add_photo
 @@--
 @@--
-@@IF@@ @_FORUM_FOR_PHOTO_@
 <form enctype="multipart/form-data" id="bnc_add_photo_form"
       action="@_SET_FORM_POST_COMMENT_PHOTO_@"
       method="POST" target="bnc_photo_post_target">
@@ -19,12 +18,9 @@
     </div>
   </fieldset>
 </form>
-@@END_IF@@
 @@--
 @@--  ??? Set outside the form to work around a Safari bug
-@@IF@@ @_IMAGE_SOURCE_@ /= ""
-  <input name="bnc_comment_pid" id="bnc_comment_pid" type="hidden" value=""/>
-@@END_IF@@
+<input name="bnc_comment_pid" id="bnc_comment_pid" type="hidden" value=""/>
 <form enctype="multipart/form-data" id="bnc_comment_form" action="#" method="post">
   <fieldset>
     @@-- Is user logged
@@ -36,11 +32,11 @@
     </p></div>
     @@-- Is user in a specific forum
     <p>
-      @@IF@@ @_IMAGE_SOURCE_@ /= ""
-        <input name="forum_photo" id="bnc_forum_photo" type="hidden" value="t" />
-      @@ELSE@@
-        <input name="forum_photo" id="bnc_forum_photo" type="hidden" value="" />
-      @@END_IF@@
+@@IF@@ @_FORUM_FOR_PHOTO_@
+      <input name="forum_photo" id="bnc_forum_photo" type="hidden" value="t" />
+@@ELSE@@
+      <input name="forum_photo" id="bnc_forum_photo" type="hidden" value="" />
+@@END_IF@@
     </p>
     <p class="enternewcomment">
       <label for="global_comment_input">@_BABEL_ENTER_COMMENT_@</label>
