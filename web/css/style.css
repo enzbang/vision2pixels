@@ -112,7 +112,7 @@ label {
 }
 
 textarea {
-    -moz-border-radius:2px;
+    -moz-border-radius:12px;
     background-color: #EEE;
     border: 1px solid #EEE;
     width: 90%;
@@ -125,7 +125,7 @@ textarea:focus {
 }
 
 input[type="submit"] {
-    -moz-border-radius:3px 3px 3px 3px;
+    -moz-border-radius:12px 12px 12px 12px;
     background-color:#D8D8C0;
     border:2px solid #404040;
     margin:1em auto;
@@ -141,9 +141,9 @@ input[type="password"] {
     background-color: #F8F8F8;
     border:1px solid #404040;
     margin: 0 auto 2px;
-    padding-bottom:0;
+    padding: 0.2em;
     width:60%;
-    -moz-border-radius: 2px;
+    -moz-border-radius: 12px;
 }
 
 .up {
@@ -231,7 +231,7 @@ hr {
     padding: 1.5em;
     margin: 0 1em 1.5em 0;
     background:none #050505;
-    -moz-border-radius:4px;
+    -moz-border-radius:12px;
     border: thin solid #888;
     color: #AAAAAA;
     font-weight: bold;
@@ -384,7 +384,7 @@ ul.thumb_metadata {
     width: 100%;
 }
 #pfe_lazy_new_comment {
-    -moz-border-radius:3px;
+    -moz-border-radius:12px;
     background-color: #222;
     padding: 2em;
     text-align: left;
@@ -411,12 +411,12 @@ body.not_logged #pfe_lazy_new_comment {
 }
 
 #pfe_lazy_new_comment input[type="file"]{
-    -moz-border-radius:2px 2px 2px 2px;
+    -moz-border-radius:12px 12px 12px 12px;
     background-color: #EEE;
 }
 #pfnpe_new_entry_form_submit input[type="submit"],
 #pfe_lazy_new_comment input[type="submit"]{
-    -moz-border-radius:2px;
+    -moz-border-radius:12px;
     background-color: #FFFBF7;
     margin: 1em 0;
     border: 1px solid #EEE;
@@ -437,7 +437,7 @@ body.not_logged #pfe_lazy_new_comment {
 }
 
 #bnv_new_vote {
-    -moz-border-radius:2px;
+    -moz-border-radius:12px;
     color: #EEE;
     padding: 2em 0 0.5em;
 }
@@ -566,7 +566,7 @@ h2#pfe_comments_section {
 }
 
 #pfe_comments li cite {
-    -moz-border-radius:4px 4px 4px 4px;
+    -moz-border-radius:12px 12px 12px 12px;
     border:2px solid #505060;
     padding:0.5em;
     margin-bottom: 0.5em;
@@ -615,7 +615,7 @@ h2#pfe_comments_section {
 }
 
 #pfe_image_infos {
-    -moz-border-radius:4px 4px 4px 4px;
+    -moz-border-radius:12px 12px 12px 12px;
     background-color:#111111;
     border:3px solid #505060;
     color:#E0E0FF;
@@ -682,7 +682,7 @@ ul#bucl_lastusercommentlist li a span.commenttext {
 #pfe_mainbox {
     position: relative;
     margin: 2em;
-    -moz-border-radius:4px;
+    -moz-border-radius:12px;
     padding: 0.1em;
 }
 
@@ -701,7 +701,7 @@ ul#bucl_lastusercommentlist li a span.commenttext {
 #pfe_mainbox .comment {
     background: #333333;
     color: #BBBBBB;
-    -moz-border-radius:4px;
+    -moz-border-radius:12px;
     margin: 1em 0 0;
     padding: 1em 1em 0 1em;
     line-height: 1.5em;
@@ -811,10 +811,14 @@ dl.bnc_comment_formatting dd {
     text-align: center;
     background-color:#909080;
     border:2px solid black;
-    -moz-border-radius:4px 4px 4px 4px;
+    -moz-border-radius:12px 12px 12px 12px;
     background-color:#909080;
     border:2px solid black;
     color: #202020;
+}
+#cvt_lazy_login li {
+    margin: 1em 0;
+    font-weight: bold;
 }
 
 #pft_filters {
@@ -978,7 +982,7 @@ body.help #cvt_main {
     padding: 1em;
     background-color: #0A0A0A;
     border: 1px solid #333;
-    -moz-border-radius:4px;
+    -moz-border-radius:12px;
     line-height: 1.5em;
 }
 body.user_page #cvt_main {
