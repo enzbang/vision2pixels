@@ -451,7 +451,6 @@ package body V2P.Database is
          Has_Voted     := Has_Voted
            & DB.String_Vectors.Element (Line, 9);
 
-
          --  Unthreaded view
 
          Comment_Level      := Comment_Level      & 1;
@@ -770,8 +769,8 @@ package body V2P.Database is
            (Name    => Module,
             Kind    => Logs.Error,
             Content => "Get_Id, Fid and Tid empty, raise Parameter_Error");
-         raise Parameter_Error with "Can not get forum type for Tid = "
-           & To_String (Tid);
+         raise Parameter_Error
+           with "Can not get forum type for Tid = " & To_String (Tid);
       end if;
 
       Iter.Get_Line (Line);

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2008                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -34,9 +34,9 @@ package body Image.Magick is
       Img         : in     MagickWand.Object;
       Size        : in     MagickWand.Image_Size)
    is
-      Original_Size : constant MagickWand.Image_Size
-        := (Width  => Img.Get_Width,
-            Height => Img.Get_Height);
+      Original_Size : constant MagickWand.Image_Size :=
+                        (Width  => Img.Get_Width,
+                         Height => Img.Get_Height);
       X_Length      : MagickWand.Size;
       Y_Length      : MagickWand.Size;
 
@@ -81,9 +81,9 @@ package body Image.Magick is
       Img   : in     MagickWand.Object;
       Size  : in     MagickWand.Image_Size)
    is
-      Original_Size : constant MagickWand.Image_Size
-        := (Width  => Img.Get_Width,
-            Height => Img.Get_Height);
+      Original_Size : constant MagickWand.Image_Size :=
+                        (Width  => Img.Get_Width,
+                         Height => Img.Get_Height);
       X_Length      : MagickWand.Size;
       Y_Length      : MagickWand.Size;
    begin

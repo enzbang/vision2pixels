@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2008                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -115,8 +115,7 @@ package body Image.Data is
 
    begin
       --  Read image info
-      MagickWand.Read
-        (Img.Image, Filename => Original_Filename);
+      MagickWand.Read (Img.Image, Filename => Original_Filename);
 
       if Settings.Limit_Image_Size
         or else Out_Max_Dimension /= Null_Dimension
@@ -156,9 +155,7 @@ package body Image.Data is
 
       --  Create 800x800 image
 
-      Image.Magick.Resize (Medium,
-                           Img  => Img.Image,
-                           Size => Medium_Size);
+      Image.Magick.Resize (Medium, Img => Img.Image, Size => Medium_Size);
 
       Medium.Write (Out_Filename_Medium);
 
@@ -167,9 +164,7 @@ package body Image.Data is
 
       --  Create thumbnail
 
-      Image.Magick.Thumbnail (Thumb,
-                              Img  => Img.Image,
-                              Size => Thumb_Size);
+      Image.Magick.Thumbnail (Thumb, Img => Img.Image, Size => Thumb_Size);
 
       Thumb.Write (Out_Filename_Thumb);
 
