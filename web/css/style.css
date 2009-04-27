@@ -1160,3 +1160,6 @@ li.current-global-rating {
     background: url('/css/img/starrating_black_static.gif') left bottom;
 }
 
+label.inline {
+   display:inline ! important;
+}

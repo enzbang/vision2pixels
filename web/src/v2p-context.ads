@@ -41,8 +41,11 @@ package V2P.Context is
    --  bug, should be changed when GNAT GPL 2007 is out and if it contains the
    --  fix as this bug is not present on recent GNAT versions.
 
-   procedure Update (Context : access Object; SID : in AWS.Session.Id);
+   procedure Update (Context : access Object;
+                     SID     : in AWS.Session.Id;
+                     Cookie  : in String);
    --  Update the context filter
    --  Set LOGIN in Context.
+   --  Read Cookie ("remember me" authentication type)
 
 end V2P.Context;

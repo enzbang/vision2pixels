@@ -316,6 +316,21 @@ package V2P.Database is
    function Get_Stats return Templates.Translate_Set;
    --  Returns global stats used in main page
 
+   function Gen_Cookie (Login : String) return String;
+   --  Generate a new random string for "remember me" authentication
+
+   procedure Register_Cookie (Login : in String; Cookie : in String);
+   --  Register a new cookie in database
+
+   function Get_User_From_Cookie (Cookie : String) return String;
+   --  Return user associated with the given cookie (or "")
+
+   procedure Delete_User_Cookies (Login : in String);
+   --  Delete user cookies
+
+   procedure Remember (Login : in String; Status : in Boolean);
+   --  Should we remember the user with a cookie ?
+
 private
 
    No_User_Data : constant User_Data :=

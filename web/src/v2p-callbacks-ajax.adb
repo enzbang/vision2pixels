@@ -116,6 +116,14 @@ package body V2P.Callbacks.Ajax is
 
          Database.Set_Last_Logged (Login);
 
+         --  Maybe remember user
+         if Parameters.Get
+           (P, Template_Defs.Block_Login.HTTP.bl_remember_me) /= "" then
+            Database.Remember (Login, True);
+         else
+            Database.Remember (Login, False);
+         end if;
+
          --  Set user's filtering preference
 
          Context.Set_Value
@@ -148,7 +156,9 @@ package body V2P.Callbacks.Ajax is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      SID : constant Session.Id := Status.Session (Request);
+      SID    : constant Session.Id := Status.Session (Request);
+      Login  : constant String :=
+        Session.Get (SID, Template_Defs.Set_Global.LOGIN);
    begin
       Session.Delete (SID);
 
@@ -158,6 +168,10 @@ package body V2P.Callbacks.Ajax is
       --  Remove the login information from the translate table
 
       Templates.Remove (Translations, Template_Defs.Set_Global.LOGIN);
+
+      --  When user want to logout he certainly does not want to be remembered
+      Database.Remember (Login, False);
+      Database.Delete_User_Cookies (Login);
    end Logout;
 
    ------------------------------------
