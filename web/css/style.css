@@ -1176,3 +1176,37 @@ li.current-global-rating {
 label.inline {
    display:inline ! important;
 }
+
+#bnc_comment_type {
+    margin: 1em 1em 0;
+    -moz-border-radius-bottomleft:2px;
+    -moz-border-radius-bottomright:2px;
+    -moz-border-radius-topleft:2px;
+    -moz-border-radius-topright:2px;
+    background-color:#FFFBF7;
+    border:1px solid #EEEEEE;
+    color: black;
+}
+
+#bnc_comment_formatting_block {
+    margin-left: 30%;
+    padding: 2em;
+    border:1px solid #EEEEEE;
+}
+
+#bnc_checkpoint_preview {
+    margin: 1em;
+    border : 3px ridge #E0E0FF;
+    padding: 2em;
+}
+
+.comment_body ul,
+.comment_body ol {
+    list-style: square inside none;
+}
+
+.comment_body blockquote {
+  margin: 10px 0 15px;
+  padding-left: 15px;
+  border-left: 3px solid #ccc;
+}
