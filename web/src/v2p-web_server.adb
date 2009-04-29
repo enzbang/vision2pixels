@@ -923,6 +923,13 @@ package body V2P.Web_Server is
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
+        (Template_Defs.Block_New_Comment.Ajax.onsubmit_bnc_comment_register,
+         Template_Defs.R_Block_Comment_Form_Enter.Template,
+         Callbacks.Ajax.Onsubmit_Comment_Form_Enter'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
         (Template_Defs.Page_Forum_New_Text_Entry.
            Ajax.onsubmit_pfnte_new_entry_form_submit,
          Template_Defs.R_Block_Post_Form_Enter.Template,

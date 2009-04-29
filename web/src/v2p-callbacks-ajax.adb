@@ -30,6 +30,7 @@ with AWS.SMTP.Client;
 with Image.Metadata.Geographic;
 
 with Morzhol.Logs;
+with Morzhol.Strings;
 
 with V2P.Context;
 with V2P.Database.Search;
@@ -657,10 +658,16 @@ package body V2P.Callbacks.Ajax is
                        Parameters.Get (P,
                                        Block_New_Comment.
                                          HTTP.global_comment_input);
+      Preview_Only : constant Boolean :=
+                       Parameters.Get
+                         (P, Block_New_Comment.HTTP.REGISTER_COMMENT) = "";
+      Comment_Type : constant String :=
+                       Parameters.Get (P,
+                                       Block_New_Comment.
+                                         HTTP.bnc_comment_type);
       Get_Photo_ID : constant String :=
                        Parameters.Get
                          (P, Block_New_Comment.HTTP.bnc_comment_pid);
-      Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
       Last_Comment : constant String :=
                        Context.Get_Value (Set_Global.CONTEXT_LAST_COMMENT);
       TID          : constant Database.Id :=
@@ -673,6 +680,9 @@ package body V2P.Callbacks.Ajax is
 
       function Is_Valid_Comment (Comment : in String) return Boolean;
       --  Check if the comment is valid
+
+      function To_HTML (Comment : String) return String;
+      --  Returns an HTML formatted comment
 
       ----------------------
       -- Is_Valid_Comment --
@@ -688,6 +698,43 @@ package body V2P.Callbacks.Ajax is
 
          return Is_Valid;
       end Is_Valid_Comment;
+
+      -------------
+      -- To_HTML --
+      -------------
+
+      function To_HTML (Comment : String) return String is
+
+         function Lf_To_BR (Source : String) return String;
+         --  Convert line feed to <br/>
+
+         --------------
+         -- Lf_To_BR --
+         --------------
+
+         function Lf_To_BR (Source : String) return String is
+            Result : Unbounded_String;
+            Last   : Integer := Source'First;
+         begin
+            for K in Source'Range loop
+               if Source (K) = ASCII.LF and K > Source'First then
+                  Append (Result, Source (Last .. K - 1) & "<br/>");
+                  Last := K + 1;
+               end if;
+            end loop;
+            if Last < Source'Last then
+               Append (Result, Source (Last .. Source'Last));
+            end if;
+            return To_String (Result);
+         end Lf_To_BR;
+
+      begin
+         if Comment_Type = "wiki" then
+            return V2P.Wiki.Wiki_To_HTML (Comment);
+         else
+            return Lf_To_BR (Morzhol.Strings.HTML_To_Text (Comment));
+         end if;
+      end To_HTML;
 
    begin
       if Get_Photo_ID /= "" then
@@ -724,7 +771,7 @@ package body V2P.Callbacks.Ajax is
               (R_Block_Comment_Form_Enter.ERROR_DUPLICATED, "ERROR"));
 
       elsif TID /= Database.Empty_Id
-        and then not Is_Valid_Comment (Comment_Wiki)
+        and then not Is_Valid_Comment (Comment)
       then
          Templates.Insert
            (Translations,
@@ -733,39 +780,57 @@ package body V2P.Callbacks.Ajax is
          --  ??? Adds an error message
 
       else
-         Insert_Comment : declare
-            Cid : constant Database.Id := Database.Insert_Comment
-              (Uid       => Login,
-               Anonymous => Anonymous,
-               Thread    => TID,
-               Name      => "",
-               Comment   => Comment_Wiki,
-               Pid       => Photo_Id);
+
+         Save_Or_Preview : declare
+            HTML_Comment : constant String := To_HTML (Comment);
          begin
-            --  Adds the new comment in context to prevent duplicated post
 
-            Context.Set_Value
-              (Set_Global.CONTEXT_LAST_COMMENT,
-               Comment & '@' & Database.To_String (TID));
+            if Preview_Only then
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc (R_Block_Comment_Form_Enter.
+                      CAN_SUBMIT_COMMENT, "true"));
+               Templates.Insert
+                 (Translations,
+                  Templates.Assoc (R_Block_Comment_Form_Enter.
+                      HTML_COMMENT_TO_CHECK, HTML_Comment));
+            else
+               Insert_Comment : declare
+                  Cid : constant Database.Id := Database.Insert_Comment
+                    (Uid       => Login,
+                     Anonymous => Anonymous,
+                     Thread    => TID,
+                     Name      => "",
+                     Comment   => HTML_Comment,
+                     Pid       => Photo_Id);
+               begin
+                  --  Adds the new comment in context to
+                  --  prevent duplicated post
 
-            Templates.Insert (Translations, Database.Get_Comment (Cid));
+                  Context.Set_Value
+                    (Set_Global.CONTEXT_LAST_COMMENT,
+                     Comment & '@' & Database.To_String (TID));
 
-            Templates.Insert
-              (Translations,
-               Database.Get_Forum
-                 (V2P.Context.Counter.Get_Value
-                    (Context => Context.all,
-                     Name    => Set_Global.FID),
-                  Tid => TID));
+                  Templates.Insert (Translations, Database.Get_Comment (Cid));
 
-            Templates.Insert
-              (Translations,
-               Database.Get_Post
-                 (Tid        => V2P.Context.Counter.Get_Value
-                    (Context => Context.all,
-                     Name    => Set_Global.TID),
-                  Forum_Type => Forum_Type));
-         end Insert_Comment;
+                  Templates.Insert
+                    (Translations,
+                     Database.Get_Forum
+                       (V2P.Context.Counter.Get_Value
+                          (Context => Context.all,
+                           Name    => Set_Global.FID),
+                        Tid => TID));
+
+                  Templates.Insert
+                    (Translations,
+                     Database.Get_Post
+                       (Tid        => V2P.Context.Counter.Get_Value
+                          (Context => Context.all,
+                           Name    => Set_Global.TID),
+                        Forum_Type => Forum_Type));
+               end Insert_Comment;
+            end if;
+         end Save_Or_Preview;
       end if;
    end Onsubmit_Comment_Form_Enter;
 
