@@ -730,7 +730,9 @@ package body V2P.Callbacks.Ajax is
 
       begin
          if Comment_Type = "wiki" then
-            return V2P.Wiki.Wiki_To_HTML (Comment);
+            --  Always append a line feed (fixes diouzhtu
+            --  block formatting)
+            return V2P.Wiki.Wiki_To_HTML (Comment & ASCII.LF);
          else
             return Lf_To_BR (Morzhol.Strings.HTML_To_Text (Comment));
          end if;
