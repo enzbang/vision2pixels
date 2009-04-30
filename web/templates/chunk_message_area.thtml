@@ -1,1 +1,6 @@
 @@--  Empty message area, add some text here to be displayed on the main page
+@@--  The message to display must be entered in the MESSAGE set variable
+@@SET@@ MESSAGE=""
+@@IF@@ @_MESSAGE_@ /= ""
+<p>@_MESSAGE_@</p>
+@@END_IF@@

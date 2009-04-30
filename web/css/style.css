@@ -96,6 +96,13 @@ dl.table-display {
     padding: 1em;
 }
 
+#pm_message_area {
+    font-size: 1.2em;
+    color: #FFBA36;
+    padding: 0.1em;
+    text-align: center;
+}
+
 .voted {color:#999;}
 .thanks {color:#36AA3D;}
 .static {color:#5D3126;}
