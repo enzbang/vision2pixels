@@ -25,7 +25,7 @@ project Magick_Wand is
 
    for Library_Dir use "lib_ext";
    for Library_Name use "MagickWand";
-   for Library_Kind use "static";
+   for Library_Kind use "dynamic";
    for Externally_Built use "true";
 
 end Magick_Wand;
