@@ -452,6 +452,8 @@ package body V2P.Database is
       Comment            : Templates.Tag;
       Filename           : Templates.Tag;
       Has_Voted          : Templates.Tag;
+      Photo_Number       : Templates.Tag;
+      Photo_Index        : Positive := 1;
    begin
       DBH.Handle.Prepare_Select
         (Iter,
@@ -481,11 +483,23 @@ package body V2P.Database is
            & DB.String_Vectors.Element (Line, 6);
          Comment       := Comment
            & DB.String_Vectors.Element (Line, 7);
-         Filename      := Filename
-           & DB.String_Vectors.Element (Line, 8);
+
+         declare
+            File : constant String :=
+                     DB.String_Vectors.Element (Line, 8);
+         begin
+            Filename := Filename & File;
+
+            if File = "" then
+               Photo_Number := Photo_Number & "";
+            else
+               Photo_Number := Photo_Number & Utils.Image (Photo_Index);
+               Photo_Index := Photo_Index + 1;
+            end if;
+         end;
+
          Has_Voted     := Has_Voted
            & DB.String_Vectors.Element (Line, 9);
-
 
          --  Unthreaded view
 
@@ -503,6 +517,9 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc
            (Template_Defs.Chunk_Comment.COMMENT_IMAGE_SOURCE, Filename));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Chunk_Comment.COMMENT_IMAGE_INDEX, Photo_Number));
       Templates.Insert
         (Set, Templates.Assoc
            (Template_Defs.Chunk_Comment.DATE_ISO_8601, Date_Iso_8601));

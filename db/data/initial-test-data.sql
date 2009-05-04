@@ -537,6 +537,10 @@ insert into photo values (87, '2007/Forum photographies/Nature morte/20070201220
                533, 800, 533, 800, 150, 150, 78529);
 insert into photo values (88, '2007/Forum photographies/Paysage/200702012203-50.conv_TRSPT066.jpg',
                800, 641, 800, 641, 150, 150, 54089);
+insert into photo values (89, '2007/Forum photographies/Paysage/200702012203-50.conv_TRSPT066x2.jpg',
+               800, 641, 800, 641, 150, 150, 54089);
+insert into photo values (90, '2007/Forum photographies/Paysage/200702012203-50.conv_TRSPT066x3.jpg',
+               800, 641, 800, 641, 150, 150, 54089);
 
 --  Comments
 insert into comment values (1, datetime(current_timestamp, '-5.0009 days'), NULL, 'enzbang', NULL, '<p>See <a href=''http://en.wikipedia.org/wiki/Rubik%27s_cube'' rel=''nofollow''>http://en.wikipedia.org/wiki/Rubik%27s_cube</a> if you''re interested...</p>', NULL, "FALSE");
@@ -560,6 +564,9 @@ insert into comment values (18, datetime(current_timestamp, '-0.0007 days'), NUL
 insert into comment values (19, datetime(current_timestamp, '-0.0003 days'), NULL, 'turbo', NULL, '<p>Mais encore ?</p>', NULL, "FALSE");
 insert into comment values (20, datetime(current_timestamp, '-0.0007 days'), NULL, 'turbo', NULL, '<p>j''aime!</p>', NULL, "FALSE");
 insert into comment values (21, datetime(current_timestamp, '-0.0003 days'), NULL, 'turbo', NULL, '<p>Superbe</p>', NULL, "FALSE");
+insert into comment values (22, datetime(current_timestamp, '-0.0003 days'), NULL, 'turbo', NULL, '<p>com en imafe</p>', 89, "FALSE");
+insert into comment values (23, datetime(current_timestamp, '-0.0003 days'), NULL, 'test', NULL, '<p>prefere l''original</p>', NULL, "FALSE");
+insert into comment values (24, datetime(current_timestamp, '-0.0003 days'), NULL, 'turbo', NULL, '<p>une autre proposition</p>', 90, "FALSE");
 
 insert into post_comment values (60, 1);
 insert into post_comment values (84, 2);
@@ -582,6 +589,9 @@ insert into post_comment values (89, 18);
 insert into post_comment values (89, 19);
 insert into post_comment values (71, 20);
 insert into post_comment values (141, 21);
+insert into post_comment values (141, 22);
+insert into post_comment values (141, 23);
+insert into post_comment values (141, 24);
 
 --  Insert rating
 
