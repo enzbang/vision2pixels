@@ -2,17 +2,41 @@
 @@INCLUDE@@ set_values.incl
 @@--
 <select name="@_$1_@" id="@_$1_@">
+  <option value="9"
+  @@IF@@ @_FILTER_PAGE_SIZE_@ = @_SET_NINE_@
+    selected="selected"
+  @@END_IF@@
+  >@_SET_NINE_@ @_BABEL_PER_PAGE_@</option>
+
   <option value="10"
   @@IF@@ @_FILTER_PAGE_SIZE_@ = @_SET_TEN_@
     selected="selected"
   @@END_IF@@
   >@_SET_TEN_@ @_BABEL_PER_PAGE_@</option>
 
+  <option value="12"
+  @@IF@@ @_FILTER_PAGE_SIZE_@ = @_SET_TWELVE_@
+    selected="selected"
+  @@END_IF@@
+  >@_SET_TWELVE_@ @_BABEL_PER_PAGE_@</option>
+
+  <option value="15"
+  @@IF@@ @_FILTER_PAGE_SIZE_@ = @_SET_FIFTEEN_@
+    selected="selected"
+  @@END_IF@@
+  >@_SET_FIFTEEN_@ @_BABEL_PER_PAGE_@</option>
+
   <option value="20"
   @@IF@@ @_FILTER_PAGE_SIZE_@ = @_SET_TWENTY_@
      selected="selected"
    @@END_IF@@
    >@_SET_TWENTY_@ @_BABEL_PER_PAGE_@</option>
+
+  <option value="30"
+  @@IF@@ @_FILTER_PAGE_SIZE_@ = @_SET_THIRTY_@
+     selected="selected"
+   @@END_IF@@
+   >@_SET_THIRTY_@ @_BABEL_PER_PAGE_@</option>
 
    <option value="50"
    @@IF@@ @_FILTER_PAGE_SIZE_@ = @_SET_FIFTY_@
