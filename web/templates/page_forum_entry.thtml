@@ -53,7 +53,7 @@
         @@END_IF@@
 
         @@IF@@ @_IMAGE_SOURCE_@ = ""
-        <span class="date">. Posté le @_DATE_POST_@</span>
+        <span class="date">. @_BABEL_DATE_POST_@ @_DATE_POST_@</span>
         @@END_IF@@
       </p>
       <div class="comment">@_IMAGE_COMMENT_@</div>
@@ -63,8 +63,8 @@
       <div id="pfe_image_infos">
         <table>
           <tr>
-            <td class="theader">Categorie :</td>
-            <td class="theader">Date :</td>
+            <td class="theader">@_BABEL_CATEGORY_@ :</td>
+            <td class="theader">@_BABEL_DATE_@ :</td>
           </tr>
           <tr>
             <td>
@@ -99,7 +99,7 @@
     @@END_IF@@
 
   @@-- Comments
-  <h2 id="pfe_comments_section">Commentaires</h2>
+  <h2 id="pfe_comments_section">@_BABEL_COMMENTS_@</h2>
   <div id="pfe_post_comments">@_LAZY_COMMENTS_@</div>
   <div id="pfe_lazy_new_comment">@_LAZY_NEW_COMMENT_@</div>
   @@IF@@ @_IMAGE_SOURCE_@ /= ""
