@@ -99,6 +99,7 @@ package body MagickWand is
    ----------
 
    procedure Read (O : in out Object; Filename : in String) is
+
       function MagickReadImage
         (Wand : in System.Address; Filename : in chars_ptr)
          return MagickBooleanType;
@@ -110,8 +111,8 @@ package body MagickWand is
       --  wand/MagickWand.h:184:4
 
       C_Filename : chars_ptr := New_String (Filename);
-   begin
 
+   begin
       O.Wand := NewMagickWand;
 
       if MagickReadImage (O.Wand, C_Filename) = MagickFalse then
@@ -142,8 +143,9 @@ package body MagickWand is
       pragma Import (C, MagickResizeImage, "MagickResizeImage");
       --  wand/magick-image.h:233:3
    begin
-      if MagickResizeImage (O.Wand, Width, Height,
-                            Filter, double (Blur)) /= MagickTrue then
+      if MagickResizeImage
+        (O.Wand, Width, Height, Filter, double (Blur)) /= MagickTrue
+      then
          raise MagickError with "can not resize image";
       end if;
    end Resize;
@@ -153,11 +155,12 @@ package body MagickWand is
    -----------------------------
 
    procedure Set_Compression_Quality
-     (O : in Object; Value : in Float := 100.0) is
+     (O : in Object; Value : in Float := 100.0)
+   is
+
       function MagickSetImageCompressionQuality
         (Wand    : in System.Address;
-         Quality : in unsigned_long)
-         return MagickBooleanType;
+         Quality : in unsigned_long) return MagickBooleanType;
       pragma Import
         (C,
          MagickSetImageCompressionQuality,
@@ -165,7 +168,8 @@ package body MagickWand is
       --  wand/magick-image.h:260:3
    begin
       if MagickSetImageCompressionQuality
-        (O.Wand, unsigned_long (Value)) /= MagickTrue then
+        (O.Wand, unsigned_long (Value)) /= MagickTrue
+      then
          raise MagickError with "Can not set compression quality";
       end if;
    end Set_Compression_Quality;
@@ -175,6 +179,7 @@ package body MagickWand is
    ------------------
 
    procedure Set_Filename (O : in Object; Filename : in String) is
+
       function MagickSetImageFilename
         (Wand     : in System.Address;
          Filename : in Interfaces.C.Strings.chars_ptr)
@@ -196,6 +201,7 @@ package body MagickWand is
    -----------
 
    procedure Write (O : in Object; Filename : in String) is
+
       function MagickWriteImage
         (Wand     : in System.Address;
          Filename : in Interfaces.C.Strings.chars_ptr)

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2008                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -448,5 +448,6 @@ exception
       Text_IO.Put_Line (Exception_Message (UP));
       Conf.IO.Close;
    when Text_IO.Name_Error =>
+      Text_IO.Put_Line ("Config file '" & Config_Filename & "' not found.");
       null;
 end V2P.Settings;

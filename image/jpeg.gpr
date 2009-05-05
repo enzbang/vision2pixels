@@ -28,7 +28,7 @@ project Jpeg is
       when "Windows_NT" =>
          for Library_Dir use "lib_ext";
          for Library_Name use "jpeg";
-         for Library_Kind use "static";
+         for Library_Kind use "dynamic";
          for Externally_Built use "true";
       when others =>
          null;

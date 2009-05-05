@@ -27,7 +27,7 @@ project Magick_Core is
 
    for Library_Dir use "lib_ext";
    for Library_Name use "MagickCore";
-   for Library_Kind use "static";
+   for Library_Kind use "dynamic";
    for Externally_Built use "true";
 
 end Magick_Core;

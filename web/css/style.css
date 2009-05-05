@@ -40,7 +40,6 @@ abbr {
     border: none;
 }
 
-
 a img, form, fieldset {
     border: none;
 }
@@ -97,6 +96,13 @@ dl.table-display {
     padding: 1em;
 }
 
+#pm_message_area {
+    font-size: 1.2em;
+    color: #FFBA36;
+    padding: 0.1em;
+    text-align: center;
+}
+
 .voted {color:#999;}
 .thanks {color:#36AA3D;}
 .static {color:#5D3126;}
@@ -113,7 +119,7 @@ label {
 }
 
 textarea {
-    -moz-border-radius:2px;
+    -moz-border-radius:12px;
     background-color: #EEE;
     border: 1px solid #EEE;
     width: 90%;
@@ -125,9 +131,8 @@ textarea:focus {
     border: 1px solid #000;
 }
 
-
 input[type="submit"] {
-    -moz-border-radius:3px 3px 3px 3px;
+    -moz-border-radius:12px 12px 12px 12px;
     background-color:#D8D8C0;
     border:2px solid #404040;
     margin:1em auto;
@@ -143,9 +148,9 @@ input[type="password"] {
     background-color: #F8F8F8;
     border:1px solid #404040;
     margin: 0 auto 2px;
-    padding-bottom:0;
+    padding: 0.2em;
     width:60%;
-    -moz-border-radius: 2px;
+    -moz-border-radius: 12px;
 }
 
 .up {
@@ -233,7 +238,7 @@ hr {
     padding: 1.5em;
     margin: 0 1em 1.5em 0;
     background:none #050505;
-    -moz-border-radius:4px;
+    -moz-border-radius:12px;
     border: thin solid #888;
     color: #AAAAAA;
     font-weight: bold;
@@ -324,7 +329,6 @@ ul.thumb_metadata {
    font-weight:bold;
 }
 
-
 /* block specific */
 
 #cvt_contents {
@@ -387,7 +391,7 @@ ul.thumb_metadata {
     width: 100%;
 }
 #pfe_lazy_new_comment {
-    -moz-border-radius:3px;
+    -moz-border-radius:12px;
     background-color: #222;
     padding: 2em;
     text-align: left;
@@ -414,12 +418,12 @@ body.not_logged #pfe_lazy_new_comment {
 }
 
 #pfe_lazy_new_comment input[type="file"]{
-    -moz-border-radius:2px 2px 2px 2px;
+    -moz-border-radius:12px 12px 12px 12px;
     background-color: #EEE;
 }
 #pfnpe_new_entry_form_submit input[type="submit"],
 #pfe_lazy_new_comment input[type="submit"]{
-    -moz-border-radius:2px;
+    -moz-border-radius:12px;
     background-color: #FFFBF7;
     margin: 1em 0;
     border: 1px solid #EEE;
@@ -428,19 +432,23 @@ body.not_logged #pfe_lazy_new_comment {
     height: 2em;
     width: 50em;
 }
+#pfnpe_main_image, #pfnpe_entry_comment {
+    margin-left: 1em;
+    margin-bottom: 1em;
+}
 #pfnpe_entry_comment textarea {
     width: 70%;
     height: 6em;
 }
 
 #bm_metadata_edition_form {
-    margin: 2em;
+    margin: 2em 0;
     line-height: 1.6em;
     padding: 0 0 1em 0;
 }
 
 #bnv_new_vote {
-    -moz-border-radius:2px;
+    -moz-border-radius:12px;
     color: #EEE;
     padding: 2em 0 0.5em;
 }
@@ -565,11 +573,11 @@ h2#pfe_comments_section {
 }
 
 #pfe_comments li.comment img {
-    padding: 0 5px;
+    padding: 0 5px 10px;
 }
 
 #pfe_comments li cite {
-    -moz-border-radius:4px 4px 4px 4px;
+    -moz-border-radius:12px 12px 12px 12px;
     border:2px solid #505060;
     padding:0.5em;
     margin-bottom: 0.5em;
@@ -618,7 +626,7 @@ h2#pfe_comments_section {
 }
 
 #pfe_image_infos {
-    -moz-border-radius:4px 4px 4px 4px;
+    -moz-border-radius:12px 12px 12px 12px;
     background-color:#111111;
     border:3px solid #505060;
     color:#E0E0FF;
@@ -647,8 +655,9 @@ h2#pfe_comments_section {
 }
 
 fieldset#pfnpe_mandatory_fields {
+    -moz-border-radius:12px 12px 12px 12px;
     margin: 1em;
-    border: thin solid #bbb;
+    border: thin solid #ff8888;
     padding: 1em;
     width: 80%;
 }
@@ -685,7 +694,7 @@ ul#bucl_lastusercommentlist li a span.commenttext {
 #pfe_mainbox {
     position: relative;
     margin: 2em;
-    -moz-border-radius:4px;
+    -moz-border-radius:12px;
     padding: 0.1em;
 }
 
@@ -704,7 +713,7 @@ ul#bucl_lastusercommentlist li a span.commenttext {
 #pfe_mainbox .comment {
     background: #333333;
     color: #BBBBBB;
-    -moz-border-radius:4px;
+    -moz-border-radius:12px;
     margin: 1em 0 0;
     padding: 1em 1em 0 1em;
     line-height: 1.5em;
@@ -814,10 +823,14 @@ dl.bnc_comment_formatting dd {
     text-align: center;
     background-color:#909080;
     border:2px solid black;
-    -moz-border-radius:4px 4px 4px 4px;
+    -moz-border-radius:12px 12px 12px 12px;
     background-color:#909080;
     border:2px solid black;
     color: #202020;
+}
+#cvt_lazy_login li {
+    margin: 1em 0;
+    font-weight: bold;
 }
 
 #pft_filters {
@@ -945,6 +958,14 @@ ul#pfe_navigate_bottom li a:hover {
     border: none;
 }
 
+div#bm_geo_metadata {
+    -moz-border-radius:12px 12px 12px 12px;
+    margin-left: 1em;
+    border: thin solid #444;
+    padding-left: 1em;
+    width: 80%;
+}
+
 /* overwrite placement */
 
 div#pfe_lazy_new_comment label,
@@ -953,7 +974,6 @@ div.posting_form label {
     text-align: left;
     margin-left: 0;
 }
-
 
 /* page specific */
 
@@ -982,13 +1002,12 @@ body.help #cvt_main {
     padding: 1em;
     background-color: #0A0A0A;
     border: 1px solid #333;
-    -moz-border-radius:4px;
+    -moz-border-radius:12px;
     line-height: 1.5em;
 }
 body.user_page #cvt_main {
     width: 80%;
 }
-
 
 body.main h1 {
     font-size: 2em;
@@ -1042,7 +1061,6 @@ body.main #pm_show_forum_list li.last:after {
     content: '';
 }
 
-
 body.search_page h2 {
     margin: 2em 0;
 }
@@ -1059,7 +1077,6 @@ body.forum_txt_entry #pfe_entry_page {
     text-align: right;
     margin-right: 1em;
 }
-
 
 /*  styles for the unit rater
 ---------------------------------------------------------

@@ -16,8 +16,11 @@
     </p>
     <p><input name="ENTER" id="bl_login_form_enter"
               type="submit" value="Envoyer"/></p>
-    <p id="bl_cd_user"><a href="/register_user">@_BABEL_CREATE_ACCOUNT_@</a>
-     / <a href="/lost_password">@_BABEL_LOST_PASSWORD_@</a>
+    <p id="bl_cd_user">
+      <ul>
+        <li><a href="/register_user">@_BABEL_CREATE_ACCOUNT_@</a></li>
+        <li><a href="/lost_password">@_BABEL_LOST_PASSWORD_@</a></li>
+      </ul>
     </p>
   </fieldset>
 </form>
