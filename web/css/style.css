@@ -959,10 +959,6 @@ ul#pfe_navigate_bottom li a:hover {
 }
 
 div#bm_geo_metadata {
-    -moz-border-radius:12px 12px 12px 12px;
-    margin-left: 1em;
-    border: thin solid #444;
-    padding-left: 1em;
     width: 80%;
 }
 
