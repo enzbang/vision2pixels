@@ -44,30 +44,65 @@
                 id="global_comment_input"></textarea>
     </p>
     <p>
-      <input name="ENTER" id="bnc_comment_form_enter" type="submit" value="Envoyer"/>
-    </p>
-    <p id="bnc_new_comment_error"></p>
-    @@--    <p><input name="FILENAME" type="file"/>
-    <p class="help_formatting"><a href="#comment_formatting" class="link"
-                                  rel="bnc_comment_formatting_block" id="bnc_formatting_toggle">Voir la syntaxe</a></p>
-    <div id="bnc_comment_formatting_block" style="display:none">
-      <dl class="bnc_comment_formatting">
-        <dt>_italique_</dt>
-        <dd><i>italique</i></dd>
-        <dt>*strong*</dt>
-        <dd><strong>strong</strong></dd>
-        <dt>bq. une citation <strong class='emptyligne'>[ligne vide]</strong></dt>
-        <dd><blockquote><p>une citation</p></blockquote></dd>
-        <dt>un paragraphe <strong class='emptyligne'>[ligne vide]</strong> un autre</dt>
-        <dd><p>un paragraphe</p>
-          <p>un autre</p>
-        </dd>
-      </dl>
-    </div>
-  </fieldset>
-</form>
+        <select name="bnc_comment_type" id="bnc_comment_type">
+          <option value="txt"><em> Texte seul </em></option>
+          <option value="wiki">
+          <em> Format wiki </em>
+          </option>
+        </select>
+
+        <span id="bnc_comment_type_show_syntax" style="display:none"><a href="#comment_formatting" class="link"
+          rel="bnc_comment_formatting_block" id="bnc_formatting_toggle">Voir la syntaxe</a>
+        </span>
+        <script type="text/javascript">
+            function maybe_show_syntax_help () {
+              if ($('bnc_comment_type').value == "wiki") {
+                $('bnc_comment_type_show_syntax').style['display'] = 'inline';
+              } else {
+                $('bnc_comment_type_show_syntax').style['display'] = 'none';
+              }
+            }
+        </script>
+        @@INCLUDE@@ ../we_js/aws_action_js.tjs (onchange, bnc_comment_type, maybe_show_syntax_help)
+
+        <p id="bnc_new_comment_error"></p>
+        @@--    <p><input name="FILENAME" type="file"/>
+        <div id="bnc_comment_formatting_block" style="display:none">
+          <dl class="bnc_comment_formatting comment_body">
+            <dt>_italique_</dt>
+            <dd><i>italique</i></dd>
+            <dt>*strong*</dt>
+            <dd><strong>strong</strong></dd>
+            <dt>bq. une citation <strong class='emptyligne'>[ligne vide]</strong></dt>
+            <dd><blockquote><p>une citation</p></blockquote></dd>
+            <dt>un paragraphe <strong class='emptyligne'>[ligne vide]</strong> un autre</dt>
+            <dd><p>un paragraphe</p>
+            <p>un autre</p>
+            </dd>
+          </dl>
+        </div>
+        <p><input name="CHECK"
+                  id="bnc_comment_form_enter" type="submit" value="Vérifier"/>
+        </p>
+      </fieldset>
+    </form>
+
+<div id="bnc_checkpoint" style="display:none;">
+  <hr/>
+  <strong>ATTENTION: vous devez cliquez sur <q>Envoyer</q> pour valider ce commentaire.
+  Vous pouvez toujours l'éditer et presser <q>Vérifier</q> pour changer votre texte</strong>
+  <div id="bnc_checkpoint_preview" class="comment_body">
+  @@--  Placeholder for the comment preview
+  </div>
+  <form enctype="multipart/form-data" id="bnc_comment_register" action="#" method="post">
+    <input name="REGISTER_COMMENT" id="bnc_comment_register_enter" type="submit" value="Envoyer" />
+  </form>
+</div>
+
+
 @@ELSE@@
     <p id="bnc_noanonymouscomment">@_BABEL_NO_ANONYMOUS_COMMENT_@</p>
 @@END_IF@@
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bnc_comment_form, 4=>bnc_comment_form, 5=>pfe_PARENT_ID, 6=>bnc_comment_pid)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bnc_comment_register, 4=>bnc_comment_form, 5=>pfe_PARENT_ID, 6=>bnc_comment_pid, 7=>bnc_comment_register)
 @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, bnc_formatting_toggle, V2P.Tools.toggle_show_hide_rel)
