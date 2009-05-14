@@ -1,7 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
 @@--
-@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ new
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ termofuse
 @@--  Use same layout as "new" page
 @@SET@@ SET_URL = /termsofuse
 
