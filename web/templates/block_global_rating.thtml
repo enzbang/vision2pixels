@@ -1,22 +1,28 @@
-@@IF@@ @_GLOBAL_NB_VOTE_@ /= 0
-  @@INLINE@@
-     <p id="bgr_has_vote">@_GLOBAL_NB_VOTE_@
-    @@IF@@ @_GLOBAL_NB_VOTE_@ > 1
-      Votes
-    @@ELSE@@
-      Vote
-    @@END_IF@@
-     : </p>
-  @@END_INLINE@@
-  @@TABLE@@
-  <h3 class="criterianame">@_GLOBAL_CRITERIA_NAME_@</h3>
-  <ul id="bgr_votefor@_GLOBAL_CRITERIA_ID_@" class="unit-global-rating">
-    <li class="current-global-rating"
-        style="width:@_FLOATMULT(15):GLOBAL_CRITERIA_CURRENT_RATING_@px;">
-      Currently @_GLOBAL_CRITERIA_CURRENT_RATING_@/5
-    </li>
-  </ul>
-  @@END_TABLE@@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@IF@@ @_REVEALED_@
+  @@IF@@ @_GLOBAL_NB_VOTE_@ /= 0
+    @@INLINE@@
+       <p id="bgr_has_vote">@_GLOBAL_NB_VOTE_@
+      @@IF@@ @_GLOBAL_NB_VOTE_@ > 1
+        Votes
+      @@ELSE@@
+        Vote
+      @@END_IF@@
+       : </p>
+    @@END_INLINE@@
+    @@TABLE@@
+    <h3 class="criterianame">@_GLOBAL_CRITERIA_NAME_@</h3>
+    <ul id="bgr_votefor@_GLOBAL_CRITERIA_ID_@" class="unit-global-rating">
+      <li class="current-global-rating"
+          style="width:@_FLOATMULT(15):GLOBAL_CRITERIA_CURRENT_RATING_@px;">
+        Currently @_GLOBAL_CRITERIA_CURRENT_RATING_@/5
+      </li>
+    </ul>
+    @@END_TABLE@@
+  @@ELSE@@
+    <p id="bgr_no_vote">@_BABEL_NO_VOTE_@</p>
+  @@END_IF@@
 @@ELSE@@
-  <p id="bgr_no_vote">Pas de vote pour l'instant</p>
+  <p id="bgr_no_vote">@_BABEL_NO_VOTE_DISPLAY_ANONYMOUS_@</p>
 @@END_IF@@

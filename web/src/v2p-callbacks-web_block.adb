@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2008                          --
+--                         Copyright (C) 2007-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -27,6 +27,7 @@ with V2P.Context;
 with V2P.Navigation_Links;
 with V2P.Settings;
 with V2P.Template_Defs.Block_Forum_List;
+with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_User_Page;
@@ -301,14 +302,20 @@ package body V2P.Callbacks.Web_Block is
       Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
+      TID : constant Database.Id :=
+              V2P.Context.Counter.Get_Value
+                (Context => Context.all,
+                 Name    => Template_Defs.Set_Global.TID);
    begin
       if Context.Exist (Template_Defs.Set_Global.TID) then
          Templates.Insert
            (Translations,
-            Database.Get_Global_Rating
-              (V2P.Context.Counter.Get_Value
-                 (Context => Context.all,
-                  Name    => Template_Defs.Set_Global.TID)));
+            Database.Get_Global_Rating (TID));
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.Block_Global_Rating.REVEALED,
+               Database.Is_Revealed (TID)));
       end if;
    end Global_Rating;
 

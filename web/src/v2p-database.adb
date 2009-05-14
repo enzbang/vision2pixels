@@ -2772,6 +2772,46 @@ package body V2P.Database is
       return Result;
    end Is_Author;
 
+   -----------------
+   -- Is_Revealed --
+   -----------------
+
+   function Is_Revealed (Tid : in Id) return Boolean is
+      DBH    : constant TLS_DBH_Access :=
+                 TLS_DBH_Access (DBH_TLS.Reference);
+      Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line   : DB.String_Vectors.Vector;
+      Result : Boolean;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select
+        (Iter, "SELECT "
+         & " (JULIANDAY(post.date_post, '+"
+         & Utils.Image (Settings.Anonymity_Hours)
+         & " hour') - JULIANDAY('NOW')) * 24 "
+         & "FROM post WHERE post.id=" & To_String (Tid));
+
+      Result := False;
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Is_Revealed : declare
+            Hours : constant Float :=
+                      Float'Value (DB.String_Vectors.Element (Line, 1));
+         begin
+            if Hours < 0.0 then
+               Result := True;
+            end if;
+         end Is_Revealed;
+
+         Iter.End_Select;
+      end if;
+
+      return Result;
+   end Is_Revealed;
+
    -----------------------
    -- Preferences_Exist --
    -----------------------

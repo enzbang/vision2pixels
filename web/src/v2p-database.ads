@@ -242,6 +242,9 @@ package V2P.Database is
    function Is_Author (Uid : in String; Pid : in Id) return Boolean;
    --  Returns true whether the user of the post Pid is Uid
 
+   function Is_Revealed (Tid : in Id) return Boolean;
+   --  Returns true if the author of the given post is now revealed
+
    function Get_User_Page (Uid : in String) return Templates.Translate_Set;
    --  Returns user page
 

@@ -115,7 +115,8 @@
 @@SET@@ BABEL_LAST_USER_COMMENT="Derniers commentaires"
 @@SET@@ BABEL_LAST_USERS="Derniers Inscrits"
 @@SET@@ BABEL_USER_VOTED_PHOTOS="Votes pour la photo de la semaine"
-@@SET@@ BABEL_NO_VOTE="Pas de vote pour le moment"
+@@SET@@ BABEL_NO_VOTE="Pas de vote pour l'instant"
+@@SET@@ BABEL_NO_VOTE_DISPLAY_ANONYMOUS="Résultat des votes affichés lorsque l'auteur est révélé"
 @@SET@@ BABEL_PREFERENCES="Préférences"
 @@-- Metadata
 @@SET@@ BABEL_GEO_LATITUDE="Latitude"
