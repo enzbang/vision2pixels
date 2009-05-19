@@ -78,7 +78,9 @@
             </td>
             <td>@_DATE_POST_@</td></tr>
         </table>
+	@@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@
         @_LAZY_EXIF_@
+	@@END_IF@@
         <div id="global_lazy_metadata" class="clear">@_LAZY_METADATA_@</div>
         <div id="pfe_lazy_global_rating">@_LAZY_GLOBAL_RATING_@</div>
       </div>
