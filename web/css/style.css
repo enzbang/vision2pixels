@@ -1201,7 +1201,7 @@ label.inline {
     padding: 2em;
 }
 
-#bnc_checkpoint strong {
+#bnc_checkpoint_warning strong {
     font-weight: bold;
     color: orange;
 }

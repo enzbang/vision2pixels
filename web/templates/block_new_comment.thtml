@@ -89,8 +89,8 @@
 
 <div id="bnc_checkpoint" style="display:none;">
   <hr/>
-  <strong>ATTENTION: vous devez cliquez sur <q>Envoyer</q> pour valider ce commentaire.
-  Vous pouvez toujours l'éditer et presser <q>Vérifier</q> pour changer votre texte</strong>
+  <p id="bnc_checkpoint_warning"><strong>ATTENTION: vous devez cliquez sur <q>Envoyer</q> pour valider ce commentaire.
+  Vous pouvez toujours l'éditer et presser <q>Vérifier</q> pour changer votre texte</strong></p>
   <div id="bnc_checkpoint_preview" class="comment_body">
   @@--  Placeholder for the comment preview
   </div>
