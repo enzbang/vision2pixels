@@ -399,6 +399,7 @@ ul.thumb_metadata {
     padding: 2em;
     text-align: left;
     max-width: 1000px;
+    width: 90%;
 }
 #pfe_lazy_global_rating {
   padding-bottom: 1em;
@@ -511,6 +512,10 @@ table.forum_text tr.table_line_1 {
 
 #pm_latest_users ul.latest_users {
     margin-left: 14.575%;
+}
+
+#pfe_post_comments {
+    width: 90%;
 }
 
 #pfe_image_block {
