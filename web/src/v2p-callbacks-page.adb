@@ -307,6 +307,10 @@ package body V2P.Callbacks.Page is
       --  First rename the file to be compatible with ImageMagick
 
       if Filename /= C_Filename then
+         if Directories.Exists (C_Filename) then
+            Directories.Delete_File (C_Filename);
+         end if;
+
          Directories.Rename
            (Old_Name => Filename,
             New_Name => C_Filename);
