@@ -22,6 +22,8 @@
 --  Reading the embedded image metadata is done using an external tool. This
 --  implementation is based on ExifTools.
 
+with Ada.Strings.Fixed;
+
 with GNAT.Expect;
 with GNAT.Regpat;
 with GNAT.OS_Lib;
@@ -143,6 +145,8 @@ package body Image.Metadata.Embedded is
 
       function Run_Exiftool return String is
 
+         use type OS_Lib.String_Access;
+
          procedure Free_Args (Args : in out OS_Lib.Argument_List);
 
          ---------------
@@ -161,7 +165,8 @@ package body Image.Metadata.Embedded is
          Args   : OS_Lib.Argument_List (1 .. 5);
 
       begin
-         if Is_Windows then
+         if Is_Windows and then Exiftool_Exe = null then
+            --  Try with an Exiftool script
             Args := (1 => new String'(Cmd_Option),
                      2 => new String'(Sh_Option),
                      3 => new String'(Exiftool),
