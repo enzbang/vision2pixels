@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2006                             --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -22,7 +22,10 @@
 --  This is the main driver for the test suite(s)
 
 with Ada.Text_IO;
+
 with AUnit;
+with AUnit.Run;
+with AUnit.Reporter.Text;
 
 with Gwiad.Web;
 with Gwiad.Dynamic_Libraries.Manager;
@@ -37,7 +40,8 @@ procedure Web_Harness is
    use Gwiad.Dynamic_Libraries.Manager;
 
    procedure Run is
-     new AUnit.Test_Runner (Suite => Web_Suite.Web_Suite_Access);
+     new AUnit.Run.Test_Runner (Suite => Web_Suite.Web_Suite_Access);
+   Reporter : AUnit.Reporter.Text.Text_Reporter;
 
 begin
    Text_IO.Put_Line ("(web_harness): Begin");
@@ -51,7 +55,7 @@ begin
    --  Run tests
 
    Text_IO.Put_Line ("(web_harness): run tests");
-   Run;
+   Run (Reporter);
 
    --  Exit now
 

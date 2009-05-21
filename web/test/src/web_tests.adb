@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2008                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -25,6 +25,8 @@ with Ada.Text_IO;
 with GNAT.Regpat;
 
 with AUnit;
+with AUnit.Assertions;
+
 with AWS.Response;
 with AWS.Utils;
 

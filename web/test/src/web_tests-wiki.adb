@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                             --
+--                         Copyright (C) 2007-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -21,6 +21,8 @@
 
 with Ada.Text_IO;
 
+with AUnit.Assertions;
+
 with V2P.Wiki;
 
 package body Web_Tests.Wiki is
@@ -34,7 +36,7 @@ package body Web_Tests.Wiki is
 
    overriding function Name (T : in Test_Case) return Message_String is
    begin
-      return New_String ("Web_Tests.Wiki");
+      return Format ("Web_Tests.Wiki");
    end Name;
 
    --------------------
@@ -57,7 +59,7 @@ package body Web_Tests.Wiki is
       Assert
         (V2P.Wiki.Wiki_To_HTML ("http://simple.url") =
            "<p><a href=" & '"' & "http://simple.url"
-         	& '"' & ">http://simple.url</a> </p>" & ASCII.Lf,
+               & '"' & ">http://simple.url</a> </p>" & ASCII.Lf,
          "Error with http://simple.url");
    end Wiki_To_Html;
 

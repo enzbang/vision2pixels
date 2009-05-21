@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                            Copyright (C) 2008                            --
+--                         Copyright (C) 2008-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -23,6 +23,8 @@ with Ada.Calendar;
 with Ada.Directories;
 
 with GNAT.Calendar.Time_IO;
+
+with AUnit.Assertions;
 
 with V2P.Settings;
 
@@ -83,7 +85,7 @@ package body Image_Tests.Resize is
    function Name (T : in Test_Case) return Message_String is
       pragma Unreferenced (T);
    begin
-      return New_String ("Create medium image size");
+      return Format ("Create medium image size");
    end Name;
 
    --------------------

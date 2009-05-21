@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2008                          --
+--                         Copyright (C) 2007-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -20,6 +20,8 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded;
+
+with AUnit.Assertions;
 
 with Image.Metadata.Embedded;
 
@@ -40,7 +42,7 @@ package body Image_Tests.Embedded_Metadata is
    function Name (T : in Test_Case) return Message_String is
       pragma Unreferenced (T);
    begin
-      return New_String ("Check image embedded metadata (exif/iptc)");
+      return Format ("Check image embedded metadata (exif/iptc)");
    end Name;
 
    ----------

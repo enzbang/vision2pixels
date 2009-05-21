@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2008                          --
+--                         Copyright (C) 2007-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -20,6 +20,8 @@
 ------------------------------------------------------------------------------
 
 with Image.Metadata.Geographic;
+
+with AUnit.Assertions;
 
 package body Image_Tests.Metadata is
 
@@ -109,7 +111,7 @@ package body Image_Tests.Metadata is
    function Name (T : in Test_Case) return Message_String is
       pragma Unreferenced (T);
    begin
-      return New_String ("Check image metadata functions");
+      return Format ("Check image metadata functions");
    end Name;
 
    --------------------

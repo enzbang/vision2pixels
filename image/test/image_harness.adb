@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -22,16 +22,20 @@
 with Ada.Command_Line;
 
 with AUnit;
+with AUnit.Run;
+with AUnit.Reporter.Text;
+
 with Image_Suite;
 
 procedure Image_Harness is
 
    use Ada;
 
-   procedure Run is new AUnit.Test_Runner (Suite => Image_Suite);
+   procedure Run is new AUnit.Run.Test_Runner (Suite => Image_Suite);
+   Reporter : AUnit.Reporter.Text.Text_Reporter;
 
 begin
-   Run;
+   Run (Reporter);
    Command_Line.Set_Exit_Status (Code => Command_Line.Success);
 exception
    when others =>

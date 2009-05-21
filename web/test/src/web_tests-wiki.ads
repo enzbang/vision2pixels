@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                           Copyright (C) 2007                             --
+--                         Copyright (C) 2007-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -20,12 +20,12 @@
 ------------------------------------------------------------------------------
 
 with AUnit;
+with AUnit.Test_Cases;
 
 package Web_Tests.Wiki is
 
    use AUnit;
    use AUnit.Test_Cases;
-   use AUnit.Message_Strings;
 
    type Test_Case is new AUnit.Test_Cases.Test_Case with null record;
 

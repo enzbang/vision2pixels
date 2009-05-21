@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                            Copyright (C) 2008                            --
+--                         Copyright (C) 2008-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -89,7 +89,7 @@ package body Web_Tests.Forum_Entry is
 
    overriding function Name (T : in Test_Case) return Message_String is
    begin
-      return New_String ("Web_Tests.Forum_Entry");
+      return Format ("Web_Tests.Forum_Entry");
    end Name;
 
    --------------------

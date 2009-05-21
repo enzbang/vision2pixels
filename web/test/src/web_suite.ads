@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                        Copyright (C) 2006-2007                           --
+--                        Copyright (C) 2006-2009                           --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,7 +19,8 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AUnit; use AUnit; use AUnit.Test_Suites;
+with AUnit;             use AUnit;
+with AUnit.Test_Suites; use AUnit.Test_Suites;
 
 package Web_Suite is
    function Web_Suite_Access return Access_Test_Suite;

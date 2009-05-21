@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2008                          --
+--                         Copyright (C) 2007-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -18,6 +18,8 @@
 --  along with this library; if not, write to the Free Software Foundation, --
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
+
+with AUnit.Assertions;
 
 with AWS.Client;
 with AWS.Response;
@@ -89,7 +91,7 @@ package body Web_Tests.Menu is
 
    overriding function Name (T : in Test_Case) return Message_String is
    begin
-      return New_String ("Web_Tests.Threads_Navigation");
+      return Format ("Web_Tests.Threads_Navigation");
    end Name;
 
    --------------------

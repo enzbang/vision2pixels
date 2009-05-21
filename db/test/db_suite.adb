@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,10 +19,10 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with AUnit; use AUnit; use AUnit.Test_Suites;
-with DB_Tests.User;
+with AUnit;             use AUnit;
+with AUnit.Test_Suites; use AUnit.Test_Suites;
 
-use AUnit;
+with DB_Tests.User;
 
 pragma Style_Checks (Off);
 

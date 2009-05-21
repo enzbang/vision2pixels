@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2007                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -20,13 +20,16 @@
 ------------------------------------------------------------------------------
 
 with AUnit;
+with AUnit.Run;
+with AUnit.Reporter.Text;
 
 with DB_Suite;
 
 procedure DB_Harness is
 
-   procedure Run is new AUnit.Test_Runner (Suite => DB_Suite);
+   procedure Run is new AUnit.Run.Test_Runner (Suite => DB_Suite);
+   Reporter : AUnit.Reporter.Text.Text_Reporter;
 
 begin
-   Run;
+   Run (Reporter);
 end DB_Harness;
