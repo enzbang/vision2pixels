@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2008                          --
+--                         Copyright (C) 2007-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -46,7 +46,7 @@ package body Image.Metadata.Embedded is
    Cmd_Exe      : constant OS_Lib.String_Access :=
                     OS_Lib.Locate_Exec_On_Path (Cmd);
 
-   Suffix              : constant String := "  [^:]*: ([^\n]*)";
+   Suffix              : constant String := "  [^:]*: ([^\n\r]*)";
 
    Make                : aliased constant String :=
                            "\n(Make)" & Suffix;
@@ -131,7 +131,9 @@ package body Image.Metadata.Embedded is
 
          if Matches (0) /= Regpat.No_Match then
             Result := To_Unbounded_String
-              (Output (Matches (2).First .. Matches (2).Last));
+              (Strings.Fixed.Trim
+                 (Output (Matches (2).First .. Matches (2).Last),
+                  Side => Strings.Both));
          end if;
       end Check_Set;
 
