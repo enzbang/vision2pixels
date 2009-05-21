@@ -240,6 +240,7 @@ install_dirs:
 	$(MKDIR) $(ARGWIAD_ROOT)/lib/websites
 	$(MKDIR) $(ARGWIAD_ROOT)/lib/services
 	$(MKDIR) $(ARGWIAD_ROOT)/bin
+	$(MKDIR) $(ARGWIAD_ROOT)/uploads
 	$(CP) -r web/templates/*.tmplt \
 		$(ARGWIAD_ROOT)/plugins/vision2pixels/templates/
 	$(CP) -r web/templates/*.thtml \

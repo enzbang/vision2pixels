@@ -228,7 +228,7 @@ package body Web_Tests.Post is
                       5 => +"Titre",
                       6 => +"test",
                       7 => +"Ajouter un commentaire"),
-            "Upload has failed");
+            "Upload has failed: '" & Page & ''');
       end Check_Post_Page;
 
       --  Post the photo now into the corresponding forum
