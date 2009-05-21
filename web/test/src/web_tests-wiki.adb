@@ -55,12 +55,13 @@ package body Web_Tests.Wiki is
 
    procedure Wiki_To_HTML (T : in out AUnit.Test_Cases.Test_Case'Class) is
       use AUnit.Assertions;
+      Result : constant String := V2P.Wiki.Wiki_To_HTML ("http://simple.url");
    begin
       Assert
-        (V2P.Wiki.Wiki_To_HTML ("http://simple.url") =
+        (Result =
            "<p><a href=" & '"' & "http://simple.url"
-               & '"' & ">http://simple.url</a> </p>" & ASCII.Lf,
-         "Error with http://simple.url");
+               & '"' & ">http://simple.url</a></p>" & ASCII.Lf,
+         "Error with http://simple.url, found: '" & Result & ''');
    end Wiki_To_Html;
 
 end Web_Tests.Wiki;
