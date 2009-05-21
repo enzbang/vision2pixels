@@ -1225,3 +1225,22 @@ label.inline {
 #bup_user_page_edit {
     margin-top: 2em;
 }
+
+#bpcu_css_url_form {
+    margin-top: 2em;
+}
+#bpcu_css_url_form label,
+#bpcu_css_url_form p,
+#bpcu_css_url_form input[type="submit"],
+#bpcu_css_url_form input {
+    display: inline;
+}
+
+#bpcu_css_url_form input {
+    width: 20em;
+}
+
+#bpcu_css_url_form input[type="submit"] {
+    width: 10em;
+    padding: 0;
+}

@@ -297,6 +297,9 @@ package V2P.Database is
    --  Returns the user's preferences for the given user. If no preferences are
    --  set, use the default values.
 
+   procedure Set_CSS_URL_Preferences (Login : in String; URL : in String);
+   --  Set css url for the given user
+
    procedure Set_Filter_Preferences
      (Login  : in String;
       Filter : in Filter_Mode);

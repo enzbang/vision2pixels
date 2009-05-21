@@ -45,6 +45,9 @@
   @_BABEL_MEDIUM_SIZE_@
 @@ELSIF@@ @_FILTER_@ = @_SET_THUMB_SIZE_@
   @_BABEL_THUMB_SIZE_@
+@@--
+@@ELSE@@
+  @_FILTER_@
 @@END_IF@@
   </replace>
 @@END_INLINE@@

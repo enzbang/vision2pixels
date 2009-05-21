@@ -54,6 +54,7 @@ with V2P.Template_Defs.Block_Forum_Category_Set;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Forum_Sort;
+with V2P.Template_Defs.Block_Pref_Css_Url;
 with V2P.Template_Defs.Block_Pref_Forum_Filter;
 with V2P.Template_Defs.Block_Pref_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Pref_Forum_Sort;
@@ -515,6 +516,34 @@ package body V2P.Callbacks.Ajax is
          Templates.Assoc
            (Template_Defs.R_Block_User_Preferences.FILTER, Size));
    end Onchange_Image_Size_Preference;
+
+   --------------------------------
+   -- Onclick_CSS_URL_Preference --
+   --------------------------------
+
+   procedure Onclick_CSS_URL_Preference
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      package HTTP renames Template_Defs.Block_Pref_Css_Url.HTTP;
+
+      SID   : constant Session.Id := Status.Session (Request);
+      Login : constant String :=
+                Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+      P     : constant Parameters.List := Status.Parameters (Request);
+      URL   : constant String :=
+                Parameters.Get (P, HTTP.Bpcu_Css_Url_Set);
+   begin
+      Context.Set_Value (Template_Defs.Set_Global.CSS_URL, URL);
+
+      Database.Set_CSS_URL_Preferences (Login, URL);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.R_Block_User_Preferences.FILTER, URL));
+   end Onclick_CSS_URL_Preference;
 
    ----------------------------
    -- Onclick_Goto_Next_Page --

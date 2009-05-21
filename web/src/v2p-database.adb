@@ -2967,6 +2967,16 @@ package body V2P.Database is
       DBH.Handle.Execute (SQL);
    end Set_Category;
 
+   -----------------------------
+   -- Set_CSS_URL_Preferences --
+   -----------------------------
+
+   procedure Set_CSS_URL_Preferences
+     (Login : in String; URL : in String) is
+   begin
+      Set_Preferences (Login, "css_url", Q (URL));
+   end Set_CSS_URL_Preferences;
+
    --------------------------------------
    -- Set_Filter_Page_Size_Preferences --
    --------------------------------------

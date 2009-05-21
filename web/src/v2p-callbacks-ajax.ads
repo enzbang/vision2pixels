@@ -100,6 +100,12 @@ package V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set);
    --  Called when changing the category of a post
 
+   procedure Onclick_CSS_URL_Preference
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when changing the default css url
+
    procedure Onclick_Goto_Next_Page
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;

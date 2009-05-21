@@ -66,6 +66,7 @@ with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Vote;
+with V2P.Template_Defs.Block_Pref_Css_Url;
 with V2P.Template_Defs.Block_Pref_Forum_Filter;
 with V2P.Template_Defs.Block_Pref_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Pref_Forum_Sort;
@@ -831,6 +832,13 @@ package body V2P.Web_Server is
         (Template_Defs.Block_Pref_Forum_Sort.Ajax.onchange_bpfs_forum_sort_set,
          Template_Defs.R_Block_User_Preferences.Template,
          Callbacks.Ajax.Onchange_Filter_Sort_Preference'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Pref_Css_Url.Ajax.onclick_bpcu_css_url_form_enter,
+         Template_Defs.R_Block_User_Preferences.Template,
+         Callbacks.Ajax.Onclick_CSS_URL_Preference'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

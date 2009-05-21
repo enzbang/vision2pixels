@@ -6,6 +6,7 @@
 @_LAZY_PREF_FORUM_FILTER_PAGE_SIZE_@
 @_LAZY_PREF_FORUM_SORT_@
 @_LAZY_PREF_IMAGE_SIZE_@
+@_LAZY_PREF_CSS_URL_@
 @@-- notification area
 <div id="bup_notify"></div>
 </div>

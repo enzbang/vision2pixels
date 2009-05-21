@@ -177,3 +177,4 @@
 @@SET@@ BABEL_MEDIUM_SIZE="Taille d'image 800x800"
 @@SET@@ BABEL_THUMB_SIZE="Taille d'image vignette"
 @@SET@@ BABEL_HAS_VOTED="a voté !"
+@@SET@@ BABEL_SET_CSS_URL="Utilisation d'une CSS personnalisée"
