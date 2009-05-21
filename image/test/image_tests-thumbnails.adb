@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                        Copyright (C) 2006-2007                           --
+--                        Copyright (C) 2006-2009                           --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -24,9 +24,10 @@ with Ada.Directories;
 
 with GNAT.Calendar.Time_IO;
 
+with AUnit.Assertions;
+
 with V2P.Settings;
 
-with G2F;
 with Image.Data;
 
 package body Image_Tests.Thumbnails is
@@ -81,7 +82,7 @@ package body Image_Tests.Thumbnails is
    function Name (T : in Test_Case) return Message_String is
       pragma Unreferenced (T);
    begin
-      return New_String ("Create image thumbnails");
+      return Format ("Create image thumbnails");
    end Name;
 
    --------------------
@@ -100,8 +101,7 @@ package body Image_Tests.Thumbnails is
    procedure Tear_Down (T : in out Test_Case) is
       pragma Unreferenced (T);
    begin
-      G2F.Destroy_Magick;
+      null;
    end Tear_Down;
-
 
 end Image_Tests.Thumbnails;
