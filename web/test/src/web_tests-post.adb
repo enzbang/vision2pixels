@@ -226,8 +226,7 @@ package body Web_Tests.Post is
                       3 => +"<select",
                       4 => +"CATEGORY",
                       5 => +"Titre",
-                      6 => +"test",
-                      7 => +"Ajouter un commentaire"),
+                      6 => +"Ajouter un commentaire"),
             "Upload has failed: '" & Page & ''');
       end Check_Post_Page;
 
@@ -238,7 +237,7 @@ package body Web_Tests.Post is
          URI => Page_Forum_New_Photo_Entry.
            Ajax.onsubmit_pfnpe_new_entry_form_submit & '?' & URL_Context
          & "&NAME=Un_Troll&comment_input=un_petit_troll"
-         & "&PID=89&CATEGORY=1");
+         & "&PID=91&CATEGORY=1");
 
       Check_Forum_Page : declare
          use AUnit.Assertions;
@@ -294,14 +293,13 @@ package body Web_Tests.Post is
          Check
            (Page,
             Word_Set'(1 => +"Poster un nouveau message",
-                      2 => +"Sélection du forum",
+                      2 => +"Choisir un forum",
                       3 => +"<select",
                       4 => +"MatCat1",
                       5 => +"MatCat2",
-                      6 => +"turbo",
-                      7 => +"ENTER",
-                      8 => +"submit"),
-            "cannot get the post message page");
+                      6 => +"ENTER",
+                      7 => +"submit"),
+            "cannot get the post message page: '" & Page & ''');
       end Check_Post_Page;
 
       --  Post the message
