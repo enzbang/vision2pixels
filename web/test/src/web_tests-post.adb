@@ -227,7 +227,7 @@ package body Web_Tests.Post is
                       4 => +"CATEGORY",
                       5 => +"Titre",
                       6 => +"Ajouter un commentaire"),
-            "Upload has failed: '" & Page & ''');
+            "Upload has failed");
       end Check_Post_Page;
 
       --  Post the photo now into the corresponding forum
@@ -299,7 +299,7 @@ package body Web_Tests.Post is
                       5 => +"MatCat2",
                       6 => +"ENTER",
                       7 => +"submit"),
-            "cannot get the post message page: '" & Page & ''');
+            "cannot get the post message page");
       end Check_Post_Page;
 
       --  Post the message
