@@ -1,0 +1,13 @@
+#!/bin/sh
+
+cd ImageMagick-*
+
+./configure --prefix=$HOME/opt --without-bzlib --without-dps \
+	    --without-djvu --without-fpx --without-fontconfig \
+	    --without-freetype --without-gslib --without-gvc \
+	    --without-lcms --without-lqr --without-openexr \
+	    --without-rsvg --without-wmf --without-xml \
+	    --disable-openmp --disable-largefile --disable-deprecated \
+	    --without-magick-plus-plus --without-tiff --without-perl
+
+make -j6 && make install

@@ -1,0 +1,134 @@
+#!/bin/sh
+
+# Build with GNAT GPL 2007/2009
+GROOT=$HOME/opt/gnat
+
+# For debug mode
+MODE=Debug
+export PRJ_BUILD=$MODE
+
+# Set to true if a clean-up needs to be done
+CLEAN=true
+
+# Installation root
+export GWIAD_ROOT=$HOME/opt/gwiad-distrib
+
+# Location for each module
+
+REPO_GWIAD=http://repo.or.cz/r/gwiad.git
+REPO_DIOUZHTU=http://repo.or.cz/r/diouzhtu.git
+REPO_V2P=http://git.sv.gnu.org/r/v2p.git
+
+# Branch to use for each module
+
+BRANCH_GWIAD=master
+BRANCH_DIOUZHTU=master
+BRANCH_V2P=master
+
+REP=$HOME/dev/repositories/git
+PATH=$GROOT/bin:$HOME/opt/bin:$PATH
+
+function get_branch()
+{
+    MODULE=$1
+    BRANCH=$2
+    REPO=$3
+    SUBM=$4
+
+    if [ ! -d $REP/$MODULE ]; then
+       cd $REP
+       git clone $REPO
+    fi;
+
+    cd $REP/$MODULE
+
+    if [ "$CLEAN" == "true" ]; then
+        make clean
+        rm -f mk.install
+    fi
+
+    if [ "$SUBM" == "true" ]; then
+        git submodule init
+	git submodule update
+    fi
+
+    # Update repository, fetch tags to update tags
+    git checkout master && git pull
+    git fetch --tags
+
+    if [ "$(git branch | grep $BRANCH)" = "" ]; then
+        # Local branch does not exists, create it now
+        git checkout -b $BRANCH origin/$BRANCH
+    fi
+
+    git checkout $BRANCH && git pull
+}
+
+rm -fr $GWIAD_ROOT all.tgz
+
+################################################
+# Gwiad
+
+get_branch gwiad $BRANCH_GWIAD $REPO_GWIAD true
+
+rm -f argwiad-linux*.tgz
+
+make -C external-libs/morzhol prepare_install
+
+make setup && make && make install && \
+     make install_server SERVER_INSTALL=$GWIAD_ROOT && make install-distrib
+
+if [ $? != 0 ]; then
+   echo "ERROR: can't build or install Gwiad";
+   exit 1;
+fi;
+
+################################################
+# Diouzhtu
+
+get_branch diouzhtu $BRANCH_DIOUZHTU $REPO_DIOUZHTU
+
+rm -f diouzhtu-linux*.tgz
+
+make && make install && \
+     make install_gwiad_plugins ARGWIAD_ROOT=$GWIAD_ROOT && make distrib-bin
+
+if [ $? != 0 ]; then
+   echo "ERROR: can't build or install Diouzhtu";
+   exit 1;
+fi;
+
+###############################################
+# V2P
+
+get_branch v2p $BRANCH_V2P $REPO_V2P true
+
+git submodule init
+git submodule update
+
+rm -f v2p-linux*.tgz
+
+# Copy ImageMagick libraries to use
+
+cp -dp $HOME/opt/lib/libMag* image/lib_ext/
+
+make MODE=$MODE && \
+     make install_gwiad_plugin ARGWIAD_ROOT=$GWIAD_ROOT && make install-distrib
+
+if [ $? != 0 ]; then
+   echo "ERROR: can't build or install V2P";
+   exit 1;
+fi;
+
+################################################
+# Prepare archive
+
+cd $REP
+
+cp gwiad/argwiad-linux-*.tgz .
+cp diouzhtu/diouzhtu-linux-*.tgz .
+cp v2p/v2p-linux-*.tgz .
+
+tar cfz all.tgz *-linux-*.tgz
+
+rm -f *-linux-*.tgz
