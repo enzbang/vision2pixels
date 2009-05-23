@@ -19,8 +19,6 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Ada.Text_IO;
-
 package body Image.Magick is
 
    use type MagickWand.Size;
@@ -31,8 +29,8 @@ package body Image.Magick is
 
    procedure Resize
      (Resized_Image : in out MagickWand.Object;
-      Img         : in     MagickWand.Object;
-      Size        : in     MagickWand.Image_Size)
+      Img           : in     MagickWand.Object;
+      Size          : in     MagickWand.Image_Size)
    is
       Original_Size : constant MagickWand.Image_Size :=
                         (Width  => Img.Get_Width,
@@ -106,5 +104,4 @@ package body Image.Magick is
 
 begin
    MagickWand.Genesis;
-
 end Image.Magick;

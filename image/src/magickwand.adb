@@ -64,7 +64,7 @@ package body MagickWand is
       --  wand/magick-image.h:264:3
       pragma Import (C, MagickGetImageFilename, "MagickGetImageFilename");
 
-      C_Filename : chars_ptr       := MagickGetImageFilename (O.Wand);
+      C_Filename : constant chars_ptr := MagickGetImageFilename (O.Wand);
       Filename   : constant String := Strings.Value (C_Filename);
    begin
       return Filename;
