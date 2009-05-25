@@ -3190,7 +3190,7 @@ package body V2P.Database is
       Preferences :    out User_Settings)
    is
       SQL  : constant String :=
-               "SELECT photo_per_page, filter, sort, image_size "
+               "SELECT photo_per_page, filter, sort, image_size, css_url "
                  & "FROM user_preferences WHERE user_login=" & Q (Login);
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -3212,14 +3212,17 @@ package body V2P.Database is
               Sort      => Forum_Sort'Value
                 (DB.String_Vectors.Element (Line, 3)),
               Image_Size => Image_Size'Value
-                (DB.String_Vectors.Element (Line, 4)));
+                (DB.String_Vectors.Element (Line, 4)),
+              CSS_URL    => To_Unbounded_String
+                (DB.String_Vectors.Element (Line, 5)));
 
       else
          Preferences :=
            User_Settings'(Page_Size  => 10,
                           Filter     => Seven_Days,
                           Sort       => Last_Commented,
-                          Image_Size => Max_Size);
+                          Image_Size => Max_Size,
+                          CSS_URL    => To_Unbounded_String (""));
       end if;
 
       Iter.End_Select;

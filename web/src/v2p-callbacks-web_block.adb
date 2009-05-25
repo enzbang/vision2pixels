@@ -19,6 +19,7 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Unbounded;
 with AWS.Utils;
 
 with V2P.URL;
@@ -507,6 +508,29 @@ package body V2P.Callbacks.Web_Block is
    begin
       Templates.Insert (Translations, Database.Get_Photo_Of_The_Week);
    end Photo_Of_The_Week;
+
+   ------------------
+   -- Pref_CSS_URL --
+   ------------------
+
+   procedure Pref_CSS_URL
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      Login       : constant String :=
+                      Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      Preferences : Database.User_Settings;
+   begin
+      Database.User_Preferences (Login, Preferences);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.CSS_URL,
+            Ada.Strings.Unbounded.To_String (Preferences.CSS_URL)));
+   end Pref_CSS_URL;
 
    -----------------------
    -- Pref_Forum_Filter --

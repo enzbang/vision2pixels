@@ -67,6 +67,7 @@ package V2P.Database is
       Filter     : Filter_Mode;
       Sort       : Forum_Sort;
       Image_Size : Database.Image_Size;
+      CSS_URL    : Unbounded_String;
    end record;
 
    type User_Data is record
@@ -342,7 +343,8 @@ private
                        Null_Unbounded_String,
                        False,
                        User_Settings'(1, All_Messages,
-                                      Last_Commented, Max_Size));
+                                      Last_Commented, Max_Size,
+                                      Null_Unbounded_String));
    Empty_Id     : constant Id := 0;
 
    --  Connection
