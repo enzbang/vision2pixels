@@ -533,7 +533,7 @@ package body V2P.Callbacks.Ajax is
                 Session.Get (SID, Template_Defs.Set_Global.LOGIN);
       P     : constant Parameters.List := Status.Parameters (Request);
       URL   : constant String :=
-                Parameters.Get (P, HTTP.Bpcu_Css_Url_Set);
+                Parameters.Get (P, HTTP.bpcu_css_url_set);
    begin
       Context.Set_Value (Template_Defs.Set_Global.CSS_URL, URL);
 
