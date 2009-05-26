@@ -109,6 +109,11 @@ dl.table-display {
 
 .new p {padding-bottom: 0.7em;}
 .new h3 {padding-top: 0.5em; padding-bottom: 0.3em;}
+.new #cvt_main ul {
+     list-style-type: square;
+     font-size: 0.7em;
+     margin-left: 3em;
+}
 
 .header {
     font-size: 1.2em;

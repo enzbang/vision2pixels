@@ -165,6 +165,10 @@ package V2P.Database is
    --  Returns the user's data. Returns the No_User_Data if User cannot be
    --  found into the database.
 
+   function Get_User_Stats (Uid : in String) return Templates.Translate_Set;
+   --  Returns the stats for the given user or No_User_Stats if user cannot be
+   --  found into the database.
+
    function Get_Password_From_Email (Email : in String) return String;
    --  Returns the user's password from the given e-mail. Returns the empty
    --  string if the Email cannot be found into the database.

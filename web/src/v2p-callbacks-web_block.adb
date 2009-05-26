@@ -769,6 +769,22 @@ package body V2P.Callbacks.Web_Block is
          Value   => Total);
    end User_Post_List;
 
+   ----------------
+   -- User_Stats --
+   ----------------
+
+   procedure User_Stats
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      URI       : constant String := Status.URI (Request);
+      User_Name : constant String := URL.User_Name (URI);
+   begin
+      Templates.Insert (Translations, Database.Get_User_Stats (User_Name));
+   end User_Stats;
+
    ----------------------------
    -- User_Voted_Photos_List --
    ----------------------------

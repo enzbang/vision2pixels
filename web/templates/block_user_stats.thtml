@@ -1,0 +1,32 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<ul>
+
+<li>@_BABEL_REGISTERED_ON_@ @_REGISTERED_DATE_@ ;
+@_BABEL_LAST_CONNECTION_ON_@ @_LAST_CONNECTED_DATE_@</li>
+
+<li>
+@@IF@@ @_N_PHOTOS_@ > 1
+  @_N_PHOTOS_@ @_LOWER:BABEL_PHOTOS_@
+@@ELSE@@
+  @_N_PHOTOS_@ @_LOWER:BABEL_PHOTO_@
+@@END_IF@@
+;
+@@IF@@ @_N_MESSAGES_@ > 1
+   @_N_MESSAGES_@ @_LOWER:BABEL_MESSAGES_@
+@@ELSE@@
+   @_N_MESSAGES_@ @_LOWER:BABEL_MESSAGE_@
+@@END_IF@@
+;
+@@IF@@ @_N_COMMENTS_@ > 1
+   @_N_COMMENTS_@ @_LOWER:BABEL_COMMENTS_@
+@@ELSE@@
+   @_N_COMMENTS_@ @_LOWER:BABEL_COMMENT_@
+@@END_IF@@
+;
+@@IF@@ @_N_CDC_@ > 1
+   @_N_CDC_@ @_BABEL_CDCS_@
+@@ELSE@@
+   @_N_CDC_@ @_BABEL_CDC_@
+@@END_IF@@
+<li>

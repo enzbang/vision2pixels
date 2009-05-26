@@ -51,6 +51,7 @@ with V2P.Template_Defs.Block_Latest_Posts;
 with V2P.Template_Defs.Block_Latest_Users;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_User_Page;
+with V2P.Template_Defs.Block_User_Stats;
 with V2P.Template_Defs.Block_User_Comment_List;
 with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Vote;
@@ -73,6 +74,15 @@ package body V2P.Database is
    use V2P.Template_Defs;
 
    Module : constant Logs.Module_Name := "Database";
+
+   type User_Stats is record
+      Created        : Unbounded_String;
+      Last_Connected : Unbounded_String;
+      N_Photos       : Natural;
+      N_Messages     : Natural;
+      N_Comments     : Natural;
+      N_CdC          : Natural;
+   end record;
 
    function F (F : in Float) return String;
    pragma Inline (F);
@@ -119,6 +129,9 @@ package body V2P.Database is
    --  preferences are registered for the given user a new set of preferences
    --  are inserted. This code is used by all procedure which need to set a
    --  preferences.
+
+   function Get_User_Stats (Uid : in String) return User_Stats;
+   --  Returns stats about the specified user
 
    -------------
    -- Connect --
@@ -2384,6 +2397,97 @@ package body V2P.Database is
 
       return Set;
    end Get_User_Rating_On_Post;
+
+   --------------------
+   -- Get_User_Stats --
+   --------------------
+
+   function Get_User_Stats (Uid : in String) return User_Stats is
+      use type AWS.Templates.Tag;
+
+      SQL     : constant String :=
+                  "SELECT login, DATE(created), DATE(last_logged), "
+                  --  nb comments
+                  & "(SELECT COUNT(id) FROM comment"
+                  & " WHERE user.login = comment.user_login), "
+                  --  nb photos
+                  & "(SELECT count (post_id) FROM post, user_post"
+                  & " WHERE post.id=post_id AND post.photo_id!=0 "
+                  & " AND user_post.user_login=user.login),"
+                  --  nb messages
+                  & "(SELECT count (post_id) FROM post, user_post"
+                  & " WHERE post.id=post_id AND post.photo_id=0 "
+                  & " AND user_post.user_login=user.login),"
+                  --  nb CdC
+                  & "(SELECT COUNT(potw.id) "
+                  & " FROM photo_of_the_week AS potw, post, "
+                  & " user_post AS up"
+                  & " WHERE post.id=up.post_id AND post.photo_id!=0"
+                  & " AND potw.post_id=post.id"
+                  & " AND up.user_login=user.login) "
+                  & "FROM User where user.login=" & Q (Uid);
+      DBH    : constant TLS_DBH_Access :=
+                 TLS_DBH_Access (DBH_TLS.Reference);
+      Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line   : DB.String_Vectors.Vector;
+      Result : User_Stats;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+         Result.Created        := +DB.String_Vectors.Element (Line, 2);
+         Result.Last_Connected := +DB.String_Vectors.Element (Line, 3);
+         Result.N_Comments :=
+           Natural'Value (DB.String_Vectors.Element (Line, 4));
+         Result.N_Photos :=
+           Natural'Value (DB.String_Vectors.Element (Line, 5));
+         Result.N_Messages :=
+           Natural'Value (DB.String_Vectors.Element (Line, 6));
+         Result.N_CdC :=
+           Natural'Value (DB.String_Vectors.Element (Line, 7));
+      end if;
+
+      Iter.End_Select;
+
+      return Result;
+   end Get_User_Stats;
+
+   function Get_User_Stats (Uid : in String) return Templates.Translate_Set is
+      use type AWS.Templates.Tag;
+
+      Stats : constant User_Stats := Get_User_Stats (Uid);
+      Set   : Templates.Translate_Set;
+   begin
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Block_User_Stats.N_PHOTOS, Stats.N_Photos));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Block_User_Stats.N_MESSAGES, Stats.N_Messages));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Block_User_Stats.N_COMMENTS, Stats.N_Comments));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Block_User_Stats.N_CDC, Stats.N_CdC));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Block_User_Stats.REGISTERED_DATE, Stats.Created));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Block_User_Stats.LAST_CONNECTED_DATE,
+            Stats.Last_Connected));
+      return Set;
+   end Get_User_Stats;
 
    ---------------------------
    -- Get_User_Voted_Photos --

@@ -9,6 +9,8 @@
 <h1>@_BABEL_USER_PAGE_OF_@ @_USER_NAME_@</h1>
 @@END_IF@@
 
+@_LAZY_USER_STATS_@
+
 @@SET@@ UP = <a href="#bup_user_page_content">Haut</a>
 
 <ul class="squarelist">

@@ -15,6 +15,17 @@
 <p>Dans la page utilisateur, les coups-de-cœur ont maintenant un fond
    de couleur.</p>
 
+<p>Quelques statistiques sont affichées dans la page utilisteur.
+<ul>
+<li>Date d'inscription sur le site</li>
+<li>Date de dernière connexion</li>
+<li>Nombre de photographies postées</li>
+<li>Nombre de messages postés</li>
+<li>Nombre de commentaires postés</li>
+<li>Nombre de Coups De Cœur</li>
+</ul>
+</p>
+
 <h2>Version 3.0 (mai 2009)</h2>
 
 <p>Redesign complet du site.</p>
