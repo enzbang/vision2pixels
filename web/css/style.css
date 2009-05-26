@@ -290,8 +290,19 @@ iframe {
     margin: 15px 30px;
     overflow:hidden;
     display:inline;
+    padding-top: 10px;
 }
-
+.thumbs_cdc {
+    float: left;
+    width:200px;
+    height:250px;
+    text-align: center;
+    margin: 15px 30px;
+    overflow:hidden;
+    display:inline;
+    padding-top: 10px;
+    background: #303030;
+}
 .thumbs a {
     border: none;
 }

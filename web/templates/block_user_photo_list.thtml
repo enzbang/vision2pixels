@@ -6,7 +6,15 @@
 <ul class="slides">
 @@TABLE@@
   @@IF@@ @_REVEALED_@
-    <li class="thumbs">
+    @@INLINE@@
+    <li class="
+    @@IF@@ @_IS_CDC_@
+    thumbs_cdc
+    @@ELSE@@
+    thumbs
+    @@END_IF@@
+    ">
+    @@END_INLINE@@
       @@IF@@ @_THUMB_SOURCE_@ /= ""
       <span class="imgcontainer">
         <span class="nooverflowimage">

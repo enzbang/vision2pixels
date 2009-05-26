@@ -55,6 +55,7 @@ with V2P.Template_Defs.Block_User_Comment_List;
 with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Photo_Of_The_Week;
+with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_User_Voted_Photos_List;
 with V2P.Template_Defs.Page_Rss_Recent_Photos;
 with V2P.Template_Defs.Set_Global;
@@ -1677,7 +1678,9 @@ package body V2P.Database is
                     & "category.name, comment_counter,"
                     & "visit_counter, post.hidden, user_post.user_login, "
                     & "(SELECT comment.date FROM comment "
-                    & "WHERE post.last_comment_id = comment.id)";
+                    & "WHERE post.last_comment_id = comment.id), "
+                    & "(SELECT id FROM photo_of_the_week "
+                    & "WHERE post.id = photo_of_the_week.post_id)";
 
                when Navigation_Only =>
                   Select_Stmt := +"SELECT post.id";
@@ -1937,6 +1940,7 @@ package body V2P.Database is
       Hidden          : Templates.Tag;
       Owner           : Templates.Tag;
       Date_Last_Com   : Templates.Tag;
+      Is_CDC          : Templates.Tag;
       Select_Stmt     : Unbounded_String;
 
    begin
@@ -2013,6 +2017,8 @@ package body V2P.Database is
               & DB.String_Vectors.Element (Line, 10);
             Date_Last_Com   := Date_Last_Com
               & DB.String_Vectors.Element (Line, 11);
+            Is_CDC          := Is_CDC
+              & (DB.String_Vectors.Element (Line, 12) /= "");
             --  Insert this post id in navigation links
          end if;
 
@@ -2058,6 +2064,9 @@ package body V2P.Database is
          Templates.Insert
            (Set, Templates.Assoc
               (Block_Forum_Threads.NB_LINE_RETURNED, Nb_Lines));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_User_Photo_List.IS_CDC, Is_CDC));
       end if;
 
       Templates.Insert
