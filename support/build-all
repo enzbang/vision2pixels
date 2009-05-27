@@ -21,9 +21,9 @@ REPO_V2P=http://git.sv.gnu.org/r/v2p.git
 
 # Branch to use for each module
 
-BRANCH_GWIAD=master
-BRANCH_DIOUZHTU=master
-BRANCH_V2P=master
+BRANCH_GWIAD=v0.7.0
+BRANCH_DIOUZHTU=v0.8.0
+BRANCH_V2P=v3.0
 
 REP=$HOME/dev/repositories/git
 PATH=$GROOT/bin:$HOME/opt/bin:$PATH
