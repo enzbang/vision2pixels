@@ -1,0 +1,11 @@
+#! /bin/sh
+
+export LD_LIBRARY_PATH=/usr/local/lib/v2p/lib
+export ARGWIAD_PATH=/usr/local/lib/v2p/gwiad
+
+while $(true); do
+   echo Starting v2p on $(date) >> /var/log/v2p/v2p_deamon.log
+   /usr/local/lib/v2p/gwiad/bin/argwiad_bin
+   # wait 10 seconds before restarting
+   sleep 10
+done;
