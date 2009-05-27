@@ -56,12 +56,15 @@ function get_branch()
     git checkout master && git pull
     git fetch --tags
 
-    if [ "$(git branch | grep $BRANCH)" = "" ]; then
+    if [ "$(git tag -l | grep $BRANCH$)" = "" ]; then
+	# Not a tag
+	if [ "$(git branch | grep $BRANCH$)" = "" ]; then
         # Local branch does not exists, create it now
-        git checkout -b $BRANCH origin/$BRANCH
+            git checkout -b $BRANCH origin/$BRANCH
+	fi
     fi
 
-    git checkout $BRANCH && git pull
+    git checkout $BRANCH
 }
 
 rm -fr $GWIAD_ROOT all.tgz
