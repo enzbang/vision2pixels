@@ -13,7 +13,7 @@
    </div>
    @@END_IF@@
 
-   <div id="pm_presentation" class="column-2"> 
+   <div id="pm_presentation" class="column-2">
       <div class="box">
          <h1>Vision2Pixels</h1>
          <h2>Un club photo sur toile</h2>
