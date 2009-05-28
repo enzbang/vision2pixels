@@ -2032,8 +2032,9 @@ package body V2P.Database is
               & DB.String_Vectors.Element (Line, 11);
             Is_CDC          := Is_CDC
               & (DB.String_Vectors.Element (Line, 12) /= "");
-            --  Insert this post id in navigation links
          end if;
+
+         --  Insert this post id in navigation links
 
          Navigation := Navigation & Database.Id'Value
            (DB.String_Vectors.Element (Line, 1));
