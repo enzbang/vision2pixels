@@ -610,7 +610,6 @@ package body V2P.Callbacks.Ajax is
                             Name    => Set_Global.NAV_NB_LINES_RETURNED);
       From           : Positive := 1;
    begin
-
       if Last_From > Last_Nb_Viewed then
          From := Last_From - Last_Nb_Viewed;
       end if;
