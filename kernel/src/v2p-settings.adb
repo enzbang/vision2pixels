@@ -43,7 +43,8 @@ package body V2P.Settings is
       Website_Data_Path, Number_Latest_User_Posts, Number_Latest_User_Messages,
       Website_Data_Prefix, Wiki_Service_Name, Number_Latest_Posts,
       Number_Latest_Users, Google_Map_Key, Log_Path, Cache_Path, RSS_Host_URL,
-      RSS_Path, RSS_Prefix, Compression, Max_Search_Results);
+      RSS_Path, RSS_Prefix, Compression, Max_Search_Results,
+      Number_Users_Listed);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -293,6 +294,15 @@ package body V2P.Settings is
    end Number_Latest_Users;
 
    -------------------------
+   -- Number_Users_Listed --
+   -------------------------
+
+   function Number_Users_Listed return Positive is
+   begin
+      return Conf.Get_Value (Number_Users_Listed);
+   end Number_Users_Listed;
+
+   -------------------------
    -- Posting_Delay_Hours --
    -------------------------
 
@@ -435,6 +445,7 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (RSS_Prefix, Defaults.RSS_Prefix);
    Conf.Set_Value (Compression, Defaults.Compression);
    Conf.Set_Value (Max_Search_Results, Defaults.Max_Search_Results);
+   Conf.Set_Value (Number_Users_Listed, Defaults.Number_Users_Listed);
 
    --  Now read the config file if any
 

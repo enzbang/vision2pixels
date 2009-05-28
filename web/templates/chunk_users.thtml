@@ -1,0 +1,25 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+
+<table class="user_list">
+<tr class="table_header">
+  <th></th>
+  <th>@_BABEL_REGISTERED_ON_@</th>
+  <th>@_BABEL_LAST_CONNECTION_@</th>
+  <th>@_LOWER:BABEL_PHOTOS_@</th>
+  <th>@_BABEL_CDCS_@</th>
+  <th>@_LOWER:BABEL_COMMENTS_@</th>
+</tr>
+
+@@TABLE@@
+<tr>
+<td><a href="/~@_LOGIN_@">@_LOGIN_@</a></td>
+<td>@_REGISTERED_DATE_@</td>
+<td>@_LAST_CONNECTED_DATE_@</td>
+<td>@_N_PHOTOS_@</td>
+<td>@_N_CDC_@</td>
+<td>@_N_COMMENTS_@</td>
+</tr>
+@@END_TABLE@@
+
+</table>

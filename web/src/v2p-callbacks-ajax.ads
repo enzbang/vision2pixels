@@ -118,6 +118,18 @@ package V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set);
    --  Called when clicking on the previous page link
 
+   procedure Onclick_Users_Goto_Next_Page
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when clicking on user's the next page link
+
+   procedure Onclick_Users_Goto_Previous_Page
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when clicking on user's the previous page link
+
    procedure Onclick_Hidden_Status_Toggle
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;

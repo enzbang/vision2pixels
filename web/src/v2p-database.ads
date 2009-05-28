@@ -186,6 +186,9 @@ package V2P.Database is
      (Uid : in String) return Templates.Translate_Set;
    --  Returns user's last photo (in the user photo queue)
 
+   function Get_Users (From : in Positive) return Templates.Translate_Set;
+   --  Returns information about N users starting at the given Offset
+
    function Get_CdC return Templates.Translate_Set;
    --  Returns all CdC photos
 

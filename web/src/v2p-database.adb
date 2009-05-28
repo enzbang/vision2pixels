@@ -42,6 +42,7 @@ with V2P.Template_Defs.Chunk_Comment;
 with V2P.Template_Defs.Chunk_Forum_Category;
 with V2P.Template_Defs.Chunk_Threads_List;
 with V2P.Template_Defs.Chunk_Threads_Text_List;
+with V2P.Template_Defs.Chunk_Users;
 with V2P.Template_Defs.Block_Cdc;
 with V2P.Template_Defs.Block_Comments;
 with V2P.Template_Defs.Block_Exif;
@@ -58,6 +59,7 @@ with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Photo_Of_The_Week;
 with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_User_Voted_Photos_List;
+with V2P.Template_Defs.Block_Users;
 with V2P.Template_Defs.Page_Rss_Recent_Photos;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.R_Block_Forum_List;
@@ -2537,6 +2539,120 @@ package body V2P.Database is
       Iter.End_Select;
       return Set;
    end Get_User_Voted_Photos;
+
+   ---------------
+   -- Get_Users --
+   ---------------
+
+   function Get_Users (From : in Positive) return Templates.Translate_Set is
+      use type AWS.Templates.Tag;
+
+      DBH             : constant TLS_DBH_Access :=
+                          TLS_DBH_Access (DBH_TLS.Reference);
+      SQL             : constant String :=
+                          "SELECT login, DATE(created), DATE(last_logged), "
+                            --  nb comments
+                            & "(SELECT COUNT(id) FROM comment"
+                            & " WHERE user.login = comment.user_login), "
+                            --  nb photos
+                            & "(SELECT count (post_id) FROM post, user_post"
+                            & " WHERE post.id=post_id AND post.photo_id!=0 "
+                            & " AND user_post.user_login=user.login),"
+                            --  nb CdC
+                            & "(SELECT COUNT(potw.id) "
+                            & " FROM photo_of_the_week AS potw, post, "
+                            & " user_post AS up"
+                            & " WHERE post.id=up.post_id AND post.photo_id!=0"
+                            & " AND potw.post_id=post.id"
+                            & " AND up.user_login=user.login) "
+                            & "FROM user "
+                            & "ORDER BY last_logged DESC LIMIT"
+                            & Positive'Image (Settings.Number_Users_Listed)
+                            & " OFFSET" & Positive'Image (From - 1);
+      Set             : Templates.Translate_Set;
+      Iter            : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line            : DB.String_Vectors.Vector;
+      Login           : Templates.Tag;
+      Registered_Date : Templates.Tag;
+      L_Connect_Date  : Templates.Tag;
+      Nb_Comments     : Templates.Tag;
+      Nb_Photos       : Templates.Tag;
+      Nb_CdC          : Templates.Tag;
+      Lines           : Natural := 0;
+   begin
+      Connect (DBH);
+
+      --  Count nb results
+
+      declare
+         SQL : constant String := "SELECT count(*) from user";
+      begin
+         DBH.Handle.Prepare_Select (Iter, SQL);
+         if Iter.More then
+            Iter.Get_Line (Line);
+
+            Templates.Insert
+              (Set,
+               Templates.Assoc
+                 (Set_Global.NAV_NB_LINES_TOTAL,
+                  DB.String_Vectors.Element (Line, 1)));
+         end if;
+         Line.Clear;
+      end;
+
+      Templates.Insert (Set, Templates.Assoc (Set_Global.NAV_FROM, From));
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+         Lines := Lines + 1;
+
+         Login := Login & DB.String_Vectors.Element (Line, 1);
+         Registered_Date :=
+           Registered_Date & DB.String_Vectors.Element (Line, 2);
+         L_Connect_Date :=
+           L_Connect_Date & DB.String_Vectors.Element (Line, 3);
+         Nb_Comments := Nb_Comments & DB.String_Vectors.Element (Line, 4);
+         Nb_Photos := Nb_Photos & DB.String_Vectors.Element (Line, 5);
+         Nb_CdC := Nb_CdC & DB.String_Vectors.Element (Line, 6);
+
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert
+        (Set,
+         Templates.Assoc (Template_Defs.Block_Users.NB_LINE_RETURNED, Lines));
+
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Chunk_Users.LOGIN, Login));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Chunk_Users.REGISTERED_DATE, Registered_Date));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Chunk_Users.LAST_CONNECTED_DATE, L_Connect_Date));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Chunk_Users.N_PHOTOS, Nb_Photos));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Chunk_Users.N_COMMENTS, Nb_Comments));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Chunk_Users.N_CDC, Nb_CdC));
+
+      return Set;
+   end Get_Users;
 
    -------------------
    -- Has_User_Vote --

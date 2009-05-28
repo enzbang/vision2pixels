@@ -34,6 +34,7 @@ with Morzhol.Strings;
 
 with V2P.Context;
 with V2P.Database.Search;
+with V2P.Settings;
 with V2P.User_Validation;
 with V2P.Wiki;
 with V2P.Syndication;
@@ -644,6 +645,58 @@ package body V2P.Callbacks.Ajax is
    begin
       Templates.Insert (Translations, Database.Toggle_Hidden_Status (TID));
    end Onclick_Hidden_Status_Toggle;
+
+   ----------------------------------
+   -- Onclick_Users_Goto_Next_Page --
+   ----------------------------------
+
+   procedure Onclick_Users_Goto_Next_Page
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Translations);
+      use Template_Defs;
+      From : Positive :=
+               V2P.Context.Not_Null_Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Set_Global.NAV_FROM);
+   begin
+      From := From + Settings.Number_Users_Listed;
+
+      --  Update FROM counter
+
+      V2P.Context.Not_Null_Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NAV_FROM,
+         Value   => From);
+   end Onclick_Users_Goto_Next_Page;
+
+   --------------------------------------
+   -- Onclick_Users_Goto_Previous_Page --
+   --------------------------------------
+
+   procedure Onclick_Users_Goto_Previous_Page
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Translations);
+      use Template_Defs;
+      From : Positive :=
+               V2P.Context.Not_Null_Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Set_Global.NAV_FROM);
+   begin
+      From := From - Settings.Number_Users_Listed;
+
+      --  Update FROM counter
+
+      V2P.Context.Not_Null_Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NAV_FROM,
+         Value   => From);
+   end Onclick_Users_Goto_Previous_Page;
 
    -----------------------------
    -- Onclick_Vote_Week_Photo --

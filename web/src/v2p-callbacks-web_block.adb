@@ -803,6 +803,27 @@ package body V2P.Callbacks.Web_Block is
       Templates.Insert (Translations, Set);
    end User_Voted_Photos_List;
 
+   -----------
+   -- Users --
+   -----------
+
+   procedure Users
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      From : Positive := 1;
+   begin
+      if Context.Exist (Template_Defs.Set_Global.NAV_FROM) then
+         From := V2P.Context.Not_Null_Counter.Get_Value
+           (Context => Context.all,
+            Name    => Template_Defs.Set_Global.NAV_FROM);
+      end if;
+
+      Templates.Insert (Translations, Database.Get_Users (From => From));
+   end Users;
+
    ---------------------
    -- Vote_Week_Photo --
    ---------------------

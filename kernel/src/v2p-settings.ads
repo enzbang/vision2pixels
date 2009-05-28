@@ -116,6 +116,9 @@ package V2P.Settings is
    function Number_Latest_User_Messages return Positive;
    --  Returns the number of latest messages to display on user's page
 
+   function Number_Users_Listed return Positive;
+   --  Returns the maximum number of users to list in the users page
+
    function Google_Map_Key return String;
    --  Returns the Google map key
 
