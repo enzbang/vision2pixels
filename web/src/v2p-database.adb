@@ -40,6 +40,7 @@ with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Page_Main;
 with V2P.Template_Defs.Chunk_Comment;
 with V2P.Template_Defs.Chunk_Forum_Category;
+with V2P.Template_Defs.Chunk_List_Navlink;
 with V2P.Template_Defs.Chunk_Threads_List;
 with V2P.Template_Defs.Chunk_Threads_Text_List;
 with V2P.Template_Defs.Chunk_Users;
@@ -59,7 +60,6 @@ with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Photo_Of_The_Week;
 with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_User_Voted_Photos_List;
-with V2P.Template_Defs.Block_Users;
 with V2P.Template_Defs.Page_Rss_Recent_Photos;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.R_Block_Forum_List;
@@ -2076,10 +2076,10 @@ package body V2P.Database is
            (Set, Templates.Assoc (Chunk_Threads_List.HIDDEN, Hidden));
          Templates.Insert
            (Set, Templates.Assoc
-              (Block_Forum_Threads.TOTAL_NB_THREADS, Total_Lines));
+              (Chunk_List_Navlink.NAV_NB_LINES_TOTAL, Total_Lines));
          Templates.Insert
            (Set, Templates.Assoc
-              (Block_Forum_Threads.NB_LINE_RETURNED, Nb_Lines));
+              (Chunk_List_Navlink.NB_LINE_RETURNED, Nb_Lines));
          Templates.Insert
            (Set, Templates.Assoc
               (Block_User_Photo_List.IS_CDC, Is_CDC));
@@ -2624,7 +2624,8 @@ package body V2P.Database is
 
       Templates.Insert
         (Set,
-         Templates.Assoc (Template_Defs.Block_Users.NB_LINE_RETURNED, Lines));
+         Templates.Assoc
+           (Template_Defs.Chunk_List_Navlink.NB_LINE_RETURNED, Lines));
 
       Templates.Insert
         (Set,
