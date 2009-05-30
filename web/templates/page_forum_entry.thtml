@@ -58,7 +58,9 @@
       </p>
       <div class="comment">@_IMAGE_COMMENT_@</div>
     </div>
+</div>
 
+<div id="pfe_data_area">
     @@IF@@ @_IMAGE_SOURCE_@ /= ""
       <div id="pfe_image_infos">
         <table>

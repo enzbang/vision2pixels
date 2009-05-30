@@ -1073,6 +1073,12 @@ body.forum_txt_entry #pfe_entry_page {
     margin: 0 auto;
 }
 
+#pfe_data_area {
+    width: 80%;
+    margin: 1em auto 0;
+    text-align: center;
+}
+
 /* for admin only */
 
 .admin_hidden {
