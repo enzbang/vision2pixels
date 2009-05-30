@@ -569,7 +569,7 @@ h2#pfe_comments_section {
     text-align: left;
     line-height: 1.5em;
     border-left:2px solid #909090;
-    color:#777777;
+    color:#999999;
     margin:2ex;
     margin-bottom:2em;
     padding:1ex;
@@ -621,7 +621,7 @@ h2#pfe_comments_section {
 }
 
 #pfe_comments li.type_you cite a {
-    color: #333333;
+    color: #A0A044;
 }
 
 #pfe_comments li.pfe_has_voted {
