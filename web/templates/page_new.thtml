@@ -28,6 +28,10 @@
 </ul>
 </p>
 
+<p>Il est maintenant possible de naviger dans la liste des photos dans la
+  page utilisateur. Le nombre initial de photo affichées est limité, la
+  page est ainsi plus rapide à s'afficher.</p>
+
 <h2>Version 3.0 (mai 2009)</h2>
 
 <p>Redesign complet du site.</p>

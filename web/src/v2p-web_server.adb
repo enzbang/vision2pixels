@@ -72,6 +72,7 @@ with V2P.Template_Defs.Block_Pref_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Pref_Forum_Sort;
 with V2P.Template_Defs.Block_Pref_Image_Size;
 with V2P.Template_Defs.Block_User_Page;
+with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_Users;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
 
@@ -114,6 +115,7 @@ with V2P.Template_Defs.R_Block_Metadata_Form_Enter;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_Rate;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
+with V2P.Template_Defs.R_Block_User_Photo_List;
 with V2P.Template_Defs.R_Block_User_Preferences;
 with V2P.Template_Defs.R_Block_Users;
 with V2P.Template_Defs.R_Block_Vote_Week_Photo;
@@ -891,6 +893,21 @@ package body V2P.Web_Server is
         (Template_Defs.Block_Users.Ajax.onclick_bu_goto_previous_page,
          Template_Defs.R_Block_Users.Template,
          Callbacks.Ajax.Onclick_Users_Goto_Previous_Page'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_User_Photo_List.Ajax.onclick_bupl_goto_next_page,
+         Template_Defs.R_Block_User_Photo_List.Template,
+         Callbacks.Ajax.Onclick_User_Photo_List_Goto_Next_Page'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_User_Photo_List.
+           Ajax.onclick_bupl_goto_previous_page,
+         Template_Defs.R_Block_User_Photo_List.Template,
+         Callbacks.Ajax.Onclick_User_Photo_List_Goto_Previous_Page'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

@@ -118,6 +118,18 @@ package V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set);
    --  Called when clicking on the previous page link
 
+   procedure Onclick_User_Photo_List_Goto_Next_Page
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when clicking on user's photo list navigation next page
+
+   procedure Onclick_User_Photo_List_Goto_Previous_Page
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when clicking on user's photo list navigation previous page
+
    procedure Onclick_Users_Goto_Next_Page
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;

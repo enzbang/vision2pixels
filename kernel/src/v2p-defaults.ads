@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2008                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -81,7 +81,9 @@ package V2P.Defaults is
 
    Number_Latest_Users         : constant Positive := 5;
 
-   Number_Latest_User_Posts    : constant Positive := 100;
+   Number_Latest_User_Posts    : constant Positive := 24;
+   --  24 is good as it is a multiple of 3 and 4 so will layout properly on 3
+   --  or 4 columns.
 
    Number_Latest_User_Messages : constant Positive := 100;
 
