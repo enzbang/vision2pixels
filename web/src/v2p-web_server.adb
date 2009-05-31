@@ -383,7 +383,6 @@ package body V2P.Web_Server is
            (Template_Defs.Page_Error.Set.URL, C_Request, Translations);
       end if;
 
-
       if Session.Exist (SID, Template_Defs.Set_Global.LOGIN)
         and not Context.Exist ("cookie")
       then
@@ -1045,7 +1044,6 @@ package body V2P.Web_Server is
                                           Translations)));
          end Does_Not_Exist;
       end if;
-
 
       Result := Response.File (MIME.Text_XML, File);
 

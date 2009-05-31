@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2008                          --
+--                         Copyright (C) 2007-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -34,9 +34,11 @@ package body V2P.Context is
    -- Update --
    ------------
 
-   procedure Update (Context : access Object;
-                     SID     : in Session.Id;
-                     Cookie  : in String) is
+   procedure Update
+     (Context : not null access Object;
+      SID     : in Session.Id;
+      Cookie  : in String)
+   is
       function Cookie_Content (S : String) return String;
       --  Returns the part between v2p= and ;
 
@@ -64,6 +66,7 @@ package body V2P.Context is
 
    begin
       --  Read cookie
+
       if not Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then
          Read_Cookie : declare
             Cookie_User : constant String :=
@@ -95,7 +98,6 @@ package body V2P.Context is
       else
          Context.Remove (Template_Defs.Set_Global.ADMIN);
       end if;
-
 
       --  Set default filter
 
