@@ -130,6 +130,36 @@ package V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set);
    --  Called when clicking on user's the previous page link
 
+   procedure Onclick_Users_Sort_Registered_On
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when sorting on registered date
+
+   procedure Onclick_Users_Sort_Last_Connected
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when sorting on last connected date
+
+   procedure Onclick_Users_Sort_Nb_Photos
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when sorting on number of photos posted
+
+   procedure Onclick_Users_Sort_Nb_Comments
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when sorting on number of comments posted
+
+   procedure Onclick_Users_Sort_Nb_CdC
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when sorting on number of CdCs
+
    procedure Onclick_Hidden_Status_Toggle
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;

@@ -79,6 +79,9 @@ package V2P.Database is
 
    type Select_Mode is (Everything, Navigation_Only);
 
+   type User_Sort is
+     (Date_Created, Last_Connected, Nb_Comments, Nb_Photos, Nb_CdC);
+
    No_User_Data : constant User_Data;
 
    function Get_Forums
@@ -186,7 +189,10 @@ package V2P.Database is
      (Uid : in String) return Templates.Translate_Set;
    --  Returns user's last photo (in the user photo queue)
 
-   function Get_Users (From : in Positive) return Templates.Translate_Set;
+   function Get_Users
+     (From  : in Positive;
+      Sort  : in User_Sort;
+      Order : in Order_Direction) return Templates.Translate_Set;
    --  Returns information about N users starting at the given Offset
 
    function Get_CdC return Templates.Translate_Set;

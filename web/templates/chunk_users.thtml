@@ -4,12 +4,94 @@
 <table class="user_list">
 <tr class="table_header">
   <th></th>
-  <th>@_BABEL_REGISTERED_ON_@</th>
-  <th>@_BABEL_LAST_CONNECTION_@</th>
-  <th>@_LOWER:BABEL_PHOTOS_@</th>
-  <th>@_BABEL_CDCS_@</th>
-  <th>@_LOWER:BABEL_COMMENTS_@</th>
+@@--
+@@INLINE@@
+  <th><a id="cu_registered_on" href="#" class="link
+@@IF@@ @_USER_SORT_@ = DATE_CREATED
+   ;selected
+@@END_IF@@
+   ">@_BABEL_REGISTERED_ON_@
+@@IF@@ @_USER_SORT_@ = DATE_CREATED
+@@IF@@ @_USER_ORDER_@ = DESC
+ ▼
+@@ELSE@@
+ ▲
+@@END_IF@@
+@@END_IF@@
+</a></th>
+@@END_INLINE@@
+@@--
+@@INLINE@@
+  <th><a id="cu_last_connected" href="#" class="link
+@@IF@@ @_USER_SORT_@ = LAST_CONNECTED
+   ;selected
+@@END_IF@@
+   ">@_BABEL_LAST_CONNECTION_@
+@@IF@@ @_USER_SORT_@ = LAST_CONNECTED
+@@IF@@ @_USER_ORDER_@ = DESC
+ ▼
+@@ELSE@@
+ ▲
+@@END_IF@@
+@@END_IF@@
+</a></th>
+@@END_INLINE@@
+@@--
+@@INLINE@@
+  <th><a id="cu_nb_photos" href="#" class="link
+@@IF@@ @_USER_SORT_@ = NB_PHOTOS
+   ;selected
+@@END_IF@@
+  ">@_LOWER:BABEL_PHOTOS_@
+@@IF@@ @_USER_SORT_@ = NB_PHOTOS
+@@IF@@ @_USER_ORDER_@ = DESC
+ ▼
+@@ELSE@@
+ ▲
+@@END_IF@@
+@@END_IF@@
+</a></th>
+@@END_INLINE@@
+@@--
+@@INLINE@@
+  <th><a id="cu_nb_cdcs" href="#" class="link
+@@IF@@ @_USER_SORT_@ = NB_CDC
+   ;selected
+@@END_IF@@
+   ">@_BABEL_CDCS_@
+@@IF@@ @_USER_SORT_@ = NB_CDC
+@@IF@@ @_USER_ORDER_@ = DESC
+ ▼
+@@ELSE@@
+ ▲
+@@END_IF@@
+@@END_IF@@
+</a></th>
+@@END_INLINE@@
+@@--
+@@INLINE@@
+  <th><a id="cu_nb_comments" href="#" class="link
+@@IF@@ @_USER_SORT_@ = NB_COMMENTS
+   ;selected
+@@END_IF@@
+  ">@_LOWER:BABEL_COMMENTS_@
+@@IF@@ @_USER_SORT_@ = NB_COMMENTS
+@@IF@@ @_USER_ORDER_@ = DESC
+ ▼
+@@ELSE@@
+ ▲
+@@END_IF@@
+@@END_IF@@
+</a></th>
+@@END_INLINE@@
+@@--
 </tr>
+
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, cu_registered_on)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, cu_last_connected)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, cu_nb_photos)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, cu_nb_cdcs)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, cu_nb_comments)
 
 @@TABLE@@
 <tr>

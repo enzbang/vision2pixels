@@ -2544,8 +2544,39 @@ package body V2P.Database is
    -- Get_Users --
    ---------------
 
-   function Get_Users (From : in Positive) return Templates.Translate_Set is
+   function Get_Users
+     (From  : in Positive;
+      Sort  : in User_Sort;
+      Order : in Order_Direction) return Templates.Translate_Set
+   is
       use type AWS.Templates.Tag;
+
+      function Sort_Order return String;
+      --  Returns the proper SQL order statement
+
+      ----------------
+      -- Sort_Order --
+      ----------------
+
+      function Sort_Order return String is
+         Result : Unbounded_String := +"ORDER BY ";
+      begin
+         case Sort is
+            when Date_Created =>
+               Append (Result, "created");
+            when Last_Connected =>
+               Append (Result, "last_logged");
+            when  Nb_Comments =>
+               Append (Result, "nbcom");
+            when Nb_Photos =>
+               Append (Result, "nbphoto");
+            when Nb_CdC =>
+               Append (Result, "nbcdc");
+         end case;
+
+         Append (Result, " " & Order_Direction'Image (Order));
+         return -Result;
+      end Sort_Order;
 
       DBH             : constant TLS_DBH_Access :=
                           TLS_DBH_Access (DBH_TLS.Reference);
@@ -2553,20 +2584,21 @@ package body V2P.Database is
                           "SELECT login, DATE(created), DATE(last_logged), "
                             --  nb comments
                             & "(SELECT COUNT(id) FROM comment"
-                            & " WHERE user.login = comment.user_login), "
+                            & " WHERE user.login=comment.user_login) AS nbcom,"
                             --  nb photos
                             & "(SELECT count (post_id) FROM post, user_post"
-                            & " WHERE post.id=post_id AND post.photo_id!=0 "
-                            & " AND user_post.user_login=user.login),"
+                            & " WHERE post.id=post_id AND post.photo_id!=0"
+                            & " AND user_post.user_login=user.login) "
+                            & "AS nbphoto,"
                             --  nb CdC
                             & "(SELECT COUNT(potw.id) "
                             & " FROM photo_of_the_week AS potw, post, "
                             & " user_post AS up"
                             & " WHERE post.id=up.post_id AND post.photo_id!=0"
                             & " AND potw.post_id=post.id"
-                            & " AND up.user_login=user.login) "
+                            & " AND up.user_login=user.login) AS nbcdc "
                             & "FROM user "
-                            & "ORDER BY last_logged DESC LIMIT"
+                            & Sort_Order & " LIMIT"
                             & Positive'Image (Settings.Number_Users_Listed)
                             & " OFFSET" & Positive'Image (From - 1);
       Set             : Templates.Translate_Set;

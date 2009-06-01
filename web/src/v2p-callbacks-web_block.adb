@@ -813,7 +813,9 @@ package body V2P.Callbacks.Web_Block is
       Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
-      From : Positive := 1;
+      From  : Positive := 1;
+      Sort  : Database.User_Sort := Database.Last_Connected;
+      Order : Database.Order_Direction := Database.DESC;
    begin
       if Context.Exist (Template_Defs.Set_Global.NAV_FROM) then
          From := V2P.Context.Not_Null_Counter.Get_Value
@@ -821,7 +823,30 @@ package body V2P.Callbacks.Web_Block is
             Name    => Template_Defs.Set_Global.NAV_FROM);
       end if;
 
-      Templates.Insert (Translations, Database.Get_Users (From => From));
+      if Context.Exist (Template_Defs.Set_Global.USER_SORT) then
+         Sort := Database.User_Sort'Value
+           (Context.Get_Value (Template_Defs.Set_Global.USER_SORT));
+      end if;
+
+      if Context.Exist (Template_Defs.Set_Global.USER_ORDER) then
+         Order := Database.Order_Direction'Value
+           (Context.Get_Value (Template_Defs.Set_Global.USER_ORDER));
+      end if;
+
+      Templates.Insert (Translations, Database.Get_Users (From, Sort, Order));
+
+      --  Set translations values
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.USER_ORDER,
+            Database.Order_Direction'Image (Order)));
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.USER_SORT,
+            Database.User_Sort'Image (Sort)));
    end Users;
 
    ---------------------
