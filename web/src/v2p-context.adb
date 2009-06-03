@@ -34,11 +34,14 @@ package body V2P.Context is
    -- Update --
    ------------
 
-   procedure Update (Context : access Object;
-                     SID     : in Session.Id;
-                     Cookie  : in String) is
+   procedure Update
+     (Context : access Object;
+      SID     : in Session.Id;
+      Cookie  : in String)
+   is
       function Cookie_Content (S : String) return String;
-      --  Returns the part between v2p= and ;
+      --  Returns the part between "v2p=" and ";" or the empty string if the
+      --  v2p cookie is not found.
 
       --------------------
       -- Cookie_Content --
@@ -52,6 +55,7 @@ package body V2P.Context is
       begin
          if Content_Start = 0 then
             return "";
+
          else
             Content_End := Index (S (Content_Start .. S'Last), ";");
             if Content_End = 0 then
@@ -64,6 +68,7 @@ package body V2P.Context is
 
    begin
       --  Read cookie
+
       if not Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then
          Read_Cookie : declare
             Cookie_User : constant String :=

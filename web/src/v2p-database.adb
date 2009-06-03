@@ -160,6 +160,10 @@ package body V2P.Database is
       end if;
    end Connect;
 
+   -------------------------
+   -- Delete_User_Cookies --
+   -------------------------
+
    procedure Delete_User_Cookies (Login : in String) is
       DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
    begin
@@ -2243,7 +2247,7 @@ package body V2P.Database is
                "SELECT user_login, remember "
                  & "FROM remember_user, user "
                  & "WHERE cookie_content=" & Q (Cookie)
-                 & " AND remember = 'TRUE' AND user.login = user_login";
+                 & " AND remember='TRUE' AND user.login=user_login";
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
    begin
@@ -3023,8 +3027,8 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter,
-         "SELECT * FROM user_post WHERE post_id  = "
-           & To_String (Pid) & " AND user_login = " & Q (Uid));
+         "SELECT * FROM user_post WHERE post_id="
+           & To_String (Pid) & " AND user_login=" & Q (Uid));
 
       if Iter.More then
          Result := True;

@@ -142,7 +142,7 @@ package body V2P.Web_Server is
    XML_Path        : constant String :=
                        Directories.Compose
                          (Containing_Directory => Gwiad_Plugin_Path,
-                          Name                 => "xml");
+                         Name                 => "xml");
    XML_Prefix_URI  : constant String := "/xml_";
    CSS_URI         : constant String := "/css";
    IMG_URI         : constant String := "/css/img";
@@ -255,8 +255,9 @@ package body V2P.Web_Server is
       URI          : constant String := Status.URI (Request);
       SID          : constant Session.Id := Status.Session (Request);
       Headers      : constant AWS.Headers.List := AWS.Status.Header (Request);
-      Cookie       : constant String := AWS.Headers.Get_Values
-        (Headers, AWS.Messages.Cookie_Token);
+      Cookie       : constant String :=
+                       AWS.Headers.Get_Values
+                         (Headers, AWS.Messages.Cookie_Token);
       C_Request    : aliased Status.Data := Request;
       Context      : aliased Services.Web_Block.Context.Object :=
                        Services.Web_Block.Registry.Get_Context
@@ -267,6 +268,7 @@ package body V2P.Web_Server is
       --  Update the context
 
       V2P.Context.Update (Context'Access, SID, Cookie);
+
       --  Note that the Context is linked to the C_Request object
       --  Do not use Request object anymore
 
@@ -386,7 +388,6 @@ package body V2P.Web_Server is
          Web_Page := Services.Web_Block.Registry.Build
            (Template_Defs.Page_Error.Set.URL, C_Request, Translations);
       end if;
-
 
       if Session.Exist (SID, Template_Defs.Set_Global.LOGIN)
         and not Context.Exist ("cookie")
@@ -1103,7 +1104,6 @@ package body V2P.Web_Server is
                                           Translations)));
          end Does_Not_Exist;
       end if;
-
 
       Result := Response.File (MIME.Text_XML, File);
 

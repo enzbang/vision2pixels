@@ -168,7 +168,7 @@ package body V2P.Callbacks.Ajax is
    is
       SID    : constant Session.Id := Status.Session (Request);
       Login  : constant String :=
-        Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+                 Session.Get (SID, Template_Defs.Set_Global.LOGIN);
    begin
       Session.Delete (SID);
 
@@ -1565,7 +1565,7 @@ package body V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set;
       Sort_On      : in              Database.User_Sort)
    is
-      pragma Unreferenced (Request);
+      pragma Unreferenced (Request, Translations);
       use type Database.Order_Direction;
       use type Database.User_Sort;
 
