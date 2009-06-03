@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2008                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -100,5 +100,7 @@ package V2P.Defaults is
    Max_Search_Results          : constant Positive := 100;
 
    Number_Users_Listed         : constant Positive := 20;
+
+   Default_Timezone            : constant String := "+1";
 
 end V2P.Defaults;

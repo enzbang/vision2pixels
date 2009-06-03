@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2008                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -142,5 +142,8 @@ package V2P.Settings is
 
    function Max_Search_Results return Positive;
    --  Returns the maximum number of match to return in the search page
+
+   function Default_Timezone return String;
+   --  Returns the default time zone offset to use
 
 end V2P.Settings;
