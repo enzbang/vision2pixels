@@ -30,6 +30,7 @@ with Morzhol.Logs;
 with Morzhol.OS;
 with Morzhol.Strings;
 
+with V2P.Database.Timezone;
 with V2P.DB_Handle;
 with V2P.Settings;
 with V2P.User_Validation;
@@ -132,7 +133,7 @@ package body V2P.Database is
    --  are inserted. This code is used by all procedure which need to set a
    --  preferences.
 
-   function Get_User_Stats (Uid : in String) return User_Stats;
+   function Get_User_Stats (Uid, TZ : in String) return User_Stats;
    --  Returns stats about the specified user
 
    -------------
@@ -381,7 +382,9 @@ package body V2P.Database is
    -- Get_Comment --
    -----------------
 
-   function Get_Comment (Cid : in Id) return Templates.Translate_Set is
+   function Get_Comment
+     (Cid : in Id; TZ : in String) return Templates.Translate_Set
+   is
       use type Templates.Tag;
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Set  : Templates.Translate_Set;
@@ -393,9 +396,10 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter,
-         "SELECT strftime('%Y-%m-%dT%H:%M:%SZ', date), "
-         & "DATE(date, 'localtime'), time(date, 'localtime'), "
-         & "user_login, anonymous_user, "
+         "SELECT strftime('%Y-%m-%dT%H:%M:%SZ', "
+         & Timezone.Date_Time ("date", TZ) & "), "
+         & Timezone.Date ("date", TZ) & ", " & Timezone.Time ("date", TZ)
+         & ", user_login, anonymous_user, "
          & "comment, "
          & "(SELECT filename FROM photo WHERE id=comment.photo_id), has_voted"
          & " FROM comment WHERE id=" & To_String (Cid));
@@ -454,7 +458,9 @@ package body V2P.Database is
    -- Get_Comments --
    ------------------
 
-   function Get_Comments (Tid : in Id) return Templates.Translate_Set is
+   function Get_Comments
+     (Tid : in Id; TZ : in String) return Templates.Translate_Set
+   is
       use type Templates.Tag;
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Set  : Templates.Translate_Set;
@@ -477,10 +483,10 @@ package body V2P.Database is
    begin
       DBH.Handle.Prepare_Select
         (Iter,
-         "SELECT comment.id, strftime('%Y-%m-%dT%H:%M:%SZ', date), "
-         & "DATE(date, 'localtime'), time(date, 'localtime'), "
-         & "user_login, anonymous_user, "
-         & "comment, "
+         "SELECT comment.id, strftime('%Y-%m-%dT%H:%M:%SZ', "
+         & Timezone.Date_Time ("date", TZ) & "), " & Timezone.Date ("date", TZ)
+         & ", " & Timezone.Time ("date", TZ) & ", "
+         & "user_login, anonymous_user, comment, "
          & "(SELECT filename FROM photo WHERE id=comment.photo_id), has_voted "
          & " FROM comment, post_comment"
          & " WHERE post_id=" & To_String (Tid)
@@ -575,12 +581,12 @@ package body V2P.Database is
 
    function Get_Entry
      (Tid        : in Id;
-      Forum_Type : in V2P.Database.Forum_Type)
-      return Templates.Translate_Set
+      Forum_Type : in V2P.Database.Forum_Type;
+      TZ         : in String) return Templates.Translate_Set
    is
       Set : Templates.Translate_Set;
    begin
-      Templates.Insert (Set, Get_Post (Tid, Forum_Type));
+      Templates.Insert (Set, Get_Post (Tid, Forum_Type, TZ));
       return Set;
    end Get_Entry;
 
@@ -863,14 +869,14 @@ package body V2P.Database is
    ----------------
 
    function Get_Forums
-     (Filter : in Forum_Filter) return Templates.Translate_Set
+     (Filter : in Forum_Filter; TZ : in String) return Templates.Translate_Set
    is
       use type Templates.Tag;
 
       SQL       : constant String :=
                     "SELECT id, name, for_photo, "
-                      & "date(last_activity, 'localtime'), "
-                      & "time (last_activity, 'localtime') "
+                      & Timezone.Date ("last_activity", TZ) & ", "
+                      & Timezone.Time ("last_activity", TZ)
                       & " FROM forum";
       DBH       : constant TLS_DBH_Access :=
                     TLS_DBH_Access (DBH_TLS.Reference);
@@ -1001,8 +1007,8 @@ package body V2P.Database is
    function Get_Latest_Posts
      (Limit    : in Positive;
       Admin    : in     Boolean;
-      Add_Date : in Boolean := False)
-      return Templates.Translate_Set
+      Add_Date : in Boolean := False;
+      TZ       : in String) return Templates.Translate_Set
    is
       use type Templates.Tag;
 
@@ -1025,7 +1031,7 @@ package body V2P.Database is
       function Select_Date return String is
       begin
          if Add_Date then
-            return ", post.date_post";
+            return ", " & Timezone.Date ("post.date_post", TZ);
          else
             return "";
          end if;
@@ -1319,8 +1325,8 @@ package body V2P.Database is
 
    function Get_Post
      (Tid        : in Id;
-      Forum_Type : in V2P.Database.Forum_Type)
-      return Templates.Translate_Set
+      Forum_Type : in V2P.Database.Forum_Type;
+      TZ         : in String) return Templates.Translate_Set
    is
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Set  : Templates.Translate_Set;
@@ -1335,7 +1341,8 @@ package body V2P.Database is
          DBH.Handle.Prepare_Select
            (Iter, "SELECT post.name, post.comment, post.hidden, "
             & "filename, width, height, medium_width, medium_height, "
-            & "thumb_width, thumb_height, user.login, post.date_post, "
+            & "thumb_width, thumb_height, user.login, "
+            & Timezone.Date_Time ("post.date_post", TZ) & ", "
             & " (JULIANDAY(post.date_post, '+"
             & Utils.Image (Settings.Anonymity_Hours)
             & " hour') - JULIANDAY('NOW')) * 24, category.name, category.id, "
@@ -1465,7 +1472,7 @@ package body V2P.Database is
       else
          DBH.Handle.Prepare_Select
            (Iter, "SELECT post.name, post.comment, post.hidden, "
-            & "user.login, post.date_post, "
+            & "user.login, " & Timezone.Date_Time ("post.date_post", TZ) & ", "
             & "DATETIME(post.date_post, '+"
             & Utils.Image (Settings.Anonymity_Hours)
             & " hour')<DATETIME('NOW'), category.name, category.id "
@@ -1597,7 +1604,8 @@ package body V2P.Database is
       Navigation    :    out Navigation_Links.Post_Ids.Vector;
       Set           :    out Templates.Translate_Set;
       Nb_Lines      :    out Natural;
-      Total_Lines   :    out Natural)
+      Total_Lines   :    out Natural;
+      TZ            : in     String)
    is
       use type Templates.Tag;
       use type Navigation_Links.Post_Ids.Vector;
@@ -1689,7 +1697,8 @@ package body V2P.Database is
          else
             case Mode is
                when Everything =>
-                  Select_Stmt := +"SELECT post.id, post.name, post.date_post, "
+                  Select_Stmt := +"SELECT post.id, post.name, "
+                    & Timezone.Date_Time ("post.date_post", TZ) & ", "
                     & "DATETIME(date_post, '+"
                     & Utils.Image (Settings.Anonymity_Hours)
                     & " hour') < DATETIME('NOW'), "
@@ -1710,7 +1719,9 @@ package body V2P.Database is
                   null;
 
                when Last_Commented =>
-                  Append (Select_Stmt, ", comment.date");
+                  Append
+                    (Select_Stmt,
+                     ", " & Timezone.Date_Time ("comment.date", TZ));
 
                when Best_Noted =>
                   Append
@@ -1987,7 +1998,7 @@ package body V2P.Database is
                Get_Threads
                  (Fid, User, Admin, Forum, Page_Size, New_Filter, Filter_Cat,
                   Order_Dir, Sorting, Only_Revealed, From, Mode, Navigation,
-                  Set, Nb_Lines, Total_Lines);
+                  Set, Nb_Lines, Total_Lines, TZ);
                return;
             end Restart_With_New_Filter;
          end if;
@@ -2409,11 +2420,12 @@ package body V2P.Database is
    -- Get_User_Stats --
    --------------------
 
-   function Get_User_Stats (Uid : in String) return User_Stats is
+   function Get_User_Stats (Uid, TZ : in String) return User_Stats is
       use type AWS.Templates.Tag;
 
       SQL     : constant String :=
-                  "SELECT login, DATE(created), DATE(last_logged), "
+                  "SELECT login, " & Timezone.Date ("created", TZ)
+                  & ", " & Timezone.Date ("last_logged", TZ) & ", "
                   --  nb comments
                   & "(SELECT COUNT(id) FROM comment"
                   & " WHERE user.login = comment.user_login), "
@@ -2462,10 +2474,12 @@ package body V2P.Database is
       return Result;
    end Get_User_Stats;
 
-   function Get_User_Stats (Uid : in String) return Templates.Translate_Set is
+   function Get_User_Stats
+     (Uid, TZ : in String) return Templates.Translate_Set
+   is
       use type AWS.Templates.Tag;
 
-      Stats : constant User_Stats := Get_User_Stats (Uid);
+      Stats : constant User_Stats := Get_User_Stats (Uid, TZ);
       Set   : Templates.Translate_Set;
    begin
       Templates.Insert
@@ -2551,7 +2565,8 @@ package body V2P.Database is
    function Get_Users
      (From  : in Positive;
       Sort  : in User_Sort;
-      Order : in Order_Direction) return Templates.Translate_Set
+      Order : in Order_Direction;
+      TZ    : in String) return Templates.Translate_Set
    is
       use type AWS.Templates.Tag;
 
@@ -2585,7 +2600,8 @@ package body V2P.Database is
       DBH             : constant TLS_DBH_Access :=
                           TLS_DBH_Access (DBH_TLS.Reference);
       SQL             : constant String :=
-                          "SELECT login, DATE(created), DATE(last_logged), "
+                          "SELECT login, " & Timezone.Date ("created", TZ)
+                            & ", " & Timezone.Date ("last_logged", TZ) & ", "
                             --  nb comments
                             & "(SELECT COUNT(id) FROM comment"
                             & " WHERE user.login=comment.user_login) AS nbcom,"

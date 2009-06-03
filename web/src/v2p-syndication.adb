@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                            Copyright (C) 2008                            --
+--                         Copyright (C) 2008-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -42,7 +42,9 @@ package body V2P.Syndication is
    -- Update_RSS_Last_Photos --
    ----------------------------
 
-   procedure Update_RSS_Last_Photos (Create_Only : in Boolean := False) is
+   procedure Update_RSS_Last_Photos
+     (Create_Only : in Boolean := False; TZ : in String := "")
+   is
       Filename     : constant String :=
                        Morzhol.OS.Compose
                          (Settings.RSS_Path,
@@ -78,7 +80,8 @@ package body V2P.Syndication is
          Database.Get_Latest_Posts
            (Limit    => 15,
             Add_Date => True,
-            Admin    => False));
+            Admin    => False,
+            TZ       => TZ));
 
       Create (File => File, Mode => Out_File, Name => Filename);
 

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2008                          --
+--                         Copyright (C) 2007-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -101,6 +101,18 @@ package body V2P.Context is
          Context.Remove (Template_Defs.Set_Global.ADMIN);
       end if;
 
+      --  Set timezone
+
+      if not Context.Exist (Template_Defs.Set_Global.TZ) then
+         declare
+            TZ : constant String :=
+                   Session.Get (SID, Template_Defs.Set_Global.TZ);
+         begin
+            if TZ /= "" then
+               Context.Set_Value (Template_Defs.Set_Global.TZ, TZ);
+            end if;
+         end;
+      end if;
 
       --  Set default filter
 

@@ -85,7 +85,7 @@ package V2P.Database is
    No_User_Data : constant User_Data;
 
    function Get_Forums
-     (Filter : in Forum_Filter) return Templates.Translate_Set;
+     (Filter : in Forum_Filter; TZ : in String) return Templates.Translate_Set;
    --  Returns the forum list
    --  If filter is Forum_Photo or Forum_Text and only one forum found, then
    --  returns the category list in that forum
@@ -117,7 +117,8 @@ package V2P.Database is
       Navigation    :    out Navigation_Links.Post_Ids.Vector;
       Set           :    out Templates.Translate_Set;
       Nb_Lines      :    out Natural;
-      Total_Lines   :    out Natural);
+      Total_Lines   :    out Natural;
+      TZ            : in     String);
    --  Returns all threads for a given forum.
    --  Returns navigation links to store in context.
    --  Set Revealed to True to retreive only revealed photos.
@@ -125,7 +126,8 @@ package V2P.Database is
    function Get_Latest_Posts
      (Limit    : in Positive;
       Admin    : in     Boolean;
-      Add_Date : in Boolean := False) return Templates.Translate_Set;
+      Add_Date : in Boolean := False;
+      TZ       : in String) return Templates.Translate_Set;
    --  Returns the Limit latest posts from all photo based forums
 
    function Get_Latest_Users
@@ -150,25 +152,30 @@ package V2P.Database is
 
    function Get_Post
      (Tid        : in Id;
-      Forum_Type : in V2P.Database.Forum_Type) return Templates.Translate_Set;
+      Forum_Type : in V2P.Database.Forum_Type;
+      TZ         : in String) return Templates.Translate_Set;
    --  Returns the post information (no comments)
 
    function Get_Entry
      (Tid        : in Id;
-      Forum_Type : in V2P.Database.Forum_Type) return Templates.Translate_Set;
+      Forum_Type : in V2P.Database.Forum_Type;
+      TZ         : in String) return Templates.Translate_Set;
    --  Returns the full content of the entry Id. As above with comments
 
-   function Get_Comment (Cid : in Id) return Templates.Translate_Set;
+   function Get_Comment
+     (Cid : in Id; TZ : in String) return Templates.Translate_Set;
    --  Returns a comment for the given comment id
 
-   function Get_Comments (Tid : in Id) return Templates.Translate_Set;
+   function Get_Comments
+     (Tid : in Id; TZ : in String) return Templates.Translate_Set;
    --  Returns all comments for the given thread
 
    function Get_User_Data (Uid : in String) return User_Data;
    --  Returns the user's data. Returns the No_User_Data if User cannot be
    --  found into the database.
 
-   function Get_User_Stats (Uid : in String) return Templates.Translate_Set;
+   function Get_User_Stats
+     (Uid, TZ : in String) return Templates.Translate_Set;
    --  Returns the stats for the given user or No_User_Stats if user cannot be
    --  found into the database.
 
@@ -192,7 +199,8 @@ package V2P.Database is
    function Get_Users
      (From  : in Positive;
       Sort  : in User_Sort;
-      Order : in Order_Direction) return Templates.Translate_Set;
+      Order : in Order_Direction;
+      TZ    : in String) return Templates.Translate_Set;
    --  Returns information about N users starting at the given Offset
 
    function Get_CdC return Templates.Translate_Set;

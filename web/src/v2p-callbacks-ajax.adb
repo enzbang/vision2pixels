@@ -961,7 +961,12 @@ package body V2P.Callbacks.Ajax is
                     (Set_Global.CONTEXT_LAST_COMMENT,
                      Comment & '@' & Database.To_String (TID));
 
-                  Templates.Insert (Translations, Database.Get_Comment (Cid));
+                  Templates.Insert
+                    (Translations,
+                     Database.Get_Comment
+                       (Cid,
+                        TZ =>
+                          Context.Get_Value (Template_Defs.Set_Global.TZ)));
 
                   Templates.Insert
                     (Translations,
@@ -977,7 +982,9 @@ package body V2P.Callbacks.Ajax is
                        (Tid        => V2P.Context.Counter.Get_Value
                           (Context => Context.all,
                            Name    => Set_Global.TID),
-                        Forum_Type => Forum_Type));
+                        Forum_Type => Forum_Type,
+                        TZ         =>
+                          Context.Get_Value (Template_Defs.Set_Global.TZ)));
                end Insert_Comment;
             end if;
          end Save_Or_Preview;
@@ -1234,7 +1241,8 @@ package body V2P.Callbacks.Ajax is
                if PID /= Database.Empty_Id then
                   --  Regenerate RSS feed
 
-                  Syndication.Update_RSS_Last_Photos;
+                  Syndication.Update_RSS_Last_Photos
+                    (TZ => Context.Get_Value (Template_Defs.Set_Global.TZ));
                end if;
 
             else

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                                Vision2Pixels                             --
 --                                                                          --
---                           Copyright (C) 2007-2008                        --
+--                           Copyright (C) 2007-2009                        --
 --                        Pascal Obry - Olivier Ramonat                     --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -87,7 +87,8 @@ package body V2P.Navigation_Links is
          Navigation  => Nav_Links,
          Set         => Translations,
          Nb_Lines    => Nb_Lines,
-         Total_Lines => Total);
+         Total_Lines => Total,
+         TZ          => Context.Get_Value (Template_Defs.Set_Global.TZ));
 
       Links.Set_Value
         (Context => Context.all,

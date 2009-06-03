@@ -149,7 +149,8 @@ package body V2P.Callbacks.Page is
            (Translations,
             Database.Get_Entry
               (Tid        => TID,
-               Forum_Type => Database.Get_Forum_Type (TID)));
+               Forum_Type => Database.Get_Forum_Type (TID),
+               TZ         => Context.Get_Value (Template_Defs.Set_Global.TZ)));
       end if;
 
       --  Add forum information into the translate set

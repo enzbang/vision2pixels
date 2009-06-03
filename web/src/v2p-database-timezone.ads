@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2008-2009                          --
+--                            Copyright (C) 2009                            --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,10 +19,19 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-package V2P.Syndication is
+package V2P.Database.Timezone is
 
-   procedure Update_RSS_Last_Photos
-     (Create_Only : in Boolean := False; TZ : in String := "");
-   --  Update last photos RSS feed
+   function Date (Field, Timezone : in String) return String;
+   pragma Inline (Date);
+   --  Returns the SQL fragment to get the date out of field on the given TZ
 
-end V2P.Syndication;
+   function Time (Field, Timezone : in String) return String;
+   pragma Inline (Time);
+   --  Returns the SQL fragment to get the time out of field on the given TZ
+
+   function Date_Time (Field, Timezone : in String) return String;
+   pragma Inline (Date_Time);
+   --  Returns the SQL fragment to get the date/time out of field on the given
+   --  TZ.
+
+end V2P.Database.Timezone;
