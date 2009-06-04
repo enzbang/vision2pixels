@@ -3,9 +3,22 @@
 export LD_LIBRARY_PATH=/usr/local/lib/v2p/lib
 export ARGWIAD_PATH=/usr/local/lib/v2p/gwiad
 
+BIN=/usr/local/lib/v2p/gwiad/bin/argwiad_bin
+EMAILS=""
+
 while $(true); do
    echo Starting v2p on $(date) >> /var/log/v2p/v2p_deamon.log
-   /usr/local/lib/v2p/gwiad/bin/argwiad_bin
+
+   if [ "$(file -b $BIN | cut -d' ' -f1)" == "ELF" ]; then
+       $BIN
+   else
+       echo $BIN is not a valid executable.
+       exit 1
+   fi
    # wait 10 seconds before restarting
    sleep 10
+
+   if [ "$EMAILS" != "" ]; then
+       echo "restarting v2p: $(date)" | mail -s "restarting v2p" $EMAILS
+   fi
 done;
