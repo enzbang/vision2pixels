@@ -1521,10 +1521,7 @@ package body V2P.Database is
    begin
       Connect (DBH);
 
-      DBH.Handle.Prepare_Select
-        (Iter,
-         "SELECT COUNT(DISTINCT user.login), COUNT(DISTINCT photo.id)"
-         & " FROM user, photo");
+      DBH.Handle.Prepare_Select (Iter, "SELECT COUNT(*) from user");
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -1532,16 +1529,26 @@ package body V2P.Database is
          Templates.Insert
            (Set, Templates.Assoc
               (Page_Main.NB_USERS, DB.String_Vectors.Element (Line, 1)));
+      end if;
+
+      Iter.End_Select;
+
+      DBH.Handle.Prepare_Select
+        (Iter, "SELECT COUNT (*) FROM post WHERE photo_id!=0");
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
          Templates.Insert
            (Set, Templates.Assoc
-              (Page_Main.NB_PHOTOS, DB.String_Vectors.Element (Line, 2)));
+              (Page_Main.NB_PHOTOS, DB.String_Vectors.Element (Line, 1)));
       end if;
 
       Iter.End_Select;
 
       DBH.Handle.Prepare_Select
         (Iter,
-         "SELECT SUM(post.comment_counter) FROM post WHERE post.photo_id!=0");
+         "SELECT SUM(post.comment_counter) FROM post WHERE photo_id!=0");
 
       if Iter.More then
          Iter.Get_Line (Line);
