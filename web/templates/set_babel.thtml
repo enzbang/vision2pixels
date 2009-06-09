@@ -55,6 +55,8 @@
 @@SET@@ BABEL_CLICK_TO_CLOSE="fermer"
 @@SET@@ BABEL_PREVIOUS="« Précédent"
 @@SET@@ BABEL_NEXT="Suivant »"
+@@SET@@ BABEL_TOP="Haut ↑"
+@@SET@@ BABEL_BOTTOM="↓"
 @@SET@@ BABEL_PREVIOUS_PAGE="Page Précédente"
 @@SET@@ BABEL_NEXT_PAGE="Page Suivante"
 @@SET@@ BABEL_BACK_TO="Retour vers"

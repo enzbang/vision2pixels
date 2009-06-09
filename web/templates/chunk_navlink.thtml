@@ -22,5 +22,5 @@
       &gt;</a>
     @@END_INLINE@@
   @@END_IF@@
+  <a href="#pfe_lazy_new_comment">@_BABEL_BOTTOM_@</a>
 </div>
-

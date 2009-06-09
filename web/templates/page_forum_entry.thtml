@@ -144,6 +144,7 @@
     @@IF@@ @_PREVIOUS_@ = "0" and @_NEXT_@ = "0"
     <li>&nbsp;</li>
     @@END_IF@@
+    <li class="top_link">&nbsp;&nbsp;&nbsp;<a href="#pfe_navigate">@_BABEL_TOP_@</a></li>
   </ul>
 </div>
 </div>
