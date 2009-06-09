@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2008                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -98,5 +98,7 @@ package V2P.Defaults is
    Compression                 : constant Boolean := False;
 
    Max_Search_Results          : constant Positive := 100;
+
+   SMTP_Server                 : constant String := "localhost";
 
 end V2P.Defaults;
