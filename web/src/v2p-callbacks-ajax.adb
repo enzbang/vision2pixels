@@ -999,8 +999,8 @@ package body V2P.Callbacks.Ajax is
                Encode => Attachments.Base64));
 
          SMTP.Client.Send
-           (Server  => Localhost,
-            From    => SMTP.E_Mail ("V2P", "no-reply"),
+           (Server      => Localhost,
+            From        => SMTP.E_Mail ("V2P", "no-reply@no-reply.com"),
             To          => SMTP.Recipients'(1 => SMTP.E_Mail (Email, Email)),
             Subject     => "Mot de passe Vision2Pixels",
             Attachments => Content,
@@ -1194,7 +1194,7 @@ package body V2P.Callbacks.Ajax is
 
          SMTP.Client.Send
            (Server  => Localhost,
-            From    => SMTP.E_Mail ("V2P", "no-reply"),
+            From    => SMTP.E_Mail ("V2P", "no-reply@no-reply.com"),
             To      => SMTP.E_Mail (Email, Email),
             Subject => "Enregistrement sur Vision2Pixels",
             Message => Templates.Parse
