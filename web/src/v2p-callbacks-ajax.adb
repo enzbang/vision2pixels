@@ -23,6 +23,7 @@ with Ada.Strings.Unbounded;
 
 with GNAT.String_Split;
 
+with AWS.Attachments;
 with AWS.Parameters;
 with AWS.Session;
 with AWS.SMTP.Client;
@@ -983,19 +984,27 @@ package body V2P.Callbacks.Ajax is
       Send_Mail : declare
          Localhost : constant SMTP.Receiver :=
                        SMTP.Client.Initialize ("localhost");
+         Content   : Attachments.List;
          Result    : SMTP.Status;
          Set       : Templates.Translate_Set;
       begin
          Templates.Insert (Set, Templates.Assoc ("USER_PASSWORD", Password));
 
+         Attachments.Add
+           (Content,
+            Name => "message",
+            Data => Attachments.Value
+              (Data   => Templates.Parse
+                 (Template_Defs.Email_Lost_Password.Template, Set),
+               Encode => Attachments.Base64));
+
          SMTP.Client.Send
            (Server  => Localhost,
             From    => SMTP.E_Mail ("V2P", "no-reply"),
-            To      => SMTP.E_Mail (Email, Email),
-            Subject => "Mot de passe Vision2Pixels",
-            Message => Templates.Parse
-              (Template_Defs.Email_Lost_Password.Template, Set),
-            Status  => Result);
+            To          => SMTP.Recipients'(1 => SMTP.E_Mail (Email, Email)),
+            Subject     => "Mot de passe Vision2Pixels",
+            Attachments => Content,
+            Status      => Result);
 
       exception
          when others =>
