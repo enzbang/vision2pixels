@@ -37,6 +37,7 @@ with V2P.Context;
 with V2P.Database.Search;
 with V2P.User_Validation;
 with V2P.Wiki;
+with V2P.Settings;
 with V2P.Syndication;
 
 with V2P.Template_Defs.Page_Forum_Entry;
@@ -983,7 +984,7 @@ package body V2P.Callbacks.Ajax is
 
       Send_Mail : declare
          Localhost : constant SMTP.Receiver :=
-                       SMTP.Client.Initialize ("localhost");
+                       SMTP.Client.Initialize (Settings.SMTP_Server);
          Content   : Attachments.List;
          Result    : SMTP.Status;
          Set       : Templates.Translate_Set;
@@ -1182,7 +1183,7 @@ package body V2P.Callbacks.Ajax is
 
       Send_Mail : declare
          Localhost : constant SMTP.Receiver :=
-                       SMTP.Client.Initialize ("localhost");
+                       SMTP.Client.Initialize (Settings.SMTP_Server);
          Key       : constant String :=
                        User_Validation.Key (Login, Password, Email);
          Result    : SMTP.Status;
