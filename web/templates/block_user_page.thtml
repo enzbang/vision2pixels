@@ -54,4 +54,6 @@
 @@IF@@ @_LOGIN_@ = @_USER_NAME_@
   @_LAZY_USER_VOTED_PHOTOS_LIST_@
 @@END_IF@@
+
+<p class="up"><a href="#cvt_contents">@_BABEL_TOP_@</a></p>
 @@END_IF@@

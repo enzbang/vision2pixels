@@ -1,7 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
 <h2 id="bupl_h">@_BABEL_LAST_USER_PHOTOS_@</h2>
-<p class="up"><a href="#cvt_contents">Haut</a></p>
+<p class="up"><a href="#cvt_contents">@_BABEL_TOP_@</a></p>
 @@--
 <ul class="slides">
 @@TABLE@@
