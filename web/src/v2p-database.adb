@@ -3242,12 +3242,7 @@ package body V2P.Database is
                 (DB.String_Vectors.Element (Line, 5)));
 
       else
-         Preferences :=
-           User_Settings'(Page_Size  => 10,
-                          Filter     => Seven_Days,
-                          Sort       => Last_Commented,
-                          Image_Size => Max_Size,
-                          CSS_URL    => To_Unbounded_String (""));
+         Preferences := Default_User_Settings;
       end if;
 
       Iter.End_Select;
