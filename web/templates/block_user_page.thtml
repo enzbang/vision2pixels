@@ -9,8 +9,6 @@
 <h1>@_BABEL_USER_PAGE_OF_@ @_USER_NAME_@</h1>
 @@END_IF@@
 
-@@SET@@ UP = <a href="#bup_user_page_content">Haut</a>
-
 <ul class="squarelist">
   <li><a href="#bupl_h">Dernières photographies</a></li>
   <li><a href="#buml_h">Derniers messages</a></li>
