@@ -130,18 +130,7 @@ package body V2P.Callbacks.Ajax is
 
          --  Set user's filtering preference
 
-         Context.Set_Value
-           (Template_Defs.Set_Global.FILTER,
-            Database.Filter_Mode'Image (User_Data.Preferences.Filter));
-
-         V2P.Context.Not_Null_Counter.Set_Value
-           (Context => Context.all,
-            Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
-            Value   => User_Data.Preferences.Page_Size);
-
-         Context.Set_Value
-           (Template_Defs.Set_Global.FORUM_SORT,
-            Database.Forum_Sort'Image (User_Data.Preferences.Sort));
+         V2P.Context.Set_User_Preferences (Context, User_Data);
 
          Templates.Insert
            (Translations,

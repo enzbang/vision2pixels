@@ -21,7 +21,6 @@
 
 with Ada.Strings.Fixed;
 
-with V2P.Database;
 with V2P.Settings;
 with V2P.Template_Defs.Set_Global;
 
@@ -29,6 +28,28 @@ package body V2P.Context is
 
    use V2P;
    use AWS;
+
+   --------------------------
+   -- Set_User_Preferences --
+   --------------------------
+
+   procedure Set_User_Preferences
+     (Context   : not null access Object;
+      User_Data : in Database.User_Data) is
+   begin
+      Context.Set_Value
+        (Template_Defs.Set_Global.FILTER,
+         Database.Filter_Mode'Image (User_Data.Preferences.Filter));
+
+      V2P.Context.Not_Null_Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
+         Value   => User_Data.Preferences.Page_Size);
+
+      Context.Set_Value
+        (Template_Defs.Set_Global.FORUM_SORT,
+         Database.Forum_Sort'Image (User_Data.Preferences.Sort));
+   end Set_User_Preferences;
 
    ------------
    -- Update --
@@ -75,10 +96,62 @@ package body V2P.Context is
                               (Cookie_Content (Cookie));
          begin
             if Cookie_User /= "" then
+               --  No session login but a cookie is sent, recover the session
+               --  from the database.
+
                Session.Set (SID, Template_Defs.Set_Global.LOGIN, Cookie_User);
+               Set_User_Preferences
+                 (Context, Database.Get_User_Data (Cookie_User));
+
+               --  Record that the cookie is set as we do not want to generate
+               --  a new one.
+
                Context.Set_Value ("cookie", "set");
+
+            else
+               --  No session login and no cookie, new user set preferences to
+               --  default.
+               Set_User_Preferences (Context, Database.No_User_Data);
             end if;
          end Read_Cookie;
+
+      elsif not Context.Exist (Template_Defs.Set_Global.FILTER)
+        or else not Context.Exist (Template_Defs.Set_Global.FILTER_PAGE_SIZE)
+        or else not Context.Exist (Template_Defs.Set_Global.FORUM_SORT)
+      then
+         --  Session is set but there is no preferences set yet, set user's
+         --  preferences.
+
+         --  Update filter context
+
+         Set_User_Preferences
+           (Context,
+            Database.Get_User_Data
+              (Session.Get (SID, Template_Defs.Set_Global.LOGIN)));
+
+         Context.Set_Value
+           (Template_Defs.Set_Global.FILTER_CATEGORY, "");
+      end if;
+
+      if not Context.Exist (Template_Defs.Set_Global.NAV_FROM)
+        or else not Context.Exist (Template_Defs.Set_Global.ORDER_DIR)
+      then
+         Not_Null_Counter.Set_Value
+           (Context => Context.all,
+            Name    => Template_Defs.Set_Global.NAV_FROM,
+            Value   => 1);
+
+         --  Should be in config
+
+         if Settings.Descending_Order then
+            Context.Set_Value
+              (Template_Defs.Set_Global.ORDER_DIR,
+               Database.Order_Direction'Image (Database.DESC));
+         else
+            Context.Set_Value
+              (Template_Defs.Set_Global.ORDER_DIR,
+               Database.Order_Direction'Image (Database.ASC));
+         end if;
       end if;
 
       --  Set LOGIN and ADMIN in session
@@ -98,43 +171,6 @@ package body V2P.Context is
               (Boolean'(Session.Get (SID, Template_Defs.Set_Global.ADMIN))));
       else
          Context.Remove (Template_Defs.Set_Global.ADMIN);
-      end if;
-
-      --  Set default filter
-
-      if not Context.Exist (Template_Defs.Set_Global.FILTER) then
-         Context.Set_Value
-           (Template_Defs.Set_Global.FILTER,
-            Database.Filter_Mode'Image (Database.Seven_Days));
-
-         Context.Set_Value
-           (Template_Defs.Set_Global.FILTER_CATEGORY, "");
-
-         Context.Set_Value
-           (Template_Defs.Set_Global.FORUM_SORT,
-            Database.Forum_Sort'Image (Database.Last_Posted));
-
-         Not_Null_Counter.Set_Value
-           (Context => Context.all,
-            Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
-            Value   => 10);
-
-         Not_Null_Counter.Set_Value
-           (Context => Context.all,
-            Name    => Template_Defs.Set_Global.NAV_FROM,
-            Value   => 1);
-
-         --  Should be in config
-
-         if Settings.Descending_Order then
-            Context.Set_Value
-              (Template_Defs.Set_Global.ORDER_DIR,
-               Database.Order_Direction'Image (Database.DESC));
-         else
-            Context.Set_Value
-              (Template_Defs.Set_Global.ORDER_DIR,
-               Database.Order_Direction'Image (Database.ASC));
-         end if;
       end if;
    end Update;
 
