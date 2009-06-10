@@ -121,9 +121,6 @@ package body V2P.Context is
       then
          --  Session is set but there is no preferences set yet, set user's
          --  preferences.
-
-         --  Update filter context
-
          Set_User_Preferences
            (Context,
             Database.Get_User_Data
