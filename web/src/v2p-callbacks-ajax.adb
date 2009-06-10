@@ -119,8 +119,10 @@ package body V2P.Callbacks.Ajax is
          Database.Set_Last_Logged (Login);
 
          --  Maybe remember user
+
          if Parameters.Get
-           (P, Template_Defs.Block_Login.HTTP.bl_remember_me) /= "" then
+           (P, Template_Defs.Block_Login.HTTP.bl_remember_me) /= ""
+         then
             Database.Remember (Login, True);
          else
             Database.Remember (Login, False);
@@ -160,7 +162,7 @@ package body V2P.Callbacks.Ajax is
    is
       SID    : constant Session.Id := Status.Session (Request);
       Login  : constant String :=
-        Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+                 Session.Get (SID, Template_Defs.Set_Global.LOGIN);
    begin
       Session.Delete (SID);
 
@@ -228,9 +230,9 @@ package body V2P.Callbacks.Ajax is
               V2P.Context.Counter.Get_Value
                 (Context => Context.all,
                  Name    => Template_Defs.Set_Global.TID);
-      CID  : constant Database.Id :=
-               Database.Id'Value
-                 (Parameters.Get (P, HTTP.bfcs_forum_category_set));
+      CID : constant Database.Id :=
+              Database.Id'Value
+                (Parameters.Get (P, HTTP.bfcs_forum_category_set));
    begin
       Database.Set_Category (TID, CID);
    end Onchange_Category_Set;
@@ -491,12 +493,12 @@ package body V2P.Callbacks.Ajax is
    is
       package HTTP renames Template_Defs.Block_Pref_Image_Size.HTTP;
 
-      SID    : constant Session.Id := Status.Session (Request);
-      Login  : constant String :=
-                 Session.Get (SID, Template_Defs.Set_Global.LOGIN);
-      P      : constant Parameters.List := Status.Parameters (Request);
-      Size   : constant String :=
-                 Parameters.Get (P, HTTP.bpis_image_size);
+      SID   : constant Session.Id := Status.Session (Request);
+      Login : constant String :=
+                Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+      P     : constant Parameters.List := Status.Parameters (Request);
+      Size  : constant String :=
+                Parameters.Get (P, HTTP.bpis_image_size);
    begin
       Morzhol.Logs.Write
         (Name    => Module,

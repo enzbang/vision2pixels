@@ -144,12 +144,16 @@ package body V2P.Database is
       end if;
    end Connect;
 
+   -------------------------
+   -- Delete_User_Cookies --
+   -------------------------
+
    procedure Delete_User_Cookies (Login : in String) is
       DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
    begin
       Connect (DBH);
-      DBH.Handle.Execute ("DELETE FROM remember_user WHERE user_login="
-                            & Q (Login));
+      DBH.Handle.Execute
+        ("DELETE FROM remember_user WHERE user_login=" & Q (Login));
    end Delete_User_Cookies;
 
    -------
@@ -165,7 +169,7 @@ package body V2P.Database is
    -- Gen_Cookie --
    ----------------
 
-   function Gen_Cookie (Login : String) return String is
+   function Gen_Cookie (Login : in String) return String is
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
 
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -174,9 +178,11 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select (Iter, "select lower(hex(randomblob(16)));");
+
       if not Iter.More then
          return "";
       end if;
+
       Iter.Get_Line (Line);
 
       declare
@@ -2218,22 +2224,24 @@ package body V2P.Database is
    -- Get_User_From_Cookie --
    --------------------------
 
-   function Get_User_From_Cookie (Cookie : String) return String is
+   function Get_User_From_Cookie (Cookie : in String) return String is
       DBH  : constant TLS_DBH_Access :=
                TLS_DBH_Access (DBH_TLS.Reference);
       SQL  : constant String :=
-               "SELECT user_login, remember "
+               "SELECT user_login "
                  & "FROM remember_user, user "
                  & "WHERE cookie_content=" & Q (Cookie)
-                 & " AND remember = 'TRUE' AND user.login = user_login";
+                 & " AND remember='TRUE' AND user.login=user_login";
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
    begin
       Connect (DBH);
       DBH.Handle.Prepare_Select (Iter, SQL);
+
       if not Iter.More then
          return "";
       end if;
+
       Iter.Get_Line (Line);
       declare
          Result : constant String := DB.String_Vectors.Element (Line, 1);

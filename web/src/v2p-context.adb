@@ -39,14 +39,14 @@ package body V2P.Context is
       SID     : in Session.Id;
       Cookie  : in String)
    is
-      function Cookie_Content (S : String) return String;
+      function Cookie_Content (S : in String) return String;
       --  Returns the part between v2p= and ;
 
       --------------------
       -- Cookie_Content --
       --------------------
 
-      function Cookie_Content (S : String) return String is
+      function Cookie_Content (S : in String) return String is
          use Ada.Strings.Fixed;
 
          Content_Start : constant Natural := Index (S, "v2p=");
@@ -54,6 +54,7 @@ package body V2P.Context is
       begin
          if Content_Start = 0 then
             return "";
+
          else
             Content_End := Index (S (Content_Start .. S'Last), ";");
             if Content_End = 0 then

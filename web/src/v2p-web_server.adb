@@ -389,10 +389,13 @@ package body V2P.Web_Server is
          Set_Cookie : declare
             use type Ada.Calendar.Arithmetic.Day_Count;
             Valid_Days : constant Ada.Calendar.Arithmetic.Day_Count := 15;
-            HTTP_Date  : constant String := AWS.Messages.To_HTTP_Date
-              (Ada.Calendar.Clock + Valid_Days);
-            GenCookie  : constant String := Database.Gen_Cookie
-              (Login => Session.Get (SID, Template_Defs.Set_Global.LOGIN));
+            HTTP_Date  : constant String :=
+                           AWS.Messages.To_HTTP_Date
+                             (Ada.Calendar.Clock + Valid_Days);
+            GenCookie  : constant String :=
+                           Database.Gen_Cookie
+                             (Session.Get
+                                (SID, Template_Defs.Set_Global.LOGIN));
          begin
             AWS.Response.Set.Add_Header
               (Web_Page, AWS.Messages.Set_Cookie_Token,
