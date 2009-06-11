@@ -34,16 +34,17 @@ package body V2P.Settings is
 
    type Attributes is
      (DB, DB_Name, Images_Path, Thumbs_Path, Medium_Image_Path,
-     Images_Source_Prefix, Thumbs_Source_Prefix, Medium_Images_Source_Prefix,
-     Anonymous_Visit_Counter, Anonymous_Comment, Anonymity_Hours,
-     Posting_Delay_Hours, Descending_Order, Ignore_Author_Click,
-     Limit_Image_Size, Image_Maximum_Width, Image_Maximum_Height,
-     Image_Maximum_Size, Medium_Maximum_Width, Medium_Maximum_Height,
-     Thumbnail_Maximum_Width, Thumbnail_Maximum_Height, Virtual_Host,
-     Website_Data_Path, Number_Latest_User_Posts, Number_Latest_User_Messages,
-     Website_Data_Prefix, Wiki_Service_Name, Number_Latest_Posts,
-     Number_Latest_Users, Google_Map_Key, Log_Path, Cache_Path, RSS_Host_URL,
-     RSS_Path, RSS_Prefix, Compression, Max_Search_Results);
+      Images_Source_Prefix, Thumbs_Source_Prefix, Medium_Images_Source_Prefix,
+      Anonymous_Visit_Counter, Anonymous_Comment, Anonymity_Hours,
+      Posting_Delay_Hours, Descending_Order, Ignore_Author_Click,
+      Limit_Image_Size, Image_Maximum_Width, Image_Maximum_Height,
+      Image_Maximum_Size, Medium_Maximum_Width, Medium_Maximum_Height,
+      Thumbnail_Maximum_Width, Thumbnail_Maximum_Height, Virtual_Host,
+      Website_Data_Path, Number_Latest_User_Posts, Number_Latest_User_Messages,
+      Website_Data_Prefix, Wiki_Service_Name, Number_Latest_Posts,
+      Number_Latest_Users, Google_Map_Key, Log_Path, Cache_Path, RSS_Host_URL,
+      RSS_Path, RSS_Prefix, Compression, Max_Search_Results,
+      Number_Users_Listed);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -293,6 +294,15 @@ package body V2P.Settings is
    end Number_Latest_Users;
 
    -------------------------
+   -- Number_Users_Listed --
+   -------------------------
+
+   function Number_Users_Listed return Positive is
+   begin
+      return Conf.Get_Value (Number_Users_Listed);
+   end Number_Users_Listed;
+
+   -------------------------
    -- Posting_Delay_Hours --
    -------------------------
 
@@ -435,6 +445,7 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (RSS_Prefix, Defaults.RSS_Prefix);
    Conf.Set_Value (Compression, Defaults.Compression);
    Conf.Set_Value (Max_Search_Results, Defaults.Max_Search_Results);
+   Conf.Set_Value (Number_Users_Listed, Defaults.Number_Users_Listed);
 
    --  Now read the config file if any
 

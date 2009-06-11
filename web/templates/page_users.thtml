@@ -1,0 +1,9 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@SET@@ SET_URL = /users
+@@--
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_USER_PAGE_@ users_page
+<div id="pu_users_page">
+@_LAZY_USERS_@
+</div>
+@@INCLUDE@@ chunk_v2p_end.thtml

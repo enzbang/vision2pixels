@@ -34,6 +34,7 @@ with Morzhol.Strings;
 
 with V2P.Context;
 with V2P.Database.Search;
+with V2P.Settings;
 with V2P.User_Validation;
 with V2P.Wiki;
 with V2P.Syndication;
@@ -84,6 +85,13 @@ package body V2P.Callbacks.Ajax is
    use GNAT;
 
    Module : constant Morzhol.Logs.Module_Name := "Ajax";
+
+   procedure User_Sort
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set;
+      Sort_On      : in              Database.User_Sort);
+   --  Handle user sort
 
    -----------
    -- Login --
@@ -610,7 +618,6 @@ package body V2P.Callbacks.Ajax is
                             Name    => Set_Global.NAV_NB_LINES_RETURNED);
       From           : Positive := 1;
    begin
-
       if Last_From > Last_Nb_Viewed then
          From := Last_From - Last_Nb_Viewed;
       end if;
@@ -645,6 +652,118 @@ package body V2P.Callbacks.Ajax is
    begin
       Templates.Insert (Translations, Database.Toggle_Hidden_Status (TID));
    end Onclick_Hidden_Status_Toggle;
+
+   ----------------------------------
+   -- Onclick_Users_Goto_Next_Page --
+   ----------------------------------
+
+   procedure Onclick_Users_Goto_Next_Page
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Translations);
+      use Template_Defs;
+      From : Positive :=
+               V2P.Context.Not_Null_Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Set_Global.NAV_FROM);
+   begin
+      From := From + Settings.Number_Users_Listed;
+
+      --  Update FROM counter
+
+      V2P.Context.Not_Null_Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NAV_FROM,
+         Value   => From);
+   end Onclick_Users_Goto_Next_Page;
+
+   --------------------------------------
+   -- Onclick_Users_Goto_Previous_Page --
+   --------------------------------------
+
+   procedure Onclick_Users_Goto_Previous_Page
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Translations);
+      use Template_Defs;
+      From : Positive :=
+               V2P.Context.Not_Null_Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Set_Global.NAV_FROM);
+   begin
+      From := From - Settings.Number_Users_Listed;
+
+      --  Update FROM counter
+
+      V2P.Context.Not_Null_Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NAV_FROM,
+         Value   => From);
+   end Onclick_Users_Goto_Previous_Page;
+
+   --------------------------------------
+   -- Onclick_Users_Sort_Registered_On --
+   --------------------------------------
+
+   procedure Onclick_Users_Sort_Last_Connected
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set) is
+   begin
+      User_Sort (Request, Context, Translations, Database.Last_Connected);
+   end Onclick_Users_Sort_Last_Connected;
+
+   -------------------------------
+   -- Onclick_Users_Sort_Nb_CdC --
+   -------------------------------
+
+   procedure Onclick_Users_Sort_Nb_CdC
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set) is
+   begin
+      User_Sort (Request, Context, Translations, Database.Nb_CdC);
+   end Onclick_Users_Sort_Nb_CdC;
+
+   ------------------------------------
+   -- Onclick_Users_Sort_Nb_Comments --
+   ------------------------------------
+
+   procedure Onclick_Users_Sort_Nb_Comments
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set) is
+   begin
+      User_Sort (Request, Context, Translations, Database.Nb_Comments);
+   end Onclick_Users_Sort_Nb_Comments;
+
+   ----------------------------------
+   -- Onclick_Users_Sort_Nb_Photos --
+   ----------------------------------
+
+   procedure Onclick_Users_Sort_Nb_Photos
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set) is
+   begin
+      User_Sort (Request, Context, Translations, Database.Nb_Photos);
+   end Onclick_Users_Sort_Nb_Photos;
+
+   --------------------------------------
+   -- Onclick_Users_Sort_Registered_On --
+   --------------------------------------
+
+   procedure Onclick_Users_Sort_Registered_On
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set) is
+   begin
+      User_Sort (Request, Context, Translations, Database.Date_Created);
+   end Onclick_Users_Sort_Registered_On;
 
    -----------------------------
    -- Onclick_Vote_Week_Photo --
@@ -1435,5 +1554,53 @@ package body V2P.Callbacks.Ajax is
            (R_Block_User_Page_Edit_Form_Enter.USER_PAGE_HTML_CONTENT,
             Content_HTML));
    end Onsubmit_User_Page_Edit_Form_Enter;
+
+   ---------------
+   -- User_Sort --
+   ---------------
+
+   procedure User_Sort
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set;
+      Sort_On      : in              Database.User_Sort)
+   is
+      pragma Unreferenced (Request);
+      use type Database.Order_Direction;
+      use type Database.User_Sort;
+
+      Sort  : Database.User_Sort := Database.Last_Connected;
+      Order : Database.Order_Direction := Database.DESC;
+   begin
+      if Context.Exist (Template_Defs.Set_Global.USER_SORT) then
+         Sort := Database.User_Sort'Value
+           (Context.Get_Value (Template_Defs.Set_Global.USER_SORT));
+      end if;
+
+      if Context.Exist (Template_Defs.Set_Global.USER_ORDER) then
+         Order := Database.Order_Direction'Value
+           (Context.Get_Value (Template_Defs.Set_Global.USER_ORDER));
+      end if;
+
+      if Sort = Sort_On then
+         --  Invert current order
+         if Order = Database.ASC then
+            Order := Database.DESC;
+         else
+            Order := Database.ASC;
+         end if;
+
+      else
+         Sort := Sort_On;
+         Order := Database.DESC;
+      end if;
+
+      Context.Set_Value
+        (Template_Defs.Set_Global.USER_ORDER,
+         Database.Order_Direction'Image (Order));
+      Context.Set_Value
+        (Template_Defs.Set_Global.USER_SORT,
+         Database.User_Sort'Image (Sort));
+   end User_Sort;
 
 end V2P.Callbacks.Ajax;

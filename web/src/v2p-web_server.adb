@@ -72,10 +72,12 @@ with V2P.Template_Defs.Block_Pref_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Pref_Forum_Sort;
 with V2P.Template_Defs.Block_Pref_Image_Size;
 with V2P.Template_Defs.Block_User_Page;
+with V2P.Template_Defs.Block_Users;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
 
 with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Chunk_New_Comment_Photo;
+with V2P.Template_Defs.Chunk_Users;
 with V2P.Template_Defs.Chunk_V2p_Top;
 
 with V2P.Template_Defs.Page_Admin;
@@ -96,6 +98,7 @@ with V2P.Template_Defs.Page_Search;
 with V2P.Template_Defs.Page_Termsofuse;
 with V2P.Template_Defs.Page_User;
 with V2P.Template_Defs.Page_User_Register;
+with V2P.Template_Defs.Page_Users;
 with V2P.Template_Defs.Page_Validate_User;
 
 with V2P.Template_Defs.Set_Global;
@@ -113,6 +116,7 @@ with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_Rate;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Preferences;
+with V2P.Template_Defs.R_Block_Users;
 with V2P.Template_Defs.R_Block_Vote_Week_Photo;
 with V2P.Template_Defs.R_Context_Error;
 with V2P.Template_Defs.R_Page_Search;
@@ -708,6 +712,11 @@ package body V2P.Web_Server is
          Callbacks.Page.Main'Access);
 
       Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Users.Set.URL,
+         Template_Defs.Page_Users.Template,
+         null);
+
+      Services.Web_Block.Registry.Register
         (Template_Defs.Page_Error.Set.URL,
          Template_Defs.Page_Error.Template,
          null);
@@ -868,6 +877,55 @@ package body V2P.Web_Server is
         (Template_Defs.Block_Forum_Threads.Ajax.onclick_bft_goto_previous_page,
          Template_Defs.R_Block_Forum_Filter.Template,
          Callbacks.Ajax.Onclick_Goto_Previous_Page'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Users.Ajax.onclick_bu_goto_next_page,
+         Template_Defs.R_Block_Users.Template,
+         Callbacks.Ajax.Onclick_Users_Goto_Next_Page'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Users.Ajax.onclick_bu_goto_previous_page,
+         Template_Defs.R_Block_Users.Template,
+         Callbacks.Ajax.Onclick_Users_Goto_Previous_Page'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Chunk_Users.Ajax.onclick_cu_registered_on,
+         Template_Defs.R_Block_Users.Template,
+         Callbacks.Ajax.Onclick_Users_Sort_Registered_On'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Chunk_Users.Ajax.onclick_cu_last_connected,
+         Template_Defs.R_Block_Users.Template,
+         Callbacks.Ajax.Onclick_Users_Sort_Last_Connected'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Chunk_Users.Ajax.onclick_cu_nb_photos,
+         Template_Defs.R_Block_Users.Template,
+         Callbacks.Ajax.Onclick_Users_Sort_Nb_Photos'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Chunk_Users.Ajax.onclick_cu_nb_comments,
+         Template_Defs.R_Block_Users.Template,
+         Callbacks.Ajax.Onclick_Users_Sort_Nb_Comments'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Chunk_Users.Ajax.onclick_cu_nb_cdcs,
+         Template_Defs.R_Block_Users.Template,
+         Callbacks.Ajax.Onclick_Users_Sort_Nb_CdC'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

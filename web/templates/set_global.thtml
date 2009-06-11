@@ -48,3 +48,7 @@
 @@--  Register globals options
 @@--
 @_OPTION_ANONYMOUS_COMMENT_@
+@@--
+@@--  Users Page
+@_USER_SORT_@
+@_USER_ORDER_@

@@ -2,32 +2,11 @@
 @@--
 <p class="threads_page_info"></p>
 
-<!-- @_NB_LINE_RETURNED_@ -->
 @@IF@@ @_NEW_FILTER_@ /= ""
 <p class="warning">@_BABEL_TRY_HARDER_TO_SEARCH_@</p>
 @@END_IF@@
 
-@@-- Navigation links
-<ul id="bft_navigate" class="pagination">
-  <li class="prev_link"
-  @@IF@@ @_NAV_FROM_@ = 1
-  style="visibility:hidden"
-  @@END_IF@@
-  >
-    <a href="#" id="bft_goto_previous_page" title="@_BABEL_PREVIOUS_PAGE_@">&lt;</a>
-  </li>
-  @@IF@@ @_TOTAL_NB_THREADS_@ /= 0
-  <li class="nav_info">@_NAV_FROM_@ .. @_SUB(1):ADD(NB_LINE_RETURNED):NAV_FROM_@ / @_TOTAL_NB_THREADS_@</li>
-  @@END_IF@@
-  <li class="next_link"
-  @@IF@@ @_ADD(NB_LINE_RETURNED):NAV_FROM_@ >= @_TOTAL_NB_THREADS_@
-     style="visibility:hidden"
-  @@END_IF@@
-  >
-    <a href="#" id="bft_goto_next_page" title="@_BABEL_NEXT_PAGE_@">&gt;</a>
-  </li>
-
-</ul>
+@@INCLUDE@@ chunk_list_navlink.thtml bft
 
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bft_goto_previous_page)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bft_goto_next_page)

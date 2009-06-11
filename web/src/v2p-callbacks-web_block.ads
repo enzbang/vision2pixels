@@ -173,6 +173,11 @@ package V2P.Callbacks.Web_Block is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set) is null;
 
+   procedure User_Stats
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+
    procedure User_Voted_Photos_List
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
@@ -204,6 +209,11 @@ package V2P.Callbacks.Web_Block is
       Translations : in out          Templates.Translate_Set);
 
    procedure Pref_Image_Size
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+
+   procedure Users
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set);

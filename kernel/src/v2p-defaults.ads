@@ -99,4 +99,6 @@ package V2P.Defaults is
 
    Max_Search_Results          : constant Positive := 100;
 
+   Number_Users_Listed         : constant Positive := 20;
+
 end V2P.Defaults;

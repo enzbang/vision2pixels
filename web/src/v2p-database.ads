@@ -79,6 +79,9 @@ package V2P.Database is
 
    type Select_Mode is (Everything, Navigation_Only);
 
+   type User_Sort is
+     (Date_Created, Last_Connected, Nb_Comments, Nb_Photos, Nb_CdC);
+
    No_User_Data : constant User_Data;
 
    function Get_Forums
@@ -165,6 +168,10 @@ package V2P.Database is
    --  Returns the user's data. Returns the No_User_Data if User cannot be
    --  found into the database.
 
+   function Get_User_Stats (Uid : in String) return Templates.Translate_Set;
+   --  Returns the stats for the given user or No_User_Stats if user cannot be
+   --  found into the database.
+
    function Get_Password_From_Email (Email : in String) return String;
    --  Returns the user's password from the given e-mail. Returns the empty
    --  string if the Email cannot be found into the database.
@@ -181,6 +188,12 @@ package V2P.Database is
    function Get_User_Last_Photo
      (Uid : in String) return Templates.Translate_Set;
    --  Returns user's last photo (in the user photo queue)
+
+   function Get_Users
+     (From  : in Positive;
+      Sort  : in User_Sort;
+      Order : in Order_Direction) return Templates.Translate_Set;
+   --  Returns information about N users starting at the given Offset
 
    function Get_CdC return Templates.Translate_Set;
    --  Returns all CdC photos

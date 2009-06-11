@@ -109,6 +109,11 @@ dl.table-display {
 
 .new p {padding-bottom: 0.7em;}
 .new h3 {padding-top: 0.5em; padding-bottom: 0.3em;}
+.new #cvt_main ul {
+     list-style-type: square;
+     font-size: 0.7em;
+     margin-left: 3em;
+}
 
 .header {
     font-size: 1.2em;
@@ -290,8 +295,19 @@ iframe {
     margin: 15px 30px;
     overflow:hidden;
     display:inline;
+    padding-top: 10px;
 }
-
+.thumbs_cdc {
+    float: left;
+    width:200px;
+    height:250px;
+    text-align: center;
+    margin: 15px 30px;
+    overflow:hidden;
+    display:inline;
+    padding-top: 10px;
+    background: #303030;
+}
 .thumbs a {
     border: none;
 }
@@ -470,7 +486,7 @@ body.not_logged #pfe_lazy_new_comment {
     content: "\0020:\0020";
 }
 
-table.forum_text {
+table.forum_text, table.user_list {
     border-collapse:collapse;
     background-color: transparent;
     width: 90%;
@@ -927,12 +943,13 @@ fieldset#pfnpe_mandatory_fields input[type="entry"],
     margin: 0 auto;
 }
 ul#bftt_navigate,
-ul#bft_navigate {
+ul#bft_navigate,
+ul#bu_navigate {
     text-align: right;
     padding: 0 1em 0 0;
 }
 
-ul#bft_navigate li, ul#pfe_navigate li, ul#pfe_navigate_bottom li, ul#bftt_navigate li {
+ul#bft_navigate li, ul#pfe_navigate li, ul#pfe_navigate_bottom li, ul#bftt_navigate li, ul#bu_navigate li {
    display:inline;
    font-variant:small-caps;
    font-size:0.9em;
@@ -942,7 +959,7 @@ ul#pfe_navigate, ul#pfe_navigate_bottom {
    text-align:center;
    padding-top:1em;
 }
-ul#bft_navigate li.nav_info, ul#bftt_navigate li.nav_info {
+ul#bft_navigate li.nav_info, ul#bftt_navigate li.nav_info, ul#bu_navigate li.nav_info {
    font-size:0.7em;
 }
 ul#pfe_navigate_bottom li a {

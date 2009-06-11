@@ -769,6 +769,22 @@ package body V2P.Callbacks.Web_Block is
          Value   => Total);
    end User_Post_List;
 
+   ----------------
+   -- User_Stats --
+   ----------------
+
+   procedure User_Stats
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      URI       : constant String := Status.URI (Request);
+      User_Name : constant String := URL.User_Name (URI);
+   begin
+      Templates.Insert (Translations, Database.Get_User_Stats (User_Name));
+   end User_Stats;
+
    ----------------------------
    -- User_Voted_Photos_List --
    ----------------------------
@@ -786,6 +802,52 @@ package body V2P.Callbacks.Web_Block is
       Set := Database.Get_User_Voted_Photos (User_Name);
       Templates.Insert (Translations, Set);
    end User_Voted_Photos_List;
+
+   -----------
+   -- Users --
+   -----------
+
+   procedure Users
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      From  : Positive := 1;
+      Sort  : Database.User_Sort := Database.Last_Connected;
+      Order : Database.Order_Direction := Database.DESC;
+   begin
+      if Context.Exist (Template_Defs.Set_Global.NAV_FROM) then
+         From := V2P.Context.Not_Null_Counter.Get_Value
+           (Context => Context.all,
+            Name    => Template_Defs.Set_Global.NAV_FROM);
+      end if;
+
+      if Context.Exist (Template_Defs.Set_Global.USER_SORT) then
+         Sort := Database.User_Sort'Value
+           (Context.Get_Value (Template_Defs.Set_Global.USER_SORT));
+      end if;
+
+      if Context.Exist (Template_Defs.Set_Global.USER_ORDER) then
+         Order := Database.Order_Direction'Value
+           (Context.Get_Value (Template_Defs.Set_Global.USER_ORDER));
+      end if;
+
+      Templates.Insert (Translations, Database.Get_Users (From, Sort, Order));
+
+      --  Set translations values
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.USER_ORDER,
+            Database.Order_Direction'Image (Order)));
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.USER_SORT,
+            Database.User_Sort'Image (Sort)));
+   end Users;
 
    ---------------------
    -- Vote_Week_Photo --

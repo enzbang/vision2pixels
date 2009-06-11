@@ -40,8 +40,10 @@ with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Page_Main;
 with V2P.Template_Defs.Chunk_Comment;
 with V2P.Template_Defs.Chunk_Forum_Category;
+with V2P.Template_Defs.Chunk_List_Navlink;
 with V2P.Template_Defs.Chunk_Threads_List;
 with V2P.Template_Defs.Chunk_Threads_Text_List;
+with V2P.Template_Defs.Chunk_Users;
 with V2P.Template_Defs.Block_Cdc;
 with V2P.Template_Defs.Block_Comments;
 with V2P.Template_Defs.Block_Exif;
@@ -51,10 +53,12 @@ with V2P.Template_Defs.Block_Latest_Posts;
 with V2P.Template_Defs.Block_Latest_Users;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_User_Page;
+with V2P.Template_Defs.Block_User_Stats;
 with V2P.Template_Defs.Block_User_Comment_List;
 with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Photo_Of_The_Week;
+with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_User_Voted_Photos_List;
 with V2P.Template_Defs.Page_Rss_Recent_Photos;
 with V2P.Template_Defs.Set_Global;
@@ -72,6 +76,15 @@ package body V2P.Database is
    use V2P.Template_Defs;
 
    Module : constant Logs.Module_Name := "Database";
+
+   type User_Stats is record
+      Created        : Unbounded_String;
+      Last_Connected : Unbounded_String;
+      N_Photos       : Natural;
+      N_Messages     : Natural;
+      N_Comments     : Natural;
+      N_CdC          : Natural;
+   end record;
 
    function F (F : in Float) return String;
    pragma Inline (F);
@@ -118,6 +131,9 @@ package body V2P.Database is
    --  preferences are registered for the given user a new set of preferences
    --  are inserted. This code is used by all procedure which need to set a
    --  preferences.
+
+   function Get_User_Stats (Uid : in String) return User_Stats;
+   --  Returns stats about the specified user
 
    -------------
    -- Connect --
@@ -1684,7 +1700,9 @@ package body V2P.Database is
                     & "category.name, comment_counter,"
                     & "visit_counter, post.hidden, user_post.user_login, "
                     & "(SELECT comment.date FROM comment "
-                    & "WHERE post.last_comment_id = comment.id)";
+                    & "WHERE post.last_comment_id = comment.id), "
+                    & "(SELECT id FROM photo_of_the_week "
+                    & "WHERE post.id = photo_of_the_week.post_id)";
 
                when Navigation_Only =>
                   Select_Stmt := +"SELECT post.id";
@@ -1944,6 +1962,7 @@ package body V2P.Database is
       Hidden          : Templates.Tag;
       Owner           : Templates.Tag;
       Date_Last_Com   : Templates.Tag;
+      Is_CDC          : Templates.Tag;
       Select_Stmt     : Unbounded_String;
 
    begin
@@ -2020,8 +2039,11 @@ package body V2P.Database is
               & DB.String_Vectors.Element (Line, 10);
             Date_Last_Com   := Date_Last_Com
               & DB.String_Vectors.Element (Line, 11);
-            --  Insert this post id in navigation links
+            Is_CDC          := Is_CDC
+              & (DB.String_Vectors.Element (Line, 12) /= "");
          end if;
+
+         --  Insert this post id in navigation links
 
          Navigation := Navigation & Database.Id'Value
            (DB.String_Vectors.Element (Line, 1));
@@ -2061,10 +2083,13 @@ package body V2P.Database is
            (Set, Templates.Assoc (Chunk_Threads_List.HIDDEN, Hidden));
          Templates.Insert
            (Set, Templates.Assoc
-              (Block_Forum_Threads.TOTAL_NB_THREADS, Total_Lines));
+              (Chunk_List_Navlink.NAV_NB_LINES_TOTAL, Total_Lines));
          Templates.Insert
            (Set, Templates.Assoc
-              (Block_Forum_Threads.NB_LINE_RETURNED, Nb_Lines));
+              (Chunk_List_Navlink.NB_LINE_RETURNED, Nb_Lines));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_User_Photo_List.IS_CDC, Is_CDC));
       end if;
 
       Templates.Insert
@@ -2383,6 +2408,97 @@ package body V2P.Database is
       return Set;
    end Get_User_Rating_On_Post;
 
+   --------------------
+   -- Get_User_Stats --
+   --------------------
+
+   function Get_User_Stats (Uid : in String) return User_Stats is
+      use type AWS.Templates.Tag;
+
+      SQL     : constant String :=
+                  "SELECT login, DATE(created), DATE(last_logged), "
+                  --  nb comments
+                  & "(SELECT COUNT(id) FROM comment"
+                  & " WHERE user.login = comment.user_login), "
+                  --  nb photos
+                  & "(SELECT count (post_id) FROM post, user_post"
+                  & " WHERE post.id=post_id AND post.photo_id!=0 "
+                  & " AND user_post.user_login=user.login),"
+                  --  nb messages
+                  & "(SELECT count (post_id) FROM post, user_post"
+                  & " WHERE post.id=post_id AND post.photo_id=0 "
+                  & " AND user_post.user_login=user.login),"
+                  --  nb CdC
+                  & "(SELECT COUNT(potw.id) "
+                  & " FROM photo_of_the_week AS potw, post, "
+                  & " user_post AS up"
+                  & " WHERE post.id=up.post_id AND post.photo_id!=0"
+                  & " AND potw.post_id=post.id"
+                  & " AND up.user_login=user.login) "
+                  & "FROM User where user.login=" & Q (Uid);
+      DBH    : constant TLS_DBH_Access :=
+                 TLS_DBH_Access (DBH_TLS.Reference);
+      Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line   : DB.String_Vectors.Vector;
+      Result : User_Stats;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+         Result.Created        := +DB.String_Vectors.Element (Line, 2);
+         Result.Last_Connected := +DB.String_Vectors.Element (Line, 3);
+         Result.N_Comments :=
+           Natural'Value (DB.String_Vectors.Element (Line, 4));
+         Result.N_Photos :=
+           Natural'Value (DB.String_Vectors.Element (Line, 5));
+         Result.N_Messages :=
+           Natural'Value (DB.String_Vectors.Element (Line, 6));
+         Result.N_CdC :=
+           Natural'Value (DB.String_Vectors.Element (Line, 7));
+      end if;
+
+      Iter.End_Select;
+
+      return Result;
+   end Get_User_Stats;
+
+   function Get_User_Stats (Uid : in String) return Templates.Translate_Set is
+      use type AWS.Templates.Tag;
+
+      Stats : constant User_Stats := Get_User_Stats (Uid);
+      Set   : Templates.Translate_Set;
+   begin
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Block_User_Stats.N_PHOTOS, Stats.N_Photos));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Block_User_Stats.N_MESSAGES, Stats.N_Messages));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Block_User_Stats.N_COMMENTS, Stats.N_Comments));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Block_User_Stats.N_CDC, Stats.N_CdC));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Block_User_Stats.REGISTERED_DATE, Stats.Created));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Block_User_Stats.LAST_CONNECTED_DATE,
+            Stats.Last_Connected));
+      return Set;
+   end Get_User_Stats;
+
    ---------------------------
    -- Get_User_Voted_Photos --
    ---------------------------
@@ -2430,6 +2546,153 @@ package body V2P.Database is
       Iter.End_Select;
       return Set;
    end Get_User_Voted_Photos;
+
+   ---------------
+   -- Get_Users --
+   ---------------
+
+   function Get_Users
+     (From  : in Positive;
+      Sort  : in User_Sort;
+      Order : in Order_Direction) return Templates.Translate_Set
+   is
+      use type AWS.Templates.Tag;
+
+      function Sort_Order return String;
+      --  Returns the proper SQL order statement
+
+      ----------------
+      -- Sort_Order --
+      ----------------
+
+      function Sort_Order return String is
+         Result : Unbounded_String := +"ORDER BY ";
+      begin
+         case Sort is
+            when Date_Created =>
+               Append (Result, "created");
+            when Last_Connected =>
+               Append (Result, "last_logged");
+            when  Nb_Comments =>
+               Append (Result, "nbcom");
+            when Nb_Photos =>
+               Append (Result, "nbphoto");
+            when Nb_CdC =>
+               Append (Result, "nbcdc");
+         end case;
+
+         Append (Result, " " & Order_Direction'Image (Order));
+         return -Result;
+      end Sort_Order;
+
+      DBH             : constant TLS_DBH_Access :=
+                          TLS_DBH_Access (DBH_TLS.Reference);
+      SQL             : constant String :=
+                          "SELECT login, DATE(created), DATE(last_logged), "
+                            --  nb comments
+                            & "(SELECT COUNT(id) FROM comment"
+                            & " WHERE user.login=comment.user_login) AS nbcom,"
+                            --  nb photos
+                            & "(SELECT count (post_id) FROM post, user_post"
+                            & " WHERE post.id=post_id AND post.photo_id!=0"
+                            & " AND user_post.user_login=user.login) "
+                            & "AS nbphoto,"
+                            --  nb CdC
+                            & "(SELECT COUNT(potw.id) "
+                            & " FROM photo_of_the_week AS potw, post, "
+                            & " user_post AS up"
+                            & " WHERE post.id=up.post_id AND post.photo_id!=0"
+                            & " AND potw.post_id=post.id"
+                            & " AND up.user_login=user.login) AS nbcdc "
+                            & "FROM user "
+                            & Sort_Order & " LIMIT"
+                            & Positive'Image (Settings.Number_Users_Listed)
+                            & " OFFSET" & Positive'Image (From - 1);
+      Set             : Templates.Translate_Set;
+      Iter            : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line            : DB.String_Vectors.Vector;
+      Login           : Templates.Tag;
+      Registered_Date : Templates.Tag;
+      L_Connect_Date  : Templates.Tag;
+      Nb_Comments     : Templates.Tag;
+      Nb_Photos       : Templates.Tag;
+      Nb_CdC          : Templates.Tag;
+      Lines           : Natural := 0;
+   begin
+      Connect (DBH);
+
+      --  Count nb results
+
+      declare
+         SQL : constant String := "SELECT count(*) from user";
+      begin
+         DBH.Handle.Prepare_Select (Iter, SQL);
+         if Iter.More then
+            Iter.Get_Line (Line);
+
+            Templates.Insert
+              (Set,
+               Templates.Assoc
+                 (Set_Global.NAV_NB_LINES_TOTAL,
+                  DB.String_Vectors.Element (Line, 1)));
+         end if;
+         Line.Clear;
+      end;
+
+      Templates.Insert (Set, Templates.Assoc (Set_Global.NAV_FROM, From));
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+         Lines := Lines + 1;
+
+         Login := Login & DB.String_Vectors.Element (Line, 1);
+         Registered_Date :=
+           Registered_Date & DB.String_Vectors.Element (Line, 2);
+         L_Connect_Date :=
+           L_Connect_Date & DB.String_Vectors.Element (Line, 3);
+         Nb_Comments := Nb_Comments & DB.String_Vectors.Element (Line, 4);
+         Nb_Photos := Nb_Photos & DB.String_Vectors.Element (Line, 5);
+         Nb_CdC := Nb_CdC & DB.String_Vectors.Element (Line, 6);
+
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Chunk_List_Navlink.NB_LINE_RETURNED, Lines));
+
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Chunk_Users.LOGIN, Login));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Chunk_Users.REGISTERED_DATE, Registered_Date));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Chunk_Users.LAST_CONNECTED_DATE, L_Connect_Date));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Chunk_Users.N_PHOTOS, Nb_Photos));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Chunk_Users.N_COMMENTS, Nb_Comments));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Chunk_Users.N_CDC, Nb_CdC));
+
+      return Set;
+   end Get_Users;
 
    -------------------
    -- Has_User_Vote --
