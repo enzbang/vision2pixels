@@ -1,10 +1,10 @@
 --  Create users
 
-insert into user ("login", "password", "email", "admin", created)
+insert into user ("login", "password", "email", "admin", "created")
        values ('enzbang', 'password', 'v2p@ramonat.fr', "TRUE", datetime(current_timestamp, '-2 days'));
-insert into user ("login", "password", "email", "admin", created)
+insert into user ("login", "password", "email", "admin", "created")
        values ('turbo', 'turbopass', 'v2p@obry.net', "TRUE", datetime(current_timestamp, '-12 days'));
-insert into user ("login", "password", "email", "admin", created)
+insert into user ("login", "password", "email", "admin", "created")
        values ('test', 'test', 'test@whatever.fr', "FALSE", datetime(current_timestamp));
 
 --  User page
