@@ -1,7 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
 <h2 id="buml_h" class="clear">@_BABEL_LAST_USER_MESSAGES_@</h2>
-<p class="up"><a href="#cvt_contents">Haut</a></p>
+<p class="up"><a href="#cvt_contents">@_BABEL_TOP_@</a></p>
 @@--
 <div id="buml_content">
 @@INCLUDE@@ chunk_threads_text_list.thtml

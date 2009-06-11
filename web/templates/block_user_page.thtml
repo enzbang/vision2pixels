@@ -11,8 +11,6 @@
 
 @_LAZY_USER_STATS_@
 
-@@SET@@ UP = <a href="#bup_user_page_content">Haut</a>
-
 <ul class="squarelist">
   <li><a href="#bupl_h">Dernières photographies</a></li>
   <li><a href="#buml_h">Derniers messages</a></li>
@@ -60,4 +58,6 @@
 @@IF@@ @_LOGIN_@ = @_USER_NAME_@
   @_LAZY_USER_VOTED_PHOTOS_LIST_@
 @@END_IF@@
+
+<p class="up"><a href="#cvt_contents">@_BABEL_TOP_@</a></p>
 @@END_IF@@
