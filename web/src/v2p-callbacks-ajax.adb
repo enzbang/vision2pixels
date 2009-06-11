@@ -1151,7 +1151,9 @@ package body V2P.Callbacks.Ajax is
          Result    : SMTP.Status;
          Set       : Templates.Translate_Set;
       begin
-         Templates.Insert (Set, Templates.Assoc ("USER_PASSWORD", Password));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Template_Defs.Email_Lost_Password.USER_PASSWORD, Password));
 
          Attachments.Add
            (Content,
@@ -1351,9 +1353,12 @@ package body V2P.Callbacks.Ajax is
          Result    : SMTP.Status;
          Set       : Templates.Translate_Set;
       begin
-         Templates.Insert (Set, Templates.Assoc ("USER_LOGIN", Login));
-         Templates.Insert (Set, Templates.Assoc ("USER_EMAIL", Email));
-         Templates.Insert (Set, Templates.Assoc ("KEY", Key));
+         Templates.Insert
+           (Set, Templates.Assoc (Email_User_Validation.USER_LOGIN, Login));
+         Templates.Insert
+           (Set, Templates.Assoc (Email_User_Validation.USER_EMAIL, Email));
+         Templates.Insert
+           (Set, Templates.Assoc (Email_User_Validation.KEY, Key));
 
          SMTP.Client.Send
            (Server  => Localhost,
