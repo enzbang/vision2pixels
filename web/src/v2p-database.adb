@@ -2221,7 +2221,8 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "SELECT password, admin FROM user WHERE login=" & Q (Uid));
+        (Iter,
+         "SELECT password, admin, email FROM user WHERE login=" & Q (Uid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -2229,6 +2230,7 @@ package body V2P.Database is
          Password_Value : declare
             Password  : constant String := DB.String_Vectors.Element (Line, 1);
             Admin     : constant String := DB.String_Vectors.Element (Line, 2);
+            Email     : constant String := DB.String_Vectors.Element (Line, 3);
             Prefs     : User_Settings;
          begin
             Line.Clear;
@@ -2237,6 +2239,7 @@ package body V2P.Database is
             return User_Data'(Uid         => +Uid,
                               Password    => +Password,
                               Admin       => Boolean'Value (Admin),
+                              Email       => +Email,
                               Preferences => Prefs);
          end Password_Value;
 

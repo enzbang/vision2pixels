@@ -73,6 +73,7 @@ package V2P.Database is
    type User_Data is record
       UID         : Unbounded_String;
       Password    : Unbounded_String;
+      Email       : Unbounded_String;
       Admin       : Boolean;
       Preferences : User_Settings;
    end record;
@@ -365,6 +366,7 @@ private
    No_User_Data : constant User_Data :=
                     User_Data'
                       (Null_Unbounded_String,
+                       Null_Unbounded_String,
                        Null_Unbounded_String,
                        False,
                        Default_User_Settings);
