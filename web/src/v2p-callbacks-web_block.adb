@@ -39,10 +39,11 @@ with V2P.Template_Defs.Set_Global;
 package body V2P.Callbacks.Web_Block is
 
    procedure User_Post_List
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
+     (Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set;
       Forum        : in     Database.Forum_Filter;
+      User_Name    : in     String;
+      From         : in     Positive;
       Limit        : in     Positive);
 
    ---------
@@ -670,11 +671,16 @@ package body V2P.Callbacks.Web_Block is
    procedure User_Message_List
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Translations : in out          Templates.Translate_Set) is
+      Translations : in out          Templates.Translate_Set)
+   is
+      URI       : constant String := Status.URI (Request);
+      User_Name : constant String := URL.User_Name (URI);
    begin
       User_Post_List
-        (Request, Context, Translations, Database.Forum_Text,
-         Limit => Settings.Number_Latest_User_Messages);
+        (Context, Translations, Database.Forum_Text,
+         User_Name => User_Name,
+         From      => 1,
+         Limit     => Settings.Number_Latest_User_Messages);
    end User_Message_List;
 
    ---------------
@@ -706,10 +712,29 @@ package body V2P.Callbacks.Web_Block is
    procedure User_Photo_List
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Translations : in out          Templates.Translate_Set) is
+      Translations : in out          Templates.Translate_Set)
+   is
+      URI       : constant String := Status.URI (Request);
+      User_Name : constant String := URL.User_Name (URI);
+      From      : Positive := 1;
    begin
+      if Context.Exist (Template_Defs.Set_Global.NAV_FROM) then
+         From := V2P.Context.Not_Null_Counter.Get_Value
+           (Context => Context.all,
+            Name    => Template_Defs.Set_Global.NAV_FROM);
+      end if;
+
+      if not Context.Exist (Template_Defs.Block_User_Page.USER_NAME) then
+         Context.Set_Value
+           (Template_Defs.Block_User_Page.USER_NAME,
+            User_Name);
+      end if;
+
       User_Post_List
-        (Request, Context, Translations, Database.Forum_Photo,
+        (Context, Translations, Database.Forum_Photo,
+         User_Name => Context.Get_Value
+           (Template_Defs.Block_User_Page.USER_NAME),
+         From  => From,
          Limit => Settings.Number_Latest_User_Posts);
    end User_Photo_List;
 
@@ -718,30 +743,29 @@ package body V2P.Callbacks.Web_Block is
    --------------------
 
    procedure User_Post_List
-     (Request      : in     Status.Data;
-      Context      : access Services.Web_Block.Context.Object;
+     (Context      : access Services.Web_Block.Context.Object;
       Translations : in out Templates.Translate_Set;
       Forum        : in     Database.Forum_Filter;
+      User_Name    : in     String;
+      From         : in     Positive;
       Limit        : in     Positive)
    is
       Admin      : constant Boolean :=
                      Context.Exist (Template_Defs.Set_Global.ADMIN)
                    and then Context.Get_Value
                      (Template_Defs.Set_Global.ADMIN) = "TRUE";
-      URI        : constant String := Status.URI (Request);
-      User_Name  : constant String := URL.User_Name (URI);
       Set        : Templates.Translate_Set;
       Navigation : Navigation_Links.Post_Ids.Vector;
-      From       : Natural := 1;
       Nb_Lines   : Natural;
       Total      : Natural;
+      L_From     : Positive := From;
    begin
       Database.Get_Threads
         (User          => User_Name,
          Navigation    => Navigation,
          Set           => Set,
          Admin         => Admin,
-         From          => From,
+         From          => L_From,
          Nb_Lines      => Nb_Lines,
          Total_Lines   => Total,
          Forum         => Forum,

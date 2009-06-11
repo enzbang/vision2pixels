@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+  <replace id="bup_photo_list"><![CDATA[@_LAZY_USER_PHOTO_LIST_@]]></replace>
+</response>

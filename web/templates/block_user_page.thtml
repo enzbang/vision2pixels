@@ -47,7 +47,9 @@
    @_LAZY_USER_PREFERENCES_@
 @@END_IF@@
 
+<div id="bup_photo_list">
 @_LAZY_USER_PHOTO_LIST_@
+</div>
 
 @_LAZY_USER_MESSAGE_LIST_@
 

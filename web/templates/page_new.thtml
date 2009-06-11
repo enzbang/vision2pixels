@@ -28,6 +28,10 @@
 </ul>
 </p>
 
+<p>Il est maintenant possible de naviger dans la liste des photos dans la
+  page utilisateur. Le nombre initial de photo affichées est limité, la
+  page est ainsi plus rapide à s'afficher.</p>
+
 <h2>Version 3.0.2 (juin 2009)</h2>
 
 <p>Corrige le nombre de photo postées indiqué en première page.</p>
