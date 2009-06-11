@@ -99,7 +99,6 @@
   </form>
 </div>
 
-
 @@ELSE@@
     <p id="bnc_noanonymouscomment">@_BABEL_NO_ANONYMOUS_COMMENT_@</p>
 @@END_IF@@
