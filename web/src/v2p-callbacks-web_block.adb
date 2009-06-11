@@ -31,6 +31,7 @@ with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Vote;
+with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
 with V2P.Template_Defs.Chunk_Forum_Category;
@@ -624,6 +625,29 @@ package body V2P.Callbacks.Web_Block is
            (Template_Defs.Set_Global.PREF_IMAGE_SIZE,
             Database.Image_Size'Image (Preferences.Image_Size)));
    end Pref_Image_Size;
+
+   ---------------------
+   -- Private_Message --
+   ---------------------
+
+   procedure Private_Message
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      URI         : constant String := Status.URI (Request);
+      User_Name   : constant String := URL.User_Name (URI);
+      Preferences : Database.User_Settings;
+   begin
+      Database.User_Preferences (User_Name, Preferences);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Block_Private_Message.ACCEPT_PRIVATE_MESSAGE,
+            Preferences.Accept_Private_Message));
+   end Private_Message;
 
    -----------------
    -- Quick_Login --

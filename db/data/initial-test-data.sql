@@ -7,6 +7,9 @@ insert into user ("login", "password", "email", "admin", "created")
 insert into user ("login", "password", "email", "admin", "created")
        values ('test', 'test', 'test@whatever.fr', "FALSE", datetime(current_timestamp));
 
+insert into user_preferences ("user_login", "accept_private_message")
+       values ('turbo', "TRUE");
+
 --  User page
 
 --  A trigger creates empty user pages, delete them first

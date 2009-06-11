@@ -63,11 +63,12 @@ package V2P.Database is
    type Image_Size is (Thumb_Size, Medium_Size, Max_Size);
 
    type User_Settings is record
-      Page_Size  : Positive;
-      Filter     : Filter_Mode;
-      Sort       : Forum_Sort;
-      Image_Size : Database.Image_Size;
-      CSS_URL    : Unbounded_String;
+      Page_Size              : Positive;
+      Filter                 : Filter_Mode;
+      Sort                   : Forum_Sort;
+      Image_Size             : Database.Image_Size;
+      CSS_URL                : Unbounded_String;
+      Accept_Private_Message : Boolean;
    end record;
 
    type User_Data is record
@@ -335,6 +336,11 @@ package V2P.Database is
       Image_Size : in Database.Image_Size);
    --  Set image size preference for the given user
 
+   procedure Set_Private_Message_Preferences
+     (Login                  : in String;
+      Accept_Private_Message : in Boolean);
+   --  Set private message preference
+
    function Get_Stats return Templates.Translate_Set;
    --  Returns global stats used in main page
 
@@ -357,11 +363,13 @@ private
 
    Default_User_Settings : constant User_Settings :=
                              User_Settings'
-                               (Page_Size  => 10,
-                                Filter     => Seven_Days,
-                                Sort       => Last_Commented,
-                                Image_Size => Max_Size,
-                                CSS_URL    => Null_Unbounded_String);
+                               (Page_Size              => 10,
+                                Filter                 => Seven_Days,
+                                Sort                   => Last_Commented,
+                                Image_Size             => Max_Size,
+                                Accept_Private_Message => False,
+                                CSS_URL                =>
+                                  Null_Unbounded_String);
 
    No_User_Data : constant User_Data :=
                     User_Data'

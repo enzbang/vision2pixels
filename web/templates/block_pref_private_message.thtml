@@ -1,0 +1,13 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@-- HTTP_GET(bppm_check)
+@@--  Must be logged to send message to a user
+@@--  User can set its preference
+@@INLINE@@
+<input id="bppm_check" type="checkbox"
+@@IF@@ @_ACCEPT_PRIVATE_MESSAGE_@
+  checked
+@@END_IF@@
+>@_BABEL_PRIVATE_MESSAGE_ACCEPTED_@</input>
+@@END_INLINE@@
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bppm_check, 4=>bppm_check)

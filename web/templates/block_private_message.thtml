@@ -1,0 +1,51 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@-- HTTP_GET(bpm_private_message_input)
+@@IF@@ @_LOGIN_@ /= ""
+@@--  Must be logged to send message to a user
+<div id="bpm_main">
+@@IF@@ @_LOGIN_@ = @_USER_NAME_@
+@@--  User can set its preference
+@_LAZY_PREF_PRIVATE_MESSAGE_@
+@@ELSE@@
+@@IF@@ @_ACCEPT_PRIVATE_MESSAGE_@
+@@--  Form to send a message
+<p><a href="#" id="bpm_show_rel" rel="bpm_form_section">Envoyer un message</a><span id="bpm_status"></span></p>
+<div id="bpm_form_section" style="display:none">
+
+  <form enctype="multipart/form-data" id="bpm_form" action="#"
+	method="post">
+    <input name="bpm_user_name" id="bpm_user_name"
+	   type="hidden" value="@_USER_NAME_@"/>
+    <p class="enterprivmessage">
+      <textarea name="bpm_private_message_input"
+		id="bpm_private_message_input"></textarea>
+    </p>
+    <p><input name="SEND" id="bpm_private_message_enter"
+	      type="submit" value="@_BABEL_SEND_@"/>
+  </form>
+</div>
+@@--
+<script type="text/javascript">
+<!--
+   rule_onclick_bpm_show_rel = function ()
+   {
+      el = $("bpm_form_section")
+
+      if ($(el).style.display == "none")
+         Element.show(el);
+      else
+         Element.hide(el);
+
+      Element.hide ($("bpm_status"));
+   };
+-->
+</script>
+@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, bpm_show_rel, rule_onclick_bpm_show_rel)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bpm_form, 4=>bpm_form)
+@@ELSE@@
+@_BABEL_NO_PRIVATE_MESSAGE_@
+@@END_IF@@
+@@END_IF@@
+</div>
+@@END_IF@@

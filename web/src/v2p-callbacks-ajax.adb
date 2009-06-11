@@ -24,6 +24,9 @@ with Ada.Strings.Unbounded;
 with GNAT.String_Split;
 
 with AWS.Attachments;
+with AWS.Headers.Set;
+with AWS.Messages;
+with AWS.MIME;
 with AWS.Parameters;
 with AWS.Session;
 with AWS.SMTP.Client;
@@ -38,7 +41,6 @@ with V2P.Database.Search;
 with V2P.Settings;
 with V2P.User_Validation;
 with V2P.Wiki;
-with V2P.Settings;
 with V2P.Syndication;
 
 with V2P.Template_Defs.Page_Forum_Entry;
@@ -62,6 +64,8 @@ with V2P.Template_Defs.Block_Pref_Forum_Filter;
 with V2P.Template_Defs.Block_Pref_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Pref_Forum_Sort;
 with V2P.Template_Defs.Block_Pref_Image_Size;
+with V2P.Template_Defs.Block_Pref_Private_Message;
+with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Chunk_Search_User;
@@ -69,10 +73,13 @@ with V2P.Template_Defs.Chunk_Search_Comment;
 with V2P.Template_Defs.Chunk_Search_Post;
 with V2P.Template_Defs.Chunk_Search_Text_Post;
 with V2P.Template_Defs.Email_Lost_Password;
+with V2P.Template_Defs.Email_From_User;
 with V2P.Template_Defs.Email_User_Validation;
 with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
+with V2P.Template_Defs.R_Block_Pref_Private_Message;
+with V2P.Template_Defs.R_Block_Send_Private_Message;
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 with V2P.Template_Defs.R_Page_Search;
@@ -645,6 +652,30 @@ package body V2P.Callbacks.Ajax is
    begin
       Templates.Insert (Translations, Database.Toggle_Hidden_Status (TID));
    end Onclick_Hidden_Status_Toggle;
+
+   ---------------------------------------------
+   -- Onclick_Pref_Private_Message_Preference --
+   ---------------------------------------------
+
+   procedure Onclick_Pref_Private_Message_Preference
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      package HTTP renames Template_Defs.Block_Pref_Private_Message.HTTP;
+
+      Login  : constant String :=
+                 Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      P      : constant Parameters.List := Status.Parameters (Request);
+      Status : constant Boolean := Parameters.Get (P, HTTP.bppm_check) = "on";
+   begin
+      Database.Set_Private_Message_Preferences (Login, Status);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.R_Block_Pref_Private_Message.SELECTED, Status));
+   end Onclick_Pref_Private_Message_Preference;
 
    --------------------------------------------
    -- Onclick_User_Photo_List_Goto_Next_Page --
@@ -1309,6 +1340,86 @@ package body V2P.Callbacks.Ajax is
       end if;
    end Onsubmit_Post_Form_Enter;
 
+   ------------------------------
+   -- Onsubmit_Private_Message --
+   ------------------------------
+
+   procedure Onsubmit_Private_Message
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      use Template_Defs;
+      P         : constant Parameters.List := Status.Parameters (Request);
+      Message   : constant String :=
+                    Parameters.Get
+                      (P,
+                       Block_Private_Message.HTTP.bpm_private_message_input);
+      User_Name : constant String :=
+                    Parameters.Get
+                      (P, Block_Private_Message.HTTP.bpm_user_name);
+   begin
+      Send_Mail : declare
+         Localhost : constant SMTP.Receiver :=
+                       SMTP.Client.Initialize (Settings.SMTP_Server);
+         Login     : constant String :=
+                       Context.Get_Value (Set_Global.LOGIN);
+         Content   : Attachments.List;
+         Headers   : AWS.Headers.List;
+         Result    : SMTP.Status;
+         Set       : Templates.Translate_Set;
+         User_Data : Database.User_Data;
+      begin
+         User_Data := Database.Get_User_Data (User_Name);
+
+         Templates.Insert
+           (Set, Templates.Assoc (Email_From_User.FROM, Login));
+         Templates.Insert
+           (Set, Templates.Assoc (Email_From_User.MESSAGE, Message));
+
+         AWS.Headers.Set.Add
+           (Headers,
+            Messages.Content_Type_Token,
+            MIME.Text_Plain & "; charset=UTF-8");
+
+         Attachments.Add
+           (Content,
+               Name => "message",
+               Headers => Headers,
+            Data => Attachments.Value
+              (Data   => Templates.Parse
+                 (Template_Defs.Email_From_User.Template, Set),
+               Encode => Attachments.Base64));
+
+         SMTP.Client.Send
+           (Server      => Localhost,
+            From        => SMTP.E_Mail ("V2P", "no-reply@no-reply.com"),
+            To          => SMTP.Recipients'(1 => SMTP.E_Mail
+                                            (User_Name,
+                                               To_String (User_Data.Email))),
+            Subject     => "Message de Vision2Pixels",
+            Attachments => Content,
+            Status      => Result);
+
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (R_Block_Send_Private_Message.ERROR, not SMTP.Is_Ok (Result)));
+
+      exception
+         when others =>
+            Morzhol.Logs.Write
+              (Name    => Module,
+               Content =>
+               "(Onsubmit_Private_Message) : sending e-mail failed for "
+               & Login,
+               Kind    => Morzhol.Logs.Error);
+            Templates.Insert
+              (Translations,
+               Templates.Assoc (R_Block_Send_Private_Message.ERROR, True));
+      end Send_Mail;
+   end Onsubmit_Private_Message;
+
    --------------------------------
    -- Onsubmit_Pur_Register_User --
    --------------------------------
@@ -1623,7 +1734,7 @@ package body V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set;
       Sort_On      : in              Database.User_Sort)
    is
-      pragma Unreferenced (Request);
+      pragma Unreferenced (Request, Translations);
       use type Database.Order_Direction;
       use type Database.User_Sort;
 
