@@ -32,6 +32,9 @@
   page utilisateur. Le nombre initial de photo affichées est limité, la
   page est ainsi plus rapide à s'afficher.</p>
 
+<p>Ajoute des liens pour naviger rapidement entre la photographie et le
+   formulaire permettant d'ajouter un commentaire.</p>
+
 <h2>Version 3.0.2 (juin 2009)</h2>
 
 <p>Corrige le nombre de photo postées indiqué en première page.</p>
