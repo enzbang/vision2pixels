@@ -2338,21 +2338,27 @@ package body V2P.Database is
       Connect (DBH);
       DBH.Handle.Prepare_Select (Iter, SQL);
 
-      while Iter.More loop
-         Iter.Get_Line (Line);
-         Content      := Content & DB.String_Vectors.Element (Line, 1);
-         Content_HTML := Content_HTML & DB.String_Vectors.Element (Line, 2);
+      if Iter.More then
+         while Iter.More loop
+            Iter.Get_Line (Line);
+            Content      := Content & DB.String_Vectors.Element (Line, 1);
+            Content_HTML := Content_HTML & DB.String_Vectors.Element (Line, 2);
 
-         Line.Clear;
-      end loop;
+            Line.Clear;
+         end loop;
 
-      Iter.End_Select;
+         Iter.End_Select;
 
-      Templates.Insert
-        (Set, Templates.Assoc (Block_User_Page.USER_PAGE_CONTENT, Content));
-      Templates.Insert
-        (Set, Templates.Assoc
-           (Block_User_Page.USER_PAGE_HTML_CONTENT, Content_HTML));
+         Templates.Insert
+           (Set, Templates.Assoc (Block_User_Page.USER_PAGE_CONTENT, Content));
+         Templates.Insert
+           (Set, Templates.Assoc
+              (Block_User_Page.USER_PAGE_HTML_CONTENT, Content_HTML));
+
+      else
+         Templates.Insert
+           (Set, Templates.Assoc (Block_User_Page.USER_NOT_FOUND, True));
+      end if;
 
       return Set;
    end Get_User_Page;

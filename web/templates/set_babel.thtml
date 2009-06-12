@@ -82,6 +82,7 @@
 @@SET@@ BABEL_HIDDEN="cachée"
 @@SET@@ BABEL_ADMIN="Administration"
 @@SET@@ BABEL_USERS="Utilisateurs"
+@@SET@@ BABEL_USER_DOES_NOT_EXIST="Cet utilisateur n'éxiste pas"
 @@SET@@ BABEL_PHOTOS="Photographies"
 @@SET@@ BABEL_PHOTOGRAPHERS="Photographes"
 @@SET@@ BABEL_COMMENTS="Commentaires"
