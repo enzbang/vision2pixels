@@ -66,6 +66,7 @@
 @@SET@@ BABEL_NEXT_PAGE="Page Suivante"
 @@SET@@ BABEL_BACK_TO="Retour vers"
 @@SET@@ BABEL_SEND="Envoyer"
+@@SET@@ BABEL_SEND_MESSAGE="Envoyer un message"
 @@SET@@ BABEL_CHECK="Vérifier"
 @@SET@@ BABEL_ADD_NEW_PHOTO="Ajouter une nouvelle photo"
 @@SET@@ BABEL_SELECT_PHOTO="Sélectionner une photo"
@@ -167,6 +168,8 @@
 @@SET@@ BABEL_PHOTO_POST_RULES_DISPLAY_RSS="Les informations EXIFs seront affichées sur le site lorsque vous serez révelé."
 @@SET@@ BABEL_CLICK_TO_VIEW_MAP="Cliquez pour localiser sur une carte"
 @@SET@@ BABEL_SEARCH="Recherche"
+@@SET@@ BABEL_SYM_OPEN="▼"
+@@SET@@ BABEL_SYM_CLOSED="▶"
 @@--
 @@--  Preferences
 @@--

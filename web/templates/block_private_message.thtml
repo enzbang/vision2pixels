@@ -10,7 +10,10 @@
 @@ELSE@@
 @@IF@@ @_ACCEPT_PRIVATE_MESSAGE_@
 @@--  Form to send a message
-<p><a href="#" id="bpm_show_rel" rel="bpm_form_section">Envoyer un message</a><span id="bpm_status"></span></p>
+<p><a href="#" id="bpm_show_rel"
+      rel="bpm_form_section">@_BABEL_SEND_MESSAGE_@
+    <span id="bpm_symbol">@_BABEL_SYM_CLOSED_@</span>
+  </a><span id="bpm_status"></span></p>
 <div id="bpm_form_section" style="display:none">
 
   <form enctype="multipart/form-data" id="bpm_form" action="#"
@@ -32,10 +35,14 @@
    {
       el = $("bpm_form_section")
 
-      if ($(el).style.display == "none")
+      if ($(el).style.display == "none") {
          Element.show(el);
-      else
+         $('bpm_symbol').innerHTML = "@_BABEL_SYM_OPEN_@";
+      }
+      else {
          Element.hide(el);
+         $('bpm_symbol').innerHTML = "@_BABEL_SYM_CLOSED_@";
+      }
 
       Element.hide ($("bpm_status"));
    };

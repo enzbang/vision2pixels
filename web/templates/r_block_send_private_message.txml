@@ -18,6 +18,7 @@
   </apply_style>
 @@--  Clear textarea
   <clear id="bpm_private_message_input"/>
+  <replace id="bpm_symbol">@_BABEL_SYM_CLOSED_@</replace>
 @@END_IF@@
   <apply_style id="bpm_status">
       <attribute id="display" value="inline"/>
