@@ -383,17 +383,19 @@ package body V2P.Web_Server is
            (Template_Defs.Page_Error.Set.URL, C_Request, Translations);
       end if;
 
-
       if Session.Exist (SID, Template_Defs.Set_Global.LOGIN)
         and not Context.Exist ("cookie")
       then
          Set_Cookie : declare
             use type Ada.Calendar.Arithmetic.Day_Count;
             Valid_Days : constant Ada.Calendar.Arithmetic.Day_Count := 15;
-            HTTP_Date  : constant String := AWS.Messages.To_HTTP_Date
-              (Ada.Calendar.Clock + Valid_Days);
-            GenCookie  : constant String := Database.Gen_Cookie
-              (Login => Session.Get (SID, Template_Defs.Set_Global.LOGIN));
+            HTTP_Date  : constant String :=
+                           AWS.Messages.To_HTTP_Date
+                             (Ada.Calendar.Clock + Valid_Days);
+            GenCookie  : constant String :=
+                           Database.Gen_Cookie
+                             (Session.Get
+                                (SID, Template_Defs.Set_Global.LOGIN));
          begin
             AWS.Response.Set.Add_Header
               (Web_Page, AWS.Messages.Set_Cookie_Token,
@@ -1045,7 +1047,6 @@ package body V2P.Web_Server is
                                           Translations)));
          end Does_Not_Exist;
       end if;
-
 
       Result := Response.File (MIME.Text_XML, File);
 

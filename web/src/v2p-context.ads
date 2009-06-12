@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2008                          --
+--                         Copyright (C) 2007-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -22,6 +22,8 @@
 with AWS.Services.Web_Block.Context;
 with AWS.Session;
 
+with V2P.Database;
+
 package V2P.Context is
 
    use Ada;
@@ -41,11 +43,17 @@ package V2P.Context is
    --  bug, should be changed when GNAT GPL 2007 is out and if it contains the
    --  fix as this bug is not present on recent GNAT versions.
 
-   procedure Update (Context : access Object;
-                     SID     : in AWS.Session.Id;
-                     Cookie  : in String);
+   procedure Update
+     (Context : not null access Object;
+      SID     : in AWS.Session.Id;
+      Cookie  : in String);
    --  Update the context filter
    --  Set LOGIN in Context.
    --  Read Cookie ("remember me" authentication type)
+
+   procedure Set_User_Preferences
+     (Context   : not null access Object;
+      User_Data : in Database.User_Data);
+   --  Set user preferences into the context after user is logged in
 
 end V2P.Context;
