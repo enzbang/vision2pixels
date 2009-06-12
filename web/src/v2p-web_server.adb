@@ -672,14 +672,14 @@ package body V2P.Web_Server is
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         Settings.RSS_Prefix,
-         Action => Dispatchers.Callback.Create (RSS_Callback'Access),
+         Settings.Thumbs_Source_Prefix,
+         Action => Dispatchers.Callback.Create (Photos_Callback'Access),
          Prefix => True);
 
       Services.Dispatchers.URI.Register
         (Main_Dispatcher,
-         Settings.Thumbs_Source_Prefix,
-         Action => Dispatchers.Callback.Create (Photos_Callback'Access),
+         Settings.RSS_Prefix,
+         Action => Dispatchers.Callback.Create (RSS_Callback'Access),
          Prefix => True);
 
       Services.Dispatchers.URI.Register

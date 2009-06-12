@@ -9,6 +9,9 @@
 <h1>@_BABEL_USER_PAGE_OF_@ @_USER_NAME_@</h1>
 @@END_IF@@
 
+@@IF@@ @_USER_NOT_FOUND_@
+@_BABEL_USER_DOES_NOT_EXIST_@
+@@ELSE@@
 @_LAZY_USER_STATS_@
 
 <ul class="squarelist">
@@ -60,4 +63,5 @@
 @@END_IF@@
 
 <p class="up"><a href="#cvt_contents">@_BABEL_TOP_@</a></p>
+@@END_IF@@
 @@END_IF@@
