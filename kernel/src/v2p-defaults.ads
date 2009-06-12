@@ -103,4 +103,6 @@ package V2P.Defaults is
 
    Number_Users_Listed         : constant Positive := 20;
 
+   SMTP_Server                 : constant String := "localhost";
+
 end V2P.Defaults;

@@ -23,6 +23,7 @@ with Ada.Strings.Unbounded;
 
 with GNAT.String_Split;
 
+with AWS.Attachments;
 with AWS.Parameters;
 with AWS.Session;
 with AWS.SMTP.Client;
@@ -37,6 +38,7 @@ with V2P.Database.Search;
 with V2P.Settings;
 with V2P.User_Validation;
 with V2P.Wiki;
+with V2P.Settings;
 with V2P.Syndication;
 
 with V2P.Template_Defs.Page_Forum_Entry;
@@ -1144,20 +1146,28 @@ package body V2P.Callbacks.Ajax is
 
       Send_Mail : declare
          Localhost : constant SMTP.Receiver :=
-                       SMTP.Client.Initialize ("localhost");
+                       SMTP.Client.Initialize (Settings.SMTP_Server);
+         Content   : Attachments.List;
          Result    : SMTP.Status;
          Set       : Templates.Translate_Set;
       begin
          Templates.Insert (Set, Templates.Assoc ("USER_PASSWORD", Password));
 
+         Attachments.Add
+           (Content,
+            Name => "message",
+            Data => Attachments.Value
+              (Data   => Templates.Parse
+                 (Template_Defs.Email_Lost_Password.Template, Set),
+               Encode => Attachments.Base64));
+
          SMTP.Client.Send
-           (Server  => Localhost,
-            From    => SMTP.E_Mail ("V2P", "no-reply"),
-            To      => SMTP.E_Mail (Email, Email),
-            Subject => "Mot de passe Vision2Pixels",
-            Message => Templates.Parse
-              (Template_Defs.Email_Lost_Password.Template, Set),
-            Status  => Result);
+           (Server      => Localhost,
+            From        => SMTP.E_Mail ("V2P", "no-reply@no-reply.com"),
+            To          => SMTP.Recipients'(1 => SMTP.E_Mail (Email, Email)),
+            Subject     => "Mot de passe Vision2Pixels",
+            Attachments => Content,
+            Status      => Result);
 
       exception
          when others =>
@@ -1335,7 +1345,7 @@ package body V2P.Callbacks.Ajax is
 
       Send_Mail : declare
          Localhost : constant SMTP.Receiver :=
-                       SMTP.Client.Initialize ("localhost");
+                       SMTP.Client.Initialize (Settings.SMTP_Server);
          Key       : constant String :=
                        User_Validation.Key (Login, Password, Email);
          Result    : SMTP.Status;
@@ -1347,7 +1357,7 @@ package body V2P.Callbacks.Ajax is
 
          SMTP.Client.Send
            (Server  => Localhost,
-            From    => SMTP.E_Mail ("V2P", "no-reply"),
+            From    => SMTP.E_Mail ("V2P", "no-reply@no-reply.com"),
             To      => SMTP.E_Mail (Email, Email),
             Subject => "Enregistrement sur Vision2Pixels",
             Message => Templates.Parse
