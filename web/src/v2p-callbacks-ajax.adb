@@ -1150,18 +1150,25 @@ package body V2P.Callbacks.Ajax is
          Localhost : constant SMTP.Receiver :=
                        SMTP.Client.Initialize (Settings.SMTP_Server);
          Content   : Attachments.List;
+         Headers   : AWS.Headers.List;
          Result    : SMTP.Status;
          Set       : Templates.Translate_Set;
       begin
          Templates.Insert (Set, Templates.Assoc ("USER_PASSWORD", Password));
 
+         AWS.Headers.Set.Add
+           (Headers,
+            Messages.Content_Type_Token,
+            MIME.Text_Plain & "; charset=UTF-8");
+
          Attachments.Add
            (Content,
-            Name => "message",
-            Data => Attachments.Value
+            Name    => "message",
+            Data    => Attachments.Value
               (Data   => Templates.Parse
                  (Template_Defs.Email_Lost_Password.Template, Set),
-               Encode => Attachments.Base64));
+               Encode => Attachments.Base64),
+            Headers => Headers);
 
          SMTP.Client.Send
            (Server      => Localhost,
