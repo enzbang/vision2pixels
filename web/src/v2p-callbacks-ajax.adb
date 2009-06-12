@@ -127,8 +127,10 @@ package body V2P.Callbacks.Ajax is
          Database.Set_Last_Logged (Login);
 
          --  Maybe remember user
+
          if Parameters.Get
-           (P, Template_Defs.Block_Login.HTTP.bl_remember_me) /= "" then
+           (P, Template_Defs.Block_Login.HTTP.bl_remember_me) /= ""
+         then
             Database.Remember (Login, True);
          else
             Database.Remember (Login, False);
@@ -136,18 +138,7 @@ package body V2P.Callbacks.Ajax is
 
          --  Set user's filtering preference
 
-         Context.Set_Value
-           (Template_Defs.Set_Global.FILTER,
-            Database.Filter_Mode'Image (User_Data.Preferences.Filter));
-
-         V2P.Context.Not_Null_Counter.Set_Value
-           (Context => Context.all,
-            Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
-            Value   => User_Data.Preferences.Page_Size);
-
-         Context.Set_Value
-           (Template_Defs.Set_Global.FORUM_SORT,
-            Database.Forum_Sort'Image (User_Data.Preferences.Sort));
+         V2P.Context.Set_User_Preferences (Context, User_Data);
 
          Templates.Insert
            (Translations,
@@ -168,7 +159,7 @@ package body V2P.Callbacks.Ajax is
    is
       SID    : constant Session.Id := Status.Session (Request);
       Login  : constant String :=
-        Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+                 Session.Get (SID, Template_Defs.Set_Global.LOGIN);
    begin
       Session.Delete (SID);
 
@@ -236,9 +227,9 @@ package body V2P.Callbacks.Ajax is
               V2P.Context.Counter.Get_Value
                 (Context => Context.all,
                  Name    => Template_Defs.Set_Global.TID);
-      CID  : constant Database.Id :=
-               Database.Id'Value
-                 (Parameters.Get (P, HTTP.bfcs_forum_category_set));
+      CID : constant Database.Id :=
+              Database.Id'Value
+                (Parameters.Get (P, HTTP.bfcs_forum_category_set));
    begin
       Database.Set_Category (TID, CID);
    end Onchange_Category_Set;
@@ -499,12 +490,12 @@ package body V2P.Callbacks.Ajax is
    is
       package HTTP renames Template_Defs.Block_Pref_Image_Size.HTTP;
 
-      SID    : constant Session.Id := Status.Session (Request);
-      Login  : constant String :=
-                 Session.Get (SID, Template_Defs.Set_Global.LOGIN);
-      P      : constant Parameters.List := Status.Parameters (Request);
-      Size   : constant String :=
-                 Parameters.Get (P, HTTP.bpis_image_size);
+      SID   : constant Session.Id := Status.Session (Request);
+      Login : constant String :=
+                Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+      P     : constant Parameters.List := Status.Parameters (Request);
+      Size  : constant String :=
+                Parameters.Get (P, HTTP.bpis_image_size);
    begin
       Morzhol.Logs.Write
         (Name    => Module,

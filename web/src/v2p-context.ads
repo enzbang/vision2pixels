@@ -22,6 +22,8 @@
 with AWS.Services.Web_Block.Context;
 with AWS.Session;
 
+with V2P.Database;
+
 package V2P.Context is
 
    use Ada;
@@ -48,5 +50,10 @@ package V2P.Context is
    --  Update the context filter
    --  Set LOGIN in Context.
    --  Read Cookie ("remember me" authentication type)
+
+   procedure Set_User_Preferences
+     (Context   : not null access Object;
+      User_Data : in Database.User_Data);
+   --  Set user preferences into the context after user is logged in
 
 end V2P.Context;
