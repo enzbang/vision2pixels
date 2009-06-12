@@ -61,7 +61,8 @@ package body V2P.Context is
       Cookie  : in String)
    is
       function Cookie_Content (S : in String) return String;
-      --  Returns the part between v2p= and ;
+      --  Returns the part between "v2p=" and ";" or the empty string if the
+      --  v2p cookie is not found.
 
       --------------------
       -- Cookie_Content --
@@ -122,8 +123,6 @@ package body V2P.Context is
          --  Session is set but there is no preferences set yet, set user's
          --  preferences.
 
-         --  Update filter context
-
          Set_User_Preferences
            (Context,
             Database.Get_User_Data
@@ -131,6 +130,19 @@ package body V2P.Context is
 
          Context.Set_Value
            (Template_Defs.Set_Global.FILTER_CATEGORY, "");
+      end if;
+
+      --  Set timezone
+
+      if not Context.Exist (Template_Defs.Set_Global.TZ) then
+         declare
+            TZ : constant String :=
+                   Session.Get (SID, Template_Defs.Set_Global.TZ);
+         begin
+            if TZ /= "" then
+               Context.Set_Value (Template_Defs.Set_Global.TZ, TZ);
+            end if;
+         end;
       end if;
 
       if not Context.Exist (Template_Defs.Set_Global.NAV_FROM)

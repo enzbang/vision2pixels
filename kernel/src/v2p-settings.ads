@@ -146,4 +146,7 @@ package V2P.Settings is
    function SMTP_Server return String;
    --  Returns the SMTP server name to use for sending e-mails
 
+   function Default_Timezone return String;
+   --  Returns the default time zone offset to use
+
 end V2P.Settings;

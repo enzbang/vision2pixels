@@ -20,6 +20,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded;
+
 with AWS.Utils;
 
 with V2P.URL;
@@ -77,7 +78,8 @@ package body V2P.Callbacks.Web_Block is
             Database.Get_Comments
               (Tid =>  V2P.Context.Counter.Get_Value
                  (Context => Context.all,
-                  Name    => Template_Defs.Set_Global.TID)));
+                  Name    => Template_Defs.Set_Global.TID),
+               TZ  =>  Context.Get_Value (Template_Defs.Set_Global.TZ)));
       end if;
    end Comments;
 
@@ -218,7 +220,10 @@ package body V2P.Callbacks.Web_Block is
       end if;
 
       Templates.Insert
-        (Translations, Database.Get_Forums (Filter => Database.Forum_All));
+        (Translations,
+         Database.Get_Forums
+           (Filter => Database.Forum_All,
+            TZ     => Context.Get_Value (Template_Defs.Set_Global.TZ)));
    end Forum_List;
 
    -----------------------------
@@ -230,11 +235,13 @@ package body V2P.Callbacks.Web_Block is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      pragma Unreferenced (Request, Context);
+      pragma Unreferenced (Request);
    begin
       Templates.Insert
         (Translations,
-         Database.Get_Forums (Filter => Database.Forum_Photo));
+         Database.Get_Forums
+           (Filter => Database.Forum_Photo,
+            TZ     => Context.Get_Value (Template_Defs.Set_Global.TZ)));
    end Forum_Photo_List_Select;
 
    ----------------
@@ -264,11 +271,13 @@ package body V2P.Callbacks.Web_Block is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      pragma Unreferenced (Request, Context);
+      pragma Unreferenced (Request);
    begin
       Templates.Insert
         (Translations,
-         Database.Get_Forums (Filter => Database.Forum_Text));
+         Database.Get_Forums
+           (Filter => Database.Forum_Text,
+            TZ     => Context.Get_Value (Template_Defs.Set_Global.TZ)));
    end Forum_Text_List_Select;
 
    -------------------
@@ -338,7 +347,9 @@ package body V2P.Callbacks.Web_Block is
    begin
       Templates.Insert
         (Translations,
-         Database.Get_Latest_Posts (Settings.Number_Latest_Posts, Admin));
+         Database.Get_Latest_Posts
+           (Settings.Number_Latest_Posts, Admin,
+            TZ => Context.Get_Value (Template_Defs.Set_Global.TZ)));
    end Latest_Posts;
 
    ------------------
@@ -770,7 +781,8 @@ package body V2P.Callbacks.Web_Block is
          Total_Lines   => Total,
          Forum         => Forum,
          Only_Revealed => True,
-         Page_Size     => Limit);
+         Page_Size     => Limit,
+         TZ            => Context.Get_Value (Template_Defs.Set_Global.TZ));
 
       Templates.Insert (Translations, Set);
 
@@ -802,11 +814,13 @@ package body V2P.Callbacks.Web_Block is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
       URI       : constant String := Status.URI (Request);
       User_Name : constant String := URL.User_Name (URI);
    begin
-      Templates.Insert (Translations, Database.Get_User_Stats (User_Name));
+      Templates.Insert
+        (Translations,
+         Database.Get_User_Stats
+           (User_Name, Context.Get_Value (Template_Defs.Set_Global.TZ)));
    end User_Stats;
 
    ----------------------------
@@ -857,7 +871,11 @@ package body V2P.Callbacks.Web_Block is
            (Context.Get_Value (Template_Defs.Set_Global.USER_ORDER));
       end if;
 
-      Templates.Insert (Translations, Database.Get_Users (From, Sort, Order));
+      Templates.Insert
+        (Translations,
+         Database.Get_Users
+           (From, Sort, Order,
+            Context.Get_Value (Template_Defs.Set_Global.TZ)));
 
       --  Set translations values
 

@@ -25,7 +25,9 @@ with Ada.Directories;
 with Ada.Exceptions;
 with Ada.Float_Text_IO;
 with Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;
 
+with AWS.Containers.Tables;
 with AWS.Dispatchers.Callback;
 with AWS.Headers;
 with AWS.Messages;
@@ -144,11 +146,12 @@ package body V2P.Web_Server is
    XML_Path        : constant String :=
                        Directories.Compose
                          (Containing_Directory => Gwiad_Plugin_Path,
-                          Name                 => "xml");
+                         Name                 => "xml");
    XML_Prefix_URI  : constant String := "/xml_";
    CSS_URI         : constant String := "/css";
    IMG_URI         : constant String := "/css/img";
    Web_JS_URI      : constant String := "/we_js";
+   Timezone_Cookie : constant String := "V2PTZ";
 
    V2p_Lib_Path    : constant String :=
                        Gwiad.Plugins.Get_Last_Library_Path;
@@ -254,11 +257,66 @@ package body V2P.Web_Server is
 
    function Default_Callback (Request : in Status.Data) return Response.Data is
       use type Messages.Status_Code;
+
+      procedure Read_Timezone;
+      --  Read timezone as recorded in the cookies, set the session
+      --  accordingly.
+
+      SID : constant Session.Id := Status.Session (Request);
+
+      -------------------
+      -- Read_Timezone --
+      -------------------
+
+      procedure Read_Timezone is
+
+         procedure Set_Timezone (TZ : in String);
+         --  Set time in session
+
+         ------------------
+         -- Set_Timezone --
+         ------------------
+
+         procedure Set_Timezone (TZ : in String) is
+         begin
+            if TZ (TZ'First) = '+' then
+               Session.Set
+                 (SID, Template_Defs.Set_Global.TZ,
+                  '-' & TZ (TZ'First + 1 .. TZ'Last));
+
+            elsif TZ (TZ'First) = '-' then
+               Session.Set
+                 (SID, Template_Defs.Set_Global.TZ,
+                  '+' & TZ (TZ'First + 1 .. TZ'Last));
+            end if;
+         end Set_Timezone;
+
+      begin
+         if not Session.Exist (SID, Template_Defs.Set_Global.TZ) then
+            declare
+               use Strings.Unbounded;
+
+               Headers : constant AWS.Headers.List := Status.Header (Request);
+               Cookies : constant Containers.Tables.VString_Array :=
+                           Headers.Get_Values (AWS.Messages.Cookie_Token);
+               Start   : Natural;
+            begin
+               for K in Cookies'Range loop
+                  Start := Index (Cookies (K), Timezone_Cookie);
+                  if Start /= 0 then
+                     Set_Timezone
+                       (Slice (Cookies (K), Start + 6, Length (Cookies (K))));
+                  end if;
+               end loop;
+            end;
+         end if;
+      end Read_Timezone;
+
       URI          : constant String := Status.URI (Request);
-      SID          : constant Session.Id := Status.Session (Request);
       Headers      : constant AWS.Headers.List := AWS.Status.Header (Request);
-      Cookie       : constant String := AWS.Headers.Get_Values
-        (Headers, AWS.Messages.Cookie_Token);
+      Cookie       : constant String :=
+                       AWS.Headers.Get_Values
+                         (Headers, AWS.Messages.Cookie_Token);
       C_Request    : aliased Status.Data := Request;
       Context      : aliased Services.Web_Block.Context.Object :=
                        Services.Web_Block.Registry.Get_Context
@@ -266,9 +324,12 @@ package body V2P.Web_Server is
       Translations : Templates.Translate_Set;
       Web_Page     : Response.Data;
    begin
+      Read_Timezone;
+
       --  Update the context
 
       V2P.Context.Update (Context'Access, SID, Cookie);
+
       --  Note that the Context is linked to the C_Request object
       --  Do not use Request object anymore
 

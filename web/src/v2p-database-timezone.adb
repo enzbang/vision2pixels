@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2008-2009                          --
+--                            Copyright (C) 2009                            --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,10 +19,59 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-package V2P.Syndication is
+with V2P.Settings;
 
-   procedure Update_RSS_Last_Photos
-     (Create_Only : in Boolean := False; TZ : in String := "");
-   --  Update last photos RSS feed
+package body V2P.Database.Timezone is
 
-end V2P.Syndication;
+   function Default_Timezone return String;
+   --  Returns the default timezone string
+
+   ----------
+   -- Date --
+   ----------
+
+   function Date (Field, Timezone : in String) return String is
+   begin
+      if Timezone = "" then
+         return "DATE(" & Field & ", " & Default_Timezone & ')';
+      else
+         return "DATE(" & Field & ", '" & Timezone & " minutes')";
+      end if;
+   end Date;
+
+   ---------------
+   -- Date_Time --
+   ---------------
+
+   function Date_Time (Field, Timezone : in String) return String is
+   begin
+      if Timezone = "" then
+         return "DATETIME(" & Field & ", " & Default_Timezone & ')';
+      else
+         return "DATETIME(" & Field & ", '" & Timezone & " minutes')";
+      end if;
+   end Date_Time;
+
+   ----------------------
+   -- Default_Timezone --
+   ----------------------
+
+   function Default_Timezone return String is
+   begin
+      return ''' & Settings.Default_Timezone & " minutes'";
+   end Default_Timezone;
+
+   ----------
+   -- Time --
+   ----------
+
+   function Time (Field, Timezone : in String) return String is
+   begin
+      if Timezone = "" then
+         return "TIME(" & Field & ", " & Default_Timezone & ')';
+      else
+         return "TIME(" & Field & ", '" & Timezone & " minutes')";
+      end if;
+   end Time;
+
+end V2P.Database.Timezone;
