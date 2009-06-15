@@ -2447,9 +2447,15 @@ package body V2P.Database is
                   & "(SELECT COUNT(id) FROM comment"
                   & " WHERE user.login = comment.user_login), "
                   --  nb photos
-                  & "(SELECT count (post_id) FROM post, user_post"
-                  & " WHERE post.id=post_id AND post.photo_id!=0 "
-                  & " AND user_post.user_login=user.login),"
+                  & "(SELECT count (post_id) FROM post, user_post,"
+                  & " forum, category"
+                  & " WHERE post.id=post_id AND post.photo_id!=0"
+                  & " AND user_post.user_login=user.login"
+                  & " AND post.category_id=category.id"
+                  & " AND forum.id=category.forum_id"
+                  & " AND (DATETIME(post.date_post, '+"
+                  & Utils.Image (V2P.Settings.Anonymity_Hours)
+                  & " hour')<DATETIME('NOW') OR forum.anonymity='FALSE')), "
                   --  nb messages
                   & "(SELECT count (post_id) FROM post, user_post"
                   & " WHERE post.id=post_id AND post.photo_id=0 "
