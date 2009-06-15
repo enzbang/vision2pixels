@@ -748,8 +748,8 @@ package body V2P.Callbacks.Web_Block is
         (Context, Translations, Database.Forum_Photo,
          User_Name => Context.Get_Value
            (Template_Defs.Block_User_Page.USER_NAME),
-         From  => From,
-         Limit => Settings.Number_Latest_User_Posts);
+         From      => From,
+         Limit     => Settings.Number_Latest_User_Posts);
    end User_Photo_List;
 
    --------------------
