@@ -703,13 +703,16 @@ package body V2P.Callbacks.Web_Block is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
       URI       : constant String := Status.URI (Request);
       User_Name : constant String := URL.User_Name (URI);
 
    begin
       Templates.Insert
         (Translations, Database.Get_User_Page (Uid => User_Name));
+
+      --  Set User_Name
+
+      Context.Set_Value (Template_Defs.Block_User_Page.USER_NAME, User_Name);
 
       Templates.Insert
         (Translations,
@@ -725,20 +728,13 @@ package body V2P.Callbacks.Web_Block is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      URI       : constant String := Status.URI (Request);
-      User_Name : constant String := URL.User_Name (URI);
-      From      : Positive := 1;
+      pragma Unreferenced (Request);
+      From : Positive := 1;
    begin
       if Context.Exist (Template_Defs.Set_Global.NAV_FROM) then
          From := V2P.Context.Not_Null_Counter.Get_Value
            (Context => Context.all,
             Name    => Template_Defs.Set_Global.NAV_FROM);
-      end if;
-
-      if not Context.Exist (Template_Defs.Block_User_Page.USER_NAME) then
-         Context.Set_Value
-           (Template_Defs.Block_User_Page.USER_NAME,
-            User_Name);
       end if;
 
       User_Post_List
