@@ -279,7 +279,11 @@ package body V2P.Web_Server is
 
          procedure Set_Timezone (TZ : in String) is
          begin
-            if TZ (TZ'First) = '+' then
+            if TZ'Length = 0 then
+               --  Protect against empty cookie sent
+               return;
+
+            elsif TZ (TZ'First) = '+' then
                Session.Set
                  (SID, Template_Defs.Set_Global.TZ,
                   '-' & TZ (TZ'First + 1 .. TZ'Last));
