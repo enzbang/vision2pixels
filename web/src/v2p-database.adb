@@ -2114,8 +2114,7 @@ package body V2P.Database is
    function Get_User_Comment
      (Uid     : in String;
       Limit   : in Positive;
-      Textify : in Boolean := False)
-      return Templates.Translate_Set
+      Textify : in Boolean := False) return Templates.Translate_Set
    is
       SQL        : constant String :=
                      "SELECT c.id, c.comment, "
