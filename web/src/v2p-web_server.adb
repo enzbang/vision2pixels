@@ -279,7 +279,11 @@ package body V2P.Web_Server is
 
          procedure Set_Timezone (TZ : in String) is
          begin
-            if TZ (TZ'First) = '+' then
+            if TZ'Length = 0 then
+               --  Protect against empty cookie sent
+               return;
+
+            elsif TZ (TZ'First) = '+' then
                Session.Set
                  (SID, Template_Defs.Set_Global.TZ,
                   '-' & TZ (TZ'First + 1 .. TZ'Last));
@@ -300,12 +304,20 @@ package body V2P.Web_Server is
                Cookies : constant Containers.Tables.VString_Array :=
                            Headers.Get_Values (AWS.Messages.Cookie_Token);
                Start   : Natural;
+               Last    : Natural;
             begin
                for K in Cookies'Range loop
                   Start := Index (Cookies (K), Timezone_Cookie);
                   if Start /= 0 then
-                     Set_Timezone
-                       (Slice (Cookies (K), Start + 6, Length (Cookies (K))));
+                     Last := Index (Cookies (K), ";", From => Start);
+
+                     if Last = 0 then
+                        Last := Length (Cookies (K));
+                     else
+                        Last := Last - 1;
+                     end if;
+
+                     Set_Timezone (Slice (Cookies (K), Start + 6, Last));
                   end if;
                end loop;
             end;
