@@ -106,6 +106,8 @@ package body V2P.Context is
 
                Database.Set_Last_Logged (Cookie_User);
 
+               --  Recover user's preferences
+
                Set_User_Preferences
                  (Context, Database.Get_User_Data (Cookie_User));
 
