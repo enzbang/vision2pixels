@@ -5,11 +5,9 @@
 @@--
 <ul id="bucl_lastusercommentlist">
 @@TABLE@@
-@@IF@@ @_HAS_VOTED_@ /= "TRUE"
   <li class="clear">
       <a href="@_FORUM_ENTRY_URL_@?TID=@_COMMENT_TID_@#pfe_comment_@_COMMENT_ID_@"><em class="commentid">#@_COMMENT_ID_@ </em>
          <span class="commenttext">@_WRAP(40):COMMENT_@</span></a>
   </li>
-@@END_IF@@
 @@END_TABLE@@
 </ul>

@@ -2150,23 +2150,23 @@ package body V2P.Database is
    function Get_User_Comment
      (Uid     : in String;
       Limit   : in Positive;
-      Textify : in Boolean := False)
-      return Templates.Translate_Set
+      Textify : in Boolean := False) return Templates.Translate_Set
    is
       SQL        : constant String :=
-                     "SELECT pc.post_id, c.id, c.comment, c.has_voted "
-                       & "FROM comment AS c, post_comment AS pc, post AS p,"
-                       & " user_post AS u "
-                       & "WHERE c.user_login=" & Q (Uid)
-                       & " AND pc.comment_id=c.id"
-                       & " AND p.id=pc.post_id"
+                     "SELECT c.id, c.comment, "
+                       & "(SELECT pc.post_id"
+                       & " FROM post_comment AS pc, post AS p,"
+                       & " user_post AS u"
+                       & " WHERE pc.comment_id=c.id AND p.id=pc.post_id"
                        & " AND u.post_id=p.id"
+                       --  Either the author is revealed or it is not Uid post
                        & " AND (DATETIME(p.date_post, '+"
                        & Utils.Image (V2P.Settings.Anonymity_Hours)
                        & " hour')<DATETIME('NOW') "
-                       & " OR u.user_login!=" & Q (Uid) & ')'
-                       & " ORDER BY c.date DESC"
-                       & " LIMIT " & Utils.Image (Limit);
+                       & " OR u.user_login!=" & Q (Uid) & ")) AS pid "
+                       & "FROM comment AS c WHERE c.user_login=" & Q (Uid)
+                       & " AND c.has_voted='FALSE' AND pid!='' "
+                       & "ORDER BY c.id DESC LIMIT " & Utils.Image (Limit);
       DBH        : constant TLS_DBH_Access :=
                      TLS_DBH_Access (DBH_TLS.Reference);
       Set        : Templates.Translate_Set;
@@ -2176,7 +2176,6 @@ package body V2P.Database is
       Post_Id    : Templates.Tag;
       Comment_Id : Templates.Tag;
       Comment    : Templates.Tag;
-      Has_Voted  : Templates.Tag;
 
       use type Templates.Tag;
 
@@ -2186,16 +2185,15 @@ package body V2P.Database is
 
       while Iter.More loop
          Iter.Get_Line (Line);
-         Post_Id    := Post_Id & DB.String_Vectors.Element (Line, 1);
-         Comment_Id := Comment_Id & DB.String_Vectors.Element (Line, 2);
+         Comment_Id := Comment_Id & DB.String_Vectors.Element (Line, 1);
          if Textify then
             Comment := Comment
               & Morzhol.Strings.HTML_To_Text
-              (DB.String_Vectors.Element (Line, 3));
+              (DB.String_Vectors.Element (Line, 2));
          else
-            Comment := Comment & DB.String_Vectors.Element (Line, 3);
+            Comment := Comment & DB.String_Vectors.Element (Line, 2);
          end if;
-         Has_Voted := Has_Voted & DB.String_Vectors.Element (Line, 4);
+         Post_Id    := Post_Id & DB.String_Vectors.Element (Line, 3);
          Line.Clear;
       end loop;
 
@@ -2208,8 +2206,6 @@ package body V2P.Database is
          Templates.Assoc (Block_User_Comment_List.COMMENT_ID, Comment_Id));
       Templates.Insert
         (Set, Templates.Assoc (Block_User_Comment_List.COMMENT, Comment));
-      Templates.Insert
-        (Set, Templates.Assoc (Block_User_Comment_List.HAS_VOTED, Has_Voted));
 
       return Set;
    end Get_User_Comment;
