@@ -35,5 +35,4 @@
      <clear id="bnc_comment_pid" />
   @@END_IF@@
 @@END_IF@@
-
 </response>
