@@ -18,6 +18,7 @@
      <apply_style id="bnc_checkpoint">
        <attribute id="display" value="block" />
      </apply_style>
+     <location url="#bnc_comment_register_enter"/>
   @@ELSE@@
      <replace id="pfe_post_comments">
        <![CDATA[@_LAZY_COMMENTS_@]]>
