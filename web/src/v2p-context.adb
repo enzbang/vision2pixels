@@ -101,6 +101,13 @@ package body V2P.Context is
                --  from the database.
 
                Session.Set (SID, Template_Defs.Set_Global.LOGIN, Cookie_User);
+
+               --  Set last logged status
+
+               Database.Set_Last_Logged (Cookie_User);
+
+               --  Recover user's preferences
+
                Set_User_Preferences
                  (Context, Database.Get_User_Data (Cookie_User));
 
