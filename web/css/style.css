@@ -349,6 +349,10 @@ ul.thumb_metadata {
 }
 
 /* block specific */
+#bpm_status {
+    color: red;
+    padding: 5em;
+}
 
 #cvt_contents {
     margin: 4px;

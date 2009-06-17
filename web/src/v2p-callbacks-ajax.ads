@@ -100,6 +100,12 @@ package V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set);
    --  Called when changing the category of a post
 
+   procedure Onclick_Pref_Private_Message_Preference
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when changing private message preference
+
    procedure Onclick_CSS_URL_Preference
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
@@ -231,6 +237,12 @@ package V2P.Callbacks.Ajax is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set);
    --  Called when submitting a new rating
+
+   procedure Onsubmit_Private_Message
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Send a private message
 
    procedure On_Context_Error
      (Request      : in              Status.Data;

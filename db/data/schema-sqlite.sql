@@ -14,7 +14,8 @@ create table "user_preferences" (
    "filter" varchar(15) default "SEVEN_DAYS",
    "sort" varchar(15) default "LAST_COMMENTED",
    "image_size" varchar(15) default "MAX_SIZE",
-   "css_url" varchar(200) default ""
+   "css_url" varchar(200) default "",
+   "accept_private_message" boolean default FALSE
 );
 
 create table "user_to_validate" (

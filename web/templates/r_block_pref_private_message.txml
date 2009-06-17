@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+@@IF@@ @_SELECTED_@
+   <check action="select" id="bppm_check"/>
+@@ELSE@@
+   <check action="clear" id="bppm_check"/>
+@@END_IF@@
+</response>

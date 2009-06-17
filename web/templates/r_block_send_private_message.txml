@@ -1,0 +1,26 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+@@INLINE@@
+   <replace id="bpm_status">
+@@IF@@ @_ERROR_@
+@_BABEL_USER_MESSAGE_NOT_SENT_@
+@@ELSE@@
+@_BABEL_USER_MESSAGE_SENT_@
+@@END_IF@@
+  </replace>
+@@END_INLINE@@
+@@IF@@ not @_ERROR_@
+@@--  Close div
+  <apply_style id="bpm_form_section">
+      <attribute id="display" value="none"/>
+  </apply_style>
+@@--  Clear textarea
+  <clear id="bpm_private_message_input"/>
+  <replace id="bpm_symbol">@_BABEL_SYM_CLOSED_@</replace>
+@@END_IF@@
+  <apply_style id="bpm_status">
+      <attribute id="display" value="inline"/>
+  </apply_style>
+</response>

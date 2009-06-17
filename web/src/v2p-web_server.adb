@@ -73,6 +73,8 @@ with V2P.Template_Defs.Block_Pref_Forum_Filter;
 with V2P.Template_Defs.Block_Pref_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Pref_Forum_Sort;
 with V2P.Template_Defs.Block_Pref_Image_Size;
+with V2P.Template_Defs.Block_Pref_Private_Message;
+with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_Users;
@@ -116,7 +118,9 @@ with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Metadata_Form_Enter;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
+with V2P.Template_Defs.R_Block_Pref_Private_Message;
 with V2P.Template_Defs.R_Block_Rate;
+with V2P.Template_Defs.R_Block_Send_Private_Message;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Photo_List;
 with V2P.Template_Defs.R_Block_User_Preferences;
@@ -929,6 +933,13 @@ package body V2P.Web_Server is
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Pref_Private_Message.Ajax.onclick_bppm_check,
+         Template_Defs.R_Block_Pref_Private_Message.Template,
+         Callbacks.Ajax.Onclick_Pref_Private_Message_Preference'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
         (Template_Defs.Block_Forum_Category_Filter.
            Ajax.onchange_bfcf_forum_category_filter_set,
          Template_Defs.R_Block_Forum_Filter.Template,
@@ -1073,6 +1084,13 @@ package body V2P.Web_Server is
            Ajax.onchange_cfls_sel_forum_list,
          Template_Defs.R_Block_Forum_List.Template,
          Callbacks.Ajax.Onchange_Forum_List'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Private_Message.Ajax.onsubmit_bpm_form,
+         Template_Defs.R_Block_Send_Private_Message.Template,
+         Callbacks.Ajax.Onsubmit_Private_Message'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

@@ -2228,7 +2228,8 @@ package body V2P.Database is
       Connect (DBH);
 
       DBH.Handle.Prepare_Select
-        (Iter, "SELECT password, admin FROM user WHERE login=" & Q (Uid));
+        (Iter,
+         "SELECT password, admin, email FROM user WHERE login=" & Q (Uid));
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -2236,6 +2237,7 @@ package body V2P.Database is
          Password_Value : declare
             Password  : constant String := DB.String_Vectors.Element (Line, 1);
             Admin     : constant String := DB.String_Vectors.Element (Line, 2);
+            Email     : constant String := DB.String_Vectors.Element (Line, 3);
             Prefs     : User_Settings;
          begin
             Line.Clear;
@@ -2244,6 +2246,7 @@ package body V2P.Database is
             return User_Data'(Uid         => +Uid,
                               Password    => +Password,
                               Admin       => Boolean'Value (Admin),
+                              Email       => +Email,
                               Preferences => Prefs);
          end Password_Value;
 
@@ -3360,6 +3363,19 @@ package body V2P.Database is
       end if;
    end Set_Preferences;
 
+   -------------------------------------
+   -- Set_Private_Message_Preferences --
+   -------------------------------------
+
+   procedure Set_Private_Message_Preferences
+     (Login                  : in String;
+      Accept_Private_Message : in Boolean) is
+   begin
+      Set_Preferences
+        (Login, "accept_private_message",
+         Q (Boolean'Image (Accept_Private_Message)));
+   end Set_Private_Message_Preferences;
+
    ---------------
    -- To_String --
    ---------------
@@ -3502,7 +3518,8 @@ package body V2P.Database is
       Preferences :    out User_Settings)
    is
       SQL  : constant String :=
-               "SELECT photo_per_page, filter, sort, image_size, css_url "
+               "SELECT photo_per_page, filter, sort, image_size, css_url, "
+                 & "accept_private_message "
                  & "FROM user_preferences WHERE user_login=" & Q (Login);
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -3526,7 +3543,9 @@ package body V2P.Database is
               Image_Size => Image_Size'Value
                 (DB.String_Vectors.Element (Line, 4)),
               CSS_URL    => To_Unbounded_String
-                (DB.String_Vectors.Element (Line, 5)));
+                (DB.String_Vectors.Element (Line, 5)),
+              Accept_Private_Message => Boolean'Value
+                ((DB.String_Vectors.Element (Line, 6))));
 
       else
          Preferences := Default_User_Settings;

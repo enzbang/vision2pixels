@@ -81,8 +81,8 @@
             </dd>
           </dl>
         </div>
-        <p><input name="CHECK"
-                  id="bnc_comment_form_enter" type="submit" value="Vérifier"/>
+        <p><input name="CHECK" id="bnc_comment_form_enter"
+		  type="submit" value="@_BABEL_CHECK_@"/>
         </p>
       </fieldset>
     </form>
@@ -95,10 +95,9 @@
   @@--  Placeholder for the comment preview
   </div>
   <form enctype="multipart/form-data" id="bnc_comment_register" action="#" method="post">
-    <input name="REGISTER_COMMENT" id="bnc_comment_register_enter" type="submit" value="Envoyer" />
+    <input name="REGISTER_COMMENT" id="bnc_comment_register_enter" type="submit" value="@_BABEL_SEND_@" />
   </form>
 </div>
-
 
 @@ELSE@@
     <p id="bnc_noanonymouscomment">@_BABEL_NO_ANONYMOUS_COMMENT_@</p>
