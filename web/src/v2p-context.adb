@@ -27,7 +27,6 @@ with V2P.Template_Defs.Set_Global;
 package body V2P.Context is
 
    use V2P;
-   use AWS;
 
    --------------------------
    -- Set_User_Preferences --
@@ -35,6 +34,7 @@ package body V2P.Context is
 
    procedure Set_User_Preferences
      (Context   : not null access Object;
+      SID       : in Session.Id;
       User_Data : in Database.User_Data) is
    begin
       Context.Set_Value
@@ -49,6 +49,8 @@ package body V2P.Context is
       Context.Set_Value
         (Template_Defs.Set_Global.FORUM_SORT,
          Database.Forum_Sort'Image (User_Data.Preferences.Sort));
+
+      Session.Set (SID, Template_Defs.Set_Global.ADMIN, User_Data.Admin);
    end Set_User_Preferences;
 
    ------------
@@ -109,7 +111,7 @@ package body V2P.Context is
                --  Recover user's preferences
 
                Set_User_Preferences
-                 (Context, Database.Get_User_Data (Cookie_User));
+                 (Context, SID, Database.Get_User_Data (Cookie_User));
 
                --  Record that the cookie is set as we do not want to generate
                --  a new one.
@@ -119,7 +121,7 @@ package body V2P.Context is
             else
                --  No session login and no cookie, new user set preferences to
                --  default.
-               Set_User_Preferences (Context, Database.No_User_Data);
+               Set_User_Preferences (Context, SID, Database.No_User_Data);
             end if;
          end Read_Cookie;
 
@@ -132,6 +134,7 @@ package body V2P.Context is
 
          Set_User_Preferences
            (Context,
+            SID,
             Database.Get_User_Data
               (Session.Get (SID, Template_Defs.Set_Global.LOGIN)));
 
