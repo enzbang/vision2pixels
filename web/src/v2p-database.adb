@@ -63,6 +63,7 @@ with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_User_Voted_Photos_List;
 with V2P.Template_Defs.Page_Rss_Recent_Photos;
 with V2P.Template_Defs.Set_Global;
+
 with V2P.Template_Defs.R_Block_Forum_List;
 
 package body V2P.Database is
@@ -3181,7 +3182,7 @@ package body V2P.Database is
    ---------------------
 
    procedure Register_Cookie (Login : in String; Cookie : in String) is
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
    begin
       DBH.Handle.Execute
         ("INSERT INTO remember_user VALUES ("
