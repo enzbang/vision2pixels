@@ -14,6 +14,9 @@
 
 <p>Amélioration du temps de chargement des pages utilisateurs.</p>
 
+<p>Lors de l'ajout d'un commentaire, le bouton [Envoyer] est maintenant
+   visible après avoir cliqué sur [Vérifier].</p>
+
 <h2>Version 3.0.3 (juin 2009)</h2>
 
 <p>Lors de la reconnection automatique les préférences utilisateurs sont
