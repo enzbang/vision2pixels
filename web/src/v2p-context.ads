@@ -27,6 +27,7 @@ with V2P.Database;
 package V2P.Context is
 
    use Ada;
+   use AWS;
    use AWS.Services.Web_Block.Context;
 
    package Counter is
@@ -53,6 +54,7 @@ package V2P.Context is
 
    procedure Set_User_Preferences
      (Context   : not null access Object;
+      SID       : in Session.Id;
       User_Data : in Database.User_Data);
    --  Set user preferences into the context after user is logged in
 
