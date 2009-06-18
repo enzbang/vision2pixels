@@ -66,6 +66,8 @@ with V2P.Template_Defs.Set_Global;
 
 with V2P.Template_Defs.R_Block_Forum_List;
 
+private with V2P.Database.Support;
+
 package body V2P.Database is
 
    use Ada;
@@ -74,6 +76,7 @@ package body V2P.Database is
    use Morzhol;
    use Morzhol.Strings;
    use Morzhol.OS;
+   use V2P.Database.Support;
 
    use V2P.Template_Defs;
 
@@ -88,36 +91,11 @@ package body V2P.Database is
       N_CdC          : Natural;
    end record;
 
-   function F (F : in Float) return String;
-   pragma Inline (F);
-   --  Returns float image
-
    function Get_Fid
      (DBH      : in TLS_DBH_Access;
       Fid, Tid : in Id) return Id;
    pragma Inline (Get_Fid);
    --  Returns Fid is not empty otherwise compute it using Tid
-
-   function I (Int : in Integer) return String;
-   pragma Inline (I);
-   --  Returns Integer image
-
-   function Q (Str : in String) return String;
-   pragma Inline (Q);
-   --  Quote the string and double all single quote in Str to be able to insert
-   --  a quote into the database.
-   --  Returns Null if empty string
-
-   function Q (Str : in Unbounded_String) return String;
-   pragma Inline (Q);
-   --  As above but from an Unbounded_String
-
-   function Q (Bool : in Boolean) return String;
-   pragma Inline (Q);
-   --  As above but for a boolean
-
-   function "+"
-     (Str : in String) return Unbounded_String renames To_Unbounded_String;
 
    Lock_Register : Utils.Semaphore;
    --  Lock the application when registering a new user. We want to avoid two
@@ -173,15 +151,6 @@ package body V2P.Database is
       DBH.Handle.Execute
         ("DELETE FROM remember_user WHERE user_login=" & Q (Login));
    end Delete_User_Cookies;
-
-   -------
-   -- F --
-   -------
-
-   function F (F : in Float) return String is
-   begin
-      return Float'Image (F);
-   end F;
 
    ----------------
    -- Gen_Cookie --
@@ -2758,15 +2727,6 @@ package body V2P.Database is
       return Result;
    end Has_User_Vote;
 
-   -------
-   -- I --
-   -------
-
-   function I (Int : in Integer) return String is
-   begin
-      return Integer'Image (Int);
-   end I;
-
    -----------------------------
    -- Increment_Visit_Counter --
    -----------------------------
@@ -3137,45 +3097,6 @@ package body V2P.Database is
       Iter.End_Select;
       return Result;
    end Preferences_Exist;
-
-   -------
-   -- Q --
-   -------
-
-   function Q (Str : in String) return String is
-      S : String (1 .. 2 + Str'Length * 2);
-      J : Positive := S'First;
-   begin
-      if Str = "" then
-         return "NULL";
-      end if;
-
-      S (J) := ''';
-
-      for K in Str'Range loop
-         if Str (K) = ''' then
-            J := J + 1;
-            S (J) := ''';
-         end if;
-         J := J + 1;
-         S (J) := Str (K);
-      end loop;
-
-      J := J + 1;
-      S (J) := ''';
-
-      return S (1 .. J);
-   end Q;
-
-   function Q (Str : in Unbounded_String) return String is
-   begin
-      return Q (To_String (Str));
-   end Q;
-
-   function Q (Bool : in Boolean) return String is
-   begin
-      return Q (Boolean'Image (Bool));
-   end Q;
 
    ---------------------
    -- Register_Cookie --
