@@ -37,6 +37,7 @@ with Morzhol.Logs;
 with Morzhol.Strings;
 
 with V2P.Context;
+with V2P.Database.Registration;
 with V2P.Database.Search;
 with V2P.Settings;
 with V2P.User_Validation;
@@ -675,6 +676,23 @@ package body V2P.Callbacks.Ajax is
          Templates.Assoc
            (Template_Defs.R_Block_Pref_Private_Message.SELECTED, Status));
    end Onclick_Pref_Private_Message_Preference;
+
+   ----------------------------
+   -- Onclick_Send_Reminders --
+   ----------------------------
+
+   procedure Onclick_Send_Reminders
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+   begin
+      --  Only admins can call this routine
+      if Context.Exist (Template_Defs.Set_Global.ADMIN) then
+         Templates.Insert (Translations, Database.Registration.Send_Reminder);
+      end if;
+   end Onclick_Send_Reminders;
 
    --------------------------------------------
    -- Onclick_User_Photo_List_Goto_Next_Page --

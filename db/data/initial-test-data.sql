@@ -642,3 +642,10 @@ insert into post values (141, 'Hissez haut...', 88, NULL, 2, datetime(current_ti
 update forum
        set last_activity = datetime(current_timestamp, '-5.0003 days')
        where forum.id = 2;
+
+insert into user_to_validate
+   ('login', 'password', 'email')
+   values ('username1', '1', 'username1@obry.net');
+insert into user_to_validate
+   ('login', 'password', 'email')
+   values ('username2', '2', 'username2@obry.net');

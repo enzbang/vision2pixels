@@ -106,6 +106,12 @@ package V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set);
    --  Called when changing private message preference
 
+   procedure Onclick_Send_Reminders
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when clicking on button to send all reminders
+
    procedure Onclick_CSS_URL_Preference
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;

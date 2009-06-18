@@ -183,6 +183,11 @@ package V2P.Callbacks.Web_Block is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set);
 
+   procedure Users_To_Validate
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+
    procedure Vote_Week_Photo
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;

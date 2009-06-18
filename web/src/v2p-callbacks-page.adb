@@ -29,7 +29,7 @@ with Image.Data;
 
 with V2P.Callbacks.Web_Block;
 with V2P.Context;
-with V2P.Database;
+with V2P.Database.Registration;
 with V2P.Navigation_Links;
 with V2P.Settings;
 with V2P.URL;
@@ -43,6 +43,29 @@ with V2P.Template_Defs.Page_Photo_Post;
 with V2P.Template_Defs.Set_Global;
 
 package body V2P.Callbacks.Page is
+
+   -----------------
+   -- Delete_User --
+   -----------------
+
+   procedure Delete_User
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      P     : constant Parameters.List := Status.Parameters (Request);
+      Login : constant String :=
+                Parameters.Get (P, Template_Defs.Set_Global.LOGIN);
+      Key   : constant String :=
+                Parameters.Get (P, Template_Defs.Set_Global.KEY);
+   begin
+      if not Database.Registration.Delete_User (Login, Key) then
+         Templates.Insert
+           (Translations, Templates.Assoc
+              (Template_Defs.Page_Validate_User.ERROR, True));
+      end if;
+   end Delete_User;
 
    -----------------
    -- Forum_Entry --

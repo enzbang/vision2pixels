@@ -24,10 +24,11 @@ with Ada.Strings.Unbounded;
 with AWS.Utils;
 
 with V2P.URL;
-with V2P.Database;
+with V2P.Database.Registration;
 with V2P.Context;
 with V2P.Navigation_Links;
 with V2P.Settings;
+
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Comment;
@@ -917,6 +918,21 @@ package body V2P.Callbacks.Web_Block is
            (Template_Defs.Set_Global.USER_SORT,
             Database.User_Sort'Image (Sort)));
    end Users;
+
+   -----------------------
+   -- Users_To_Validate --
+   -----------------------
+
+   procedure Users_To_Validate
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context);
+   begin
+      Templates.Insert
+        (Translations, Database.Registration.Users_To_Validate);
+   end Users_To_Validate;
 
    ---------------------
    -- Vote_Week_Photo --

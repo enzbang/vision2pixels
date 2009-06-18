@@ -78,6 +78,7 @@ with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_Users;
+with V2P.Template_Defs.Block_Users_To_Validate;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
 
 with V2P.Template_Defs.Chunk_Forum_List_Select;
@@ -87,6 +88,7 @@ with V2P.Template_Defs.Chunk_V2p_Top;
 
 with V2P.Template_Defs.Page_Admin;
 with V2P.Template_Defs.Page_Cdc;
+with V2P.Template_Defs.Page_Delete_User;
 with V2P.Template_Defs.Page_Error;
 with V2P.Template_Defs.Page_Fatal_Error;
 with V2P.Template_Defs.Page_Forum_Entry;
@@ -125,6 +127,7 @@ with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Photo_List;
 with V2P.Template_Defs.R_Block_User_Preferences;
 with V2P.Template_Defs.R_Block_Users;
+with V2P.Template_Defs.R_Block_Users_To_Validate;
 with V2P.Template_Defs.R_Block_Vote_Week_Photo;
 with V2P.Template_Defs.R_Context_Error;
 with V2P.Template_Defs.R_Page_Search;
@@ -836,6 +839,11 @@ package body V2P.Web_Server is
          Callbacks.Page.Validate_User'Access);
 
       Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Delete_User.Set.URL,
+         Template_Defs.Page_Delete_User.Template,
+         Callbacks.Page.Delete_User'Access);
+
+      Services.Web_Block.Registry.Register
         (Template_Defs.Page_Cdc.Set.URL,
          Template_Defs.Page_Cdc.Template,
          Callbacks.Page.CdC'Access);
@@ -1163,6 +1171,14 @@ package body V2P.Web_Server is
         (Template_Defs.Page_Lost_Password.Ajax.onsubmit_plp_lost_password,
          Template_Defs.R_Page_Lost_Password.Template,
          Callbacks.Ajax.Onsubmit_Plp_Lost_Password'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Users_To_Validate.
+           Ajax.onclick_butv_send_reminders,
+         Template_Defs.R_Block_Users_To_Validate.Template,
+         Callbacks.Ajax.Onclick_Send_Reminders'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

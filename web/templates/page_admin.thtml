@@ -2,7 +2,7 @@
 @@--
 @@SET@@ SET_URL = /admin
 @@--
-@@INCLUDE@@ chunk_v2p_top.thtml (1=>@_BABEL_ADMIN_@, 2=>admin_page, 4=>"notebook")
+@@INCLUDE@@ chunk_v2p_top.thtml "@_BABEL_V2P_SMALL_WEBSITE_NAME_@ - Administration" page_admin yui-t7
 <div id="pa_admin_page">
 @@IF@@ @_ADMIN_@
 <ul id="pa_Tabs">
@@ -13,7 +13,10 @@
 
 @@-- Create user page
 <div class="TabContents" id="page1">
-<p>Cette page est pour le moment vide.</p>
+<div id="pa_users_to_validate">
+@_LAZY_USERS_TO_VALIDATE_@
+</div>
+<div id="pa_message"></div>
 </div>
 <script language="javascript">setCurrentPage_Tabs()</script>
 @@ELSE@@

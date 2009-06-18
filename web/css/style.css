@@ -1009,6 +1009,7 @@ body.transparent {
 }
 body.user_register_page #cvt_contents,
 body.user_page #cvt_contents,
+body.admin_page #cvt_contents,
 body.new #cvt_contents,
 body.termofuse #cvt_contents,
 body.help #cvt_contents {
@@ -1029,7 +1030,7 @@ body.help #cvt_main {
     -moz-border-radius:4px;
     line-height: 1.5em;
 }
-body.user_page #cvt_main {
+body.user_page #cvt_main, body.admin_page #cvt_main {
     width: 80%;
 }
 
@@ -1271,4 +1272,13 @@ label.inline {
 #bpcu_css_url_form input[type="submit"] {
     width: 10em;
     padding: 0;
+}
+#pa_admin_page {
+    margin-top: 3em;
+}
+#butv_send_reminders {
+    margin-top: 1em;
+}
+#pa_users_to_validate p, #pa_message {
+    margin-top: 1em;
 }

@@ -1,0 +1,25 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<div id="butv_users">
+<table class="user_list">
+<tr class="table_header">
+<th>@_BABEL_LOGIN_@</th>
+<th>@_BABEL_EMAIL_@</th>
+<th>@_BABEL_REGISTERED_ON_@</th>
+<th>@_BABEL_DATE_LAST_REMINDER_@</th>
+<th>@_BABEL_NB_REMINDER_@</th>
+</tr>
+@@TABLE@@
+<tr>
+<td>@_LOGIN_@</td>
+<td>@_EMAIL_@</td>
+<td>@_CREATED_@</td>
+<td>@_LAST_REMINDER_@</td>
+<td>@_NB_REMINDER_@</td>
+</tr>
+@@END_TABLE@@
+</table>
+</div>
+@@--
+<p><a id="butv_send_reminders" href="#">@_BABEL_SEND_REMINDERS_@</a></p>
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, butv_send_reminders)
