@@ -31,7 +31,10 @@ with AWS.Templates;
 with V2P.Settings;
 with V2P.User_Validation;
 
+with V2P.Template_Defs.Email_From_User;
+with V2P.Template_Defs.Email_Lost_Password;
 with V2P.Template_Defs.Email_Send_Reminder;
+with V2P.Template_Defs.Email_User_Validation;
 
 package body V2P.Email is
 
@@ -92,6 +95,72 @@ package body V2P.Email is
       when E : others =>
          raise Cannot_Send with Exception_Message (E);
    end Send;
+
+   ------------------------
+   -- Send_Lost_Password --
+   ------------------------
+
+   procedure Send_Lost_Password (Login, Password, Email : in String) is
+      Set : Templates.Translate_Set;
+   begin
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Email_Lost_Password.USER_PASSWORD, Password));
+
+      Send
+        (Login        => Login,
+         To           => Email,
+         Template     => Template_Defs.Email_Lost_Password.Template,
+         Translations => Set,
+         Subject      => "Mot de passe Vision2Pixels");
+   end Send_Lost_Password;
+
+   --------------------------
+   -- Send_Private_Message --
+   --------------------------
+
+   procedure Send_Private_Message (From, Login, Email, Message : in String) is
+      Set : Templates.Translate_Set;
+   begin
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Email_From_User.FROM, From));
+      Templates.Insert
+        (Set,
+         Templates.Assoc (Template_Defs.Email_From_User.MESSAGE, Message));
+
+      Send
+        (Login        => Login,
+         To           => Email,
+         Template     => Template_Defs.Email_From_User.Template,
+         Translations => Set,
+         Subject      => "Message de Vision2Pixels");
+   end Send_Private_Message;
+
+   ------------------------
+   -- Send_Register_User --
+   ------------------------
+
+   procedure Send_Register_User (Login, Password, Email : in String) is
+      Key : constant String := User_Validation.Key (Login, Password, Email);
+      Set : Templates.Translate_Set;
+   begin
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Email_User_Validation.USER_LOGIN, Login));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Email_User_Validation.USER_EMAIL, Email));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Email_User_Validation.KEY, Key));
+
+      Send
+        (Login        => Login,
+         To           => Email,
+         Template     => Template_Defs.Email_User_Validation.Template,
+         Translations => Set,
+         Subject      => "Enregistrement sur Vision2Pixels");
+   end Send_Register_User;
 
    -------------------
    -- Send_Reminder --

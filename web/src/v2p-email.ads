@@ -23,6 +23,16 @@ package V2P.Email is
 
    Cannot_Send : exception;
 
+   procedure Send_Register_User (Login, Password, Email : in String);
+   --  Send message for registration
+
    procedure Send_Reminder (Login, Password, Email : in String);
+   --  Send reminder message for the registration (users not yet validated)
+
+   procedure Send_Lost_Password (Login, Password, Email : in String);
+   --  Send password to given address
+
+   procedure Send_Private_Message (From, Login, Email, Message : in String);
+   --  Send private message from From to (Login, Email)
 
 end V2P.Email;

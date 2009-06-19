@@ -23,13 +23,8 @@ with Ada.Strings.Unbounded;
 
 with GNAT.String_Split;
 
-with AWS.Attachments;
-with AWS.Headers.Set;
-with AWS.Messages;
-with AWS.MIME;
 with AWS.Parameters;
 with AWS.Session;
-with AWS.SMTP.Client;
 
 with Image.Metadata.Geographic;
 
@@ -39,8 +34,8 @@ with Morzhol.Strings;
 with V2P.Context;
 with V2P.Database.Registration;
 with V2P.Database.Search;
+with V2P.Email;
 with V2P.Settings;
-with V2P.User_Validation;
 with V2P.Wiki;
 with V2P.Syndication;
 
@@ -74,9 +69,6 @@ with V2P.Template_Defs.Chunk_Search_User;
 with V2P.Template_Defs.Chunk_Search_Comment;
 with V2P.Template_Defs.Chunk_Search_Post;
 with V2P.Template_Defs.Chunk_Search_Text_Post;
-with V2P.Template_Defs.Email_Lost_Password;
-with V2P.Template_Defs.Email_From_User;
-with V2P.Template_Defs.Email_User_Validation;
 with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
@@ -1209,52 +1201,19 @@ package body V2P.Callbacks.Ajax is
 
       --  Send the e-mail with the password
 
-      Send_Mail : declare
-         Localhost : constant SMTP.Receiver :=
-                       SMTP.Client.Initialize (Settings.SMTP_Server);
-         Content   : Attachments.List;
-         Headers   : AWS.Headers.List;
-         Result    : SMTP.Status;
-         Set       : Templates.Translate_Set;
-      begin
+      V2P.Email.Send_Lost_Password (Email, Password, Email);
+
+   exception
+      when others =>
+         Morzhol.Logs.Write
+           (Name    => Module,
+            Content =>
+            "(Onsubmit_Plp_Lost_Email) : sending e-mail failed for email "
+            & Email & ", password " & Password,
+            Kind    => Morzhol.Logs.Error);
          Templates.Insert
-           (Set, Templates.Assoc
-              (Template_Defs.Email_Lost_Password.USER_PASSWORD, Password));
-
-         AWS.Headers.Set.Add
-           (Headers,
-            Messages.Content_Type_Token,
-            MIME.Text_Plain & "; charset=UTF-8");
-
-         Attachments.Add
-           (Content,
-            Name    => "message",
-            Data    => Attachments.Value
-              (Data   => Templates.Parse
-                 (Template_Defs.Email_Lost_Password.Template, Set),
-               Encode => Attachments.Base64),
-            Headers => Headers);
-
-         SMTP.Client.Send
-           (Server      => Localhost,
-            From        => SMTP.E_Mail ("V2P", "no-reply@no-reply.com"),
-            To          => SMTP.Recipients'(1 => SMTP.E_Mail (Email, Email)),
-            Subject     => "Mot de passe Vision2Pixels",
-            Attachments => Content,
-            Status      => Result);
-
-      exception
-         when others =>
-            Morzhol.Logs.Write
-              (Name    => Module,
-               Content =>
-               "(Onsubmit_Plp_Lost_Email) : sending e-mail failed for email "
-               & Email & ", password " & Password,
-               Kind    => Morzhol.Logs.Error);
-            Templates.Insert
-              (Translations,
-               Templates.Assoc (R_Page_Lost_Password.ERROR, True));
-      end Send_Mail;
+           (Translations,
+            Templates.Assoc (R_Page_Lost_Password.ERROR, True));
    end Onsubmit_Plp_Lost_Password;
 
    ------------------------------
@@ -1402,51 +1361,18 @@ package body V2P.Callbacks.Ajax is
                       (P, Block_Private_Message.HTTP.bpm_user_name);
    begin
       Send_Mail : declare
-         Localhost : constant SMTP.Receiver :=
-                       SMTP.Client.Initialize (Settings.SMTP_Server);
          Login     : constant String :=
                        Context.Get_Value (Set_Global.LOGIN);
-         Content   : Attachments.List;
-         Headers   : AWS.Headers.List;
-         Result    : SMTP.Status;
-         Set       : Templates.Translate_Set;
          User_Data : Database.User_Data;
       begin
          User_Data := Database.Get_User_Data (User_Name);
 
-         Templates.Insert
-           (Set, Templates.Assoc (Email_From_User.FROM, Login));
-         Templates.Insert
-           (Set, Templates.Assoc (Email_From_User.MESSAGE, Message));
-
-         AWS.Headers.Set.Add
-           (Headers,
-            Messages.Content_Type_Token,
-            MIME.Text_Plain & "; charset=UTF-8");
-
-         Attachments.Add
-           (Content,
-               Name => "message",
-               Headers => Headers,
-            Data => Attachments.Value
-              (Data   => Templates.Parse
-                 (Template_Defs.Email_From_User.Template, Set),
-               Encode => Attachments.Base64));
-
-         SMTP.Client.Send
-           (Server      => Localhost,
-            From        => SMTP.E_Mail ("V2P", "no-reply@no-reply.com"),
-            To          => SMTP.Recipients'(1 => SMTP.E_Mail
-                                            (User_Name,
-                                               To_String (User_Data.Email))),
-            Subject     => "Message de Vision2Pixels",
-            Attachments => Content,
-            Status      => Result);
+         Email.Send_Private_Message
+           (Login, User_Name, To_String (User_Data.Email), Message);
 
          Templates.Insert
            (Translations,
-            Templates.Assoc
-              (R_Block_Send_Private_Message.ERROR, not SMTP.Is_Ok (Result)));
+            Templates.Assoc (R_Block_Send_Private_Message.ERROR, False));
 
       exception
          when others =>
@@ -1498,57 +1424,19 @@ package body V2P.Callbacks.Ajax is
 
       --  Send the e-mail for confirmation
 
-      Send_Mail : declare
-         Localhost : constant SMTP.Receiver :=
-                       SMTP.Client.Initialize (Settings.SMTP_Server);
-         Key       : constant String :=
-                       User_Validation.Key (Login, Password, Email);
-         Result    : SMTP.Status;
-         Content   : Attachments.List;
-         Headers   : AWS.Headers.List;
-         Set       : Templates.Translate_Set;
-      begin
+      V2P.Email.Send_Register_User (Login, Password, Email);
+
+   exception
+      when others =>
+         Morzhol.Logs.Write
+           (Name    => Module,
+            Content =>
+            "(Onsubmit_Pur_Register_User) : sending e-mail failed for "
+            & Login & ", email " & Email & ", password " & Password,
+            Kind    => Morzhol.Logs.Error);
          Templates.Insert
-           (Set, Templates.Assoc (Email_User_Validation.USER_LOGIN, Login));
-         Templates.Insert
-           (Set, Templates.Assoc (Email_User_Validation.USER_EMAIL, Email));
-         Templates.Insert
-           (Set, Templates.Assoc (Email_User_Validation.KEY, Key));
-
-         AWS.Headers.Set.Add
-           (Headers,
-            Messages.Content_Type_Token,
-            MIME.Text_Plain & "; charset=UTF-8");
-
-         Attachments.Add
-           (Content,
-            Name     => "message",
-            Data     => Attachments.Value
-              (Templates.Parse
-                 (Template_Defs.Email_User_Validation.Template, Set),
-               Encode => Attachments.Base64),
-            Headers  => Headers);
-
-         SMTP.Client.Send
-           (Server      => Localhost,
-            From        => SMTP.E_Mail ("V2P", "no-reply@no-reply.com"),
-            To          => SMTP.Recipients'(1 => SMTP.E_Mail (Email, Email)),
-            Subject     => "Enregistrement sur Vision2Pixels",
-            Attachments => Content,
-            Status      => Result);
-
-      exception
-         when others =>
-            Morzhol.Logs.Write
-              (Name    => Module,
-               Content =>
-               "(Onsubmit_Pur_Register_User) : sending e-mail failed for "
-               & Login & ", email " & Email & ", password " & Password,
-               Kind    => Morzhol.Logs.Error);
-            Templates.Insert
-              (Translations,
-               Templates.Assoc (R_Page_User_Register.ERROR, True));
-      end Send_Mail;
+           (Translations,
+            Templates.Assoc (R_Page_User_Register.ERROR, True));
    end Onsubmit_Pur_Register_User;
 
    -------------------

@@ -10,7 +10,6 @@
     <a href="#" onclick="switchTabPage_Tabs('page1')">@_BABEL_USERS_@</a>
   </li>
 </ul>
-
 @@-- Create user page
 <div class="TabContents" id="page1">
 <div id="pa_users_to_validate">
