@@ -68,6 +68,7 @@ with V2P.Template_Defs.Block_Pref_Image_Size;
 with V2P.Template_Defs.Block_Pref_Private_Message;
 with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Page;
+with V2P.Template_Defs.Block_Users_To_Validate;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Chunk_Search_User;
 with V2P.Template_Defs.Chunk_Search_Comment;
@@ -686,11 +687,20 @@ package body V2P.Callbacks.Ajax is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      pragma Unreferenced (Request);
+      use Template_Defs;
+      P    : constant Parameters.List := Status.Parameters (Request);
+      User : constant String :=
+               Parameters.Get (P, Block_Users_To_Validate.Set.USER);
+      Set  : Templates.Translate_Set;
    begin
       --  Only admins can call this routine
       if Context.Exist (Template_Defs.Set_Global.ADMIN) then
-         Templates.Insert (Translations, Database.Registration.Send_Reminder);
+         if User = "" then
+            Set := Database.Registration.Send_Reminder;
+         else
+            Set := Database.Registration.Send_Reminder (User);
+         end if;
+         Templates.Insert (Translations, Set);
       end if;
    end Onclick_Send_Reminders;
 

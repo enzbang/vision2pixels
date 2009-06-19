@@ -176,6 +176,7 @@
 @@SET@@ BABEL_NB_REMINDER="Nombre rappel"
 @@SET@@ BABEL_CANNOT_SEND_REMINDERS="Impossible d'envoyer des rappels"
 @@SET@@ BABEL_REMINDERS_SENT="Rappels envoyés"
+@@SET@@ BABEL_SEND_REMINDER="▶ envoyer rappel"
 @@--
 @@--  Preferences
 @@--

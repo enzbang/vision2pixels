@@ -1183,6 +1183,15 @@ package body V2P.Web_Server is
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Users_To_Validate.
+           Ajax.onclick_butv_send_reminder,
+         Template_Defs.R_Block_Users_To_Validate.Template,
+         Callbacks.Ajax.Onclick_Send_Reminders'Access,
+         Prefix           => True,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
         (Template_Defs.Page_Search.Ajax.onsubmit_ps_search_form,
          Template_Defs.R_Page_Search.Template,
          Callbacks.Ajax.Onsubmit_Search_Form'Access,
