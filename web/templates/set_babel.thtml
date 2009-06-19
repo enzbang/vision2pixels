@@ -171,6 +171,12 @@
 @@SET@@ BABEL_SEARCH="Recherche"
 @@SET@@ BABEL_SYM_OPEN="▼"
 @@SET@@ BABEL_SYM_CLOSED="▶"
+@@SET@@ BABEL_SEND_REMINDERS="Envoyer rappels d'inscription"
+@@SET@@ BABEL_DATE_LAST_REMINDER="Dernier rappel"
+@@SET@@ BABEL_NB_REMINDER="Nombre rappel"
+@@SET@@ BABEL_CANNOT_SEND_REMINDERS="Impossible d'envoyer des rappels"
+@@SET@@ BABEL_REMINDERS_SENT="Rappels envoyés"
+@@SET@@ BABEL_SEND_REMINDER="▶ envoyer rappel"
 @@--
 @@--  Preferences
 @@--

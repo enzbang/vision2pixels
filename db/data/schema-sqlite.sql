@@ -22,7 +22,9 @@ create table "user_to_validate" (
    "login" varchar(50) not null primary key,
    "password" varchar(20) not null,
    "email" varchar(50) not null unique,
-   "created" date default current_timestamp
+   "created" date default current_timestamp,
+   "last_reminder" date default current_timestamp,
+   "nb_reminder" integer default 0
 );
 
 create trigger add_user_page after insert on user

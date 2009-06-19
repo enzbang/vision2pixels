@@ -37,6 +37,7 @@ with Morzhol.Logs;
 with Morzhol.Strings;
 
 with V2P.Context;
+with V2P.Database.Registration;
 with V2P.Database.Search;
 with V2P.Settings;
 with V2P.User_Validation;
@@ -67,6 +68,7 @@ with V2P.Template_Defs.Block_Pref_Image_Size;
 with V2P.Template_Defs.Block_Pref_Private_Message;
 with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Page;
+with V2P.Template_Defs.Block_Users_To_Validate;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
 with V2P.Template_Defs.Chunk_Search_User;
 with V2P.Template_Defs.Chunk_Search_Comment;
@@ -675,6 +677,32 @@ package body V2P.Callbacks.Ajax is
          Templates.Assoc
            (Template_Defs.R_Block_Pref_Private_Message.SELECTED, Status));
    end Onclick_Pref_Private_Message_Preference;
+
+   ----------------------------
+   -- Onclick_Send_Reminders --
+   ----------------------------
+
+   procedure Onclick_Send_Reminders
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      use Template_Defs;
+      P    : constant Parameters.List := Status.Parameters (Request);
+      User : constant String :=
+               Parameters.Get (P, Block_Users_To_Validate.Set.USER);
+      Set  : Templates.Translate_Set;
+   begin
+      --  Only admins can call this routine
+      if Context.Exist (Template_Defs.Set_Global.ADMIN) then
+         if User = "" then
+            Set := Database.Registration.Send_Reminder;
+         else
+            Set := Database.Registration.Send_Reminder (User);
+         end if;
+         Templates.Insert (Translations, Set);
+      end if;
+   end Onclick_Send_Reminders;
 
    --------------------------------------------
    -- Onclick_User_Photo_List_Goto_Next_Page --
