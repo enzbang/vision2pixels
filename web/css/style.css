@@ -964,6 +964,7 @@ ul#pfe_navigate_bottom li a:hover {
 
 div#bm_geo_metadata {
     width: 80%;
+    color: black;
 }
 
 /* overwrite placement */
