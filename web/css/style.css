@@ -662,7 +662,7 @@ h2#pfe_comments_section {
     font-size: 0.9em;
 }
 
-#pfe_image_infos td {
+#pfe_image_infos td, #pfe_image_infos th {
     width: 138px;
     margin: 0;
     padding: 0 0 0 80px;
