@@ -39,6 +39,7 @@
 @@END_IF@@
     </p>
     <p class="enternewcomment">
+       <input name="TID" id="bnc_tid" type="hidden" value=@_TID_@ />
       <label for="global_comment_input">@_BABEL_ENTER_COMMENT_@</label>
       <textarea name="global_comment_input"
                 id="global_comment_input"></textarea>

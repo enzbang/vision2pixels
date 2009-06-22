@@ -432,6 +432,12 @@ package body V2P.Callbacks.Web_Block is
                     (Context => Context.all,
                      Name    => Template_Defs.Set_Global.TID))
                = Database.Forum_Photo));
+         Templates.Insert
+           (Translations, Templates.Assoc
+              (Template_Defs.Set_Global.TID,
+               (V2P.Context.Counter.Get_Value
+                    (Context => Context.all,
+                     Name    => Template_Defs.Set_Global.TID))));
       end if;
    end New_Comment;
 
@@ -485,6 +491,12 @@ package body V2P.Callbacks.Web_Block is
                     (Context => Context.all,
                      Name    => Template_Defs.Set_Global.TID)));
          end if;
+         Templates.Insert
+           (Translations, Templates.Assoc
+              (Template_Defs.Set_Global.TID,
+               (V2P.Context.Counter.Get_Value
+                  (Context => Context.all,
+                   Name    => Template_Defs.Set_Global.TID))));
       end if;
 
       Ratings := Ratings & "1" & "2" & "3" & "4" & "5";
