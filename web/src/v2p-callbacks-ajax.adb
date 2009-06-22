@@ -872,9 +872,8 @@ package body V2P.Callbacks.Ajax is
       Last_Comment : constant String :=
                        Context.Get_Value (Set_Global.CONTEXT_LAST_COMMENT);
       TID          : constant Database.Id :=
-                       V2P.Context.Counter.Get_Value
-                         (Context => Context.all,
-                          Name    => Template_Defs.Set_Global.TID);
+                       Database.Id'Value
+                         (Parameters.Get (P, Block_New_Comment.HTTP.TID));
 
       Forum_Type   : V2P.Database.Forum_Type := V2P.Database.Forum_Text;
       Photo_Id     : V2P.Database.Id := V2P.Database.Empty_Id;
@@ -1412,9 +1411,9 @@ package body V2P.Callbacks.Ajax is
       Login    : constant String :=
                    Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       TID      : constant Database.Id :=
-                   V2P.Context.Counter.Get_Value
-                     (Context => Context.all,
-                      Name    => Template_Defs.Set_Global.TID);
+                   Database.Id'Value
+                     (Parameters.Get (P, Template_Defs.Set_Global.TID));
+
       Criteria : constant String :=
                    Parameters.Get
                      (P, Block_New_Vote.Set.AJAX_RATE_CRITERIA);
