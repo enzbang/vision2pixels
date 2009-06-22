@@ -192,11 +192,11 @@ AWS.Context = new function() {
 
       if (!is_new_context
           && (!document.referrer || history.length == history_first)) {
-	 @@--  This is a new page in the browser
-	 @@--  Renew the context
+         @@--  This is a new page in the browser
+         @@--  Renew the context
 
-	 is_new_context = true;
-	 AWS.Ajax.XML.request
+         is_new_context = true;
+         AWS.Ajax.XML.request
            ("/xml_reset_context.xml?CTX_WB_COPY=true", "", AWS.Context.update);
       }
       @@END_IF@@
