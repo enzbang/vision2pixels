@@ -1025,8 +1025,7 @@ package body V2P.Database is
    -------------------------
 
    function Get_Latest_Comments
-     (Limit    : in Positive;
-      TZ       : in String := "") return Templates.Translate_Set
+     (Limit    : in Positive) return Templates.Translate_Set
    is
       use type Templates.Tag;
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
@@ -1038,9 +1037,7 @@ package body V2P.Database is
       Comment_Id         : Templates.Tag;
       User               : Templates.Tag;
       Anonymous          : Templates.Tag;
-      Date_Iso_8601      : Templates.Tag;
       Date               : Templates.Tag;
-      Time               : Templates.Tag;
       Comment            : Templates.Tag;
       Filename           : Templates.Tag;
    begin
@@ -1048,9 +1045,7 @@ package body V2P.Database is
 
       DBH.Handle.Prepare_Select
         (Iter,
-         "SELECT post_id, comment.id, strftime('%Y-%m-%dT%H:%M:%SZ', "
-         & Timezone.Date_Time ("date", TZ) & "), " & Timezone.Date ("date", TZ)
-         & ", " & Timezone.Time ("date", TZ) & ", "
+        "SELECT post_id, comment.id, strftime('%Y-%m-%d %H:%M:%S', date), "
          & "user_login, anonymous_user, comment, "
          & "(SELECT filename FROM photo WHERE id=comment.photo_id), has_voted "
          & " FROM comment, post_comment"
@@ -1064,20 +1059,16 @@ package body V2P.Database is
            & DB.String_Vectors.Element (Line, 1);
          Comment_Id    := Comment_Id
            & DB.String_Vectors.Element (Line, 2);
-         Date_Iso_8601 := Date_Iso_8601
-           & DB.String_Vectors.Element (Line, 3);
          Date          := Date
-           & DB.String_Vectors.Element (Line, 4);
-         Time          := Time
-           & DB.String_Vectors.Element (Line, 5);
+           & DB.String_Vectors.Element (Line, 3);
          User          := User
-           & DB.String_Vectors.Element (Line, 6);
+           & DB.String_Vectors.Element (Line, 4);
          Anonymous     := Anonymous
-           & DB.String_Vectors.Element (Line, 7);
+           & DB.String_Vectors.Element (Line, 5);
          Comment       := Comment
-           & DB.String_Vectors.Element (Line, 8);
+           & DB.String_Vectors.Element (Line, 6);
          Filename      := Filename
-           & DB.String_Vectors.Element (Line, 9);
+           & DB.String_Vectors.Element (Line, 7);
 
          Line.Clear;
       end loop;
@@ -1096,12 +1087,7 @@ package body V2P.Database is
         (Set, Templates.Assoc
            (Template_Defs.Chunk_Comment.COMMENT_IMAGE_SOURCE, Filename));
       Templates.Insert
-        (Set, Templates.Assoc
-           (Template_Defs.Chunk_Comment.DATE_ISO_8601, Date_Iso_8601));
-      Templates.Insert
         (Set, Templates.Assoc (Template_Defs.Chunk_Comment.DATE, Date));
-      Templates.Insert
-        (Set, Templates.Assoc (Template_Defs.Chunk_Comment.TIME, Time));
       Templates.Insert
         (Set, Templates.Assoc (Template_Defs.Chunk_Comment.USER, User));
       Templates.Insert
@@ -1120,8 +1106,8 @@ package body V2P.Database is
 
    function Get_Latest_Posts
      (Limit    : in Positive;
-      Add_Date : in Boolean := False;
-      TZ       : in String) return Templates.Translate_Set
+      TZ       : in String;
+      Add_Date : in Boolean := False) return Templates.Translate_Set
    is
       use type Templates.Tag;
 
@@ -1144,7 +1130,8 @@ package body V2P.Database is
       function Select_Date return String is
       begin
          if Add_Date then
-            return ", " & Timezone.Date ("post.date_post", TZ);
+            return ", strftime('%Y-%m-%d %H:%M:%S', "
+              & Timezone.Date ("post.date_post", TZ) & ")";
          else
             return "";
          end if;
