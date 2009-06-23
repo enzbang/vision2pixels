@@ -105,6 +105,6 @@ package V2P.Defaults is
 
    SMTP_Server                 : constant String := "localhost";
 
-   Default_Timezone            : constant String := "+1";
+   Default_Timezone            : constant String := "+60";
 
 end V2P.Defaults;
