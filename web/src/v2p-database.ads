@@ -131,11 +131,13 @@ package V2P.Database is
      (Limit      : in Positive;
       TZ         : in String;
       Add_Date   : in Boolean := False;
-      Photo_Only : in Boolean := False) return Templates.Translate_Set;
+      Photo_Only : in Boolean := False;
+      From_User  : in String  := "") return Templates.Translate_Set;
    --  Returns the Limit latest posts from all photo based forums
 
    function Get_Latest_Comments
-     (Limit    : in Positive) return Templates.Translate_Set;
+     (Limit       : in Positive;
+      Post_Author : in String := "") return Templates.Translate_Set;
    --  Returns the Limit latest posts from all forums
 
    function Get_Latest_Users

@@ -1025,7 +1025,8 @@ package body V2P.Database is
    -------------------------
 
    function Get_Latest_Comments
-     (Limit    : in Positive) return Templates.Translate_Set
+     (Limit       : in Positive;
+      Post_Author : in String := "") return Templates.Translate_Set
    is
       use type Templates.Tag;
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
@@ -1043,14 +1044,29 @@ package body V2P.Database is
    begin
       Connect (DBH);
 
-      DBH.Handle.Prepare_Select
-        (Iter,
-        "SELECT post_id, comment.id, strftime('%Y-%m-%d %H:%M:%S', date), "
-         & "user_login, anonymous_user, comment, "
-         & "(SELECT filename FROM photo WHERE id=comment.photo_id), has_voted "
-         & " FROM comment, post_comment"
-         & " WHERE post_comment.comment_id=comment.id"
-         & " ORDER BY date LIMIT " & I (Limit));
+      if Post_Author = "" then
+         DBH.Handle.Prepare_Select
+           (Iter,
+            "SELECT post_id, comment.id,"
+            & " strftime('%Y-%m-%d %H:%M:%S', date),"
+            & " user_login, anonymous_user, comment,"
+            & " (SELECT filename FROM photo WHERE id=comment.photo_id),"
+            & " has_voted FROM comment, post_comment"
+            & " WHERE post_comment.comment_id=comment.id"
+            & " ORDER BY date LIMIT " & I (Limit));
+      else
+         DBH.Handle.Prepare_Select
+           (Iter,
+            "SELECT post_comment.post_id, comment.id,"
+            & " strftime('%Y-%m-%d %H:%M:%S', date), "
+            & "comment.user_login, anonymous_user, comment, "
+            & "(SELECT filename FROM photo WHERE id=comment.photo_id),"
+            & " has_voted FROM comment, post_comment, user_post"
+            & " WHERE post_comment.comment_id=comment.id"
+            & " and user_post.post_id = post_comment.post_id"
+            & " and user_post.user_login = " & Q (Post_Author)
+            & " ORDER BY date LIMIT " & I (Limit));
+      end if;
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -1108,7 +1124,8 @@ package body V2P.Database is
      (Limit      : in Positive;
       TZ         : in String;
       Add_Date   : in Boolean := False;
-      Photo_Only : in Boolean := False) return Templates.Translate_Set
+      Photo_Only : in Boolean := False;
+      From_User  : in String  := "") return Templates.Translate_Set
    is
       use type Templates.Tag;
 
@@ -1152,18 +1169,27 @@ package body V2P.Database is
             Append (SQL, " FROM post, photo ");
          else
             Append (SQL, " FROM post, photo, forum, category ");
+            if From_User /= "" then
+               Append (SQL, ", user_post ");
+            end if;
          end if;
 
          if Photo_Only then
             Append (SQL, "WHERE post.photo_id=photo.id"
                     & " AND post.category_id=category.id"
-                    & " AND category.forum_id = forum.id"
+                    & " AND category.forum_id=forum.id"
                     & " AND forum.for_photo='TRUE'"
-                    & " AND post.hidden='FALSE' ");
+                    & " AND post.hidden='FALSE'");
+
+            if From_User /= "" then
+               Append (SQL,
+                       " AND user_post.post_id=post.id AND user_login="
+                       & Q (From_User));
+            end if;
          end if;
 
          Append
-           (SQL, "ORDER BY post.date_post DESC "
+           (SQL, " ORDER BY post.date_post DESC "
             & "LIMIT " & Utils.Image (Limit));
 
          DBH.Handle.Prepare_Select (Iter, -SQL);

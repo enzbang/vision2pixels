@@ -161,6 +161,7 @@
 @@SET@@ BABEL_FOCUS="Focus"
 @@SET@@ BABEL_LIGHTING="Lumière"
 @@-- RSS
+@@SET@@ BABEL_RSS_RECENT_PHOTOS_FROM="Flux RSS des dernières photos de"
 @@SET@@ BABEL_RSS_RECENT_POSTS="Posts récents"
 @@SET@@ BABEL_RSS_RECENT_POSTS_DESC="Les derniers posts arrivés sur le site de Vision2Pixels"
 @@SET@@ BABEL_RSS_RECENT_PHOTOS="Photographies récentes"
