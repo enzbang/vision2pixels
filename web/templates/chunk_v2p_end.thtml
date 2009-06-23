@@ -4,6 +4,8 @@
         <div id="pm_show_forum_list" class="clear">
             @_LAZY_FORUM_LIST_@
         </div>
+        <a href="/rss/lastcomments.xml">
+            <img alt="RSS" class="rss_link" src="/css/img/rss.png" />Derniers commentaires</a>
         @@END_IF@@
    </div>
 </body>

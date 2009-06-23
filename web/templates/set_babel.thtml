@@ -163,6 +163,9 @@
 @@-- RSS
 @@SET@@ BABEL_RSS_RECENT_PHOTOS="Photographies récentes"
 @@SET@@ BABEL_RSS_RECENT_PHOTOS_DESC="Les dernières photographies arrivées sur le site de Vision2Pixels"
+@@SET@@ BABEL_RSS_ALL_RECENT_COMMENTS="Derniers commentaires"
+@@SET@@ BABEL_RSS_ALL_RECENT_COMMENTS_DESC="Les derniers commentaires arrivés sur le site de Vision2Pixels"
+@@--
 @@SET@@ BABEL_MAXDIM="1000x1000"
 @@SET@@ BABEL_PHOTO_POST_RULES_FORMAT="Les images doivent être au format Jpeg."
 @@SET@@ BABEL_PHOTO_POST_RULES_MAX_DIM="La taille maximum d'une photographie ne doit pas dépasser 1000x1000 pixels. Toute photographie de taille supérieure sera rejetée."

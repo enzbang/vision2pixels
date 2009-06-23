@@ -133,6 +133,11 @@ package V2P.Database is
       TZ       : in String) return Templates.Translate_Set;
    --  Returns the Limit latest posts from all photo based forums
 
+   function Get_Latest_Comments
+     (Limit    : in Positive;
+      TZ       : in String := "") return Templates.Translate_Set;
+   --  Returns the Limit latest posts from all forums
+
    function Get_Latest_Users
      (Limit : in Positive) return Templates.Translate_Set;
    --  Returns the Limit latest registered users

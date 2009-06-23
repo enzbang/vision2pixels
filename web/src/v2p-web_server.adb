@@ -53,7 +53,6 @@ with V2P.Callbacks.Web_Block;
 with V2P.Context;
 with V2P.Database;
 with V2P.Settings;
-with V2P.Syndication;
 with V2P.URL;
 with V2P.Version;
 
@@ -108,6 +107,8 @@ with V2P.Template_Defs.Page_User;
 with V2P.Template_Defs.Page_User_Register;
 with V2P.Template_Defs.Page_Users;
 with V2P.Template_Defs.Page_Validate_User;
+with V2P.Template_Defs.Page_Rss_Last_Comments;
+with V2P.Template_Defs.Page_Rss_Last_Posts;
 
 with V2P.Template_Defs.Set_Global;
 
@@ -195,9 +196,6 @@ package body V2P.Web_Server is
 
    function Photos_Callback (Request : in Status.Data) return Response.Data;
    --  Photos callback
-
-   function RSS_Callback (Request : in Status.Data) return Response.Data;
-   --  RSS callback
 
    function Website_Data (Request : in Status.Data) return Response.Data;
    --  Website data (images, ...) callback
@@ -765,12 +763,6 @@ package body V2P.Web_Server is
          Prefix => True);
 
       Services.Dispatchers.URI.Register
-        (Main_Dispatcher,
-         Settings.RSS_Prefix,
-         Action => Dispatchers.Callback.Create (RSS_Callback'Access),
-         Prefix => True);
-
-      Services.Dispatchers.URI.Register
         (Dispatcher => Main_Dispatcher,
          URI        => Settings.Website_Data_Prefix,
          Action     => Dispatchers.Callback.Create (Website_Data'Access),
@@ -894,6 +886,22 @@ package body V2P.Web_Server is
         (Template_Defs.Page_Google_Map_View.Set.URL,
          Template_Defs.Page_Google_Map_View.Template,
          null);
+
+      --  Register RSS
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Rss_Last_Comments.Set.URL,
+         Template_Defs.Page_Rss_Last_Comments.Template,
+         Callbacks.Page.Rss_Last_Comments'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => False);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Rss_Last_Posts.Set.URL,
+         Template_Defs.Page_Rss_Last_Posts.Template,
+         Callbacks.Page.Rss_Last_Posts'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => False);
 
       --  Register Ajax callbacks
 
@@ -1235,37 +1243,6 @@ package body V2P.Web_Server is
       --  callback returning the corresponding file in the xml directory.
    end Register_Callbacks;
 
-   ------------------
-   -- RSS_Callback --
-   ------------------
-
-   function RSS_Callback (Request : in Status.Data) return Response.Data is
-      URI  : constant String := Status.URI (Request);
-      File : constant String := Compose
-        (V2P.Settings.RSS_Path,
-         URI (URI'First + Settings.RSS_Prefix'Length + 1 .. URI'Last));
-
-      Result : AWS.Response.Data;
-   begin
-      if not Directories.Exists (File)
-        or else Directories.Kind (File) /= Directories.Ordinary_File
-      then
-         Does_Not_Exist : declare
-            Translations : Templates.Translate_Set;
-         begin
-            return Response.Build
-              (Content_Type => MIME.Text_HTML,
-               Message_Body => String'(Templates.Parse
-                                         (Template_Defs.Page_Error.Template,
-                                          Translations)));
-         end Does_Not_Exist;
-      end if;
-
-      Result := Response.File (MIME.Text_XML, File);
-
-      return Result;
-   end RSS_Callback;
-
    ----------------
    -- Unregister --
    ----------------
@@ -1375,9 +1352,5 @@ begin  -- V2P.Web_Server : register vision2pixels website
    --  Init Ten_Year_From_Now
 
    In_Ten_Year := Clock + (3_650.0 * 86_400.0);
-
-   --  Generate RSS if don't exist
-
-   Syndication.Update_RSS_Last_Photos (Create_Only => True);
 
 end V2P.Web_Server;
