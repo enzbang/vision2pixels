@@ -15,7 +15,7 @@
          @@ELSE@@ 
           class="comment level_@_COMMENT_LEVEL_@">
          @@END_IF@@
-     @@END_IF@@
+      @@END_IF@@
     @@END_IF@@
       @@INCLUDE@@ chunk_comment.thtml
       @@IF@@ @_NB_LEVELS_TO_CLOSE_@ > 0
