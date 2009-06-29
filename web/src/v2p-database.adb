@@ -434,10 +434,13 @@ package body V2P.Database is
      (Tid : in Id; TZ : in String) return Templates.Translate_Set
    is
       use type Templates.Tag;
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Set  : Templates.Translate_Set;
-      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line : DB.String_Vectors.Vector;
+      DBH            : constant TLS_DBH_Access :=
+                         TLS_DBH_Access (DBH_TLS.Reference);
+      Set            : Templates.Translate_Set;
+      Iter           : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line           : DB.String_Vectors.Vector;
+      Date_Revealed  : Unbounded_String;
+      First_Revealed : Unbounded_String;
 
       Comment_Id         : Templates.Tag;
       Comment_Level      : Templates.Tag;
@@ -453,13 +456,32 @@ package body V2P.Database is
       Photo_Number       : Templates.Tag;
       Photo_Index        : Positive := 1;
    begin
+      Connect (DBH);
+
+      --  Get date post to set the DATE_FIRST_REVEALED
+
+      DBH.Handle.Prepare_Select
+        (Iter, "SELECT JULIANDAY(date_post, '+"
+         & Utils.Image (Settings.Anonymity_Hours) & " hours')"
+         & " FROM post WHERE id=" & To_String (Tid));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+         Date_Revealed := +DB.String_Vectors.Element (Line, 1);
+      end if;
+
+      Line.Clear;
+
+      --  Get comments
+
       DBH.Handle.Prepare_Select
         (Iter,
          "SELECT comment.id, strftime('%Y-%m-%dT%H:%M:%SZ', "
          & Timezone.Date_Time ("date", TZ) & "), " & Timezone.Date ("date", TZ)
          & ", " & Timezone.Time ("date", TZ) & ", "
          & "user_login, anonymous_user, comment, "
-         & "(SELECT filename FROM photo WHERE id=comment.photo_id), has_voted "
+         & "(SELECT filename FROM photo WHERE id=comment.photo_id), has_voted,"
+         & " JULIANDAY(date)"
          & " FROM comment, post_comment"
          & " WHERE post_id=" & To_String (Tid)
          & " AND post_comment.comment_id=comment.id");
@@ -467,25 +489,29 @@ package body V2P.Database is
       while Iter.More loop
          Iter.Get_Line (Line);
 
-         Comment_Id    := Comment_Id
-           & DB.String_Vectors.Element (Line, 1);
-         Date_Iso_8601 := Date_Iso_8601
-           & DB.String_Vectors.Element (Line, 2);
-         Date          := Date
-           & DB.String_Vectors.Element (Line, 3);
-         Time          := Time
-           & DB.String_Vectors.Element (Line, 4);
-         User          := User
-           & DB.String_Vectors.Element (Line, 5);
-         Anonymous     := Anonymous
-           & DB.String_Vectors.Element (Line, 6);
-         Comment       := Comment
-           & DB.String_Vectors.Element (Line, 7);
-
          declare
+            Id   : constant String := DB.String_Vectors.Element (Line, 1);
             File : constant String :=
                      DB.String_Vectors.Element (Line, 8);
          begin
+            if DB.String_Vectors.Element (Line, 10) > -Date_Revealed
+              and then First_Revealed = Null_Unbounded_String
+            then
+               First_Revealed := +Id;
+            end if;
+
+            Comment_Id    := Comment_Id & Id;
+            Date_Iso_8601 := Date_Iso_8601
+              & DB.String_Vectors.Element (Line, 2);
+            Date          := Date & DB.String_Vectors.Element (Line, 3);
+            Time          := Time & DB.String_Vectors.Element (Line, 4);
+            User          := User
+              & DB.String_Vectors.Element (Line, 5);
+            Anonymous     := Anonymous
+              & DB.String_Vectors.Element (Line, 6);
+            Comment       := Comment
+              & DB.String_Vectors.Element (Line, 7);
+
             Filename := Filename & File;
 
             if File = "" then
@@ -543,6 +569,9 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc
            (Chunk_Comment.HAS_VOTED, Has_Voted));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Block_Comments.ID_FIRST_REVEALED, First_Revealed));
 
       return Set;
    end Get_Comments;

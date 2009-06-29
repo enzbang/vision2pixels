@@ -347,6 +347,18 @@ ul.thumb_metadata {
    margin:0;
    font-weight:bold;
 }
+.has_been_revealed {
+   font-weight:bold;
+   color: #C6A937;
+   font-size: 0.8em;
+   border-top: 1px inset #C6A937;
+   width: 105%;
+   margin: 2ex 2ex 2em;
+   text-align: right;
+   letter-spacing: 0.5em;
+   text-transform: uppercase;
+   padding-top: 4px;
+}
 
 /* block specific */
 #bpm_status {

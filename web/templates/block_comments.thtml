@@ -6,6 +6,9 @@
     @@IF@@ @_HAS_VOTED_@ = "TRUE"
       <li class="pfe_has_voted">
     @@ELSE@@
+       @@IF@@ @_ID_FIRST_REVEALED_@ = @_COMMENT_ID_@
+       <li class="has_been_revealed"><span>@_BABEL_AUTHOR_REVEALED_@</span></li>
+       @@END_IF@@
       <li id="pfe_comment_@_COMMENT_ID_@"
       @@IF@@ @_USER_@ = @_OWNER_@
         class="comment level_@_COMMENT_LEVEL_@ type_author">

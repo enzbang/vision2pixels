@@ -99,6 +99,7 @@
 @@SET@@ BABEL_FORUMS="Forums"
 @@SET@@ BABEL_NOT_REVEALED="non révélé"
 @@SET@@ BABEL_REVEALED_WITHIN="révélé dans"
+@@SET@@ BABEL_AUTHOR_REVEALED="Auteur révélé"
 @@SET@@ BABEL_HOURS="heures"
 @@SET@@ BABEL_MINUTES="minutes"
 @@SET@@ BABEL_THE_AUTHOR="L'auteur"
