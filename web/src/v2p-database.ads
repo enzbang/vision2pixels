@@ -206,7 +206,7 @@ package V2P.Database is
       TZ    : in String) return Templates.Translate_Set;
    --  Returns information about N users starting at the given Offset
 
-   function Get_CdC return Templates.Translate_Set;
+   function Get_CdC (From : in Positive) return Templates.Translate_Set;
    --  Returns all CdC photos
 
    function Get_Metadata (Tid : in Id) return Templates.Translate_Set;

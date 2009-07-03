@@ -519,6 +519,58 @@ package body V2P.Callbacks.Ajax is
    end Onchange_Image_Size_Preference;
 
    --------------------------------
+   -- Onclick_CdC_Goto_Next_Page --
+   --------------------------------
+
+   procedure Onclick_CdC_Goto_Next_Page
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Translations);
+      use Template_Defs;
+      From : Positive :=
+               V2P.Context.Not_Null_Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Set_Global.NAV_FROM);
+   begin
+      From := From + Settings.Number_CdC_Listed;
+
+      --  Update FROM counter
+
+      V2P.Context.Not_Null_Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NAV_FROM,
+         Value   => From);
+   end Onclick_CdC_Goto_Next_Page;
+
+   ------------------------------------
+   -- Onclick_CdC_Goto_Previous_Page --
+   ------------------------------------
+
+   procedure Onclick_CdC_Goto_Previous_Page
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Translations);
+      use Template_Defs;
+      From : Positive :=
+               V2P.Context.Not_Null_Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Set_Global.NAV_FROM);
+   begin
+      From := From - Settings.Number_CdC_Listed;
+
+      --  Update FROM counter
+
+      V2P.Context.Not_Null_Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NAV_FROM,
+         Value   => From);
+   end Onclick_CdC_Goto_Previous_Page;
+
+   --------------------------------
    -- Onclick_CSS_URL_Preference --
    --------------------------------
 

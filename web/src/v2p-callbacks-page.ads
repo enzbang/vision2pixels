@@ -73,7 +73,7 @@ package V2P.Callbacks.Page is
    procedure CdC
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Translations : in out          Templates.Translate_Set) is null;
+      Translations : in out          Templates.Translate_Set);
 
    procedure Search
      (Request      : in              Status.Data;

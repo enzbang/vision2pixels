@@ -44,6 +44,20 @@ with V2P.Template_Defs.Set_Global;
 
 package body V2P.Callbacks.Page is
 
+   ---------
+   -- CdC --
+   ---------
+
+   procedure CdC
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Translations);
+   begin
+      Context.Remove (Template_Defs.Set_Global.NAV_FROM);
+   end CdC;
+
    -----------------
    -- Delete_User --
    -----------------

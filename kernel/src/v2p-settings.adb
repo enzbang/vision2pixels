@@ -44,7 +44,7 @@ package body V2P.Settings is
       Website_Data_Prefix, Wiki_Service_Name, Number_Latest_Posts,
       Number_Latest_Users, Google_Map_Key, Log_Path, Cache_Path, RSS_Host_URL,
       RSS_Path, RSS_Prefix, Compression, Max_Search_Results, SMTP_Server,
-      Number_Users_Listed, Default_Timezone);
+      Number_Users_Listed, Default_Timezone, Number_CdC_Listed);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -266,6 +266,15 @@ package body V2P.Settings is
       return Conf.Get_Value (Medium_Maximum_Width);
    end Medium_Maximum_Width;
 
+   -----------------------
+   -- Number_CdC_Listed --
+   -----------------------
+
+   function Number_CdC_Listed return Positive is
+   begin
+      return Conf.Get_Value (Number_CdC_Listed);
+   end Number_CdC_Listed;
+
    -------------------------
    -- Number_Latest_Posts --
    -------------------------
@@ -466,6 +475,7 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (Number_Users_Listed, Defaults.Number_Users_Listed);
    Conf.Set_Value (SMTP_Server, Defaults.SMTP_Server);
    Conf.Set_Value (Default_Timezone, Defaults.Default_Timezone);
+   Conf.Set_Value (Number_CdC_Listed, Defaults.Number_CdC_Listed);
 
    --  Now read the config file if any
 

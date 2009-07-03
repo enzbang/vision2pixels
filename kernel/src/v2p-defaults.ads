@@ -103,6 +103,8 @@ package V2P.Defaults is
 
    Number_Users_Listed         : constant Positive := 20;
 
+   Number_CdC_Listed           : constant Positive := 20;
+
    SMTP_Server                 : constant String := "localhost";
 
    Default_Timezone            : constant String := "+60";

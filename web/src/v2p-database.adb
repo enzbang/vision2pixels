@@ -292,32 +292,55 @@ package body V2P.Database is
    -- Get_CdC --
    -------------
 
-   function Get_CdC return Templates.Translate_Set is
-      DBH        : constant TLS_DBH_Access :=
-                     TLS_DBH_Access (DBH_TLS.Reference);
-      SQL        : constant String :=
-                     "SELECT q.post_id, p.filename, q.elected_on, "
-                       & "o.comment_counter, o.visit_counter, c.name, o.name "
-                       & "FROM photo_of_the_week q, photo p, post o, "
-                       & "category c "
-                       & "WHERE q.post_id=o.id"
-                       & " AND p.id=o.photo_id AND o.category_id=c.id"
-                       & " ORDER BY q.elected_on DESC";
-      Set        : Templates.Translate_Set;
-      Iter       : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line       : DB.String_Vectors.Vector;
-      TIDs       : Templates.Tag;
-      Thumbs     : Templates.Tag;
-      Date       : Templates.Tag;
-      Visits     : Templates.Tag;
-      Comments   : Templates.Tag;
-      Categories : Templates.Tag;
-      Names      : Templates.Tag;
+   function Get_CdC (From : in Positive) return Templates.Translate_Set is
+      DBH         : constant TLS_DBH_Access :=
+                      TLS_DBH_Access (DBH_TLS.Reference);
+      SQL         : constant String :=
+                      "SELECT q.post_id, p.filename, q.elected_on, "
+                        & "o.comment_counter, o.visit_counter, c.name, o.name "
+                        & "FROM photo_of_the_week q, photo p, post o, "
+                        & "category c "
+                        & "WHERE q.post_id=o.id"
+                        & " AND p.id=o.photo_id AND o.category_id=c.id"
+                        & " ORDER BY q.elected_on DESC"
+                        & " LIMIT " & Utils.Image (Settings.Number_CdC_Listed)
+                        & " OFFSET " & Utils.Image (From - 1);
+
+      Set         : Templates.Translate_Set;
+      Iter        : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line        : DB.String_Vectors.Vector;
+      TIDs        : Templates.Tag;
+      Thumbs      : Templates.Tag;
+      Date        : Templates.Tag;
+      Visits      : Templates.Tag;
+      Comments    : Templates.Tag;
+      Categories  : Templates.Tag;
+      Names       : Templates.Tag;
+      Lines       : Natural := 0;
+      Total_Lines : Natural := 0;
    begin
+      Connect (DBH);
+
+      --  Compute total number of CdC
+
+      DBH.Handle.Prepare_Select
+        (Iter, "SELECT count(*) FROM photo_of_the_week WHERE post_id!=0");
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+         Total_Lines := Positive'Value (DB.String_Vectors.Element (Line, 1));
+         Line.Clear;
+      end if;
+
+      Iter.End_Select;
+
+      --  Returns CdC
+
       DBH.Handle.Prepare_Select (Iter, SQL);
 
       while Iter.More loop
          Iter.Get_Line (Line);
+         Lines := Lines + 1;
 
          Templates.Append (TIDs, DB.String_Vectors.Element (Line, 1));
          Templates.Append (Thumbs, DB.String_Vectors.Element (Line, 2));
@@ -347,6 +370,16 @@ package body V2P.Database is
         (Set, Templates.Assoc (Template_Defs.Block_Cdc.CATEGORY, Categories));
       Templates.Insert
         (Set, Templates.Assoc (Template_Defs.Block_Cdc.NAME, Names));
+
+      Templates.Insert
+        (Set, Templates.Assoc (Set_Global.NAV_FROM, From));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Chunk_List_Navlink.NB_LINE_RETURNED, Lines));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Chunk_List_Navlink.NAV_NB_LINES_TOTAL, Total_Lines));
       return Set;
    end Get_CdC;
 
