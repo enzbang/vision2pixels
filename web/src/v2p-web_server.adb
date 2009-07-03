@@ -109,6 +109,7 @@ with V2P.Template_Defs.Page_Users;
 with V2P.Template_Defs.Page_Validate_User;
 with V2P.Template_Defs.Page_Rss;
 with V2P.Template_Defs.Page_Rss_Last_Comments;
+with V2P.Template_Defs.Page_Rss_Last_Photos;
 with V2P.Template_Defs.Page_Rss_Last_Posts;
 
 with V2P.Template_Defs.Set_Global;
@@ -906,6 +907,13 @@ package body V2P.Web_Server is
         (Template_Defs.Page_Rss_Last_Posts.Set.URL,
          Template_Defs.Page_Rss_Last_Posts.Template,
          Callbacks.Page.Rss_Last_Posts'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => False);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Rss_Last_Photos.Set.URL,
+         Template_Defs.Page_Rss_Last_Photos.Template,
+         Callbacks.Page.Rss_Last_Photos'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => False);
 

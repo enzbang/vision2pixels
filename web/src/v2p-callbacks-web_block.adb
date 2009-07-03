@@ -354,7 +354,8 @@ package body V2P.Callbacks.Web_Block is
         (Translations,
          Database.Get_Latest_Posts
            (Settings.Number_Latest_Posts,
-            TZ => Context.Get_Value (Template_Defs.Set_Global.TZ)));
+            TZ         => Context.Get_Value (Template_Defs.Set_Global.TZ),
+            Photo_Only => True));
    end Latest_Posts;
 
    ------------------

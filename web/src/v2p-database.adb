@@ -1105,9 +1105,10 @@ package body V2P.Database is
    ----------------------
 
    function Get_Latest_Posts
-     (Limit    : in Positive;
-      TZ       : in String;
-      Add_Date : in Boolean := False) return Templates.Translate_Set
+     (Limit      : in Positive;
+      TZ         : in String;
+      Add_Date   : in Boolean := False;
+      Photo_Only : in Boolean := False) return Templates.Translate_Set
    is
       use type Templates.Tag;
 
@@ -1145,13 +1146,22 @@ package body V2P.Database is
       Prepare_Select : declare
          SQL : Unbounded_String :=
                       +"SELECT post.id, post.name, filename"
-                        & Select_Date
-                        & " FROM post, forum, photo, category "
-                        & "WHERE post.photo_id=photo.id "
-                        & "AND post.category_id=category.id "
-                        & "AND category.forum_id=forum.id "
-                        & "AND forum.for_photo='TRUE' AND post.hidden='FALSE'";
+                        & Select_Date;
       begin
+         if not Photo_Only then
+            Append (SQL, " FROM post, photo ");
+         else
+            Append (SQL, " FROM post, photo, forum, category ");
+         end if;
+
+         if Photo_Only then
+            Append (SQL, "WHERE post.photo_id=photo.id"
+                    & " AND post.category_id=category.id"
+                    & " AND category.forum_id = forum.id"
+                    & " AND forum.for_photo='TRUE'"
+                    & " AND post.hidden='FALSE' ");
+         end if;
+
          Append
            (SQL, "ORDER BY post.date_post DESC "
             & "LIMIT " & Utils.Image (Limit));

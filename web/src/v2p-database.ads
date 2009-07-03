@@ -128,9 +128,10 @@ package V2P.Database is
    --  Set Revealed to True to retreive only revealed photos.
 
    function Get_Latest_Posts
-     (Limit    : in Positive;
-      TZ       : in String;
-      Add_Date : in Boolean := False) return Templates.Translate_Set;
+     (Limit      : in Positive;
+      TZ         : in String;
+      Add_Date   : in Boolean := False;
+      Photo_Only : in Boolean := False) return Templates.Translate_Set;
    --  Returns the Limit latest posts from all photo based forums
 
    function Get_Latest_Comments

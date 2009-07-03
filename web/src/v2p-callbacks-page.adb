@@ -41,6 +41,7 @@ with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Page_Validate_User;
 with V2P.Template_Defs.Page_Photo_Post;
 with V2P.Template_Defs.Page_Rss_Last_Comments;
+with V2P.Template_Defs.Page_Rss_Last_Photos;
 with V2P.Template_Defs.Page_Rss_Last_Posts;
 with V2P.Template_Defs.Set_Global;
 
@@ -498,6 +499,42 @@ package body V2P.Callbacks.Page is
         (Translations,
          Database.Get_Latest_Comments (Limit => 15));
    end Rss_Last_Comments;
+
+   ---------------------
+   -- Rss_Last_Photos --
+   ---------------------
+
+   procedure Rss_Last_Photos
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+   begin
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.FORUM_ENTRY_URL,
+            Template_Defs.Page_Forum_Entry.Set.URL));
+
+      Templates.Insert
+        (Translations, Templates.Assoc
+           (Template_Defs.Set_Global.THUMB_SOURCE_PREFIX,
+            Settings.Thumbs_Source_Prefix));
+
+      Templates.Insert
+        (Translations, Templates.Assoc
+           (Template_Defs.Page_Rss_Last_Posts.V2P_URL,
+            V2P.Settings.RSS_Host_URL));
+
+      Templates.Insert
+        (Translations,
+         Database.Get_Latest_Posts
+           (Limit      => 15,
+            Add_Date   => True,
+            TZ         => Context.Get_Value (Template_Defs.Set_Global.TZ),
+            Photo_Only => True));
+   end Rss_Last_Photos;
 
    --------------------
    -- Rss_Last_Posts --

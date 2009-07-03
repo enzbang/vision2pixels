@@ -94,4 +94,9 @@ package V2P.Callbacks.Page is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set);
 
+   procedure Rss_Last_Photos
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+
 end V2P.Callbacks.Page;
