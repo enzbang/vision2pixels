@@ -3494,6 +3494,23 @@ package body V2P.Database is
         ("UPDATE user SET last_logged=DATETIME('NOW') WHERE login=" & Q (Uid));
    end Set_Last_Logged;
 
+   --------------------
+   -- Set_Last_Visit --
+   --------------------
+
+   procedure Set_Last_Visit (Login : in String; TID : in Id) is
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      SQL : constant String :=
+              "INSERT OR REPLACE INTO last_user_visit "
+                & "('user_login', 'post_id', 'last_comment_id') VALUES ("
+                & Q (Login) & ", " & I (TID)
+                & ", (SELECT last_comment_id FROM post WHERE id="
+                & I (TID) & "))";
+   begin
+      Connect (DBH);
+      DBH.Handle.Execute (SQL);
+   end Set_Last_Visit;
+
    ---------------------
    -- Set_Preferences --
    ---------------------

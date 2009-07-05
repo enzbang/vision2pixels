@@ -372,6 +372,8 @@ package V2P.Database is
    procedure Remember (Login : in String; Status : in Boolean);
    --  Should we remember the user with a cookie ?
 
+   procedure Set_Last_Visit (Login : in String; TID : in Id);
+
 private
 
    Default_User_Settings : constant User_Settings :=

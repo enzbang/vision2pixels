@@ -449,6 +449,12 @@ package body V2P.Web_Server is
       V2P.Callbacks.Web_Block.Pref_CSS_URL
         (Request, Context'Access, Translations);
 
+      if Session.Exist (SID, Template_Defs.Set_Global.LOGIN)
+         and then Context.Exist ("Last_Visit")
+      then
+         Context.Remove ("Last_Visit"); --  Do not update last visit again !
+      end if;
+
       if Services.Web_Block.Registry.Content_Type (URI) = MIME.Text_HTML then
          --  The HTML case, we just redirect to the Web root
          Web_Page := Services.Web_Block.Registry.Build
@@ -491,6 +497,16 @@ package body V2P.Web_Server is
                & "; expires=" & HTTP_Date & "; path=/");
             Context.Set_Value ("cookie", "set");
          end Set_Cookie;
+      end if;
+
+      if Session.Exist (SID, Template_Defs.Set_Global.LOGIN)
+         and then Context.Exist ("Last_Visit")
+      then
+         --  Update last visit table
+
+         Database.Set_Last_Visit
+           (Session.Get (SID, Template_Defs.Set_Global.LOGIN),
+            V2P.Context.Not_Null_Counter.Get_Value (Context, "Last_Visit"));
       end if;
 
       return Web_Page;
