@@ -1,5 +1,5 @@
 @@INCLUDE@@ set_babel.thtml
-@@SET@@ SET_URL = /rss/lastcomments.xml
+@@SET@@ SET_URL = /rss/comments
 <?xml version="1.0"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>

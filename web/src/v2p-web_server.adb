@@ -107,6 +107,7 @@ with V2P.Template_Defs.Page_User;
 with V2P.Template_Defs.Page_User_Register;
 with V2P.Template_Defs.Page_Users;
 with V2P.Template_Defs.Page_Validate_User;
+with V2P.Template_Defs.Page_Rss;
 with V2P.Template_Defs.Page_Rss_Last_Comments;
 with V2P.Template_Defs.Page_Rss_Last_Posts;
 
@@ -888,6 +889,11 @@ package body V2P.Web_Server is
          null);
 
       --  Register RSS
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Rss.Set.URL,
+         Template_Defs.Page_Rss.Template,
+         null);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Rss_Last_Comments.Set.URL,
