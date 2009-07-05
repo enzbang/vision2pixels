@@ -363,3 +363,12 @@ create table remember_user (
     "cookie_content" varchar(15),
     "last_used" date default current_timestamp
 );
+
+create table last_user_visit (
+   "user_login" varchar(50),
+   "post_id" integer not null,
+   "last_comment_id" integer,
+   constraint unique_entry unique (user_login, post_id),
+   foreign key ("post_id") references post("id"),
+   foreign key ("last_comment_id") references comment("id")
+);
