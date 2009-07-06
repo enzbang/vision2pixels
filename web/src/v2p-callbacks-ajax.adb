@@ -35,6 +35,7 @@ with V2P.Context;
 with V2P.Database.Registration;
 with V2P.Database.Search;
 with V2P.Email;
+with V2P.Navigation_Links;
 with V2P.Settings;
 with V2P.Wiki;
 with V2P.Syndication;
@@ -528,20 +529,9 @@ package body V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Translations);
-      use Template_Defs;
-      From : Positive :=
-               V2P.Context.Not_Null_Counter.Get_Value
-                 (Context => Context.all,
-                  Name    => Set_Global.NAV_FROM);
    begin
-      From := From + Settings.Number_CdC_Listed;
-
-      --  Update FROM counter
-
-      V2P.Context.Not_Null_Counter.Set_Value
-        (Context => Context.all,
-         Name    => Template_Defs.Set_Global.NAV_FROM,
-         Value   => From);
+      Navigation_Links.Goto_Next_Previous
+        (Context, Settings.Number_CdC_Listed);
    end Onclick_CdC_Goto_Next_Page;
 
    ------------------------------------
@@ -554,20 +544,9 @@ package body V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Translations);
-      use Template_Defs;
-      From : Positive :=
-               V2P.Context.Not_Null_Counter.Get_Value
-                 (Context => Context.all,
-                  Name    => Set_Global.NAV_FROM);
    begin
-      From := From - Settings.Number_CdC_Listed;
-
-      --  Update FROM counter
-
-      V2P.Context.Not_Null_Counter.Set_Value
-        (Context => Context.all,
-         Name    => Template_Defs.Set_Global.NAV_FROM,
-         Value   => From);
+      Navigation_Links.Goto_Next_Previous
+        (Context, -Settings.Number_CdC_Listed);
    end Onclick_CdC_Goto_Previous_Page;
 
    --------------------------------
@@ -609,29 +588,12 @@ package body V2P.Callbacks.Ajax is
    is
       pragma Unreferenced (Request);
       use Template_Defs;
-      Last_Nb_Viewed : constant Natural :=
-                         V2P.Context.Counter.Get_Value
-                           (Context => Context.all,
-                            Name    => Set_Global.NAV_NB_LINES_RETURNED);
-      Total          : constant Natural :=
-                         V2P.Context.Counter.Get_Value
-                           (Context => Context.all,
-                            Name    => Set_Global.NAV_NB_LINES_TOTAL);
-      From           : Positive         :=
-                         V2P.Context.Not_Null_Counter.Get_Value
-                           (Context => Context.all,
-                            Name    => Set_Global.NAV_FROM);
    begin
-      if From + Last_Nb_Viewed < Total then
-         From := From + Last_Nb_Viewed;
-      end if;
-
-      --  Update FROM counter
-
-      V2P.Context.Not_Null_Counter.Set_Value
-        (Context => Context.all,
-         Name    => Template_Defs.Set_Global.NAV_FROM,
-         Value   => From);
+      Navigation_Links.Goto_Next_Previous
+        (Context,
+         V2P.Context.Not_Null_Counter.Get_Value
+           (Context => Context.all,
+            Name    => Set_Global.FILTER_PAGE_SIZE));
 
       Templates.Insert
         (Translations,
@@ -653,24 +615,12 @@ package body V2P.Callbacks.Ajax is
    is
       pragma Unreferenced (Request);
       use Template_Defs;
-      Last_From      : constant Positive :=
-                         V2P.Context.Not_Null_Counter.Get_Value
-                           (Context => Context.all,
-                            Name    => Set_Global.NAV_FROM);
-      Last_Nb_Viewed : constant Integer :=
-                         V2P.Context.Counter.Get_Value
-                           (Context => Context.all,
-                            Name    => Set_Global.NAV_NB_LINES_RETURNED);
-      From           : Positive := 1;
    begin
-      if Last_From > Last_Nb_Viewed then
-         From := Last_From - Last_Nb_Viewed;
-      end if;
-
-      V2P.Context.Not_Null_Counter.Set_Value
-        (Context => Context.all,
-         Name    => Template_Defs.Set_Global.NAV_FROM,
-         Value   => From);
+      Navigation_Links.Goto_Next_Previous
+        (Context,
+         -V2P.Context.Not_Null_Counter.Get_Value
+           (Context => Context.all,
+            Name    => Set_Global.FILTER_PAGE_SIZE));
 
       Templates.Insert
         (Translations,
@@ -758,20 +708,9 @@ package body V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Translations);
-      use Template_Defs;
-      From : Positive :=
-               V2P.Context.Not_Null_Counter.Get_Value
-                 (Context => Context.all,
-                  Name    => Set_Global.NAV_FROM);
    begin
-      From := From + Settings.Number_Latest_User_Posts;
-
-      --  Update FROM counter
-
-      V2P.Context.Not_Null_Counter.Set_Value
-        (Context => Context.all,
-         Name    => Template_Defs.Set_Global.NAV_FROM,
-         Value   => From);
+      Navigation_Links.Goto_Next_Previous
+        (Context, Settings.Number_Latest_User_Posts);
    end Onclick_User_Photo_List_Goto_Next_Page;
 
    ------------------------------------------------
@@ -784,20 +723,9 @@ package body V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Translations);
-      use Template_Defs;
-      From : Positive :=
-               V2P.Context.Not_Null_Counter.Get_Value
-                 (Context => Context.all,
-                  Name    => Set_Global.NAV_FROM);
    begin
-      From := From - Settings.Number_Latest_User_Posts;
-
-      --  Update FROM counter
-
-      V2P.Context.Not_Null_Counter.Set_Value
-        (Context => Context.all,
-         Name    => Template_Defs.Set_Global.NAV_FROM,
-         Value   => From);
+      Navigation_Links.Goto_Next_Previous
+        (Context, -Settings.Number_Latest_User_Posts);
    end Onclick_User_Photo_List_Goto_Previous_Page;
 
    ----------------------------------
@@ -810,20 +738,9 @@ package body V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Translations);
-      use Template_Defs;
-      From : Positive :=
-               V2P.Context.Not_Null_Counter.Get_Value
-                 (Context => Context.all,
-                  Name    => Set_Global.NAV_FROM);
    begin
-      From := From + Settings.Number_Users_Listed;
-
-      --  Update FROM counter
-
-      V2P.Context.Not_Null_Counter.Set_Value
-        (Context => Context.all,
-         Name    => Template_Defs.Set_Global.NAV_FROM,
-         Value   => From);
+      Navigation_Links.Goto_Next_Previous
+        (Context, Settings.Number_Users_Listed);
    end Onclick_Users_Goto_Next_Page;
 
    --------------------------------------
@@ -836,20 +753,9 @@ package body V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request, Translations);
-      use Template_Defs;
-      From : Positive :=
-               V2P.Context.Not_Null_Counter.Get_Value
-                 (Context => Context.all,
-                  Name    => Set_Global.NAV_FROM);
    begin
-      From := From - Settings.Number_Users_Listed;
-
-      --  Update FROM counter
-
-      V2P.Context.Not_Null_Counter.Set_Value
-        (Context => Context.all,
-         Name    => Template_Defs.Set_Global.NAV_FROM,
-         Value   => From);
+      Navigation_Links.Goto_Next_Previous
+        (Context, -Settings.Number_Users_Listed);
    end Onclick_Users_Goto_Previous_Page;
 
    --------------------------------------

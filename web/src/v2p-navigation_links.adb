@@ -121,6 +121,33 @@ package body V2P.Navigation_Links is
         (Context, Page_Size, From, Database.Everything, Translations);
    end Get_Threads;
 
+   ------------------------
+   -- Goto_Next_Previous --
+   ------------------------
+
+   procedure Goto_Next_Previous
+     (Context : not null access Services.Web_Block.Context.Object;
+      Moves   : in Integer)
+   is
+      From : Positive :=
+               V2P.Context.Not_Null_Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Template_Defs.Set_Global.NAV_FROM);
+   begin
+      if From + Moves < 1 then
+         From := 1;
+      else
+         From := From + Moves;
+      end if;
+
+      --  Update FROM counter
+
+      V2P.Context.Not_Null_Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NAV_FROM,
+         Value   => From);
+   end Goto_Next_Previous;
+
    ---------------
    -- Next_Post --
    ---------------

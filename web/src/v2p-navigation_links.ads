@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2008                          --
+--                         Copyright (C) 2007-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -55,6 +55,11 @@ package V2P.Navigation_Links is
    package Post_Ids is new Containers.Indefinite_Vectors
      (Index_Type => Positive, Element_Type => Positive);
    --  Post_Ids stores all visible post ids in forum threads page
+
+   procedure Goto_Next_Previous
+     (Context : not null access Services.Web_Block.Context.Object;
+      Moves   : in Integer);
+   --  Move context variable NAV_FROM to next/previous page using Moves number
 
 private
 
