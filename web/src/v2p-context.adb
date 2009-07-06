@@ -121,7 +121,14 @@ package body V2P.Context is
             else
                --  No session login and no cookie, new user set preferences to
                --  default.
-               Set_User_Preferences (Context, SID, Database.No_User_Data);
+               if not Context.Exist (Template_Defs.Set_Global.FILTER)
+                 or else not Context.Exist
+                   (Template_Defs.Set_Global.FILTER_PAGE_SIZE)
+                 or else not Context.Exist
+                   (Template_Defs.Set_Global.FORUM_SORT)
+               then
+                  Set_User_Preferences (Context, SID, Database.No_User_Data);
+               end if;
             end if;
          end Read_Cookie;
 
