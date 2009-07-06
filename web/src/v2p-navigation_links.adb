@@ -194,9 +194,9 @@ package body V2P.Navigation_Links is
                --  Fetch more post ids
 
                Set_Navigation
-                 (Context      => Context,
-                  From         => Nav_From + Page_Size - 1,
-                  Page_Size    => Page_Size * 2);
+                 (Context   => Context,
+                  From      => Nav_From + Page_Size - 1,
+                  Page_Size => Page_Size * 2);
 
                --  Recursive call to Next_Post as the next element has been
                --  loaded in Links.
@@ -261,9 +261,9 @@ package body V2P.Navigation_Links is
                --  Fetch more post ids
 
                Set_Navigation
-                 (Context      => Context,
-                  From         => Nav_From,
-                  Page_Size    => Page_Size * 2);
+                 (Context   => Context,
+                  From      => Nav_From,
+                  Page_Size => Page_Size * 2);
 
                --  Recursive call to Previous_Post as the previous element
                --  has been loaded in Links.
