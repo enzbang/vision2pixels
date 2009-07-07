@@ -184,6 +184,8 @@
 @@SET@@ BABEL_TODAY="Aujourd'hui"
 @@SET@@ BABEL_TWO_DAYS="Deux derniers jours"
 @@SET@@ BABEL_SEVEN_DAYS="Sept derniers jours"
+@@SET@@ BABEL_FIFTEEN_DAYS="Quinze derniers jours"
+@@SET@@ BABEL_ONE_MONTH="Dernier mois"
 @@SET@@ BABEL_ALL_MESSAGES="Tous les messages"
 @@SET@@ BABEL_NINE="Neuf"
 @@SET@@ BABEL_TEN="Dix"

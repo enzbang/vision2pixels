@@ -1763,7 +1763,7 @@ package body V2P.Database is
                Append (Where_Stmt, " AND comment.id=post.last_comment_id");
 
                case Filter is
-                  when Today | Two_Days | Seven_Days =>
+                  when Today .. One_Month =>
                      Append (Where_Stmt, " AND DATE(comment.date)");
 
                   when All_Messages =>
@@ -1772,7 +1772,7 @@ package body V2P.Database is
 
             when Last_Posted | Best_Noted | Need_Attention =>
                case Filter is
-                  when Today | Two_Days | Seven_Days =>
+                  when Today .. One_Month =>
                      Append (Where_Stmt, " AND DATE(post.date_post)");
 
                   when All_Messages =>
@@ -1789,6 +1789,12 @@ package body V2P.Database is
 
             when Seven_Days =>
                Append (Where_Stmt, " >DATE(current_date, '-7 days')");
+
+            when Fifteen_Days =>
+               Append (Where_Stmt, " >DATE(current_date, '-15 days')");
+
+            when One_Month =>
+               Append (Where_Stmt, " >DATE(current_date, '-1 month')");
 
             when All_Messages =>
                null;
