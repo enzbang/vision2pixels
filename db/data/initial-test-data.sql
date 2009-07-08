@@ -63,35 +63,35 @@ insert into template values (1, 'mytemplate', 'V2P Template');
 --  Post comments
 
 insert into post
-    values (1, 'vends canon 350D', 0, 'en tres bon état', 6, datetime(current_timestamp, '-1.0010 days'), NULL, 1, 0, 0, "FALSE");
+    values (1, 'vends canon 350D', NULL, 'en tres bon état', 6, datetime(current_timestamp, '-1.0010 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
-    values (2, 'vends nikon D200', 0, 'en tres mauvais état', 6, datetime(current_timestamp, '-2.0008 days'), NULL, 1, 0, 0, "FALSE");
+    values (2, 'vends nikon D200', NULL, 'en tres mauvais état', 6, datetime(current_timestamp, '-2.0008 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
-    values (3, 'vends pentax', 0, 'avec des pellicules Kodacolor 100 - 24 poses', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+    values (3, 'vends pentax', NULL, 'avec des pellicules Kodacolor 100 - 24 poses', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
-    values (4, 'vends 4', 0, '4', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+    values (4, 'vends 4', NULL, '4', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
-    values (5, 'vends 5', 0, '5', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+    values (5, 'vends 5', NULL, '5', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
-    values (6, 'vends 6', 0, '6', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+    values (6, 'vends 6', NULL, '6', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
-    values (7, 'vends 7', 0, '7', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+    values (7, 'vends 7', NULL, '7', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
-    values (8, 'vends 8', 0, '8', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+    values (8, 'vends 8', NULL, '8', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
-    values (9, 'vends 9', 0, '9', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+    values (9, 'vends 9', NULL, '9', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
-    values (10, 'vends 10', 0, '10', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+    values (10, 'vends 10', NULL, '10', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
-    values (11, 'vends 11', 0, '11', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+    values (11, 'vends 11', NULL, '11', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
-    values (12, 'vends 12', 0, '12', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+    values (12, 'vends 12', NULL, '12', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
-    values (13, 'vends 13', 0, '13', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+    values (13, 'vends 13', NULL, '13', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
-    values (14, 'vends 14', 0, '14', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+    values (14, 'vends 14', NULL, '14', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 insert into post
-    values (15, 'vends 15', 0, '15', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
+    values (15, 'vends 15', NULL, '15', 6, datetime(current_timestamp, '-5.0003 days'), NULL, 1, 0, 0, "FALSE");
 
 insert into post
     values (54, 'un camion', 1, 'commentaire du camion', 2, datetime(current_timestamp, '-2.999 days'), NULL, 1, 0, 0, "FALSE");
