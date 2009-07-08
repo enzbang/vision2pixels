@@ -2427,7 +2427,7 @@ package body V2P.Database is
                   & " hour')<DATETIME('NOW') OR forum.anonymity='FALSE')), "
                   --  nb messages
                   & "(SELECT count (post_id) FROM post, user_post"
-                  & " WHERE post.id=post_id AND post.photo_id=0 "
+                  & " WHERE post.id=post_id AND post.photo_id is null "
                   & " AND user_post.user_login=user.login),"
                   --  nb CdC
                   & "(SELECT COUNT(potw.id) "

@@ -4,7 +4,7 @@
 @@--
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_CDC_@ cdc_page
 @@--
-<h1>@_BABEL_CDC_@</h1>
+<h1>@_BABEL_YOUR_CDC_@</h1>
 @@--
 <div id="pc_cdc">
 @_LAZY_CDC_@

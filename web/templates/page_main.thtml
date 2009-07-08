@@ -34,7 +34,7 @@
    </div>
    <div id="pm_photo_of_the_week" class="column-2 last">
      <p>@_LAZY_PHOTO_OF_THE_WEEK_@</p>
-     <p id="pm_cdc" class="clear"><a href="/cdc" class="link">@_BABEL_CDC_@&nbsp;&hearts;</a></p>
+     <p id="pm_cdc" class="clear"><a href="/cdc" class="link">@_BABEL_YOUR_CDC_@&nbsp;&hearts;</a></p>
       <div class="box2">
          <h2>Derniers inscrits</h2>
          @_LAZY_LATEST_USERS_@
