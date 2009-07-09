@@ -1,0 +1,27 @@
+@@INCLUDE@@ set_babel.thtml
+@@SET@@ SET_URL = /rss/photos
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>@_BABEL_RSS_RECENT_PHOTOS_@</title>
+    <link>@_V2P_URL_@</link>
+    <description>@_BABEL_RSS_RECENT_PHOTOS_DESC_@</description>
+    <generator>Vision2Pixels</generator>
+    <atom:link href="@_V2P_URL_@/rss/lastphotos.xml"
+               rel="self" type="application/rss+xml" />
+
+    @@TABLE@@
+    <item>
+      <title>@_WEB_ESCAPE:NAME_@</title>
+      <link>@_V2P_URL_@@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=True</link>
+      <guid>@_V2P_URL_@@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=True</guid>
+      <description>
+        &lt;a href=&quot;@_V2P_URL_@@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=True&quot;&gt;
+        &lt;img alt=&quot;&quot; src=&quot;@_V2P_URL_@@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@&quot;/&gt;
+        &lt;/a&gt;
+      </description>
+      <pubDate>@_FORMAT_DATE(%a, %d %b %Y %T):DATE_@ GMT</pubDate>
+    </item>
+    @@END_TABLE@@
+  </channel>
+</rss>
