@@ -75,12 +75,14 @@ package body Web_Tests.Menu is
          Check
            (Page,
             Word_Set'
-              (1 => +"Votre page",
-               2 => +"Poster une nouvelle photo",
-               3 => +"Poster un nouveau message",
-               4 => +"Se déconnecter",
-               5 => +"Forum photographies",
-               6 => +"Forum matériel"),
+              (1 => +"Forum photographies",
+               2 => +"Forum matériel",
+               3 => +"Votre page",
+               4 => +"Poster une nouvelle photo",
+               5 => +"Poster un nouveau message",
+               6 => +"Recherche",
+               7 => +"Photographes",
+               8 => +"Se déconnecter"),
             "wrong menu on the main page");
       end Check_Page;
    end Main_Page;
@@ -91,7 +93,7 @@ package body Web_Tests.Menu is
 
    overriding function Name (T : in Test_Case) return Message_String is
    begin
-      return Format ("Web_Tests.Threads_Navigation");
+      return Format ("Web_Tests.Menu");
    end Name;
 
    --------------------

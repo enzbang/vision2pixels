@@ -59,6 +59,9 @@ package Web_Tests is
       User, Password : in     String);
    --  Login the specified user
 
+   function Login_Parameters (Login, Password : in String) return String;
+   --  Returns the HTTP login parameters
+
    procedure Logout (Connection : in out Client.HTTP_Connection);
    --  Logout current connected user
 

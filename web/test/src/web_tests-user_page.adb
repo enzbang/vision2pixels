@@ -71,7 +71,9 @@ package body Web_Tests.User_Page is
 
       Check
         (Response.Message_Body (Result),
-         Word_Set'(+"Forum photographies", +"Forum mat", +"diter votre page",
+         Word_Set'(+"Forum photographies", +"Forum mat",
+           +"20 photographies", +"14 messages", +"7 commentaires",
+           +"3 coups-de", +"diter votre page",
            +"?TID=67", +"?TID=66", +"?TID=65", +"?TID=64", +"?TID=75",
            +"?TID=74", +"?TID=73", +"?TID=72", +"?TID=71", +"?TID=70",
            not "#17", not "#19", +"#21", +"#20"),

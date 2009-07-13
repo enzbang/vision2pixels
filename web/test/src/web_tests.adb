@@ -219,27 +219,26 @@ package body Web_Tests is
    is
       use V2P.Template_Defs;
 
-      function Login_Parameters (Login, Password : in String) return String;
-      --  Returns the HTTP login parameters
-
-      ----------------------
-      -- Login_Parameters --
-      ----------------------
-
-      function Login_Parameters (Login, Password : in String) return String is
-      begin
-         return '&' & Block_Login.HTTP.bl_login_input & '=' & Login &
-           '&' & Block_Login.HTTP.bl_password_input & '=' & Password;
-      end Login_Parameters;
-
       Result : Response.Data;
 
    begin
       Client.Get
         (Connection, Result,
          URI => Block_Login.Ajax.onclick_bl_login_form_enter &
-         '?' & URL_Context & Login_Parameters (User, Password));
+         '?' & URL_Context & '&' & Login_Parameters (User, Password));
    end Login;
+
+   ----------------------
+   -- Login_Parameters --
+   ----------------------
+
+   function Login_Parameters (Login, Password : in String) return String is
+      use V2P.Template_Defs;
+   begin
+      return Block_Login.HTTP.bl_login_input & '=' & Login &
+        '&' & Block_Login.HTTP.bl_password_input & '=' & Password &
+        '&' & Block_Login.HTTP.bl_remember_me & "=0";
+   end Login_Parameters;
 
    ------------
    -- Logout --

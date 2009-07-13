@@ -28,6 +28,7 @@ with AWS.Utils;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
+with V2P.Template_Defs.Block_Forum_Sort;
 
 package body Web_Tests.Threads_Navigation is
 
@@ -43,7 +44,10 @@ package body Web_Tests.Threads_Navigation is
    --  List threads in a forum
 
    procedure Set_Page_Size (T : in out AUnit.Test_Cases.Test_Case'Class);
-   --  Set page size to 500
+   --  Set page size to 100
+
+   procedure Set_Last_Posted (T : in out AUnit.Test_Cases.Test_Case'Class);
+   --  Set filter to last posted
 
    procedure Set_All_Messages (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  Set filter to all messages which is expected to be the initial setting
@@ -416,6 +420,7 @@ package body Web_Tests.Threads_Navigation is
       Register_Routine (T, Main_Page'Access, "main page");
       Register_Routine (T, Set_Page_Size'Access, "Set page size");
       Register_Routine (T, Set_All_Messages'Access, "Set all messages");
+      Register_Routine (T, Set_Last_Posted'Access, "Set last posted");
       Register_Routine (T, List_Forum_Threads'Access, "list post");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
@@ -436,6 +441,22 @@ package body Web_Tests.Threads_Navigation is
          & "=ALL_MESSAGES&" & URL_Context);
    end Set_All_Messages;
 
+   ---------------------
+   -- Set_Last_Posted --
+   ---------------------
+
+   procedure Set_Last_Posted (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      use V2P.Template_Defs;
+
+      Result : Response.Data;
+   begin
+      Client.Get
+        (Connection, Result,
+         URI => Block_Forum_Sort.Ajax.onchange_bfs_forum_sort_set
+         & "?" & Block_Forum_Sort.HTTP.bfs_forum_sort_set
+         & "=LAST_POSTED&" & URL_Context);
+   end Set_Last_Posted;
+
    -------------------
    -- Set_Page_Size --
    -------------------
@@ -450,7 +471,7 @@ package body Web_Tests.Threads_Navigation is
          URI => Block_Forum_Filter_Page_Size.Ajax.
            onchange_bffps_forum_filter_pagesize
          & "?" & Block_Forum_Filter_Page_Size.HTTP.bffps_forum_filter_pagesize
-         & "=500&" & URL_Context);
+         & "=100&" & URL_Context);
    end Set_Page_Size;
 
    -----------------
