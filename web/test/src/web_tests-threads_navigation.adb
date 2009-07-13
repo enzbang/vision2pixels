@@ -43,7 +43,7 @@ package body Web_Tests.Threads_Navigation is
    --  List threads in a forum
 
    procedure Set_Page_Size (T : in out AUnit.Test_Cases.Test_Case'Class);
-   --  Set page size to 500
+   --  Set page size to 100
 
    procedure Set_All_Messages (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  Set filter to all messages which is expected to be the initial setting
@@ -450,7 +450,7 @@ package body Web_Tests.Threads_Navigation is
          URI => Block_Forum_Filter_Page_Size.Ajax.
            onchange_bffps_forum_filter_pagesize
          & "?" & Block_Forum_Filter_Page_Size.HTTP.bffps_forum_filter_pagesize
-         & "=500&" & URL_Context);
+         & "=100&" & URL_Context);
    end Set_Page_Size;
 
    -----------------
