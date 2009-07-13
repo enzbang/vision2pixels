@@ -91,7 +91,7 @@ package body Web_Tests.Menu is
 
    overriding function Name (T : in Test_Case) return Message_String is
    begin
-      return Format ("Web_Tests.Threads_Navigation");
+      return Format ("Web_Tests.Menu");
    end Name;
 
    --------------------
