@@ -48,6 +48,7 @@ project Web is
       "v2p.template_defs.block_login",
       "v2p.template_defs.block_forum_filter",
       "v2p.template_defs.block_forum_filter_page_size",
+      "v2p.template_defs.block_forum_sort",
       "v2p.template_defs.page_forum_threads",
       "v2p.template_defs.page_forum_new_photo_entry",
       "v2p.template_defs.page_forum_new_text_entry");
