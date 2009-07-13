@@ -60,19 +60,6 @@ package body Web_Tests.User is
    procedure Login (T : in out AUnit.Test_Cases.Test_Case'Class) is
       use V2P.Template_Defs;
 
-      function Login_Parameters (Login, Password : in String) return String;
-      --  Returns the HTTP login parameters
-
-      ----------------------
-      -- Login_Parameters --
-      ----------------------
-
-      function Login_Parameters (Login, Password : in String) return String is
-      begin
-         return Block_Login.HTTP.bl_login_input & '=' & Login &
-           '&' & Block_Login.HTTP.bl_password_input & '=' & Password;
-      end Login_Parameters;
-
       Result : Response.Data;
 
    begin
