@@ -3,9 +3,15 @@
 <?xml version="1.0"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>@_BABEL_V2P_WEBSITE_NAME_@ - @_BABEL_RSS_RECENT_PHOTOS_@</title>
+    <title>@_BABEL_V2P_WEBSITE_NAME_@ - @_BABEL_RSS_RECENT_PHOTOS_@
+@@IF@@ @_FROM_USER_@ /= ""
+(@_FROM_USER_@)
+@@END_IF@@
+</title>
     <link>@_V2P_URL_@</link>
+@@IF@@ @_FROM_USER_@ = ""
     <description>@_BABEL_RSS_RECENT_PHOTOS_DESC_@</description>
+@@END_IF@@
     <generator>Vision2Pixels</generator>
     <atom:link href="@_V2P_URL_@/rss/lastphotos.xml"
                rel="self" type="application/rss+xml" />

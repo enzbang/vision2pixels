@@ -40,6 +40,7 @@ with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Page_Main;
 with V2P.Template_Defs.Page_Rss_Last_Comments;
+with V2P.Template_Defs.Page_Rss_Last_Photos;
 with V2P.Template_Defs.Page_Rss_Last_Posts;
 with V2P.Template_Defs.Chunk_Comment;
 with V2P.Template_Defs.Chunk_Forum_Category;
@@ -1220,6 +1221,10 @@ package body V2P.Database is
          Templates.Insert
            (Set, Templates.Assoc (Page_Rss_Last_Posts.DATE, Date));
       end if;
+
+      Templates.Insert (Set,
+                        Templates.Assoc (Page_Rss_Last_Photos.FROM_USER,
+                                         From_User));
 
       return Set;
    end Get_Latest_Posts;
