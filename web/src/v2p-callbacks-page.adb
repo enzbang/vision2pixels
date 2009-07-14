@@ -570,9 +570,10 @@ package body V2P.Callbacks.Page is
       Templates.Insert
         (Translations,
          Database.Get_Latest_Posts
-           (Limit    => 15,
-            Add_Date => True,
-            TZ       => Context.Get_Value (Template_Defs.Set_Global.TZ)));
+           (Limit         => 15,
+            Add_Date      => True,
+            TZ            => Context.Get_Value (Template_Defs.Set_Global.TZ),
+            Show_Category => True));
    end Rss_Last_Posts;
 
    -------------------

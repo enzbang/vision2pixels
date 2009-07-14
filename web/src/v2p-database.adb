@@ -1122,11 +1122,12 @@ package body V2P.Database is
    ----------------------
 
    function Get_Latest_Posts
-     (Limit      : in Positive;
-      TZ         : in String;
-      Add_Date   : in Boolean := False;
-      Photo_Only : in Boolean := False;
-      From_User  : in String  := "") return Templates.Translate_Set
+     (Limit         : in Positive;
+      TZ            : in String;
+      Add_Date      : in Boolean := False;
+      Photo_Only    : in Boolean := False;
+      From_User     : in String  := "";
+      Show_Category : in Boolean := False) return Templates.Translate_Set
    is
       use type Templates.Tag;
 
@@ -1137,6 +1138,8 @@ package body V2P.Database is
       Name  : Templates.Tag;
       Date  : Templates.Tag;
       Thumb : Templates.Tag;
+      Forum : Templates.Tag;
+      Category : Templates.Tag;
       Set   : Templates.Translate_Set;
 
       function Select_Date return String;
@@ -1166,8 +1169,13 @@ package body V2P.Database is
                       +"SELECT post.id, post.name, filename"
                         & Select_Date;
       begin
-         if not Photo_Only then
+         if Show_Category then
+            Append (SQL, ", category.name, forum.name ");
+         end if;
+
+         if not Photo_Only and not Show_Category then
             Append (SQL, " FROM post, photo ");
+
          else
             Append (SQL, " FROM post, photo, forum, category ");
             if From_User /= "" then
@@ -1187,6 +1195,12 @@ package body V2P.Database is
                        " AND user_post.post_id=post.id AND user_login="
                        & Q (From_User));
             end if;
+
+         elsif Show_Category then
+            Append (SQL, "WHERE post.photo_id=photo.id"
+                    & " AND post.category_id=category.id"
+                    & " AND category.forum_id = forum.id"
+                    & " AND post.hidden='FALSE' ");
          end if;
 
          Append
@@ -1205,6 +1219,15 @@ package body V2P.Database is
 
          if Add_Date then
             Date  := Date  & DB.String_Vectors.Element (Line, 4);
+            if Show_Category then
+               Category := Category & DB.String_Vectors.Element (Line, 5);
+               Forum    := Forum & DB.String_Vectors.Element (Line, 6);
+            end if;
+         else
+            if Show_Category then
+               Category := Category & DB.String_Vectors.Element (Line, 4);
+               Forum    := Forum & DB.String_Vectors.Element (Line, 5);
+            end if;
          end if;
 
          Line.Clear;
@@ -1220,6 +1243,15 @@ package body V2P.Database is
       if Add_Date then
          Templates.Insert
            (Set, Templates.Assoc (Page_Rss_Last_Posts.DATE, Date));
+      end if;
+
+      if Show_Category then
+         Templates.Insert
+           (Set,
+           Templates.Assoc (Page_Rss_Last_Posts.POST_CATEGORY, Category));
+         Templates.Insert
+           (Set,
+           Templates.Assoc (Page_Rss_Last_Posts.POST_FORUM, Forum));
       end if;
 
       Templates.Insert (Set,

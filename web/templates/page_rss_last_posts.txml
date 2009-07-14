@@ -16,6 +16,7 @@
       <link>@_V2P_URL_@@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=True</link>
       <guid>@_V2P_URL_@@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=True</guid>
       <description>
+        @_POST_FORUM_@ :: @_POST_CATEGORY_@
         @@IF@@ @_THUMB_SOURCE_@ /= ""
         &lt;a href=&quot;@_V2P_URL_@@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=True&quot;&gt;
         &lt;img alt=&quot;&quot; src=&quot;@_V2P_URL_@@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@&quot;/&gt;
