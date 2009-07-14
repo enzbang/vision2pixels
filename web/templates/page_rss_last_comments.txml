@@ -3,7 +3,7 @@
 <?xml version="1.0"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>@_BABEL_RSS_ALL_RECENT_COMMENTS_@</title>
+    <title>@_BABEL_V2P_WEBSITE_NAME_@ - @_BABEL_RSS_RECENT_COMMENTS_@</title>
     <link>@_V2P_URL_@</link>
     <description>@_BABEL_RSS_ALL_RECENT_COMMENTS_DESC_@</description>
     <generator>Vision2Pixels</generator>
