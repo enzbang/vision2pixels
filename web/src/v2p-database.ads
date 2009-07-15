@@ -40,7 +40,8 @@ package V2P.Database is
    Parameter_Error : exception;
    --  Raise if the given parameter value does not exist in database
 
-   type Filter_Mode is (Today, Two_Days, Seven_Days, All_Messages);
+   type Filter_Mode is
+     (Today, Two_Days, Seven_Days, Fifteen_Days, One_Month, All_Messages);
    --  Kind of filter to apply when returning the list of posts, see
    --  Get_Threads.
 
