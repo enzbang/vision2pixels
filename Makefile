@@ -67,6 +67,11 @@ ifeq (${OS},Windows_NT)
 	EXEEXT = .exe
 	DISTRIB_OS = win32-$(uname_M)
 	LIBRARIES += ext_lib
+	# Set PATH needed for the testsuite on Windows
+	IPATH=$(PWD)/image/lib
+	KPATH=$(PWD)/kernel/lib
+	WPATH=$(PWD)/.build/web_testdir/lib/websites
+	PATH:=$(IPATH):$(KPATH):$(WPATH):"$(PATH)"
 else
 	LIBEXT = .so
 	uname_S       := $(shell sh -c 'uname -s 2>/dev/null || echo not')
