@@ -57,6 +57,7 @@ with V2P.Syndication;
 with V2P.URL;
 with V2P.Version;
 
+with V2P.Template_Defs.Block_Cdc;
 with V2P.Template_Defs.Block_Forum_Category_Filter;
 with V2P.Template_Defs.Block_Forum_Category_Set;
 with V2P.Template_Defs.Block_Forum_Filter;
@@ -110,6 +111,7 @@ with V2P.Template_Defs.Page_Validate_User;
 
 with V2P.Template_Defs.Set_Global;
 
+with V2P.Template_Defs.R_Block_Cdc;
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_Fatal_Error;
 with V2P.Template_Defs.R_Block_Forum_Category_Set;
@@ -960,6 +962,20 @@ package body V2P.Web_Server is
            onchange_bpis_image_size,
          Template_Defs.R_Block_User_Preferences.Template,
          Callbacks.Ajax.Onchange_Image_Size_Preference'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Cdc.Ajax.onclick_bcdc_goto_next_page,
+         Template_Defs.R_Block_Cdc.Template,
+         Callbacks.Ajax.Onclick_CdC_Goto_Next_Page'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Cdc.Ajax.onclick_bcdc_goto_previous_page,
+         Template_Defs.R_Block_Cdc.Template,
+         Callbacks.Ajax.Onclick_CdC_Goto_Previous_Page'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

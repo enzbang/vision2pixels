@@ -1,5 +1,9 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
+@@INCLUDE@@ chunk_list_navlink.thtml bcdc
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bcdc_goto_previous_page)
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bcdc_goto_next_page)
+@@--
 <ul class="slides">
 @@TABLE@@
   <li class="thumbs">

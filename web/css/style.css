@@ -949,12 +949,13 @@ fieldset#pfnpe_mandatory_fields input[type="entry"],
 ul#bftt_navigate,
 ul#bft_navigate,
 ul#bu_navigate,
-ul#bupl_navigate {
+ul#bupl_navigate,
+ul#bcdc_navigate {
     text-align: right;
     padding: 0 1em 0 0;
 }
 
-ul#bft_navigate li, ul#pfe_navigate li, ul#pfe_navigate_bottom li, ul#bftt_navigate li, ul#bu_navigate li, ul#bupl_navigate li {
+ul#bft_navigate li, ul#pfe_navigate li, ul#pfe_navigate_bottom li, ul#bftt_navigate li, ul#bu_navigate li, ul#bupl_navigate li, ul#bcdc_navigate li {
    display:inline;
    font-variant:small-caps;
    font-size:0.9em;
@@ -964,7 +965,7 @@ ul#pfe_navigate, ul#pfe_navigate_bottom {
    text-align:center;
    padding-top:1em;
 }
-ul#bft_navigate li.nav_info, ul#bftt_navigate li.nav_info, ul#bu_navigate li.nav_info, ul#bupl_navigate li.nav_info {
+ul#bft_navigate li.nav_info, ul#bftt_navigate li.nav_info, ul#bu_navigate li.nav_info, ul#bupl_navigate li.nav_info, ul#bcdc_navigate li.nav_info {
    font-size:0.7em;
 }
 ul#pfe_navigate_bottom li a {
