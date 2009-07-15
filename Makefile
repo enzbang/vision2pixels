@@ -33,7 +33,6 @@ TAR_DIR           = tar czf
 
 LMODE             = $(shell echo $(MODE) | tr [[:upper:]] [[:lower:]])
 
-
 # Install prefix
 GNAT_ROOT            = $(dir $(shell which gnatls))..
 DIOUZHTU_DYNAMIC_LIB = $(GNAT_ROOT)/share/diouzhtu/dlib
@@ -81,6 +80,7 @@ else
 
 	DISTRIB_OS  = $(uname_S_lower)-$(uname_M)
 endif
+
 DISTRIB = $(shell pwd)/v2p-$(DISTRIB_OS)-$(VERSION_ALL)
 
 LOG := ${shell pwd}/log.${shell date +%Y%m%d-%H%M%S}
