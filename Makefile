@@ -127,7 +127,7 @@ WEB_TESTPLUGIN  = $(WEB_TESTDIR)/plugins/vision2pixels
 
 regtests: mkdirs regtests_db_internal \
 	regtests_image_internal regtests_web_internal
-	@if [ `grep ": 0" $(LOG) | wc -l` == 6 ]; then \
+	@if [ `grep ": 0" $(LOG) | wc -l` = 6 ]; then \
 	   echo "=====>>>>>> Ok, all tests have passed"; \
 	else \
 	   echo "=====>>>>>> NOk, some tests have failed"; \
