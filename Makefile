@@ -130,7 +130,7 @@ DB_TEST_LOGFILE = $(BUILD_DIR)/db_harness.log.$(LOG_SUFFIX)
 WEB_TESTDIR = $(BUILD_DIR)/web_testdir
 WEB_TESTPLUGIN  = $(WEB_TESTDIR)/plugins/vision2pixels
 
-regtests: mkdirs regtests_db_internal \
+regtests: mkdirs init_testdb regtests_db_internal \
 	regtests_image_internal regtests_web_internal
 	@if [ `grep ": 0" $(LOG) | wc -l` = 6 ]; then \
 	   echo "=====>>>>>> Ok, all tests have passed"; \
@@ -150,13 +150,15 @@ regtests_image_internal: bld-image/image_test
 regtests_image: regtests_image_internal
 	@cat $(IMAGE_TEST_LOGFILE)
 
-regtests_db_internal: bld-db/db_test
+init_testdb :
 # DB tests
 # For tests we need to rebuild the database in order to have
 # post in 'today view'
 	@touch db/data/schema-sqlite.sql
 	@$(MAKE) --quiet install_gwiad_plugin \
 		DBNAME=testing.db ARGWIAD_ROOT=$(WEB_TESTDIR)
+
+regtests_db_internal: bld-db/db_test
 	@$(CP) $(WEB_TESTDIR)/plugins/vision2pixels/db/testing.db \
 		$(BUILD_DIR)/db_test/obj/
 	-(cd $(BUILD_DIR)/db_test/obj/; \
@@ -166,11 +168,10 @@ regtests_db_internal: bld-db/db_test
 	@-grep "Failed Assertions" $(DB_TEST_LOGFILE) >> $(LOG)
 	@-grep "Unexpected Errors" $(DB_TEST_LOGFILE) >> $(LOG)
 
-regtests_db: regtests_db_internal
+regtests_db: init_testdb regtests_db_internal
 	@cat $(DB_TEST_LOGFILE)
 
 regtests_web_internal: bld-web/web_test
-	# Web test
 	$(MKDIR) $(WEB_TESTPLUGIN)/db
 	echo "server_port 8042" > $(WEB_TESTDIR)/aws.ini
 	echo "upload_directory uploads" >> $(WEB_TESTDIR)/aws.ini
@@ -184,7 +185,7 @@ regtests_web_internal: bld-web/web_test
 	-grep "Failed Assertions" $(WEB_TEST_LOGFILE) >> $(LOG)
 	-grep "Unexpected Errors" $(WEB_TEST_LOGFILE) >> $(LOG)
 
-regtests_web: regtests_web_internal
+regtests_web: mkdirs init_testdb regtests_web_internal
 	@cat $(WEB_TEST_LOGFILE)
 
 mkdirs:
