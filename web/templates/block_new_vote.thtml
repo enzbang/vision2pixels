@@ -33,7 +33,7 @@
                   AWS.Ajax.XML.request ("@_SET_AJAX_RATE_URL_@",
                   "@_SET_AJAX_RATE_CRITERIA_@=@_CRITERIA_ID_@&@_SET_AJAX_RATE_VAL_@="
                   + this.innerHTML
-                  + "&" + AWS.Ajax.serialize("bnv_TID", "TID"), "");
+                  + "&TID=" + @_TID_@, "");
                   return (false);
                }
              }
