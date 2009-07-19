@@ -64,6 +64,8 @@ package body V2P.Navigation_Links is
                     Context.Exist (Template_Defs.Set_Global.ADMIN)
                   and then Context.Get_Value
                     (Template_Defs.Set_Global.ADMIN) = "TRUE";
+      Login     : constant String := Context.Get_Value
+              (Template_Defs.Set_Global.LOGIN);
       Nav_From  : Positive := From;
       Nav_Links : Post_Ids.Vector;
       Nb_Lines  : Natural;
@@ -73,6 +75,7 @@ package body V2P.Navigation_Links is
         (Fid         => V2P.Context.Counter.Get_Value
            (Context => Context.all,
             Name    => Set_Global.FID),
+         Login       => Login,
          From        => Nav_From,
          Admin       => Admin,
          Filter      => Database.Filter_Mode'Value

@@ -17,6 +17,9 @@
       class="hidden_entry"
     @@END_IF@@
     >
+    @@IF@@ @_IS_NEW_@ = TRUE
+    <span class="new">!NEW</span>
+    @@END_IF@@
     @_NAME_@
     </a></p>
     <ul class="thumb_metadata">

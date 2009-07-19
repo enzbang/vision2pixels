@@ -106,6 +106,7 @@ package V2P.Database is
 
    procedure Get_Threads
      (Fid           : in     Id := Empty_Id;
+      Login         : in     String := "";
       User          : in     String := "";
       Admin         : in     Boolean;
       Forum         : in     Forum_Filter := Forum_All;
@@ -172,7 +173,7 @@ package V2P.Database is
    --  Returns a comment for the given comment id
 
    function Get_Comments
-     (Tid : in Id; TZ : in String) return Templates.Translate_Set;
+     (Tid : in Id; Login, TZ : in String) return Templates.Translate_Set;
    --  Returns all comments for the given thread
 
    function Get_User_Data (Uid : in String) return User_Data;

@@ -466,7 +466,7 @@ package body V2P.Database is
    ------------------
 
    function Get_Comments
-     (Tid : in Id; TZ : in String) return Templates.Translate_Set
+     (Tid : in Id; Login, TZ : in String) return Templates.Translate_Set
    is
       use type Templates.Tag;
       DBH            : constant TLS_DBH_Access :=
@@ -488,8 +488,32 @@ package body V2P.Database is
       Comment            : Templates.Tag;
       Filename           : Templates.Tag;
       Has_Voted          : Templates.Tag;
+      Is_New             : Templates.Tag;
       Photo_Number       : Templates.Tag;
       Photo_Index        : Positive := 1;
+
+      function Select_Is_New return String;
+      --  Select Is_New
+      --  If last_comment_id is less than comment.id, then this is a new
+      --  comment.
+
+      -------------------
+      -- Select_Is_New --
+      -------------------
+
+      function Select_Is_New return String is
+      begin
+         if Login /= "" then
+            return ", (SELECT v.last_comment_id < "
+              & "comment.id FROM post, last_user_visit v "
+              & "WHERE v.post_id=post.id AND post.id="
+              & To_String (Tid) & " AND v.user_login="
+              & Q (Login) & ")";
+         else
+            return "";
+         end if;
+      end Select_Is_New;
+
    begin
       Connect (DBH);
 
@@ -517,6 +541,7 @@ package body V2P.Database is
          & "user_login, anonymous_user, comment, "
          & "(SELECT filename FROM photo WHERE id=comment.photo_id), has_voted,"
          & " JULIANDAY(date)"
+         & Select_Is_New
          & " FROM comment, post_comment"
          & " WHERE post_id=" & To_String (Tid)
          & " AND post_comment.comment_id=comment.id");
@@ -557,8 +582,11 @@ package body V2P.Database is
             end if;
          end;
 
-         Has_Voted     := Has_Voted
-           & DB.String_Vectors.Element (Line, 9);
+         Has_Voted := Has_Voted & DB.String_Vectors.Element (Line, 9);
+
+         if Login /= "" then
+            Is_New := Is_New & (DB.String_Vectors.Element (Line, 11) /= "0");
+         end if;
 
          --  Unthreaded view
 
@@ -607,6 +635,9 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc
            (Template_Defs.Block_Comments.ID_FIRST_REVEALED, First_Revealed));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Chunk_Comment.IS_NEW, Is_New));
 
       return Set;
    end Get_Comments;
@@ -1795,6 +1826,7 @@ package body V2P.Database is
 
    procedure Get_Threads
      (Fid           : in     Id := Empty_Id;
+      Login         : in     String := "";
       User          : in     String := "";
       Admin         : in     Boolean;
       Forum         : in     Forum_Filter := Forum_All;
@@ -1918,6 +1950,13 @@ package body V2P.Database is
                     & "(SELECT id FROM photo_of_the_week "
                     & "WHERE post.id = photo_of_the_week.post_id)";
 
+                  if Login /= "" then
+                     Append (Select_Stmt, ", (SELECT v.last_comment_id < "
+                             & "post.last_comment_id FROM last_user_visit v "
+                             & "WHERE v.post_id=post.id AND v.user_login="
+                             & Q (Login) & ")");
+                  end if;
+
                when Navigation_Only =>
                   Select_Stmt := +"SELECT post.id";
             end case;
@@ -1939,6 +1978,7 @@ package body V2P.Database is
                        & " WHERE post.id=global_rating.post_id)"
                        & " AS sum_rating");
             end case;
+
          end if;
 
          return -Select_Stmt;
@@ -2185,6 +2225,7 @@ package body V2P.Database is
       Owner           : Templates.Tag;
       Date_Last_Com   : Templates.Tag;
       Is_CDC          : Templates.Tag;
+      Is_New          : Templates.Tag;
       Select_Stmt     : Unbounded_String;
 
    begin
@@ -2210,9 +2251,9 @@ package body V2P.Database is
                New_Filter : constant Filter_Mode := Filter_Mode'Succ (Filter);
             begin
                Get_Threads
-                 (Fid, User, Admin, Forum, Page_Size, New_Filter, Filter_Cat,
-                  Order_Dir, Sorting, Only_Revealed, From, Mode, Navigation,
-                  Set, Nb_Lines, Total_Lines, TZ);
+                 (Fid, Login, User, Admin, Forum, Page_Size, New_Filter,
+                  Filter_Cat, Order_Dir, Sorting, Only_Revealed, From,
+                  Mode, Navigation, Set, Nb_Lines, Total_Lines, TZ);
                return;
             end Restart_With_New_Filter;
          end if;
@@ -2271,6 +2312,11 @@ package body V2P.Database is
             end if;
             Is_CDC          := Is_CDC
               & (DB.String_Vectors.Element (Line, 12) /= "");
+
+            if Login /= ""  then
+               Is_New := Is_New
+                 & (DB.String_Vectors.Element (Line, 13) /= "0");
+            end if;
          end if;
 
          --  Insert this post id in navigation links
@@ -2320,6 +2366,12 @@ package body V2P.Database is
          Templates.Insert
            (Set, Templates.Assoc
               (Block_User_Photo_List.IS_CDC, Is_CDC));
+
+         if Login /= "" then
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Chunk_Threads_List.IS_NEW, Is_New));
+         end if;
       end if;
 
       Templates.Insert

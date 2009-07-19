@@ -87,10 +87,11 @@ package body V2P.Callbacks.Web_Block is
          Templates.Insert
            (Translations,
             Database.Get_Comments
-              (Tid =>  V2P.Context.Counter.Get_Value
+              (Tid   =>  V2P.Context.Counter.Get_Value
                  (Context => Context.all,
                   Name    => Template_Defs.Set_Global.TID),
-               TZ  =>  Context.Get_Value (Template_Defs.Set_Global.TZ)));
+               Login => Context.Get_Value (Template_Defs.Set_Global.LOGIN),
+               TZ    =>  Context.Get_Value (Template_Defs.Set_Global.TZ)));
       end if;
    end Comments;
 
