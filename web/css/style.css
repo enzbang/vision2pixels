@@ -758,12 +758,6 @@ ul#bucl_lastusercommentlist li a span.commenttext {
     bottom: 0;
 }
 
-#pm_latest_posts #blp_posts .small_thumbs {
-    height:170px;
-    margin:5px;
-    width:130px;
-}
-
 #pm_latest_posts #blp_posts .small_thumbs,
 #pm_latest_posts #blp_posts .thumbs {
     display:inline;
