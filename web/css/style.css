@@ -90,6 +90,11 @@ dl.table-display {
     padding: 1px;
 }
 
+.hidden_entry {
+    text-decoration: line-through;
+    color: red;
+}
+
 .errorinline {
     font-size: 1.3em;
     color: red;
