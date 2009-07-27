@@ -1011,7 +1011,6 @@ package body V2P.Database is
 
    function Get_Latest_Posts
      (Limit    : in Positive;
-      Admin    : in     Boolean;
       Add_Date : in Boolean := False;
       TZ       : in String) return Templates.Translate_Set
    is
@@ -1055,12 +1054,8 @@ package body V2P.Database is
                         & "WHERE post.photo_id=photo.id "
                         & "AND post.category_id=category.id "
                         & "AND category.forum_id=forum.id "
-                        & "AND forum.for_photo='TRUE' ";
+                        & "AND forum.for_photo='TRUE' AND post.hidden='FALSE'";
       begin
-         if not Admin then
-            Append (SQL, " AND post.hidden='FALSE'");
-         end if;
-
          Append
            (SQL, "ORDER BY post.date_post DESC "
             & "LIMIT " & Utils.Image (Limit));

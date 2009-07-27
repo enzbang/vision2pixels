@@ -80,7 +80,6 @@ package body V2P.Syndication is
          Database.Get_Latest_Posts
            (Limit    => 15,
             Add_Date => True,
-            Admin    => False,
             TZ       => TZ));
 
       Create (File => File, Mode => Out_File, Name => Filename);
