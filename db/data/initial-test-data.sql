@@ -217,6 +217,7 @@ insert into post values (137, 'Un éléphant ça trompe...', 84, NULL, 3, dateti
 insert into post values (138, 'Ah Parisssse', 85, NULL, 2, datetime(current_timestamp, '-1.0002 days'), NULL, 1, 0, 0, "FALSE");
 insert into post values (139, 'Coucher de soleil', 86, NULL, 2, datetime(current_timestamp, '-1.0001 days'), NULL, 1, 0, 0, "FALSE");
 insert into post values (140, 'Rides', 87, NULL, 4, datetime(current_timestamp, '-1.0000 days'), NULL, 1, 0, 0, "FALSE");
+insert into post values (141, 'Hissez haut...', 88, NULL, 2, datetime(current_timestamp, '-0.003 days'), NULL, 1, 0, 0, "FALSE");
 
 --  User post
 
@@ -559,7 +560,7 @@ insert into comment values (10, datetime(current_timestamp, '-1.0509 days'), NUL
 insert into comment values (11, datetime(current_timestamp, '-1.0409 days'), NULL, 'enzbang', NULL, '<p>D&#195;&#169;sol&#195;&#169; mais je n''accroche pas</p>', NULL, "FALSE");
 insert into comment values (12, datetime(current_timestamp, '-1.0309 days'), NULL, 'enzbang', NULL, '<p>Good idea 4 this picture</p>', NULL, "FALSE");
 insert into comment values (13, datetime(current_timestamp, '-0.0809 days'), NULL, 'enzbang', NULL, '<p>Un classique</p>', NULL, "FALSE");
-insert into comment values (14, datetime(current_timestamp, '-0.0900 days'), NULL, 'enzbang', NULL, '<p>^_^</p>', NULL, "FALSE");
+insert into comment values (14, datetime(current_timestamp, '-5.0900 days'), NULL, 'enzbang', NULL, '<p>^_^</p>', NULL, "FALSE");
 insert into comment values (15, datetime(current_timestamp, '-0.0505 days'), NULL, 'enzbang', NULL, '<p>Unlocked ?</p>', NULL, "FALSE");
 insert into comment values (16, datetime(current_timestamp, '-0.0500 days'), NULL, 'enzbang', NULL, '<p>L''envie de fraise d&#195;&#169;j&#195;&#160; !</p>', NULL, "FALSE");
 insert into comment values (17, datetime(current_timestamp, '-0.0009 days'), NULL, 'turbo', NULL, '<p>Alors qu''en pensez-vous?</p>', NULL, "FALSE");
@@ -635,9 +636,6 @@ insert into photo_exif values
 --  Insert metadata
 
 insert into photo_metadata values (88, 46.2573, 4.30196, "N 46° 15' 26", "E 4° 18' 7");
-
---  Insert last photo
-insert into post values (141, 'Hissez haut...', 88, NULL, 2, datetime(current_timestamp, '-0.003 days'), NULL, 1, 0, 0, "FALSE");
 
 update forum
        set last_activity = datetime(current_timestamp, '-5.0003 days')

@@ -31,6 +31,9 @@
 </ul>
 </p>
 
+<p>Un séparateur indique à quel moment un auteur est révélé dans le flux
+   des commentaites.</p>
+
 <p>Il est maintenant possible de naviger dans la liste des photos dans la
   page utilisateur. Le nombre initial de photo affichées est limité, la
   page est ainsi plus rapide à s'afficher.</p>
