@@ -35,6 +35,7 @@ with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Page;
+with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
 with V2P.Template_Defs.Chunk_Forum_Category;
 with V2P.Template_Defs.Set_Global;
@@ -837,6 +838,11 @@ package body V2P.Callbacks.Web_Block is
         (Translations,
          Templates.Assoc
            (Template_Defs.Set_Global.IS_USER_PAGE, "True"));
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Block_User_Photo_List.USER_NAME, User_Name));
 
       V2P.Context.Counter.Set_Value
         (Context => Context.all,
