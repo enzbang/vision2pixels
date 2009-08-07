@@ -2317,10 +2317,10 @@ package body V2P.Database is
 
       Iter.Get_Line (Line);
       declare
-         Result : constant String := DB.String_Vectors.Element (Line, 1);
+         Login : constant String := DB.String_Vectors.Element (Line, 1);
       begin
          Line.Clear;
-         return Result;
+         return Login;
       end;
    end Get_User_From_Cookie;
 
