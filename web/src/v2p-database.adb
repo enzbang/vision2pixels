@@ -2316,6 +2316,7 @@ package body V2P.Database is
       end if;
 
       Iter.Get_Line (Line);
+
       declare
          Login : constant String := DB.String_Vectors.Element (Line, 1);
       begin
