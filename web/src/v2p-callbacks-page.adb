@@ -188,7 +188,7 @@ package body V2P.Callbacks.Page is
 
          Templates.Insert
            (Translations,
-            Database.Get_Entry
+            Database.Get_Post
               (Tid        => TID,
                Forum_Type => Database.Get_Forum_Type (TID),
                TZ         => Context.Get_Value (Template_Defs.Set_Global.TZ)));

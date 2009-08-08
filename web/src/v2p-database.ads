@@ -160,12 +160,6 @@ package V2P.Database is
       TZ         : in String) return Templates.Translate_Set;
    --  Returns the post information (no comments)
 
-   function Get_Entry
-     (Tid        : in Id;
-      Forum_Type : in V2P.Database.Forum_Type;
-      TZ         : in String) return Templates.Translate_Set;
-   --  Returns the full content of the entry Id. As above with comments
-
    function Get_Comment
      (Cid : in Id; TZ : in String) return Templates.Translate_Set;
    --  Returns a comment for the given comment id

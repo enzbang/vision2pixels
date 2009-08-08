@@ -609,21 +609,6 @@ package body V2P.Database is
       return Set;
    end Get_Comments;
 
-   ---------------
-   -- Get_Entry --
-   ---------------
-
-   function Get_Entry
-     (Tid        : in Id;
-      Forum_Type : in V2P.Database.Forum_Type;
-      TZ         : in String) return Templates.Translate_Set
-   is
-      Set : Templates.Translate_Set;
-   begin
-      Templates.Insert (Set, Get_Post (Tid, Forum_Type, TZ));
-      return Set;
-   end Get_Entry;
-
    --------------
    -- Get_Exif --
    --------------
