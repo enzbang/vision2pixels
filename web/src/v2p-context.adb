@@ -92,7 +92,9 @@ package body V2P.Context is
    begin
       --  Read cookie
 
-      if not Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then
+      if not Session.Exist (SID, Template_Defs.Set_Global.LOGIN)
+        or else not Context.Exist ("cookie")
+      then
          Read_Cookie : declare
             Cookie_User : constant String :=
                             Database.Get_User_From_Cookie
@@ -117,36 +119,30 @@ package body V2P.Context is
                --  a new one.
 
                Context.Set_Value ("cookie", "set");
-
-            else
-               --  No session login and no cookie, new user set preferences to
-               --  default.
-               if not Context.Exist (Template_Defs.Set_Global.FILTER)
-                 or else not Context.Exist
-                   (Template_Defs.Set_Global.FILTER_PAGE_SIZE)
-                 or else not Context.Exist
-                   (Template_Defs.Set_Global.FORUM_SORT)
-               then
-                  Set_User_Preferences (Context, SID, Database.No_User_Data);
-               end if;
             end if;
          end Read_Cookie;
+      end if;
 
-      elsif not Context.Exist (Template_Defs.Set_Global.FILTER)
+      if not Context.Exist (Template_Defs.Set_Global.FILTER)
         or else not Context.Exist (Template_Defs.Set_Global.FILTER_PAGE_SIZE)
         or else not Context.Exist (Template_Defs.Set_Global.FORUM_SORT)
       then
-         --  Session is set but there is no preferences set yet, set user's
-         --  preferences.
+         if Session.Exist (SID, Template_Defs.Set_Global.LOGIN) then
+            --  Session is set but there is no preferences set yet, set user's
+            --  preferences.
 
-         Set_User_Preferences
-           (Context,
-            SID,
-            Database.Get_User_Data
-              (Session.Get (SID, Template_Defs.Set_Global.LOGIN)));
+            Set_User_Preferences
+              (Context,
+               SID,
+               Database.Get_User_Data
+                 (Session.Get (SID, Template_Defs.Set_Global.LOGIN)));
 
-         Context.Set_Value
-           (Template_Defs.Set_Global.FILTER_CATEGORY, "");
+            Context.Set_Value
+              (Template_Defs.Set_Global.FILTER_CATEGORY, "");
+
+         else
+            Set_User_Preferences (Context, SID, Database.No_User_Data);
+         end if;
       end if;
 
       --  Set timezone
