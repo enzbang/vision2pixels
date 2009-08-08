@@ -36,7 +36,13 @@
     <td>@_COMMENT_COUNTER_@</td>
     <td>@_VISIT_COUNTER_@</td>
     @@IF@@ @_ADMIN_@
-      <td class="hidden_entry">
+    @@INLINE@@
+      <td
+    @@IF@@ @_HIDDEN_@
+      class="hidden_entry"
+    @@END_IF@@
+    >
+    @@END_INLINE@@
       @@IF@@ @_HIDDEN_@
         @_BABEL_NO_@
       @@ELSE@@
