@@ -116,7 +116,6 @@ package body V2P.Callbacks.Page is
         (Translations, Templates.Assoc
            (Template_Defs.Set_Global.TID, Database.Id'Image (TID)));
 
-
       if TID /= Database.Empty_Id then
          if not Settings.Anonymous_Visit_Counter then
             --  Do not count anonymous click
