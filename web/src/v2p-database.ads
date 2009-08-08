@@ -157,7 +157,8 @@ package V2P.Database is
    function Get_Post
      (Tid        : in Id;
       Forum_Type : in V2P.Database.Forum_Type;
-      TZ         : in String) return Templates.Translate_Set;
+      TZ         : in String;
+      Admin      : in     Boolean) return Templates.Translate_Set;
    --  Returns the post information (no comments)
 
    function Get_Comment
