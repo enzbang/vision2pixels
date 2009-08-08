@@ -1108,6 +1108,7 @@ body.forum_txt_entry #pfe_entry_page {
 .admin_hidden {
     text-align: right;
     margin-right: 1em;
+    margin-left: 3em;
 }
 
 /*  styles for the unit rater

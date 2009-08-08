@@ -31,11 +31,31 @@
          height="@_THUMB_IMAGE_HEIGHT_@" width="@_THUMB_IMAGE_WIDTH_@" />
   @@END_IF@@
     <div id="pfe_author">
-      <p class="postname">@_NAME_@</p>
+    @@INLINE@@
+      <span class="postname
+    @@IF@@ @_HIDDEN_@
+    hidden_entry
+    @@END_IF@@
+    ">@_NAME_@</span>
+    @@END_INLINE@@
 @@ELSE@@
     <div id="pfe_mainbox">
-      <p class="postname"><span class="category">@_CATEGORY_@</span>@_NAME_@</p>
+    @@INLINE@@
+      <span class="postname
+    @@IF@@ @_HIDDEN_@
+    hidden_entry
+    @@END_IF@@
+    "><span class="category">@_CATEGORY_@</span>@_NAME_@</span>
+    @@END_INLINE@@
 @@END_IF@@
+
+    @@IF@@ @_ADMIN_@
+    <span class="admin_hidden">@_BABEL_HIDDEN_STATUS_@:
+      <a href="#" id="pfe_hidden_status_toggle">
+        <span id="pfe_image_hidden_status">@_OUI_NON:HIDDEN_@</span>
+      </a>
+    </span>
+    @@END_IF@@
 
       <p class="by">
         @@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@
@@ -92,14 +112,6 @@
       @@ELSE@@
         <div id="pfe_lazy_vote_week_photo">@_LAZY_VOTE_WEEK_PHOTO_@</div>
       @@END_IF@@
-    @@END_IF@@
-
-    @@IF@@ @_ADMIN_@
-    <p class="admin_hidden">@_BABEL_HIDDEN_STATUS_@:
-      <a href="#" id="pfe_hidden_status_toggle">
-        <span id="pfe_image_hidden_status">@_OUI_NON:HIDDEN_@</span>
-      </a>
-    </p>
     @@END_IF@@
 
   @@-- Comments
