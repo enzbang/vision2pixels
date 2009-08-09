@@ -496,6 +496,12 @@ package body V2P.Web_Server is
       return Web_Page;
 
    exception
+      when Callbacks.Page.Error_404 =>
+         --  Page not found
+         Web_Page := Services.Web_Block.Registry.Build
+           (Template_Defs.Page_Error.Set.URL, C_Request, Translations);
+         return Web_Page;
+
       when E : others =>
          Fatal_Error : begin
             if
