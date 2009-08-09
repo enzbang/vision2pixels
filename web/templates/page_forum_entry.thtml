@@ -11,13 +11,13 @@
 @@SET@@ BODY_CLASS = forum_txt_entry
 @@END_IF@@
 
-@@IF@@ @_NAME_@ /=""
 @@INCLUDE@@ chunk_v2p_top.thtml "@_BABEL_V2P_SMALL_WEBSITE_NAME_@ - @_NAME_@" @_BODY_CLASS_@ yui-t7
 @@--
 @@-- Top Navigation links
 @@INCLUDE@@ chunk_navlink.thtml
 <div id="pfe_entry_page">
 
+@@IF@@ @_NAME_@ /=""
 @@IF@@ @_IMAGE_SOURCE_@ /= ""
   @@IF@@ @_PREF_IMAGE_SIZE_@ = @_SET_MAX_SIZE_@
   <div id="pfe_image_block" style="width:@_IMAGE_WIDTH_@px;">
@@ -147,10 +147,10 @@
     <li class="top_link">&nbsp;&nbsp;&nbsp;<a href="#pfe_navigate">@_BABEL_TOP_@</a></li>
   </ul>
 </div>
+@@ELSE@@
+@_BABEL_DOES_NOT_EXIST_@
+@@END_IF@@
 </div>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, pfe_hidden_status_toggle)
 @@INCLUDE@@ chunk_v2p_end.thtml forum_entry
-@@ELSE@@
-@_BABEL_DOES_NOT_EXIST_@
-@@END_IF@@
