@@ -41,7 +41,6 @@ with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Page_Validate_User;
 with V2P.Template_Defs.Page_Photo_Post;
 with V2P.Template_Defs.Page_Rss_Last_Comments;
-with V2P.Template_Defs.Page_Rss_Last_Photos;
 with V2P.Template_Defs.Page_Rss_Last_Posts;
 with V2P.Template_Defs.Set_Global;
 
