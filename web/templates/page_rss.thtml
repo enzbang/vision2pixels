@@ -1,0 +1,16 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@--
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ new
+@@SET@@ SET_URL = /rss_list
+
+<h1>Vision2Pixels - Syndication ?</h1>
+
+<p>Suivez la vie du site depuis votre agrégateur.</p>
+
+<ul>
+    <li><a href="/rss/posts">les derniers posts</a></li>
+    <li><a href="/rss/comments">les derniers commentaires</a></li>
+</ul>
+
+@@INCLUDE@@ chunk_v2p_end.thtml

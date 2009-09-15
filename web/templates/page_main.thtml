@@ -43,8 +43,7 @@
 
    <div id="pm_latest_posts" class="clear">
       <h2>@_BABEL_LAST_USER_PHOTOS_@
-         <a href="/rss/lastphotos.xml"
-            title="@_BABEL_RSS_RECENT_PHOTOS_DESC_@">
+         <a href="/rss_list"
             <img alt="RSS" class="rss_link" src="/css/img/rss.png" /></a>
       </h2>
       @_LAZY_LATEST_POSTS_@

@@ -39,6 +39,9 @@ with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Page_Main;
+with V2P.Template_Defs.Page_Rss_Last_Comments;
+with V2P.Template_Defs.Page_Rss_Last_Photos;
+with V2P.Template_Defs.Page_Rss_Last_Posts;
 with V2P.Template_Defs.Chunk_Comment;
 with V2P.Template_Defs.Chunk_Forum_Category;
 with V2P.Template_Defs.Chunk_List_Navlink;
@@ -61,7 +64,6 @@ with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Photo_Of_The_Week;
 with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_User_Voted_Photos_List;
-with V2P.Template_Defs.Page_Rss_Recent_Photos;
 with V2P.Template_Defs.Set_Global;
 
 with V2P.Template_Defs.R_Block_Forum_List;
@@ -1019,14 +1021,113 @@ package body V2P.Database is
       return Set;
    end Get_Global_Rating;
 
+   -------------------------
+   -- Get_Latest_Comments --
+   -------------------------
+
+   function Get_Latest_Comments
+     (Limit       : in Positive;
+      Post_Author : in String := "") return Templates.Translate_Set
+   is
+      use type Templates.Tag;
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Set  : Templates.Translate_Set;
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+
+      TID                : Templates.Tag;
+      Comment_Id         : Templates.Tag;
+      User               : Templates.Tag;
+      Anonymous          : Templates.Tag;
+      Date               : Templates.Tag;
+      Comment            : Templates.Tag;
+      Filename           : Templates.Tag;
+   begin
+      Connect (DBH);
+
+      if Post_Author = "" then
+         DBH.Handle.Prepare_Select
+           (Iter,
+            "SELECT post_id, comment.id,"
+            & " strftime('%Y-%m-%d %H:%M:%S', date),"
+            & " user_login, anonymous_user, comment,"
+            & " (SELECT filename FROM photo WHERE id=comment.photo_id),"
+            & " has_voted FROM comment, post_comment"
+            & " WHERE post_comment.comment_id=comment.id"
+            & " ORDER BY date LIMIT " & I (Limit));
+      else
+         DBH.Handle.Prepare_Select
+           (Iter,
+            "SELECT post_comment.post_id, comment.id,"
+            & " strftime('%Y-%m-%d %H:%M:%S', date), "
+            & "comment.user_login, anonymous_user, comment, "
+            & "(SELECT filename FROM photo WHERE id=comment.photo_id),"
+            & " has_voted FROM comment, post_comment, user_post"
+            & " WHERE post_comment.comment_id=comment.id"
+            & " and user_post.post_id = post_comment.post_id"
+            & " and user_post.user_login = " & Q (Post_Author)
+            & " ORDER BY date LIMIT " & I (Limit));
+      end if;
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+
+         TID           := TID
+           & DB.String_Vectors.Element (Line, 1);
+         Comment_Id    := Comment_Id
+           & DB.String_Vectors.Element (Line, 2);
+         Date          := Date
+           & DB.String_Vectors.Element (Line, 3);
+         User          := User
+           & DB.String_Vectors.Element (Line, 4);
+         Anonymous     := Anonymous
+           & DB.String_Vectors.Element (Line, 5);
+         Comment       := Comment
+           & DB.String_Vectors.Element (Line, 6);
+         Filename      := Filename
+           & DB.String_Vectors.Element (Line, 7);
+
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Page_Rss_Last_Comments.TID, TID));
+
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Block_Comments.COMMENT_ID, Comment_Id));
+
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Chunk_Comment.COMMENT_IMAGE_SOURCE, Filename));
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Chunk_Comment.DATE, Date));
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Chunk_Comment.USER, User));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Chunk_Comment.ANONYMOUS_USER, Anonymous));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Chunk_Comment.COMMENT, Comment));
+
+      return Set;
+   end Get_Latest_Comments;
+
    ----------------------
    -- Get_Latest_Posts --
    ----------------------
 
    function Get_Latest_Posts
-     (Limit    : in Positive;
-      Add_Date : in Boolean := False;
-      TZ       : in String) return Templates.Translate_Set
+     (Limit         : in Positive;
+      TZ            : in String;
+      Add_Date      : in Boolean := False;
+      Photo_Only    : in Boolean := False;
+      From_User     : in String  := "";
+      Show_Category : in Boolean := False) return Templates.Translate_Set
    is
       use type Templates.Tag;
 
@@ -1037,6 +1138,8 @@ package body V2P.Database is
       Name  : Templates.Tag;
       Date  : Templates.Tag;
       Thumb : Templates.Tag;
+      Forum : Templates.Tag;
+      Category : Templates.Tag;
       Set   : Templates.Translate_Set;
 
       function Select_Date return String;
@@ -1049,7 +1152,8 @@ package body V2P.Database is
       function Select_Date return String is
       begin
          if Add_Date then
-            return ", " & Timezone.Date ("post.date_post", TZ);
+            return ", strftime('%Y-%m-%d %H:%M:%S', "
+              & Timezone.Date ("post.date_post", TZ) & ")";
          else
             return "";
          end if;
@@ -1063,15 +1167,44 @@ package body V2P.Database is
       Prepare_Select : declare
          SQL : Unbounded_String :=
                       +"SELECT post.id, post.name, filename"
-                        & Select_Date
-                        & " FROM post, forum, photo, category "
-                        & "WHERE post.photo_id=photo.id "
-                        & "AND post.category_id=category.id "
-                        & "AND category.forum_id=forum.id "
-                        & "AND forum.for_photo='TRUE' AND post.hidden='FALSE'";
+                        & Select_Date;
       begin
+         if Show_Category then
+            Append (SQL, ", category.name, forum.name ");
+         end if;
+
+         if not Photo_Only and not Show_Category then
+            Append (SQL, " FROM post, photo ");
+
+         else
+            Append (SQL, " FROM post, photo, forum, category ");
+            if From_User /= "" then
+               Append (SQL, ", user_post ");
+            end if;
+         end if;
+
+         if Photo_Only then
+            Append (SQL, "WHERE post.photo_id=photo.id"
+                    & " AND post.category_id=category.id"
+                    & " AND category.forum_id=forum.id"
+                    & " AND forum.for_photo='TRUE'"
+                    & " AND post.hidden='FALSE'");
+
+            if From_User /= "" then
+               Append (SQL,
+                       " AND user_post.post_id=post.id AND user_login="
+                       & Q (From_User));
+            end if;
+
+         elsif Show_Category then
+            Append (SQL, "WHERE post.photo_id=photo.id"
+                    & " AND post.category_id=category.id"
+                    & " AND category.forum_id = forum.id"
+                    & " AND post.hidden='FALSE' ");
+         end if;
+
          Append
-           (SQL, "ORDER BY post.date_post DESC "
+           (SQL, " ORDER BY post.date_post DESC "
             & "LIMIT " & Utils.Image (Limit));
 
          DBH.Handle.Prepare_Select (Iter, -SQL);
@@ -1086,6 +1219,15 @@ package body V2P.Database is
 
          if Add_Date then
             Date  := Date  & DB.String_Vectors.Element (Line, 4);
+            if Show_Category then
+               Category := Category & DB.String_Vectors.Element (Line, 5);
+               Forum    := Forum & DB.String_Vectors.Element (Line, 6);
+            end if;
+         else
+            if Show_Category then
+               Category := Category & DB.String_Vectors.Element (Line, 4);
+               Forum    := Forum & DB.String_Vectors.Element (Line, 5);
+            end if;
          end if;
 
          Line.Clear;
@@ -1100,8 +1242,21 @@ package body V2P.Database is
 
       if Add_Date then
          Templates.Insert
-           (Set, Templates.Assoc (Page_Rss_Recent_Photos.DATE, Date));
+           (Set, Templates.Assoc (Page_Rss_Last_Posts.DATE, Date));
       end if;
+
+      if Show_Category then
+         Templates.Insert
+           (Set,
+           Templates.Assoc (Page_Rss_Last_Posts.POST_CATEGORY, Category));
+         Templates.Insert
+           (Set,
+           Templates.Assoc (Page_Rss_Last_Posts.POST_FORUM, Forum));
+      end if;
+
+      Templates.Insert (Set,
+                        Templates.Assoc (Page_Rss_Last_Photos.FROM_USER,
+                                         From_User));
 
       return Set;
    end Get_Latest_Posts;
