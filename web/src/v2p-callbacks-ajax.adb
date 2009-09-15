@@ -1036,7 +1036,8 @@ package body V2P.Callbacks.Ajax is
                            Name    => Set_Global.TID),
                         Forum_Type => Forum_Type,
                         TZ         =>
-                          Context.Get_Value (Template_Defs.Set_Global.TZ)));
+                          Context.Get_Value (Template_Defs.Set_Global.TZ),
+                        Admin      => False));
                end Insert_Comment;
             end if;
          end Save_Or_Preview;

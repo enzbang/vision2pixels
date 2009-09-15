@@ -129,7 +129,6 @@ package V2P.Database is
 
    function Get_Latest_Posts
      (Limit    : in Positive;
-      Admin    : in     Boolean;
       Add_Date : in Boolean := False;
       TZ       : in String) return Templates.Translate_Set;
    --  Returns the Limit latest posts from all photo based forums
@@ -157,14 +156,9 @@ package V2P.Database is
    function Get_Post
      (Tid        : in Id;
       Forum_Type : in V2P.Database.Forum_Type;
-      TZ         : in String) return Templates.Translate_Set;
+      TZ         : in String;
+      Admin      : in     Boolean) return Templates.Translate_Set;
    --  Returns the post information (no comments)
-
-   function Get_Entry
-     (Tid        : in Id;
-      Forum_Type : in V2P.Database.Forum_Type;
-      TZ         : in String) return Templates.Translate_Set;
-   --  Returns the full content of the entry Id. As above with comments
 
    function Get_Comment
      (Cid : in Id; TZ : in String) return Templates.Translate_Set;

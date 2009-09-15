@@ -103,6 +103,10 @@ package body V2P.Callbacks.Page is
                            (P, Template_Defs.Page_Forum_Entry.HTTP.From_Main));
       Login       : constant String :=
                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      Admin       : constant Boolean :=
+                      Context.Exist (Template_Defs.Set_Global.ADMIN)
+                    and then Context.Get_Value
+                      (Template_Defs.Set_Global.ADMIN) = "TRUE";
       Count_Visit : Boolean := True;
    begin
       --  Set thread Id into the context
@@ -115,7 +119,6 @@ package body V2P.Callbacks.Page is
       Templates.Insert
         (Translations, Templates.Assoc
            (Template_Defs.Set_Global.TID, Database.Id'Image (TID)));
-
 
       if TID /= Database.Empty_Id then
          if not Settings.Anonymous_Visit_Counter then
@@ -189,10 +192,11 @@ package body V2P.Callbacks.Page is
 
          Templates.Insert
            (Translations,
-            Database.Get_Entry
+            Database.Get_Post
               (Tid        => TID,
                Forum_Type => Database.Get_Forum_Type (TID),
-               TZ         => Context.Get_Value (Template_Defs.Set_Global.TZ)));
+               TZ         => Context.Get_Value (Template_Defs.Set_Global.TZ),
+               Admin      => Admin));
       end if;
 
       --  Add forum information into the translate set

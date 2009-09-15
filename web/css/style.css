@@ -90,6 +90,11 @@ dl.table-display {
     padding: 1px;
 }
 
+.hidden_entry {
+    text-decoration: line-through;
+    color: red;
+}
+
 .errorinline {
     font-size: 1.3em;
     color: red;
@@ -765,12 +770,6 @@ ul#bucl_lastusercommentlist li a span.commenttext {
     bottom: 0;
 }
 
-#pm_latest_posts #blp_posts .small_thumbs {
-    height:170px;
-    margin:5px;
-    width:130px;
-}
-
 #pm_latest_posts #blp_posts .small_thumbs,
 #pm_latest_posts #blp_posts .thumbs {
     display:inline;
@@ -1121,6 +1120,7 @@ body.forum_txt_entry #pfe_entry_page {
 .admin_hidden {
     text-align: right;
     margin-right: 1em;
+    margin-left: 3em;
 }
 
 /*  styles for the unit rater

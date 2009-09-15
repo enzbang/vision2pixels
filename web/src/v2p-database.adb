@@ -609,21 +609,6 @@ package body V2P.Database is
       return Set;
    end Get_Comments;
 
-   ---------------
-   -- Get_Entry --
-   ---------------
-
-   function Get_Entry
-     (Tid        : in Id;
-      Forum_Type : in V2P.Database.Forum_Type;
-      TZ         : in String) return Templates.Translate_Set
-   is
-      Set : Templates.Translate_Set;
-   begin
-      Templates.Insert (Set, Get_Post (Tid, Forum_Type, TZ));
-      return Set;
-   end Get_Entry;
-
    --------------
    -- Get_Exif --
    --------------
@@ -1040,7 +1025,6 @@ package body V2P.Database is
 
    function Get_Latest_Posts
      (Limit    : in Positive;
-      Admin    : in     Boolean;
       Add_Date : in Boolean := False;
       TZ       : in String) return Templates.Translate_Set
    is
@@ -1084,12 +1068,8 @@ package body V2P.Database is
                         & "WHERE post.photo_id=photo.id "
                         & "AND post.category_id=category.id "
                         & "AND category.forum_id=forum.id "
-                        & "AND forum.for_photo='TRUE' ";
+                        & "AND forum.for_photo='TRUE' AND post.hidden='FALSE'";
       begin
-         if not Admin then
-            Append (SQL, " AND post.hidden='FALSE'");
-         end if;
-
          Append
            (SQL, "ORDER BY post.date_post DESC "
             & "LIMIT " & Utils.Image (Limit));
@@ -1360,8 +1340,25 @@ package body V2P.Database is
    function Get_Post
      (Tid        : in Id;
       Forum_Type : in V2P.Database.Forum_Type;
-      TZ         : in String) return Templates.Translate_Set
+      TZ         : in String;
+      Admin      : in     Boolean) return Templates.Translate_Set
    is
+      function Post_Hidden return String;
+      --  Returns SQL fragment with select hidden post depending on Admin
+
+      -----------------
+      -- Post_Hidden --
+      -----------------
+
+      function Post_Hidden return String is
+      begin
+         if Admin then
+            return "";
+         else
+            return " AND post.hidden='FALSE'";
+         end if;
+      end Post_Hidden;
+
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Set  : Templates.Translate_Set;
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -1387,7 +1384,8 @@ package body V2P.Database is
             & " AND user.login=user_post.user_login"
             & " AND user_post.post_id=post.id"
             & " AND photo.id=post.photo_id"
-            & " AND category.id=post.category_id");
+            & " AND category.id=post.category_id"
+            & Post_Hidden);
 
          if Iter.More then
             Iter.Get_Line (Line);
@@ -1514,7 +1512,8 @@ package body V2P.Database is
             & "WHERE post.id=" & To_String (Tid)
             & " AND user.login=user_post.user_login"
             & " AND user_post.post_id=post.id"
-            & " AND category.id=post.category_id");
+            & " AND category.id=post.category_id"
+            & Post_Hidden);
 
          if Iter.More then
             Iter.Get_Line (Line);
