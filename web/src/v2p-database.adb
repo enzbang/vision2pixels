@@ -2315,11 +2315,18 @@ package body V2P.Database is
       end if;
 
       Iter.Get_Line (Line);
+
       declare
-         Result : constant String := DB.String_Vectors.Element (Line, 1);
+         Login : constant String := DB.String_Vectors.Element (Line, 1);
       begin
          Line.Clear;
-         return Result;
+
+         --  Now update the timestamp for this cookie
+         DBH.Handle.Execute
+           ("UPDATE remember_user SET last_used=current_timestamp"
+            & " WHERE user_login=" & Q (Login)
+            & " AND cookie_content=" & Q (Cookie));
+         return Login;
       end;
    end Get_User_From_Cookie;
 
@@ -3173,7 +3180,7 @@ package body V2P.Database is
       DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
    begin
       DBH.Handle.Execute
-        ("INSERT INTO remember_user VALUES ("
+        ("INSERT INTO remember_user ('user_login', 'cookie_content') VALUES ("
          & Q (Login) & ", " & Q (Cookie) & ")");
    end Register_Cookie;
 
