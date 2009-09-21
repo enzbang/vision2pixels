@@ -1901,7 +1901,8 @@ package body V2P.Database is
                     & "category.name, comment_counter,"
                     & "visit_counter, post.hidden, user_post.user_login, "
                     & "(SELECT comment.date FROM comment "
-                    & "WHERE post.last_comment_id = comment.id), "
+                    & "WHERE post.last_comment_id=comment.id"
+                    & "      AND post.comment_counter!=0), "
                     & "(SELECT id FROM photo_of_the_week "
                     & "WHERE post.id = photo_of_the_week.post_id)";
 
@@ -2246,8 +2247,16 @@ package body V2P.Database is
             Hidden          := Hidden    & DB.String_Vectors.Element (Line, 9);
             Owner           := Owner
               & DB.String_Vectors.Element (Line, 10);
-            Date_Last_Com   := Date_Last_Com
-              & DB.String_Vectors.Element (Line, 11);
+
+            if DB.String_Vectors.Element (Line, 11) = "" then
+               --  No comment yet, date/time of last modification is the post
+               --  date.
+               Date_Last_Com   := Date_Last_Com
+                 & DB.String_Vectors.Element (Line, 3);
+            else
+               Date_Last_Com   := Date_Last_Com
+                 & DB.String_Vectors.Element (Line, 11);
+            end if;
             Is_CDC          := Is_CDC
               & (DB.String_Vectors.Element (Line, 12) /= "");
          end if;
