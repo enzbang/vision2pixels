@@ -2643,7 +2643,8 @@ package body V2P.Database is
                   & ", " & Timezone.Date ("last_logged", TZ) & ", "
                   --  nb comments
                   & "(SELECT COUNT(id) FROM comment"
-                  & " WHERE user.login=comment.user_login), "
+                  & " WHERE user.login=comment.user_login"
+                  & " AND comment.has_voted='FALSE'), "
                   --  nb photos
                   & "(SELECT count (post_id) FROM post, user_post,"
                   & " forum, category"
