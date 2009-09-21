@@ -1054,7 +1054,7 @@ package body V2P.Database is
             & " (SELECT filename FROM photo WHERE id=comment.photo_id),"
             & " has_voted FROM comment, post_comment"
             & " WHERE post_comment.comment_id=comment.id"
-            & " ORDER BY date LIMIT " & I (Limit));
+            & " ORDER BY date DESC LIMIT " & I (Limit));
       else
          DBH.Handle.Prepare_Select
            (Iter,
@@ -1066,7 +1066,7 @@ package body V2P.Database is
             & " WHERE post_comment.comment_id=comment.id"
             & " and user_post.post_id = post_comment.post_id"
             & " and user_post.user_login = " & Q (Post_Author)
-            & " ORDER BY date LIMIT " & I (Limit));
+            & " ORDER BY date DESC LIMIT " & I (Limit));
       end if;
 
       while Iter.More loop
