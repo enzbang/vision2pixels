@@ -935,6 +935,9 @@ div#cvt_lazy_login p {
 #ps_search_results_users p a {
     color: #eee;
 }
+#bm_metadata_post, #bm_address_example {
+    color: #AAAAAA
+}
 #bm_metadata_post input[type="entry"] {
     width: 10em;
     margin: 0;
