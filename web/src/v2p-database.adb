@@ -1035,13 +1035,13 @@ package body V2P.Database is
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
 
-      TID                : Templates.Tag;
-      Comment_Id         : Templates.Tag;
-      User               : Templates.Tag;
-      Anonymous          : Templates.Tag;
-      Date               : Templates.Tag;
-      Comment            : Templates.Tag;
-      Filename           : Templates.Tag;
+      TID        : Templates.Tag;
+      Comment_Id : Templates.Tag;
+      User       : Templates.Tag;
+      Anonymous  : Templates.Tag;
+      Date       : Templates.Tag;
+      Comment    : Templates.Tag;
+      Filename   : Templates.Tag;
    begin
       Connect (DBH);
 
@@ -1064,8 +1064,8 @@ package body V2P.Database is
             & "(SELECT filename FROM photo WHERE id=comment.photo_id),"
             & " has_voted FROM comment, post_comment, user_post"
             & " WHERE post_comment.comment_id=comment.id"
-            & " and user_post.post_id = post_comment.post_id"
-            & " and user_post.user_login = " & Q (Post_Author)
+            & " and user_post.post_id=post_comment.post_id"
+            & " and user_post.user_login=" & Q (Post_Author)
             & " ORDER BY date DESC LIMIT " & I (Limit));
       end if;
 
@@ -2643,7 +2643,7 @@ package body V2P.Database is
                   & ", " & Timezone.Date ("last_logged", TZ) & ", "
                   --  nb comments
                   & "(SELECT COUNT(id) FROM comment"
-                  & " WHERE user.login = comment.user_login), "
+                  & " WHERE user.login=comment.user_login), "
                   --  nb photos
                   & "(SELECT count (post_id) FROM post, user_post,"
                   & " forum, category"
