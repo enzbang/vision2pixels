@@ -1900,7 +1900,8 @@ package body V2P.Database is
                     & "(SELECT filename FROM photo WHERE id=post.photo_id), "
                     & "category.name, comment_counter,"
                     & "visit_counter, post.hidden, user_post.user_login, "
-                    & "(SELECT comment.date FROM comment "
+                    & "(SELECT " & Timezone.Date_Time ("comment.date", TZ)
+                    & "FROM comment "
                     & "WHERE post.last_comment_id=comment.id"
                     & "      AND post.comment_counter!=0), "
                     & "(SELECT id FROM photo_of_the_week "
