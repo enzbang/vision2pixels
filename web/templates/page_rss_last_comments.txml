@@ -12,7 +12,11 @@
 
     @@TABLE@@
     <item>
-      <title>@_WEB_ESCAPE:USER_@</title>
+      @@IF@@ @_REVEALED_@ or @_USER_@ /= @_OWNER_@
+         <title>@_WEB_ESCAPE:USER_@</title>
+      @@ELSE@@
+         <title>@_BABEL_THE_AUTHOR_@</title>
+      @@END_IF@@
       <link>@_V2P_URL_@@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=True#comment_@_COMMENT_ID_@</link>
       <guid>@_V2P_URL_@@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=True#comment_@_COMMENT_ID_@</guid>
       <description>

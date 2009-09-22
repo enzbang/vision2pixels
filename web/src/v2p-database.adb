@@ -1042,19 +1042,25 @@ package body V2P.Database is
       Date       : Templates.Tag;
       Comment    : Templates.Tag;
       Filename   : Templates.Tag;
+      Revealed   : Templates.Tag;
+      Owner      : Templates.Tag;
    begin
       Connect (DBH);
 
       if Post_Author = "" then
          DBH.Handle.Prepare_Select
            (Iter,
-            "SELECT post_id, comment.id,"
-            & " strftime('%Y-%m-%d %H:%M:%S', date),"
-            & " user_login, anonymous_user, comment,"
-            & " (SELECT filename FROM photo WHERE id=comment.photo_id)"
-            & " FROM comment, post_comment"
+            "SELECT post_comment.post_id, comment.id,"
+            & " strftime('%Y-%m-%d %H:%M:%S', date), comment.user_login,"
+            & " user_post.user_login, anonymous_user, comment.comment,"
+            & " (SELECT filename FROM photo WHERE id=comment.photo_id),"
+            & " DATETIME(post.date_post, '+"
+            & Utils.Image (V2P.Settings.Anonymity_Hours)
+            & " hour')<DATETIME('NOW') "
+            & " FROM comment, post_comment, post, user_post"
             & " WHERE post_comment.comment_id=comment.id"
             & " AND has_voted='FALSE'"
+            & " AND post.id=post_comment.post_id AND user_post.post_id=post.id"
             & " ORDER BY date DESC LIMIT " & I (Limit));
       else
          DBH.Handle.Prepare_Select
@@ -1082,12 +1088,16 @@ package body V2P.Database is
            & DB.String_Vectors.Element (Line, 3);
          User          := User
            & DB.String_Vectors.Element (Line, 4);
-         Anonymous     := Anonymous
+         Owner        := Owner
            & DB.String_Vectors.Element (Line, 5);
-         Comment       := Comment
+         Anonymous     := Anonymous
            & DB.String_Vectors.Element (Line, 6);
-         Filename      := Filename
+         Comment       := Comment
            & DB.String_Vectors.Element (Line, 7);
+         Filename      := Filename
+           & DB.String_Vectors.Element (Line, 8);
+         Revealed      := Revealed
+           & DB.String_Vectors.Element (Line, 9);
 
          Line.Clear;
       end loop;
@@ -1115,6 +1125,12 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc
            (Template_Defs.Chunk_Comment.COMMENT, Comment));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Chunk_Comment.REVEALED, Revealed));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Chunk_Comment.OWNER, Owner));
 
       return Set;
    end Get_Latest_Comments;
