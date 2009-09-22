@@ -1054,6 +1054,7 @@ package body V2P.Database is
             & " (SELECT filename FROM photo WHERE id=comment.photo_id)"
             & " FROM comment, post_comment"
             & " WHERE post_comment.comment_id=comment.id"
+            & " AND has_voted='FALSE'"
             & " ORDER BY date DESC LIMIT " & I (Limit));
       else
          DBH.Handle.Prepare_Select
@@ -1064,6 +1065,7 @@ package body V2P.Database is
             & "(SELECT filename FROM photo WHERE id=comment.photo_id)"
             & " FROM comment, post_comment, user_post"
             & " WHERE post_comment.comment_id=comment.id"
+            & " AND has_voted='FALSE'"
             & " and user_post.post_id=post_comment.post_id"
             & " and user_post.user_login=" & Q (Post_Author)
             & " ORDER BY date DESC LIMIT " & I (Limit));
