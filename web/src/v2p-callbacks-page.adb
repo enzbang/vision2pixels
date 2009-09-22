@@ -496,8 +496,7 @@ package body V2P.Callbacks.Page is
 
       Templates.Insert
         (Translations,
-         Database.Get_Latest_Comments
-           (Limit => Settings.RSS_Latest_Comments, Post_Author => ""));
+         Database.Get_Latest_Comments (Limit => Settings.RSS_Latest_Comments));
    end Rss_Last_Comments;
 
    ---------------------

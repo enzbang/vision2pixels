@@ -1026,8 +1026,7 @@ package body V2P.Database is
    -------------------------
 
    function Get_Latest_Comments
-     (Limit       : in Positive;
-      Post_Author : in String := "") return Templates.Translate_Set
+     (Limit : in Positive) return Templates.Translate_Set
    is
       use type Templates.Tag;
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
@@ -1047,35 +1046,20 @@ package body V2P.Database is
    begin
       Connect (DBH);
 
-      if Post_Author = "" then
-         DBH.Handle.Prepare_Select
-           (Iter,
-            "SELECT post_comment.post_id, comment.id,"
-            & " strftime('%Y-%m-%d %H:%M:%S', date), comment.user_login,"
-            & " user_post.user_login, anonymous_user, comment.comment,"
-            & " (SELECT filename FROM photo WHERE id=comment.photo_id),"
-            & " DATETIME(post.date_post, '+"
-            & Utils.Image (V2P.Settings.Anonymity_Hours)
-            & " hour')<DATETIME('NOW') "
-            & " FROM comment, post_comment, post, user_post"
-            & " WHERE post_comment.comment_id=comment.id"
-            & " AND has_voted='FALSE'"
-            & " AND post.id=post_comment.post_id AND user_post.post_id=post.id"
-            & " ORDER BY date DESC LIMIT " & I (Limit));
-      else
-         DBH.Handle.Prepare_Select
-           (Iter,
-            "SELECT post_comment.post_id, comment.id,"
-            & " strftime('%Y-%m-%d %H:%M:%S', date), "
-            & "comment.user_login, anonymous_user, comment, "
-            & "(SELECT filename FROM photo WHERE id=comment.photo_id)"
-            & " FROM comment, post_comment, user_post"
-            & " WHERE post_comment.comment_id=comment.id"
-            & " AND has_voted='FALSE'"
-            & " and user_post.post_id=post_comment.post_id"
-            & " and user_post.user_login=" & Q (Post_Author)
-            & " ORDER BY date DESC LIMIT " & I (Limit));
-      end if;
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "SELECT post_comment.post_id, comment.id,"
+         & " strftime('%Y-%m-%d %H:%M:%S', date), comment.user_login,"
+         & " user_post.user_login, anonymous_user, comment.comment,"
+         & " (SELECT filename FROM photo WHERE id=comment.photo_id),"
+         & " DATETIME(post.date_post, '+"
+         & Utils.Image (V2P.Settings.Anonymity_Hours)
+         & " hour')<DATETIME('NOW') "
+         & " FROM comment, post_comment, post, user_post"
+         & " WHERE post_comment.comment_id=comment.id"
+         & " AND has_voted='FALSE'"
+         & " AND post.id=post_comment.post_id AND user_post.post_id=post.id"
+         & " ORDER BY date DESC LIMIT " & I (Limit));
 
       while Iter.More loop
          Iter.Get_Line (Line);
