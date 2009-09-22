@@ -1149,16 +1149,16 @@ package body V2P.Database is
    is
       use type Templates.Tag;
 
-      DBH   : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Iter  : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line  : DB.String_Vectors.Vector;
-      Id    : Templates.Tag;
-      Name  : Templates.Tag;
-      Date  : Templates.Tag;
-      Thumb : Templates.Tag;
-      Forum : Templates.Tag;
+      DBH      : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter     : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line     : DB.String_Vectors.Vector;
+      Id       : Templates.Tag;
+      Name     : Templates.Tag;
+      Date     : Templates.Tag;
+      Thumb    : Templates.Tag;
+      Forum    : Templates.Tag;
       Category : Templates.Tag;
-      Set   : Templates.Translate_Set;
+      Set      : Templates.Translate_Set;
 
       function Select_Date return String;
       --  Adds date selection if required
@@ -1280,9 +1280,8 @@ package body V2P.Database is
            Templates.Assoc (Page_Rss_Last_Posts.POST_FORUM, Forum));
       end if;
 
-      Templates.Insert (Set,
-                        Templates.Assoc (Page_Rss_Last_Photos.FROM_USER,
-                                         From_User));
+      Templates.Insert
+        (Set, Templates.Assoc (Page_Rss_Last_Photos.FROM_USER, From_User));
 
       return Set;
    end Get_Latest_Posts;
