@@ -1196,6 +1196,14 @@ package body V2P.Database is
                Append (SQL,
                        " AND user_post.post_id=post.id AND user_login="
                        & Q (From_User));
+
+               --  Do not display post for a specific user when it is not yet
+               --  revealed.
+
+               Append
+                 (SQL, " AND DATETIME(post.date_post, '+"
+                  & Utils.Image (Settings.Anonymity_Hours)
+                  & " hour') < DATETIME('NOW')");
             end if;
 
          elsif Show_Category then
