@@ -1035,13 +1035,13 @@ package body V2P.Database is
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
       Line : DB.String_Vectors.Vector;
 
-      TID                : Templates.Tag;
-      Comment_Id         : Templates.Tag;
-      User               : Templates.Tag;
-      Anonymous          : Templates.Tag;
-      Date               : Templates.Tag;
-      Comment            : Templates.Tag;
-      Filename           : Templates.Tag;
+      TID        : Templates.Tag;
+      Comment_Id : Templates.Tag;
+      User       : Templates.Tag;
+      Anonymous  : Templates.Tag;
+      Date       : Templates.Tag;
+      Comment    : Templates.Tag;
+      Filename   : Templates.Tag;
    begin
       Connect (DBH);
 
@@ -1054,7 +1054,7 @@ package body V2P.Database is
             & " (SELECT filename FROM photo WHERE id=comment.photo_id),"
             & " has_voted FROM comment, post_comment"
             & " WHERE post_comment.comment_id=comment.id"
-            & " ORDER BY date LIMIT " & I (Limit));
+            & " ORDER BY date DESC LIMIT " & I (Limit));
       else
          DBH.Handle.Prepare_Select
            (Iter,
@@ -1064,9 +1064,9 @@ package body V2P.Database is
             & "(SELECT filename FROM photo WHERE id=comment.photo_id),"
             & " has_voted FROM comment, post_comment, user_post"
             & " WHERE post_comment.comment_id=comment.id"
-            & " and user_post.post_id = post_comment.post_id"
-            & " and user_post.user_login = " & Q (Post_Author)
-            & " ORDER BY date LIMIT " & I (Limit));
+            & " and user_post.post_id=post_comment.post_id"
+            & " and user_post.user_login=" & Q (Post_Author)
+            & " ORDER BY date DESC LIMIT " & I (Limit));
       end if;
 
       while Iter.More loop
@@ -1900,8 +1900,10 @@ package body V2P.Database is
                     & "(SELECT filename FROM photo WHERE id=post.photo_id), "
                     & "category.name, comment_counter,"
                     & "visit_counter, post.hidden, user_post.user_login, "
-                    & "(SELECT comment.date FROM comment "
-                    & "WHERE post.last_comment_id = comment.id), "
+                    & "(SELECT " & Timezone.Date_Time ("comment.date", TZ)
+                    & "FROM comment "
+                    & "WHERE post.last_comment_id=comment.id"
+                    & "      AND post.comment_counter!=0), "
                     & "(SELECT id FROM photo_of_the_week "
                     & "WHERE post.id = photo_of_the_week.post_id)";
 
@@ -2246,8 +2248,16 @@ package body V2P.Database is
             Hidden          := Hidden    & DB.String_Vectors.Element (Line, 9);
             Owner           := Owner
               & DB.String_Vectors.Element (Line, 10);
-            Date_Last_Com   := Date_Last_Com
-              & DB.String_Vectors.Element (Line, 11);
+
+            if DB.String_Vectors.Element (Line, 11) = "" then
+               --  No comment yet, date/time of last modification is the post
+               --  date.
+               Date_Last_Com   := Date_Last_Com
+                 & DB.String_Vectors.Element (Line, 3);
+            else
+               Date_Last_Com   := Date_Last_Com
+                 & DB.String_Vectors.Element (Line, 11);
+            end if;
             Is_CDC          := Is_CDC
               & (DB.String_Vectors.Element (Line, 12) /= "");
          end if;
@@ -2643,7 +2653,8 @@ package body V2P.Database is
                   & ", " & Timezone.Date ("last_logged", TZ) & ", "
                   --  nb comments
                   & "(SELECT COUNT(id) FROM comment"
-                  & " WHERE user.login = comment.user_login), "
+                  & " WHERE user.login=comment.user_login"
+                  & " AND comment.has_voted='FALSE'), "
                   --  nb photos
                   & "(SELECT count (post_id) FROM post, user_post,"
                   & " forum, category"
