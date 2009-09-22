@@ -109,4 +109,8 @@ package V2P.Defaults is
 
    Default_Timezone            : constant String := "+60";
 
+   RSS_Latest_Comments         : constant Positive := 40;
+
+   RSS_Latest_Posts            : constant Positive := 15;
+
 end V2P.Defaults;

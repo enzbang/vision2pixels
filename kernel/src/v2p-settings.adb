@@ -44,7 +44,8 @@ package body V2P.Settings is
       Website_Data_Prefix, Wiki_Service_Name, Number_Latest_Posts,
       Number_Latest_Users, Google_Map_Key, Log_Path, Cache_Path, RSS_Host_URL,
       RSS_Path, RSS_Prefix, Compression, Max_Search_Results, SMTP_Server,
-      Number_Users_Listed, Default_Timezone, Number_CdC_Listed);
+      Number_Users_Listed, Default_Timezone, Number_CdC_Listed,
+      RSS_Latest_Comments, RSS_Latest_Posts);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -338,6 +339,24 @@ package body V2P.Settings is
       return Conf.Get_Value (RSS_Host_URL);
    end RSS_Host_URL;
 
+   -------------------------
+   -- RSS_Latest_Comments --
+   -------------------------
+
+   function RSS_Latest_Comments return Positive is
+   begin
+      return Conf.Get_Value (RSS_Latest_Comments);
+   end RSS_Latest_Comments;
+
+   ----------------------
+   -- RSS_Latest_Posts --
+   ----------------------
+
+   function RSS_Latest_Posts return Positive is
+   begin
+      return Conf.Get_Value (RSS_Latest_Posts);
+   end RSS_Latest_Posts;
+
    --------------
    -- RSS_Path --
    --------------
@@ -476,6 +495,8 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (SMTP_Server, Defaults.SMTP_Server);
    Conf.Set_Value (Default_Timezone, Defaults.Default_Timezone);
    Conf.Set_Value (Number_CdC_Listed, Defaults.Number_CdC_Listed);
+   Conf.Set_Value (RSS_Latest_Comments, Defaults.RSS_Latest_Comments);
+   Conf.Set_Value (RSS_Latest_Posts, Defaults.RSS_Latest_Posts);
 
    --  Now read the config file if any
 
