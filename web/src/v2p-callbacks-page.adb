@@ -481,10 +481,7 @@ package body V2P.Callbacks.Page is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      pragma Unreferenced (Context);
-      P     : constant Parameters.List := Status.Parameters (Request);
-      Login : constant String :=
-                Parameters.Get (P, Template_Defs.Set_Global.LOGIN);
+      pragma Unreferenced (Request, Context);
    begin
       Templates.Insert
         (Translations,
@@ -499,7 +496,7 @@ package body V2P.Callbacks.Page is
 
       Templates.Insert
         (Translations,
-         Database.Get_Latest_Comments (Limit => 15, Post_Author => Login));
+         Database.Get_Latest_Comments (Limit => Settings.RSS_Latest_Comments));
    end Rss_Last_Comments;
 
    ---------------------
@@ -532,7 +529,7 @@ package body V2P.Callbacks.Page is
       Templates.Insert
         (Translations,
          Database.Get_Latest_Posts
-           (Limit      => 15,
+           (Limit      => Settings.RSS_Latest_Posts,
             Add_Date   => True,
             TZ         => Context.Get_Value (Template_Defs.Set_Global.TZ),
             Photo_Only => True,
@@ -569,7 +566,7 @@ package body V2P.Callbacks.Page is
       Templates.Insert
         (Translations,
          Database.Get_Latest_Posts
-           (Limit         => 15,
+           (Limit         => Settings.RSS_Latest_Posts,
             Add_Date      => True,
             TZ            => Context.Get_Value (Template_Defs.Set_Global.TZ),
             Show_Category => True));

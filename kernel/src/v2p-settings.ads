@@ -140,6 +140,12 @@ package V2P.Settings is
    function RSS_Prefix return String;
    --  Returns RSS prefix
 
+   function RSS_Latest_Posts return Positive;
+   --  Returns the number of latest posts to retrun for RSS files
+
+   function RSS_Latest_Comments return Positive;
+   --  Returns the number of latest comments to retrun for RSS files
+
    function Compression return Boolean;
    --  Returns True if the HTTP content compression can be used
 

@@ -1026,8 +1026,7 @@ package body V2P.Database is
    -------------------------
 
    function Get_Latest_Comments
-     (Limit       : in Positive;
-      Post_Author : in String := "") return Templates.Translate_Set
+     (Limit : in Positive) return Templates.Translate_Set
    is
       use type Templates.Tag;
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
@@ -1042,32 +1041,25 @@ package body V2P.Database is
       Date       : Templates.Tag;
       Comment    : Templates.Tag;
       Filename   : Templates.Tag;
+      Revealed   : Templates.Tag;
+      Owner      : Templates.Tag;
    begin
       Connect (DBH);
 
-      if Post_Author = "" then
-         DBH.Handle.Prepare_Select
-           (Iter,
-            "SELECT post_id, comment.id,"
-            & " strftime('%Y-%m-%d %H:%M:%S', date),"
-            & " user_login, anonymous_user, comment,"
-            & " (SELECT filename FROM photo WHERE id=comment.photo_id),"
-            & " has_voted FROM comment, post_comment"
-            & " WHERE post_comment.comment_id=comment.id"
-            & " ORDER BY date DESC LIMIT " & I (Limit));
-      else
-         DBH.Handle.Prepare_Select
-           (Iter,
-            "SELECT post_comment.post_id, comment.id,"
-            & " strftime('%Y-%m-%d %H:%M:%S', date), "
-            & "comment.user_login, anonymous_user, comment, "
-            & "(SELECT filename FROM photo WHERE id=comment.photo_id),"
-            & " has_voted FROM comment, post_comment, user_post"
-            & " WHERE post_comment.comment_id=comment.id"
-            & " and user_post.post_id=post_comment.post_id"
-            & " and user_post.user_login=" & Q (Post_Author)
-            & " ORDER BY date DESC LIMIT " & I (Limit));
-      end if;
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "SELECT post_comment.post_id, comment.id,"
+         & " strftime('%Y-%m-%d %H:%M:%S', date), comment.user_login,"
+         & " user_post.user_login, anonymous_user, comment.comment,"
+         & " (SELECT filename FROM photo WHERE id=comment.photo_id),"
+         & " DATETIME(post.date_post, '+"
+         & Utils.Image (V2P.Settings.Anonymity_Hours)
+         & " hour')<DATETIME('NOW') "
+         & " FROM comment, post_comment, post, user_post"
+         & " WHERE post_comment.comment_id=comment.id"
+         & " AND has_voted='FALSE'"
+         & " AND post.id=post_comment.post_id AND user_post.post_id=post.id"
+         & " ORDER BY date DESC LIMIT " & I (Limit));
 
       while Iter.More loop
          Iter.Get_Line (Line);
@@ -1080,12 +1072,16 @@ package body V2P.Database is
            & DB.String_Vectors.Element (Line, 3);
          User          := User
            & DB.String_Vectors.Element (Line, 4);
-         Anonymous     := Anonymous
+         Owner        := Owner
            & DB.String_Vectors.Element (Line, 5);
-         Comment       := Comment
+         Anonymous     := Anonymous
            & DB.String_Vectors.Element (Line, 6);
-         Filename      := Filename
+         Comment       := Comment
            & DB.String_Vectors.Element (Line, 7);
+         Filename      := Filename
+           & DB.String_Vectors.Element (Line, 8);
+         Revealed      := Revealed
+           & DB.String_Vectors.Element (Line, 9);
 
          Line.Clear;
       end loop;
@@ -1113,6 +1109,12 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc
            (Template_Defs.Chunk_Comment.COMMENT, Comment));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Chunk_Comment.REVEALED, Revealed));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Chunk_Comment.OWNER, Owner));
 
       return Set;
    end Get_Latest_Comments;
@@ -1131,16 +1133,16 @@ package body V2P.Database is
    is
       use type Templates.Tag;
 
-      DBH   : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Iter  : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line  : DB.String_Vectors.Vector;
-      Id    : Templates.Tag;
-      Name  : Templates.Tag;
-      Date  : Templates.Tag;
-      Thumb : Templates.Tag;
-      Forum : Templates.Tag;
+      DBH      : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter     : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line     : DB.String_Vectors.Vector;
+      Id       : Templates.Tag;
+      Name     : Templates.Tag;
+      Date     : Templates.Tag;
+      Thumb    : Templates.Tag;
+      Forum    : Templates.Tag;
       Category : Templates.Tag;
-      Set   : Templates.Translate_Set;
+      Set      : Templates.Translate_Set;
 
       function Select_Date return String;
       --  Adds date selection if required
@@ -1194,6 +1196,14 @@ package body V2P.Database is
                Append (SQL,
                        " AND user_post.post_id=post.id AND user_login="
                        & Q (From_User));
+
+               --  Do not display post for a specific user when it is not yet
+               --  revealed.
+
+               Append
+                 (SQL, " AND DATETIME(post.date_post, '+"
+                  & Utils.Image (Settings.Anonymity_Hours)
+                  & " hour') < DATETIME('NOW')");
             end if;
 
          elsif Show_Category then
@@ -1254,9 +1264,8 @@ package body V2P.Database is
            Templates.Assoc (Page_Rss_Last_Posts.POST_FORUM, Forum));
       end if;
 
-      Templates.Insert (Set,
-                        Templates.Assoc (Page_Rss_Last_Photos.FROM_USER,
-                                         From_User));
+      Templates.Insert
+        (Set, Templates.Assoc (Page_Rss_Last_Photos.FROM_USER, From_User));
 
       return Set;
    end Get_Latest_Posts;

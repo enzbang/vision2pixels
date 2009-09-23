@@ -137,8 +137,7 @@ package V2P.Database is
    --  Returns the Limit latest posts from all photo based forums
 
    function Get_Latest_Comments
-     (Limit       : in Positive;
-      Post_Author : in String := "") return Templates.Translate_Set;
+     (Limit : in Positive) return Templates.Translate_Set;
    --  Returns the Limit latest posts from all forums
 
    function Get_Latest_Users
