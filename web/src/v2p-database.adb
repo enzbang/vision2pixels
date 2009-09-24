@@ -1758,7 +1758,9 @@ package body V2P.Database is
       Iter.End_Select;
 
       DBH.Handle.Prepare_Select
-        (Iter, "SELECT COUNT (*) FROM post WHERE photo_id!=0");
+        (Iter,
+         "SELECT SUM(user_stats.nb_photo), SUM(user_stats.nb_com)"
+         & " FROM user_stats;");
 
       if Iter.More then
          Iter.Get_Line (Line);
@@ -1766,20 +1768,9 @@ package body V2P.Database is
          Templates.Insert
            (Set, Templates.Assoc
               (Page_Main.NB_PHOTOS, DB.String_Vectors.Element (Line, 1)));
-      end if;
-
-      Iter.End_Select;
-
-      DBH.Handle.Prepare_Select
-        (Iter,
-         "SELECT SUM(post.comment_counter) FROM post WHERE photo_id!=0");
-
-      if Iter.More then
-         Iter.Get_Line (Line);
-
          Templates.Insert
            (Set, Templates.Assoc
-              (Page_Main.NB_COMMENTS, DB.String_Vectors.Element (Line, 1)));
+              (Page_Main.NB_COMMENTS, DB.String_Vectors.Element (Line, 2)));
       end if;
 
       Iter.End_Select;
