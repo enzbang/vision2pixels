@@ -12,6 +12,14 @@
 
 <h2>Version 3.1 (june 2009)</h2>
 
+<p>Deux nouveaux flux RSS sont disponibles pour suivre:
+<ul>
+<li>Les nouveaux commentaires</li>
+<li>Les nouvelles photographies d'un auteur</li>
+</p>
+
+<p>Toutes les dates sont affichées dans le fuseau horaire de l'utilisateur</p>
+
 <p>Des liens de navigation sont maintenant disponlibles dans la page
    des coups-de-cœur.</p>
 
