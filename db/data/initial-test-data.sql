@@ -559,7 +559,7 @@ insert into comment values (9, datetime(current_timestamp, '-1.0609 days'), NULL
 insert into comment values (10, datetime(current_timestamp, '-1.0509 days'), NULL, 'enzbang', NULL, '<p>J''aurais cadr&#195;&#169; l&#195;&#169;g&#195;&#168;rement plus &#195;&#160; droite</p>', NULL, "FALSE");
 insert into comment values (11, datetime(current_timestamp, '-1.0409 days'), NULL, 'enzbang', NULL, '<p>D&#195;&#169;sol&#195;&#169; mais je n''accroche pas</p>', NULL, "FALSE");
 insert into comment values (12, datetime(current_timestamp, '-1.0309 days'), NULL, 'enzbang', NULL, '<p>Good idea 4 this picture</p>', NULL, "FALSE");
-insert into comment values (13, datetime(current_timestamp, '-0.0809 days'), NULL, 'enzbang', NULL, '<p>Un classique</p>', NULL, "FALSE");
+insert into comment values (13, datetime(current_timestamp, '-5.0809 days'), NULL, 'enzbang', NULL, '<p>Un classique</p>', NULL, "FALSE");
 insert into comment values (14, datetime(current_timestamp, '-5.0900 days'), NULL, 'enzbang', NULL, '<p>^_^</p>', NULL, "FALSE");
 insert into comment values (15, datetime(current_timestamp, '-0.0505 days'), NULL, 'enzbang', NULL, '<p>Unlocked ?</p>', NULL, "FALSE");
 insert into comment values (16, datetime(current_timestamp, '-0.0500 days'), NULL, 'enzbang', NULL, '<p>L''envie de fraise d&#195;&#169;j&#195;&#160; !</p>', NULL, "FALSE");

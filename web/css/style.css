@@ -363,6 +363,9 @@ ul.thumb_metadata {
    letter-spacing: 0.5em;
    text-transform: uppercase;
    padding-top: 4px;
+   list-style-type: none;
+   list-style-image: none;
+   list-style-position: outside;
 }
 
 /* block specific */
