@@ -97,7 +97,7 @@ package MagickWand is
 private
 
    type Object is new Ada.Finalization.Controlled with record
-      Wand : System.Address;
+      Wand : System.Address := System.Null_Address;
    end record;
 
    overriding procedure Finalize (O : in out Object);
