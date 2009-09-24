@@ -2660,32 +2660,10 @@ package body V2P.Database is
       SQL     : constant String :=
                   "SELECT login, " & Timezone.Date ("created", TZ)
                   & ", " & Timezone.Date ("last_logged", TZ) & ", "
-                  --  nb comments
-                  & "(SELECT COUNT(id) FROM comment"
-                  & " WHERE user.login=comment.user_login"
-                  & " AND comment.has_voted='FALSE'), "
-                  --  nb photos
-                  & "(SELECT count (post_id) FROM post, user_post,"
-                  & " forum, category"
-                  & " WHERE post.id=post_id AND post.photo_id!=0"
-                  & " AND user_post.user_login=user.login"
-                  & " AND post.category_id=category.id"
-                  & " AND forum.id=category.forum_id"
-                  & " AND (DATETIME(post.date_post, '+"
-                  & Utils.Image (V2P.Settings.Anonymity_Hours)
-                  & " hour')<DATETIME('NOW') OR forum.anonymity='FALSE')), "
-                  --  nb messages
-                  & "(SELECT count (post_id) FROM post, user_post"
-                  & " WHERE post.id=post_id AND post.photo_id is null "
-                  & " AND user_post.user_login=user.login),"
-                  --  nb CdC
-                  & "(SELECT COUNT(potw.id) "
-                  & " FROM photo_of_the_week AS potw, post, "
-                  & " user_post AS up"
-                  & " WHERE post.id=up.post_id AND post.photo_id!=0"
-                  & " AND potw.post_id=post.id"
-                  & " AND up.user_login=user.login) "
-                  & "FROM User where user.login=" & Q (Uid);
+                  & "nb_com, nb_photo, nb_mess, nb_cdc "
+                  & "FROM user, user_stats "
+                  & "WHERE user.login=" & Q (Uid)
+                  & " AND user.login=user_stats.user_login";
       DBH    : constant TLS_DBH_Access :=
                  TLS_DBH_Access (DBH_TLS.Reference);
       Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -2827,11 +2805,11 @@ package body V2P.Database is
             when Last_Connected =>
                Append (Result, "last_logged");
             when  Nb_Comments =>
-               Append (Result, "nbcom");
+               Append (Result, "nb_com");
             when Nb_Photos =>
-               Append (Result, "nbphoto");
+               Append (Result, "nb_photo");
             when Nb_CdC =>
-               Append (Result, "nbcdc");
+               Append (Result, "nb_cdc");
          end case;
 
          Append (Result, " " & Order_Direction'Image (Order));
@@ -2843,22 +2821,9 @@ package body V2P.Database is
       SQL             : constant String :=
                           "SELECT login, " & Timezone.Date ("created", TZ)
                             & ", " & Timezone.Date ("last_logged", TZ) & ", "
-                            --  nb comments
-                            & "(SELECT COUNT(id) FROM comment"
-                            & " WHERE user.login=comment.user_login) AS nbcom,"
-                            --  nb photos
-                            & "(SELECT count (post_id) FROM post, user_post"
-                            & " WHERE post.id=post_id AND post.photo_id!=0"
-                            & " AND user_post.user_login=user.login) "
-                            & "AS nbphoto,"
-                            --  nb CdC
-                            & "(SELECT COUNT(potw.id) "
-                            & " FROM photo_of_the_week AS potw, post, "
-                            & " user_post AS up"
-                            & " WHERE post.id=up.post_id AND post.photo_id!=0"
-                            & " AND potw.post_id=post.id"
-                            & " AND up.user_login=user.login) AS nbcdc "
-                            & "FROM user "
+                            & "nb_com, nb_photo, nb_cdc "
+                            & "FROM user, user_stats "
+                            & "WHERE user.login=user_stats.user_login "
                             & Sort_Order & " LIMIT"
                             & Positive'Image (Settings.Number_Users_Listed)
                             & " OFFSET" & Positive'Image (From - 1);
