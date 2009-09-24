@@ -8,6 +8,14 @@ create table "user" (
    "last_logged" date default current_timestamp
 );
 
+create table "user_stats" (
+   "user_login" varchar(50) not null primary key,
+   "nb_cdc" integer default 0,
+   "nb_photo" integer default 0,
+   "nb_com" integer default 0,
+   "nb_mess" integer default 0
+);
+
 create table "user_preferences" (
    "user_login" varchar(50) not null primary key,
    "photo_per_page" integer default 10,
@@ -27,9 +35,10 @@ create table "user_to_validate" (
    "nb_reminder" integer default 0
 );
 
-create trigger add_user_page after insert on user
+create trigger after_user_insert after insert on user
    begin
       insert into user_page (user_login) values (new.login);
+      insert into user_stats (user_login) values (new.login);
    end;
 
 create table "user_page" (
@@ -58,6 +67,14 @@ create table "comment" (
    foreign key ("user_login") references user("login"),
    foreign key ("parent") references comment("id")
 );
+
+create trigger after_comment_insert after insert on comment
+   begin
+      update user_stats
+         set nb_com=nb_com+1
+	 where user_stats.user_login=new.user_login
+	       and new.has_voted='FALSE';
+   end;
 
 create table "forum" (
    "id" integer not null primary key autoincrement,
@@ -171,6 +188,22 @@ create table "user_post" (
    foreign key ("post_id") references post("id"),
    foreign key ("user_login") references user("login")
 );
+
+create trigger after_user_post_insert after insert on user_post
+   begin
+      update user_stats
+         set nb_photo=nb_photo+1
+	 where user_stats.user_login=
+	    (select new.user_login
+	     from post
+	     where new.post_id=post.id and not post.photo_id is null);
+      update user_stats
+         set nb_mess=nb_mess+1
+	 where user_stats.user_login=
+	    (select new.user_login
+	     from post
+	     where new.post_id=post.id and post.photo_id is null);
+   end;
 
 create table "photo_metadata" (
    "photo_id" integer not null,
@@ -310,6 +343,16 @@ create table user_photo_of_the_week (
    foreign key ("post_id") references post("id"),
    foreign key ("week_id") references photo_of_the_week("id")
 );
+
+create trigger after_photo_of_the_week_insert after insert on photo_of_the_week
+   begin
+      update user_stats
+         set nb_cdc=nb_cdc+1
+	 where user_stats.user_login=
+	 (select user_post.user_login
+	 from user_post
+	 where user_post.post_id=new.post_id);
+   end;
 
 create table vote_ponderated (
    val integer not null

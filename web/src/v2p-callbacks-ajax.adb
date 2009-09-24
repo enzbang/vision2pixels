@@ -1665,6 +1665,10 @@ package body V2P.Callbacks.Ajax is
       Context.Set_Value
         (Template_Defs.Set_Global.USER_SORT,
          Database.User_Sort'Image (Sort));
+      V2P.Context.Not_Null_Counter.Set_Value
+        (Context => Context.all,
+         Name    => Template_Defs.Set_Global.NAV_FROM,
+         Value   => 1);
    end User_Sort;
 
 end V2P.Callbacks.Ajax;
