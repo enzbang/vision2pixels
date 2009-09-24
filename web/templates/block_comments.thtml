@@ -33,6 +33,10 @@
         </div>
       @@END_IF@@
     @@END_TABLE@@
+    @@-- no comment after revealed date
+    @@IF@@ @_REVEALED_@ and @_ID_FIRST_REVEALED_@ = ""
+       <li class="has_been_revealed"><span>@_BABEL_AUTHOR_REVEALED_@</span></li>
+    @@END_IF@@
 @@ELSE@@
   <ol id="pfe_comments"><li id="pfe_nocomment">@_BABEL_NO_COMMENT_@</li></ol>
   <div id="pfe_last_parent_id" style="visibility:hidden">
