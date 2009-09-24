@@ -51,7 +51,9 @@ package body MagickWand is
 
       use type System.Address;
    begin
-      O.Wand := DestroyMagickWand (O.Wand);
+      if O.Wand /= System.Null_Address then
+         O.Wand := DestroyMagickWand (O.Wand);
+      end if;
    end Finalize;
 
    ------------------
