@@ -1344,10 +1344,16 @@ begin  -- V2P.Web_Server : register vision2pixels website
 
    Cache.Clear (Root_Directory => Settings.Cache_Path);
 
-   Morzhol.Logs.Set_File
-     (Morzhol.OS.Compose
-        (Gwiad_Plugin_Path,
-         Settings.Log_Path & Directory_Separator & "v2p.log"));
+   Set_Log : declare
+      Log_Dir : constant String := Morzhol.OS.Compose
+        (Gwiad_Plugin_Path, Settings.Log_Path);
+   begin
+      if not Ada.Directories.Exists (Log_Dir) then
+         Ada.Directories.Create_Directory (Log_Dir);
+      end if;
+
+      Morzhol.Logs.Set_File (Log_Dir & Directory_Separator & "v2p.log");
+   end Set_Log;
 
    AWS.Templates.Register_Filter ("FLOATMULT", Float_Mult_Filter'Access);
 
