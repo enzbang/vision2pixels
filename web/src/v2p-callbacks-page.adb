@@ -125,18 +125,11 @@ package body V2P.Callbacks.Page is
       if TID /= Database.Empty_Id then
          if not Settings.Anonymous_Visit_Counter then
             --  Do not count anonymous click
-            --  ??? can use a simple assignment
-            if Login = "" then
-               Count_Visit := False;
+            --  Do not count author click if Ignore_Author_Click
 
-            else
-               if Settings.Ignore_Author_Click
-                 and then Database.Is_Author (Login, TID)
-               then
-                  --  Do not count author click
-                  Count_Visit := False;
-               end if;
-            end if;
+            Count_Visit := Login /= ""
+              and not (Settings.Ignore_Author_Click
+                       and then Database.Is_Author (Login, TID));
          end if;
 
          if Count_Visit then
