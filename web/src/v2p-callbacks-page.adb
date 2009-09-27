@@ -246,11 +246,10 @@ package body V2P.Callbacks.Page is
 
       if Parameters.Exist (P, Template_Defs.Block_Forum_List.HTTP.FROM) then
          Set_First_Post : declare
-            From : Positive;
-         begin
-            From := Positive'Value
+            From : constant Positive := Positive'Value
               (Parameters.Get
                  (P, Template_Defs.Block_Forum_List.HTTP.FROM));
+         begin
             V2P.Context.Not_Null_Counter.Set_Value
               (Context.all, Template_Defs.Set_Global.NAV_FROM, From);
          end Set_First_Post;
