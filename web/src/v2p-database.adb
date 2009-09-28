@@ -1059,7 +1059,9 @@ package body V2P.Database is
          & " WHERE post_comment.comment_id=comment.id"
          & " AND has_voted='FALSE'"
          & " AND post.id=post_comment.post_id AND user_post.post_id=post.id"
-         & " ORDER BY date DESC LIMIT " & I (Limit));
+         & " AND comment.id IN (SELECT comment.id FROM comment"
+         & " WHERE has_voted='FALSE' ORDER BY comment.date DESC LIMIT"
+         & I (Limit) & ") ORDER BY date DESC");
 
       while Iter.More loop
          Iter.Get_Line (Line);
