@@ -21,7 +21,7 @@
 
 <p>Toutes les dates sont affichées dans le fuseau horaire de l'utilisateur</p>
 
-<p>Des liens de navigation sont maintenant disponlibles dans la page
+<p>Des liens de navigation sont maintenant disponibles dans la page
    des coups-de-cœur.</p>
 
 <p>Les utilisateurs ont maintenant leur page.</p>
@@ -43,11 +43,11 @@
 <p>Un séparateur indique à quel moment un auteur est révélé dans le flux
    des commentaites.</p>
 
-<p>Il est maintenant possible de naviger dans la liste des photos dans la
-  page utilisateur. Le nombre initial de photo affichées est limité, la
-  page est ainsi plus rapide à s'afficher.</p>
+<p>Il est maintenant possible de naviguer dans la liste des photographies dans
+  la page utilisateur. Le nombre initial de photographies affichées est
+  limité, la page est ainsi plus rapide à s'afficher.</p>
 
-<p>Ajoute des liens pour naviger rapidement entre la photographie et le
+<p>Ajoute des liens pour naviguer rapidement entre la photographie et le
    formulaire permettant d'ajouter un commentaire.</p>
 
 <p>Il est maintenant possible d'envoyer des messages privés entre
@@ -64,12 +64,12 @@
 
 <h2>Version 3.0.3 (juin 2009)</h2>
 
-<p>Lors de la reconnection automatique les préférences utilisateurs sont
+<p>Lors de la reconnexion automatique les préférences utilisateurs sont
    conservées.</p>
 
 <h2>Version 3.0.2 (juin 2009)</h2>
 
-<p>Corrige le nombre de photo postées indiqué en première page.</p>
+<p>Corrige le nombre de photographies postées indiqué en première page.</p>
 
 <h2>Version 3.0.1 (mai 2009)</h2>
 
@@ -94,7 +94,7 @@
 
 <p>Un nouveau menu permet de récupérer les mots de passe perdus.</p>
 
-<p>Il est maintenant possible d'afficher 9, 12, 15 ou 30 photos par
+<p>Il est maintenant possible d'afficher 9, 12, 15 ou 30 photographies par
    page (nombres optimum pour certains écrans).</p>
 
 <p>Il est maintenant possible de spécifier une autre CSS (préférence
@@ -102,7 +102,7 @@
 
 <h2>Version 2.3.1 (février 2009)</h2>
 
-<p>Le nombre de commentaire n'inclut plus les votes.</p>
+<p>Le nombre de commentaires n'inclut plus les votes.</p>
 
 <h2>Version 2.3 (février 2009)</h2>
 
@@ -169,7 +169,7 @@
 <p>L'auteur peut maintenant changer la catégorie de ses photographies et de
   ses messages.</p>
 
-<p>Lorsque l'on sélectionne le filtre "Demande votre attention" uniquement
+<p>Lorsque l'on sélectionne le filtre "Demande votre attention", uniquement
   les photographies des 7 derniers jours sont affichées par défaut.</p>
 
 <p>Le formulaire pour poster une photographie ou un message a été amélioré.
