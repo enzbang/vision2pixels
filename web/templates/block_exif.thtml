@@ -10,6 +10,9 @@
       </abbr>
     </dd>
   @@END_IF@@
+  @@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@
+  @@--  Create day, make and Model name are only dislayed if author is
+  @@--  revealed
   @@IF@@ @_EXIST:EXIF_CREATE_DATE_@
     <dt><strong>@_BABEL_EXIF_CREATE_DATE_@</strong></dt>
     <dd>
@@ -31,6 +34,7 @@
         @_EXIF_CAMERA_MODEL_NAME_@
       </abbr>
     </dd>
+  @@END_IF@@
   @@END_IF@@
   @@IF@@ @_EXIST:EXIF_SHUTTER_SPEED_VALUE_@
     <dt><strong>@_BABEL_EXIF_SHUTTER_SPEED_VALUE_@</strong></dt>

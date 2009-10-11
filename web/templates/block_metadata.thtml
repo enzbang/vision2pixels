@@ -83,7 +83,3 @@
     @@END_IF@@
   @@END_IF@@
 </div>
-@@--
-@@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@
-@@--<div id="bm_exif_metadata" class="yui-u">@_LAZY_EXIF_@</div>
-@@END_IF@@
