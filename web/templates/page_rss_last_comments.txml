@@ -20,10 +20,18 @@
       <link>@_V2P_URL_@@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=True#comment_@_COMMENT_ID_@</link>
       <guid>@_V2P_URL_@@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=True#comment_@_COMMENT_ID_@</guid>
       <description>
+        &lt;p&gt;
+        &lt;a href="@_V2P_URL_@@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=True"&gt;
+        &lt;img alt="" src="@_V2P_URL_@@_THUMB_SOURCE_PREFIX_@/@_POST_PHOTO_@"/&gt;
+        &lt;br /&gt;
         &lt;a href="@_V2P_URL_@@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=True"&gt;
         @_WEB_ESCAPE:COMMENT_@
-        &lt;img alt="" src="@_V2P_URL_@@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/&gt;
+        @@IF@@ @_COMMENT_IMAGE_SOURCE_@ /= ""
+        &lt;br /&gt;
+        &lt;img alt="" src="@_V2P_URL_@@_THUMB_SOURCE_PREFIX_@/@_COMMENT_IMAGE_SOURCE_@"/&gt;
+        @@END_IF@@
         &lt;/a&gt;
+        &lt;/p&gt;
       </description>
       <pubDate>@_FORMAT_DATE(%a, %d %b %Y %T):DATE_@ GMT</pubDate>
     </item>

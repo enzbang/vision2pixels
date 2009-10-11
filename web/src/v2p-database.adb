@@ -1043,6 +1043,7 @@ package body V2P.Database is
       Filename   : Templates.Tag;
       Revealed   : Templates.Tag;
       Owner      : Templates.Tag;
+      Post_Photo : Templates.Tag;
    begin
       Connect (DBH);
 
@@ -1054,7 +1055,8 @@ package body V2P.Database is
          & " (SELECT filename FROM photo WHERE id=comment.photo_id),"
          & " DATETIME(post.date_post, '+"
          & Utils.Image (V2P.Settings.Anonymity_Hours)
-         & " hour')<DATETIME('NOW') "
+         & " hour')<DATETIME('NOW'), "
+         & " (SELECT filename FROM photo WHERE id=post.photo_id) "
          & " FROM comment, post_comment, post, user_post"
          & " WHERE post_comment.comment_id=comment.id"
          & " AND has_voted='FALSE'"
@@ -1084,6 +1086,8 @@ package body V2P.Database is
            & DB.String_Vectors.Element (Line, 8);
          Revealed      := Revealed
            & DB.String_Vectors.Element (Line, 9);
+         Post_Photo    := Post_Photo
+           & DB.String_Vectors.Element (Line, 10);
 
          Line.Clear;
       end loop;
@@ -1117,6 +1121,9 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc
            (Template_Defs.Chunk_Comment.OWNER, Owner));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Page_Rss_Last_Comments.POST_PHOTO, Post_Photo));
 
       return Set;
    end Get_Latest_Comments;
