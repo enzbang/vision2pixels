@@ -145,7 +145,7 @@ package body Image_Tests.Embedded_Metadata is
          ISO              => "100",
          Create_Date      => "2008:08:21 20:33:42",
          Metering_Mode    => "Multi-segment",
-         Flash            => "0",
+         Flash            => "No Flash",
          Focal            => "18.0 mm",
          Exposure_Mode    => "Auto",
          White_Balance    => "Auto");
