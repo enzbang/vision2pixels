@@ -2660,7 +2660,23 @@ package body V2P.Database is
       SQL     : constant String :=
                   "SELECT login, " & Timezone.Date ("created", TZ)
                   & ", " & Timezone.Date ("last_logged", TZ) & ", "
-                  & "nb_com, nb_photo, nb_mess, nb_cdc "
+                  & "nb_com, "
+                  --  nb photos, do not use the data from user's stats table
+                  --  has the non revealed photos are counted in this table.
+                  --  This is not very important in the table listing all users
+                  --  but on the user page it is because from this page it is
+                  --  easy to know how many photos not yet revealed the author
+                  --  has posted.
+                  & "(SELECT count (post_id) FROM post, user_post,"
+                  & " forum, category"
+                  & " WHERE post.id=post_id AND post.photo_id!=0"
+                  & " AND user_post.user_login=user.login"
+                  & " AND post.category_id=category.id"
+                  & " AND forum.id=category.forum_id"
+                  & " AND (DATETIME(post.date_post, '+"
+                  & Utils.Image (V2P.Settings.Anonymity_Hours)
+                  & " hour')<DATETIME('NOW') OR forum.anonymity='FALSE')), "
+                  & "nb_mess, nb_cdc "
                   & "FROM user, user_stats "
                   & "WHERE user.login=" & Q (Uid)
                   & " AND user.login=user_stats.user_login";
