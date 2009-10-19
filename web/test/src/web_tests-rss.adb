@@ -28,6 +28,9 @@ package body Web_Tests.RSS is
    procedure Last_Posts (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  Checks last post content
 
+   procedure Last_Comments (T : in out AUnit.Test_Cases.Test_Case'Class);
+   --  Checks last comments
+
    procedure Close (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  Close the Web connection
 
@@ -43,6 +46,25 @@ package body Web_Tests.RSS is
    begin
       Client.Close (Connection);
    end Close;
+
+   -------------------
+   -- Last_Comments --
+   -------------------
+
+   procedure Last_Comments (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      Result : Response.Data;
+   begin
+      Client.Get (Connection, Result, URI => "/rss/comments");
+
+      Check
+        (Response.Message_Body (Result),
+         Word_Set'(+"L'auteur", +"Mais encore", +"turbo", +"Superbe",
+           +"turbo", +"com en imafe", +"test", +"prefere l'original",
+           +"turbo", +"une autre proposition", +"enzbang", +"Bof!",
+           +"enzbang", +"Un classique", +"enzbang", +"^_^"),
+         "wrong content for RSS last comments:"
+         & Response.Message_Body (Result));
+   end Last_Comments;
 
    ----------------
    -- Last_Posts --
@@ -82,6 +104,7 @@ package body Web_Tests.RSS is
       use AUnit.Test_Cases.Registration;
    begin
       Register_Routine (T, Last_Posts'Access, "RSS: last posts");
+      Register_Routine (T, Last_Comments'Access, "RSS: last comments");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
 
