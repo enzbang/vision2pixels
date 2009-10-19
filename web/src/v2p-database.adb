@@ -1140,6 +1140,8 @@ package body V2P.Database is
       From_User     : in String  := "";
       Show_Category : in Boolean := False) return Templates.Translate_Set
    is
+      pragma Unreferenced (TZ);
+
       use type Templates.Tag;
 
       DBH      : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
@@ -1163,8 +1165,7 @@ package body V2P.Database is
       function Select_Date return String is
       begin
          if Add_Date then
-            return ", strftime('%Y-%m-%d %H:%M:%S', "
-              & Timezone.Date ("post.date_post", TZ) & ")";
+            return ", strftime('%Y-%m-%d %H:%M:%S', post.date_post)";
          else
             return "";
          end if;
