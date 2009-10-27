@@ -1043,6 +1043,7 @@ package body V2P.Database is
       Filename   : Templates.Tag;
       Revealed   : Templates.Tag;
       Owner      : Templates.Tag;
+      Post_Photo : Templates.Tag;
    begin
       Connect (DBH);
 
@@ -1054,7 +1055,8 @@ package body V2P.Database is
          & " (SELECT filename FROM photo WHERE id=comment.photo_id),"
          & " DATETIME(post.date_post, '+"
          & Utils.Image (V2P.Settings.Anonymity_Hours)
-         & " hour')<DATETIME('NOW') "
+         & " hour')<DATETIME('NOW'), "
+         & " (SELECT filename FROM photo WHERE id=post.photo_id) "
          & " FROM comment, post_comment, post, user_post"
          & " WHERE post_comment.comment_id=comment.id"
          & " AND has_voted='FALSE'"
@@ -1084,6 +1086,8 @@ package body V2P.Database is
            & DB.String_Vectors.Element (Line, 8);
          Revealed      := Revealed
            & DB.String_Vectors.Element (Line, 9);
+         Post_Photo    := Post_Photo
+           & DB.String_Vectors.Element (Line, 10);
 
          Line.Clear;
       end loop;
@@ -1117,6 +1121,9 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc
            (Template_Defs.Chunk_Comment.OWNER, Owner));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Page_Rss_Last_Comments.POST_PHOTO, Post_Photo));
 
       return Set;
    end Get_Latest_Comments;
@@ -1133,6 +1140,8 @@ package body V2P.Database is
       From_User     : in String  := "";
       Show_Category : in Boolean := False) return Templates.Translate_Set
    is
+      pragma Unreferenced (TZ);
+
       use type Templates.Tag;
 
       DBH      : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
@@ -1156,8 +1165,7 @@ package body V2P.Database is
       function Select_Date return String is
       begin
          if Add_Date then
-            return ", strftime('%Y-%m-%d %H:%M:%S', "
-              & Timezone.Date ("post.date_post", TZ) & ")";
+            return ", strftime('%Y-%m-%d %H:%M:%S', post.date_post)";
          else
             return "";
          end if;
@@ -2653,7 +2661,23 @@ package body V2P.Database is
       SQL     : constant String :=
                   "SELECT login, " & Timezone.Date ("created", TZ)
                   & ", " & Timezone.Date ("last_logged", TZ) & ", "
-                  & "nb_com, nb_photo, nb_mess, nb_cdc "
+                  & "nb_com, "
+                  --  nb photos, do not use the data from user's stats table
+                  --  has the non revealed photos are counted in this table.
+                  --  This is not very important in the table listing all users
+                  --  but on the user page it is because from this page it is
+                  --  easy to know how many photos not yet revealed the author
+                  --  has posted.
+                  & "(SELECT count (post_id) FROM post, user_post,"
+                  & " forum, category"
+                  & " WHERE post.id=post_id AND post.photo_id!=0"
+                  & " AND user_post.user_login=user.login"
+                  & " AND post.category_id=category.id"
+                  & " AND forum.id=category.forum_id"
+                  & " AND (DATETIME(post.date_post, '+"
+                  & Utils.Image (V2P.Settings.Anonymity_Hours)
+                  & " hour')<DATETIME('NOW') OR forum.anonymity='FALSE')), "
+                  & "nb_mess, nb_cdc "
                   & "FROM user, user_stats "
                   & "WHERE user.login=" & Q (Uid)
                   & " AND user.login=user_stats.user_login";
