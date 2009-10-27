@@ -5,6 +5,7 @@
 <div id="butv_users">
 <table class="user_list">
 <tr class="table_header">
+<th></th>
 <th>@_BABEL_LOGIN_@</th>
 <th>@_BABEL_EMAIL_@</th>
 <th>@_BABEL_REGISTERED_ON_@</th>
@@ -14,6 +15,7 @@
 </tr>
 @@TABLE@@
 <tr>
+<td>@_TABLE_LINE_@ - </td>
 <td>@_LOGIN_@</td>
 <td>@_EMAIL_@</td>
 <td>@_CREATED_@</td>
