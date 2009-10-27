@@ -5,6 +5,7 @@
 @@IF@@ @_ERROR_@
    <replace id="pur_register_message">@_BABEL_LOGIN_EXISTS_@</replace>
 @@ELSE@@
-   <location url="/"/>
+   <replace id="pur_user_register"><![CDATA[@_MESSAGE_@]]></replace>
+   <clear id="pur_register_message"/>
 @@END_IF@@
 </response>

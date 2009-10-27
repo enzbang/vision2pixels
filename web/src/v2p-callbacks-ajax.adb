@@ -65,6 +65,7 @@ with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Users_To_Validate;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
+with V2P.Template_Defs.Chunk_Register_Request;
 with V2P.Template_Defs.Chunk_Search_User;
 with V2P.Template_Defs.Chunk_Search_Comment;
 with V2P.Template_Defs.Chunk_Search_Post;
@@ -1370,6 +1371,22 @@ package body V2P.Callbacks.Ajax is
          Templates.Insert
            (Translations, Templates.Assoc (R_Page_User_Register.ERROR, True));
          return;
+
+      else
+         declare
+            T : Templates.Translate_Set;
+         begin
+            Templates.Insert
+              (T, Templates.Assoc (Chunk_Register_Request.USER_EMAIL, Email));
+
+            Templates.Insert
+              (Translations,
+               Templates.Assoc
+                 (R_Page_User_Register.MESSAGE,
+                  Unbounded_String'
+                    (Templates.Parse
+                       (Template_Defs.Chunk_Register_Request.Template, T))));
+         end;
       end if;
 
       --  Send the e-mail for confirmation
