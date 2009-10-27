@@ -2,8 +2,12 @@
 @@--
 <?xml version="1.0" encoding="utf-8"?>
 <response>
-@@IF@@ @_ERROR_@
+@@IF@@ @_ERROR_MISSING_DATA_@
+   <replace id="pur_register_message">@_BABEL_MISSING_DATA_@</replace>
+@@ELSIF@@ @_ERROR_LOGIN_EXISTS_@
    <replace id="pur_register_message">@_BABEL_LOGIN_EXISTS_@</replace>
+@@ELSIF@@ @_ERROR_WRONG_EMAIL_@
+   <replace id="pur_register_message">@_BABEL_WRONG_EMAIL_@</replace>
 @@ELSE@@
    <replace id="pur_user_register"><![CDATA[@_MESSAGE_@]]></replace>
    <clear id="pur_register_message"/>
