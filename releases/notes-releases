@@ -13,6 +13,15 @@ branch:
 
    $ git cherry-pick <sha1>
 
+or:
+
+   $ git merge --log --no-ff <branch_name>
+
+For this branch_name must be rebased on current branch.
+
+   $ git rebase --onto v2.0 branch_name^ branch_name
+   (if there is a single commit)
+
 When the release is fully ready a corresponding tag is created (vX.Y.Z):
 
    $ git tag -a v2.0.0
