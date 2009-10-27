@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2009                          --
+--                            Copyright (C) 2009                            --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -23,10 +23,13 @@ with AWS.Client;
 with AWS.Response;
 with AWS.Utils;
 
-package body Web_Tests.User_Page is
+package body Web_Tests.RSS is
 
-   procedure Turbo_Page (T : in out AUnit.Test_Cases.Test_Case'Class);
-   --  User's obry page
+   procedure Last_Posts (T : in out AUnit.Test_Cases.Test_Case'Class);
+   --  Checks last post content
+
+   procedure Last_Comments (T : in out AUnit.Test_Cases.Test_Case'Class);
+   --  Checks last comments
 
    procedure Close (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  Close the Web connection
@@ -44,42 +47,54 @@ package body Web_Tests.User_Page is
       Client.Close (Connection);
    end Close;
 
+   -------------------
+   -- Last_Comments --
+   -------------------
+
+   procedure Last_Comments (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      Result : Response.Data;
+   begin
+      Client.Get (Connection, Result, URI => "/rss/comments");
+
+      Check
+        (Response.Message_Body (Result),
+         Word_Set'(+"L'auteur", +"Mais encore", +"turbo", +"Superbe",
+           +"turbo", +"com en imafe", +"test", +"prefere l'original",
+           +"turbo", +"une autre proposition", +"enzbang", +"Bof!",
+           +"enzbang", +"Un classique", +"enzbang", +"^_^"),
+         "wrong content for RSS last comments:"
+         & Response.Message_Body (Result));
+   end Last_Comments;
+
+   ----------------
+   -- Last_Posts --
+   ----------------
+
+   procedure Last_Posts (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      Result : Response.Data;
+   begin
+      Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
+      Client.Get (Connection, Result, URI => "/rss/posts");
+
+      Check
+        (Response.Message_Body (Result),
+         Word_Set'(+"Un_Troll", +"photographies", +"Portrait",
+           +"Hissez haut...", +"photographies", +"Paysage",
+           +"Invasion", +"photographies", +"Portrait",
+           +"On ne pousse pas", +"photographies", +"Paysage",
+           +"Rides", +"En troupeau", +"Road"),
+         "wrong content for RSS last post:"
+         & Response.Message_Body (Result));
+   end Last_Posts;
+
    ----------
    -- Name --
    ----------
 
    overriding function Name (T : in Test_Case) return Message_String is
    begin
-      return Format ("Web_Tests.User_Page");
+      return Format ("Web_Tests.RSS");
    end Name;
-
-   ----------------
-   -- Turbo_Page --
-   ----------------
-
-   procedure Turbo_Page (T : in out AUnit.Test_Cases.Test_Case'Class) is
-      Result : Response.Data;
-   begin
-      Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
-
-      Client.Get (Connection, Result, URI => "/");
-      Set_Context (Response.Message_Body (Result));
-
-      Web_Tests.Login (Connection, "turbo", "turbopass");
-
-      Client.Get (Connection, Result, URI => "/~turbo?" & URL_Context);
-
-      Check
-        (Response.Message_Body (Result),
-         Word_Set'(+"Forum photographies", +"Forum mat",
-           +"20 photographies", +"15 messages", +"6 commentaires",
-           +"3 coups-de", +"diter votre page",
-           +"?TID=67", +"?TID=66", +"?TID=65", +"?TID=64", +"?TID=75",
-           +"?TID=74", +"?TID=73", +"?TID=72", +"?TID=71", +"?TID=70",
-           not "#17", not "#19", +"#21", +"#20"),
-         "wrong content for obry's personal page:"
-         & Response.Message_Body (Result));
-   end Turbo_Page;
 
    --------------------
    -- Register_Tests --
@@ -88,17 +103,9 @@ package body Web_Tests.User_Page is
    overriding procedure Register_Tests (T : in out Test_Case) is
       use AUnit.Test_Cases.Registration;
    begin
-      Register_Routine (T, Turbo_Page'Access, "turbo page");
+      Register_Routine (T, Last_Posts'Access, "RSS: last posts");
+      Register_Routine (T, Last_Comments'Access, "RSS: last comments");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
 
-   -----------------
-   -- Set_Up_Case --
-   -----------------
-
-   overriding procedure Set_Up_Case (T : in out Test_Case) is
-   begin
-      Set_Context;
-   end Set_Up_Case;
-
-end Web_Tests.User_Page;
+end Web_Tests.RSS;
