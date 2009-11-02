@@ -19,6 +19,7 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 
 with GNAT.String_Split;
@@ -65,6 +66,7 @@ with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Users_To_Validate;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
+with V2P.Template_Defs.Chunk_Register_Request;
 with V2P.Template_Defs.Chunk_Search_User;
 with V2P.Template_Defs.Chunk_Search_Comment;
 with V2P.Template_Defs.Chunk_Search_Post;
@@ -84,6 +86,7 @@ with V2P.Template_Defs.Set_Values;
 
 package body V2P.Callbacks.Ajax is
 
+   use Ada;
    use Ada.Strings.Unbounded;
    use GNAT;
 
@@ -1362,14 +1365,39 @@ package body V2P.Callbacks.Ajax is
    begin
       --  Record registration request into the database
 
-      if Login = "" or else Password = "" or else Email = ""
-        or else not Database.Register_User (Login, Password, Email)
-      then
-         --  Display error message on the login page, a single error for now
-         --  (duplicate login).
+      if Login = "" or else Password = "" or else Email = "" then
          Templates.Insert
-           (Translations, Templates.Assoc (R_Page_User_Register.ERROR, True));
+           (Translations,
+            Templates.Assoc (R_Page_User_Register.ERROR_MISSING_DATA, True));
          return;
+
+      elsif Strings.Fixed.Index (Email, "@") = 0 then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc (R_Page_User_Register.ERROR_WRONG_EMAIL, True));
+         return;
+
+      elsif not Database.Register_User (Login, Password, Email) then
+         Templates.Insert
+           (Translations,
+            Templates.Assoc (R_Page_User_Register.ERROR_LOGIN_EXISTS, True));
+         return;
+
+      else
+         declare
+            T : Templates.Translate_Set;
+         begin
+            Templates.Insert
+              (T, Templates.Assoc (Chunk_Register_Request.USER_EMAIL, Email));
+
+            Templates.Insert
+              (Translations,
+               Templates.Assoc
+                 (R_Page_User_Register.MESSAGE,
+                  Unbounded_String'
+                    (Templates.Parse
+                       (Template_Defs.Chunk_Register_Request.Template, T))));
+         end;
       end if;
 
       --  Send the e-mail for confirmation
@@ -1386,7 +1414,7 @@ package body V2P.Callbacks.Ajax is
             Kind    => Morzhol.Logs.Error);
          Templates.Insert
            (Translations,
-            Templates.Assoc (R_Page_User_Register.ERROR, True));
+            Templates.Assoc (R_Page_User_Register.ERROR_LOGIN_EXISTS, True));
    end Onsubmit_Pur_Register_User;
 
    -------------------

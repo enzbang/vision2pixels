@@ -10,11 +10,14 @@
   rapports d'erreur ou des demandes de fonctionnalités. Le site ne peut
   évoluer sans vous.</p>
 
-<h2>Version 3.1.1 (december 2009)</h2>
-<p>Le flux RSS des nouveaux commentaires comporte maintenant la miniature de
-la photo commentée</p>
+<h2>Version 3.1.1 (decembre 2009)</h2>
 
-<h2>Version 3.1 (september 2009)</h2>
+<p>Le flux RSS des nouveaux commentaires comporte maintenant la miniature de
+la photo commentée.</p>
+
+<p>Amélioration de la page d'enregistrement des utilisateurs.</p>
+
+<h2>Version 3.1 (septembre 2009)</h2>
 
 <p>Deux nouveaux flux RSS sont disponibles pour suivre:
 <ul>
