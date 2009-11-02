@@ -1,0 +1,7 @@
+<p>Un message de confirmation a été envoyé à <b>@_USER_EMAIL_@</b></p>
+
+<p>Pensez à vérifier votre boîte de réception des spams</p>
+
+<p><form action="/">
+<input type="submit" value="terminer"/>
+</form>
