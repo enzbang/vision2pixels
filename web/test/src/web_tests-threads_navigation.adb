@@ -37,6 +37,9 @@ package body Web_Tests.Threads_Navigation is
    procedure Main_Page (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  The very first thing to do is to get the main page
 
+   procedure Forum_Photo (T : in out AUnit.Test_Cases.Test_Case'Class);
+   --  Go to the photography forum page
+
    procedure Close (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  Close the Web connection
 
@@ -66,6 +69,16 @@ package body Web_Tests.Threads_Navigation is
       Client.Close (Connection);
    end Close;
 
+   -----------------
+   -- Forum_Photo --
+   -----------------
+
+   procedure Forum_Photo (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      Result : Response.Data;
+   begin
+      Call (Connection, Result, URI => "/forum/threads?FID=1");
+   end Forum_Photo;
+
    ------------------------
    -- List_Forum_Threads --
    ------------------------
@@ -79,8 +92,7 @@ package body Web_Tests.Threads_Navigation is
    begin
       --  All posts
 
-      Client.Get
-        (Connection, Result, URI => "/forum/threads?FID=1&" & URL_Context);
+      Call (Connection, Result, URI => "/forum/threads?FID=1");
 
       Check
         (Response.Message_Body (Result),
@@ -176,12 +188,12 @@ package body Web_Tests.Threads_Navigation is
 
       --  Today posts
 
-      Client.Get
+      Call
         (Connection,
          Result,
          URI => Block_Forum_Filter.Ajax.onchange_bff_forum_filter_set
          & "?" & Block_Forum_Filter.HTTP.bff_forum_filter_set
-         & "=TODAY&" & URL_Context);
+         & "=TODAY");
 
       Check
         (Response.Message_Body (Result),
@@ -195,12 +207,12 @@ package body Web_Tests.Threads_Navigation is
 
       --  Two days
 
-      Client.Get
+      Call
         (Connection,
          Result,
          URI => Block_Forum_Filter.Ajax.onchange_bff_forum_filter_set
          & "?" & Block_Forum_Filter.HTTP.bff_forum_filter_set
-         & "=TWO_DAYS&" & URL_Context);
+         & "=TWO_DAYS");
 
       Check
         (Response.Message_Body (Result),
@@ -268,12 +280,12 @@ package body Web_Tests.Threads_Navigation is
 
       --  Seven days
 
-      Client.Get
+      Call
         (Connection,
          Result,
          URI => Block_Forum_Filter.Ajax.onchange_bff_forum_filter_set
          & "?" & Block_Forum_Filter.HTTP.bff_forum_filter_set
-         & "=SEVEN_DAYS&" & URL_Context);
+         & "=SEVEN_DAYS");
 
       Check
         (Response.Message_Body (Result),
@@ -355,15 +367,14 @@ package body Web_Tests.Threads_Navigation is
 
       --  Check that the filter is kept into the context
 
-      Client.Get
+      Call
         (Connection,
          Result,
          URI => Block_Forum_Filter.Ajax.onchange_bff_forum_filter_set
          & "?" & Block_Forum_Filter.HTTP.bff_forum_filter_set
-         & "=TODAY&" & URL_Context);
+         & "=TODAY");
 
-      Client.Get
-        (Connection, Result, URI => "/forum/threads?FID=1&" & URL_Context);
+      Call (Connection, Result, URI => "/forum/threads?FID=1");
 
       Check
         (Response.Message_Body (Result),
@@ -384,7 +395,7 @@ package body Web_Tests.Threads_Navigation is
    begin
       Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
 
-      Client.Get (Connection, Result, URI => "/");
+      Call (Connection, Result, URI => "/");
 
       Check_Page : declare
          use AUnit.Assertions;
@@ -394,10 +405,6 @@ package body Web_Tests.Threads_Navigation is
            (Page,
             Word_Set'(1 => +"Forum photographies", 2 => +"Forum mat"),
             "cannot get the first page");
-
-         Set_Context (Page);
-
-         Assert (URL_Context /= Null_Unbounded_String, "No context found!");
       end Check_Page;
    end Main_Page;
 
@@ -418,6 +425,7 @@ package body Web_Tests.Threads_Navigation is
       use AUnit.Test_Cases.Registration;
    begin
       Register_Routine (T, Main_Page'Access, "main page");
+      Register_Routine (T, Forum_Photo'Access, "go to photography forum");
       Register_Routine (T, Set_Page_Size'Access, "Set page size");
       Register_Routine (T, Set_All_Messages'Access, "Set all messages");
       Register_Routine (T, Set_Last_Posted'Access, "Set last posted");
@@ -434,11 +442,11 @@ package body Web_Tests.Threads_Navigation is
 
       Result : Response.Data;
    begin
-      Client.Get
+      Call
         (Connection, Result,
          URI => Block_Forum_Filter.Ajax.onchange_bff_forum_filter_set
          & "?" & Block_Forum_Filter.HTTP.bff_forum_filter_set
-         & "=ALL_MESSAGES&" & URL_Context);
+         & "=ALL_MESSAGES");
    end Set_All_Messages;
 
    ---------------------
@@ -450,11 +458,11 @@ package body Web_Tests.Threads_Navigation is
 
       Result : Response.Data;
    begin
-      Client.Get
+      Call
         (Connection, Result,
          URI => Block_Forum_Sort.Ajax.onchange_bfs_forum_sort_set
          & "?" & Block_Forum_Sort.HTTP.bfs_forum_sort_set
-         & "=LAST_POSTED&" & URL_Context);
+         & "=LAST_POSTED");
    end Set_Last_Posted;
 
    -------------------
@@ -466,21 +474,12 @@ package body Web_Tests.Threads_Navigation is
 
       Result : Response.Data;
    begin
-      Client.Get
+      Call
         (Connection, Result,
          URI => Block_Forum_Filter_Page_Size.Ajax.
            onchange_bffps_forum_filter_pagesize
          & "?" & Block_Forum_Filter_Page_Size.HTTP.bffps_forum_filter_pagesize
-         & "=100&" & URL_Context);
+         & "=100");
    end Set_Page_Size;
-
-   -----------------
-   -- Set_Up_Case --
-   -----------------
-
-   overriding procedure Set_Up_Case (T : in out Test_Case) is
-   begin
-      Set_Context;
-   end Set_Up_Case;
 
 end Web_Tests.Threads_Navigation;

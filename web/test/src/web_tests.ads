@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2008                          --
+--                         Copyright (C) 2006-2009                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -20,7 +20,9 @@
 ------------------------------------------------------------------------------
 
 with Ada.Strings.Unbounded;
+
 with AWS.Client;
+with AWS.Response;
 
 package Web_Tests is
 
@@ -65,11 +67,17 @@ package Web_Tests is
    procedure Logout (Connection : in out Client.HTTP_Connection);
    --  Logout current connected user
 
-   procedure Set_Context (Page : in String := "");
-   --  Set context from page content, if Page is empty string the context is
-   --  deleted.
+   procedure Call
+     (Connection : in out AWS.Client.HTTP_Connection;
+      Result     :    out Response.Data;
+      URI        : in     String);
+   --  Call the given Web page, set back the internal context
 
-   function URL_Context return String;
-   --  Returns the context as an HTTP URL parameter
+   procedure Upload
+     (Connection : in out AWS.Client.HTTP_Connection;
+      Result     :    out Response.Data;
+      Filename   : in     String;
+      URI        : in     String);
+   --  Upload, set back the internal context
 
 end Web_Tests;

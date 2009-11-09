@@ -61,7 +61,7 @@ package body Web_Tests.CdC is
    begin
       Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
 
-      Client.Get (Connection, Result, URI => "/cdc");
+      Call (Connection, Result, URI => "/cdc");
 
       Check_Page : declare
          use AUnit.Assertions;
@@ -100,14 +100,5 @@ package body Web_Tests.CdC is
       Register_Routine (T, Cdc'Access, "cdc page");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
-
-   -----------------
-   -- Set_Up_Case --
-   -----------------
-
-   overriding procedure Set_Up_Case (T : in out Test_Case) is
-   begin
-      Set_Context;
-   end Set_Up_Case;
 
 end Web_Tests.CdC;

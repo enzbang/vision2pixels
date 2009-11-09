@@ -61,12 +61,11 @@ package body Web_Tests.Menu is
    begin
       Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
 
-      Client.Get (Connection, Result, URI => "/");
-      Set_Context (Response.Message_Body (Result));
+      Call (Connection, Result, URI => "/");
 
       Login (Connection, "turbo", "turbopass");
 
-      Client.Get (Connection, Result, URI => "/?" & URL_Context);
+      Call (Connection, Result, URI => "/");
 
       Check_Page : declare
          use AUnit.Assertions;
@@ -106,14 +105,5 @@ package body Web_Tests.Menu is
       Register_Routine (T, Main_Page'Access, "main page");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
-
-   -----------------
-   -- Set_Up_Case --
-   -----------------
-
-   overriding procedure Set_Up_Case (T : in out Test_Case) is
-   begin
-      Set_Context;
-   end Set_Up_Case;
 
 end Web_Tests.Menu;

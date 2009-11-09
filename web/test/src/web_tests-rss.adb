@@ -54,7 +54,7 @@ package body Web_Tests.RSS is
    procedure Last_Comments (T : in out AUnit.Test_Cases.Test_Case'Class) is
       Result : Response.Data;
    begin
-      Client.Get (Connection, Result, URI => "/rss/comments");
+      Call (Connection, Result, URI => "/rss/comments");
 
       Check
         (Response.Message_Body (Result),
@@ -74,7 +74,7 @@ package body Web_Tests.RSS is
       Result : Response.Data;
    begin
       Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
-      Client.Get (Connection, Result, URI => "/rss/posts");
+      Call (Connection, Result, URI => "/rss/posts");
 
       Check
         (Response.Message_Body (Result),

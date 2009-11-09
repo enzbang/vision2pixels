@@ -82,8 +82,7 @@ package body Web_Tests.Post is
       use V2P.Template_Defs;
       Result : Response.Data;
    begin
-      Client.Get
-        (Connection, Result, URI => "/forum/entry?TID=142&" & URL_Context);
+      Call (Connection, Result, URI => "/forum/entry?TID=142");
 
       Check
         (Response.Message_Body (Result),
@@ -102,8 +101,7 @@ package body Web_Tests.Post is
       use V2P.Template_Defs;
       Result : Response.Data;
    begin
-      Client.Get
-        (Connection, Result, URI => "/forum/entry?TID=89&" & URL_Context);
+      Call (Connection, Result, URI => "/forum/entry?TID=89");
 
       Check
         (Response.Message_Body (Result),
@@ -124,7 +122,7 @@ package body Web_Tests.Post is
    begin
       Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
 
-      Client.Get (Connection, Result, URI => "/");
+      Call (Connection, Result, URI => "/");
 
       Check_Page : declare
          use AUnit.Assertions;
@@ -134,10 +132,6 @@ package body Web_Tests.Post is
            (Page,
             Word_Set'(1 => +"Forum photographies", 2 => +"Forum mat"),
             "cannot get the first page");
-
-         Set_Context (Page);
-
-         Assert (URL_Context /= Null_Unbounded_String, "No context found!");
       end Check_Page;
    end Main_Page;
 
@@ -194,7 +188,7 @@ package body Web_Tests.Post is
 
       --  Go to the upload page (anonymous)
 
-      Client.Get (Connection, Result, URI => "/add_photo?" & URL_Context);
+      Call (Connection, Result, URI => "/add_photo");
 
       Check_Anonymous_Upload_Page : declare
          use AUnit.Assertions;
@@ -211,7 +205,7 @@ package body Web_Tests.Post is
 
       Login (Connection, "turbo", "turbopass");
 
-      Client.Get (Connection, Result, URI => "/add_photo?" & URL_Context);
+      Call (Connection, Result, URI => "/add_photo");
 
       Check_Turbo_Upload_Page : declare
          use AUnit.Assertions;
@@ -228,7 +222,7 @@ package body Web_Tests.Post is
       Logout (Connection);
       Login (Connection, "test", "test");
 
-      Client.Get (Connection, Result, URI => "/add_photo?" & URL_Context);
+      Call (Connection, Result, URI => "/add_photo");
 
       Check_Upload_Page : declare
          use AUnit.Assertions;
@@ -249,11 +243,10 @@ package body Web_Tests.Post is
 
       --  Upload new photo
 
-      Client.Upload
+      Upload
         (Connection, Result,
          Filename => "./troll.jpg",
-         URI      => "/forum/new_photo_entry?" & URL_Context
-         & "&FILENAME=troll.jpg");
+         URI      => "/forum/new_photo_entry?FILENAME=troll.jpg");
 
       Check_Post_Page : declare
          use AUnit.Assertions;
@@ -272,11 +265,11 @@ package body Web_Tests.Post is
 
       --  Post the photo now into the corresponding forum
 
-      Client.Get
+      Call
         (Connection, Result,
          URI => Page_Forum_New_Photo_Entry.
-           Ajax.onsubmit_pfnpe_new_entry_form_submit & '?' & URL_Context
-         & "&NAME=Un_Troll&comment_input=un_petit_troll"
+           Ajax.onsubmit_pfnpe_new_entry_form_submit & '?'
+         & "NAME=Un_Troll&comment_input=un_petit_troll"
          & "&PID=91&CATEGORY=1");
 
       Check_Forum_Page : declare
@@ -305,8 +298,7 @@ package body Web_Tests.Post is
 
       --  Go to the post test page (anonymous)
 
-      Client.Get
-        (Connection, Result, URI => "/forum/new_entry?" & URL_Context);
+      Call (Connection, Result, URI => "/forum/new_entry");
 
       Check_Anonymous_Post_Page : declare
          use AUnit.Assertions;
@@ -323,8 +315,7 @@ package body Web_Tests.Post is
 
       Login (Connection, "turbo", "turbopass");
 
-      Client.Get
-        (Connection, Result, URI => "/forum/new_entry?" & URL_Context);
+      Call (Connection, Result, URI => "/forum/new_entry");
 
       Check_Post_Page : declare
          use AUnit.Assertions;
@@ -344,11 +335,11 @@ package body Web_Tests.Post is
 
       --  Post the message
 
-      Client.Get
+      Call
         (Connection, Result,
          URI => Page_Forum_New_Text_Entry.
-           Ajax.onsubmit_pfnte_new_entry_form_submit & '?' & URL_Context
-         & "&NAME=""une vente""&comment_input=""une sourie pour DELL M70"""
+           Ajax.onsubmit_pfnte_new_entry_form_submit & '?'
+         & "NAME=""une vente""&comment_input=""une sourie pour DELL M70"""
          & "&CATEGORY=7");
 
       Check_Forum_Page : declare
@@ -380,14 +371,5 @@ package body Web_Tests.Post is
       Register_Routine (T, Post_New_Comment'Access, "post new comment");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
-
-   -----------------
-   -- Set_Up_Case --
-   -----------------
-
-   overriding procedure Set_Up_Case (T : in out Test_Case) is
-   begin
-      Set_Context;
-   end Set_Up_Case;
 
 end Web_Tests.Post;
