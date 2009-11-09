@@ -57,7 +57,7 @@ package body Web_Tests.Forum_Entry is
 
       Check
         (Response.Message_Body (Result),
-         Word_Set'(not "ISO", not "Multi-segment"),
+         Word_Set'(not "Marque", not "Model"),
          "should not have exif information as not revealed");
    end Check_Exif;
 
