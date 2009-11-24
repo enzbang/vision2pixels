@@ -3360,7 +3360,8 @@ package body V2P.Database is
       DBH.Handle.Prepare_Select
         (Iter,
          "SELECT * FROM user "
-         & "WHERE login=" & Q (Login) & " OR email=" & Q (Email));
+         & "WHERE login COLLATE NOCASE =" & Q (Login)
+         & " OR email COLLATE NOCASE =" & Q (Email));
 
       if Iter.More then
          Iter.End_Select;
