@@ -1281,8 +1281,18 @@ label.inline {
 #bpcu_css_url_form label,
 #bpcu_css_url_form p,
 #bpcu_css_url_form input[type="submit"],
-#bpcu_css_url_form input {
+#bpcu_css_url_form input,
+#bue_form label,
+#bue_form p,
+#bue_form input[type="submit"],
+#bue_form input
+{
     display: inline;
+}
+
+#bue_form p#bue_success {
+    display: block;
+    font-weight: bold;
 }
 
 #bpcu_css_url_form input {

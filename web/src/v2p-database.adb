@@ -3663,6 +3663,21 @@ package body V2P.Database is
       end if;
    end Update_Rating;
 
+   -----------------------
+   -- Update_User_Email --
+   -----------------------
+
+   procedure Update_User_Email (Uid : in String; New_Email : in String) is
+      SQL : constant String :=
+              "UPDATE user SET email=" & Q (New_Email)
+              & " WHERE login=" & Q (Uid);
+
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+   begin
+      Connect (DBH);
+      DBH.Handle.Execute (SQL);
+   end Update_User_Email;
+
    ----------------------
    -- User_Preferences --
    ----------------------

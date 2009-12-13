@@ -275,6 +275,9 @@ package V2P.Database is
    function Get_User_Page (Uid : in String) return Templates.Translate_Set;
    --  Returns user page
 
+   procedure Update_User_Email (Uid : in String; New_Email : in String);
+   --  Update user email
+
    procedure Update_Page
      (Uid : in String; Content : in String; Content_HTML : in String);
    --  Update a user page

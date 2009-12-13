@@ -63,6 +63,7 @@ with V2P.Template_Defs.Block_Pref_Forum_Sort;
 with V2P.Template_Defs.Block_Pref_Image_Size;
 with V2P.Template_Defs.Block_Pref_Private_Message;
 with V2P.Template_Defs.Block_Private_Message;
+with V2P.Template_Defs.Block_User_Email;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Users_To_Validate;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
@@ -71,6 +72,7 @@ with V2P.Template_Defs.Chunk_Search_User;
 with V2P.Template_Defs.Chunk_Search_Comment;
 with V2P.Template_Defs.Chunk_Search_Post;
 with V2P.Template_Defs.Chunk_Search_Text_Post;
+with V2P.Template_Defs.R_Block_User_Email_Form_Enter;
 with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
@@ -1615,6 +1617,31 @@ package body V2P.Callbacks.Ajax is
          end;
       end if;
    end Onsubmit_Search_Form;
+
+   ------------------------------------
+   -- Onsubmit_User_Email_Form_Enter --
+   ------------------------------------
+
+   procedure Onsubmit_User_Email_Form_Enter
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      use Template_Defs;
+
+      P         : constant Parameters.List := Status.Parameters (Request);
+      Login     : constant String :=
+                    Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      New_Email : constant String :=
+                    Parameters.Get (P, Block_User_Email.HTTP.bue_email);
+   begin
+      Database.Update_User_Email (Login, New_Email);
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (R_Block_User_Email_Form_Enter.NEW_EMAIL,
+            New_Email));
+   end Onsubmit_User_Email_Form_Enter;
 
    ----------------------------------------
    -- Onsubmit_User_Page_Edit_Form_Enter --

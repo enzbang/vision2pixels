@@ -226,6 +226,12 @@ package V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set);
    --  Called when submitting a new post
 
+   procedure Onsubmit_User_Email_Form_Enter
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when a user change its email
+
    procedure Onsubmit_User_Page_Edit_Form_Enter
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
