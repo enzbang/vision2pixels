@@ -1375,16 +1375,17 @@ package body V2P.Database is
    ------------------------
 
    function Get_New_Post_Delay
-     (Uid : in String) return Templates.Translate_Set
+     (Uid : in String; TZ : in String) return Templates.Translate_Set
    is
       SQL : constant String := "SELECT JULIANDAY(p.date_post,'+"
         & Utils.Image (Settings.Posting_Delay_Hours)
-        & " hour') - JULIANDAY('NOW'), DATETIME(p.date_post,'+"
-        & Utils.Image (Settings.Posting_Delay_Hours)
-        & " hour') "
-        & "FROM user_post up, post p "
-        & "WHERE up.post_id=p.id AND p.photo_id!=0 "
-        & "AND DATETIME(p.date_post, '+"
+        & " hour') - JULIANDAY('NOW'), "
+        & Timezone.Date_Time ("DATETIME (p.date_post, '+"
+                              &  Utils.Image (Settings.Posting_Delay_Hours)
+                              & " hour')", TZ)
+        & " FROM user_post up, post p "
+        & " WHERE up.post_id=p.id AND p.photo_id!=0 "
+        & "  AND DATETIME(p.date_post, '+"
         & Utils.Image (Settings.Posting_Delay_Hours)
         & " hour')>DATETIME('NOW') AND up.user_login=" & Q (Uid);
 
