@@ -474,7 +474,7 @@ package body V2P.Web_Server is
       end if;
 
       if Session.Exist (SID, Template_Defs.Set_Global.LOGIN)
-        and not Context.Exist ("cookie")
+        and then not Context.Exist ("cookie")
       then
          Set_Cookie : declare
             use type Ada.Calendar.Arithmetic.Day_Count;
