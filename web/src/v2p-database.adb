@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2009                          --
+--                         Copyright (C) 2006-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -1912,9 +1912,9 @@ package body V2P.Database is
                     & "category.name, comment_counter,"
                     & "visit_counter, post.hidden, user_post.user_login, "
                     & "(SELECT " & Timezone.Date_Time ("comment.date", TZ)
-                    & "FROM comment "
-                    & "WHERE post.last_comment_id=comment.id"
-                    & "      AND post.comment_counter!=0), "
+                    & " FROM comment "
+                    & "WHERE post.last_comment_id = comment.id"
+                    & "      AND post.comment_counter != 0), "
                     & "(SELECT id FROM photo_of_the_week "
                     & "WHERE post.id = photo_of_the_week.post_id)";
 
