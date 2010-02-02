@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2009                          --
+--                         Copyright (C) 2007-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,6 +19,9 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Calendar.Formatting;
+with Ada.Calendar.Time_Zones;
+
 with AUnit.Assertions;
 
 with AWS.Client;
@@ -27,12 +30,14 @@ with AWS.Utils;
 
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Login;
+with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Page_Forum_New_Text_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 
 package body Web_Tests.Post is
 
+   use Ada;
    use AWS;
 
    procedure Main_Page (T : in out AUnit.Test_Cases.Test_Case'Class);
@@ -49,6 +54,9 @@ package body Web_Tests.Post is
 
    procedure Post_New_Photo (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  Posts a new photo
+
+   procedure Post_New_Comment (T : in out AUnit.Test_Cases.Test_Case'Class);
+   --  Post a comment on the new photo
 
    procedure Post_New_Message (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  Posts a new photo
@@ -141,6 +149,38 @@ package body Web_Tests.Post is
    begin
       return Format ("Web_Tests.Post");
    end Name;
+
+   ------------------
+   -- Post_Comment --
+   ------------------
+
+   procedure Post_New_Comment (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      use V2P.Template_Defs;
+      use type Ada.Calendar.Time;
+
+      Now    : constant Calendar.Time :=
+                 Calendar.Clock +
+                   Duration (Calendar.Time_Zones.UTC_Time_Offset) * 60.0;
+      H      : constant Calendar.Formatting.Hour_Number :=
+                 Calendar.Formatting.Hour (Now);
+      Result : Response.Data;
+   begin
+      Login (Connection, "turbo", "turbopass");
+
+      Call
+        (Connection, Result,
+         URI => Block_New_Comment.Ajax.onsubmit_bnc_comment_register & '?'
+           & "forum_photo=t&TID=142&global_comment_input=mon_commentaire"
+           & "&bnc_comment_type=txt&CHECK=V%C3%A9rifier&pfe_PARENT_ID="
+         & "&bnc_comment_pid=&REGISTER_COMMENT=Envoyer");
+
+      Call (Connection, Result, URI => "/forum/entry?TID=142");
+
+      Check
+        (Response.Message_Body (Result),
+         Word_Set'(+Natural'Image (H) & ':', +"turbo", +"mon_commentaire"),
+         "wrong date for new comment");
+   end Post_New_Comment;
 
    --------------------
    -- Post_New_Photo --
@@ -337,6 +377,7 @@ package body Web_Tests.Post is
       Register_Routine (T, Post_New_Photo'Access, "post new photo");
       Register_Routine (T, Check_New_Post'Access, "check new post");
       Register_Routine (T, Post_New_Message'Access, "post new photo");
+      Register_Routine (T, Post_New_Comment'Access, "post new comment");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
 
