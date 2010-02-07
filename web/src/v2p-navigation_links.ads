@@ -61,6 +61,12 @@ package V2P.Navigation_Links is
       Moves   : in Integer);
    --  Move context variable NAV_FROM to next/previous page using Moves number
 
+   package Context_Page_Size is
+     new AWS.Services.Web_Block.Context.Generic_Data
+       (Data      => Page_Size,
+        Null_Data => 1);
+   --  Get_Value / Set_Value for Page_Size
+
 private
 
    Default_Page_Size : constant Page_Size := 10;

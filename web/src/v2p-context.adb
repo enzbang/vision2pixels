@@ -23,6 +23,7 @@ with Ada.Strings.Fixed;
 
 with V2P.Settings;
 with V2P.Template_Defs.Set_Global;
+with V2P.Navigation_Links;
 
 package body V2P.Context is
 
@@ -41,7 +42,7 @@ package body V2P.Context is
         (Template_Defs.Set_Global.FILTER,
          Database.Filter_Mode'Image (User_Data.Preferences.Filter));
 
-      V2P.Context.Not_Null_Counter.Set_Value
+      V2P.Navigation_Links.Context_Page_Size.Set_Value
         (Context => Context.all,
          Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
          Value   => User_Data.Preferences.Page_Size);

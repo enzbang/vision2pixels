@@ -64,7 +64,7 @@ package V2P.Database is
    type Image_Size is (Thumb_Size, Medium_Size, Max_Size);
 
    type User_Settings is record
-      Page_Size              : Positive;
+      Page_Size              : Navigation_Links.Page_Size;
       Filter                 : Filter_Mode;
       Sort                   : Forum_Sort;
       Image_Size             : Database.Image_Size;

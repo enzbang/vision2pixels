@@ -178,7 +178,7 @@ package body V2P.Navigation_Links is
 
          Try_Harder : declare
             Page_Size : constant Navigation_Links.Page_Size :=
-                          V2P.Context.Not_Null_Counter.Get_Value
+                          V2P.Navigation_Links.Context_Page_Size.Get_Value
                             (Context => Context.all,
                              Name    => Set_Global.FILTER_PAGE_SIZE);
             Total     : constant Natural :=
@@ -242,7 +242,7 @@ package body V2P.Navigation_Links is
 
          Try_Harder : declare
             Page_Size : constant Navigation_Links.Page_Size :=
-                          V2P.Context.Not_Null_Counter.Get_Value
+                          V2P.Navigation_Links.Context_Page_Size.Get_Value
                             (Context => Context.all,
                              Name    => Set_Global.FILTER_PAGE_SIZE);
             Nav_From  : Positive :=

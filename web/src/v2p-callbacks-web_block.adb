@@ -204,7 +204,7 @@ package body V2P.Callbacks.Web_Block is
         (Translations,
          Templates.Assoc
            (Template_Defs.Set_Global.FILTER_PAGE_SIZE,
-            V2P.Context.Not_Null_Counter.Get_Value
+            V2P.Navigation_Links.Context_Page_Size.Get_Value
               (Context => Context.all,
                Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE)));
    end Forum_Filter_Page_Size;
@@ -302,7 +302,7 @@ package body V2P.Callbacks.Web_Block is
    is
       pragma Unreferenced (Request);
       Page_Size : constant Navigation_Links.Page_Size :=
-                    V2P.Context.Not_Null_Counter.Get_Value
+                    V2P.Navigation_Links.Context_Page_Size.Get_Value
                       (Context => Context.all,
                        Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE);
       Nav_From  : constant Positive :=

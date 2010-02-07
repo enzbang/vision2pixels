@@ -288,10 +288,10 @@ package body V2P.Callbacks.Ajax is
    begin
       --  Keep the sorting scheme into the session
 
-      V2P.Context.Not_Null_Counter.Set_Value
+      V2P.Navigation_Links.Context_Page_Size.Set_Value
         (Context => Context.all,
          Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
-         Value   => Positive'Value (Filter));
+         Value   => V2P.Navigation_Links.Page_Size'Value (Filter));
 
       Templates.Insert
         (Translations,
@@ -321,10 +321,10 @@ package body V2P.Callbacks.Ajax is
       Filter : constant String :=
                  Parameters.Get (P, HTTP.bpffps_forum_filter_pagesize_set);
    begin
-      V2P.Context.Not_Null_Counter.Set_Value
+      V2P.Navigation_Links.Context_Page_Size.Set_Value
         (Context => Context.all,
          Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
-         Value   => Positive'Value (Filter));
+         Value   => V2P.Navigation_Links.Page_Size'Value (Filter));
 
       Database.Set_Filter_Page_Size_Preferences
         (Login, Positive'Value (Filter));
@@ -595,7 +595,7 @@ package body V2P.Callbacks.Ajax is
    begin
       Navigation_Links.Goto_Next_Previous
         (Context,
-         V2P.Context.Not_Null_Counter.Get_Value
+         V2P.Navigation_Links.Context_Page_Size.Get_Value
            (Context => Context.all,
             Name    => Set_Global.FILTER_PAGE_SIZE));
 
@@ -622,7 +622,7 @@ package body V2P.Callbacks.Ajax is
    begin
       Navigation_Links.Goto_Next_Previous
         (Context,
-         -V2P.Context.Not_Null_Counter.Get_Value
+         -V2P.Navigation_Links.Context_Page_Size.Get_Value
            (Context => Context.all,
             Name    => Set_Global.FILTER_PAGE_SIZE));
 
