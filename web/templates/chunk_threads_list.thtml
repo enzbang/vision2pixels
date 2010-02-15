@@ -18,7 +18,7 @@
     @@END_IF@@
     >
     @@IF@@ @_IS_NEW_@ = TRUE
-    <span class="new">!NEW</span>
+    <span class="newlv">!NEW</span>
     @@END_IF@@
     @_NAME_@
     </a></p>

@@ -9,7 +9,7 @@
   <span class="commentmetadata">
     <a href="#comment_@_COMMENT_ID_@">
       @@IF@@ @_IS_NEW_@ = TRUE
-      <span class="new">!NEW</span>
+      <span class="newlv">!NEW</span>
       @@END_IF@@
       <abbr class="comment_date"
       title="@_DATE_ISO_8601_@">@_FORMAT_DATE(%d %b %Y):DATE_@&nbsp;@_TIME_@

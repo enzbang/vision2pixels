@@ -108,6 +108,12 @@ dl.table-display {
     text-align: center;
 }
 
+.newlv {
+    color: red;
+    font-variant: small-caps;
+    font-size: 0.6em;
+}
+
 .voted {color:#999;}
 .thanks {color:#36AA3D;}
 .static {color:#5D3126;}

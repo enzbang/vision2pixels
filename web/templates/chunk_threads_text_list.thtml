@@ -29,7 +29,7 @@
     @@END_INLINE@@
     <td class="table_title"><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
     @@IF@@ @_IS_NEW_@ = TRUE
-    <span class="new">!NEW</span>
+    <span class="newlv">!NEW</span>
     @@END_IF@@
     @_NAME_@</a></td>
 @@IF@@ @_DATE_LAST_COMMENT_@ = ""
