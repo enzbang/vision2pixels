@@ -10,6 +10,11 @@
   rapports d'erreur ou des demandes de fonctionnalités. Le site ne peut
   évoluer sans vous.</p>
 
+<h2>Version 3.1.4 (février 2010)</h2>
+
+<p>Corrige un problème qui faisait que le lien RSS sur la première page
+  n'était pas visible depuis Internet Explorer.</p>
+
 <h2>Version 3.1.3 (février 2010)</h2>
 
 <p>Corrections mineures.</p>
