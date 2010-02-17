@@ -63,6 +63,21 @@ V2P.Tools = new function () {
       return false;
    }
 
+   @@-- --------------------------------
+   @@-- Show/Hide histogram
+
+   this.toggle_histogram_rel = function ()
+   {
+      if ($(this.rel).nodeName == "CANVAS") {
+          Pixastic.revert($(this.rel));
+      } else {
+          var hist = {};
+          Pixastic.process($(this.rel), "histogram", {
+          paint:true,returnValue:hist
+          });
+      }
+   }
+
    @@----------------------------------
    @@--  Auto-focus a form element
 
