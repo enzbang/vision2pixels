@@ -44,9 +44,10 @@ commentaires portent vraiment sur la photographie et non sur l'auteur.</p>
 <h2>La possibilité de noter des photographies</h2>
 
 <p>Lorsque vous êtes connecté, vous pouvez noter chaque photographie (sauf
-les votres !) à l'aide de différents critères : Composition, Focus
-(mise au point), Lumiére. La note que vous donnerez (de 1 à 5) pourra
-être changée à tout moment en revenant sur la photographie.</p>
+les votres !) sur l'aspect artistique (composition, mise en valeur du sujet
+par le photographe) et technique (gestion de la lumière, netteté). La note
+que vous donnerez (de 1 à 5) pourra être changée à tout moment en revenant
+sur la photographie.</p>
 
 <h2>Information EXIF et Géolocalisation</h2>
 
@@ -59,7 +60,6 @@ entrant directement la latitude et la longitude.</p>
 
 <p>Nous souhaitons apporter de nombreuses améliorations : </p>
 <ul class="squarelist">
-<li>Plus de flux RSS/Atom pour suivre l'actualité.</li>
 <li>La notification de nouveaux commentaires sur ses propres photographies ou
 sur les photographies "bookmarquées".</li>
 <li>La possibilité de tagger des photographies.</li>
