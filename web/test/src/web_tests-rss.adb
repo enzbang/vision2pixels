@@ -58,8 +58,8 @@ package body Web_Tests.RSS is
 
       Check
         (Response.Message_Body (Result),
-         Word_Set'(+"L'auteur", +"Mais encore", +"turbo", +"Superbe",
-           +"turbo", +"com en imafe", +"test", +"prefere l'original",
+         Word_Set'(+"turbo", +"Superbe",
+           +"turbo", +"com en imafe",
            +"turbo", +"une autre proposition", +"enzbang", +"Bof!",
            +"enzbang", +"Un classique", +"enzbang", +"^_^"),
          "wrong content for RSS last comments:"
