@@ -16,6 +16,9 @@
    actions Ajax ne marchaient pas avec Internet Explorer ou Firefox
    sous Windows.</p>
 
+<p>Corrige l'affichage du séparateur indiquant à quel moment un auteur est
+  révélé dans le flux des commentaites.</p>
+
 <h2>Version 3.1.4 (février 2010)</h2>
 
 <p>Corrige un problème qui faisait que le lien RSS sur la première page
