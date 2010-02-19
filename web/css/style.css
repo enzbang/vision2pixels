@@ -125,6 +125,12 @@ dl.table-display {
     padding-right: 2em;
 }
 
+p.entry_name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 label {
     text-align: center;
     display: block;
