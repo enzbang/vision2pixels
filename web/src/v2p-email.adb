@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                            Copyright (C) 2009                            --
+--                         Copyright (C) 2009-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -79,7 +79,7 @@ package body V2P.Email is
 
       SMTP.Client.Send
         (Server      => SMTP_Server,
-         From        => SMTP.E_Mail ("V2P", "no-reply@no-reply.com"),
+         From        => SMTP.E_Mail ("V2P", "no-reply@v2p.fr.eu.org"),
          To          => SMTP.Recipients'(1 => SMTP.E_Mail (Login, To)),
          Subject     => Subject,
          Attachments => Content,
