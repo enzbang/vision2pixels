@@ -22,8 +22,6 @@
 with Ada.Exceptions; use Ada.Exceptions;
 
 with AWS.Attachments;
-with AWS.Headers.Set;
-with AWS.Messages;
 with AWS.MIME;
 with AWS.SMTP.Client;
 with AWS.Templates;
@@ -61,21 +59,15 @@ package body V2P.Email is
       SMTP_Server : constant SMTP.Receiver :=
                       SMTP.Client.Initialize (Settings.SMTP_Server);
       Content     : Attachments.List;
-      Headers     : AWS.Headers.List;
       Result      : SMTP.Status;
    begin
-      AWS.Headers.Set.Add
-        (Headers,
-         Messages.Content_Type_Token,
-         MIME.Text_Plain & "; charset=UTF-8");
-
       Attachments.Add
         (Content,
          Name    => "message",
          Data    => Attachments.Value
            (Data   => Templates.Parse (Template, Translations),
-            Encode => Attachments.Base64),
-         Headers => Headers);
+            Encode => Attachments.Base64,
+            Content_Type => MIME.Text_Plain & "; charset=UTF-8"));
 
       SMTP.Client.Send
         (Server      => SMTP_Server,
