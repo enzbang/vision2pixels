@@ -162,7 +162,7 @@ create table "post_comment" (
    foreign key ("comment_id") references comment("id")
 );
 
---  Comment counter and last_comment_id
+--  Comment counter, last_comment_id and last_user_visit
 
 create trigger after_post_comment_insert after insert on post_comment
    begin
@@ -180,6 +180,10 @@ create trigger after_post_comment_insert after insert on post_comment
 	        from category, post
 		where new.post_id = post.id
 		  and post.category_id = category.id);
+      insert or replace into last_user_visit values
+        ((select user_login from comment where comment.id = new.comment_id),
+         new.post_id,
+         new.comment_id);
    end;
 
 create table "user_post" (

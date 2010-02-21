@@ -51,10 +51,6 @@ package body Web_Tests.Last_Visit is
 
       Call (Conn1, Result, URI => "/forum/threads?FID=1");
 
-      Check
-        (Response.Message_Body (Result),
-         Word_Set'(+"!NEW", +"Hissez"), "Should have !NEW");
-
       --  Now read Hissez haut...
       Call (Conn1, Result, URI => "/forum/entry?TID=141");
       Call (Conn1, Result, URI => "/forum/threads?FID=1");
@@ -82,6 +78,20 @@ package body Web_Tests.Last_Visit is
            & "forum_photo=t&TID=141&global_comment_input=nouveau"
            & "&bnc_comment_type=txt&CHECK=V%C3%A9rifier&pfe_PARENT_ID="
          & "&bnc_comment_pid=&REGISTER_COMMENT=Envoyer");
+
+      --  turbo just post a comment, this post should not be marked as !NEW
+      Call (Conn2, Result, URI => "/forum/threads?FID=1");
+
+      declare
+         Page : constant String := Response.Message_Body (Result);
+         Index : constant Natural := Ada.Strings.Fixed.Index (Page, "TID=71");
+      begin
+         --  Cut the Page before the second post.
+         Check
+            (Page (Page'First .. Index + 5),
+         Word_Set'(not "!NEW", +"Hissez"),
+         "Should not have !NEW before 'Hissez haut...' for turbo");
+      end;
 
       Logout (Conn2);
       Client.Close (Conn2);
