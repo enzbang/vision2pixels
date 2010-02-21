@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2009                          --
+--                         Copyright (C) 2006-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -340,10 +340,9 @@ package body V2P.Web_Server is
       Cookie       : constant String :=
                        AWS.Headers.Get_Values
                          (Headers, AWS.Messages.Cookie_Token);
-      C_Request    : aliased Status.Data := Request;
       Context      : aliased Services.Web_Block.Context.Object :=
                        Services.Web_Block.Registry.Get_Context
-                         (Request => C_Request'Access);
+                         (Request => Request);
       Translations : Templates.Translate_Set;
       Web_Page     : Response.Data;
    begin
@@ -352,9 +351,6 @@ package body V2P.Web_Server is
       --  Update the context
 
       V2P.Context.Update (Context'Access, SID, Cookie);
-
-      --  Note that the Context is linked to the C_Request object
-      --  Do not use Request object anymore
 
       --  Add LOGIN and ADMIN in template
 
@@ -448,21 +444,23 @@ package body V2P.Web_Server is
             Settings.Medium_Images_Source_Prefix));
 
       V2P.Callbacks.Web_Block.Pref_Image_Size
-        (C_Request, Context'Access, Translations);
+        (Request, Context'Access, Translations);
 
       V2P.Callbacks.Web_Block.Pref_CSS_URL
-        (C_Request, Context'Access, Translations);
+        (Request, Context'Access, Translations);
 
       if Services.Web_Block.Registry.Content_Type (URI) = MIME.Text_HTML then
          --  The HTML case, we just redirect to the Web root
          Web_Page := Services.Web_Block.Registry.Build
-           (URI, C_Request, Translations,
+           (URI, Request, Translations,
             Cache_Control => Messages.Prevent_Cache,
+            Context       => Context'Access,
             Context_Error => "/");
       else
          Web_Page := Services.Web_Block.Registry.Build
-           (URI, C_Request, Translations,
+           (URI, Request, Translations,
             Cache_Control => Messages.Prevent_Cache,
+            Context       => Context'Access,
             Context_Error =>
               Template_Defs.R_Context_Error.Set.CONTEXT_ERROR_URL);
       end if;
@@ -470,7 +468,7 @@ package body V2P.Web_Server is
       if Response.Status_Code (Web_Page) = Messages.S404 then
          --  Page not found
          Web_Page := Services.Web_Block.Registry.Build
-           (Template_Defs.Page_Error.Set.URL, C_Request, Translations);
+           (Template_Defs.Page_Error.Set.URL, Request, Translations);
       end if;
 
       if Session.Exist (SID, Template_Defs.Set_Global.LOGIN)
@@ -501,7 +499,7 @@ package body V2P.Web_Server is
       when Callbacks.Page.Error_404 =>
          --  Page not found
          Web_Page := Services.Web_Block.Registry.Build
-           (Template_Defs.Page_Error.Set.URL, C_Request, Translations);
+           (Template_Defs.Page_Error.Set.URL, Request, Translations);
          return Web_Page;
 
       when E : others =>

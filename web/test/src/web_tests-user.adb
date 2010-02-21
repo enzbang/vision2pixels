@@ -63,10 +63,10 @@ package body Web_Tests.User is
       Result : Response.Data;
 
    begin
-      Client.Get
+      Call
         (Connection, Result,
          URI => Block_Login.Ajax.onclick_bl_login_form_enter &
-         '?' & Login_Parameters ("turbo", "password") & "&" & URL_Context);
+         '?' & Login_Parameters ("turbo", "password"));
 
       Check
         (Response.Message_Body (Result),
@@ -75,10 +75,10 @@ package body Web_Tests.User is
            +"apply_style", +"new_comment", +"display", +"none"),
          "login should have failed for turbo");
 
-      Client.Get
+      Call
         (Connection, Result,
          URI => Block_Login.Ajax.onclick_bl_login_form_enter &
-         '?' & Login_Parameters ("turbo", "turbopass") & "&" & URL_Context);
+         '?' & Login_Parameters ("turbo", "turbopass"));
 
       Check
         (Response.Message_Body (Result),
@@ -95,9 +95,7 @@ package body Web_Tests.User is
    begin
       Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
 
-      Client.Get (Connection, Result, URI => "/");
-
-      Set_Context (Response.Message_Body (Result));
+      Call (Connection, Result, URI => "/");
 
       Check
         (Response.Message_Body (Result),
@@ -125,14 +123,5 @@ package body Web_Tests.User is
       Register_Routine (T, Login'Access, "user login");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
-
-   -----------------
-   -- Set_Up_Case --
-   -----------------
-
-   overriding procedure Set_Up_Case (T : in out Test_Case) is
-   begin
-      Set_Context;
-   end Set_Up_Case;
 
 end Web_Tests.User;

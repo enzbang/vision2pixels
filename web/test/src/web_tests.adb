@@ -37,6 +37,7 @@ package body Web_Tests is
    use Ada;
 
    R_Context : constant String := "div id=""CTX_WB""[^>]+>([^<]+)";
+   A_Context : constant String := "ctx id=""([^""]+)""";
 
    Context : Unbounded_String;
    --  The context Id to be passed with each request
@@ -52,6 +53,19 @@ package body Web_Tests is
       From, To : Unbounded_String;
    end record;
 
+   procedure Set_Context (Page : in String := "");
+   --  Set context from page content, if Page is empty string the context is
+   --  deleted.
+
+   procedure Set_Ajax_Context (XML : in String);
+   --  Set context from Ajax XML content
+
+   function Add_Context (URI : in String) return String;
+   --  Add current context to the given URI
+
+   function URL_Context return String;
+   --  Returns the context as an HTTP URL parameter
+
    type Coding_Array is array (1 .. 30) of Coding;
 
    Coding_Rules : Coding_Array;
@@ -64,6 +78,39 @@ package body Web_Tests is
    begin
       return +("(not)" & Word);
    end "not";
+
+   -----------------
+   -- Add_Context --
+   -----------------
+
+   function Add_Context (URI : in String) return String is
+   begin
+      if Strings.Fixed.Index (URI, "?") = 0 then
+         return URI & '?' & URL_Context;
+      else
+         return URI & '&' & URL_Context;
+      end if;
+   end Add_Context;
+
+   ----------
+   -- Call --
+   ----------
+
+   procedure Call
+     (Connection : in out AWS.Client.HTTP_Connection;
+      Result     :    out Response.Data;
+      URI        : in     String)
+   is
+   begin
+      Client.Get (Connection, Result, Add_Context (URI));
+
+      if Strings.Fixed.Index (URI, "$") = 0 then
+         Set_Context (Response.Message_Body (Result));
+      else
+         --  An Ajax call
+         Set_Ajax_Context (Response.Message_Body (Result));
+      end if;
+   end Call;
 
    -----------
    -- Check --
@@ -222,10 +269,10 @@ package body Web_Tests is
       Result : Response.Data;
 
    begin
-      Client.Get
+      Call
         (Connection, Result,
          URI => Block_Login.Ajax.onclick_bl_login_form_enter &
-         '?' & URL_Context & '&' & Login_Parameters (User, Password));
+         '?' & Login_Parameters (User, Password));
    end Login;
 
    ----------------------
@@ -248,23 +295,53 @@ package body Web_Tests is
       use V2P.Template_Defs;
       Result : Response.Data;
    begin
-      Client.Get
-        (Connection, Result,
-         URI => Block_Login.Ajax.onclick_bl_logout_enter & '?' & URL_Context);
+      Call
+        (Connection, Result, URI => Block_Login.Ajax.onclick_bl_logout_enter);
    end Logout;
+
+   ----------------------
+   -- Set_Ajax_Context --
+   ----------------------
+
+   procedure Set_Ajax_Context (XML : in String) is
+      use AUnit.Assertions;
+   begin
+      Context := +Get (XML, A_Context, 1);
+      Assert (URL_Context /= Null_Unbounded_String,
+              "No context found in Ajax response!");
+   end Set_Ajax_Context;
 
    -----------------
    -- Set_Context --
    -----------------
 
    procedure Set_Context (Page : in String := "") is
+      use AUnit.Assertions;
    begin
       if Page = "" then
          Context := Null_Unbounded_String;
       else
          Context := +Get (Page, R_Context, 1);
+         Assert (URL_Context /= Null_Unbounded_String,
+                 "No context found in Web page!");
       end if;
    end Set_Context;
+
+   ------------
+   -- Upload --
+   ------------
+
+   procedure Upload
+     (Connection : in out AWS.Client.HTTP_Connection;
+      Result     :    out Response.Data;
+      Filename   : in     String;
+      URI        : in     String)
+   is
+   begin
+      Client.Upload
+        (Connection, Result, Filename => Filename, URI => Add_Context (URI));
+      Set_Context (Response.Message_Body (Result));
+   end Upload;
 
    -----------------
    -- URL_Context --

@@ -44,16 +44,14 @@ package body Web_Tests.Forum_Entry is
    procedure Check_Exif (T : in out AUnit.Test_Cases.Test_Case'Class) is
       Result : Response.Data;
    begin
-      Client.Get
-        (Connection, Result, URI => "/forum/entry?TID=67&" & URL_Context);
+      Call (Connection, Result, URI => "/forum/entry?TID=67");
 
       Check
         (Response.Message_Body (Result),
          Word_Set'(+"ISO", +"Date de création", +"2.8", +"Multi-segment"),
          "should have exif data");
 
-      Client.Get
-        (Connection, Result, URI => "/forum/entry?TID=89&" & URL_Context);
+      Call (Connection, Result, URI => "/forum/entry?TID=89");
 
       Check
         (Response.Message_Body (Result),
@@ -79,8 +77,7 @@ package body Web_Tests.Forum_Entry is
       Result : Response.Data;
    begin
       Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
-      Client.Get (Connection, Result, URI => "/");
-      Set_Context (Response.Message_Body (Result));
+      Call (Connection, Result, URI => "/");
    end Connect;
 
    ----------
@@ -103,14 +100,5 @@ package body Web_Tests.Forum_Entry is
       Register_Routine (T, Check_Exif'Access, "exif on forum entry");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
-
-   -----------------
-   -- Set_Up_Case --
-   -----------------
-
-   overriding procedure Set_Up_Case (T : in out Test_Case) is
-   begin
-      Set_Context;
-   end Set_Up_Case;
 
 end Web_Tests.Forum_Entry;

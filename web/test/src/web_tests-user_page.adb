@@ -62,12 +62,11 @@ package body Web_Tests.User_Page is
    begin
       Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
 
-      Client.Get (Connection, Result, URI => "/");
-      Set_Context (Response.Message_Body (Result));
+      Call (Connection, Result, URI => "/");
 
       Web_Tests.Login (Connection, "turbo", "turbopass");
 
-      Client.Get (Connection, Result, URI => "/~turbo?" & URL_Context);
+      Call (Connection, Result, URI => "/~turbo");
 
       Check
         (Response.Message_Body (Result),
@@ -76,7 +75,7 @@ package body Web_Tests.User_Page is
            +"3 coups-de", +"diter votre page",
            +"?TID=67", +"?TID=66", +"?TID=65", +"?TID=64", +"?TID=75",
            +"?TID=74", +"?TID=73", +"?TID=72", +"?TID=71", +"?TID=70",
-           not "#17", not "#19", +"#21", +"#20"),
+           not ">#17", not ">#19", +">#21", +">#20"),
          "wrong content for obry's personal page:"
          & Response.Message_Body (Result));
    end Turbo_Page;
@@ -91,14 +90,5 @@ package body Web_Tests.User_Page is
       Register_Routine (T, Turbo_Page'Access, "turbo page");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
-
-   -----------------
-   -- Set_Up_Case --
-   -----------------
-
-   overriding procedure Set_Up_Case (T : in out Test_Case) is
-   begin
-      Set_Context;
-   end Set_Up_Case;
 
 end Web_Tests.User_Page;

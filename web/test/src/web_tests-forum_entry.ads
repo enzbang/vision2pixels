@@ -35,7 +35,4 @@ package Web_Tests.Forum_Entry is
    overriding function Name (T : in Test_Case) return Message_String;
    --  Returns name identifying the test case
 
-   overriding procedure Set_Up_Case (T : in out Test_Case);
-   --  Before running the test case
-
 end Web_Tests.Forum_Entry;
