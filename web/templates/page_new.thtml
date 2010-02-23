@@ -10,6 +10,11 @@
   rapports d'erreur ou des demandes de fonctionnalités. Le site ne peut
   évoluer sans vous.</p>
 
+<h1>Version 3.2 (mars 2010)</h1>
+
+<p>Les posts et commentaires non lu apparaissent maintenant précédés de la
+mention <span class="newlv">!NEW</span></p>
+
 <h2>Version 3.1.6 (février 2010)</h2>
 
 <p>Corrige un problème avec l'envoi de message.</p>
