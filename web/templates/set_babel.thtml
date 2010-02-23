@@ -47,7 +47,7 @@
 @@SET@@ BABEL_MESSAGE_SENT="Un message a été envoyé à cet e-mail."
 @@SET@@ BABEL_USER_MESSAGE_SENT="Message envoyé."
 @@SET@@ BABEL_USER_MESSAGE_NOT_SENT="Impossible d'envoyer le message."
-@@SET@@ BABEL_YOUR_PAGE="Votre page"
+@@SET@@ BABEL_MY_PAGE="Ma page"
 @@SET@@ BABEL_SELECT_FORUM="Choisir un forum"
 @@SET@@ BABEL_SELECT="Sélectionner"
 @@SET@@ BABEL_LOGGED_AS="Connecté en tant que "
