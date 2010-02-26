@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                            Copyright (C) 2009                            --
+--                         Copyright (C) 2009-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -34,5 +34,8 @@ package V2P.Email is
 
    procedure Send_Private_Message (From, Login, Email, Message : in String);
    --  Send private message from From to (Login, Email)
+
+   procedure Send_Change_Email (Login, Email, New_Email : in String);
+   --  Send message for new email validation
 
 end V2P.Email;

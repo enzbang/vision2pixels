@@ -8,7 +8,7 @@
   </replace>
 @@ELSE@@
   <replace id="bue_success">
-    <![CDATA[@_BABEL_NEW_EMAIL_SET_@ @_NEW_EMAIL_@]]>
+    <![CDATA[@_BABEL_VALIDATION_MESSAGE_@ @_NEW_EMAIL_@]]>
   </replace>
 @@END_IF@@
 </response>
