@@ -12,8 +12,13 @@
 
 <h1>Version 3.2 (mars 2010)</h1>
 
+<p>Refonte complète de la gestion du contexte. Ceci devrait permettre
+  l'utilisation de multiple onglets sans soucis.</p>
+
 <p>Les posts et commentaires non lu apparaissent maintenant précédés de la
 mention <span class="newlv">!NEW</span></p>
+
+<p>Il est maintenant possible de changer son e-mail.</p>
 
 <h2>Version 3.1.6 (février 2010)</h2>
 
