@@ -73,9 +73,8 @@ V2P.Tools = new function () {
       if ($(this.rel).nodeName == "CANVAS") {
           Pixastic.revert($(this.rel));
       } else {
-          var hist = {};
           Pixastic.process($(this.rel), "histogram", {
-          paint:true,returnValue:hist
+          paint:true,background:"rgba(0,0,0,0.4)",returnValue:{}
           });
       }
    }
