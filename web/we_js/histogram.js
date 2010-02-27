@@ -10,6 +10,7 @@ Pixastic.Actions.histogram = {
 		var average = !!(params.options.average && params.options.average != "false");
 		var paint = !!(params.options.paint && params.options.paint != "false");
 		var color = params.options.color || "rgba(255,255,255,0.5)";
+		var background = params.options.background || "";
 		var values = [];
 		if (typeof params.options.returnValue != "object") {
 			params.options.returnValue = {values:[]};
@@ -54,6 +55,10 @@ Pixastic.Actions.histogram = {
 				var heightScale = params.height / maxValue;
 				var widthScale = params.width / 256;
 				var ctx = params.canvas.getContext("2d");
+				if (background != "") {
+					ctx.fillStyle=background;
+					ctx.fillRect(0,0,params.width,params.height);
+				}
 				ctx.fillStyle = color;
 				for (var i=0;i<256;i++) {
 					ctx.fillRect(
