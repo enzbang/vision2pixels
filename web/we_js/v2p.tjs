@@ -3,6 +3,8 @@
 @@INCLUDE@@ behaviour.js
 @@INCLUDE@@ scriptaculous.js
 @@INCLUDE@@ aws_kernel.tjs
+@@INCLUDE@@ pixastic.core.js
+@@INCLUDE@@ histogram.js
 @@--
 @@-- Now the specific content
 var V2P = {

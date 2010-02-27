@@ -20,7 +20,6 @@
     @@END_IF@@
     />
     <script src="/we_js/v2p.tjs" type="text/javascript"></script>
-    <script src="/we_js/pixastic.custom.js" type="text/javascript"></script>
     @@IF@@ @_$2_@ = forum_new_photo_entry or @_$2_@ = "iframe_map_view"
       <script type="text/javascript"
               src="http://www.google.com/jsapi?key=@_GOOGLE_MAP_KEY_@">
