@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2009                          --
+--                         Copyright (C) 2007-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -39,6 +39,7 @@ with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Page_Validate_User;
+with V2P.Template_Defs.Page_Validate_New_Email;
 with V2P.Template_Defs.Page_Photo_Post;
 with V2P.Template_Defs.Page_Rss_Last_Comments;
 with V2P.Template_Defs.Page_Rss_Last_Posts;
@@ -575,6 +576,29 @@ package body V2P.Callbacks.Page is
             TZ            => Context.Get_Value (Template_Defs.Set_Global.TZ),
             Show_Category => True));
    end Rss_Last_Posts;
+
+   ------------------------
+   -- Validate_New_Email --
+   ------------------------
+
+   procedure Validate_New_Email
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      P     : constant Parameters.List := Status.Parameters (Request);
+      Login : constant String :=
+                Parameters.Get (P, Template_Defs.Set_Global.LOGIN);
+      Key   : constant String :=
+                Parameters.Get (P, Template_Defs.Set_Global.KEY);
+   begin
+      if not Database.Validate_New_User_Email (Login, Key) then
+         Templates.Insert
+           (Translations, Templates.Assoc
+              (Template_Defs.Page_Validate_New_Email.ERROR, True));
+      end if;
+   end Validate_New_Email;
 
    -------------------
    -- Validate_User --

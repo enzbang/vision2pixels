@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2009                          --
+--                         Copyright (C) 2007-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -1634,13 +1634,18 @@ package body V2P.Callbacks.Ajax is
                     Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       New_Email : constant String :=
                     Parameters.Get (P, Block_User_Email.HTTP.bue_email);
+      User_Data : constant Database.User_Data :=
+                    Database.Get_User_Data (Login);
    begin
-      Database.Update_User_Email (Login, New_Email);
+      Database.Register_New_User_Email (Login, New_Email);
       Templates.Insert
         (Translations,
          Templates.Assoc
            (R_Block_User_Email_Form_Enter.NEW_EMAIL,
             New_Email));
+
+      Email.Send_Change_Email
+        (Login, To_String (User_Data.Email), New_Email);
    end Onsubmit_User_Email_Form_Enter;
 
    ----------------------------------------

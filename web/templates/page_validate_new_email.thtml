@@ -1,0 +1,19 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@SET@@ SET_URL = /validate_new_email
+@@--
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_REGISTER_USER_@ user_register_page
+<div id="pur_user_register">
+<h1>Validation adresse de messagerie sur Vision2Pixels</h1>
+
+@@IF@@ @_ERROR_@
+<p>Impossible de valider la nouvelle adresse electronique.</p>
+@@ELSE@@
+<p>Votre nouvelle adresse de messagerie est maintenant validé sur
+  Vision2Pixels.</p>
+@@END_IF@@
+
+</div>
+
+@@--
+@@INCLUDE@@ chunk_v2p_end.thtml

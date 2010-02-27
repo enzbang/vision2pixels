@@ -216,6 +216,6 @@
 @@SET@@ BABEL_HAS_VOTED="a voté !"
 @@SET@@ BABEL_SET_CSS_URL="Utilisation d'une CSS personnalisée"
 @@SET@@ BABEL_SET_USER_EMAIL="Votre email"
-@@SET@@ BABEL_NEW_EMAIL_SET="Votre email est maintenant : "
+@@SET@@ BABEL_VALIDATION_MESSAGE="Message de validation envoyé à"
 @@SET@@ BABEL_NO_PRIVATE_MESSAGE="Les messages personnels ne sont pas acceptés."
 @@SET@@ BABEL_PRIVATE_MESSAGE_ACCEPTED="Messages privés acceptés."

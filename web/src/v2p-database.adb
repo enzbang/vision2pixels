@@ -3394,6 +3394,22 @@ package body V2P.Database is
          & Q (Login) & ", " & Q (Cookie) & ")");
    end Register_Cookie;
 
+   -----------------------------
+   -- Register_New_User_Email --
+   -----------------------------
+
+   procedure Register_New_User_Email
+     (Uid : in String; New_Email : in String)
+   is
+      SQL : constant String :=
+              "UPDATE user SET new_email=" & Q (New_Email)
+              & " WHERE login=" & Q (Uid);
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+   begin
+      Connect (DBH);
+      DBH.Handle.Execute (SQL);
+   end Register_New_User_Email;
+
    -------------------
    -- Register_User --
    -------------------
@@ -3733,21 +3749,6 @@ package body V2P.Database is
       end if;
    end Update_Rating;
 
-   -----------------------
-   -- Update_User_Email --
-   -----------------------
-
-   procedure Update_User_Email (Uid : in String; New_Email : in String) is
-      SQL : constant String :=
-              "UPDATE user SET email=" & Q (New_Email)
-              & " WHERE login=" & Q (Uid);
-
-      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-   begin
-      Connect (DBH);
-      DBH.Handle.Execute (SQL);
-   end Update_User_Email;
-
    ----------------------
    -- User_Preferences --
    ----------------------
@@ -3792,6 +3793,49 @@ package body V2P.Database is
 
       Iter.End_Select;
    end User_Preferences;
+
+   -----------------------------
+   -- Validate_New_User_Email --
+   -----------------------------
+
+   function Validate_New_User_Email (Uid, Key : in String) return Boolean is
+      DBH   : constant TLS_DBH_Access :=
+                 TLS_DBH_Access (DBH_TLS.Reference);
+      Iter  : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line  : DB.String_Vectors.Vector;
+      SQL   : constant String :=
+                "UPDATE user SET email=new_email WHERE login=" & Q (Uid);
+      Email : Unbounded_String;
+   begin
+      Connect (DBH);
+
+      --  Read user's data from user_to_validate
+
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "SELECT new_email FROM user WHERE login=" & Q (Uid));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+         Email    := +DB.String_Vectors.Element (Line, 1);
+         Line.Clear;
+
+      else
+         --  User not found, could be due to an obsolete registration URL sent
+         return False;
+      end if;
+
+      Iter.End_Select;
+
+      if User_Validation.Key (Uid, "", -Email) /= Key then
+         --  Key does not match
+         return False;
+      end if;
+
+      DBH.Handle.Execute (SQL);
+
+      return True;
+   end Validate_New_User_Email;
 
    -------------------
    -- Validate_User --

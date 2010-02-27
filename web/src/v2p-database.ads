@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2009                          --
+--                         Copyright (C) 2006-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -276,8 +276,12 @@ package V2P.Database is
    function Get_User_Page (Uid : in String) return Templates.Translate_Set;
    --  Returns user page
 
-   procedure Update_User_Email (Uid : in String; New_Email : in String);
+   procedure Register_New_User_Email
+     (Uid : in String; New_Email : in String);
    --  Update user email
+
+   function Validate_New_User_Email (Uid, Key : in String) return Boolean;
+   --  Validate new e-mail for given user
 
    procedure Update_Page
      (Uid : in String; Content : in String; Content_HTML : in String);

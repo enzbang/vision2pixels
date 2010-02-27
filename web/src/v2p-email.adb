@@ -29,6 +29,7 @@ with AWS.Templates;
 with V2P.Settings;
 with V2P.User_Validation;
 
+with V2P.Template_Defs.Email_Change_Email;
 with V2P.Template_Defs.Email_From_User;
 with V2P.Template_Defs.Email_Lost_Password;
 with V2P.Template_Defs.Email_Send_Reminder;
@@ -87,6 +88,35 @@ package body V2P.Email is
       when E : others =>
          raise Cannot_Send with Exception_Message (E);
    end Send;
+
+   -----------------------
+   -- Send_Change_Email --
+   -----------------------
+
+   procedure Send_Change_Email (Login, Email, New_Email : in String) is
+      Key : constant String := User_Validation.Key (Login, "", New_Email);
+      Set : Templates.Translate_Set;
+   begin
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Email_User_Validation.USER_LOGIN, Login));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Email_Change_Email.CURRENT_EMAIL, Email));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Email_Change_Email.NEW_EMAIL, New_Email));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Email_User_Validation.KEY, Key));
+
+      Send
+        (Login        => Login,
+         To           => Email,
+         Template     => Template_Defs.Email_Change_Email.Template,
+         Translations => Set,
+         Subject      => "Changement d'adresse de messagerie Vision2Pixels");
+   end Send_Change_Email;
 
    ------------------------
    -- Send_Lost_Password --

@@ -107,6 +107,7 @@ with V2P.Template_Defs.Page_Termsofuse;
 with V2P.Template_Defs.Page_User;
 with V2P.Template_Defs.Page_User_Register;
 with V2P.Template_Defs.Page_Users;
+with V2P.Template_Defs.Page_Validate_New_Email;
 with V2P.Template_Defs.Page_Validate_User;
 with V2P.Template_Defs.Page_Rss;
 with V2P.Template_Defs.Page_Rss_Last_Comments;
@@ -904,6 +905,11 @@ package body V2P.Web_Server is
         (Template_Defs.Page_Google_Map_View.Set.URL,
          Template_Defs.Page_Google_Map_View.Template,
          null);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Validate_New_Email.Set.URL,
+         Template_Defs.Page_Validate_New_Email.Template,
+         Callbacks.Page.Validate_New_Email'Access);
 
       --  Register RSS
 
