@@ -187,6 +187,7 @@
 @@SET@@ BABEL_CANNOT_SEND_REMINDERS="Impossible d'envoyer des rappels"
 @@SET@@ BABEL_REMINDERS_SENT="Rappels envoyés"
 @@SET@@ BABEL_SEND_REMINDER="▶ envoyer rappel"
+@@SET@@ BABEL_SHOW_HISTOGRAM="Afficher l'histogramme"
 @@--
 @@--  Preferences
 @@--

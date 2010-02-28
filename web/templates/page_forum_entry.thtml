@@ -38,7 +38,10 @@
     hidden_entry
     @@END_IF@@
     ">@_NAME_@</span>
-    <a id="pfe_toggle_hist" rel="pfe_main_img" href="#pfe_main_img">show histogram</a>
+    <a id="pfe_toggle_hist" rel="pfe_main_img"
+       href="#pfe_main_img" title="@_BABEL_SHOW_HISTOGRAM_@">
+      <img alt="@_BABEL_SHOW_HISTOGRAM_@" src="/css/img/histogram.gif"/>
+    </a>
     @@END_INLINE@@
 @@ELSE@@
     <div id="pfe_mainbox">
