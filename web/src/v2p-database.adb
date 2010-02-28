@@ -965,14 +965,40 @@ package body V2P.Database is
    ----------------
 
    function Get_Forums
-     (Filter : in Forum_Filter; TZ : in String) return Templates.Translate_Set
+     (Filter : in Forum_Filter;
+      TZ     : in String;
+      Login  : in String)
+      return Templates.Translate_Set
    is
       use type Templates.Tag;
+
+      function Select_Is_New return String;
+      --  Whether the forum should be mark !NEW.
+      --  If Login is not set, do not mark as !NEW.
+
+      -------------------
+      -- Select_Is_New --
+      -------------------
+
+      function Select_Is_New return String is
+      begin
+         if Login /= "" then
+            return "(SELECT COUNT(*) FROM post, last_user_visit, category "
+              & "WHERE post.last_comment_id>(SELECT "
+              & "last_user_visit.last_comment_id AND "
+              & "last_user_visit.user_login=" & Q (Login)
+              & " AND post.id=last_user_visit.post_id) AND "
+              & "category.forum_id=forum.id) > 0";
+         else
+            return "0";
+         end if;
+      end Select_Is_New;
 
       SQL       : constant String :=
                     "SELECT id, name, for_photo, "
                       & Timezone.Date ("last_activity", TZ) & ", "
-                      & Timezone.Time ("last_activity", TZ)
+                      & Timezone.Time ("last_activity", TZ) & ", "
+                      & Select_Is_New
                       & " FROM forum";
       DBH       : constant TLS_DBH_Access :=
                     TLS_DBH_Access (DBH_TLS.Reference);
@@ -985,6 +1011,7 @@ package body V2P.Database is
       For_Photo : Templates.Tag;
       Date      : Templates.Tag;
       Time      : Templates.Tag;
+      Is_New    : Templates.Tag;
       Nb_Lines  : Natural := 0;
 
    begin
@@ -1007,6 +1034,7 @@ package body V2P.Database is
          For_Photo := For_Photo & DB.String_Vectors.Element (Line, 3);
          Date      := Date      & DB.String_Vectors.Element (Line, 4);
          Time      := Time      & DB.String_Vectors.Element (Line, 5);
+         Is_New    := Is_New    & DB.String_Vectors.Element (Line, 6);
 
          Line.Clear;
       end loop;
@@ -1020,6 +1048,8 @@ package body V2P.Database is
         (Set, Templates.Assoc (Block_Forum_List.F_DATE, Date));
       Templates.Insert
         (Set, Templates.Assoc (Block_Forum_List.F_TIME, Time));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Forum_List.IS_NEW, Is_New));
 
       if Filter /= Forum_All and then Nb_Lines = 1 then
          --  Only one forum matched. Returns the categories too

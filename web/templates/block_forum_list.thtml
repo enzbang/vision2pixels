@@ -17,7 +17,11 @@
       class="selected"
       @@END_IF@@
     href="@_FORUM_THREAD_URL_@?FID=@_FID_@&amp;FROM=1">@_FORUM_NAME_@</a>
+    @@IF@@ @_IS_NEW_@ /= 0
+    <span class="timestampnew">
+    @@ELSE@@
     <span class="timestamp">
+    @@END_IF@@
     @@IF@@ @_F_DATE_@ = @_FORMAT_DATE("%Y-%m-%d"):NOW_@
     (@_SLICE(1..5):F_TIME_@)
     @@ELSE@@
