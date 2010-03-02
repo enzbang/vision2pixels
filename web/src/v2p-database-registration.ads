@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                            Copyright (C) 2009                            --
+--                         Copyright (C) 2009-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -20,6 +20,9 @@
 ------------------------------------------------------------------------------
 
 package V2P.Database.Registration is
+
+   function Delete_User (Login : in String) return Boolean;
+   --  Delete user from user_to_validate table (for admin)
 
    function Delete_User (Login, Key : in String) return Boolean;
    --  Delete user from user_to_validate table
