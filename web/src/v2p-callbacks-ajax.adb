@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2009                          --
+--                         Copyright (C) 2007-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -72,6 +72,7 @@ with V2P.Template_Defs.Chunk_Search_User;
 with V2P.Template_Defs.Chunk_Search_Comment;
 with V2P.Template_Defs.Chunk_Search_Post;
 with V2P.Template_Defs.Chunk_Search_Text_Post;
+with V2P.Template_Defs.R_Block_Delete_User;
 with V2P.Template_Defs.R_Block_User_Email_Form_Enter;
 with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Login;
@@ -580,6 +581,32 @@ package body V2P.Callbacks.Ajax is
          Templates.Assoc
            (Template_Defs.R_Block_User_Preferences.FILTER, URL));
    end Onclick_CSS_URL_Preference;
+
+   -------------------------
+   -- Onclick_Delete_User --
+   -------------------------
+
+   procedure Onclick_Delete_User
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      use Template_Defs;
+      P    : constant Parameters.List := Status.Parameters (Request);
+      User : constant String :=
+               Parameters.Get (P, Block_Users_To_Validate.Set.USER);
+   begin
+      --  Only admins can call this routine
+      if Context.Exist (Template_Defs.Set_Global.ADMIN)
+        and then User /= ""
+      then
+         if not Database.Registration.Delete_User (User) then
+            Templates.Insert
+              (Translations,
+               Templates.Assoc (R_Block_Delete_User.ERROR, True));
+         end if;
+      end if;
+   end Onclick_Delete_User;
 
    ----------------------------
    -- Onclick_Goto_Next_Page --

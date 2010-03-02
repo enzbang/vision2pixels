@@ -219,3 +219,6 @@
 @@SET@@ BABEL_NEW_EMAIL_SET="Votre email est maintenant : "
 @@SET@@ BABEL_NO_PRIVATE_MESSAGE="Les messages personnels ne sont pas acceptés."
 @@SET@@ BABEL_PRIVATE_MESSAGE_ACCEPTED="Messages privés acceptés."
+@@SET@@ BABEL_DELETE="supprimer"
+@@SET@@ BABEL_CANNOT_DELETE_USER="Impossible du supprimer cet utilisateur."
+@@SET@@ BABEL_USER_DELETED="Utilisateur supprimé."

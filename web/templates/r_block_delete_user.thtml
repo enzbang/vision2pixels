@@ -1,0 +1,13 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+@@IF@@ @_ERROR_@
+  <replace id="pa_message">@_BABEL_CANNOT_DELETE_USER_@</replace>
+@@ELSE@@
+  <replace id="pa_message">@_BABEL_USER_DELETED_@</replace>
+@@END_IF@@
+  <replace
+   id="pa_users_to_validate"><![CDATA[@_LAZY_USERS_TO_VALIDATE_@]]></replace>
+  <refresh/>
+</response>

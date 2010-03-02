@@ -117,6 +117,7 @@ with V2P.Template_Defs.Set_Global;
 
 with V2P.Template_Defs.R_Block_Cdc;
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
+with V2P.Template_Defs.R_Block_Delete_User;
 with V2P.Template_Defs.R_Block_Fatal_Error;
 with V2P.Template_Defs.R_Block_Forum_Category_Set;
 with V2P.Template_Defs.R_Block_Forum_Filter;
@@ -1247,6 +1248,15 @@ package body V2P.Web_Server is
            Ajax.onclick_butv_send_reminder,
          Template_Defs.R_Block_Users_To_Validate.Template,
          Callbacks.Ajax.Onclick_Send_Reminders'Access,
+         Prefix           => True,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Users_To_Validate.
+           Ajax.onclick_butv_del_user,
+         Template_Defs.R_Block_Delete_User.Template,
+         Callbacks.Ajax.Onclick_Delete_User'Access,
          Prefix           => True,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
