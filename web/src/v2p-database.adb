@@ -2508,7 +2508,7 @@ package body V2P.Database is
             Line.Clear;
             User_Preferences (Uid, Prefs);
 
-            return User_Data'(Uid         => +Uid,
+            return User_Data'(UID         => +Uid,
                               Password    => +Password,
                               Admin       => Boolean'Value (Admin),
                               Email       => +Email,
