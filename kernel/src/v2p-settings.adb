@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2009                          --
+--                         Copyright (C) 2006-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -45,11 +45,12 @@ package body V2P.Settings is
       Number_Latest_Users, Google_Map_Key, Log_Path, Cache_Path, RSS_Host_URL,
       RSS_Path, RSS_Prefix, Compression, Max_Search_Results, SMTP_Server,
       Number_Users_Listed, Default_Timezone, Number_CdC_Listed,
-      RSS_Latest_Comments, RSS_Latest_Posts);
+      RSS_Latest_Comments, RSS_Latest_Posts, Log_Level);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
    package DB_Conf is new Conf.Enum_Values (Enum => DB_Kind);
+   package Log_Conf is new Conf.Enum_Values (Enum => Morzhol.Logs.Log_Level);
 
    ---------------------
    -- Anonymity_Hours --
@@ -221,6 +222,15 @@ package body V2P.Settings is
    begin
       return Conf.Get_Value (Limit_Image_Size);
    end Limit_Image_Size;
+
+   ---------------
+   -- Log_Level --
+   ---------------
+
+   function Log_Level return Morzhol.Logs.Log_Level is
+   begin
+      return Log_Conf.Get_Value (Log_Level);
+   end Log_Level;
 
    --------------
    -- Log_Path --
@@ -450,6 +460,8 @@ package body V2P.Settings is
 begin --  V2P.Settings : Set default values
 
    DB_Conf.Set_Value (DB, Defaults.DB);
+   Log_Conf.Set_Value (Log_Level, Defaults.Log_Level);
+
    Conf.Set_Value (DB_Name, Defaults.DB_Name);
    Conf.Set_Value (Images_Path, Defaults.Images_Path);
    Conf.Set_Value (Medium_Image_Path, Defaults.Medium_Path);
@@ -502,6 +514,20 @@ begin --  V2P.Settings : Set default values
 
    Conf.IO.Open (Config_Filename);
    Conf.IO.Close;
+
+   --  Activate only logs starting at the set level
+
+   Set_Log_Level : declare
+      use type Morzhol.Logs.Log_Level;
+   begin
+      for K in Morzhol.Logs.Log_Level'Range loop
+         if K >= Log_Level then
+            Morzhol.Logs.Set (K, Activated => True);
+         else
+            Morzhol.Logs.Set (K, Activated => False);
+         end if;
+      end loop;
+   end Set_Log_Level;
 
 exception
    when Conf.IO.Uncomplete_Config =>

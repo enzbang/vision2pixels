@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2009                          --
+--                         Copyright (C) 2006-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -18,6 +18,8 @@
 --  along with this library; if not, write to the Free Software Foundation, --
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
+
+with Morzhol.Logs;
 
 with V2P.Settings;
 
@@ -112,5 +114,8 @@ package V2P.Defaults is
    RSS_Latest_Comments         : constant Positive := 40;
 
    RSS_Latest_Posts            : constant Positive := 15;
+
+   Log_Level                   : constant Morzhol.Logs.Log_Level :=
+                                   Morzhol.Logs.Warnings;
 
 end V2P.Defaults;
