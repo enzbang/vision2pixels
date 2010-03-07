@@ -371,6 +371,12 @@ package body V2P.Web_Server is
                   String'(Session.Get
                     (SID, Template_Defs.Set_Global.ADMIN))));
          end if;
+
+         V2P.Callbacks.Web_Block.Pref_Image_Size
+           (C_Request, Context'Access, Translations);
+
+         V2P.Callbacks.Web_Block.Pref_CSS_URL
+           (C_Request, Context'Access, Translations);
       end if;
 
       --  Add Version number
@@ -444,12 +450,6 @@ package body V2P.Web_Server is
         (Translations, Templates.Assoc
            (Template_Defs.Set_Global.MEDIUM_IMAGE_SOURCE_PREFIX,
             Settings.Medium_Images_Source_Prefix));
-
-      V2P.Callbacks.Web_Block.Pref_Image_Size
-        (Request, Context'Access, Translations);
-
-      V2P.Callbacks.Web_Block.Pref_CSS_URL
-        (Request, Context'Access, Translations);
 
       if Session.Exist (SID, Template_Defs.Set_Global.LOGIN)
          and then Context.Exist ("Last_Visit")
