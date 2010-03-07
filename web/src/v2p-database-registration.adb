@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                            Copyright (C) 2009                            --
+--                         Copyright (C) 2009-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -38,6 +38,14 @@ package body V2P.Database.Registration is
    -----------------
    -- Delete_User --
    -----------------
+
+   function Delete_User (Login : in String) return Boolean is
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+   begin
+      DBH.Handle.Execute
+        ("DELETE FROM user_to_validate WHERE login=" & Q (Login));
+      return True;
+   end Delete_User;
 
    function Delete_User (Login, Key : in String) return Boolean is
       DBH             : constant TLS_DBH_Access :=
@@ -77,10 +85,7 @@ package body V2P.Database.Registration is
 
       --  Now we can remove the user from user_to_validate
 
-      DBH.Handle.Execute
-        ("DELETE FROM user_to_validate WHERE login=" & Q (Login));
-
-      return True;
+      return Delete_User (Login);
    end Delete_User;
 
    -------------------

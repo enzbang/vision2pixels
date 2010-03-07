@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2009                          --
+--                         Copyright (C) 2007-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -111,6 +111,12 @@ package V2P.Callbacks.Ajax is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set);
    --  Called when clicking on button to send all reminders
+
+   procedure Onclick_Delete_User
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when clicking on button to delete a not yet registered user
 
    procedure Onclick_CSS_URL_Preference
      (Request      : in              Status.Data;
