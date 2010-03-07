@@ -373,10 +373,10 @@ package body V2P.Web_Server is
          end if;
 
          V2P.Callbacks.Web_Block.Pref_Image_Size
-           (C_Request, Context'Access, Translations);
+           (Request, Context'Access, Translations);
 
          V2P.Callbacks.Web_Block.Pref_CSS_URL
-           (C_Request, Context'Access, Translations);
+           (Request, Context'Access, Translations);
       end if;
 
       --  Add Version number
