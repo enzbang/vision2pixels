@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2009                          --
+--                         Copyright (C) 2006-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -18,6 +18,8 @@
 --  along with this library; if not, write to the Free Software Foundation, --
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
+
+with Morzhol.Logs;
 
 package V2P.Settings is
 
@@ -157,5 +159,8 @@ package V2P.Settings is
 
    function Default_Timezone return String;
    --  Returns the default time zone offset to use
+
+   function Log_Level return Morzhol.Logs.Log_Level;
+   --  Returns the current log level
 
 end V2P.Settings;
