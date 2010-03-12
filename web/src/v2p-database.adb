@@ -983,12 +983,12 @@ package body V2P.Database is
       function Select_Is_New return String is
       begin
          if Login /= "" then
-            return "(SELECT COUNT(*) FROM post, last_user_visit, category "
-              & "WHERE post.last_comment_id>(SELECT "
-              & "last_user_visit.last_comment_id AND "
-              & "last_user_visit.user_login=" & Q (Login)
-              & " AND post.id=last_user_visit.post_id) AND "
-              & "category.forum_id=forum.id) > 0";
+            return "(SELECT COUNT(*) FROM post, last_forum_visit, category "
+              & "WHERE post.id>last_forum_visit.last_post_id AND "
+              & "last_forum_visit.user_login=" & Q (Login)
+              & " AND last_forum_visit.forum_id=forum.id AND "
+              & " post.category_id=category.id AND "
+              & "category.forum_id=forum.id) > 0 ";
          else
             return "0";
          end if;
@@ -3678,6 +3678,24 @@ package body V2P.Database is
       Set_Preferences
         (Login, "image_size", Q (Database.Image_Size'Image (Image_Size)));
    end Set_Image_Size_Preferences;
+
+   --------------------------
+   -- Set_Last_Forum_Visit --
+   --------------------------
+
+   procedure Set_Last_Forum_Visit (Login : in String; FID : in Id) is
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      SQL : constant String :=
+              "INSERT OR REPLACE INTO last_forum_visit "
+                & "('user_login', 'forum_id', 'last_post_id') VALUES ("
+                & Q (Login) & ", " & I (FID)
+                & ", (SELECT post.id FROM post, category WHERE "
+                & "post.category_id=category.id AND category.forum_id="
+                & I (FID) & " ORDER BY post.id DESC LIMIT 1))";
+   begin
+      Connect (DBH);
+      DBH.Handle.Execute (SQL);
+   end Set_Last_Forum_Visit;
 
    ---------------------
    -- Set_Last_Logged --

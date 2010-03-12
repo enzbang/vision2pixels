@@ -388,6 +388,8 @@ package V2P.Database is
 
    procedure Set_Last_Visit (Login : in String; TID : in Id);
 
+   procedure Set_Last_Forum_Visit (Login : in String; FID : in Id);
+
 private
 
    Default_User_Settings : constant User_Settings :=
