@@ -2500,10 +2500,10 @@ package body V2P.Database is
          Iter.Get_Line (Line);
 
          Password_Value : declare
-            Password  : constant String := DB.String_Vectors.Element (Line, 1);
-            Admin     : constant String := DB.String_Vectors.Element (Line, 2);
-            Email     : constant String := DB.String_Vectors.Element (Line, 3);
-            Prefs     : User_Settings;
+            Password : constant String := DB.String_Vectors.Element (Line, 1);
+            Admin    : constant String := DB.String_Vectors.Element (Line, 2);
+            Email    : constant String := DB.String_Vectors.Element (Line, 3);
+            Prefs    : User_Settings;
          begin
             Line.Clear;
             User_Preferences (Uid, Prefs);
