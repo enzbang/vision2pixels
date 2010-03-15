@@ -3584,8 +3584,8 @@ package body V2P.Database is
               "INSERT OR REPLACE INTO last_user_visit "
                 & "('user_login', 'post_id', 'last_comment_id') VALUES ("
                 & Q (Login) & ", " & I (TID)
-                & ", (SELECT last_comment_id FROM post WHERE id="
-                & I (TID) & "))";
+                & ", (SELECT COALESCE ((SELECT last_comment_id FROM post"
+                & " WHERE id=" & I (TID) & "), 1)))";
    begin
       Connect (DBH);
       DBH.Handle.Execute (SQL);
