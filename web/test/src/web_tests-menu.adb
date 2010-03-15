@@ -76,7 +76,7 @@ package body Web_Tests.Menu is
             Word_Set'
               (1 => +"Forum photographies",
                2 => +"Forum matériel",
-               3 => +"Votre page",
+               3 => +"Ma page",
                4 => +"Poster une nouvelle photo",
                5 => +"Poster un nouveau message",
                6 => +"Recherche",
