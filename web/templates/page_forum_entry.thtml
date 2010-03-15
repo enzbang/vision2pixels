@@ -18,16 +18,17 @@
 <div id="pfe_entry_page">
 
 @@IF@@ @_NAME_@ /=""
+
 @@IF@@ @_IMAGE_SOURCE_@ /= ""
   @@IF@@ @_PREF_IMAGE_SIZE_@ = @_SET_MAX_SIZE_@
   <div id="pfe_image_block" style="width:@_IMAGE_WIDTH_@px;">
-    <p><img alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
+    <p><img id="pfe_main_img" alt="@_NAME_@" src="@_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
          height="@_IMAGE_HEIGHT_@" width="@_IMAGE_WIDTH_@" /></p>
   @@ELSIF@@ @_PREF_IMAGE_SIZE_@ = @_SET_MEDIUM_SIZE_@
-    <img alt="@_NAME_@" src="@_MEDIUM_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
+    <img id="pfe_main_img" alt="@_NAME_@" src="@_MEDIUM_IMAGE_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
          height="@_MEDIUM_IMAGE_HEIGHT_@" width="@_MEDIUM_IMAGE_WIDTH_@" />
   @@ELSE@@
-    <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
+    <img id="pfe_main_img" alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
          height="@_THUMB_IMAGE_HEIGHT_@" width="@_THUMB_IMAGE_WIDTH_@" />
   @@END_IF@@
     <div id="pfe_author">
@@ -37,6 +38,10 @@
     hidden_entry
     @@END_IF@@
     ">@_NAME_@</span>
+    <a id="pfe_toggle_hist" rel="pfe_main_img"
+       href="#pfe_main_img" title="@_BABEL_SHOW_HISTOGRAM_@">
+      <img alt="@_BABEL_SHOW_HISTOGRAM_@" src="/css/img/histogram.gif"/>
+    </a>
     @@END_INLINE@@
 @@ELSE@@
     <div id="pfe_mainbox">
@@ -163,4 +168,5 @@
 </div>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, pfe_hidden_status_toggle)
+@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, pfe_toggle_hist, V2P.Tools.toggle_histogram_rel)
 @@INCLUDE@@ chunk_v2p_end.thtml forum_entry

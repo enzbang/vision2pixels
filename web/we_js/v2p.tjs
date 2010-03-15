@@ -3,6 +3,8 @@
 @@INCLUDE@@ behaviour.js
 @@INCLUDE@@ scriptaculous.js
 @@INCLUDE@@ aws_kernel.tjs
+@@INCLUDE@@ pixastic.core.js
+@@INCLUDE@@ histogram.js
 @@--
 @@-- Now the specific content
 var V2P = {
@@ -60,7 +62,26 @@ V2P.Tools = new function () {
          Element.show(this.rel);
       else
          Element.hide(this.rel);
-         return false;
+      return false;
+   }
+
+   @@-- --------------------------------
+   @@-- Show/Hide histogram
+
+   this.toggle_histogram_rel = function ()
+   {
+      if ($(this.rel).nodeName == "CANVAS") {
+          Pixastic.revert($(this.rel));
+      } else {
+          if (Pixastic.Actions.histogram.checkSupport() == true) {
+	      Pixastic.process ($(this.rel), "histogram", {
+                  paint:true,background:"rgba(0,0,0,0.4)",returnValue:{}
+              });
+	  } else {
+	      alert ("Votre navigateur ne support pas cette fonction"
+		     + " qui nécessite Firefox 2+ ou Opera 9.5+");
+	  }
+      }
    }
 
    @@----------------------------------

@@ -1324,3 +1324,6 @@ label.inline {
 #pa_users_to_validate p, #pa_message {
     margin-top: 1em;
 }
+#pfe_toggle_hist {
+    float: right;
+}
