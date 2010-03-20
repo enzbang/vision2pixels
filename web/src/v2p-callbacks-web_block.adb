@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2009                          --
+--                         Copyright (C) 2007-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -556,7 +556,11 @@ package body V2P.Callbacks.Web_Block is
                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       Preferences : Database.User_Settings;
    begin
-      Database.User_Preferences (Login, Preferences);
+      if Login = "" then
+         Preferences := Database.Default_User_Settings;
+      else
+         Database.User_Preferences (Login, Preferences);
+      end if;
 
       Templates.Insert
         (Translations,
@@ -648,7 +652,11 @@ package body V2P.Callbacks.Web_Block is
                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       Preferences : Database.User_Settings;
    begin
-      Database.User_Preferences (Login, Preferences);
+      if Login = "" then
+         Preferences := Database.Default_User_Settings;
+      else
+         Database.User_Preferences (Login, Preferences);
+      end if;
 
       Templates.Insert
         (Translations,
