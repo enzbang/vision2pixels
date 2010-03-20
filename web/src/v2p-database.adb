@@ -490,7 +490,9 @@ package body V2P.Database is
       Has_Voted          : Templates.Tag;
       Is_New             : Templates.Tag;
       Photo_Number       : Templates.Tag;
-      Photo_Index        : Positive := 1;
+      Photo_Index        : Positive := 2;
+      --  Start at index 2, the number 1 is the original photo posted. The
+      --  other attachments are 2, 3, etc.
 
       function Select_Is_New return String;
       --  Select Is_New
