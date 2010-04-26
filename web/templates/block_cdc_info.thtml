@@ -1,0 +1,20 @@
+<span id="bci">
+@@INLINE@@
+@_NB_PHOTO_@
+@@IF@@ @_NB_PHOTO_@ > 1
+photos nominées
+@@ELSE@@
+photo nominée
+@@END_IF@@
+pour le prochain Coup De Cœur
+@@IF@@ @_NB_PHOTO_@ > 0
+par
+@_NB_ELECTOR_@
+@@IF@@ @_NB_ELECTOR_@ > 1
+utilisateurs
+@@ELSE@@
+utilisateur
+@@END_IF@@
+@@END_IF@@
+@@END_INLINE@@
+</span>

@@ -1327,3 +1327,7 @@ label.inline {
 #pfe_toggle_hist {
     float: right;
 }
+#bca {
+    font-weight: bold;
+    color: #C3883C;
+}

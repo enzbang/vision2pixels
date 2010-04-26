@@ -73,6 +73,20 @@ package body V2P.Callbacks.Web_Block is
    end CdC;
 
    --------------
+   -- CdC_Info --
+   --------------
+
+   procedure CdC_Info
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context);
+   begin
+      Templates.Insert (Translations, Database.Get_CdC_Info);
+   end CdC_Info;
+
+   --------------
    -- Comments --
    --------------
 

@@ -212,6 +212,9 @@ package V2P.Database is
    function Get_CdC (From : in Positive) return Templates.Translate_Set;
    --  Returns all CdC photos
 
+   function Get_CdC_Info return Templates.Translate_Set;
+   --  Returns the current CdC information
+
    function Get_Metadata (Tid : in Id) return Templates.Translate_Set;
    --  Returns photo geographic metadata from thread if
 
