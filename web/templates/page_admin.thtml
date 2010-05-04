@@ -16,6 +16,7 @@
 @_LAZY_USERS_TO_VALIDATE_@
 </div>
 <div id="pa_message"></div>
+<div id="pa_mail"></div>
 </div>
 <script language="javascript">setCurrentPage_Tabs()</script>
 @@ELSE@@

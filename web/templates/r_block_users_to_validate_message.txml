@@ -1,0 +1,7 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+<response>
+  <replace id="pa_message">@_BABEL_REMINDERS_TO_BE_SENT_@</replace>
+  <replace id="pa_mail"><![CDATA[@_REMINDER_MESSAGE_@]]></replace>
+</response>

@@ -47,6 +47,34 @@ package body V2P.Email is
    --  Send an e-mail message given the subject and template with corresponding
    --  data.
 
+   ----------------------
+   -- Reminder_Message --
+   ----------------------
+
+   function Reminder_Message
+     (Login, Password, Email : in String) return String
+   is
+      Key : constant String :=
+              User_Validation.Key (Login, Password, Email);
+      Set : Templates.Translate_Set;
+   begin
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Email_Send_Reminder.USER_LOGIN, Login));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Email_Send_Reminder.USER_EMAIL, Email));
+      Templates.Insert
+        (Set,
+         Templates.Assoc
+           (Template_Defs.Email_Send_Reminder.KEY, Key));
+
+      return Templates.Parse
+        (Template_Defs.Email_Send_Reminder.Template, Set);
+   end Reminder_Message;
+
    ----------
    -- Send --
    ----------

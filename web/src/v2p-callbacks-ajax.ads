@@ -112,6 +112,12 @@ package V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set);
    --  Called when clicking on button to send all reminders
 
+   procedure Onclick_Show_Reminder
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Called when clicking on button to show a reminder
+
    procedure Onclick_Delete_User
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;

@@ -12,6 +12,7 @@
 <th>@_BABEL_DATE_LAST_REMINDER_@</th>
 <th>@_BABEL_NB_REMINDER_@</th>
 <th></th>
+<th></th>
 </tr>
 @@TABLE@@
 <tr>
@@ -23,6 +24,8 @@
 <td>@_NB_REMINDER_@</td>
 <td><a id="butv_send_reminder@_TABLE_LINE_@" href="#">@_BABEL_SEND_REMINDER_@</a></td>
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, butv_send_reminder, 3=>USER=@_LOGIN_@, 18=>@_TABLE_LINE_@)
+<td><a id="butv_show_reminder@_TABLE_LINE_@" href="#">@_BABEL_SHOW_REMINDER_@</a></td>
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, butv_show_reminder, 3=>USER=@_LOGIN_@, 18=>@_TABLE_LINE_@)
 <td><a id="butv_del_user@_TABLE_LINE_@" href="#">@_BABEL_DELETE_@</a></td>
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, butv_del_user, 3=>USER=@_LOGIN_@, 18=>@_TABLE_LINE_@)
 </tr>
