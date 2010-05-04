@@ -58,7 +58,8 @@ package body V2P.Email is
       Subject      : in String)
    is
       SMTP_Server : constant SMTP.Receiver :=
-                      SMTP.Client.Initialize (Settings.SMTP_Server);
+                      SMTP.Client.Initialize
+                        (Settings.SMTP_Server, Settings.SMTP_Port);
       Content     : Attachments.List;
       Result      : SMTP.Status;
    begin

@@ -43,9 +43,9 @@ package body V2P.Settings is
       Website_Data_Path, Number_Latest_User_Posts, Number_Latest_User_Messages,
       Website_Data_Prefix, Wiki_Service_Name, Number_Latest_Posts,
       Number_Latest_Users, Google_Map_Key, Log_Path, Cache_Path, RSS_Host_URL,
-      RSS_Path, RSS_Prefix, Compression, Max_Search_Results, SMTP_Server,
-      Number_Users_Listed, Default_Timezone, Number_CdC_Listed,
-      RSS_Latest_Comments, RSS_Latest_Posts, Log_Level);
+      RSS_Path, RSS_Prefix, Compression, Max_Search_Results,
+      SMTP_Server, SMTP_Port, Number_Users_Listed, Default_Timezone,
+      Number_CdC_Listed, RSS_Latest_Comments, RSS_Latest_Posts, Log_Level);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -385,6 +385,15 @@ package body V2P.Settings is
       return Conf.Get_Value (RSS_Prefix);
    end RSS_Prefix;
 
+   ---------------
+   -- SMTP_Port --
+   ---------------
+
+   function SMTP_Port return Positive is
+   begin
+      return Conf.Get_Value (SMTP_Port);
+   end SMTP_Port;
+
    -----------------
    -- SMTP_Server --
    -----------------
@@ -505,6 +514,7 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (Max_Search_Results, Defaults.Max_Search_Results);
    Conf.Set_Value (Number_Users_Listed, Defaults.Number_Users_Listed);
    Conf.Set_Value (SMTP_Server, Defaults.SMTP_Server);
+   Conf.Set_Value (SMTP_Port, Defaults.SMTP_Port);
    Conf.Set_Value (Default_Timezone, Defaults.Default_Timezone);
    Conf.Set_Value (Number_CdC_Listed, Defaults.Number_CdC_Listed);
    Conf.Set_Value (RSS_Latest_Comments, Defaults.RSS_Latest_Comments);
