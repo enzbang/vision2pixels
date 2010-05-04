@@ -180,6 +180,9 @@ package V2P.Database is
    --  Returns the user's data. Returns the No_User_Data if User cannot be
    --  found into the database.
 
+   function Get_User_To_Validate_Data (Uid : in String) return User_Data;
+   --  As above but for user not yet validated
+
    function Get_User_Stats
      (Uid, TZ : in String) return Templates.Translate_Set;
    --  Returns the stats for the given user or No_User_Stats if user cannot be
