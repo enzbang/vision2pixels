@@ -1958,15 +1958,17 @@ package body V2P.Database is
                      --  Get last_comment_id (or 0 if first visit)
                      --  Select last_comment_id < post.last_comment_id -> True
                      --  but only if comment.date less than 30 day old
+                     --  (if there is a comment)
 
                      Append (Select_Stmt, ", (SELECT (SELECT COALESCE ("
                              & "(SELECT v.last_comment_id FROM "
                              & "last_user_visit v WHERE v.post_id=post.id "
                              & "AND v.user_login=" & Q (Login) & "), "
-                             & "0) < post.last_comment_id "
+                             & "0) < COALESCE (post.last_comment_id, 1) "
                              & " AND (SELECT date>DATE('now', '-30day') FROM "
                              & "comment WHERE comment.id="
-                             & "post.last_comment_id))) ");
+                             & "post.last_comment_id "
+                             & "OR post.last_comment_id is null))) ");
                   end if;
 
                when Navigation_Only =>
