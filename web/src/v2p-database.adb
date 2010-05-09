@@ -2839,6 +2839,42 @@ package body V2P.Database is
       return Set;
    end Get_User_Stats;
 
+   -------------------------------
+   -- Get_User_To_Validate_Data --
+   -------------------------------
+
+   function Get_User_To_Validate_Data (Uid : in String) return User_Data is
+      use type Templates.Tag;
+
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+   begin
+      if Uid = "" then
+         return No_User_Data;
+      end if;
+
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "SELECT password, email " &
+         "FROM user_to_validate WHERE login=" & Q (Uid));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         return User_Data'
+           (UID         => +Uid,
+            Password    => +DB.String_Vectors.Element (Line, 1),
+            Admin       => False,
+            Email       => +DB.String_Vectors.Element (Line, 2),
+            Preferences => Default_User_Settings);
+      else
+         return No_User_Data;
+      end if;
+   end Get_User_To_Validate_Data;
+
    ---------------------------
    -- Get_User_Voted_Photos --
    ---------------------------

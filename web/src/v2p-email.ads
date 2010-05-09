@@ -38,4 +38,8 @@ package V2P.Email is
    procedure Send_Change_Email (Login, Email, New_Email : in String);
    --  Send message for new email validation
 
+   function Reminder_Message
+     (Login, Password, Email : in String) return String;
+   --  Build and return the reminder message
+
 end V2P.Email;

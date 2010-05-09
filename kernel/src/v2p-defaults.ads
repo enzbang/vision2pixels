@@ -109,6 +109,8 @@ package V2P.Defaults is
 
    SMTP_Server                 : constant String := "localhost";
 
+   SMTP_Port                   : constant Positive := 25;
+
    Default_Timezone            : constant String := "+60";
 
    RSS_Latest_Comments         : constant Positive := 40;

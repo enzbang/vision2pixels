@@ -81,6 +81,7 @@ with V2P.Template_Defs.R_Block_Pref_Private_Message;
 with V2P.Template_Defs.R_Block_Send_Private_Message;
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
+with V2P.Template_Defs.R_Block_Users_To_Validate_Message;
 with V2P.Template_Defs.R_Page_Search;
 with V2P.Template_Defs.R_Page_Lost_Password;
 with V2P.Template_Defs.R_Page_User_Register;
@@ -728,6 +729,31 @@ package body V2P.Callbacks.Ajax is
          Templates.Insert (Translations, Set);
       end if;
    end Onclick_Send_Reminders;
+
+   ---------------------------
+   -- Onclick_Show_Reminder --
+   ---------------------------
+
+   procedure Onclick_Show_Reminder
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      use Template_Defs;
+      P    : constant Parameters.List := Status.Parameters (Request);
+      User : constant String :=
+               Parameters.Get (P, Block_Users_To_Validate.Set.USER);
+      Data : constant Database.User_Data :=
+               Database.Get_User_To_Validate_Data (User);
+   begin
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.R_Block_Users_To_Validate_Message.REMINDER_MESSAGE,
+            String'(Email.Reminder_Message
+              (User, To_String (Data.Password), To_String (Data.Email)))));
+   end Onclick_Show_Reminder;
 
    --------------------------------------------
    -- Onclick_User_Photo_List_Goto_Next_Page --

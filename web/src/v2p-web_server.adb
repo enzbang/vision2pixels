@@ -137,6 +137,7 @@ with V2P.Template_Defs.R_Block_User_Photo_List;
 with V2P.Template_Defs.R_Block_User_Preferences;
 with V2P.Template_Defs.R_Block_Users;
 with V2P.Template_Defs.R_Block_Users_To_Validate;
+with V2P.Template_Defs.R_Block_Users_To_Validate_Message;
 with V2P.Template_Defs.R_Block_Vote_Week_Photo;
 with V2P.Template_Defs.R_Context_Error;
 with V2P.Template_Defs.R_Page_Search;
@@ -1254,6 +1255,15 @@ package body V2P.Web_Server is
            Ajax.onclick_butv_send_reminder,
          Template_Defs.R_Block_Users_To_Validate.Template,
          Callbacks.Ajax.Onclick_Send_Reminders'Access,
+         Prefix           => True,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Users_To_Validate.
+           Ajax.onclick_butv_show_reminder,
+         Template_Defs.R_Block_Users_To_Validate_Message.Template,
+         Callbacks.Ajax.Onclick_Show_Reminder'Access,
          Prefix           => True,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
