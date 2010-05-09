@@ -49,6 +49,7 @@ with V2P.Template_Defs.Chunk_Threads_List;
 with V2P.Template_Defs.Chunk_Threads_Text_List;
 with V2P.Template_Defs.Chunk_Users;
 with V2P.Template_Defs.Block_Cdc;
+with V2P.Template_Defs.Block_Cdc_Info;
 with V2P.Template_Defs.Block_Comments;
 with V2P.Template_Defs.Block_Exif;
 with V2P.Template_Defs.Block_Forum_Threads;
@@ -384,6 +385,43 @@ package body V2P.Database is
            (Chunk_List_Navlink.NAV_NB_LINES_TOTAL, Total_Lines));
       return Set;
    end Get_CdC;
+
+   ------------------
+   -- Get_CdC_Info --
+   ------------------
+
+   function Get_CdC_Info return Templates.Translate_Set is
+      DBH        : constant TLS_DBH_Access :=
+                     TLS_DBH_Access (DBH_TLS.Reference);
+      SQL        : constant String :=
+                     "SELECT COUNT(DISTINCT(user_login)), "
+                       & "COUNT(DISTINCT(post_id)) "
+                       & "FROM user_photo_of_the_week WHERE week_id=0";
+      Set        : Templates.Translate_Set;
+      Iter       : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line       : DB.String_Vectors.Vector;
+      Nb_Elector : Natural := 0;
+      Nb_Photo   : Natural := 0;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+         Nb_Elector := Positive'Value (DB.String_Vectors.Element (Line, 1));
+         Nb_Photo := Positive'Value (DB.String_Vectors.Element (Line, 2));
+         Line.Clear;
+      end if;
+
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Block_Cdc_Info.NB_ELECTOR, Nb_Elector));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Block_Cdc_Info.NB_PHOTO, Nb_Photo));
+      return Set;
+   end Get_CdC_Info;
 
    -----------------
    -- Get_Comment --

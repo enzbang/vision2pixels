@@ -25,6 +25,7 @@
            <li>@_NB_USERS_@ inscrits</li>
            <li>@_NB_PHOTOS_@ photographies postées</li>
            <li>@_NB_COMMENTS_@ commentaires (soit @_"/"(NB_PHOTOS):NB_COMMENTS_@ commentaires par photographie en moyenne)</li>
+	   <li>@_LAZY_CDC_INFO_@ @_LAZY_CDC_ALERT_@</li>
          </ul>
          <p><a class="help" href="/help">En savoir plus</a></p>
          <p><a class="help" href="/termsofuse">Condition d'utilisations</a></p>
