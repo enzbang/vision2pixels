@@ -2503,7 +2503,7 @@ package body V2P.Database is
       if Iter.More then
          Iter.Get_Line (Line);
 
-         Password_Value : declare
+         User : declare
             Password : constant String := DB.String_Vectors.Element (Line, 1);
             Admin    : constant String := DB.String_Vectors.Element (Line, 2);
             Email    : constant String := DB.String_Vectors.Element (Line, 3);
@@ -2517,7 +2517,7 @@ package body V2P.Database is
                               Admin       => Boolean'Value (Admin),
                               Email       => +Email,
                               Preferences => Prefs);
-         end Password_Value;
+         end User;
 
       else
          return No_User_Data;
