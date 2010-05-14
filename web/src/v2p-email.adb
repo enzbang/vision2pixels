@@ -156,6 +156,9 @@ package body V2P.Email is
    begin
       Templates.Insert
         (Set, Templates.Assoc
+           (Template_Defs.Email_Lost_Password.USER_LOGIN, Login));
+      Templates.Insert
+        (Set, Templates.Assoc
            (Template_Defs.Email_Lost_Password.USER_PASSWORD, Password));
 
       Send

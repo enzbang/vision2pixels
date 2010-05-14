@@ -1200,14 +1200,15 @@ package body V2P.Callbacks.Ajax is
    is
       pragma Unreferenced (Context);
       use Template_Defs;
+      use type Database.User_Data;
       P        : constant Parameters.List := Status.Parameters (Request);
       Email    : constant String :=
                    Parameters.Get
                      (P, Page_Lost_Password.HTTP.USER_EMAIL);
-      Password : constant String :=
-                   Database.Get_Password_From_Email (Email);
+      Data     : constant Database.User_Data :=
+                   Database.Get_User_Data_From_Email (Email);
    begin
-      if Email = "" or else Password = "" then
+      if Email = "" or else Data = Database.No_User_Data then
          --  Display error message
          Templates.Insert
            (Translations, Templates.Assoc (R_Page_Lost_Password.ERROR, True));
@@ -1216,7 +1217,10 @@ package body V2P.Callbacks.Ajax is
 
       --  Send the e-mail with the password
 
-      V2P.Email.Send_Lost_Password (Email, Password, Email);
+      V2P.Email.Send_Lost_Password
+        (Login    => To_String (Data.UID),
+         Password => To_String (Data.Password),
+         Email    => Email);
 
    exception
       when others =>
@@ -1224,7 +1228,7 @@ package body V2P.Callbacks.Ajax is
            (Name    => Module,
             Content =>
             "(Onsubmit_Plp_Lost_Email) : sending e-mail failed for email "
-            & Email & ", password " & Password,
+            & Email & ", password " & To_String (Data.Password),
             Kind    => Morzhol.Logs.Error);
          Templates.Insert
            (Translations,

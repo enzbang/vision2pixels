@@ -1493,42 +1493,6 @@ package body V2P.Database is
       return Set;
    end Get_New_Post_Delay;
 
-   -----------------------------
-   -- Get_Password_From_Email --
-   -----------------------------
-
-   function Get_Password_From_Email (Email : in String) return String is
-      use type Templates.Tag;
-
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line : DB.String_Vectors.Vector;
-   begin
-      if Email = "" then
-         return "";
-      end if;
-
-      Connect (DBH);
-
-      DBH.Handle.Prepare_Select
-        (Iter, "SELECT password FROM user WHERE email=" & Q (Email));
-
-      if Iter.More then
-         Iter.Get_Line (Line);
-
-         Password_Value : declare
-            Password : constant String := DB.String_Vectors.Element (Line, 1);
-         begin
-            Line.Clear;
-
-            return Password;
-         end Password_Value;
-
-      else
-         return "";
-      end if;
-   end Get_Password_From_Email;
-
    ---------------------------
    -- Get_Photo_Of_The_Week --
    ---------------------------
@@ -2539,7 +2503,7 @@ package body V2P.Database is
       if Iter.More then
          Iter.Get_Line (Line);
 
-         Password_Value : declare
+         User : declare
             Password : constant String := DB.String_Vectors.Element (Line, 1);
             Admin    : constant String := DB.String_Vectors.Element (Line, 2);
             Email    : constant String := DB.String_Vectors.Element (Line, 3);
@@ -2553,12 +2517,57 @@ package body V2P.Database is
                               Admin       => Boolean'Value (Admin),
                               Email       => +Email,
                               Preferences => Prefs);
-         end Password_Value;
+         end User;
 
       else
          return No_User_Data;
       end if;
    end Get_User_Data;
+
+   ------------------------------
+   -- Get_User_Data_From_Email --
+   ------------------------------
+
+   function Get_User_Data_From_Email (Email : in String) return User_Data is
+      use type Templates.Tag;
+
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+   begin
+      if Email = "" then
+         return No_User_Data;
+      end if;
+
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "SELECT login, password, admin FROM user WHERE email=" & Q (Email));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         User : declare
+            Login    : constant String := DB.String_Vectors.Element (Line, 1);
+            Password : constant String := DB.String_Vectors.Element (Line, 2);
+            Admin    : constant String := DB.String_Vectors.Element (Line, 3);
+            Prefs    : User_Settings;
+         begin
+            Line.Clear;
+            User_Preferences (Login, Prefs);
+
+            return User_Data'(UID         => +Login,
+                              Password    => +Password,
+                              Admin       => Boolean'Value (Admin),
+                              Email       => +Email,
+                              Preferences => Prefs);
+         end User;
+
+      else
+         return No_User_Data;
+      end if;
+   end Get_User_Data_From_Email;
 
    --------------------------
    -- Get_User_From_Cookie --
