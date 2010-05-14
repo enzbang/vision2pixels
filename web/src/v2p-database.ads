@@ -188,9 +188,9 @@ package V2P.Database is
    --  Returns the stats for the given user or No_User_Stats if user cannot be
    --  found into the database.
 
-   function Get_Password_From_Email (Email : in String) return String;
-   --  Returns the user's password from the given e-mail. Returns the empty
-   --  string if the Email cannot be found into the database.
+   function Get_User_Data_From_Email (Email : in String) return User_Data;
+   --  Returns the user's data for the given e-mail. Returns No_User_Data
+   --  if the Email cannot be found into the database.
 
    procedure Set_Last_Logged (Uid : in String);
    --  Set last logged status in the database
