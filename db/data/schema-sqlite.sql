@@ -123,7 +123,7 @@ create table "post" (
    "comment" longtext,
    "category_id" integer not null,
    "date_post" date default current_timestamp,
-   "last_comment_id" integer,
+   "last_comment_id" integer default 0,
    "template_id" integer not null,
    "visit_counter" integer not null,
    "comment_counter" integer not null,

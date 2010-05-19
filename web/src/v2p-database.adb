@@ -536,19 +536,23 @@ package body V2P.Database is
       --  Select Is_New
       --  If last_comment_id is less than comment.id, then this is a new
       --  comment.
+      --  If last_comment is older that 30 days it is ignored
 
       -------------------
       -- Select_Is_New --
       -------------------
 
       function Select_Is_New return String is
+         --  Get last_comment_id (or 0 if first visit)
+         --  Select last_comment_id < comment.id -> True if new
+         --  but only if comment.date less than 30 day old
       begin
          if Login /= "" then
-            return ", (SELECT v.last_comment_id < "
-              & "comment.id FROM post, last_user_visit v "
-              & "WHERE v.post_id=post.id AND post.id="
-              & To_String (Tid) & " AND v.user_login="
-              & Q (Login) & ")";
+            return ", (SELECT (SELECT COALESCE ("
+              & "(SELECT v.last_comment_id FROM last_user_visit v "
+              & "WHERE v.post_id=post_comment.post_id "
+              & "AND v.user_login=" & Q (Login) & "), 0) < comment.id "
+              & " AND date>DATE('now', '-30day'))) ";
          else
             return "";
          end if;
@@ -1955,10 +1959,20 @@ package body V2P.Database is
                     & "WHERE post.id = photo_of_the_week.post_id)";
 
                   if Login /= "" then
-                     Append (Select_Stmt, ", (SELECT v.last_comment_id < "
-                             & "post.last_comment_id FROM last_user_visit v "
-                             & "WHERE v.post_id=post.id AND v.user_login="
-                             & Q (Login) & ")");
+                     --  Get last_comment_id (or 0 if first visit)
+                     --  Select last_comment_id < post.last_comment_id -> True
+                     --  but only if comment.date less than 30 day old
+                     --  (if there is a comment)
+
+                     Append (Select_Stmt, ", (SELECT (SELECT COALESCE ("
+                             & "(SELECT v.last_comment_id FROM "
+                             & "last_user_visit v WHERE v.post_id=post.id "
+                             & "AND v.user_login=" & Q (Login) & "), "
+                             & "0) < COALESCE (post.last_comment_id, 1) "
+                             & " AND (SELECT date>DATE('now', '-30day') FROM "
+                             & "comment WHERE comment.id="
+                             & "post.last_comment_id "
+                             & "OR post.last_comment_id is null))) ");
                   end if;
 
                when Navigation_Only =>
@@ -3657,8 +3671,8 @@ package body V2P.Database is
               "INSERT OR REPLACE INTO last_user_visit "
                 & "('user_login', 'post_id', 'last_comment_id') VALUES ("
                 & Q (Login) & ", " & I (TID)
-                & ", (SELECT last_comment_id FROM post WHERE id="
-                & I (TID) & "))";
+                & ", (SELECT COALESCE ((SELECT last_comment_id FROM post"
+                & " WHERE id=" & I (TID) & "), 1)))";
    begin
       Connect (DBH);
       DBH.Handle.Execute (SQL);
