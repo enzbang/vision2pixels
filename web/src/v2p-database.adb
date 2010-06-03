@@ -833,14 +833,14 @@ package body V2P.Database is
             if Iter.More then
                Iter.Get_Line (Line);
 
-               Fid : declare
+               Read_Fid : declare
                   Fid : constant Id :=
-                    Id'Value (DB.String_Vectors.Element (Line, 1));
+                          Id'Value (DB.String_Vectors.Element (Line, 1));
                begin
                   Line.Clear;
                   Iter.End_Select;
                   return Fid;
-               end Fid;
+               end Read_Fid;
 
             else
                Logs.Write
