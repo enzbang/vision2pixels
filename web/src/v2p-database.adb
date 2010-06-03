@@ -100,6 +100,12 @@ package body V2P.Database is
    pragma Inline (Get_Fid);
    --  Returns Fid if not empty otherwise compute it using Tid
 
+   function Get_Fid_From_Category
+     (DBH : in TLS_DBH_Access;
+      Cid : in Id) return Id;
+   pragma Inline (Get_Fid_From_Category);
+   --  Returns the Fid given the category
+
    Lock_Register : Utils.Semaphore;
    --  Lock the application when registering a new user. We want to avoid two
    --  users registering under the same login.
@@ -850,6 +856,44 @@ package body V2P.Database is
          return Fid;
       end if;
    end Get_Fid;
+
+   ---------------------------
+   -- Get_Fid_From_Category --
+   ---------------------------
+
+   function Get_Fid_From_Category
+     (DBH : in TLS_DBH_Access;
+      Cid : in Id) return Id
+   is
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+   begin
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "SELECT forum_id FROM category "
+           & "WHERE category.id=" & To_String (Cid));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Return_Fid : declare
+            Fid : constant Id :=
+                    Id'Value (DB.String_Vectors.Element (Line, 1));
+         begin
+            Line.Clear;
+            Iter.End_Select;
+            return Fid;
+         end Return_Fid;
+
+      else
+         Logs.Write
+           (Name    => Module,
+            Kind    => Logs.Error,
+            Content => "Get_Fid_From_Category, Cid does not exist, "
+              & "raise Database_Error");
+         raise Database_Error;
+      end if;
+   end Get_Fid_From_Category;
 
    ---------------
    -- Get_Forum --
@@ -3410,6 +3454,13 @@ package body V2P.Database is
       begin
          Insert_Table_User_Post (Uid, Post_Id);
          DBH.Handle.Commit;
+
+         --  Set the last forum visit for the posting user. We do not want to
+         --  have this forum appearing as containing new message for the
+         --  author of the post.
+
+         Set_Last_Forum_Visit (Uid, Get_Fid_From_Category (DBH, Category_Id));
+
          return Post_Id;
       end Row_Id;
 
