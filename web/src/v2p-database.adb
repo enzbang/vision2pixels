@@ -98,7 +98,7 @@ package body V2P.Database is
      (DBH      : in TLS_DBH_Access;
       Fid, Tid : in Id) return Id;
    pragma Inline (Get_Fid);
-   --  Returns Fid is not empty otherwise compute it using Tid
+   --  Returns Fid if not empty otherwise compute it using Tid
 
    Lock_Register : Utils.Semaphore;
    --  Lock the application when registering a new user. We want to avoid two
@@ -840,7 +840,7 @@ package body V2P.Database is
                Logs.Write
                  (Name    => Module,
                   Kind    => Logs.Error,
-                  Content => "Get_Id, Fid and Tid empty, "
+                  Content => "Get_Fid, Fid and Tid empty, "
                     & "raise Database_Error");
                raise Database_Error;
             end if;
