@@ -386,8 +386,10 @@ package V2P.Database is
    --  Should we remember the user with a cookie ?
 
    procedure Set_Last_Visit (Login : in String; TID : in Id);
+   --  Record the last visit for Login in the given thread
 
    procedure Set_Last_Forum_Visit (Login : in String; FID : in Id);
+   --  Record the last visit for Login in the given forum
 
 private
 
