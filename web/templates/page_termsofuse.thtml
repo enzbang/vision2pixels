@@ -29,6 +29,11 @@ semblerait détournée.</p>
 propos diffamatoires, racistes, etc, veuillez nous en <a
 href="mailto:v2p-users@googlegroups.com" class="link">avertir</a> dès que possible.</p>
 
+<h2 id="privacy">Nous contacter</h2>
+
+<p><a href="mailto:v2p-users@googlegroups.com"
+      class="link">v2p-users@googlegroups.com</a></p>
+
 @@IF@@ @_V2P_ERROR_@ /= ""
   @_V2P_ERROR_@
 @@END_IF@@
