@@ -95,7 +95,7 @@
 
 @@TABLE@@
 <tr>
-<td><a href="/~@_LOGIN_@">@_LOGIN_@</a></td>
+<td><a href="/~@_WEB_ENCODE:LOGIN_@">@_LOGIN_@</a></td>
 <td>@_REGISTERED_DATE_@</td>
 <td>@_LAST_CONNECTED_DATE_@</td>
 <td>@_N_PHOTOS_@</td>
