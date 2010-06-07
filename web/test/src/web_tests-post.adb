@@ -172,7 +172,7 @@ package body Web_Tests.Post is
 
       Check
         (Response.Message_Body (Result),
-         Word_Set'(+Natural'Image (H) & ':', +"turbo", +"mon_commentaire"),
+         Word_Set'(+Utils.Image (H) & ':', +"turbo", +"mon_commentaire"),
          "wrong date for new comment");
    end Post_New_Comment;
 
