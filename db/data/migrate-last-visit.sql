@@ -54,3 +54,12 @@ create trigger after_post_comment_insert after insert on post_comment
    end;
 
 COMMIT;
+
+create table last_forum_visit (
+   "user_login" varchar(50),
+   "forum_id" integer not null,
+   "last_post_id" integer,
+   constraint unique_entry unique (user_login, forum_id),
+   foreign key ("forum_id") references forum("id"),
+   foreign key ("last_post_id") references post("id")
+);
