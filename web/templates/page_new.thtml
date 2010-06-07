@@ -10,7 +10,7 @@
   rapports d'erreur ou des demandes de fonctionnalités. Le site ne peut
   évoluer sans vous.</p>
 
-<h1>Version 3.2 (mars 2010)</h1>
+<h1>Version 3.2 (juin 2010)</h1>
 
 <p>Refonte complète de la gestion du contexte. Ceci devrait permettre
   l'utilisation de multiple onglets sans soucis.</p>
@@ -18,7 +18,17 @@
 <p>Les posts et commentaires non lu apparaissent maintenant précédés de la
 mention <span class="newlv">!NEW</span></p>
 
+<p>Les forums contenant de nouveaux posts sont affichés en rouge.</p>
+
 <p>Il est maintenant possible de changer son e-mail.</p>
+
+<p>Une alerte est affichée lorsque le nombre de votes pour le coups-de-cœur
+   n'est pas suffisant.</p>
+
+<p>Les photographies postées comme propositions sont numérotées en
+   commençant par 2. La photographie originale étant souvent référencée
+   comme la première. Cela devrait permettre d'éviter certaines
+   confusions.</p>
 
 <h2>Version 3.1.7 (février 2010)</h2>
 

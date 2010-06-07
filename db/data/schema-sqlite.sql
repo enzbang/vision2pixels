@@ -377,3 +377,12 @@ create table last_user_visit (
    foreign key ("post_id") references post("id"),
    foreign key ("last_comment_id") references comment("id")
 );
+
+create table last_forum_visit (
+   "user_login" varchar(50),
+   "forum_id" integer not null,
+   "last_post_id" integer,
+   constraint unique_entry unique (user_login, forum_id),
+   foreign key ("forum_id") references forum("id"),
+   foreign key ("last_post_id") references post("id")
+);

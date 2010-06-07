@@ -236,6 +236,8 @@ package body V2P.Callbacks.Page is
                   V2P.Context.Counter.Get_Value
                     (Context => Context.all,
                      Name    => Template_Defs.Set_Global.FID);
+      Login    : constant String :=
+                   Context.Get_Value (Template_Defs.Set_Global.LOGIN);
    begin
       if Context.Exist (Template_Defs.Set_Global.TID) then
          Context.Remove (Template_Defs.Set_Global.TID);
@@ -271,6 +273,11 @@ package body V2P.Callbacks.Page is
 
       Templates.Insert
         (Translations, Database.Get_Forum (FID, Tid => Database.Empty_Id));
+
+      --  Update last_forum_visit table
+      if Login /= "" then
+         Database.Set_Last_Forum_Visit (Login, FID);
+      end if;
    exception
       when Database.Parameter_Error =>
          --  Redirect to main page

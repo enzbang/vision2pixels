@@ -89,7 +89,9 @@ package V2P.Database is
    Default_User_Settings : constant User_Settings;
 
    function Get_Forums
-     (Filter : in Forum_Filter; TZ : in String) return Templates.Translate_Set;
+     (Filter : in Forum_Filter;
+      TZ     : in String;
+      Login  : in String) return Templates.Translate_Set;
    --  Returns the forum list
    --  If filter is Forum_Photo or Forum_Text and only one forum found, then
    --  returns the category list in that forum
@@ -384,6 +386,10 @@ package V2P.Database is
    --  Should we remember the user with a cookie ?
 
    procedure Set_Last_Visit (Login : in String; TID : in Id);
+   --  Record the last visit for Login in the given thread
+
+   procedure Set_Last_Forum_Visit (Login : in String; FID : in Id);
+   --  Record the last visit for Login in the given forum
 
 private
 

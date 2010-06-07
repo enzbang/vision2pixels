@@ -98,7 +98,13 @@ package body V2P.Database is
      (DBH      : in TLS_DBH_Access;
       Fid, Tid : in Id) return Id;
    pragma Inline (Get_Fid);
-   --  Returns Fid is not empty otherwise compute it using Tid
+   --  Returns Fid if not empty otherwise compute it using Tid
+
+   function Get_Fid_From_Category
+     (DBH : in TLS_DBH_Access;
+      Cid : in Id) return Id;
+   pragma Inline (Get_Fid_From_Category);
+   --  Returns the Fid given the category
 
    Lock_Register : Utils.Semaphore;
    --  Lock the application when registering a new user. We want to avoid two
@@ -827,20 +833,20 @@ package body V2P.Database is
             if Iter.More then
                Iter.Get_Line (Line);
 
-               Fid : declare
+               Read_Fid : declare
                   Fid : constant Id :=
-                    Id'Value (DB.String_Vectors.Element (Line, 1));
+                          Id'Value (DB.String_Vectors.Element (Line, 1));
                begin
                   Line.Clear;
                   Iter.End_Select;
                   return Fid;
-               end Fid;
+               end Read_Fid;
 
             else
                Logs.Write
                  (Name    => Module,
                   Kind    => Logs.Error,
-                  Content => "Get_Id, Fid and Tid empty, "
+                  Content => "Get_Fid, Fid and Tid empty, "
                     & "raise Database_Error");
                raise Database_Error;
             end if;
@@ -850,6 +856,44 @@ package body V2P.Database is
          return Fid;
       end if;
    end Get_Fid;
+
+   ---------------------------
+   -- Get_Fid_From_Category --
+   ---------------------------
+
+   function Get_Fid_From_Category
+     (DBH : in TLS_DBH_Access;
+      Cid : in Id) return Id
+   is
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+   begin
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "SELECT forum_id FROM category "
+           & "WHERE category.id=" & To_String (Cid));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Return_Fid : declare
+            Fid : constant Id :=
+                    Id'Value (DB.String_Vectors.Element (Line, 1));
+         begin
+            Line.Clear;
+            Iter.End_Select;
+            return Fid;
+         end Return_Fid;
+
+      else
+         Logs.Write
+           (Name    => Module,
+            Kind    => Logs.Error,
+            Content => "Get_Fid_From_Category, Cid does not exist, "
+              & "raise Database_Error");
+         raise Database_Error;
+      end if;
+   end Get_Fid_From_Category;
 
    ---------------
    -- Get_Forum --
@@ -965,14 +1009,40 @@ package body V2P.Database is
    ----------------
 
    function Get_Forums
-     (Filter : in Forum_Filter; TZ : in String) return Templates.Translate_Set
+     (Filter : in Forum_Filter;
+      TZ     : in String;
+      Login  : in String)
+      return Templates.Translate_Set
    is
       use type Templates.Tag;
+
+      function Select_Is_New return String;
+      --  Whether the forum should be mark !NEW.
+      --  If Login is not set, do not mark as !NEW.
+
+      -------------------
+      -- Select_Is_New --
+      -------------------
+
+      function Select_Is_New return String is
+      begin
+         if Login /= "" then
+            return "(SELECT COUNT(*) FROM post, last_forum_visit, category "
+              & "WHERE post.id>last_forum_visit.last_post_id AND "
+              & "last_forum_visit.user_login=" & Q (Login)
+              & " AND last_forum_visit.forum_id=forum.id AND "
+              & " post.category_id=category.id AND "
+              & "category.forum_id=forum.id) > 0 ";
+         else
+            return "0";
+         end if;
+      end Select_Is_New;
 
       SQL       : constant String :=
                     "SELECT id, name, for_photo, "
                       & Timezone.Date ("last_activity", TZ) & ", "
-                      & Timezone.Time ("last_activity", TZ)
+                      & Timezone.Time ("last_activity", TZ) & ", "
+                      & Select_Is_New
                       & " FROM forum";
       DBH       : constant TLS_DBH_Access :=
                     TLS_DBH_Access (DBH_TLS.Reference);
@@ -985,6 +1055,7 @@ package body V2P.Database is
       For_Photo : Templates.Tag;
       Date      : Templates.Tag;
       Time      : Templates.Tag;
+      Is_New    : Templates.Tag;
       Nb_Lines  : Natural := 0;
 
    begin
@@ -1007,6 +1078,7 @@ package body V2P.Database is
          For_Photo := For_Photo & DB.String_Vectors.Element (Line, 3);
          Date      := Date      & DB.String_Vectors.Element (Line, 4);
          Time      := Time      & DB.String_Vectors.Element (Line, 5);
+         Is_New    := Is_New    & DB.String_Vectors.Element (Line, 6);
 
          Line.Clear;
       end loop;
@@ -1020,6 +1092,8 @@ package body V2P.Database is
         (Set, Templates.Assoc (Block_Forum_List.F_DATE, Date));
       Templates.Insert
         (Set, Templates.Assoc (Block_Forum_List.F_TIME, Time));
+      Templates.Insert
+        (Set, Templates.Assoc (Block_Forum_List.IS_NEW, Is_New));
 
       if Filter /= Forum_All and then Nb_Lines = 1 then
          --  Only one forum matched. Returns the categories too
@@ -3380,6 +3454,13 @@ package body V2P.Database is
       begin
          Insert_Table_User_Post (Uid, Post_Id);
          DBH.Handle.Commit;
+
+         --  Set the last forum visit for the posting user. We do not want to
+         --  have this forum appearing as containing new message for the
+         --  author of the post.
+
+         Set_Last_Forum_Visit (Uid, Get_Fid_From_Category (DBH, Category_Id));
+
          return Post_Id;
       end Row_Id;
 
@@ -3648,6 +3729,24 @@ package body V2P.Database is
       Set_Preferences
         (Login, "image_size", Q (Database.Image_Size'Image (Image_Size)));
    end Set_Image_Size_Preferences;
+
+   --------------------------
+   -- Set_Last_Forum_Visit --
+   --------------------------
+
+   procedure Set_Last_Forum_Visit (Login : in String; FID : in Id) is
+      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      SQL : constant String :=
+              "INSERT OR REPLACE INTO last_forum_visit "
+                & "('user_login', 'forum_id', 'last_post_id') VALUES ("
+                & Q (Login) & ", " & I (FID)
+                & ", (SELECT post.id FROM post, category WHERE "
+                & "post.category_id=category.id AND category.forum_id="
+                & I (FID) & " ORDER BY post.id DESC LIMIT 1))";
+   begin
+      Connect (DBH);
+      DBH.Handle.Execute (SQL);
+   end Set_Last_Forum_Visit;
 
    ---------------------
    -- Set_Last_Logged --

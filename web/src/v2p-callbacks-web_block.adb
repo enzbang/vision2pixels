@@ -249,7 +249,8 @@ package body V2P.Callbacks.Web_Block is
         (Translations,
          Database.Get_Forums
            (Filter => Database.Forum_All,
-            TZ     => Context.Get_Value (Template_Defs.Set_Global.TZ)));
+            TZ     => Context.Get_Value (Template_Defs.Set_Global.TZ),
+            Login  => Context.Get_Value (Template_Defs.Set_Global.LOGIN)));
    end Forum_List;
 
    -----------------------------
@@ -267,7 +268,8 @@ package body V2P.Callbacks.Web_Block is
         (Translations,
          Database.Get_Forums
            (Filter => Database.Forum_Photo,
-            TZ     => Context.Get_Value (Template_Defs.Set_Global.TZ)));
+            TZ     => Context.Get_Value (Template_Defs.Set_Global.TZ),
+            Login  => Context.Get_Value (Template_Defs.Set_Global.LOGIN)));
    end Forum_Photo_List_Select;
 
    ----------------
@@ -303,7 +305,8 @@ package body V2P.Callbacks.Web_Block is
         (Translations,
          Database.Get_Forums
            (Filter => Database.Forum_Text,
-            TZ     => Context.Get_Value (Template_Defs.Set_Global.TZ)));
+            TZ     => Context.Get_Value (Template_Defs.Set_Global.TZ),
+            Login  => Context.Get_Value (Template_Defs.Set_Global.LOGIN)));
    end Forum_Text_List_Select;
 
    -------------------
