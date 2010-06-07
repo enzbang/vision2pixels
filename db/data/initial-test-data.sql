@@ -6,6 +6,8 @@ insert into user ("login", "password", "email", "admin", "created")
        values ('turbo', 'turbopass', 'v2p@obry.net', "TRUE", datetime(current_timestamp, '-12 days'));
 insert into user ("login", "password", "email", "admin", "created")
        values ('test', 'test', 'test@whatever.fr', "FALSE", datetime(current_timestamp));
+insert into user ("login", "password", "email", "admin", "created")
+       values ('x"x', 'x"x', 'xx@whatever.fr', "FALSE", datetime(current_timestamp));
 
 insert into user_preferences ("user_login", "accept_private_message")
        values ('turbo', "TRUE");
