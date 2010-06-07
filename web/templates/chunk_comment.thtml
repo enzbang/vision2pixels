@@ -2,7 +2,7 @@
 @@-- Comment title line since it's not yet used
 @@IF@@ @_HAS_VOTED_@ = "TRUE"
   <span class="user_has_voted">
-  <a href="/~@_USER_@" >@_USER_@</a> @_BABEL_HAS_VOTED_@
+  <a href="/~@_WEB_ENCODE:USER_@" >@_USER_@</a> @_BABEL_HAS_VOTED_@
   </span>
 @@ELSE@@
   <cite>
@@ -19,10 +19,10 @@
   <span class="user_name">
   @@IF@@ @_USER_@ /= ""
     @@IF@@ @_USER_@ /= @_OWNER_@
-       <a href="/~@_USER_@" >@_USER_@</a>
+       <a href="/~@_WEB_ENCODE:USER_@" >@_USER_@</a>
     @@ELSE@@
        @@IF@@ @_REVEALED_@ or not @_FORUM_ANONYMITY_@
-          <a href="/~@_USER_@" >@_USER_@ (@_BABEL_THE_AUTHOR_@)</a>
+          <a href="/~@_WEB_ENCODE:USER_@" >@_USER_@ (@_BABEL_THE_AUTHOR_@)</a>
        @@ELSE@@
           @_BABEL_THE_AUTHOR_@
        @@END_IF@@
