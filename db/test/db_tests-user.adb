@@ -73,7 +73,8 @@ package body DB_Tests.User is
                      (1 => User'(+"enzbang", +"password", +"v2p@ramonat.fr"),
                       2 => User'(+"test", +"test", +"test@whatever.fr"),
                       3 => User'(+"toto", +"pwd", +"toto@here.com"),
-                      4 => User'(+"turbo", +"turbopass", +"v2p@obry.net"));
+                      4 => User'(+"turbo", +"turbopass", +"v2p@obry.net"),
+                      5 => User'(+"x""x", +"x""x", +"xx@whatever.fr"));
 
       H        : DB.SQLite.Handle;
       I        : DB.SQLite.Iterator;
@@ -103,8 +104,10 @@ package body DB_Tests.User is
       DB.SQLite.Connect (H, "./testing.db");
 
       DB.SQLite.Execute
-        (H, "insert into user ('login', 'password', 'email', 'admin')" &
-         " values ('toto', 'pwd', 'toto@here.com', 'false')");
+        (H, "insert into user ('login', 'password', 'email', 'admin'" &
+           ", 'new_email', 'remember')" &
+           " values ('toto', 'pwd', 'toto@here.com', 'false'" &
+           ", 'newtoto@here.com', 'false')");
 
       DB.SQLite.Prepare_Select
         (H, I, "select login, password, email from user order by login");
