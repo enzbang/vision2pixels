@@ -53,6 +53,30 @@ create trigger after_post_comment_insert after insert on post_comment
          new.comment_id);
    end;
 
+create trigger after_post_insert after insert on post
+   begin
+      update post
+         set last_comment_id=(select max(comment_id) from post_comment, comment
+                              where comment_id = comment.id
+                              and post_comment.comment_id = comment_id
+                              and comment.has_voted = "FALSE")
+         where id = new.id;
+      update forum
+         set last_activity=datetime(current_timestamp)
+         where forum.id =
+	       (select category.forum_id
+	        from category
+		where category.id = new.category_id);
+   end;
+
+create trigger initialize_global_rating after insert on post
+begin
+   insert into global_rating
+      (post_id, criteria_id, nb_vote, post_rating_ponderated,
+       post_rating, controversial_level)
+      select new.id, id, 0, 0, 0, 0 from criteria;
+end;
+
 COMMIT;
 
 create table last_forum_visit (
