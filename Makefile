@@ -137,6 +137,7 @@ regtests: mkdirs init_testdb regtests_db_internal \
 	else \
 	   echo "=====>>>>>> NOk, some tests have failed"; \
 	   cat $(LOG) | grep -v ': 0'; \
+	   exit 1; \
 	fi;
 
 regtests_image_internal: bld-image/image_test
