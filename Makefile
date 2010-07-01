@@ -140,7 +140,6 @@ regtests: mkdirs init_testdb regtests_db_internal \
 	fi;
 
 regtests_image_internal: bld-image/image_test
-	# Image tests
 	-(cd image/test; ./image_harness > $(IMAGE_TEST_LOGFILE))
 	@echo " * Image regtests" >> $(LOG)
 	@echo "     report file is $(IMAGE_TEST_LOGFILE)" >> $(LOG)
