@@ -10,6 +10,11 @@
   rapports d'erreur ou des demandes de fonctionnalités. Le site ne peut
   évoluer sans vous.</p>
 
+<h1>Version 3.2.1 (juillet 2010)</h1>
+
+<p>Corrige une dégradation des performances, lors de l'utilisation des
+  filtres, introduite dans la version précédente.</p>
+
 <h1>Version 3.2 (juin 2010)</h1>
 
 <p>Refonte complète de la gestion du contexte. Ceci devrait permettre

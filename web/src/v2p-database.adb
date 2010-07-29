@@ -2043,10 +2043,11 @@ package body V2P.Database is
                              & "last_user_visit v WHERE v.post_id=post.id "
                              & "AND v.user_login=" & Q (Login) & "), "
                              & "0) < COALESCE (post.last_comment_id, 1) "
-                             & " AND (SELECT date>DATE('now', '-30day') FROM "
+                             & " AND (SELECT post.last_comment_id is null "
+                             & "OR (SELECT date>DATE('now', '-30day') FROM "
                              & "comment WHERE comment.id="
                              & "post.last_comment_id "
-                             & "OR post.last_comment_id is null))) ");
+                             & ")))) ");
                   end if;
 
                when Navigation_Only =>
