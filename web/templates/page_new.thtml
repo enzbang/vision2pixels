@@ -10,6 +10,10 @@
   rapports d'erreur ou des demandes de fonctionnalités. Le site ne peut
   évoluer sans vous.</p>
 
+<h1>Version 3.2.2 (septembre 2010)</h1>
+
+<p>Le calcul de l'histogramme utilise maintenant l'espace de couleur sRGB.</p>
+
 <h1>Version 3.2.1 (juillet 2010)</h1>
 
 <p>Corrige une dégradation des performances, lors de l'utilisation des
