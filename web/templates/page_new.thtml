@@ -14,6 +14,9 @@
 
 <p>Le calcul de l'histogramme utilise maintenant l'espace de couleur sRGB.</p>
 
+<p>Indique clairement lors de l'ajout d'une photo que le modèle de couleur
+  doit être sRGB.</p>
+
 <h1>Version 3.2.1 (juillet 2010)</h1>
 
 <p>Corrige une dégradation des performances, lors de l'utilisation des

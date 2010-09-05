@@ -173,6 +173,7 @@
 @@--
 @@SET@@ BABEL_MAXDIM="1000x1000"
 @@SET@@ BABEL_PHOTO_POST_RULES_FORMAT="Les images doivent être au format Jpeg."
+@@SET@@ BABEL_PHOTO_POST_RULES_COLORSPACE="Les images doivent utiliser l'espace de couleur sRGB."
 @@SET@@ BABEL_PHOTO_POST_RULES_MAX_DIM="La taille maximum d'une photographie ne doit pas dépasser 1000x1000 pixels. Toute photographie de taille supérieure sera rejetée."
 @@SET@@ BABEL_PHOTO_POST_RULES_YOUR_PHOTO="Vous ne devez poster que vos propres photos."
 @@SET@@ BABEL_PHOTO_POST_RULES_DISPLAY_RSS="Les informations EXIFs seront affichées sur le site lorsque vous serez révelé."
