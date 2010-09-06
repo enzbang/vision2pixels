@@ -55,6 +55,10 @@ package body Web_Tests.Last_Visit is
 
       --  Now read Hissez haut...
       Call (Conn1, Result, URI => "/forum/entry?TID=141");
+
+      --  For the timestamp to differ
+      delay 2.0;
+
       Call (Conn1, Result, URI => "/forum/threads?FID=1");
 
       declare
