@@ -30,6 +30,8 @@ with V2P.Template_Defs.Block_New_Comment;
 
 package body Web_Tests.Last_Visit is
 
+   use Ada;
+
    procedure Check_New (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  Check exif information
 
@@ -56,8 +58,8 @@ package body Web_Tests.Last_Visit is
       Call (Conn1, Result, URI => "/forum/threads?FID=1");
 
       declare
-         Page : constant String := Response.Message_Body (Result);
-         Index : constant Natural := Ada.Strings.Fixed.Index (Page, "TID=71");
+         Page  : constant String := Response.Message_Body (Result);
+         Index : constant Natural := Strings.Fixed.Index (Page, "TID=71");
       begin
          --  Cut the Page before the second post.
          Check
@@ -83,8 +85,8 @@ package body Web_Tests.Last_Visit is
       Call (Conn2, Result, URI => "/forum/threads?FID=1");
 
       declare
-         Page : constant String := Response.Message_Body (Result);
-         Index : constant Natural := Ada.Strings.Fixed.Index (Page, "TID=71");
+         Page  : constant String := Response.Message_Body (Result);
+         Index : constant Natural := Strings.Fixed.Index (Page, "TID=71");
       begin
          --  Cut the Page before the second post.
          Check
@@ -98,9 +100,10 @@ package body Web_Tests.Last_Visit is
 
       Login (Conn1, "enzbang", "password");
       Call (Conn1, Result, URI => "/forum/threads?FID=1");
+
       declare
-         Page : constant String := Response.Message_Body (Result);
-         Index : constant Natural := Ada.Strings.Fixed.Index (Page, "TID=71");
+         Page  : constant String := Response.Message_Body (Result);
+         Index : constant Natural := Strings.Fixed.Index (Page, "TID=71");
       begin
          --  Cut the Page before the second post.
          Check

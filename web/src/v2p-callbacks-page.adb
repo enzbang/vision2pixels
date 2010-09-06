@@ -200,7 +200,6 @@ package body V2P.Callbacks.Page is
 
          V2P.Context.Not_Null_Counter.Set_Value
            (Context.all, "Last_Visit", TID);
-
       end if;
 
       --  Add forum information into the translate set
