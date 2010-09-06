@@ -10,7 +10,7 @@ Vous devez maintenant confirmer votre inscription en la validant.
 Cliquez simplement sur le lien suivant (ou couper/coller le
 lien dans votre navigateur Web):
 
-http://v2p.fr.eu.org/validate_user?LOGIN=@_USER_LOGIN_@&KEY=@_KEY_@
+http://v2p.fr.eu.org/validate_user?LOGIN=@_URL_EMAIL:USER_LOGIN_@&KEY=@_KEY_@
 
 Votre pseudo est : @_USER_LOGIN_@
 Votre messagerie : @_USER_EMAIL_@
