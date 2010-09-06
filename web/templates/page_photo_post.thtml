@@ -15,6 +15,7 @@
 
     <ul id="ppp_rules" class="squarelist">
        <li>@_BABEL_PHOTO_POST_RULES_FORMAT_@</li>
+       <li>@_BABEL_PHOTO_POST_RULES_COLORSPACE_@</li>
        <li>@_BABEL_PHOTO_POST_RULES_MAX_DIM_@</li>
        <li>@_BABEL_PHOTO_POST_RULES_YOUR_PHOTO_@</li>
        <li>@_BABEL_PHOTO_POST_RULES_DISPLAY_RSS_@</li>

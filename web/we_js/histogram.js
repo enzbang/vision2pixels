@@ -11,6 +11,7 @@ Pixastic.Actions.histogram = {
 		var paint = !!(params.options.paint && params.options.paint != "false");
 		var color = params.options.color || "rgba(255,255,255,0.5)";
 		var background = params.options.background || "";
+		var colorspace = params.options.colorspace || "srgb";
 		var values = [];
 		if (typeof params.options.returnValue != "object") {
 			params.options.returnValue = {values:[]};
@@ -38,6 +39,14 @@ Pixastic.Actions.histogram = {
 			if (average) {
 				while (p--) {
 					values[ round((data[pix-=4]+data[pix+1]+data[pix+2])/3) ]++;
+				}
+			} else if (colorspace == "srgb") {
+				while (p--) {
+					values[ round(data[pix-=4]*0.2126 + data[pix+1]*0.7152 + data[pix+2]*0.0722) ]++;
+				}
+			} else if (colorspace == "adobergb") {
+				while (p--) {
+					values[ round(data[pix-=4]*0.212 + data[pix+1]*0.701 + data[pix+2]*0.087) ]++;
 				}
 			} else {
 				while (p--) {
