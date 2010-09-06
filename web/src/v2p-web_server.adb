@@ -21,6 +21,7 @@
 
 with Ada.Calendar;
 with Ada.Calendar.Arithmetic;
+with Ada.Characters.Handling;
 with Ada.Directories;
 with Ada.Exceptions;
 with Ada.Float_Text_IO;
@@ -39,6 +40,7 @@ with AWS.Services.Web_Block.Registry;
 with AWS.Session;
 with AWS.Status;
 with AWS.Templates;
+with AWS.Utils;
 
 with Gwiad.Plugins.Websites.Registry;
 with Gwiad.Web.Virtual_Host;
@@ -197,6 +199,12 @@ package body V2P.Web_Server is
       Parameters : in String;
       Context    : in Templates.Filter_Context) return String;
    --  Mult filter (template parser user filter)
+
+   function URL_Email_Filter
+     (Value      : in String;
+      Parameters : in String;
+      Context    : in Templates.Filter_Context) return String;
+   --  Clean-up URL to be properly printed in plain text e-mail
 
    function IMG_Callback (Request : in Status.Data) return Response.Data;
    --  Image callback
@@ -1316,6 +1324,41 @@ package body V2P.Web_Server is
       Gwiad.Web.Virtual_Host.Unregister (Settings.Virtual_Host);
    end Unregister;
 
+   ---------------
+   -- URL_Email --
+   ---------------
+
+   function URL_Email_Filter
+     (Value      : in String;
+      Parameters : in String;
+      Context    : in Templates.Filter_Context) return String
+   is
+      pragma Unreferenced (Parameters, Context);
+      Result : String (Value'First .. Value'Last + Value'Length * 2);
+      J      : Natural := Result'First - 1;
+   begin
+      for K in Value'Range loop
+         if Characters.Handling.Is_Alphanumeric (Value (K)) then
+            J := J + 1;
+            Result (J) := Value (K);
+
+         else
+            declare
+               P : constant Natural := Character'Pos (Value (K));
+            begin
+               if P <= 128 then
+                  Result (J + 1 .. J + 3) := "%" & Utils.Hex (P, Width => 2);
+                  J := J + 3;
+               else
+                  J := J + 1;
+                  Result (J) := Value (K);
+               end if;
+            end;
+         end if;
+      end loop;
+      return Result (Result'First .. J);
+   end URL_Email_Filter;
+
    ------------------
    -- Website_Data --
    ------------------
@@ -1405,6 +1448,7 @@ begin  -- V2P.Web_Server : register vision2pixels website
    end Set_Log;
 
    AWS.Templates.Register_Filter ("FLOATMULT", Float_Mult_Filter'Access);
+   AWS.Templates.Register_Filter ("URL_EMAIL", URL_Email_Filter'Access);
 
    Register_Callbacks;
 
