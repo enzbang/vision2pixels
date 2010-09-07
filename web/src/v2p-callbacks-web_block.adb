@@ -34,7 +34,7 @@ with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Private_Message;
-with V2P.Template_Defs.Block_User_Email;
+with V2P.Template_Defs.Block_Pref_User_Email;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
@@ -683,6 +683,26 @@ package body V2P.Callbacks.Web_Block is
    end Pref_Image_Size;
 
    ---------------------
+   -- Pref_User_Email --
+   ---------------------
+
+   procedure Pref_User_Email
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      URI       : constant String := Status.URI (Request);
+      User_Name : constant String := URL.User_Name (URI);
+   begin
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Block_Pref_User_Email.USER_EMAIL,
+            Database.Get_User_Data (Uid => User_Name).Email));
+   end Pref_User_Email;
+
+   ---------------------
    -- Private_Message --
    ---------------------
 
@@ -743,26 +763,6 @@ package body V2P.Callbacks.Web_Block is
          Database.Get_User_Comment
            (Uid => User_Name, Limit => 50, Textify => True));
    end User_Comment_List;
-
-   ----------------
-   -- User_Email --
-   ----------------
-
-   procedure User_Email
-     (Request      : in              Status.Data;
-      Context      : not null access Services.Web_Block.Context.Object;
-      Translations : in out          Templates.Translate_Set)
-   is
-      pragma Unreferenced (Context);
-      URI       : constant String := Status.URI (Request);
-      User_Name : constant String := URL.User_Name (URI);
-   begin
-      Templates.Insert
-        (Translations,
-         Templates.Assoc
-           (Template_Defs.Block_User_Email.USER_EMAIL,
-            Database.Get_User_Data (Uid => User_Name).Email));
-   end User_Email;
 
    -----------------------
    -- User_Message_List --

@@ -10,7 +10,7 @@
 @_LAZY_PREF_IMAGE_SIZE_@
 @_LAZY_PREF_CSS_URL_@
 @_LAZY_PREF_PRIVATE_MESSAGE_@
-@_LAZY_USER_EMAIL_@
+@_LAZY_PREF_USER_EMAIL_@
 @@-- notification area
 <div id="bup_notify"></div>
 </div>
