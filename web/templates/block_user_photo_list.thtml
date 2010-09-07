@@ -1,13 +1,15 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
 <h2 id="bupl_h">@_BABEL_LAST_USER_PHOTOS_@
+  <a href="#x" id="bupl_show_hide" rel="bupl_content">
+    <span id="bupl_symbol">@_BABEL_SYM_OPEN_@</span></a>
   <a href="/rss/photos?from=@_USER_NAME_@"
      title="@_BABEL_RSS_RECENT_PHOTOS_FROM_@ @_USER_NAME_@">
     <img alt="@_BABEL_RSS_RECENT_PHOTOS_FROM_@ @_USER_NAME_@"
          class="rss_link" src="/css/img/rss.png" /></a>
 </h2>
 <p class="up"><a href="#cvt_contents">@_BABEL_TOP_@</a></p>
-
+<div id="bupl_content">
 @@--
 @@INCLUDE@@ chunk_list_navlink.thtml bupl
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bupl_goto_previous_page)
@@ -53,3 +55,7 @@
   @@END_IF@@
 @@END_TABLE@@
 </ul>
+</div>
+@@--
+@@INCLUDE@@ ../we_js/chunk_show_hide.tjs bupl bupl_content bupl_symbol
+@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, bupl_show_hide, rule_onclick_bupl_show_rel)

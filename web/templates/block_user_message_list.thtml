@@ -1,8 +1,14 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-<h2 id="buml_h" class="clear">@_BABEL_LAST_USER_MESSAGES_@</h2>
+<h2 id="buml_h" class="clear">@_BABEL_LAST_USER_MESSAGES_@
+    <a href="#x" id="buml_show_hide" rel="buml_content">
+    <span id="buml_symbol">@_BABEL_SYM_OPEN_@</span></a>
+</h2>
 <p class="up"><a href="#cvt_contents">@_BABEL_TOP_@</a></p>
 @@--
 <div id="buml_content">
 @@INCLUDE@@ chunk_threads_text_list.thtml
 </div>
+@@--
+@@INCLUDE@@ ../we_js/chunk_show_hide.tjs buml buml_content buml_symbol
+@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, buml_show_hide, rule_onclick_buml_show_rel)

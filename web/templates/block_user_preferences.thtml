@@ -1,6 +1,8 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-<h2>@_BABEL_PREFERENCES_@</h2>
+<h2>@_BABEL_PREFERENCES_@ <a href="#x" id="bup_show_hide" rel="bup_pref_block">
+    <span id="bup_symbol">@_BABEL_SYM_OPEN_@</span></a>
+</h2>
 <div id="bup_pref_block">
 @_LAZY_PREF_FORUM_FILTER_@
 @_LAZY_PREF_FORUM_FILTER_PAGE_SIZE_@
@@ -12,3 +14,5 @@
 @@-- notification area
 <div id="bup_notify"></div>
 </div>
+@@INCLUDE@@ ../we_js/chunk_show_hide.tjs bup bup_pref_block bup_symbol
+@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, bup_show_hide, rule_onclick_bup_show_rel)

@@ -1,8 +1,12 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-<h2 id="bucl_h">@_BABEL_LAST_USER_COMMENT_@</h2>
+<h2 id="bucl_h">@_BABEL_LAST_USER_COMMENT_@
+<a href="#x" id="bucl_show_hide" rel="bucl_content">
+    <span id="bucl_symbol">@_BABEL_SYM_OPEN_@</span></a>
+</h2>
 <p class="up"><a href="#cvt_contents">@_BABEL_TOP_@</a></p>
 @@--
+<div id="bucl_content">
 <ul id="bucl_lastusercommentlist">
 @@TABLE@@
   <li class="clear">
@@ -11,3 +15,7 @@
   </li>
 @@END_TABLE@@
 </ul>
+</div>
+@@--
+@@INCLUDE@@ ../we_js/chunk_show_hide.tjs bucl bucl_content bucl_symbol
+@@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, bucl_show_hide, rule_onclick_bucl_show_rel)
