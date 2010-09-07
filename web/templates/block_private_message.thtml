@@ -29,25 +29,7 @@
   </form>
 </div>
 @@--
-<script type="text/javascript">
-<!--
-   rule_onclick_bpm_show_rel = function ()
-   {
-      el = $("bpm_form_section")
-
-      if ($(el).style.display == "none") {
-         Element.show(el);
-         $('bpm_symbol').innerHTML = "@_BABEL_SYM_OPEN_@";
-      }
-      else {
-         Element.hide(el);
-         $('bpm_symbol').innerHTML = "@_BABEL_SYM_CLOSED_@";
-      }
-
-      Element.hide ($("bpm_status"));
-   };
--->
-</script>
+@@INCLUDE@@ ../we_js/chunk_show_hide.tjs bpm bpm_form_section bpm_symbol bpm_status
 @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, bpm_show_rel, rule_onclick_bpm_show_rel)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bpm_form, 4=>bpm_form)
 @@ELSE@@

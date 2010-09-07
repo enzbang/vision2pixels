@@ -1,0 +1,27 @@
+@@-- Must be included into a page having loaded babel.thtml
+@@--
+@@SET@@ CSH_PREFIX = $1
+@@SET@@ CSH_WIDGET = $2
+@@SET@@ CSH_SYMBOL = $3
+@@SET@@ CSH_STATUS = $4
+@@--
+<script type="text/javascript">
+<!--
+   rule_onclick_@_CSH_PREFIX_@_show_rel = function ()
+   {
+      el = $("@_CSH_WIDGET_@")
+
+      if ($(el).style.display == "none") {
+         Element.show(el);
+         $('@_CSH_SYMBOL_@').innerHTML = "@_BABEL_SYM_OPEN_@";
+      }
+      else {
+         Element.hide(el);
+         $('@_CSH_SYMBOL_@').innerHTML = "@_BABEL_SYM_CLOSED_@";
+      }
+@@IF@@ @_CSH_STATUS_@ /= ""
+      Element.hide ($("@_CSH_STATUS_@"));
+@@END_IF@@
+   };
+-->
+</script>
