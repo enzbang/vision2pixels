@@ -4,10 +4,7 @@
 @@IF@@ @_LOGIN_@ /= ""
 @@--  Must be logged to send message to a user
 <div id="bpm_main">
-@@IF@@ @_LOGIN_@ = @_USER_NAME_@
-@@--  User can set its preference
-@_LAZY_PREF_PRIVATE_MESSAGE_@
-@@ELSE@@
+@@IF@@ @_LOGIN_@ /= @_USER_NAME_@
 @@IF@@ @_ACCEPT_PRIVATE_MESSAGE_@
 @@--  Form to send a message
 <p><a href="#" id="bpm_show_rel"

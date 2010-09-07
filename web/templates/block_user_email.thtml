@@ -1,7 +1,5 @@
-
 @@INCLUDE@@ set_babel.thtml
 <div>
-@@IF@@ @_LOGIN_@ = @_USER_NAME_@
 <form enctype="multipart/form-data"
       id="bue_form" action="#" method="post">
   <fieldset>
@@ -18,5 +16,4 @@
 </form>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bue_form, 4=>bue_form)
-@@END_IF@@
 </div>

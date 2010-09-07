@@ -50,8 +50,6 @@
 
 @_LAZY_PRIVATE_MESSAGE_@
 
-@_LAZY_USER_EMAIL_@
-
 <div id="bup_photo_list">
 @_LAZY_USER_PHOTO_LIST_@
 </div>
