@@ -794,7 +794,6 @@ package body V2P.Callbacks.Web_Block is
    is
       URI       : constant String := Status.URI (Request);
       User_Name : constant String := URL.User_Name (URI);
-
    begin
       Templates.Insert
         (Translations, Database.Get_User_Page (Uid => User_Name));

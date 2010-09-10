@@ -200,7 +200,6 @@ package body V2P.Callbacks.Page is
 
          V2P.Context.Not_Null_Counter.Set_Value
            (Context.all, "Last_Visit", TID);
-
       end if;
 
       --  Add forum information into the translate set
@@ -349,7 +348,7 @@ package body V2P.Callbacks.Page is
                      Parameters.Get
                        (P, Template_Defs.Page_Photo_Post.HTTP.FILENAME);
       C_Filename : constant String :=
-                     Ada.Strings.Fixed.Translate
+                     Strings.Fixed.Translate
                        (Source  => Filename,
                         Mapping => Clean_Mapping'Unrestricted_Access);
 

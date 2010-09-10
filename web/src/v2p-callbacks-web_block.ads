@@ -40,7 +40,7 @@ package V2P.Callbacks.Web_Block is
    procedure CdC_Alert
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Translations : in out          Templates.Translate_Set) renames Cdc_Info;
+      Translations : in out          Templates.Translate_Set) renames CdC_Info;
 
    procedure Exif
      (Request      : in              Status.Data;

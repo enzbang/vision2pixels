@@ -5,7 +5,8 @@
   <fieldset>
     <p>
       <label for="bue_email">@_BABEL_SET_USER_EMAIL_@</label>
-      <input type="text" name="bue_email" id="bue_email" value="@_USER_EMAIL_@" size="50" />
+      <input type="text" name="bue_email"
+	     id="bue_email" value="@_USER_EMAIL_@" size="50" />
     </p>
     <p>
       <input name="ENTER" id="bue_form_enter" type="submit" value="OK"/>
