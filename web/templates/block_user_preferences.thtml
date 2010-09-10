@@ -4,6 +4,7 @@
     <span id="bup_symbol">@_BABEL_SYM_OPEN_@</span></a>
 </h2>
 <div id="bup_pref_block">
+@_LAZY_PREF_NEW_AVATAR_@
 @_LAZY_PREF_FORUM_FILTER_@
 @_LAZY_PREF_FORUM_FILTER_PAGE_SIZE_@
 @_LAZY_PREF_FORUM_SORT_@

@@ -35,6 +35,8 @@ package V2P.Defaults is
 
    Thumbs_Path                 : constant String := "thumbs";
 
+   Avatars_Path                : constant String := "avatars";
+
    Website_Data_Path           : constant String := "web_data";
 
    Big_Images_Source_Prefix    : constant String := "/photos";
@@ -42,6 +44,8 @@ package V2P.Defaults is
    Medium_Images_Source_Prefix : constant String := "/photos-m";
 
    Thumbs_Source_Prefix        : constant String := "/thumbs";
+
+   Avatars_Source_Prefix       : constant String := "/avatars";
 
    Website_Data_Prefix         : constant String := "/web";
 
@@ -70,6 +74,8 @@ package V2P.Defaults is
    Medium_Maximum_Width        : constant Positive := 800;
 
    Medium_Maximum_Height       : constant Positive := 800;
+
+   Avatar_Maximum_Size         : constant Positive := 150;
 
    Descending_Order            : constant Boolean := True;
 

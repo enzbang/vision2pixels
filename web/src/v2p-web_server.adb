@@ -75,12 +75,14 @@ with V2P.Template_Defs.Block_Pref_Forum_Filter;
 with V2P.Template_Defs.Block_Pref_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Pref_Forum_Sort;
 with V2P.Template_Defs.Block_Pref_Image_Size;
+with V2P.Template_Defs.Block_Pref_New_Avatar;
 with V2P.Template_Defs.Block_Pref_Private_Message;
 with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Email;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_Users;
+with V2P.Template_Defs.Block_User_Avatar;
 with V2P.Template_Defs.Block_Users_To_Validate;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
 
@@ -454,6 +456,11 @@ package body V2P.Web_Server is
            (Template_Defs.Set_Global.MEDIUM_IMAGE_SOURCE_PREFIX,
             Settings.Medium_Images_Source_Prefix));
 
+      Templates.Insert
+        (Translations, Templates.Assoc
+           (Template_Defs.Set_Global.AVATAR_SOURCE_PREFIX,
+            Settings.Avatars_Source_Prefix));
+
       V2P.Callbacks.Web_Block.Pref_Image_Size
         (Request, Context'Access, Translations);
 
@@ -708,9 +715,14 @@ package body V2P.Web_Server is
          elsif Prefix = Settings.Medium_Images_Source_Prefix then
             return Medium;
 
-         else
+         elsif Prefix = Settings.Thumbs_Source_Prefix then
             return Compose
               (V2P.URL.Thumbs_Full_Prefix,
+               URI (URI'First + Prefix'Length + 1 .. URI'Last));
+
+         else
+            return Compose
+              (V2P.URL.Avatar_Full_Prefix,
                URI (URI'First + Prefix'Length + 1 .. URI'Last));
          end if;
 
@@ -792,6 +804,12 @@ package body V2P.Web_Server is
          Prefix => True);
 
       Services.Dispatchers.URI.Register
+        (Main_Dispatcher,
+         Settings.Avatars_Source_Prefix,
+         Action => Dispatchers.Callback.Create (Photos_Callback'Access),
+         Prefix => True);
+
+      Services.Dispatchers.URI.Register
         (Dispatcher => Main_Dispatcher,
          URI        => Settings.Website_Data_Prefix,
          Action     => Dispatchers.Callback.Create (Website_Data'Access),
@@ -861,6 +879,18 @@ package body V2P.Web_Server is
          Template_Defs.Chunk_New_Comment_Photo.Template,
          Callbacks.Page.New_Photo_Entry'Access,
          Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Pref_New_Avatar.Set.FORM_NEW_AVATAR,
+         Template_Defs.Block_User_Avatar.Template,
+         Callbacks.Page.New_Avatar'Access,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_User_Avatar.Set.URL,
+         Template_Defs.Block_User_Avatar.Template,
+         Callbacks.Web_Block.User_Avatar'Access);
+      --  To get the avatar from the iframe in the user's page
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Validate_User.Set.URL,

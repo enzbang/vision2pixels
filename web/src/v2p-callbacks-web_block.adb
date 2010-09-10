@@ -21,19 +21,21 @@
 
 with Ada.Strings.Unbounded;
 
+with AWS.Parameters;
 with AWS.Utils;
 
-with V2P.URL;
-with V2P.Database.Registration;
 with V2P.Context;
+with V2P.Database.Registration;
 with V2P.Navigation_Links;
 with V2P.Settings;
+with V2P.URL;
 
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Private_Message;
+with V2P.Template_Defs.Block_User_Avatar;
 with V2P.Template_Defs.Block_Pref_User_Email;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Photo_List;
@@ -744,6 +746,55 @@ package body V2P.Callbacks.Web_Block is
                String'(Context.Get_Value  (Template_Defs.Set_Global.LOGIN))));
       end if;
    end Quick_Login;
+
+   -----------------
+   -- User_Avatar --
+   -----------------
+
+   procedure User_Avatar
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      use Ada;
+      pragma Unreferenced (Context);
+
+      function Get_User_Name return String;
+      --  This procedure can be called either from the user's page or with a
+      --  parameter LOGIN.
+
+      -------------------
+      -- Get_User_Name --
+      -------------------
+
+      function Get_User_Name return String is
+         P         : constant Parameters.List := Status.Parameters (Request);
+         Login     : constant String :=
+                       Parameters.Get (P, Template_Defs.Set_Global.LOGIN);
+         URI       : constant String := Status.URI (Request);
+         User_Name : constant String := URL.User_Name (URI);
+      begin
+         if Login = "" then
+            return User_Name;
+         else
+            return Login;
+         end if;
+      end Get_User_Name;
+
+      User_Name : constant String := Get_User_Name;
+
+      Preferences : Database.User_Settings;
+   begin
+      if User_Name /= "" then
+         Database.User_Preferences (User_Name, Preferences);
+
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.Block_User_Avatar.USER_AVATAR,
+               Strings.Unbounded.To_String (Preferences.Avatar)));
+      end if;
+   end User_Avatar;
 
    -----------------------
    -- User_Comment_List --

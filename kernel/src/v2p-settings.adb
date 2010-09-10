@@ -45,7 +45,8 @@ package body V2P.Settings is
       Number_Latest_Users, Google_Map_Key, Log_Path, Cache_Path, RSS_Host_URL,
       RSS_Path, RSS_Prefix, Compression, Max_Search_Results,
       SMTP_Server, SMTP_Port, Number_Users_Listed, Default_Timezone,
-      Number_CdC_Listed, RSS_Latest_Comments, RSS_Latest_Posts, Log_Level);
+      Number_CdC_Listed, RSS_Latest_Comments, RSS_Latest_Posts, Log_Level,
+      Avatars_Path, Avatar_Maximum_Size, Avatars_Source_Prefix);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -78,6 +79,24 @@ package body V2P.Settings is
    begin
       return Conf.Get_Value (Anonymous_Visit_Counter);
    end Anonymous_Visit_Counter;
+
+   -------------------------
+   -- Avatar_Maximum_Size --
+   -------------------------
+
+   function Avatar_Maximum_Size return Natural is
+   begin
+      return Conf.Get_Value (Avatar_Maximum_Size);
+   end Avatar_Maximum_Size;
+
+   ---------------------------
+   -- Avatars_Source_Prefix --
+   ---------------------------
+
+   function Avatars_Source_Prefix return String is
+   begin
+      return Conf.Get_Value (Avatars_Source_Prefix);
+   end Avatars_Source_Prefix;
 
    ------------------------------
    -- Big_Images_Source_Prefix --
@@ -123,6 +142,15 @@ package body V2P.Settings is
    begin
       return Conf.Get_Value (Descending_Order);
    end Descending_Order;
+
+   ----------------------
+   -- Get_Avatars_Path --
+   ----------------------
+
+   function Get_Avatars_Path return String is
+   begin
+      return Conf.Get_Value (Avatars_Path);
+   end Get_Avatars_Path;
 
    -------------------------
    -- Get_Big_Images_Path --
@@ -475,10 +503,12 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (Images_Path, Defaults.Images_Path);
    Conf.Set_Value (Medium_Image_Path, Defaults.Medium_Path);
    Conf.Set_Value (Thumbs_Path, Defaults.Thumbs_Path);
+   Conf.Set_Value (Avatars_Path, Defaults.Avatars_Path);
    Conf.Set_Value (Images_Source_Prefix, Defaults.Big_Images_Source_Prefix);
    Conf.Set_Value (Medium_Images_Source_Prefix,
                    Defaults.Medium_Images_Source_Prefix);
    Conf.Set_Value (Thumbs_Source_Prefix, Defaults.Thumbs_Source_Prefix);
+   Conf.Set_Value (Avatars_Source_Prefix, Defaults.Avatars_Source_Prefix);
    Conf.Set_Value (Anonymous_Visit_Counter, Defaults.Anonymous_Visit_Counter);
    Conf.Set_Value (Anonymous_Comment, Defaults.Anonymous_Comment);
    Conf.Set_Value (Anonymity_Hours, Defaults.Anonymity_Hours);
@@ -494,6 +524,7 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (Thumbnail_Maximum_Width, Defaults.Thumbnail_Maximum_Width);
    Conf.Set_Value (Thumbnail_Maximum_Height,
                    Defaults.Thumbnail_Maximum_Height);
+   Conf.Set_Value (Avatar_Maximum_Size, Defaults.Avatar_Maximum_Size);
    Conf.Set_Value (Virtual_Host, Defaults.Virtual_Host);
    Conf.Set_Value (Website_Data_Path, Defaults.Website_Data_Path);
    Conf.Set_Value (Website_Data_Prefix, Defaults.Website_Data_Prefix);

@@ -27,6 +27,16 @@ package body V2P.URL is
 
    use V2P;
 
+   ------------------------
+   -- Avatar_Full_Prefix --
+   ------------------------
+
+   function Avatar_Full_Prefix return String is
+   begin
+      return Morzhol.OS.Compose
+        (Gwiad_Plugin_Path, Settings.Get_Avatars_Path);
+   end Avatar_Full_Prefix;
+
    ----------------------------
    -- Big_Images_Full_Prefix --
    ----------------------------

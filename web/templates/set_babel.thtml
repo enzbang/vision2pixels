@@ -129,7 +129,6 @@
 @@--  User page
 @@SET@@ BABEL_USER_EDIT_YOUR_PAGE="Éditer votre page"
 @@SET@@ BABEL_USER_PAGE="Page utilisateur"
-@@SET@@ BABEL_USER_PAGE_OF="Page d'"
 @@SET@@ BABEL_LAST_USER_PHOTOS="Dernières Photographies"
 @@SET@@ BABEL_LAST_USER_MESSAGES="Derniers Messages"
 @@SET@@ BABEL_LAST_USER_COMMENT="Derniers commentaires"
@@ -226,3 +225,4 @@
 @@SET@@ BABEL_DELETE="supprimer"
 @@SET@@ BABEL_CANNOT_DELETE_USER="Impossible du supprimer cet utilisateur."
 @@SET@@ BABEL_USER_DELETED="Utilisateur supprimé."
+@@SET@@ BABEL_NEW_AVATAR="Nouvel Avatar"

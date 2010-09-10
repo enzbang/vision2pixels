@@ -44,11 +44,17 @@ package V2P.Settings is
    function Get_Medium_Images_Path return String;
    --  Returns the path to the medium size images
 
+   function Get_Avatars_Path return String;
+   --  Returns the path to the avatar images
+
    function Medium_Images_Source_Prefix return String;
    --  Source prefix used to reference medium size images in URL
 
    function Thumbs_Source_Prefix return String;
    --  Source prefix used to reference thumbs in URL
+
+   function Avatars_Source_Prefix return String;
+   --  Source prefix used to reference avatars in URL
 
    function Anonymous_Visit_Counter return Boolean;
    --  Counts anonymous clicks or only logged user clicks
@@ -88,6 +94,9 @@ package V2P.Settings is
 
    function Medium_Maximum_Height return Natural;
    --  Maximum height dimension of a medium size image
+
+   function Avatar_Maximum_Size return Natural;
+   --  Maximum height/width dimension of an avatar image
 
    function Descending_Order return Boolean;
    --  Returns true is the threads view must be sorted in descending order

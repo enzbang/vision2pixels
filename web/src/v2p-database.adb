@@ -3662,6 +3662,17 @@ package body V2P.Database is
       DBH.Handle.Execute (SQL);
    end Remember;
 
+   ----------------------------
+   -- Set_Avatar_Preferences --
+   ----------------------------
+
+   procedure Set_Avatar_Preferences
+     (Login  : in String;
+      Avatar : in String) is
+   begin
+      Set_Preferences (Login, "avatar", Q (Avatar));
+   end Set_Avatar_Preferences;
+
    ------------------
    -- Set_Category --
    ------------------
@@ -3958,7 +3969,7 @@ package body V2P.Database is
    is
       SQL  : constant String :=
                "SELECT photo_per_page, filter, sort, image_size, css_url, "
-                 & "accept_private_message "
+                 & "accept_private_message, avatar "
                  & "FROM user_preferences WHERE user_login=" & Q (Login);
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -3984,7 +3995,9 @@ package body V2P.Database is
               CSS_URL    => To_Unbounded_String
                 (DB.String_Vectors.Element (Line, 5)),
               Accept_Private_Message => Boolean'Value
-                ((DB.String_Vectors.Element (Line, 6))));
+                ((DB.String_Vectors.Element (Line, 6))),
+              Avatar                 => To_Unbounded_String
+                (DB.String_Vectors.Element (Line, 7)));
 
       else
          Preferences := Default_User_Settings;

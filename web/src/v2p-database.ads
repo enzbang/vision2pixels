@@ -70,6 +70,7 @@ package V2P.Database is
       Image_Size             : Database.Image_Size;
       CSS_URL                : Unbounded_String;
       Accept_Private_Message : Boolean;
+      Avatar                 : Unbounded_String;
    end record;
 
    type User_Data is record
@@ -342,6 +343,11 @@ package V2P.Database is
    procedure Set_CSS_URL_Preferences (Login : in String; URL : in String);
    --  Set css url for the given user
 
+   procedure Set_Avatar_Preferences
+     (Login  : in String;
+      Avatar : in String);
+   --  Set avatar preference for the given user
+
    procedure Set_Filter_Preferences
      (Login  : in String;
       Filter : in Filter_Mode);
@@ -401,6 +407,8 @@ private
                                 Image_Size             => Max_Size,
                                 Accept_Private_Message => False,
                                 CSS_URL                =>
+                                  Null_Unbounded_String,
+                                Avatar                 =>
                                   Null_Unbounded_String);
 
    No_User_Data : constant User_Data :=

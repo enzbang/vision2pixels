@@ -56,6 +56,12 @@ package Image.Data is
    --  Set image filename, read image info and create thumbnail
    --  Generate image and thumb filename under Root_Dir.
 
+   procedure Store_Avatar
+     (Img      : in out Image_Data;
+      Root_Dir : in     String;
+      Filename : in     String);
+   --  Store a new avatar
+
    function Filename (Img : in Image_Data) return String;
    --  Returns image filename
 

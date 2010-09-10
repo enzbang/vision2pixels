@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2008                          --
+--                         Copyright (C) 2007-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -37,6 +37,11 @@ package V2P.URL is
    function Thumbs_Full_Prefix return String;
    --  Returns thumbs full prefix : Vision2Pixels plugin path + thumbs path
    --  or thumbs path if it is an absolute path
+   --  Removes the trailing '/' if it exists.
+
+   function Avatar_Full_Prefix return String;
+   --  Returns avatar full prefix : Vision2Pixels plugin path + avatar path
+   --  or avatar path if it is an absolute path
    --  Removes the trailing '/' if it exists.
 
 end V2P.URL;
