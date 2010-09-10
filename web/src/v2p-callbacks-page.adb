@@ -33,6 +33,7 @@ with V2P.Database.Registration;
 with V2P.Navigation_Links;
 with V2P.Settings;
 with V2P.URL;
+with V2P.Utils;
 
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Page_Forum_Entry;
@@ -316,32 +317,9 @@ package body V2P.Callbacks.Page is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      use Ada;
       use Image.Data;
 
       package Post_Entry renames Template_Defs.Page_Forum_New_Photo_Entry;
-
-      function Clean_Mapping (From : in Character) return Character;
-      --  Removes character that the underlying image manipulation tool will
-      --  not support.
-
-      -------------------
-      -- Clean_Mapping --
-      -------------------
-
-      function Clean_Mapping (From : in Character) return Character is
-      begin
-         if From in 'a' .. 'z'
-           or else From in 'A' .. 'Z'
-           or else From in '0' .. '9'
-           or else Morzhol.OS.Is_Directory_Separator (From)
-           or else From = '.'
-         then
-            return From;
-         else
-            return 'x';
-         end if;
-      end Clean_Mapping;
 
       P          : constant Parameters.List := Status.Parameters (Request);
       Filename   : constant String :=
@@ -350,7 +328,7 @@ package body V2P.Callbacks.Page is
       C_Filename : constant String :=
                      Strings.Fixed.Translate
                        (Source  => Filename,
-                        Mapping => Clean_Mapping'Unrestricted_Access);
+                        Mapping => Utils.Clean_Mapping'Unrestricted_Access);
 
       Login      : constant String :=
                      Context.Get_Value (Template_Defs.Set_Global.LOGIN);
