@@ -726,6 +726,15 @@ fieldset#pfnpe_mandatory_fields p {
     padding-top: 1em;
 }
 
+#buvpl_vote {
+    height: 250px;
+}
+
+#buvpl_vote .thumbs {
+    margin: 0;
+    padding-top: 0;
+}
+
 ul#bucl_lastusercommentlist li {
     margin: 0 1em 1em;
     font-style: italic;
