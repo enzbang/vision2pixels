@@ -386,6 +386,11 @@ ul.thumb_metadata {
     padding: 5em;
 }
 
+#bup_notify {
+    color: red;
+    padding-top: 1em;
+}
+
 #cvt_contents {
     margin: 4px;
     background-color: #0A0A0A;
