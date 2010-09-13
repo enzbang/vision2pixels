@@ -450,7 +450,6 @@ ul.thumb_metadata {
     background-color: #222;
     padding: 2em;
     text-align: left;
-    max-width: 1000px;
     width: 90%;
 }
 #pfe_lazy_global_rating {
@@ -813,6 +812,7 @@ ul#bucl_lastusercommentlist li a span.commenttext {
     color: #990000;
     font-weight: bold;
     margin: 2em 0;
+    padding-left: 10%;
 }
 ul#pfe_navigate li img, ul#pfe_navigate_bottom li img {
    display:none;
@@ -839,6 +839,7 @@ dl.bnc_comment_formatting dd {
     margin: 3em 0;
     font-style: italic;
     text-decoration: underline;
+    padding-left: 10%;
 }
 
 #pfe_comments li.pfe_has_voted .user_has_voted {
