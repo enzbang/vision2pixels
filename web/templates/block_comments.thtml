@@ -34,7 +34,7 @@
       @@END_IF@@
     @@END_TABLE@@
     @@-- no comment after revealed date
-    @@IF@@ @_REVEALED_@ and @_ID_FIRST_REVEALED_@ = ""
+    @@IF@@ @_REVEALED_@ and @_ID_FIRST_REVEALED_@ = "" and @_FORUM_ANONYMITY_@
        <li class="has_been_revealed"><span>@_BABEL_AUTHOR_REVEALED_@</span></li>
     @@END_IF@@
 @@ELSE@@
