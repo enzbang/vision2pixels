@@ -153,7 +153,9 @@ package body V2P.Context is
             TZ : constant String :=
                    Session.Get (SID, Template_Defs.Set_Global.TZ);
          begin
-            if TZ /= "" then
+            if TZ = "" then
+               Context.Set_Value (Template_Defs.Set_Global.TZ, "+0");
+            else
                Context.Set_Value (Template_Defs.Set_Global.TZ, TZ);
             end if;
          end;

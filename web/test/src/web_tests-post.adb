@@ -152,9 +152,7 @@ package body Web_Tests.Post is
       use V2P.Template_Defs;
       use type Ada.Calendar.Time;
 
-      Now    : constant Calendar.Time :=
-                 Calendar.Clock +
-                   Duration (Calendar.Time_Zones.UTC_Time_Offset) * 60.0;
+      Now    : constant Calendar.Time := Calendar.Clock;
       H      : constant Calendar.Formatting.Hour_Number :=
                  Calendar.Formatting.Hour (Now);
       Result : Response.Data;
