@@ -300,6 +300,8 @@ package body V2P.Web_Server is
          ------------------
 
          procedure Set_Timezone (TZ : in String) is
+            --  We check for '+' or '-' as starting character to avoid boggus
+            --  timezone data.
          begin
             if TZ'Length = 0 then
                --  Protect against empty cookie sent
