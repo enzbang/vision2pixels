@@ -210,9 +210,13 @@ package body Web_Tests is
 
             if Is_Not (-Word (K)) then
                if Tmp /= 0 then
-                  I := K;
-                  Status := False;
-                  exit Check_Status_Page;
+		  --  Found so look now before this word if not last one
+		  if K = Word'Last then
+		     I := K;
+		     Status := False;
+		  else
+		     Len := Tmp - 1;
+		  end if;
                end if;
 
             else
