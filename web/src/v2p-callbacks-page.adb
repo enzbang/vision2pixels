@@ -664,6 +664,20 @@ package body V2P.Callbacks.Page is
             Show_Category => True));
    end Rss_Last_Posts;
 
+   -----------
+   -- Users --
+   -----------
+
+   procedure Users
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Translations);
+   begin
+      Context.Remove (Template_Defs.Set_Global.NAV_FROM);
+   end Users;
+
    ------------------------
    -- Validate_New_Email --
    ------------------------

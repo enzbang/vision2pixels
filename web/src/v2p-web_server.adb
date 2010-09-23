@@ -848,7 +848,7 @@ package body V2P.Web_Server is
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Users.Set.URL,
          Template_Defs.Page_Users.Template,
-         null);
+         Callbacks.Page.Users'Access);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Error.Set.URL,
