@@ -1400,3 +1400,6 @@ label.inline {
     color: #019BBD;
     margin-top: 2em;
 }
+#exception_msg {
+    display: none;
+}
