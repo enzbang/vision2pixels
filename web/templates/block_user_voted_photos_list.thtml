@@ -1,6 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-<h2>@_BABEL_USER_VOTED_PHOTOS_@</h2>
+<div id="buvpl_vote">
+<h2 id="buvpl_h">@_BABEL_USER_VOTED_PHOTOS_@</h2>
 @@--
 @@IF@@ @_TID'LENGTH_@ = 0
 <p id="buvpl_no_vote">@_BABEL_NO_VOTE_@</p>
@@ -20,4 +21,5 @@
   </li>
 @@END_TABLE@@
 </ul>
+</div>
 @@END_IF@@

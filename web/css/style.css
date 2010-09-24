@@ -140,7 +140,7 @@ p.entry_name {
 label {
     text-align: center;
     display: block;
-    padding: 2em 0 0.5em;
+    padding: 1em 0 0.5em;
 }
 
 textarea {
@@ -176,6 +176,11 @@ input[type="password"] {
     padding: 0.2em;
     width:60%;
     -moz-border-radius: 2px;
+}
+
+input[type="checkbox"] {
+    padding: 0.2em;
+    margin-right: 1em;
 }
 
 .up {
@@ -393,6 +398,11 @@ ul.thumb_metadata {
     padding: 5em;
 }
 
+#bup_notify {
+    color: red;
+    padding-top: 1em;
+}
+
 #cvt_contents {
     margin: 4px;
     background-color: #0A0A0A;
@@ -457,7 +467,6 @@ ul.thumb_metadata {
     background-color: #222;
     padding: 2em;
     text-align: left;
-    max-width: 1000px;
     width: 90%;
 }
 #pfe_lazy_global_rating {
@@ -734,6 +743,15 @@ fieldset#pfnpe_mandatory_fields p {
     padding-top: 1em;
 }
 
+#buvpl_vote {
+    height: 250px;
+}
+
+#buvpl_vote .thumbs {
+    margin: 0;
+    padding-top: 0;
+}
+
 ul#bucl_lastusercommentlist li {
     margin: 0 1em 1em;
     font-style: italic;
@@ -820,6 +838,7 @@ ul#bucl_lastusercommentlist li a span.commenttext {
     color: #990000;
     font-weight: bold;
     margin: 2em 0;
+    padding-left: 10%;
 }
 ul#pfe_navigate li img, ul#pfe_navigate_bottom li img {
    display:none;
@@ -846,6 +865,7 @@ dl.bnc_comment_formatting dd {
     margin: 3em 0;
     font-style: italic;
     text-decoration: underline;
+    padding-left: 10%;
 }
 
 #pfe_comments li.pfe_has_voted .user_has_voted {
@@ -1314,9 +1334,6 @@ label.inline {
     float: left;
 }
 
-#bpcu_css_url_form {
-    margin-top: 2em;
-}
 #bpcu_css_url_form label,
 #bpcu_css_url_form p,
 #bpcu_css_url_form input[type="submit"],
@@ -1369,4 +1386,12 @@ label.inline {
     font-weight: bold;
     color: #C3883C;
     font-size: 0.9em;
+}
+.pref_header {
+    font-size: 1.1em;
+    border-top-style: dotted;
+    border-top-left: dotted;
+    border-top-width: 1px;
+    color: #019BBD;
+    margin-top: 2em;
 }

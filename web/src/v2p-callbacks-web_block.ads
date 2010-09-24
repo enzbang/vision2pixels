@@ -133,6 +133,11 @@ package V2P.Callbacks.Web_Block is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set) is null;
 
+   procedure Pref_Filters
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set) is null;
+
    procedure New_Comment
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;

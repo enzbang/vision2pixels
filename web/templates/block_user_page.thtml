@@ -29,6 +29,9 @@
   <li><a href="#bupl_h">Dernières photographies</a></li>
   <li><a href="#buml_h">Derniers messages</a></li>
   <li><a href="#bucl_h">Derniers commentaires</a></li>
+@@IF@@ @_LOGIN_@ = @_USER_NAME_@
+  <li><a href="#buvpl_h">Votes pour la photo de la semaine</a></li>
+@@END_IF@@
 </ul>
 </div>
 </div>

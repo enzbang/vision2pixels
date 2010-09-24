@@ -1,0 +1,14 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@-- HTTP_GET(bppm_check)
+@@--  Must be logged to send message to a user
+@@--  User can set its preference
+<div>
+  <p class="pref_header">
+    @_BABEL_DEFAULT_FILTERS_@
+  </p>
+@_LAZY_PREF_FORUM_FILTER_@
+@_LAZY_PREF_FORUM_FILTER_PAGE_SIZE_@
+@_LAZY_PREF_FORUM_SORT_@
+@_LAZY_PREF_IMAGE_SIZE_@
+</div>
