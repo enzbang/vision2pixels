@@ -123,30 +123,20 @@ create table "post" (
    "comment" longtext,
    "category_id" integer not null,
    "date_post" date default current_timestamp,
-   "last_comment_id" integer default 0,
+   "last_activity" date default current_timestamp,
    "template_id" integer not null,
    "visit_counter" integer not null,
    "comment_counter" integer not null,
    "hidden" boolean default FALSE,
    foreign key ("category_id") references category("id"),
-   foreign key ("last_comment_id") references comment("id"),
    foreign key ("template_id") references template_id("id"),
    foreign key ("photo_id") references photo("id")
 );
 
---  We want the last_comment_id to be just one above the current
---  last_comment_id this is needed for proper ordering for lastest commented
---  photos. We want to have the new posted photos into the flow. Note that
---  this last_comment_id has meaningful value only when comment_counter is
---  not zero.
-
 create trigger after_post_insert after insert on post
    begin
       update post
-         set last_comment_id=(select max(comment_id) from post_comment, comment
-                              where comment_id = comment.id
-                              and post_comment.comment_id = comment_id
-                              and comment.has_voted = "FALSE")
+         set last_activity=datetime(current_timestamp)
          where id = new.id;
       update forum
          set last_activity=datetime(current_timestamp)
@@ -169,7 +159,7 @@ create trigger after_post_comment_insert after insert on post_comment
    begin
       update post
          set comment_counter=comment_counter + 1,
-             last_comment_id=new.comment_id
+             last_activity=datetime(current_timestamp)
          where id = (select post_id from comment, post_comment
                      where post_comment.comment_id = new.comment_id
                      and comment.id = post_comment.comment_id
@@ -184,7 +174,7 @@ create trigger after_post_comment_insert after insert on post_comment
       insert or replace into last_user_visit values
         ((select user_login from comment where comment.id = new.comment_id),
          new.post_id,
-         new.comment_id);
+         datetime(current_timestamp));
    end;
 
 create table "user_post" (
@@ -372,10 +362,10 @@ create table remember_user (
 create table last_user_visit (
    "user_login" varchar(50),
    "post_id" integer not null,
-   "last_comment_id" integer,
+   "last_activity" date,
    constraint unique_entry unique (user_login, post_id),
    foreign key ("post_id") references post("id"),
-   foreign key ("last_comment_id") references comment("id")
+   foreign key ("last_activity") references comment("date")
 );
 
 create table last_forum_visit (

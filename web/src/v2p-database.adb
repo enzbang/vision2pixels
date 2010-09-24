@@ -536,26 +536,25 @@ package body V2P.Database is
       --  other attachments are 2, 3, etc.
 
       function Select_Is_New return String;
-      --  Select Is_New
-      --  If last_comment_id is less than comment.id, then this is a new
-      --  comment.
-      --  If last_comment is older that 30 days it is ignored
+      pragma Inline (Select_Is_New);
+      --  Returns true (1) if the post is new since last user visit.
+      --  If last_activity is older that 30 days it is ignored. Note that we
+      --  are using <= as the last visit date is set after we have read the
+      --  post data. So we really want to catch comments posted at the same
+      --  time we have read the comments.
 
       -------------------
       -- Select_Is_New --
       -------------------
 
       function Select_Is_New return String is
-         --  Get last_comment_id (or 0 if first visit)
-         --  Select last_comment_id < comment.id -> True if new
-         --  but only if comment.date less than 30 day old
       begin
          if Login /= "" then
-            return ", (SELECT (SELECT COALESCE ("
-              & "(SELECT v.last_comment_id FROM last_user_visit v "
-              & "WHERE v.post_id=post_comment.post_id "
-              & "AND v.user_login=" & Q (Login) & "), 0) < comment.id "
-              & " AND date>DATE('now', '-30day'))) ";
+            return ", (SELECT v.last_activity <= comment.date"
+              & " FROM last_user_visit v"
+              & " WHERE v.post_id=post_comment.post_id"
+              & "    AND v.user_login=" & Q (Login)
+              & "    AND date > DATE ('now', '-30day'))";
          else
             return "";
          end if;
@@ -1988,14 +1987,6 @@ package body V2P.Database is
             Append (From_Stmt, ", forum");
          end if;
 
-         case Sorting is
-            when Last_Commented =>
-               Append (From_Stmt, ", comment");
-
-            when Last_Posted | Best_Noted | Need_Attention =>
-               null;
-         end case;
-
          return To_String (From_Stmt);
       end Build_From;
 
@@ -2022,29 +2013,26 @@ package body V2P.Database is
                     & "(SELECT filename FROM photo WHERE id=post.photo_id), "
                     & "category.name, comment_counter,"
                     & "visit_counter, post.hidden, user_post.user_login, "
-                    & "(SELECT " & Timezone.Date_Time ("comment.date", TZ)
-                    & " FROM comment "
-                    & "WHERE post.last_comment_id = comment.id"
-                    & "      AND post.comment_counter != 0), "
+                    & Timezone.Date_Time ("post.last_activity", TZ) & ", "
                     & "(SELECT id FROM photo_of_the_week "
                     & "WHERE post.id = photo_of_the_week.post_id)";
 
                   if Login /= "" then
-                     --  Get last_comment_id (or 0 if first visit)
-                     --  Select last_comment_id < post.last_comment_id -> True
-                     --  but only if comment.date less than 30 day old
-                     --  (if there is a comment)
+                     --  Is_New? Check last activity against last user visit
+                     --  but only if post.date less than 30 day old. Note that
+                     --  we are using <= as the last visit date is set after we
+                     --  retreive data for the post. So we really want to catch
+                     --  posts done at the same time we have gone into the
+                     --  forum.
 
-                     Append (Select_Stmt, ", (SELECT (SELECT COALESCE ("
-                             & "(SELECT v.last_comment_id FROM "
-                             & "last_user_visit v WHERE v.post_id=post.id "
-                             & "AND v.user_login=" & Q (Login) & "), "
-                             & "0) < COALESCE (post.last_comment_id, 1) "
-                             & " AND (SELECT post.last_comment_id is null "
-                             & "OR (SELECT date>DATE('now', '-30day') FROM "
-                             & "comment WHERE comment.id="
-                             & "post.last_comment_id "
-                             & ")))) ");
+                     Append
+                       (Select_Stmt,
+                        ", (SELECT v.last_activity <= post.last_activity"
+                        & " FROM last_user_visit v"
+                        & " WHERE v.post_id=post.id"
+                        & "   AND v.user_login=" & Q (Login)
+                        & "   AND post.last_activity>DATE('now', '-30day')"
+                        & ") ");
                   end if;
 
                when Navigation_Only =>
@@ -2052,13 +2040,8 @@ package body V2P.Database is
             end case;
 
             case Sorting is
-               when Last_Posted | Need_Attention =>
+               when Last_Posted | Need_Attention | Last_Commented =>
                   null;
-
-               when Last_Commented =>
-                  Append
-                    (Select_Stmt,
-                     ", " & Timezone.Date_Time ("comment.date", TZ));
 
                when Best_Noted =>
                   Append
@@ -2119,11 +2102,9 @@ package body V2P.Database is
 
          case Sorting is
             when Last_Commented =>
-               Append (Where_Stmt, " AND comment.id=post.last_comment_id");
-
                case Filter is
                   when Today .. One_Month =>
-                     Append (Where_Stmt, " AND DATE(comment.date)");
+                     Append (Where_Stmt, " AND DATE(last_activity)");
 
                   when All_Messages =>
                      null;
@@ -2275,7 +2256,7 @@ package body V2P.Database is
                Append (Select_Stmt, ' ' & Order_Direction'Image (Order_Dir));
 
             when Last_Commented =>
-               Append (Select_Stmt, " ORDER BY post.last_comment_id");
+               Append (Select_Stmt, " ORDER BY post.last_activity");
                Append (Select_Stmt, ' ' & Order_Direction'Image (Order_Dir));
                Append (Select_Stmt, ", post.date_post");
                Append (Select_Stmt, ' ' & Order_Direction'Image (Order_Dir));
@@ -2390,16 +2371,8 @@ package body V2P.Database is
             Hidden          := Hidden    & DB.String_Vectors.Element (Line, 9);
             Owner           := Owner
               & DB.String_Vectors.Element (Line, 10);
-
-            if DB.String_Vectors.Element (Line, 11) = "" then
-               --  No comment yet, date/time of last modification is the post
-               --  date.
-               Date_Last_Com   := Date_Last_Com
-                 & DB.String_Vectors.Element (Line, 3);
-            else
-               Date_Last_Com   := Date_Last_Com
-                 & DB.String_Vectors.Element (Line, 11);
-            end if;
+            Date_Last_Com   := Date_Last_Com
+              & DB.String_Vectors.Element (Line, 11);
             Is_CDC          := Is_CDC
               & (DB.String_Vectors.Element (Line, 12) /= "");
 
@@ -3746,10 +3719,8 @@ package body V2P.Database is
       DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       SQL : constant String :=
               "INSERT OR REPLACE INTO last_user_visit "
-                & "('user_login', 'post_id', 'last_comment_id') VALUES ("
-                & Q (Login) & ", " & I (TID)
-                & ", (SELECT COALESCE ((SELECT last_comment_id FROM post"
-                & " WHERE id=" & I (TID) & "), 1)))";
+                & "('user_login', 'post_id', 'last_activity') VALUES ("
+                & Q (Login) & ", " & I (TID) & ", current_timestamp)";
    begin
       Connect (DBH);
       DBH.Handle.Execute (SQL);

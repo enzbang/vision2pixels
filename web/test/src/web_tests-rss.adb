@@ -58,12 +58,12 @@ package body Web_Tests.RSS is
 
       Check
         (Response.Message_Body (Result),
-         Word_Set'(+"turbo", +"Superbe",
+         Word_Set'(+"turbo", +"une autre proposition",
            +"turbo", +"com en imafe",
-           +"turbo", +"une autre proposition", +"enzbang", +"Bof!",
-           +"enzbang", +"Un classique", +"enzbang", +"^_^"),
-         "wrong content for RSS last comments:"
-         & Response.Message_Body (Result));
+           +"turbo", +"Superbe",
+           +"enzbang", +"Bof!",
+           +"enzbang", +"^_^", +"enzbang", +"Un classique"),
+         "wrong content for RSS last comments");
    end Last_Comments;
 
    ----------------
@@ -83,8 +83,7 @@ package body Web_Tests.RSS is
            +"Invasion", +"photographies", +"Portrait",
            +"On ne pousse pas", +"photographies", +"Paysage",
            +"Rides", +"En troupeau", +"Road"),
-         "wrong content for RSS last post:"
-         & Response.Message_Body (Result));
+         "wrong content for RSS last post");
    end Last_Posts;
 
    ----------
