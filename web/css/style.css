@@ -282,6 +282,13 @@ iframe {
     left: -9000px;
 }
 
+iframe#bup_avatar_target {
+    width: 150px;
+    height: 150px;
+    left: 1em;
+    border: 0;
+}
+
 .nooverflowimage {
     display: table-cell;
     width: 150px;
@@ -1292,6 +1299,21 @@ label.inline {
     margin-top: 2em;
 }
 
+#bup_avatar {
+    float: left;
+    padding-right: 5em;
+}
+
+#bup_info {
+    padding-left: 15em;
+}
+
+#bup_top {
+    width: 100%;
+    padding-bottom: 2em;
+    float: left;
+}
+
 #bpcu_css_url_form {
     margin-top: 2em;
 }
@@ -1302,7 +1324,11 @@ label.inline {
 #bue_form label,
 #bue_form p,
 #bue_form input[type="submit"],
-#bue_form input
+#bue_form input,
+#bpa_form label,
+#bpa_form p,
+#bpa_form input[type="submit"],
+#bpa_form input
 {
     display: inline;
 }

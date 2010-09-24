@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2010                          --
+--                            Copyright (C) 2010                            --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,29 +19,26 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-package V2P.URL is
+with Morzhol.OS;
 
-   function User_Name (URL : in String) return String;
-   --  Returns User_Name from URL
+package body V2P.Utils is
 
-   function Big_Images_Full_Prefix return String;
-   --  Returns images full prefix : Vision2Pixels plugin path + image path
-   --  or image path if it is an absolute path.
-   --  Removes the trailing '/' if it exists.
+   -------------------
+   -- Clean_Mapping --
+   -------------------
 
-   function Medium_Images_Full_Prefix return String;
-   --  Returns images full prefix : Vision2Pixels plugin path + image path
-   --  or image path if it is an absolute path.
-   --  Removes the trailing '/' if it exists.
+   function Clean_Mapping (From : in Character) return Character is
+   begin
+      if From in 'a' .. 'z'
+        or else From in 'A' .. 'Z'
+        or else From in '0' .. '9'
+        or else Morzhol.OS.Is_Directory_Separator (From)
+        or else From = '.'
+      then
+         return From;
+      else
+         return 'x';
+      end if;
+   end Clean_Mapping;
 
-   function Thumbs_Full_Prefix return String;
-   --  Returns thumbs full prefix : Vision2Pixels plugin path + thumbs path
-   --  or thumbs path if it is an absolute path
-   --  Removes the trailing '/' if it exists.
-
-   function Avatar_Full_Prefix return String;
-   --  Returns avatar full prefix : Vision2Pixels plugin path + avatar path
-   --  or avatar path if it is an absolute path
-   --  Removes the trailing '/' if it exists.
-
-end V2P.URL;
+end V2P.Utils;

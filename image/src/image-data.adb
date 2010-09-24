@@ -243,4 +243,41 @@ package body Image.Data is
       return Img.Init_Status;
    end Init_Status;
 
+   ------------------
+   -- Store_Avatar --
+   ------------------
+
+   procedure Store_Avatar
+     (Img      : in out Image_Data;
+      Root_Dir : in     String;
+      Filename : in     String)
+   is
+      S_Name      : constant String := Simple_Name (Filename);
+      Avatar_Name : constant String := Compose
+        (Containing_Directory =>
+           Morzhol.OS.Compose (Root_Dir, Settings.Get_Avatars_Path),
+         Name                 => S_Name);
+      Avatar_Size : constant MagickWand.Image_Size :=
+                      MagickWand.Image_Size'
+                        (Width  => MagickWand.Size
+                           (Settings.Avatar_Maximum_Size),
+                         Height => MagickWand.Size
+                           (Settings.Avatar_Maximum_Size));
+      Avatar      : MagickWand.Object;
+   begin
+      if not Exists (Containing_Directory (Avatar_Name)) then
+         Create_Path (Containing_Directory (Avatar_Name));
+      end if;
+
+      MagickWand.Read (Img.Image, Filename => Filename);
+
+      --  Resize to max avatar size
+
+      Image.Magick.Resize (Avatar, Img => Img.Image, Size => Avatar_Size);
+
+      Avatar.Write (Avatar_Name);
+
+      Img.Init_Status := Image_Created;
+   end Store_Avatar;
+
 end Image.Data;

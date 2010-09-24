@@ -53,6 +53,12 @@ package V2P.Callbacks.Page is
       Translations : in out          Templates.Translate_Set);
    --  New entry callback
 
+   procedure New_Avatar
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Post a new avatar
+
    procedure Post_Photo
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;

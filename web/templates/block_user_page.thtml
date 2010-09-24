@@ -6,12 +6,23 @@
 @@IF@@ @_LOGIN_@ = @_USER_NAME_@
 <h1>@_BABEL_MY_PAGE_@</h1>
 @@ELSE@@
-<h1>@_BABEL_USER_PAGE_OF_@ @_USER_NAME_@</h1>
+<h1>@_USER_NAME_@</h1>
 @@END_IF@@
 
 @@IF@@ @_USER_NOT_FOUND_@
 @_BABEL_USER_DOES_NOT_EXIST_@
 @@ELSE@@
+<div id="bup_top">
+<div id="bup_avatar">
+<iframe name="bup_avatar_target" id="bup_avatar_target" scrolling="no"
+	src="user_avatar?LOGIN=@_USER_NAME_@">
+@@-- LAZY_USER_AVATAR is there to properly generate reference to this web
+@@-- block. It has no effect for browser supporting iframes.
+	@_LAZY_USER_AVATAR_@
+</iframe>
+</div>
+
+<div id="bup_info">
 @_LAZY_USER_STATS_@
 
 <ul class="squarelist">
@@ -19,6 +30,8 @@
   <li><a href="#buml_h">Derniers messages</a></li>
   <li><a href="#bucl_h">Derniers commentaires</a></li>
 </ul>
+</div>
+</div>
 
 <div id="bup_user_page_content">@_USER_PAGE_HTML_CONTENT_@</div>
 
@@ -49,8 +62,6 @@
 @@END_IF@@
 
 @_LAZY_PRIVATE_MESSAGE_@
-
-@_LAZY_USER_EMAIL_@
 
 <div id="bup_photo_list">
 @_LAZY_USER_PHOTO_LIST_@

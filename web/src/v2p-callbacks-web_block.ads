@@ -40,7 +40,7 @@ package V2P.Callbacks.Web_Block is
    procedure CdC_Alert
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Translations : in out          Templates.Translate_Set) renames Cdc_Info;
+      Translations : in out          Templates.Translate_Set) renames CdC_Info;
 
    procedure Exif
      (Request      : in              Status.Data;
@@ -128,6 +128,11 @@ package V2P.Callbacks.Web_Block is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set);
 
+   procedure Pref_New_Avatar
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set) is null;
+
    procedure New_Comment
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
@@ -158,7 +163,12 @@ package V2P.Callbacks.Web_Block is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set);
 
-   procedure User_Email
+   procedure Pref_User_Email
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+
+   procedure User_Avatar
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set);

@@ -21,11 +21,13 @@
 
 with Ada.Directories;
 with Ada.Strings.Fixed;
+with Ada.Strings.Unbounded;
 
 with AWS.Parameters;
-with Morzhol.OS;
+with AWS.Utils;
 
 with Image.Data;
+with Morzhol.OS;
 
 with V2P.Callbacks.Web_Block;
 with V2P.Context;
@@ -33,8 +35,11 @@ with V2P.Database.Registration;
 with V2P.Navigation_Links;
 with V2P.Settings;
 with V2P.URL;
+with V2P.Utils;
 
 with V2P.Template_Defs.Block_Forum_List;
+with V2P.Template_Defs.Block_Pref_New_Avatar;
+with V2P.Template_Defs.Block_User_Avatar;
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
@@ -46,6 +51,8 @@ with V2P.Template_Defs.Page_Rss_Last_Posts;
 with V2P.Template_Defs.Set_Global;
 
 package body V2P.Callbacks.Page is
+
+   use Ada;
 
    ---------
    -- CdC --
@@ -307,6 +314,103 @@ package body V2P.Callbacks.Page is
       Templates.Insert (Translations, Database.Get_Stats);
    end Main;
 
+   ----------------
+   -- New_Avatar --
+   ----------------
+
+   procedure New_Avatar
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      use Ada.Strings.Unbounded;
+      use Image.Data;
+
+      function Rand10 return String;
+      --  Returns a 10 digits random number
+
+      ------------
+      -- Rand10 --
+      ------------
+
+      function Rand10 return String is
+         R : String (1 .. 10);
+      begin
+         AWS.Utils.Random_String (R);
+         return R;
+      end Rand10;
+
+      Login      : constant String :=
+                     Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+
+      P          : constant Parameters.List := Status.Parameters (Request);
+
+      Filename   : constant String :=
+                     Parameters.Get
+                       (P,
+                        Template_Defs.Block_Pref_New_Avatar.HTTP.bpa_avatar);
+      C_Filename : constant String :=
+                     Strings.Fixed.Translate
+                       (Source  => Login & Rand10
+                          & "." & Directories.Extension (Filename),
+                        Mapping => Utils.Clean_Mapping'Unrestricted_Access);
+
+      Prefs      : Database.User_Settings;
+   begin
+      Database.User_Preferences (Login, Prefs);
+
+      --  First rename the file to be compatible with ImageMagick
+
+      if Directories.Exists (C_Filename) then
+         Directories.Delete_File (C_Filename);
+      end if;
+
+      Directories.Rename (Old_Name => Filename, New_Name => C_Filename);
+
+      --  If a new photo has been uploaded, insert it in the database
+
+      if C_Filename /= "" then
+         New_Avatar : declare
+            New_Image : Image_Data;
+         begin
+            Store_Avatar (Img      => New_Image,
+                          Root_Dir => Gwiad_Plugin_Path,
+                          Filename => C_Filename);
+
+            if New_Image.Init_Status = Image_Created then
+               Set_Pref : declare
+                  use URL;
+                  Filename : constant String := New_Image.Filename;
+               begin
+                  Database.Set_Avatar_Preferences (Login, Filename);
+
+                  Templates.Insert
+                    (Translations, Templates.Assoc
+                       (Template_Defs.Block_User_Avatar.USER_AVATAR,
+                        Filename));
+
+                  --  Delete old avatar if any
+
+                  if Prefs.Avatar /= Null_Unbounded_String then
+                     declare
+                        Old_Avatar : constant String := Directories.Compose
+                          (Containing_Directory =>
+                             Morzhol.OS.Compose
+                               (Gwiad_Plugin_Path,
+                                Settings.Get_Avatars_Path),
+                           Name                 => To_String (Prefs.Avatar));
+                     begin
+                        Directories.Delete_File (Old_Avatar);
+                     end;
+                  end if;
+               end Set_Pref;
+            end if;
+         end New_Avatar;
+
+         Directories.Delete_File (C_Filename);
+      end if;
+   end New_Avatar;
+
    ---------------------
    -- New_Photo_Entry --
    ---------------------
@@ -316,41 +420,18 @@ package body V2P.Callbacks.Page is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      use Ada;
       use Image.Data;
 
       package Post_Entry renames Template_Defs.Page_Forum_New_Photo_Entry;
-
-      function Clean_Mapping (From : in Character) return Character;
-      --  Removes character that the underlying image manipulation tool will
-      --  not support.
-
-      -------------------
-      -- Clean_Mapping --
-      -------------------
-
-      function Clean_Mapping (From : in Character) return Character is
-      begin
-         if From in 'a' .. 'z'
-           or else From in 'A' .. 'Z'
-           or else From in '0' .. '9'
-           or else Morzhol.OS.Is_Directory_Separator (From)
-           or else From = '.'
-         then
-            return From;
-         else
-            return 'x';
-         end if;
-      end Clean_Mapping;
 
       P          : constant Parameters.List := Status.Parameters (Request);
       Filename   : constant String :=
                      Parameters.Get
                        (P, Template_Defs.Page_Photo_Post.HTTP.FILENAME);
       C_Filename : constant String :=
-                     Ada.Strings.Fixed.Translate
+                     Strings.Fixed.Translate
                        (Source  => Filename,
-                        Mapping => Clean_Mapping'Unrestricted_Access);
+                        Mapping => Utils.Clean_Mapping'Unrestricted_Access);
 
       Login      : constant String :=
                      Context.Get_Value (Template_Defs.Set_Global.LOGIN);

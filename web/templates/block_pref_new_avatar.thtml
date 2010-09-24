@@ -1,0 +1,26 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@SET@@ SET_FORM_NEW_AVATAR = /bpa_upload_avatar
+@@--
+@@-- We need to set the context explicitely here as it is explicitely
+@@-- set on the enclosing page and this will disable the auto context --
+@@-- injection.
+@@--
+<div>
+  <p class="pref_header">
+    @_BABEL_NEW_AVATAR_@
+  </p>
+<form enctype="multipart/form-data"
+      action="@_SET_FORM_NEW_AVATAR_@"
+      id="bpa_form" method="POST" target="bup_avatar_target">
+  <fieldset>
+    <p>
+      <label for="bpa_avatar">@_BABEL_AVATAR_SIZE_@</label>
+      <input type="file" name="bpa_avatar" id="bpa_avatar" size="50" />
+    </p>
+    <p>
+      <input name="ENTER" id="bpa_form_enter" type="submit" value="OK"/>
+    </p>
+  </fieldset>
+</form>
+</div>

@@ -14,6 +14,8 @@
 
 <p>Optimisation des filtres permettant au serveur d'être plus réactif.</p>
 
+<p>Un Avatar peut maintenant être ajouté sur sa page personnelle.</p>
+
 <h1>Version 3.2.2 (septembre 2010)</h1>
 
 <p>Le calcul de l'histogramme utilise maintenant l'espace de couleur sRGB.</p>

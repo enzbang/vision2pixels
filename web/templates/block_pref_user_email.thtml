@@ -1,13 +1,12 @@
-
 @@INCLUDE@@ set_babel.thtml
 <div>
-@@IF@@ @_LOGIN_@ = @_USER_NAME_@
 <form enctype="multipart/form-data"
       id="bue_form" action="#" method="post">
   <fieldset>
     <p>
       <label for="bue_email">@_BABEL_SET_USER_EMAIL_@</label>
-      <input type="text" name="bue_email" id="bue_email" value="@_USER_EMAIL_@" size="50" />
+      <input type="text" name="bue_email"
+	     id="bue_email" value="@_USER_EMAIL_@" size="50" />
     </p>
     <p>
       <input name="ENTER" id="bue_form_enter" type="submit" value="OK"/>
@@ -18,5 +17,4 @@
 </form>
 @@--
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bue_form, 4=>bue_form)
-@@END_IF@@
 </div>

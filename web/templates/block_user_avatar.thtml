@@ -1,0 +1,18 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@SET@@ SET_URL = /user_avatar
+@@--
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <link media="screen" type="text/css" rel="stylesheet" href="/css/style.css"/>
+</head>
+<body>
+@@IF@@ @_USER_AVATAR_@ = ""
+<p><img src="/css/img/default_empty_avatar.jpg"/></p>
+@@ELSE@@
+<p><img src="@_AVATAR_SOURCE_PREFIX_@/@_USER_AVATAR_@"/></p>
+@@END_IF@@
+</body>
+</html>
