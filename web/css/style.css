@@ -178,6 +178,11 @@ input[type="password"] {
     -moz-border-radius: 2px;
 }
 
+input[type="checkbox"] {
+    padding: 0.2em;
+    margin-right: 1em;
+}
+
 .up {
     top: -3em;
     position: relative;
@@ -1307,9 +1312,21 @@ label.inline {
     margin-top: 2em;
 }
 
-#bpcu_css_url_form {
-    margin-top: 2em;
+#bup_avatar {
+    float: left;
+    padding-right: 5em;
 }
+
+#bup_info {
+    padding-left: 15em;
+}
+
+#bup_top {
+    width: 100%;
+    padding-bottom: 2em;
+    float: left;
+}
+
 #bpcu_css_url_form label,
 #bpcu_css_url_form p,
 #bpcu_css_url_form input[type="submit"],
@@ -1358,4 +1375,12 @@ label.inline {
     font-weight: bold;
     color: #C3883C;
     font-size: 0.9em;
+}
+.pref_header {
+    font-size: 1.1em;
+    border-top-style: dotted;
+    border-top-left: dotted;
+    border-top-width: 1px;
+    color: #019BBD;
+    margin-top: 2em;
 }

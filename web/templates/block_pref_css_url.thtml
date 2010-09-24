@@ -1,13 +1,20 @@
 @@INCLUDE@@ set_babel.thtml
 @@-- HTTP_GET(bpcu_forum_sort_set)
 @@--
+<div>
+  <p class="pref_header">
+    @_BABEL_SET_CSS_URL_@
+  </p>
 <form method="post" id="bpcu_css_url_form" action="">
   <p>
-    <label for="bpcu_css_url_set">@_BABEL_SET_CSS_URL_@</label>
+    <p>
+    <label for="bpcu_css_url_set">CSS</label>
     <input id="bpcu_css_url_set" name="bpcu_css_url_set" type="text"
            value="@_CSS_URL_@" size="50"/>
+    </p>
     <p><input name="ENTER" id="bpcu_css_url_form_enter"
               type="submit" value="OK"/></p>
   </p>
 </form>
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bpcu_css_url_form_enter, 4=>bpcu_css_url_set)
+</div>

@@ -2,6 +2,9 @@
 @@INCLUDE@@ set_babel.thtml
 <div>
 @@IF@@ @_LOGIN_@ = @_USER_NAME_@
+  <p class="pref_header">
+    @_BABEL_CHANGE_EMAIL_@
+  </p>
 <form enctype="multipart/form-data"
       id="bue_form" action="#" method="post">
   <fieldset>
