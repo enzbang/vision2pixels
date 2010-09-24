@@ -110,6 +110,9 @@ package body V2P.Database is
    --  Lock the application when registering a new user. We want to avoid two
    --  users registering under the same login.
 
+   function Preferences_Exist (Uid : in String) return Boolean;
+   --  Returns True if a current set of user's preferences exist
+
    procedure Set_Preferences
      (Login       : in String;
       Name, Value : in String);
@@ -3513,6 +3516,26 @@ package body V2P.Database is
       return Result;
    end Is_Revealed;
 
+   -----------------------
+   -- Preferences_Exist --
+   -----------------------
+
+   function Preferences_Exist (Uid : in String) return Boolean is
+      SQL    : constant String :=
+                 "SELECT 1 FROM user_preferences WHERE user_login=" & Q (Uid);
+      DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Result : Boolean;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      Result := Iter.More;
+      Iter.End_Select;
+      return Result;
+   end Preferences_Exist;
+
    ---------------------
    -- Register_Cookie --
    ---------------------
@@ -3745,14 +3768,20 @@ package body V2P.Database is
      (Login       : in String;
       Name, Value : in String)
    is
-      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
    begin
       Connect (DBH);
 
-      DBH.Handle.Execute
-        ("INSERT OR REPLACE INTO user_preferences "
-         & "('user_login', '" & Name & "') "
-         & "VALUES (" & Q (Login) & ", " & Value & ')');
+      if Preferences_Exist (Login) then
+         DBH.Handle.Execute
+           ("UPDATE user_preferences SET " & Name & '=' & Value
+            & " WHERE user_login=" & Q (Login));
+      else
+         DBH.Handle.Execute
+           ("INSERT INTO user_preferences ('user_login', '" & Name & "') "
+            & "VALUES (" & Q (Login) & ", " & Value & ')');
+      end if;
    end Set_Preferences;
 
    -------------------------------------
