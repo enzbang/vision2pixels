@@ -1088,6 +1088,11 @@ body.help #cvt_main {
     -moz-border-radius:4px;
     line-height: 1.5em;
 }
+
+#bua_main {
+    background-color: #0A0A0A;
+}
+
 body.user_page #cvt_main, body.admin_page #cvt_main {
     width: 80%;
 }
