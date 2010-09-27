@@ -34,7 +34,6 @@ with V2P.Database.Preference;
 with V2P.Database.Timezone;
 with V2P.DB_Handle;
 with V2P.Settings;
-with V2P.User_Validation;
 
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
@@ -106,10 +105,6 @@ package body V2P.Database is
       Cid : in Id) return Id;
    pragma Inline (Get_Fid_From_Category);
    --  Returns the Fid given the category
-
-   Lock_Register : Utils.Semaphore;
-   --  Lock the application when registering a new user. We want to avoid two
-   --  users registering under the same login.
 
    function Get_User_Stats (Uid, TZ : in String) return User_Stats;
    --  Returns stats about the specified user
@@ -2900,42 +2895,6 @@ package body V2P.Database is
       return Set;
    end Get_User_Stats;
 
-   -------------------------------
-   -- Get_User_To_Validate_Data --
-   -------------------------------
-
-   function Get_User_To_Validate_Data (Uid : in String) return User_Data is
-      use type Templates.Tag;
-
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line : DB.String_Vectors.Vector;
-   begin
-      if Uid = "" then
-         return No_User_Data;
-      end if;
-
-      Connect (DBH);
-
-      DBH.Handle.Prepare_Select
-        (Iter,
-         "SELECT password, email " &
-         "FROM user_to_validate WHERE login=" & Q (Uid));
-
-      if Iter.More then
-         Iter.Get_Line (Line);
-
-         return User_Data'
-           (UID         => +Uid,
-            Password    => +DB.String_Vectors.Element (Line, 1),
-            Admin       => False,
-            Email       => +DB.String_Vectors.Element (Line, 2),
-            Preferences => Default_User_Settings);
-      else
-         return No_User_Data;
-      end if;
-   end Get_User_To_Validate_Data;
-
    ---------------------------
    -- Get_User_Voted_Photos --
    ---------------------------
@@ -3518,79 +3477,6 @@ package body V2P.Database is
          & Q (Login) & ", " & Q (Cookie) & ")");
    end Register_Cookie;
 
-   -----------------------------
-   -- Register_New_User_Email --
-   -----------------------------
-
-   procedure Register_New_User_Email
-     (Uid : in String; New_Email : in String)
-   is
-      SQL : constant String :=
-              "UPDATE user SET new_email=" & Q (New_Email)
-              & " WHERE login=" & Q (Uid);
-      DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-   begin
-      Connect (DBH);
-      DBH.Handle.Execute (SQL);
-   end Register_New_User_Email;
-
-   -------------------
-   -- Register_User --
-   -------------------
-
-   function Register_User
-     (Login, Password, Email : in String) return Boolean
-   is
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
-   begin
-      Lock_Register.Seize;
-
-      Connect (DBH);
-
-      --  Check already validated users
-
-      DBH.Handle.Prepare_Select
-        (Iter,
-         "SELECT * FROM user "
-         & "WHERE login COLLATE NOCASE =" & Q (Login)
-         & " OR email COLLATE NOCASE =" & Q (Email));
-
-      if Iter.More then
-         Iter.End_Select;
-         Lock_Register.Release;
-         return False;
-      end if;
-
-      --  Check registered but not yet validated  users
-
-      DBH.Handle.Prepare_Select
-        (Iter,
-         "SELECT * FROM user_to_validate "
-         & "WHERE login=" & Q (Login) & " OR email=" & Q (Email));
-
-      if Iter.More then
-         Iter.End_Select;
-         Lock_Register.Release;
-         return False;
-      end if;
-
-      --  The login and e-mail are free, register user
-
-      DBH.Handle.Execute
-        ("INSERT INTO user_to_validate ('login', 'password', 'email') "
-         & "VALUES ("
-         & Q (Login) & ", " & Q (Password) & ", " & Q (Email) & ')');
-
-      Lock_Register.Release;
-      return True;
-
-   exception
-      when others =>
-         Lock_Register.Release;
-         return False;
-   end Register_User;
-
    --------------
    -- Remember --
    --------------
@@ -3796,103 +3682,5 @@ package body V2P.Database is
             & ", " & Q (Value) & ")");
       end if;
    end Update_Rating;
-
-   -----------------------------
-   -- Validate_New_User_Email --
-   -----------------------------
-
-   function Validate_New_User_Email (Uid, Key : in String) return Boolean is
-      DBH   : constant TLS_DBH_Access :=
-                 TLS_DBH_Access (DBH_TLS.Reference);
-      Iter  : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line  : DB.String_Vectors.Vector;
-      SQL   : constant String :=
-                "UPDATE user SET email=new_email WHERE login=" & Q (Uid);
-      Email : Unbounded_String;
-   begin
-      Connect (DBH);
-
-      --  Read user's data from user_to_validate
-
-      DBH.Handle.Prepare_Select
-        (Iter,
-         "SELECT new_email FROM user WHERE login=" & Q (Uid));
-
-      if Iter.More then
-         Iter.Get_Line (Line);
-         Email    := +DB.String_Vectors.Element (Line, 1);
-         Line.Clear;
-
-      else
-         --  User not found, could be due to an obsolete registration URL sent
-         return False;
-      end if;
-
-      Iter.End_Select;
-
-      if User_Validation.Key (Uid, "", -Email) /= Key then
-         --  Key does not match
-         return False;
-      end if;
-
-      DBH.Handle.Execute (SQL);
-
-      return True;
-   end Validate_New_User_Email;
-
-   -------------------
-   -- Validate_User --
-   -------------------
-
-   function Validate_User (Login, Key : in String) return Boolean is
-      DBH             : constant TLS_DBH_Access :=
-                          TLS_DBH_Access (DBH_TLS.Reference);
-      Iter            : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line            : DB.String_Vectors.Vector;
-      Password, Email : Unbounded_String;
-   begin
-      Connect (DBH);
-
-      --  Read user's data from user_to_validate
-
-      DBH.Handle.Prepare_Select
-        (Iter,
-         "SELECT password, email FROM user_to_validate "
-         & "WHERE login=" & Q (Login));
-
-      if Iter.More then
-         Iter.Get_Line (Line);
-         Password := +DB.String_Vectors.Element (Line, 1);
-         Email    := +DB.String_Vectors.Element (Line, 2);
-         Line.Clear;
-
-      else
-         --  User not found, could be due to an obsolete registration URL sent
-         return False;
-      end if;
-
-      Iter.End_Select;
-
-      --  Check key now
-
-      if User_Validation.Key (Login, -Password, -Email) /= Key then
-         --  Key does not match
-         return False;
-      end if;
-
-      --  Create corresponding entry into user table
-
-      DBH.Handle.Execute
-        ("INSERT INTO user ('login', 'password', 'email', 'admin') VALUES ("
-         & Q (Login) & ", " & Q (-Password)
-         & ", " & Q (-Email) & ", 'FALSE')");
-
-      --  Now we can remove the user from user_to_validate
-
-      DBH.Handle.Execute
-        ("DELETE FROM user_to_validate WHERE login=" & Q (Login));
-
-      return True;
-   end Validate_User;
 
 end V2P.Database;

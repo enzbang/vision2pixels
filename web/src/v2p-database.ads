@@ -183,9 +183,6 @@ package V2P.Database is
    --  Returns the user's data. Returns the No_User_Data if User cannot be
    --  found into the database.
 
-   function Get_User_To_Validate_Data (Uid : in String) return User_Data;
-   --  As above but for user not yet validated
-
    function Get_User_Stats
      (Uid, TZ : in String) return Templates.Translate_Set;
    --  Returns the stats for the given user or No_User_Stats if user cannot be
@@ -285,13 +282,6 @@ package V2P.Database is
    function Get_User_Page (Uid : in String) return Templates.Translate_Set;
    --  Returns user page
 
-   procedure Register_New_User_Email
-     (Uid : in String; New_Email : in String);
-   --  Update user email
-
-   function Validate_New_User_Email (Uid, Key : in String) return Boolean;
-   --  Validate new e-mail for given user
-
    procedure Update_Page
      (Uid : in String; Content : in String; Content_HTML : in String);
    --  Update a user page
@@ -326,13 +316,6 @@ package V2P.Database is
      (Uid : in String) return Templates.Translate_Set;
    --  Returns the translate table with the list of all voted photos for the
    --  given user.
-
-   function Register_User (Login, Password, Email : in String) return Boolean;
-   --  Register a new user before validation. Returns False if the user cannot
-   --  be registered (duplicate login).
-
-   function Validate_User (Login, Key : in String) return Boolean;
-   --  Validate a registered user
 
    function Get_Stats return Templates.Translate_Set;
    --  Returns global stats used in main page

@@ -746,7 +746,7 @@ package body V2P.Callbacks.Ajax is
       User : constant String :=
                Parameters.Get (P, Block_Users_To_Validate.Set.USER);
       Data : constant Database.User_Data :=
-               Database.Get_User_To_Validate_Data (User);
+               Database.Registration.Get_User_To_Validate_Data (User);
    begin
       Templates.Insert
         (Translations,
@@ -1437,7 +1437,9 @@ package body V2P.Callbacks.Ajax is
             Templates.Assoc (R_Page_User_Register.ERROR_WRONG_EMAIL, True));
          return;
 
-      elsif not Database.Register_User (Login, Password, Email) then
+      elsif not Database.Registration.Register_User
+        (Login, Password, Email)
+      then
          Templates.Insert
            (Translations,
             Templates.Assoc (R_Page_User_Register.ERROR_LOGIN_EXISTS, True));
@@ -1695,7 +1697,7 @@ package body V2P.Callbacks.Ajax is
       User_Data : constant Database.User_Data :=
                     Database.Get_User_Data (Login);
    begin
-      Database.Register_New_User_Email (Login, New_Email);
+      Database.Registration.Register_New_User_Email (Login, New_Email);
       Templates.Insert
         (Translations,
          Templates.Assoc

@@ -695,7 +695,7 @@ package body V2P.Callbacks.Page is
       Key   : constant String :=
                 Parameters.Get (P, Template_Defs.Set_Global.KEY);
    begin
-      if not Database.Validate_New_User_Email (Login, Key) then
+      if not Database.Registration.Validate_New_User_Email (Login, Key) then
          Templates.Insert
            (Translations, Templates.Assoc
               (Template_Defs.Page_Validate_New_Email.ERROR, True));
@@ -718,7 +718,7 @@ package body V2P.Callbacks.Page is
       Key   : constant String :=
                 Parameters.Get (P, Template_Defs.Set_Global.KEY);
    begin
-      if not Database.Validate_User (Login, Key) then
+      if not Database.Registration.Validate_User (Login, Key) then
          Templates.Insert
            (Translations, Templates.Assoc
               (Template_Defs.Page_Validate_User.ERROR, True));

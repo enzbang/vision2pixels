@@ -21,6 +21,13 @@
 
 package V2P.Database.Registration is
 
+   function Register_User (Login, Password, Email : in String) return Boolean;
+   --  Register a new user before validation. Returns False if the user cannot
+   --  be registered (duplicate login).
+
+   function Validate_User (Login, Key : in String) return Boolean;
+   --  Validate a registered user
+
    function Delete_User (Login : in String) return Boolean;
    --  Delete user from user_to_validate table (for admin)
 
@@ -33,5 +40,15 @@ package V2P.Database.Registration is
 
    function Users_To_Validate return Templates.Translate_Set;
    --  Returns all users in the users_to_validate table
+
+   function Get_User_To_Validate_Data (Uid : in String) return User_Data;
+   --  As above but for user not yet validated
+
+   procedure Register_New_User_Email
+     (Uid : in String; New_Email : in String);
+   --  Update user email
+
+   function Validate_New_User_Email (Uid, Key : in String) return Boolean;
+   --  Validate new e-mail for given user
 
 end V2P.Database.Registration;
