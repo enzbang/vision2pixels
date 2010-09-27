@@ -212,21 +212,12 @@ package V2P.Database is
       TZ    : in String) return Templates.Translate_Set;
    --  Returns information about N users starting at the given Offset
 
-   function Get_CdC (From : in Positive) return Templates.Translate_Set;
-   --  Returns all CdC photos
-
-   function Get_CdC_Info return Templates.Translate_Set;
-   --  Returns the current CdC information
-
    function Get_Metadata (Tid : in Id) return Templates.Translate_Set;
    --  Returns photo geographic metadata from thread if
 
    function Get_Exif (Tid : in Id) return Templates.Translate_Set;
    --  Returns photo exif metadata, get them from the image if needed and
    --  update the database.
-
-   function Get_Photo_Of_The_Week return Templates.Translate_Set;
-   --  Returns photo of the week
 
    function Toggle_Hidden_Status (Tid : in Id) return Templates.Translate_Set;
    --  Toggle Tid hidden status and returns the new status
@@ -286,36 +277,9 @@ package V2P.Database is
      (Uid : in String; Content : in String; Content_HTML : in String);
    --  Update a user page
 
-   procedure Update_Rating
-     (Uid      : in String;
-      Tid      : in Id;
-      Criteria : in String;
-      Value    : in String);
-   --  Update post rating
-
-   function Get_Global_Rating (Tid : in Id) return Templates.Translate_Set;
-   --  Get the post global rating
-
-   function Get_User_Rating_On_Post
-     (Uid : in String; Tid : in Id) return Templates.Translate_Set;
-   --  Get the user rating on a specific post
-
    function Get_New_Post_Delay
      (Uid : in String; TZ : in String) return Templates.Translate_Set;
    --  Get the delay the user has to wait before he can post
-
-   --  Weekly votes
-
-   procedure Toggle_Vote_Week_Photo (Uid : in String; Tid : in Id);
-   --  Set or Reset user Uid vote for photo Tid
-
-   function Has_User_Vote (Uid : in String; Tid : in Id) return Boolean;
-   --  Returns True if user Uid has voted for the given photo
-
-   function Get_User_Voted_Photos
-     (Uid : in String) return Templates.Translate_Set;
-   --  Returns the translate table with the list of all voted photos for the
-   --  given user.
 
    function Get_Stats return Templates.Translate_Set;
    --  Returns global stats used in main page

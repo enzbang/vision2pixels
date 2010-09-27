@@ -36,6 +36,7 @@ with V2P.Context;
 with V2P.Database.Preference;
 with V2P.Database.Registration;
 with V2P.Database.Search;
+with V2P.Database.Vote;
 with V2P.Email;
 with V2P.Navigation_Links;
 with V2P.Settings;
@@ -893,7 +894,7 @@ package body V2P.Callbacks.Ajax is
                   (Context => Context.all,
                    Name    => Template_Defs.Set_Global.TID);
    begin
-      Database.Toggle_Vote_Week_Photo (Login, TID);
+      Database.Vote.Toggle_Vote_Week_Photo (Login, TID);
    end Onclick_Vote_Week_Photo;
 
    ---------------------------------
@@ -1504,7 +1505,7 @@ package body V2P.Callbacks.Ajax is
                    Parameters.Get
                      (P, Block_New_Vote.Set.AJAX_RATE_VAL);
    begin
-      Database.Update_Rating
+      Database.Vote.Update_Rating
         (Uid      => Login,
          Tid      => TID,
          Criteria => Criteria,

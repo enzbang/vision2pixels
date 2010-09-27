@@ -27,6 +27,7 @@ with AWS.Utils;
 with V2P.Context;
 with V2P.Database.Preference;
 with V2P.Database.Registration;
+with V2P.Database.Vote;
 with V2P.Navigation_Links;
 with V2P.Settings;
 with V2P.URL;
@@ -72,7 +73,7 @@ package body V2P.Callbacks.Web_Block is
             Name    => Template_Defs.Set_Global.NAV_FROM);
       end if;
 
-      Templates.Insert (Translations, Database.Get_CdC (From));
+      Templates.Insert (Translations, Database.Vote.Get_CdC (From));
    end CdC;
 
    --------------
@@ -86,7 +87,7 @@ package body V2P.Callbacks.Web_Block is
    is
       pragma Unreferenced (Request, Context);
    begin
-      Templates.Insert (Translations, Database.Get_CdC_Info);
+      Templates.Insert (Translations, Database.Vote.Get_CdC_Info);
    end CdC_Info;
 
    --------------
@@ -353,7 +354,7 @@ package body V2P.Callbacks.Web_Block is
       if Context.Exist (Template_Defs.Set_Global.TID) then
          Templates.Insert
            (Translations,
-            Database.Get_Global_Rating (TID));
+            Database.Vote.Get_Global_Rating (TID));
          Templates.Insert
            (Translations,
             Templates.Assoc
@@ -526,7 +527,7 @@ package body V2P.Callbacks.Web_Block is
          if Context.Exist (Template_Defs.Set_Global.LOGIN) then
             Templates.Insert
               (Translations,
-               Database.Get_User_Rating_On_Post
+               Database.Vote.Get_User_Rating_On_Post
                  (Uid => Context.Get_Value (Template_Defs.Set_Global.LOGIN),
                   Tid => V2P.Context.Counter.Get_Value
                     (Context => Context.all,
@@ -559,7 +560,7 @@ package body V2P.Callbacks.Web_Block is
    is
       pragma Unreferenced (Request, Context);
    begin
-      Templates.Insert (Translations, Database.Get_Photo_Of_The_Week);
+      Templates.Insert (Translations, Database.Vote.Get_Photo_Of_The_Week);
    end Photo_Of_The_Week;
 
    ------------------
@@ -985,7 +986,7 @@ package body V2P.Callbacks.Web_Block is
       User_Name : constant String := URL.User_Name (URI);
       Set       : Templates.Translate_Set;
    begin
-      Set := Database.Get_User_Voted_Photos (User_Name);
+      Set := Database.Vote.Get_User_Voted_Photos (User_Name);
       Templates.Insert (Translations, Set);
    end User_Voted_Photos_List;
 
@@ -1072,7 +1073,7 @@ package body V2P.Callbacks.Web_Block is
            (Translations,
             Templates.Assoc
               (Template_Defs.Block_Vote_Week_Photo.HAS_USER_VOTE,
-               Database.Has_User_Vote
+               Database.Vote.Has_User_Vote
                  (Uid => Context.Get_Value (Template_Defs.Set_Global.LOGIN),
                   Tid => V2P.Context.Counter.Get_Value
                     (Context => Context.all,
