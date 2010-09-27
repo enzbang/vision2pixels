@@ -30,6 +30,7 @@ with Morzhol.Logs;
 with Morzhol.OS;
 with Morzhol.Strings;
 
+with V2P.Database.Preference;
 with V2P.Database.Timezone;
 with V2P.DB_Handle;
 with V2P.Settings;
@@ -109,17 +110,6 @@ package body V2P.Database is
    Lock_Register : Utils.Semaphore;
    --  Lock the application when registering a new user. We want to avoid two
    --  users registering under the same login.
-
-   function Preferences_Exist (Uid : in String) return Boolean;
-   --  Returns True if a current set of user's preferences exist
-
-   procedure Set_Preferences
-     (Login       : in String;
-      Name, Value : in String);
-   --  Update the user preferences named Name with the given Value. If not
-   --  preferences are registered for the given user a new set of preferences
-   --  are inserted. This code is used by all procedure which need to set a
-   --  preferences.
 
    function Get_User_Stats (Uid, TZ : in String) return User_Stats;
    --  Returns stats about the specified user
@@ -2572,7 +2562,7 @@ package body V2P.Database is
             Prefs    : User_Settings;
          begin
             Line.Clear;
-            User_Preferences (Uid, Prefs);
+            Preference.User (Uid, Prefs);
 
             return User_Data'(UID         => +Uid,
                               Password    => +Password,
@@ -2617,7 +2607,7 @@ package body V2P.Database is
             Prefs    : User_Settings;
          begin
             Line.Clear;
-            User_Preferences (Login, Prefs);
+            Preference.User (Login, Prefs);
 
             return User_Data'(UID         => +Login,
                               Password    => +Password,
@@ -3516,26 +3506,6 @@ package body V2P.Database is
       return Result;
    end Is_Revealed;
 
-   -----------------------
-   -- Preferences_Exist --
-   -----------------------
-
-   function Preferences_Exist (Uid : in String) return Boolean is
-      SQL    : constant String :=
-                 "SELECT 1 FROM user_preferences WHERE user_login=" & Q (Uid);
-      DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Result : Boolean;
-   begin
-      Connect (DBH);
-
-      DBH.Handle.Prepare_Select (Iter, SQL);
-
-      Result := Iter.More;
-      Iter.End_Select;
-      return Result;
-   end Preferences_Exist;
-
    ---------------------
    -- Register_Cookie --
    ---------------------
@@ -3635,17 +3605,6 @@ package body V2P.Database is
       DBH.Handle.Execute (SQL);
    end Remember;
 
-   ----------------------------
-   -- Set_Avatar_Preferences --
-   ----------------------------
-
-   procedure Set_Avatar_Preferences
-     (Login  : in String;
-      Avatar : in String) is
-   begin
-      Set_Preferences (Login, "avatar", Q (Avatar));
-   end Set_Avatar_Preferences;
-
    ------------------
    -- Set_Category --
    ------------------
@@ -3659,61 +3618,6 @@ package body V2P.Database is
       Connect (DBH);
       DBH.Handle.Execute (SQL);
    end Set_Category;
-
-   -----------------------------
-   -- Set_CSS_URL_Preferences --
-   -----------------------------
-
-   procedure Set_CSS_URL_Preferences
-     (Login : in String; URL : in String) is
-   begin
-      Set_Preferences (Login, "css_url", Q (URL));
-   end Set_CSS_URL_Preferences;
-
-   --------------------------------------
-   -- Set_Filter_Page_Size_Preferences --
-   --------------------------------------
-
-   procedure Set_Filter_Page_Size_Preferences
-     (Login     : in String;
-      Page_Size : in Positive) is
-   begin
-      Set_Preferences (Login, "photo_per_page", Utils.Image (Page_Size));
-   end Set_Filter_Page_Size_Preferences;
-
-   ----------------------------
-   -- Set_Filter_Preferences --
-   ----------------------------
-
-   procedure Set_Filter_Preferences
-     (Login  : in String;
-      Filter : in Filter_Mode) is
-   begin
-      Set_Preferences (Login, "filter", Q (Filter_Mode'Image (Filter)));
-   end Set_Filter_Preferences;
-
-   ---------------------------------
-   -- Set_Filter_Sort_Preferences --
-   ---------------------------------
-
-   procedure Set_Filter_Sort_Preferences
-     (Login : in String;
-      Sort  : in Forum_Sort) is
-   begin
-      Set_Preferences (Login, "sort", Q (Forum_Sort'Image (Sort)));
-   end Set_Filter_Sort_Preferences;
-
-   --------------------------------
-   -- Set_Image_Size_Preferences --
-   --------------------------------
-
-   procedure Set_Image_Size_Preferences
-     (Login      : in String;
-      Image_Size : in Database.Image_Size) is
-   begin
-      Set_Preferences
-        (Login, "image_size", Q (Database.Image_Size'Image (Image_Size)));
-   end Set_Image_Size_Preferences;
 
    --------------------------
    -- Set_Last_Forum_Visit --
@@ -3759,43 +3663,6 @@ package body V2P.Database is
       Connect (DBH);
       DBH.Handle.Execute (SQL);
    end Set_Last_Visit;
-
-   ---------------------
-   -- Set_Preferences --
-   ---------------------
-
-   procedure Set_Preferences
-     (Login       : in String;
-      Name, Value : in String)
-   is
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
-   begin
-      Connect (DBH);
-
-      if Preferences_Exist (Login) then
-         DBH.Handle.Execute
-           ("UPDATE user_preferences SET " & Name & '=' & Value
-            & " WHERE user_login=" & Q (Login));
-      else
-         DBH.Handle.Execute
-           ("INSERT INTO user_preferences ('user_login', '" & Name & "') "
-            & "VALUES (" & Q (Login) & ", " & Value & ')');
-      end if;
-   end Set_Preferences;
-
-   -------------------------------------
-   -- Set_Private_Message_Preferences --
-   -------------------------------------
-
-   procedure Set_Private_Message_Preferences
-     (Login                  : in String;
-      Accept_Private_Message : in Boolean) is
-   begin
-      Set_Preferences
-        (Login, "accept_private_message",
-         Q (Boolean'Image (Accept_Private_Message)));
-   end Set_Private_Message_Preferences;
 
    ---------------
    -- To_String --
@@ -3929,53 +3796,6 @@ package body V2P.Database is
             & ", " & Q (Value) & ")");
       end if;
    end Update_Rating;
-
-   ----------------------
-   -- User_Preferences --
-   ----------------------
-
-   procedure User_Preferences
-     (Login       : in     String;
-      Preferences :    out User_Settings)
-   is
-      SQL  : constant String :=
-               "SELECT photo_per_page, filter, sort, image_size, css_url, "
-                 & "accept_private_message, avatar "
-                 & "FROM user_preferences WHERE user_login=" & Q (Login);
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line : DB.String_Vectors.Vector;
-   begin
-      Connect (DBH);
-
-      DBH.Handle.Prepare_Select (Iter, SQL);
-
-      if Iter.More then
-         Iter.Get_Line (Line);
-
-         Preferences :=
-           User_Settings'
-             (Page_Size => Positive'Value
-                  (DB.String_Vectors.Element (Line, 1)),
-              Filter    => Filter_Mode'Value
-                (DB.String_Vectors.Element (Line, 2)),
-              Sort      => Forum_Sort'Value
-                (DB.String_Vectors.Element (Line, 3)),
-              Image_Size => Image_Size'Value
-                (DB.String_Vectors.Element (Line, 4)),
-              CSS_URL    => To_Unbounded_String
-                (DB.String_Vectors.Element (Line, 5)),
-              Accept_Private_Message => Boolean'Value
-                ((DB.String_Vectors.Element (Line, 6))),
-              Avatar                 => To_Unbounded_String
-                (DB.String_Vectors.Element (Line, 7)));
-
-      else
-         Preferences := Default_User_Settings;
-      end if;
-
-      Iter.End_Select;
-   end User_Preferences;
 
    -----------------------------
    -- Validate_New_User_Email --

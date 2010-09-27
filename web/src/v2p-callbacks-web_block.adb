@@ -25,6 +25,7 @@ with AWS.Parameters;
 with AWS.Utils;
 
 with V2P.Context;
+with V2P.Database.Preference;
 with V2P.Database.Registration;
 with V2P.Navigation_Links;
 with V2P.Settings;
@@ -578,7 +579,7 @@ package body V2P.Callbacks.Web_Block is
       if Login = "" then
          Preferences := Database.Default_User_Settings;
       else
-         Database.User_Preferences (Login, Preferences);
+         Database.Preference.User (Login, Preferences);
       end if;
 
       Templates.Insert
@@ -602,7 +603,7 @@ package body V2P.Callbacks.Web_Block is
                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       Preferences : Database.User_Settings;
    begin
-      Database.User_Preferences (Login, Preferences);
+      Database.Preference.User (Login, Preferences);
 
       Templates.Insert
         (Translations,
@@ -625,7 +626,7 @@ package body V2P.Callbacks.Web_Block is
                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       Preferences : Database.User_Settings;
    begin
-      Database.User_Preferences (Login, Preferences);
+      Database.Preference.User (Login, Preferences);
 
       Templates.Insert
         (Translations,
@@ -648,7 +649,7 @@ package body V2P.Callbacks.Web_Block is
                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       Preferences : Database.User_Settings;
    begin
-      Database.User_Preferences (Login, Preferences);
+      Database.Preference.User (Login, Preferences);
 
       Templates.Insert
         (Translations,
@@ -674,7 +675,7 @@ package body V2P.Callbacks.Web_Block is
       if Login = "" then
          Preferences := Database.Default_User_Settings;
       else
-         Database.User_Preferences (Login, Preferences);
+         Database.Preference.User (Login, Preferences);
       end if;
 
       Templates.Insert
@@ -718,7 +719,7 @@ package body V2P.Callbacks.Web_Block is
       User_Name   : constant String := URL.User_Name (URI);
       Preferences : Database.User_Settings;
    begin
-      Database.User_Preferences (User_Name, Preferences);
+      Database.Preference.User (User_Name, Preferences);
 
       Templates.Insert
         (Translations,
@@ -786,7 +787,7 @@ package body V2P.Callbacks.Web_Block is
       Preferences : Database.User_Settings;
    begin
       if User_Name /= "" then
-         Database.User_Preferences (User_Name, Preferences);
+         Database.Preference.User (User_Name, Preferences);
 
          Templates.Insert
            (Translations,

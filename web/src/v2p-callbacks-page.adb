@@ -31,6 +31,7 @@ with Morzhol.OS;
 
 with V2P.Callbacks.Web_Block;
 with V2P.Context;
+with V2P.Database.Preference;
 with V2P.Database.Registration;
 with V2P.Navigation_Links;
 with V2P.Settings;
@@ -357,7 +358,7 @@ package body V2P.Callbacks.Page is
 
       Prefs      : Database.User_Settings;
    begin
-      Database.User_Preferences (Login, Prefs);
+      Database.Preference.User (Login, Prefs);
 
       --  First rename the file to be compatible with ImageMagick
 
@@ -382,7 +383,7 @@ package body V2P.Callbacks.Page is
                   use URL;
                   Filename : constant String := New_Image.Filename;
                begin
-                  Database.Set_Avatar_Preferences (Login, Filename);
+                  Database.Preference.Set_Avatar (Login, Filename);
 
                   Templates.Insert
                     (Translations, Templates.Assoc

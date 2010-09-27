@@ -33,6 +33,7 @@ with Morzhol.Logs;
 with Morzhol.Strings;
 
 with V2P.Context;
+with V2P.Database.Preference;
 with V2P.Database.Registration;
 with V2P.Database.Search;
 with V2P.Email;
@@ -328,7 +329,7 @@ package body V2P.Callbacks.Ajax is
          Name    => Template_Defs.Set_Global.FILTER_PAGE_SIZE,
          Value   => V2P.Navigation_Links.Page_Size'Value (Filter));
 
-      Database.Set_Filter_Page_Size_Preferences
+      Database.Preference.Set_Filter_Page_Size
         (Login, Positive'Value (Filter));
 
       Templates.Insert
@@ -357,7 +358,7 @@ package body V2P.Callbacks.Ajax is
    begin
       Context.Set_Value (Template_Defs.Set_Global.FILTER, Filter);
 
-      Database.Set_Filter_Preferences
+      Database.Preference.Set_Filter
         (Login, Database.Filter_Mode'Value (Filter));
 
       Templates.Insert
@@ -386,7 +387,7 @@ package body V2P.Callbacks.Ajax is
    begin
       Context.Set_Value (Template_Defs.Set_Global.FORUM_SORT, Filter);
 
-      Database.Set_Filter_Sort_Preferences
+      Database.Preference.Set_Filter_Sort
         (Login, Database.Forum_Sort'Value (Filter));
 
       Templates.Insert
@@ -516,7 +517,7 @@ package body V2P.Callbacks.Ajax is
         (Name    => Module,
          Content => "CONTENT IS " & Size);
 
-      Database.Set_Image_Size_Preferences
+      Database.Preference.Set_Image_Size
         (Login, Database.Image_Size'Value (Size));
 
       Templates.Insert
@@ -575,7 +576,7 @@ package body V2P.Callbacks.Ajax is
    begin
       Context.Set_Value (Template_Defs.Set_Global.CSS_URL, URL);
 
-      Database.Set_CSS_URL_Preferences (Login, URL);
+      Database.Preference.Set_CSS_URL (Login, URL);
 
       Templates.Insert
         (Translations,
@@ -696,7 +697,7 @@ package body V2P.Callbacks.Ajax is
       P      : constant Parameters.List := Status.Parameters (Request);
       Status : constant Boolean := Parameters.Get (P, HTTP.bppm_check) = "on";
    begin
-      Database.Set_Private_Message_Preferences (Login, Status);
+      Database.Preference.Set_Private_Message (Login, Status);
 
       Templates.Insert
         (Translations,

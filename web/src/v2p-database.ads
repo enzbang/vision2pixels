@@ -334,45 +334,6 @@ package V2P.Database is
    function Validate_User (Login, Key : in String) return Boolean;
    --  Validate a registered user
 
-   procedure User_Preferences
-     (Login       : in     String;
-      Preferences :    out User_Settings);
-   --  Returns the user's preferences for the given user. If no preferences are
-   --  set, use the default values.
-
-   procedure Set_CSS_URL_Preferences (Login : in String; URL : in String);
-   --  Set css url for the given user
-
-   procedure Set_Avatar_Preferences
-     (Login  : in String;
-      Avatar : in String);
-   --  Set avatar preference for the given user
-
-   procedure Set_Filter_Preferences
-     (Login  : in String;
-      Filter : in Filter_Mode);
-   --  Set filter preference for the given user
-
-   procedure Set_Filter_Page_Size_Preferences
-     (Login     : in String;
-      Page_Size : in Positive);
-   --  Set filter preference for the given user
-
-   procedure Set_Filter_Sort_Preferences
-     (Login : in String;
-      Sort  : in Forum_Sort);
-   --  Set sort preference for the given user
-
-   procedure Set_Image_Size_Preferences
-     (Login      : in String;
-      Image_Size : in Database.Image_Size);
-   --  Set image size preference for the given user
-
-   procedure Set_Private_Message_Preferences
-     (Login                  : in String;
-      Accept_Private_Message : in Boolean);
-   --  Set private message preference
-
    function Get_Stats return Templates.Translate_Set;
    --  Returns global stats used in main page
 
