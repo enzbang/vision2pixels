@@ -169,9 +169,9 @@ package body V2P.Callbacks.Ajax is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      SID    : constant Session.Id := Status.Session (Request);
-      Login  : constant String :=
-                 Session.Get (SID, Template_Defs.Set_Global.LOGIN);
+      SID   : constant Session.Id := Status.Session (Request);
+      Login : constant String :=
+                Session.Get (SID, Template_Defs.Set_Global.LOGIN);
    begin
       Session.Delete (SID);
 
@@ -183,6 +183,7 @@ package body V2P.Callbacks.Ajax is
       Templates.Remove (Translations, Template_Defs.Set_Global.LOGIN);
 
       --  When user want to logout he certainly does not want to be remembered
+
       Database.Remember.Set (Login, False);
       Database.Remember.Delete_User_Cookies (Login);
    end Logout;
