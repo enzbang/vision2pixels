@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2009                          --
+--                         Copyright (C) 2007-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -21,6 +21,7 @@
 
 with Ada.Strings.Fixed;
 
+with V2P.Database.Remember;
 with V2P.Settings;
 with V2P.Template_Defs.Set_Global;
 with V2P.Navigation_Links;
@@ -98,7 +99,7 @@ package body V2P.Context is
       then
          Read_Cookie : declare
             Cookie_User : constant String :=
-                            Database.Get_User_From_Cookie
+                            Database.Remember.Get_User_From_Cookie
                               (Cookie_Content (Cookie));
          begin
             if Cookie_User /= "" then

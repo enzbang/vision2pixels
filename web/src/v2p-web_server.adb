@@ -53,7 +53,7 @@ with V2P.Callbacks.Page;
 with V2P.Callbacks.Ajax;
 with V2P.Callbacks.Web_Block;
 with V2P.Context;
-with V2P.Database;
+with V2P.Database.Remember;
 with V2P.Settings;
 with V2P.URL;
 with V2P.Version;
@@ -507,7 +507,7 @@ package body V2P.Web_Server is
                            AWS.Messages.To_HTTP_Date
                              (Ada.Calendar.Clock + Valid_Days);
             GenCookie  : constant String :=
-                           Database.Gen_Cookie
+                           Database.Remember.Gen_Cookie
                              (Session.Get
                                 (SID, Template_Defs.Set_Global.LOGIN));
          begin

@@ -35,6 +35,7 @@ with Morzhol.Strings;
 with V2P.Context;
 with V2P.Database.Preference;
 with V2P.Database.Registration;
+with V2P.Database.Remember;
 with V2P.Database.Search;
 with V2P.Database.Vote;
 with V2P.Email;
@@ -142,9 +143,9 @@ package body V2P.Callbacks.Ajax is
          if Parameters.Get
            (P, Template_Defs.Block_Login.HTTP.bl_remember_me) /= ""
          then
-            Database.Remember (Login, True);
+            Database.Remember.Set (Login, True);
          else
-            Database.Remember (Login, False);
+            Database.Remember.Set (Login, False);
          end if;
 
          --  Set user's filtering preference
@@ -182,8 +183,8 @@ package body V2P.Callbacks.Ajax is
       Templates.Remove (Translations, Template_Defs.Set_Global.LOGIN);
 
       --  When user want to logout he certainly does not want to be remembered
-      Database.Remember (Login, False);
-      Database.Delete_User_Cookies (Login);
+      Database.Remember.Set (Login, False);
+      Database.Remember.Delete_User_Cookies (Login);
    end Logout;
 
    ------------------------------------
