@@ -92,6 +92,7 @@ with V2P.Template_Defs.Chunk_Users;
 with V2P.Template_Defs.Chunk_V2p_Top;
 
 with V2P.Template_Defs.Page_Admin;
+with V2P.Template_Defs.Page_Admin_Database_Cleanup;
 with V2P.Template_Defs.Page_Cdc;
 with V2P.Template_Defs.Page_Delete_User;
 with V2P.Template_Defs.Page_Error;
@@ -952,6 +953,11 @@ package body V2P.Web_Server is
         (Template_Defs.Page_Validate_New_Email.Set.URL,
          Template_Defs.Page_Validate_New_Email.Template,
          Callbacks.Page.Validate_New_Email'Access);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Admin_Database_Cleanup.Set.URL,
+         Template_Defs.Page_Admin_Database_Cleanup.Template,
+         Callbacks.Page.Admin_Database_Cleanup'Access);
 
       --  Register RSS
 
