@@ -81,31 +81,30 @@
         <span class="date">. @_BABEL_DATE_POST_@ @_DATE_POST_@</span>
         @@END_IF@@
       </p>
+@@IF@@ @_IMAGE_COMMENT_@ /= ""
       <div class="comment">@_IMAGE_COMMENT_@</div>
+@@END_IF@@
     </div>
 </div>
 
 <div id="pfe_data_area">
     @@IF@@ @_IMAGE_SOURCE_@ /= ""
       <div id="pfe_image_infos">
-        <table>
-          <tr>
-            <th class="theader">@_BABEL_CATEGORY_@ :</th>
-            <th class="theader">@_BABEL_DATE_@ :</th>
-          </tr>
-          <tr>
-            <td>
-              @@IF@@ @_EXIST:CATEGORY_@
-                @@IF@@ @_OWNER_@ = @_LOGIN_@ or @_ADMIN_@
-                  @_LAZY_FORUM_CATEGORY_SET_@
-                @@ELSE@@
-                  @_CATEGORY_@
-                @@END_IF@@
-              @@END_IF@@
-            </td>
-            <td>@_DATE_POST_@</td></tr>
-        </table>
-        @_LAZY_EXIF_@
+        <p id="pfe_info"><span class="theader">@_BABEL_CATEGORY_@ :</span>
+          <span>
+               @@IF@@ @_EXIST:CATEGORY_@
+                 @@IF@@ @_OWNER_@ = @_LOGIN_@ or @_ADMIN_@
+                   @_LAZY_FORUM_CATEGORY_SET_@
+                 @@ELSE@@
+                   @_CATEGORY_@
+                 @@END_IF@@
+               @@END_IF@@
+          </span>
+        </p>
+        <p id="pfe_info"> <span class="theader">@_BABEL_DATE_@ :</span>
+          <span>@_DATE_POST_@</td></span>
+        </p>
+        <div class="clear">@_LAZY_EXIF_@</div>
         <div id="global_lazy_metadata" class="clear">@_LAZY_METADATA_@</div>
         <div id="pfe_lazy_global_rating">@_LAZY_GLOBAL_RATING_@</div>
       </div>

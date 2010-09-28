@@ -361,10 +361,14 @@ V2P.Map = new function () {
      this.view = function ()
      {
         @@--  Toggle map canvas
-        if ($('bm_map_canvas').style.display == "none")
+        if ($('bm_map_canvas').style.display == "none") {
           Element.show($('bm_map_canvas'));
-        else
+          $('bm_symbol').innerHTML = "▼";
+        }
+        else {
           Element.hide($('bm_map_canvas'));
+          $('bm_symbol').innerHTML = "▶";
+        }
 
         if ($('bm_map_geoloc_content').style.display == "none") {
           Element.show($('bm_map_geoloc_content'));
