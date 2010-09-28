@@ -31,6 +31,7 @@ with Morzhol.OS;
 
 with V2P.Callbacks.Web_Block;
 with V2P.Context;
+with V2P.Database.Admin;
 with V2P.Database.Preference;
 with V2P.Database.Registration;
 with V2P.Navigation_Links;
@@ -41,6 +42,7 @@ with V2P.Utils;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Pref_New_Avatar;
 with V2P.Template_Defs.Block_User_Avatar;
+with V2P.Template_Defs.Page_Admin_Database_Cleanup;
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
 with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
@@ -54,6 +56,28 @@ with V2P.Template_Defs.Set_Global;
 package body V2P.Callbacks.Page is
 
    use Ada;
+
+   ----------------------------
+   -- Admin_Database_Cleanup --
+   ----------------------------
+
+   procedure Admin_Database_Cleanup
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context, Request);
+   begin
+      Database.Admin.Database_Cleanup;
+      Templates.Insert
+        (Translations, Templates.Assoc
+           (Template_Defs.Page_Admin_Database_Cleanup.RESPONSE, "OK"));
+   exception
+      when others =>
+         Templates.Insert
+           (Translations, Templates.Assoc
+              (Template_Defs.Page_Admin_Database_Cleanup.RESPONSE, "NOK"));
+   end Admin_Database_Cleanup;
 
    ---------
    -- CdC --
