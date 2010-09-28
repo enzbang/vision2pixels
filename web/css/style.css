@@ -603,30 +603,6 @@ table.forum_text tr.table_line_1 {
     padding-right: 3em;
 }
 
-#pfe_author {
-    text-align: left;
-    color: #777777;
-    font-family:Helvetica,serif;
-    font-size:1.1em;
-    margin-left:1em;
-    margin-top:10px;
-}
-
-#pfe_author .by {
-    font-size: 0.9em;
-    color: #666666;
-}
-
-#pfe_author .comment {
-    font-size: 0.9em;
-    color: #555555;
-    margin-top: 0.5em;
-}
-
-#pfe_author .by a {
-    border: none;
-}
-
 h2#pfe_comments_section {
     text-align: center;
     color:#E0E0FF;
@@ -777,36 +753,39 @@ ul#bucl_lastusercommentlist li a span.commenttext {
     width: 90%;
 }
 
-#pfe_mainbox {
+#pfe_author {
+    text-align: left;
     position: relative;
-    margin: 2em;
+    margin-top: 1em;
     -moz-border-radius:4px;
     padding: 0.1em;
 }
 
-#pfe_mainbox .postname {
-    color: #404040;
-    font-size: 1.5em;
-    padding: 4px;
+#pfe_author .postname {
+    color: #808099;
+    font-size: 1.2em;
 }
 
-#pfe_mainbox .by {
+#pfe_author .by {
     color: #404040;
     font-size: 1em;
-    padding: 4px;
 }
 
-#pfe_mainbox .comment {
+#pfe_author .comment {
     background: #333333;
     color: #BBBBBB;
     -moz-border-radius:4px;
     margin: 1em 0 0;
-    padding: 1em 1em 0 1em;
+    padding: 0.2em;
     line-height: 1.5em;
 }
 
-#pfe_mainbox .comment p {
+#pfe_author .comment p {
     padding-bottom: 1em;
+}
+
+#pfe_author .by a {
+    border: none;
 }
 
 #pm_latest_posts {
