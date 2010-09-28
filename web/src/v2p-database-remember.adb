@@ -19,10 +19,16 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Handling;
+
+with AWS.Utils;
+
 with V2P.DB_Handle;
 with V2P.Database.Support;
 
 package body V2P.Database.Remember is
+
+   use Ada;
 
    use V2P.Database.Support;
 
@@ -43,28 +49,11 @@ package body V2P.Database.Remember is
    ----------------
 
    function Gen_Cookie (Login : in String) return String is
-      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
-
-      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
-      Line : DB.String_Vectors.Vector;
+      Cookie_Value : constant String :=
+                       Characters.Handling.To_Lower (Utils.Random_String (16));
    begin
-      Connect (DBH);
-
-      DBH.Handle.Prepare_Select (Iter, "select lower(hex(randomblob(16)));");
-
-      if not Iter.More then
-         return "";
-      end if;
-
-      Iter.Get_Line (Line);
-
-      declare
-         Cookie_Value : constant String := DB.String_Vectors.Element (Line, 1);
-      begin
-         Line.Clear;
-         Register_Cookie (Login, Cookie_Value);
-         return Cookie_Value;
-      end;
+      Register_Cookie (Login, Cookie_Value);
+      return Cookie_Value;
    end Gen_Cookie;
 
    --------------------------
