@@ -81,7 +81,9 @@
         <span class="date">. @_BABEL_DATE_POST_@ @_DATE_POST_@</span>
         @@END_IF@@
       </p>
+@@IF@@ @_IMAGE_COMMENT_@ /= ""
       <div class="comment">@_IMAGE_COMMENT_@</div>
+@@END_IF@@
     </div>
 </div>
 
