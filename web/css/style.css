@@ -716,6 +716,11 @@ h2#pfe_comments_section {
     padding: 0 0 0 80px;
     height: 1.5em;
 }
+#pfe_info {
+    width: 50%;
+    float: left;
+    margin-bottom: 1em;
+}
 #pm_cdc {
     padding: 0.5em 0 0;
 }
