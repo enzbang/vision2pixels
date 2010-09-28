@@ -1157,9 +1157,9 @@ body.forum_txt_entry #pfe_entry_page {
 /* for admin only */
 
 .admin_hidden {
-    text-align: right;
-    margin-right: 1em;
-    margin-left: 3em;
+    margin-right: 5em;
+    float: right;
+    font-size: 0.7em;
 }
 
 /*  styles for the unit rater
