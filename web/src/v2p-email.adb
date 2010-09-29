@@ -141,7 +141,7 @@ package body V2P.Email is
 
       Send
         (Login        => Login,
-         To           => Email,
+         To           => New_Email,
          Template     => Template_Defs.Email_Change_Email.Template,
          Translations => Set,
          Subject      => "Changement d'adresse de messagerie Vision2Pixels");
