@@ -365,7 +365,7 @@ package body Web_Tests.Post is
       Register_Routine (T, Check_Post'Access, "check post");
       Register_Routine (T, Post_New_Photo'Access, "post new photo");
       Register_Routine (T, Check_New_Post'Access, "check new post");
-      Register_Routine (T, Post_New_Message'Access, "post new photo");
+      Register_Routine (T, Post_New_Message'Access, "post new message");
       Register_Routine (T, Post_New_Comment'Access, "post new comment");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
