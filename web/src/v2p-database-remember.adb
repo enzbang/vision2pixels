@@ -101,6 +101,7 @@ package body V2P.Database.Remember is
    procedure Register_Cookie (Login : in String; Cookie : in String) is
       DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
    begin
+      Connect (DBH);
       DBH.Handle.Execute
         ("INSERT INTO remember_user ('user_login', 'cookie_content') VALUES ("
          & Q (Login) & ", " & Q (Cookie) & ")");
