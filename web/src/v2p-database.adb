@@ -933,6 +933,7 @@ package body V2P.Database is
       Revealed   : Templates.Tag;
       Owner      : Templates.Tag;
       Post_Photo : Templates.Tag;
+      Anonymity  : Templates.Tag;
    begin
       Connect (DBH);
 
@@ -945,11 +946,13 @@ package body V2P.Database is
          & " DATETIME(post.date_post, '+"
          & Utils.Image (V2P.Settings.Anonymity_Hours)
          & " hour')<DATETIME('NOW'), "
-         & " (SELECT filename FROM photo WHERE id=post.photo_id) "
-         & " FROM comment, post_comment, post, user_post"
+         & " (SELECT filename FROM photo WHERE id=post.photo_id), anonymity "
+         & " FROM comment, post_comment, post, user_post, forum, category "
          & " WHERE post_comment.comment_id=comment.id"
          & " AND has_voted='FALSE'"
          & " AND post.id=post_comment.post_id AND user_post.post_id=post.id"
+         & " AND forum.id=category.forum_id "
+         & " AND category.id=post.category_id "
          & " AND comment.id IN (SELECT comment.id FROM comment"
          & " WHERE has_voted='FALSE' ORDER BY comment.date DESC LIMIT"
          & I (Limit) & ") ORDER BY date DESC");
@@ -977,6 +980,8 @@ package body V2P.Database is
            & DB.String_Vectors.Element (Line, 9);
          Post_Photo    := Post_Photo
            & DB.String_Vectors.Element (Line, 10);
+         Anonymity     := Anonymity
+           & DB.String_Vectors.Element (Line, 11);
 
          Line.Clear;
       end loop;
@@ -1013,6 +1018,9 @@ package body V2P.Database is
       Templates.Insert
         (Set, Templates.Assoc
            (Template_Defs.Page_Rss_Last_Comments.POST_PHOTO, Post_Photo));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Page_Rss_Last_Comments.ANONYMITY, Anonymity));
 
       return Set;
    end Get_Latest_Comments;
