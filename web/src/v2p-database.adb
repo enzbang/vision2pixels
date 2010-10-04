@@ -1067,26 +1067,27 @@ package body V2P.Database is
 
       Prepare_Select : declare
          SQL : Unbounded_String :=
-                      +"SELECT post.id, post.name, filename"
-                        & Select_Date;
+                 +"SELECT post.id, post.name, "
+                   & "(SELECT filename FROM photo"
+                   & " WHERE post.photo_id = photo.id)"
+                   & Select_Date;
       begin
          if Show_Category then
             Append (SQL, ", category.name, forum.name ");
          end if;
 
          if not Photo_Only and not Show_Category then
-            Append (SQL, " FROM post, photo ");
+            Append (SQL, " FROM post ");
 
          else
-            Append (SQL, " FROM post, photo, forum, category ");
+            Append (SQL, " FROM post, forum, category ");
             if From_User /= "" then
                Append (SQL, ", user_post ");
             end if;
          end if;
 
          if Photo_Only then
-            Append (SQL, "WHERE post.photo_id=photo.id"
-                    & " AND post.category_id=category.id"
+            Append (SQL, "WHERE post.category_id=category.id"
                     & " AND category.forum_id=forum.id"
                     & " AND forum.for_photo='TRUE'"
                     & " AND post.hidden='FALSE'");
@@ -1106,8 +1107,7 @@ package body V2P.Database is
             end if;
 
          elsif Show_Category then
-            Append (SQL, "WHERE post.photo_id=photo.id"
-                    & " AND post.category_id=category.id"
+            Append (SQL, "WHERE post.category_id=category.id"
                     & " AND category.forum_id = forum.id"
                     & " AND post.hidden='FALSE' ");
          end if;
