@@ -44,7 +44,7 @@
     </a>
     @@END_INLINE@@
 @@ELSE@@
-    <div id="pfe_mainbox">
+    <div id="pfe_author">
     @@INLINE@@
       <span class="postname
     @@IF@@ @_HIDDEN_@
