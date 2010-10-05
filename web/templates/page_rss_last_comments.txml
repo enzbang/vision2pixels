@@ -12,7 +12,7 @@
 
     @@TABLE@@
     <item>
-      @@IF@@ @_REVEALED_@ or @_USER_@ /= @_OWNER_@
+      @@IF@@ @_REVEALED_@ or @_USER_@ /= @_OWNER_@ or not @_ANONYMITY_@
          <title>@_WEB_ESCAPE:USER_@</title>
       @@ELSE@@
          <title>@_BABEL_THE_AUTHOR_@</title>

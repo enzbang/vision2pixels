@@ -78,11 +78,11 @@ package body Web_Tests.RSS is
 
       Check
         (Response.Message_Body (Result),
-         Word_Set'(+"Un_Troll", +"photographies", +"Portrait",
+         Word_Set'(+"une vente", +"Un_Troll", +"photographies", +"Portrait",
            +"Hissez haut...", +"photographies", +"Paysage",
            +"Invasion", +"photographies", +"Portrait",
            +"On ne pousse pas", +"photographies", +"Paysage",
-           +"Rides", +"En troupeau", +"Road"),
+           +"Rides", +"En troupeau"),
          "wrong content for RSS last post");
    end Last_Posts;
 
