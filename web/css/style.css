@@ -1039,6 +1039,13 @@ div.posting_form label {
     margin-left: 0;
 }
 
+#bnc_upload_file input[type="file"],
+#pfnte_new_entry_name label,
+#pfnpe_new_entry_name label {
+    float: left;
+    padding: 0 1em;
+}
+
 /* page specific */
 
 html.transparent,

@@ -126,6 +126,7 @@
 @@SET@@ BABEL_HAS_BEEN_CDC="A été élu coup-de-cœur"
 @@SET@@ BABEL_YOUR_CDC="Vos Coups de Cœur"
 @@SET@@ BABEL_UPLOAD="Ajouter"
+@@SET@@ BABEL_ATTACH="Attacher l'image"
 @@SET@@ BABEL_NOTHING_MATCHED="Aucun résultat. <em>Filtres trop restrictifs ?</em>"
 @@--  User page
 @@SET@@ BABEL_USER_EDIT_YOUR_PAGE="Éditer votre page"

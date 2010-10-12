@@ -26,7 +26,7 @@
       method="POST">
       <fieldset>
         <p>
-          <input name="FILENAME" type="file"/>
+          <input name="FILENAME" type="file" size="50"/>
           <input name="ENTER" type="submit" value="@_BABEL_UPLOAD_@"/></p>
       </fieldset>
     </form>
