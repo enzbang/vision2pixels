@@ -851,7 +851,7 @@ package body V2P.Callbacks.Web_Block is
       Templates.Insert
         (Translations, Database.Get_User_Page (Uid => User_Name));
 
-      --  We entre the user's page, start navigate starting with first photo
+      --  We enter the user's page, start navigate starting with first photo
 
       V2P.Context.Not_Null_Counter.Set_Value
         (Context => Context.all,
