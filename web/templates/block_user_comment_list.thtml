@@ -1,7 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-<h2 id="bucl_h">@_BABEL_LAST_USER_COMMENT_@
-<a href="#x" id="bucl_show_hide" rel="bucl_content">
+<h2 id="bucl_h" name="buclh2">@_BABEL_LAST_USER_COMMENT_@
+<a href="#buclh2" id="bucl_show_hide" rel="bucl_content">
     <span id="bucl_symbol">@_BABEL_SYM_OPEN_@</span></a>
 </h2>
 <p class="up"><a href="#cvt_contents">@_BABEL_TOP_@</a></p>

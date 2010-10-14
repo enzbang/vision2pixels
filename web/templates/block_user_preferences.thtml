@@ -1,6 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-<h2>@_BABEL_PREFERENCES_@ <a href="#x" id="bup_show_hide" rel="bup_pref_block">
+<h2 name="buph2">@_BABEL_PREFERENCES_@ <a href="#buph2" id="bup_show_hide" rel="bup_pref_block">
     <span id="bup_symbol">@_BABEL_SYM_OPEN_@</span></a>
 </h2>
 <div id="bup_pref_block">

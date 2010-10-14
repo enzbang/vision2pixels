@@ -2,7 +2,7 @@
 @@--
 @@SET@@ SET_URL = /404
 @@--
-@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ main
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ error
 @@--
 <p id="pe_doesnotexist">@_BABEL_DOES_NOT_EXIST_@</p>
 @@--

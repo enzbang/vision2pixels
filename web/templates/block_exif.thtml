@@ -2,7 +2,7 @@
 @@--
 @@IF@@ @_EXIST:EXIF_ISO_@ or @_EXIST:EXIF_CREATE_DATE_@ or @_EXIST:EXIF_MAKE_@ or @_EXIST:EXIF_CAMERA_MODEL_NAME_@ or @_EXIST:EXIF_SHUTTER_SPEED_VALUE_@ or @_EXIST:EXIF_APERTURE_VALUE_@ or @_EXIST:EXIF_FLASH_@ or @_EXIST:EXIF_FOCAL_LENGTH_@ or @_EXIST:EXIF_EXPOSURE_MODE_@ or @_EXIST:EXIF_EXPOSURE_PROGRAM_@ or @_EXIST:EXIF_WHITE_BALANCE_@ or @_EXIST:EXIF_METERING_MODE_@
 @@IF@@ not @_REVEALED_@
-<a href="##" id="be_toggle_exif" class="link" rel="be_exif_table">@_BABEL_TOGGLE_EXIF_@ <span id="be_symbol">@_BABEL_SYM_CLOSED_@</span></a>
+<a href="#exif" id="be_toggle_exif" class="link" rel="be_exif_table">@_BABEL_TOGGLE_EXIF_@ <span id="be_symbol">@_BABEL_SYM_CLOSED_@</span></a>
 @@INCLUDE@@ ../we_js/chunk_show_hide.tjs be be_exif_table be_symbol
 @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, be_toggle_exif, rule_onclick_be_show_rel)
 @@END_IF@@

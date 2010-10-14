@@ -1,7 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-<h2 id="bupl_h">@_BABEL_LAST_USER_PHOTOS_@
-  <a href="#x" id="bupl_show_hide" rel="bupl_content">
+<h2 id="bupl_h" name="buplh2">@_BABEL_LAST_USER_PHOTOS_@
+  <a href="#buplh2" id="bupl_show_hide" rel="bupl_content">
     <span id="bupl_symbol">@_BABEL_SYM_OPEN_@</span></a>
   <a href="/rss/photos?from=@_USER_NAME_@"
      title="@_BABEL_RSS_RECENT_PHOTOS_FROM_@ @_USER_NAME_@">

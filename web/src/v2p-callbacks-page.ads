@@ -87,6 +87,11 @@ package V2P.Callbacks.Page is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set);
 
+   procedure User
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+
    procedure Users
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;

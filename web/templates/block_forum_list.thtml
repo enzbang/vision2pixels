@@ -4,7 +4,7 @@
 @@--
 <ul class="bfl_navcontainer">
   <li class="copyright" style="display: none;" >© Vision2Pixels Team, 2008-2010</li>
-  <li class="index"><a href="/">@_BABEL_V2P_WEBSITE_NAME_@</a></li>
+  <li class="index"><a href="/">@_BABEL_V2P_SMALL_WEBSITE_NAME_@</a></li>
   @@TABLE@@
   <li class="fc_@_FID_@
   @@IF@@ @_TABLE_LINE_@ = @_FID'Length_@

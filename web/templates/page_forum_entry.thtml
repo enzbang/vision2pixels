@@ -104,7 +104,7 @@
         <p id="pfe_info"> <span class="theader">@_BABEL_DATE_@ :</span>
           <span>@_DATE_POST_@</td></span>
         </p>
-        <div class="clear">@_LAZY_EXIF_@</div>
+        <div class="clear" name="exif">@_LAZY_EXIF_@</div>
         <div id="global_lazy_metadata" class="clear">@_LAZY_METADATA_@</div>
         <div id="pfe_lazy_global_rating">@_LAZY_GLOBAL_RATING_@</div>
       </div>

@@ -2,7 +2,7 @@
 @@--
 @@SET@@ SET_URL = /~
 @@--
-@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_USER_PAGE_@ user_page
+@@INCLUDE@@ chunk_v2p_top.thtml "@_BABEL_USER_PAGE_@ - @_USER_NAME_@" user_page
 <div id="pu_user_page">
 @_LAZY_USER_PAGE_@
 </div>
