@@ -51,6 +51,7 @@ with V2P.Template_Defs.Page_Validate_New_Email;
 with V2P.Template_Defs.Page_Photo_Post;
 with V2P.Template_Defs.Page_Rss_Last_Comments;
 with V2P.Template_Defs.Page_Rss_Last_Posts;
+with V2P.Template_Defs.Page_User;
 with V2P.Template_Defs.Set_Global;
 
 package body V2P.Callbacks.Page is
@@ -688,6 +689,25 @@ package body V2P.Callbacks.Page is
             TZ            => Context.Get_Value (Template_Defs.Set_Global.TZ),
             Show_Category => True));
    end Rss_Last_Posts;
+
+   ----------
+   -- User --
+   ----------
+
+   procedure User
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context);
+      URI       : constant String := Status.URI (Request);
+      User_Name : constant String := URL.User_Name (URI);
+   begin
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Page_User.USER_NAME, User_Name));
+   end User;
 
    -----------
    -- Users --

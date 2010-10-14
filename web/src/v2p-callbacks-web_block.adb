@@ -861,10 +861,6 @@ package body V2P.Callbacks.Web_Block is
       --  Set User_Name
 
       Context.Set_Value (Template_Defs.Block_User_Page.USER_NAME, User_Name);
-
-      Templates.Insert
-        (Translations,
-         Templates.Assoc (Template_Defs.Block_User_Page.USER_NAME, User_Name));
    end User_Page;
 
    ---------------------

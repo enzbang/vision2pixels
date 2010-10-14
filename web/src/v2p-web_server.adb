@@ -828,7 +828,7 @@ package body V2P.Web_Server is
       Services.Web_Block.Registry.Register
         (Key      => Template_Defs.Page_User.Set.URL,
          Template => Template_Defs.Page_User.Template,
-         Data_CB  => null,
+         Data_CB  => Callbacks.Page.User'Access,
          Prefix   => True);
 
       Services.Web_Block.Registry.Register
