@@ -1037,6 +1037,7 @@ div#pfe_lazy_new_comment input[type="file"],
 div.posting_form label {
     text-align: left;
     margin-left: 0;
+    margin-right: 1em;
 }
 
 #bnc_upload_file input[type="file"],
