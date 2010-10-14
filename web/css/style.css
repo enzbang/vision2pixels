@@ -493,6 +493,9 @@ body.not_logged #pfe_lazy_new_comment {
     -moz-border-radius:2px 2px 2px 2px;
     background-color: #EEE;
 }
+#pfnpe_mandatory_fields legend {
+    color: #FF8888;
+}
 #pfnpe_new_entry_form_submit input[type="submit"],
 #pfe_lazy_new_comment input[type="submit"]{
     -moz-border-radius:2px;
