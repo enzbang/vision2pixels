@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2009                          --
+--                         Copyright (C) 2006-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -23,6 +23,7 @@ with Ada.Calendar;
 with Ada.Text_IO;
 
 with GNAT.Calendar.Time_IO;
+with GNAT.MD5;
 
 with V2P.Settings;
 
@@ -98,23 +99,24 @@ package body Image.Data is
       Out_Filename_Thumb  : in     String;
       Out_Max_Dimension   : in     Image_Dimension := Null_Dimension)
    is
-      Thumb_Size  : constant MagickWand.Image_Size :=
-                      MagickWand.Image_Size'
-                        (Width  => MagickWand.Size
-                           (Settings.Thumbnail_Maximum_Width),
-                         Height => MagickWand.Size
-                           (Settings.Thumbnail_Maximum_Height));
+      Thumb_Size    : constant MagickWand.Image_Size :=
+                        MagickWand.Image_Size'
+                          (Width  => MagickWand.Size
+                             (Settings.Thumbnail_Maximum_Width),
+                           Height => MagickWand.Size
+                             (Settings.Thumbnail_Maximum_Height));
 
-      Medium_Size    : constant MagickWand.Image_Size :=
-                         MagickWand.Image_Size'
-                           (Width  => MagickWand.Size
-                              (Settings.Medium_Maximum_Width),
-                            Height => MagickWand.Size
-                              (Settings.Medium_Maximum_Height));
+      Medium_Size   : constant MagickWand.Image_Size :=
+                        MagickWand.Image_Size'
+                          (Width  => MagickWand.Size
+                             (Settings.Medium_Maximum_Width),
+                           Height => MagickWand.Size
+                             (Settings.Medium_Maximum_Height));
       Thumb, Medium : MagickWand.Object;
 
    begin
       --  Read image info
+
       MagickWand.Read (Img.Image, Filename => Original_Filename);
 
       if Settings.Limit_Image_Size
@@ -194,7 +196,9 @@ package body Image.Data is
                           GNAT.Calendar.Time_IO.Image (Now, "%Y");
       Filename_Prefix : constant String :=
                           GNAT.Calendar.Time_IO.Image (Now, "%Y%m%d%H%M-");
-      S_Name          : constant String := Simple_Name (Filename);
+      S_Name          : constant String :=
+                          Compose (Name      => GNAT.MD5.Digest (Filename),
+                                   Extension => Extension (Filename));
       Thumb_Name      : constant String := Compose
         (Containing_Directory => Compose
            (Containing_Directory =>
