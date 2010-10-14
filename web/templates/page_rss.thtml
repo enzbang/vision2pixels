@@ -1,7 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
 @@--
-@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ new
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_V2P_WEBSITE_NAME_@ rss
 @@SET@@ SET_URL = /rss_list
 
 <h1>Vision2Pixels - Syndication ?</h1>
