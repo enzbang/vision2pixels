@@ -99,23 +99,24 @@ package body Image.Data is
       Out_Filename_Thumb  : in     String;
       Out_Max_Dimension   : in     Image_Dimension := Null_Dimension)
    is
-      Thumb_Size  : constant MagickWand.Image_Size :=
-                      MagickWand.Image_Size'
-                        (Width  => MagickWand.Size
-                           (Settings.Thumbnail_Maximum_Width),
-                         Height => MagickWand.Size
-                           (Settings.Thumbnail_Maximum_Height));
+      Thumb_Size    : constant MagickWand.Image_Size :=
+                        MagickWand.Image_Size'
+                          (Width  => MagickWand.Size
+                             (Settings.Thumbnail_Maximum_Width),
+                           Height => MagickWand.Size
+                             (Settings.Thumbnail_Maximum_Height));
 
-      Medium_Size    : constant MagickWand.Image_Size :=
-                         MagickWand.Image_Size'
-                           (Width  => MagickWand.Size
-                              (Settings.Medium_Maximum_Width),
-                            Height => MagickWand.Size
-                              (Settings.Medium_Maximum_Height));
+      Medium_Size   : constant MagickWand.Image_Size :=
+                        MagickWand.Image_Size'
+                          (Width  => MagickWand.Size
+                             (Settings.Medium_Maximum_Width),
+                           Height => MagickWand.Size
+                             (Settings.Medium_Maximum_Height));
       Thumb, Medium : MagickWand.Object;
 
    begin
       --  Read image info
+
       MagickWand.Read (Img.Image, Filename => Original_Filename);
 
       if Settings.Limit_Image_Size
