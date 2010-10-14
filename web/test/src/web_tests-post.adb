@@ -21,8 +21,11 @@
 
 with Ada.Calendar.Formatting;
 with Ada.Calendar.Time_Zones;
+with Ada.Directories;
 
 with AUnit.Assertions;
+
+with GNAT.MD5;
 
 with AWS.Client;
 with AWS.Response;
@@ -80,13 +83,17 @@ package body Web_Tests.Post is
 
    procedure Check_New_Post (T : in out AUnit.Test_Cases.Test_Case'Class) is
       use V2P.Template_Defs;
+      use Ada.Directories;
       Result : Response.Data;
+      I_Name : constant String :=
+                 Compose (Name      => GNAT.MD5.Digest ("troll.jpg"),
+                          Extension => "jpg");
    begin
       Call (Connection, Result, URI => "/forum/entry?TID=142");
 
       Check
         (Response.Message_Body (Result),
-         Word_Set'(+"Un_Troll", +"Un_Troll", +"troll.jpg",
+         Word_Set'(+"Un_Troll", +"Un_Troll", +I_Name,
            +"révélé dans 71", +"un<em>petit</em>troll"),
          "wrong entry for post 142" & Response.Message_Body (Result));
    end Check_New_Post;

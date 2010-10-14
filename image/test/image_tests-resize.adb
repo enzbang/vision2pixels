@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2008-2009                          --
+--                         Copyright (C) 2008-2010                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -23,6 +23,7 @@ with Ada.Calendar;
 with Ada.Directories;
 
 with GNAT.Calendar.Time_IO;
+with GNAT.MD5;
 
 with AUnit.Assertions;
 
@@ -54,6 +55,9 @@ package body Image_Tests.Resize is
       pragma Unreferenced (T);
       use Image.Data;
       S_Name          : constant String := "gnu.jpg";
+      I_Name          : constant String :=
+                          Compose (Name      => GNAT.MD5.Digest (S_Name),
+                                   Extension => "jpg");
       Now             : constant Calendar.Time := Calendar.Clock;
       Year            : constant String :=
                           GNAT.Calendar.Time_IO.Image (Now, "%Y");
@@ -63,7 +67,7 @@ package body Image_Tests.Resize is
         (Containing_Directory => Compose
            (Containing_Directory => Settings.Get_Thumbs_Path,
             Name                 => Year),
-         Name                 => Filename_Prefix & S_Name);
+         Name                 => Filename_Prefix & I_Name);
       Test_Image      : Image.Data.Image_Data;
 
    begin
