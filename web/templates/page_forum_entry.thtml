@@ -31,7 +31,7 @@
     <img id="pfe_main_img" alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_IMAGE_SOURCE_@"
          height="@_THUMB_IMAGE_HEIGHT_@" width="@_THUMB_IMAGE_WIDTH_@" />
   @@END_IF@@
-    <div id="pfe_author">
+    <div id="pfe_author" name="pfe_histo">
     @@INLINE@@
       <span class="postname
     @@IF@@ @_HIDDEN_@
@@ -39,7 +39,7 @@
     @@END_IF@@
     ">@_NAME_@</span>
     <a id="pfe_toggle_hist" rel="pfe_main_img"
-       href="#pfe_main_img" title="@_BABEL_SHOW_HISTOGRAM_@">
+       href="#pfe_histo" title="@_BABEL_SHOW_HISTOGRAM_@">
       <img alt="@_BABEL_SHOW_HISTOGRAM_@" src="/css/img/histogram.gif"/>
     </a>
     @@END_INLINE@@
