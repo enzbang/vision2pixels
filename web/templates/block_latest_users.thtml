@@ -4,7 +4,7 @@
   <li class="latest_users">
 @@INLINE()(, )()@@
 @@TABLE@@
-    <a href="/~@_WEB_ENCODE:USER_@">@_USER_@</a>
+    <a href="/~@_URL_EMAIL:USER_@">@_USER_@</a>
 @@END_TABLE@@
 @@END_INLINE@@
   </li>
