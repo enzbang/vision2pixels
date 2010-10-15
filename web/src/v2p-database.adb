@@ -363,7 +363,7 @@ package body V2P.Database is
               & " FROM last_user_visit v"
               & " WHERE v.post_id=post_comment.post_id"
               & "    AND v.user_login=" & Q (Login)
-              & "    AND date > DATE ('now', '-30day'))";
+              & "    AND date > DATE ('now', '-30 days'))";
          else
             return "";
          end if;
@@ -1733,7 +1733,7 @@ package body V2P.Database is
                         & " FROM last_user_visit v"
                         & " WHERE v.post_id=post.id"
                         & "   AND v.user_login=" & Q (Login)
-                        & "   AND post.last_activity>DATE('now', '-30day')"
+                        & "   AND post.last_activity>DATE('now', '-30 days')"
                         & ") ");
                   end if;
 
