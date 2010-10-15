@@ -203,11 +203,13 @@ package body V2P.Web_Server is
       Context    : in Templates.Filter_Context) return String;
    --  Mult filter (template parser user filter)
 
-   function URL_Email_Filter
+   function URL_Encode_Filter
      (Value      : in String;
       Parameters : in String;
       Context    : in Templates.Filter_Context) return String;
-   --  Clean-up URL to be properly printed in plain text e-mail
+   --  Clean-up URL to be properly printed in plain text e-mail or used as link
+   --  in Web pages. The most important part is to convert a space to %20 to
+   --  avoid breaks into the URL.
 
    function IMG_Callback (Request : in Status.Data) return Response.Data;
    --  Image callback
@@ -1362,11 +1364,11 @@ package body V2P.Web_Server is
       Gwiad.Web.Virtual_Host.Unregister (Settings.Virtual_Host);
    end Unregister;
 
-   ---------------
-   -- URL_Email --
-   ---------------
+   -----------------------
+   -- URL_Encode_Filter --
+   -----------------------
 
-   function URL_Email_Filter
+   function URL_Encode_Filter
      (Value      : in String;
       Parameters : in String;
       Context    : in Templates.Filter_Context) return String
@@ -1395,7 +1397,7 @@ package body V2P.Web_Server is
          end if;
       end loop;
       return Result (Result'First .. J);
-   end URL_Email_Filter;
+   end URL_Encode_Filter;
 
    ------------------
    -- Website_Data --
@@ -1486,7 +1488,7 @@ begin  -- V2P.Web_Server : register vision2pixels website
    end Set_Log;
 
    AWS.Templates.Register_Filter ("FLOATMULT", Float_Mult_Filter'Access);
-   AWS.Templates.Register_Filter ("URL_EMAIL", URL_Email_Filter'Access);
+   AWS.Templates.Register_Filter ("URL_ENCODE", URL_Encode_Filter'Access);
 
    Register_Callbacks;
 

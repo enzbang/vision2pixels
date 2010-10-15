@@ -1,7 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
 @@IF@@ @_LOGIN_@ /= ""
-  <a href="/~@_URL_EMAIL:LOGIN_@" class="link">@_BABEL_MY_PAGE_@</a> |
+  <a href="/~@_URL_ENCODE:LOGIN_@" class="link">@_BABEL_MY_PAGE_@</a> |
 @@END_IF@@
 
 <a href="#" class="link" id="bql_show_rel_login" rel="cvt_lazy_login">
