@@ -1,3 +1,3 @@
 @@TABLE@@
-<p><a href="/~@_WEB_ENCODE:LOGIN_@">@_LOGIN_@</a> - @_CONTENT_@</p>
+<p><a href="/~@_URL_ENCODE:LOGIN_@">@_LOGIN_@</a> - @_CONTENT_@</p>
 @@END_TABLE@@
