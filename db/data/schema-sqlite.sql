@@ -175,7 +175,7 @@ create trigger after_post_comment_insert after insert on post_comment
       insert or replace into last_user_visit values
         ((select user_login from comment where comment.id = new.comment_id),
          new.post_id,
-         datetime(current_timestamp));
+         datetime(current_timestamp, '+1 second'));
    end;
 
 create table "user_post" (

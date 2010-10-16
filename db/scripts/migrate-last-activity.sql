@@ -97,7 +97,7 @@ CREATE TRIGGER after_post_comment_insert AFTER INSERT ON post_comment
       INSERT OR REPLACE INTO last_user_visit VALUES
         ((SELECT user_login FROM comment WHERE comment.id = new.comment_id),
          new.post_id,
-         datetime(current_timestamp));
+         datetime(current_timestamp, '+1 second'));
    END;
 
 COMMIT;
