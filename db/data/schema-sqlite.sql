@@ -74,8 +74,8 @@ create trigger after_comment_insert after insert on comment
    begin
       update user_stats
          set nb_com=nb_com+1
-	 where user_stats.user_login=new.user_login
-	       and new.has_voted='FALSE';
+         where user_stats.user_login=new.user_login
+               and new.has_voted='FALSE';
    end;
 
 create table "forum" (
@@ -142,9 +142,9 @@ create trigger after_post_insert after insert on post
       update forum
          set last_activity=datetime(current_timestamp)
          where forum.id =
-	       (select category.forum_id
-	        from category
-		where category.id = new.category_id);
+               (select category.forum_id
+                from category
+                where category.id = new.category_id);
    end;
 
 create table "post_comment" (
@@ -168,10 +168,10 @@ create trigger after_post_comment_insert after insert on post_comment
       update forum
          set last_activity=datetime(current_timestamp)
          where forum.id =
-	       (select category.forum_id
-	        from category, post
-		where new.post_id = post.id
-		  and post.category_id = category.id);
+               (select category.forum_id
+                from category, post
+                where new.post_id = post.id
+                  and post.category_id = category.id);
       insert or replace into last_user_visit values
         ((select user_login from comment where comment.id = new.comment_id),
          new.post_id,
@@ -189,16 +189,16 @@ create trigger after_user_post_insert after insert on user_post
    begin
       update user_stats
          set nb_photo=nb_photo+1
-	 where user_stats.user_login=
-	    (select new.user_login
-	     from post
-	     where new.post_id=post.id and not post.photo_id is null);
+         where user_stats.user_login=
+            (select new.user_login
+             from post
+             where new.post_id=post.id and not post.photo_id is null);
       update user_stats
          set nb_mess=nb_mess+1
-	 where user_stats.user_login=
-	    (select new.user_login
-	     from post
-	     where new.post_id=post.id and post.photo_id is null);
+         where user_stats.user_login=
+            (select new.user_login
+             from post
+             where new.post_id=post.id and post.photo_id is null);
    end;
 
 create table "photo_metadata" (
@@ -344,10 +344,10 @@ create trigger after_photo_of_the_week_insert after insert on photo_of_the_week
    begin
       update user_stats
          set nb_cdc=nb_cdc+1
-	 where user_stats.user_login=
-	 (select user_post.user_login
-	 from user_post
-	 where user_post.post_id=new.post_id);
+         where user_stats.user_login=
+         (select user_post.user_login
+         from user_post
+         where user_post.post_id=new.post_id);
    end;
 
 create table vote_ponderated (
