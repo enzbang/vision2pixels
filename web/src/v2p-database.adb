@@ -359,11 +359,12 @@ package body V2P.Database is
       function Select_Is_New return String is
       begin
          if Login /= "" then
-            return ", (SELECT v.last_activity <= comment.date"
+            return ", (comment.date>DATE ('now', '-30 days')"
+              & "   AND (COALESCE ((SELECT v.last_activity"
               & " FROM last_user_visit v"
               & " WHERE v.post_id=post_comment.post_id"
-              & "    AND v.user_login=" & Q (Login)
-              & "    AND date > DATE ('now', '-30 days'))";
+              & "   AND v.user_login=" & Q (Login)
+              & " ), DATE('now', '-30 days')) < comment.date))";
          else
             return "";
          end if;
@@ -1729,12 +1730,12 @@ package body V2P.Database is
 
                      Append
                        (Select_Stmt,
-                        ", (SELECT v.last_activity <= post.last_activity"
+                        ", (post.last_activity>DATE ('now', '-30 days')"
+                        & "   AND (COALESCE ((SELECT v.last_activity"
                         & " FROM last_user_visit v"
                         & " WHERE v.post_id=post.id"
-                        & "   AND v.user_login=" & Q (Login)
-                        & "   AND post.last_activity>DATE('now', '-30 days')"
-                        & ") ");
+                        & "   AND v.user_login=" & Q (Login) & "), "
+                        & " DATE('now','-30 days')) < post.last_activity)) ");
                   end if;
 
                when Navigation_Only =>

@@ -93,7 +93,7 @@ insert into post
 insert into post
     values (14, 'vends 14', NULL, '14', 6, datetime(current_timestamp, '-5.0003 days'), datetime(current_timestamp), 1, 0, 0, "FALSE");
 insert into post
-    values (15, 'vends 15', NULL, '15', 6, datetime(current_timestamp, '-5.0003 days'), datetime(current_timestamp), 1, 0, 0, "FALSE");
+    values (15, 'vends 15', NULL, '15', 6, datetime(current_timestamp, '-40 days'), datetime(current_timestamp), 1, 0, 0, "FALSE");
 
 insert into post
     values (54, 'un camion', 1, 'commentaire du camion', 2, datetime(current_timestamp, '-2.999 days'), datetime(current_timestamp), 1, 0, 0, "FALSE");

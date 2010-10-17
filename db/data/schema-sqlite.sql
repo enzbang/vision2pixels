@@ -175,7 +175,7 @@ create trigger after_post_comment_insert after insert on post_comment
       insert or replace into last_user_visit values
         ((select user_login from comment where comment.id = new.comment_id),
          new.post_id,
-         datetime(current_timestamp, '+1 second'));
+         datetime(current_timestamp));
    end;
 
 create table "user_post" (
@@ -199,6 +199,8 @@ create trigger after_user_post_insert after insert on user_post
             (select new.user_login
              from post
              where new.post_id=post.id and post.photo_id is null);
+      insert or replace into last_user_visit values
+        (new.user_login, new.post_id, datetime(current_timestamp));
    end;
 
 create table "photo_metadata" (

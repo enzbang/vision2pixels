@@ -67,6 +67,8 @@ create trigger after_post_insert after insert on post
                (select category.forum_id
                 from category
                 where category.id = new.category_id);
+      insert or replace into last_user_visit values
+        (new.user_login, new.post_id, datetime(current_timestamp));
    end;
 
 create trigger initialize_global_rating after insert on post
