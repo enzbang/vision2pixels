@@ -33,7 +33,7 @@ package body Web_Tests.Last_Visit is
    use Ada;
 
    procedure Check_New (T : in out AUnit.Test_Cases.Test_Case'Class);
-   --  Check exif information
+   --  Check !NEW information
 
    ---------------
    -- Check_New --
@@ -65,7 +65,7 @@ package body Web_Tests.Last_Visit is
          Page  : constant String := Response.Message_Body (Result);
          Index : constant Natural := Strings.Fixed.Index (Page, "TID=71");
       begin
-         --  Cut the Page before the second post.
+         --  Cut the Page before the second post
          Check
             (Page (Page'First .. Index + 5),
          Word_Set'(not "!NEW", +"Hissez"),
@@ -75,6 +75,7 @@ package body Web_Tests.Last_Visit is
       Logout (Conn1);
 
       --  Add a new comment in Hissez haut... post
+
       Call (Conn2, Result, URI => "/");
       Login (Conn2, "turbo", "turbopass");
 
@@ -86,13 +87,14 @@ package body Web_Tests.Last_Visit is
          & "&bnc_comment_pid=&REGISTER_COMMENT=Envoyer");
 
       --  turbo just post a comment, this post should not be marked as !NEW
+
       Call (Conn2, Result, URI => "/forum/threads?FID=1");
 
       declare
          Page  : constant String := Response.Message_Body (Result);
          Index : constant Natural := Strings.Fixed.Index (Page, "TID=71");
       begin
-         --  Cut the Page before the second post.
+         --  Cut the Page before the second post
          Check
             (Page (Page'First .. Index + 5),
          Word_Set'(not "!NEW", +"Hissez"),
@@ -109,7 +111,7 @@ package body Web_Tests.Last_Visit is
          Page  : constant String := Response.Message_Body (Result);
          Index : constant Natural := Strings.Fixed.Index (Page, "TID=71");
       begin
-         --  Cut the Page before the second post.
+         --  Cut the Page before the second post
          Check
             (Page (Page'First .. Index + 5),
          Word_Set'(+"!NEW", +"Hissez"),

@@ -476,24 +476,20 @@ package body V2P.Database is
         (Set, Templates.Assoc
            (Template_Defs.Chunk_Comment.ANONYMOUS_USER, Anonymous));
       Templates.Insert
-        (Set, Templates.Assoc
-           (Template_Defs.Chunk_Comment.COMMENT, Comment));
+        (Set, Templates.Assoc (Template_Defs.Chunk_Comment.COMMENT, Comment));
       Templates.Insert
-        (Set, Templates.Assoc
-           (Block_Comments.COMMENT_LEVEL, Comment_Level));
+        (Set, Templates.Assoc (Block_Comments.COMMENT_LEVEL, Comment_Level));
       Templates.Insert
         (Set,
          Templates.Assoc
            (Block_Comments.NB_LEVELS_TO_CLOSE, Nb_Levels_To_Close));
       Templates.Insert
-        (Set, Templates.Assoc
-           (Chunk_Comment.HAS_VOTED, Has_Voted));
+        (Set, Templates.Assoc (Chunk_Comment.HAS_VOTED, Has_Voted));
       Templates.Insert
         (Set, Templates.Assoc
            (Template_Defs.Block_Comments.ID_FIRST_REVEALED, First_Revealed));
       Templates.Insert
-        (Set, Templates.Assoc
-           (Chunk_Comment.IS_NEW, Is_New));
+        (Set, Templates.Assoc (Chunk_Comment.IS_NEW, Is_New));
 
       return Set;
    end Get_Comments;
@@ -2135,8 +2131,7 @@ package body V2P.Database is
 
          if Login /= "" then
             Templates.Insert
-              (Set, Templates.Assoc
-                 (Chunk_Threads_List.IS_NEW, Is_New));
+              (Set, Templates.Assoc (Chunk_Threads_List.IS_NEW, Is_New));
          end if;
       end if;
 

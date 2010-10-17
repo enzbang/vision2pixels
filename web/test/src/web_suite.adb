@@ -20,18 +20,19 @@
 ------------------------------------------------------------------------------
 
 with Web_Tests.CdC;
+with Web_Tests.Forum_Entry;
 with Web_Tests.Last_Visit;
 with Web_Tests.Last_Visit_After_Post;
 with Web_Tests.Menu;
 with Web_Tests.Post;
+with Web_Tests.RSS;
 with Web_Tests.Threads_Navigation;
 with Web_Tests.User;
 with Web_Tests.User_Page;
 with Web_Tests.Wiki;
-with Web_Tests.Forum_Entry;
-with Web_Tests.RSS;
 
 package body Web_Suite is
+
    Web_Suite_Test : Access_Test_Suite;
 
    ----------------------
