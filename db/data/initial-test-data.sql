@@ -660,3 +660,12 @@ insert into user_to_validate
 insert into user_to_validate
    ('login', 'password', 'email')
    values ('username2', '2', 'username2@obry.net');
+
+--  Start with a state where all users have visited the forums
+
+insert into last_forum_visit values ('turbo', 1, 141);
+insert into last_forum_visit values ('enzbang', 1, 141);
+insert into last_forum_visit values ('test', 1, 141);
+insert into last_forum_visit values ('turbo', 2, 15);
+insert into last_forum_visit values ('enzbang', 2, 15);
+insert into last_forum_visit values ('test', 2, 15);
