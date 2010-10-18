@@ -232,7 +232,7 @@ package body V2P.Callbacks.Page is
          --  Default_Callback, when all lazy tags have been parsed.
 
          V2P.Context.Not_Null_Counter.Set_Value
-           (Context.all, "Last_Visit", TID);
+           (Context.all, Template_Defs.Set_Global.LAST_VISIT_TOKEN, TID);
       end if;
 
       --  Add forum information into the translate set

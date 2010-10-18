@@ -31,6 +31,7 @@
 @_CONTEXT_LAST_POST_NAME_@
 @_CONTEXT_LAST_COMMENT_@
 @_IS_USER_PAGE_@
+@_LAST_VISIT_TOKEN_@
 @@--
 @@--
 @@--  Register globals state

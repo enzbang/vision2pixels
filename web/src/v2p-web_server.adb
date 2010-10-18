@@ -473,9 +473,10 @@ package body V2P.Web_Server is
         (Request, Context'Access, Translations);
 
       if Session.Exist (SID, Template_Defs.Set_Global.LOGIN)
-         and then Context.Exist ("Last_Visit")
+         and then Context.Exist (Template_Defs.Set_Global.LAST_VISIT_TOKEN)
       then
-         Context.Remove ("Last_Visit"); --  Do not update last visit again !
+         Context.Remove (Template_Defs.Set_Global.LAST_VISIT_TOKEN);
+         --  Do not update last visit again !
       end if;
 
       if Services.Web_Block.Registry.Content_Type (URI) = MIME.Text_HTML then
@@ -523,13 +524,14 @@ package body V2P.Web_Server is
       end if;
 
       if Session.Exist (SID, Template_Defs.Set_Global.LOGIN)
-         and then Context.Exist ("Last_Visit")
+         and then Context.Exist (Template_Defs.Set_Global.LAST_VISIT_TOKEN)
       then
          --  Update last visit table
 
          Database.Set_Last_Visit
            (Session.Get (SID, Template_Defs.Set_Global.LOGIN),
-            V2P.Context.Not_Null_Counter.Get_Value (Context, "Last_Visit"));
+            V2P.Context.Not_Null_Counter.Get_Value
+              (Context, Template_Defs.Set_Global.LAST_VISIT_TOKEN));
       end if;
 
       return Web_Page;
