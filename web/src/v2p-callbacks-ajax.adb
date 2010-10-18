@@ -151,6 +151,7 @@ package body V2P.Callbacks.Ajax is
          --  Set user's filtering preference
 
          V2P.Context.Set_User_Preferences (Context, SID, User_Data);
+         Context.Remove ("Last_Visit");
 
          Templates.Insert
            (Translations,
