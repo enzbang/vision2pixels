@@ -1022,7 +1022,7 @@ ul#pfe_navigate_bottom li a:hover {
     padding: 1em;
 }
 
-#bvwp_vote_week_photo a {
+a#bvwp_vote_button {
     font-style: italic;
     color: #FA5858;
     border: none;
@@ -1397,4 +1397,12 @@ label.inline {
 }
 #exception_msg {
     display: none;
+}
+
+.inlinehelp a {
+    color: #ccc;
+}
+.inlinehelp {
+    padding-left: 2em;
+    font-size: 0.8em;
 }

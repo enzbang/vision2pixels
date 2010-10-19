@@ -231,3 +231,4 @@
 @@SET@@ BABEL_NEW_AVATAR="Nouvel Avatar"
 @@SET@@ BABEL_AVATAR_SIZE="Taille maximum 150x150"
 @@SET@@ BABEL_CHANGE_EMAIL="Changer son adresse de messagerie"
+@@SET@@ BABEL_READ_MORE="En savoir plus..."

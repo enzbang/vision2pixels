@@ -7,6 +7,8 @@
   @@ELSE@@
      <a id="bvwp_vote_button" href="#">@_BABEL_SET_VOTE_WEEK_PHOTO_@</a>
   @@END_IF@@
+  <span class="inlinehelp">
+     <a href="/help#helpcdc">@_BABEL_READ_MORE_@</a></span>
   </div>
 @@END_IF@@
 @@--
