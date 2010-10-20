@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # Build with GNAT GPL 2007/2009
 GROOT=$HOME/opt/gnat
@@ -49,7 +49,7 @@ function get_branch()
 
     if [ "$SUBM" == "true" ]; then
         git submodule init
-	git submodule update
+        git submodule update
     fi
 
     # Update repository, fetch tags to update tags
@@ -57,11 +57,11 @@ function get_branch()
     git fetch --tags
 
     if [ "$(git tag -l | grep $BRANCH$)" = "" ]; then
-	# Not a tag
-	if [ "$(git branch | grep $BRANCH$)" = "" ]; then
-        # Local branch does not exists, create it now
+        # Not a tag
+        if [ "$(git branch | grep $BRANCH$)" = "" ]; then
+            # Local branch does not exists, create it now
             git checkout -b $BRANCH origin/$BRANCH
-	fi
+        fi
     fi
 
     git checkout $BRANCH
@@ -82,9 +82,9 @@ make setup && make && make install && \
      make install_server SERVER_INSTALL=$GWIAD_ROOT && make install-distrib
 
 if [ $? != 0 ]; then
-   echo "ERROR: can't build or install Gwiad";
-   exit 1;
-fi;
+   echo "ERROR: can't build or install Gwiad"
+   exit 1
+fi
 
 ################################################
 # Diouzhtu
