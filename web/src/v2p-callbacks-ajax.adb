@@ -65,8 +65,8 @@ with V2P.Template_Defs.Block_Pref_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Pref_Forum_Sort;
 with V2P.Template_Defs.Block_Pref_Image_Size;
 with V2P.Template_Defs.Block_Pref_Private_Message;
+with V2P.Template_Defs.Block_Pref_User_Email;
 with V2P.Template_Defs.Block_Private_Message;
-with V2P.Template_Defs.Block_User_Email;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Users_To_Validate;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
@@ -1696,7 +1696,7 @@ package body V2P.Callbacks.Ajax is
       Login     : constant String :=
                     Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       New_Email : constant String :=
-                    Parameters.Get (P, Block_User_Email.HTTP.bue_email);
+                    Parameters.Get (P, Block_Pref_User_Email.HTTP.bue_email);
       User_Data : constant Database.User_Data :=
                     Database.Get_User_Data (Login);
    begin

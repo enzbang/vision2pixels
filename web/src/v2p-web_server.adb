@@ -77,8 +77,8 @@ with V2P.Template_Defs.Block_Pref_Forum_Sort;
 with V2P.Template_Defs.Block_Pref_Image_Size;
 with V2P.Template_Defs.Block_Pref_New_Avatar;
 with V2P.Template_Defs.Block_Pref_Private_Message;
+with V2P.Template_Defs.Block_Pref_User_Email;
 with V2P.Template_Defs.Block_Private_Message;
-with V2P.Template_Defs.Block_User_Email;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_Users;
@@ -1333,7 +1333,7 @@ package body V2P.Web_Server is
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
-        (Template_Defs.Block_User_Email.Ajax.onsubmit_bue_form,
+        (Template_Defs.Block_Pref_User_Email.Ajax.onsubmit_bue_form,
          Template_Defs.R_Block_User_Email_Form_Enter.Template,
          Callbacks.Ajax.Onsubmit_User_Email_Form_Enter'Access,
          Content_Type     => MIME.Text_XML,
