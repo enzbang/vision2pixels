@@ -25,7 +25,7 @@ with AWS.Server;
 with AWS.Status;
 with AWS.Response;
 
-procedure Wmain is
+procedure Wmaint is
 
    use AWS;
 
@@ -48,4 +48,4 @@ procedure Wmain is
 begin
    Server.Start (S, Callback'Unrestricted_Access, C);
    Server.Wait (Server.Forever);
-end Wmain;
+end Wmaint;
