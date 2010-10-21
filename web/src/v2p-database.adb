@@ -21,7 +21,6 @@
 
 with Ada.Directories;
 with Ada.Exceptions;
-with Ada.Text_IO;
 
 with AWS.Utils;
 
@@ -2725,7 +2724,10 @@ package body V2P.Database is
    exception
       when E : DB.DB_Error =>
          DBH.Handle.Rollback;
-         Text_IO.Put_Line (Exception_Message (E));
+         Logs.Write
+            (Name    => Module,
+             Kind    => Logs.Error,
+             Content => Exception_Message (E));
          return Empty_Id;
    end Insert_Comment;
 
@@ -2754,7 +2756,10 @@ package body V2P.Database is
       DBH.Handle.Execute (SQL);
    exception
       when E : DB.DB_Error =>
-         Text_IO.Put_Line (Exception_Message (E));
+         Logs.Write
+            (Name    => Module,
+             Kind    => Logs.Error,
+             Content => Exception_Message (E));
    end Insert_Metadata;
 
    ------------------
@@ -2927,11 +2932,10 @@ package body V2P.Database is
    exception
       when E : DB.DB_Error =>
          DBH.Handle.Rollback;
-         Text_IO.Put_Line (Exception_Message (E));
-         return Empty_Id;
-      when E : others =>
-         DBH.Handle.Rollback;
-         Text_IO.Put_Line (Exception_Message (E));
+         Logs.Write
+            (Name    => Module,
+             Kind    => Logs.Error,
+             Content => Exception_Message (E));
          return Empty_Id;
    end Insert_Post;
 
@@ -3113,7 +3117,10 @@ package body V2P.Database is
 
    exception
       when E : DB.DB_Error =>
-         Text_IO.Put_Line (Exception_Message (E));
+         Logs.Write
+            (Name    => Module,
+             Kind    => Logs.Error,
+             Content => Exception_Message (E));
          return Set;
    end Toggle_Hidden_Status;
 
