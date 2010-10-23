@@ -359,11 +359,12 @@ package body V2P.Database is
       function Select_Is_New return String is
       begin
          if Login /= "" then
-            return ", (SELECT v.last_activity <= comment.date"
+            return ", (comment.date>DATE ('now', '-30 days')"
+              & "   AND (COALESCE ((SELECT v.last_activity"
               & " FROM last_user_visit v"
               & " WHERE v.post_id=post_comment.post_id"
-              & "    AND v.user_login=" & Q (Login)
-              & "    AND date > DATE ('now', '-30 days'))";
+              & "   AND v.user_login=" & Q (Login)
+              & " ), DATE('now', '-30 days')) < comment.date))";
          else
             return "";
          end if;
@@ -475,24 +476,20 @@ package body V2P.Database is
         (Set, Templates.Assoc
            (Template_Defs.Chunk_Comment.ANONYMOUS_USER, Anonymous));
       Templates.Insert
-        (Set, Templates.Assoc
-           (Template_Defs.Chunk_Comment.COMMENT, Comment));
+        (Set, Templates.Assoc (Template_Defs.Chunk_Comment.COMMENT, Comment));
       Templates.Insert
-        (Set, Templates.Assoc
-           (Block_Comments.COMMENT_LEVEL, Comment_Level));
+        (Set, Templates.Assoc (Block_Comments.COMMENT_LEVEL, Comment_Level));
       Templates.Insert
         (Set,
          Templates.Assoc
            (Block_Comments.NB_LEVELS_TO_CLOSE, Nb_Levels_To_Close));
       Templates.Insert
-        (Set, Templates.Assoc
-           (Chunk_Comment.HAS_VOTED, Has_Voted));
+        (Set, Templates.Assoc (Chunk_Comment.HAS_VOTED, Has_Voted));
       Templates.Insert
         (Set, Templates.Assoc
            (Template_Defs.Block_Comments.ID_FIRST_REVEALED, First_Revealed));
       Templates.Insert
-        (Set, Templates.Assoc
-           (Chunk_Comment.IS_NEW, Is_New));
+        (Set, Templates.Assoc (Chunk_Comment.IS_NEW, Is_New));
 
       return Set;
    end Get_Comments;
@@ -1729,12 +1726,12 @@ package body V2P.Database is
 
                      Append
                        (Select_Stmt,
-                        ", (SELECT v.last_activity <= post.last_activity"
+                        ", (post.last_activity>DATE ('now', '-30 days')"
+                        & "   AND (COALESCE ((SELECT v.last_activity"
                         & " FROM last_user_visit v"
                         & " WHERE v.post_id=post.id"
-                        & "   AND v.user_login=" & Q (Login)
-                        & "   AND post.last_activity>DATE('now', '-30 days')"
-                        & ") ");
+                        & "   AND v.user_login=" & Q (Login) & "), "
+                        & " DATE('now','-30 days')) < post.last_activity)) ");
                   end if;
 
                when Navigation_Only =>
@@ -2134,8 +2131,7 @@ package body V2P.Database is
 
          if Login /= "" then
             Templates.Insert
-              (Set, Templates.Assoc
-                 (Chunk_Threads_List.IS_NEW, Is_New));
+              (Set, Templates.Assoc (Chunk_Threads_List.IS_NEW, Is_New));
          end if;
       end if;
 

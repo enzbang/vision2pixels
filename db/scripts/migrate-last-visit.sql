@@ -43,10 +43,10 @@ create trigger after_post_comment_insert after insert on post_comment
       update forum
          set last_activity=datetime(current_timestamp)
          where forum.id =
-	       (select category.forum_id
-	        from category, post
-		where new.post_id = post.id
-		  and post.category_id = category.id);
+               (select category.forum_id
+                from category, post
+                where new.post_id = post.id
+                  and post.category_id = category.id);
       insert or replace into last_user_visit values
         ((select user_login from comment where comment.id = new.comment_id),
          new.post_id,
@@ -64,9 +64,11 @@ create trigger after_post_insert after insert on post
       update forum
          set last_activity=datetime(current_timestamp)
          where forum.id =
-	       (select category.forum_id
-	        from category
-		where category.id = new.category_id);
+               (select category.forum_id
+                from category
+                where category.id = new.category_id);
+      insert or replace into last_user_visit values
+        (new.user_login, new.post_id, datetime(current_timestamp));
    end;
 
 create trigger initialize_global_rating after insert on post

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2010                          --
+--                            Copyright (C) 2010                            --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,43 +19,20 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with Web_Tests.CdC;
-with Web_Tests.Forum_Entry;
-with Web_Tests.Last_Visit;
-with Web_Tests.Last_Visit_After_Post;
-with Web_Tests.Menu;
-with Web_Tests.Post;
-with Web_Tests.RSS;
-with Web_Tests.Threads_Navigation;
-with Web_Tests.User;
-with Web_Tests.User_Page;
-with Web_Tests.Wiki;
+with AUnit;
+with AUnit.Test_Cases;
 
-package body Web_Suite is
+package Web_Tests.Last_Visit_After_Post is
 
-   Web_Suite_Test : Access_Test_Suite;
+   use AUnit;
+   use AUnit.Test_Cases;
 
-   ----------------------
-   -- Web_Suite_Access --
-   ----------------------
+   type Test_Case is new Test_Cases.Test_Case with null record;
 
-   function Web_Suite_Access return Access_Test_Suite is
-   begin
-      return Web_Suite_Test;
-   end Web_Suite_Access;
+   overriding procedure Register_Tests (T : in out Test_Case);
+   --  Register routines to be run
 
-begin --  Web_Suite : Initialize the web_suite test
+   overriding function Name (T : in Test_Case) return Message_String;
+   --  Returns name identifying the test case
 
-   Web_Suite_Test := new Test_Suite;
-   Add_Test (Web_Suite_Test, new Web_Tests.Last_Visit.Test_Case);
-   Add_Test (Web_Suite_Test, new Web_Tests.Wiki.Test_Case);
-   Add_Test (Web_Suite_Test, new Web_Tests.CdC.Test_Case);
-   Add_Test (Web_Suite_Test, new Web_Tests.User.Test_Case);
-   Add_Test (Web_Suite_Test, new Web_Tests.Threads_Navigation.Test_Case);
-   Add_Test (Web_Suite_Test, new Web_Tests.Post.Test_Case);
-   Add_Test (Web_Suite_Test, new Web_Tests.Last_Visit_After_Post.Test_Case);
-   Add_Test (Web_Suite_Test, new Web_Tests.Menu.Test_Case);
-   Add_Test (Web_Suite_Test, new Web_Tests.User_Page.Test_Case);
-   Add_Test (Web_Suite_Test, new Web_Tests.Forum_Entry.Test_Case);
-   Add_Test (Web_Suite_Test, new Web_Tests.RSS.Test_Case);
-end Web_Suite;
+end Web_Tests.Last_Visit_After_Post;

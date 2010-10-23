@@ -227,6 +227,8 @@ package body Web_Tests.Post is
       Logout (Connection);
       Login (Connection, "test", "test");
 
+      delay 1.5;
+
       Call (Connection, Result, URI => "/add_photo");
 
       Check_Upload_Page : declare
@@ -289,6 +291,8 @@ package body Web_Tests.Post is
                       4 => +"142"),
             "Not returned on the proper forum after upload");
       end Check_Forum_Page;
+
+      delay 1.5;
    end Post_New_Photo;
 
    ----------------------

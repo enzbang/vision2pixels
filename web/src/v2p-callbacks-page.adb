@@ -228,11 +228,11 @@ package body V2P.Callbacks.Page is
                Admin      => Admin));
 
          --  Update user 'last visit' data
-         --  This should be done just before returing the Web_Page in
+         --  This should be done just before returning the Web_Page in
          --  Default_Callback, when all lazy tags have been parsed.
 
          V2P.Context.Not_Null_Counter.Set_Value
-           (Context.all, "Last_Visit", TID);
+           (Context.all, Template_Defs.Set_Global.LAST_VISIT_TOKEN, TID);
       end if;
 
       --  Add forum information into the translate set
