@@ -376,10 +376,12 @@ package body V2P.Callbacks.Page is
                        (P,
                         Template_Defs.Block_Pref_New_Avatar.HTTP.bpa_avatar);
       C_Filename : constant String :=
-                     Strings.Fixed.Translate
-                       (Source  => Login & Rand10
-                          & "." & Directories.Extension (Filename),
-                        Mapping => Utils.Clean_Mapping'Unrestricted_Access);
+                     Directories.Compose
+                       (Directories.Containing_Directory (Filename),
+                        Strings.Fixed.Translate
+                          (Source  => Login & Rand10,
+                           Mapping => Utils.Clean_Mapping'Access),
+                        Directories.Extension (Filename));
 
       Prefs      : Database.User_Settings;
    begin
@@ -406,14 +408,17 @@ package body V2P.Callbacks.Page is
             if New_Image.Init_Status = Image_Created then
                Set_Pref : declare
                   use URL;
-                  Filename : constant String := New_Image.Filename;
+                  Filename     : constant String := New_Image.Filename;
+                  New_Filename : constant String := Filename
+                    (Filename'First + Avatar_Full_Prefix'Length + 1
+                     .. Filename'Last);
                begin
-                  Database.Preference.Set_Avatar (Login, Filename);
+                  Database.Preference.Set_Avatar (Login, New_Filename);
 
                   Templates.Insert
                     (Translations, Templates.Assoc
                        (Template_Defs.Block_User_Avatar.USER_AVATAR,
-                        Filename));
+                        New_Filename));
 
                   --  Delete old avatar if any
 
@@ -457,7 +462,7 @@ package body V2P.Callbacks.Page is
       C_Filename : constant String :=
                      Strings.Fixed.Translate
                        (Source  => Filename,
-                        Mapping => Utils.Clean_Mapping'Unrestricted_Access);
+                        Mapping => Utils.Clean_Mapping'Access);
 
       Login      : constant String :=
                      Context.Get_Value (Template_Defs.Set_Global.LOGIN);
