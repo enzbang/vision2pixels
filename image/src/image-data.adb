@@ -280,6 +280,7 @@ package body Image.Data is
       Image.Magick.Resize (Avatar, Img => Img.Image, Size => Avatar_Size);
 
       Avatar.Write (Avatar_Name);
+      Img.Image.Set_Filename (Avatar_Name);
 
       Img.Init_Status := Image_Created;
    end Store_Avatar;
