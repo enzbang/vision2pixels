@@ -462,7 +462,7 @@ package body V2P.Callbacks.Page is
       C_Filename : constant String :=
                      Strings.Fixed.Translate
                        (Source  => Filename,
-                        Mapping => Utils.Clean_Mapping'Unrestricted_Access);
+                        Mapping => Utils.Clean_Mapping'Access);
 
       Login      : constant String :=
                      Context.Get_Value (Template_Defs.Set_Global.LOGIN);
