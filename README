@@ -1,0 +1,4 @@
+Vision2Pixels is a GPL web application oriented toward photography critics.
+
+This is a Gwiad plugin (a web server based on AWS) using AWS Web_Block API.
+A live website running this software can be seen at http://v2p.fr.eu.org
