@@ -3,11 +3,15 @@ Some notes for building Vision2Pixels from sources.
 
 Vision2Pixels needs some support libraries:
 
+   * AWS (required)
+
    * Gwiad (required)
 
      http://repo.or.cz/w/gwiad.git
 
      Morzhol submodule must also be installed.
+
+   * Diouzhtu (to support comments with markdown syntax)
 
    * ImageMagick (required)
 
