@@ -10,9 +10,8 @@
 	<style type="text/css">
 		body {
   		margin-top: 1.0em;
-  		background-color: #1e5085;
-		  font-family: "Helvetica,Arial,FreeSans";
-  		color: #ffffff;
+        font-family: "Helvetica,Arial,FreeSans";
+  		color: #444444;
     }
     #container {
       margin: 0 auto;
@@ -52,59 +51,38 @@
       A Web space engine for commenting user's photos using AWS.
     </div>
 
-    <p>Vision2Pixels is a GPL web application oriented toward photography critics.
+    <p>Vision2Pixels is a GPL web application oriented toward photography critics.</p>
 
-This is a Gwiad plugin (a web server based on AWS) using AWS Web_Block API.
-A live website running this software can be seen at http://v2p.fr.eu.org
+    <p>This is a Gwiad plugin (a web server based on AWS) using AWS Web_Block API.
+    A live website running this software can be seen at <a href="http://v2p.fr.eu.org" alt="photography critics">v2p.fr.eu.org</a></p>
 </p><h2>Dependencies</h2>
 <p>Vision2Pixels needs some support libraries:
 
-   * Gwiad (required)
-
-     http://repo.or.cz/w/gwiad.git
-
-     Morzhol submodule must also be installed.
-
-   * ImageMagick (required)
-
-     Tested with ImageMagick 6.2.4.
-
-   * GnadeLite (required - a Git submodule)
-
-     http://repo.or.cz/w/gnadelite.git
-
-     Minimal version of GNADE database binding for Vision2Pixels.
-     It also contains a high level binding to abstract the database
-     used, this will permit to swicth to PostgreSQL if needed.
-
-   * JPEG (required for ImageMagick JPEG support)
-
-     Tested with JPEG v6b
-
-   * SQLite3 (required)
-
-     SQLite3 database is at the moment the primary database.
+<ul>
+    <li>Gwiad (required)</li>
+    <li>Morzhol submodule must also be installed.</li>
+    <li>ImageMagick (required) Tested with ImageMagick 6.2.4.</li>
+    <li>GnadeLite (required - a Git submodule)
+    It also contains a high level binding to abstract the database
+    used, this will permit to swicth to PostgreSQL if needed.</li>
+    <li>JPEG (required for ImageMagick JPEG support) Tested with JPEG v6b</li>
+    <li>SQLite3 (required)
+    SQLite3 database is at the moment the primary database.</li>
+</ul>
 </p>
+
 <h2>Install</h2>
-<p>
-Building
---------
+<h3>Building</h3>
+<p>Ada modules Gwiad, Morzhol and GnadeLite must be installed into the
+standard location. See install documentation for each of them.</p>
+<p><pre>$ cd v2p</pre></p>
+<p><pre>$ make</pre></p>
 
-   Ada modules Gwiad, Morzhol and GnadeLite must be installed into the
-   standard location. See install documentation for each of them.
-
-   Building Vision2Pixels:
-
-   $ cd v2p
-   $ make
-
-Installing with Gwiad
----------------------
-
-   $ make install_gwiad_plugin
+<h3>Installing with Gwiad</h3>
+<p><pre>$ make install_gwiad_plugin</pre></p>
 </p>
 <h2>License</h2>
-<p>GPL</p>
+<p>GPLv2</p>
 <h2>Authors</h2>
 <p>Olivier Ramonat (olivier@ramonat.fr)<br/>Pascal Obry (pascal@obry.net)<br/><br/>      </p>
 <h2>Contact</h2>
@@ -128,6 +106,5 @@ Installing with Gwiad
 
   </div>
 
-  
 </body>
 </html>
