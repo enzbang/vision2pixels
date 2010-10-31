@@ -753,6 +753,33 @@ package body V2P.Database is
       return Set;
    end Get_Forum;
 
+   --------------------------
+   -- Get_Forum_Entry_Name --
+   --------------------------
+
+   function Get_Forum_Entry_Name (Tid : in Id) return String is
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+      Name : Unbounded_String;
+   begin
+      Connect (DBH);
+
+      DBH.Handle.Prepare_Select
+        (Iter, "SELECT name from post WHERE post.id=" & To_String (Tid));
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Name := To_Unbounded_String (DB.String_Vectors.Element (Line, 1));
+
+         Line.Clear;
+      end if;
+
+      Iter.End_Select;
+
+      return To_String (Name);
+   end Get_Forum_Entry_Name;
+
    ------------------
    -- Get_Forum_Id --
    ------------------

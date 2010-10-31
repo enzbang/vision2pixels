@@ -203,6 +203,15 @@ package body V2P.Web_Server is
       Context    : in Templates.Filter_Context) return String;
    --  Mult filter (template parser user filter)
 
+   function URL_Encode_Internal
+     (Value           : in String;
+      Underline_Space : in Boolean) return String;
+   --  Converts characters into a format that can be safely transmitted over
+   --  the Internet
+   --  If Underline_Space is True, replace space characters by an underscore.
+   --  If False, encode spaces with %20.
+   --  Please note that using Underline_Space creates a different URL.
+
    function URL_Encode_Filter
      (Value      : in String;
       Parameters : in String;
@@ -210,6 +219,11 @@ package body V2P.Web_Server is
    --  Clean-up URL to be properly printed in plain text e-mail or used as link
    --  in Web pages. The most important part is to convert a space to %20 to
    --  avoid breaks into the URL.
+
+   function URL_Encode_Name_Filter
+     (Value      : in String;
+      Parameters : in String;
+      Context    : in Templates.Filter_Context) return String;
 
    function IMG_Callback (Request : in Status.Data) return Response.Data;
    --  Image callback
@@ -416,6 +430,12 @@ package body V2P.Web_Server is
       Templates.Insert
         (Translations,
          Templates.Assoc
+           (Template_Defs.Set_Global.FORUM_THREAD_URL_PREFIX,
+            Template_Defs.Page_Forum_Threads.Set.URL_PREFIX));
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
            (Template_Defs.Set_Global.FORUM_POST_URL,
             Template_Defs.Page_Forum_New_Text_Entry.Set.URL));
 
@@ -430,6 +450,18 @@ package body V2P.Web_Server is
          Templates.Assoc
            (Template_Defs.Set_Global.FORUM_ENTRY_URL,
             Template_Defs.Page_Forum_Entry.Set.URL));
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.FORUM_ENTRY_URL_PREFIX,
+            Template_Defs.Page_Forum_Entry.Set.URL_PREFIX));
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.FORUM_ENTRY_URL_CDC_PREFIX,
+            Template_Defs.Page_Forum_Entry.Set.URL_CDC_PREFIX));
 
       Templates.Insert
         (Translations,
@@ -840,10 +872,36 @@ package body V2P.Web_Server is
          Template_Defs.Page_Forum_Entry.Template,
          Callbacks.Page.Forum_Entry'Access);
 
+      Services.Web_Block.Registry.Register_Pattern_URL
+        (Prefix => Template_Defs.Page_Forum_Entry.Set.URL_PHOTOGRAPHY_PREFIX,
+         Regexp => "([0-9]+)-.*",
+         Template => Template_Defs.Page_Forum_Entry.Template,
+         Data_CB => Callbacks.Page.Forum_Entry_P'Access);
+
+      Services.Web_Block.Registry.Register_Pattern_URL
+        (Prefix => Template_Defs.Page_Forum_Entry.Set.URL_CDC_PREFIX,
+         Regexp => "([0-9]+)-.*",
+         Template => Template_Defs.Page_Forum_Entry.Template,
+         Data_CB => Callbacks.Page.Forum_Entry_Cdc_P'Access);
+
+
+      Services.Web_Block.Registry.Register_Pattern_URL
+        (Prefix => Template_Defs.Page_Forum_Entry.Set.URL_PREFIX,
+         Regexp => "([0-9]+)-.*",
+         Template => Template_Defs.Page_Forum_Entry.Template,
+         Data_CB => Callbacks.Page.Forum_Entry_P'Access);
+
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Forum_Threads.Set.URL,
          Template_Defs.Page_Forum_Threads.Template,
          Callbacks.Page.Forum_Threads'Access);
+
+      Services.Web_Block.Registry.Register_Pattern_URL
+        (Prefix => Template_Defs.Page_Forum_Threads.Set.URL_PREFIX,
+         Regexp => "([0-9]+)-.*",
+         Template => Template_Defs.Page_Forum_Threads.Template,
+         Data_CB => Callbacks.Page.Forum_Threads_P'Access);
+
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Main.Set.URL,
@@ -1376,6 +1434,18 @@ package body V2P.Web_Server is
       Context    : in Templates.Filter_Context) return String
    is
       pragma Unreferenced (Parameters, Context);
+   begin
+      return URL_Encode_Internal (Value, False);
+   end URL_Encode_Filter;
+
+   -------------------------
+   -- URL_Encode_Internal --
+   -------------------------
+
+   function URL_Encode_Internal
+      (Value : in String;
+       Underline_Space : in Boolean) return String
+   is
       Result : String (Value'First .. Value'Last + Value'Length * 2);
       J      : Natural := Result'First - 1;
    begin
@@ -1388,7 +1458,10 @@ package body V2P.Web_Server is
             declare
                P : constant Natural := Character'Pos (Value (K));
             begin
-               if P <= 128 then
+               if Underline_Space and then Value (K) = ' ' then
+                  J := J + 1;
+                  Result (J) := '_';
+               elsif P <= 128 then
                   Result (J + 1 .. J + 3) := "%" & Utils.Hex (P, Width => 2);
                   J := J + 3;
                else
@@ -1399,7 +1472,21 @@ package body V2P.Web_Server is
          end if;
       end loop;
       return Result (Result'First .. J);
-   end URL_Encode_Filter;
+   end URL_Encode_Internal;
+
+   ----------------------------
+   -- URL_Encode_Name_Filter --
+   ----------------------------
+
+   function URL_Encode_Name_Filter
+     (Value      : in String;
+      Parameters : in String;
+      Context    : in Templates.Filter_Context) return String
+   is
+      pragma Unreferenced (Parameters, Context);
+   begin
+      return URL_Encode_Internal (Value, True);
+   end URL_Encode_Name_Filter;
 
    ------------------
    -- Website_Data --
@@ -1491,6 +1578,8 @@ begin  -- V2P.Web_Server : register vision2pixels website
 
    AWS.Templates.Register_Filter ("FLOATMULT", Float_Mult_Filter'Access);
    AWS.Templates.Register_Filter ("URL_ENCODE", URL_Encode_Filter'Access);
+   AWS.Templates.Register_Filter
+      ("URL_ENCODE_NAME", URL_Encode_Name_Filter'Access);
 
    Register_Callbacks;
 

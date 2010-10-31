@@ -16,7 +16,7 @@
       @@IF@@ @_FID_@ = @_Current_FID_@
       class="selected"
       @@END_IF@@
-    href="@_FORUM_THREAD_URL_@?FID=@_FID_@&amp;FROM=1">@_FORUM_NAME_@</a>
+    href="@_FORUM_THREAD_URL_PREFIX_@@_FID_@-@_URL_ENCODE_NAME:FORUM_NAME_@">@_FORUM_NAME_@</a>
     @@IF@@ @_IS_NEW_@ /= 0
     <span class="timestampnew">
     @@ELSE@@

@@ -27,7 +27,7 @@
       </a>
     </td>
     @@END_INLINE@@
-    <td class="table_title"><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
+    <td class="table_title"><a href="@_FORUM_ENTRY_URL_PREFIX_@@_TID_@-@_URL_ENCODE_NAME:NAME_@">
     @@IF@@ @_IS_NEW_@ = TRUE
     <span class="newlv">!NEW</span>
     @@END_IF@@

@@ -22,10 +22,12 @@
 with AWS.Status;
 with AWS.Templates;
 with AWS.Services.Web_Block.Context;
+with AWS.Services.Web_Block.Registry;
 
 package V2P.Callbacks.Page is
 
    use AWS;
+   use AWS.Services.Web_Block.Registry;
 
    Error_404 : exception renames V2P.Callbacks.Error_404;
 
@@ -41,11 +43,33 @@ package V2P.Callbacks.Page is
       Translations : in out          Templates.Translate_Set);
    --  Forum entry callback
 
+   procedure Forum_Entry_Cdc_P
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Parameters   :                 Callback_Parameters;
+      Translations : in out          Templates.Translate_Set);
+   --  Forum entry callback
+
+   procedure Forum_Entry_P
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Parameters   :                 Callback_Parameters;
+      Translations : in out          Templates.Translate_Set);
+   --  Forum entry callback
+
    procedure Forum_Threads
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set);
    --  Forum threads callback
+
+   procedure Forum_Threads_P
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Parameters   :                 Callback_Parameters;
+      Translations : in out          Templates.Translate_Set);
+   --  Forum threads callback
+
 
    procedure New_Photo_Entry
      (Request      : in              Status.Data;
