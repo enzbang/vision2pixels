@@ -74,12 +74,12 @@ package body Web_Tests.CdC is
            (Page,
             Word_Set'
               (1 => +"pc_cdc",
-               2 => +"/forum/entry?TID=141",
-               3 => +"/forum/entry?TID=67",
-               4 => +"/forum/entry?TID=87",
-               5 => +"/forum/entry?TID=90",
-               6 => +"/forum/entry?TID=99",
-               7 => +"/forum/entry?TID=134"),
+               2 => +"/141-",
+               3 => +"/67-",
+               4 => +"/87-",
+               5 => +"/90-",
+               6 => +"/99-",
+               7 => +"/134-"),
             "wrong entries in the CdC page");
       end Check_Page;
    end CdC;
