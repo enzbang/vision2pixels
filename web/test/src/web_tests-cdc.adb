@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2008-2009                          --
+--                         Copyright (C) 2008-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -79,7 +79,7 @@ package body Web_Tests.CdC is
                7 => +"/forum/entry?TID=134"),
             "wrong entries in the CdC page");
       end Check_Page;
-   end Cdc;
+   end CdC;
 
    ----------
    -- Name --
@@ -97,7 +97,7 @@ package body Web_Tests.CdC is
    overriding procedure Register_Tests (T : in out Test_Case) is
       use AUnit.Test_Cases.Registration;
    begin
-      Register_Routine (T, Cdc'Access, "cdc page");
+      Register_Routine (T, CdC'Access, "cdc page");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
 

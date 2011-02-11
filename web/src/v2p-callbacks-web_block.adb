@@ -109,7 +109,7 @@ package body V2P.Callbacks.Web_Block is
                  (Context => Context.all,
                   Name    => Template_Defs.Set_Global.TID),
                Login => Context.Get_Value (Template_Defs.Set_Global.LOGIN),
-               TZ    =>  Context.Get_Value (Template_Defs.Set_Global.TZ)));
+               TZ    => Context.Get_Value (Template_Defs.Set_Global.TZ)));
       end if;
    end Comments;
 
