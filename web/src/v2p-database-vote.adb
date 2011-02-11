@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                            Copyright (C) 2010                            --
+--                         Copyright (C) 2010-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -22,10 +22,12 @@
 with AWS.Utils;
 
 with V2P.Database.Support;
+with V2P.Database.Timezone;
 with V2P.DB_Handle;
 with V2P.Settings;
 
 with V2P.Template_Defs.Block_Cdc;
+with V2P.Template_Defs.Block_Cdc_Data;
 with V2P.Template_Defs.Block_Cdc_Info;
 with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Vote;
@@ -133,6 +135,70 @@ package body V2P.Database.Vote is
            (Chunk_List_Navlink.NAV_NB_LINES_TOTAL, Total_Lines));
       return Set;
    end Get_CdC;
+
+   ------------------
+   -- Get_CdC_Data --
+   ------------------
+
+   function Get_CdC_Data (Tid : in Id) return Templates.Translate_Set is
+      use type Templates.Tag;
+      DBH      : constant TLS_DBH_Access :=
+                   TLS_DBH_Access (DBH_TLS.Reference);
+      Set      : Templates.Translate_Set;
+      Iter     : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line     : DB.String_Vectors.Vector;
+      Electors : Templates.Tag;
+   begin
+      Connect (DBH);
+
+      --  Get score and date
+
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "SELECT val, " & Timezone.Date ("elected_on", "")
+         & " FROM photo_of_the_week WHERE post_id=" & To_String (Tid));
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+
+         Templates.Insert
+           (Set,
+            Templates.Assoc
+              (Template_Defs.Block_Cdc_Data.SCORE,
+               DB.String_Vectors.Element (Line, 1)));
+         Templates.Insert
+           (Set,
+            Templates.Assoc
+              (Template_Defs.Block_Cdc_Data.DATE,
+               DB.String_Vectors.Element (Line, 2)));
+
+         Line.Clear;
+      end if;
+
+      Iter.End_Select;
+
+      --  Get electors
+
+      DBH.Handle.Prepare_Select
+        (Iter,
+         "SELECT user_login FROM user_photo_of_the_week"
+         & " WHERE post_id=" & To_String (Tid)
+         & " AND week_id != 0");
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+
+         Electors := Electors & DB.String_Vectors.Element (Line, 1);
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Block_Cdc_Data.USERS, Electors));
+
+      return Set;
+   end Get_CdC_Data;
 
    ------------------
    -- Get_CdC_Info --

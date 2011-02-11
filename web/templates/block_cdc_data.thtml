@@ -1,0 +1,9 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<div id="bcd_data">
+<p>@_BABEL_ON_DATE_@ <span id="bcd_info">@_DATE_@</span>
+- score <span id="bcd_info">@_SCORE_@</span> - @_BABEL_BY_@ :</p>
+@@TABLE@@
+<span id="bcd_user_name"><a href="/~@_URL_ENCODE:USERS_@">@_USERS_@</a></span>
+@@END_TABLE@@
+</div>

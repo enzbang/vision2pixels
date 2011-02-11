@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2010                          --
+--                         Copyright (C) 2007-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -75,6 +75,27 @@ package body V2P.Callbacks.Web_Block is
 
       Templates.Insert (Translations, Database.Vote.Get_CdC (From));
    end CdC;
+
+   --------------
+   -- CdC_Data --
+   --------------
+
+   procedure CdC_Data
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+   begin
+      if Context.Exist (Template_Defs.Set_Global.TID) then
+         Templates.Insert
+           (Translations,
+            Database.Vote.Get_CdC_Data
+              (V2P.Context.Counter.Get_Value
+                 (Context => Context.all,
+                  Name    => Template_Defs.Set_Global.TID)));
+      end if;
+   end CdC_Data;
 
    --------------
    -- CdC_Info --
