@@ -74,7 +74,7 @@ mention <span class="newlv">!NEW</span></p>
    sous Windows.</p>
 
 <p>Corrige l'affichage du séparateur indiquant à quel moment un auteur est
-  révélé dans le flux des commentaites.</p>
+  révélé dans le flux des commentaires.</p>
 
 <h2>Version 3.1.4 (février 2010)</h2>
 
@@ -130,7 +130,7 @@ la photo commentée.</p>
 </p>
 
 <p>Un séparateur indique à quel moment un auteur est révélé dans le flux
-   des commentaites.</p>
+   des commentaires.</p>
 
 <p>Il est maintenant possible de naviguer dans la liste des photographies dans
   la page utilisateur. Le nombre initial de photographies affichées est
@@ -262,7 +262,7 @@ la photo commentée.</p>
   les photographies des 7 derniers jours sont affichées par défaut.</p>
 
 <p>Le formulaire pour poster une photographie ou un message a été amélioré.
-  La catégorie n'est plus selectionnée par défaut et les messages d'erreur
+  La catégorie n'est plus sélectionnée par défaut et les messages d'erreur
   sont plus clairs.</p>
 
 <h3>Corrections de bugs</h3>
