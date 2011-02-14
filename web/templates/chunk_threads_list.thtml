@@ -12,7 +12,8 @@
       </span>
     </span>
     @@END_IF@@
-    <p class="entry_name"><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@"
+    <p class="entry_name" title="@_NAME_@">
+    <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@"
     @@IF@@ @_ADMIN_@ and @_HIDDEN_@
       class="hidden_entry"
     @@END_IF@@

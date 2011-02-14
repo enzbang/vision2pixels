@@ -16,9 +16,8 @@
       </span>
     </span>
     @@END_IF@@
-    <p><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
-    @_NAME_@
-    </a></p>
+    <p title="@_NAME_@">
+      <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">@_NAME_@</a></p>
     <ul class="thumb_metadata">
       <li class="photocat">@_CATEGORY_@</li>
       <li>@_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@</li>
