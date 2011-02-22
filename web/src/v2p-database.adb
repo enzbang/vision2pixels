@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2010                          --
+--                         Copyright (C) 2006-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -2435,6 +2435,7 @@ package body V2P.Database is
                   & " AND user_post.user_login=user.login"
                   & " AND post.category_id=category.id"
                   & " AND forum.id=category.forum_id"
+                  & " AND post.hidden='FALSE'"
                   & " AND (DATETIME(post.date_post, '+"
                   & Utils.Image (V2P.Settings.Anonymity_Hours)
                   & " hour')<DATETIME('NOW') OR forum.anonymity='FALSE')), "
