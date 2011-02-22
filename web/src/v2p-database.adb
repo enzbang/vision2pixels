@@ -2435,6 +2435,7 @@ package body V2P.Database is
                   & " AND user_post.user_login=user.login"
                   & " AND post.category_id=category.id"
                   & " AND forum.id=category.forum_id"
+                  & " AND post.hidden='FALSE'"
                   & " AND (DATETIME(post.date_post, '+"
                   & Utils.Image (V2P.Settings.Anonymity_Hours)
                   & " hour')<DATETIME('NOW') OR forum.anonymity='FALSE')), "
