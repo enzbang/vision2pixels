@@ -26,7 +26,7 @@
     <ul class="thumb_metadata">
       <li class="photocat">@_CATEGORY_@</li>
       <li>@_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@</li>
-      <li>@_ELECTED_ON_@</li>
+      <li>@_FORMAT_DATE("%d-%m-%Y"):ELECTED_ON_@</li>
     </ul>
   </li>
 @@END_TABLE@@

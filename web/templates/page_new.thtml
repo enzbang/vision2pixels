@@ -10,6 +10,11 @@
   rapports d'erreur ou des demandes de fonctionnalités. Le site ne peut
   évoluer sans vous.</p>
 
+<h1>Version 3.3.1 (février 2011)</h1>
+
+<p>Les dates sont affichées en utilisant le format standard français
+   (JJ-MM-AAAA).</p>
+
 <h1>Version 3.3 (novembre 2010)</h1>
 
 <p>Optimisation des filtres permettant au serveur d'être plus réactif.</p>

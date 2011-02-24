@@ -33,9 +33,9 @@
     @@END_IF@@
     @_NAME_@</a></td>
 @@IF@@ @_DATE_LAST_COMMENT_@ = ""
-    <td>@_DATE_POST_@</td>
+    <td>@_FORMAT_DATE("%d-%m-%Y"):DATE_POST_@</td>
 @@ELSE@@
-    <td title="@_BABEL_DATE_POST_@ @_DATE_POST_@">@_DATE_LAST_COMMENT_@</td>
+    <td title="@_BABEL_DATE_POST_@ @_FORMAT_DATE("%d-%m-%Y"):DATE_POST_@">@_FORMAT_DATE("%d-%m-%Y"):DATE_LAST_COMMENT_@</td>
 @@END_IF@@
     <td>@_COMMENT_COUNTER_@</td>
     <td>@_VISIT_COUNTER_@</td>

@@ -28,9 +28,9 @@
   @@INLINE@@
          @_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@ /
   @@IF@@ @_DATE_LAST_COMMENT_@ = ""
-      @_DATE_POST_@
+      @_FORMAT_DATE("%d-%m-%Y"):DATE_POST_@
   @@ELSE@@
-      @_DATE_LAST_COMMENT_@
+      @_FORMAT_DATE("%d-%m-%Y"):DATE_LAST_COMMENT_@
   @@END_IF@@
   @@END_INLINE@@
       </li>
