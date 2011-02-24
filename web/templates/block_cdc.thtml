@@ -17,11 +17,7 @@
     </span>
     @@END_IF@@
     <p><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@">
-    @@IF@@ @_SIZE:NAME_@ > 20
-    @_SLICE(1..20):NAME_@...
-    @@ELSE@@
     @_NAME_@
-    @@END_IF@@
     </a></p>
     <ul class="thumb_metadata">
       <li class="photocat">@_CATEGORY_@</li>
