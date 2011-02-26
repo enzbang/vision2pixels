@@ -12,7 +12,8 @@
       </span>
     </span>
     @@END_IF@@
-    <p class="entry_name"><a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@"
+    <p class="entry_name" title="@_NAME_@">
+    <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@"
     @@IF@@ @_ADMIN_@ and @_HIDDEN_@
       class="hidden_entry"
     @@END_IF@@
@@ -28,9 +29,9 @@
   @@INLINE@@
          @_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@ /
   @@IF@@ @_DATE_LAST_COMMENT_@ = ""
-      @_DATE_POST_@
+      @_FORMAT_DATE("%d-%m-%Y"):DATE_POST_@
   @@ELSE@@
-      @_DATE_LAST_COMMENT_@
+      @_FORMAT_DATE("%d-%m-%Y"):DATE_LAST_COMMENT_@
   @@END_IF@@
   @@END_INLINE@@
       </li>

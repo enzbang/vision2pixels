@@ -9,7 +9,8 @@
 <div class="posting_form">
 @@IF@@ @_LOGIN_@ /= ""
   @@IF@@ @_NEW_POST_DELAY_@ /= ""
-    <p class="errorinline">@_BABEL_HAVE_TO_WAIT_@ @_NEW_POST_DATE_@</p>
+    <p class="errorinline">@_BABEL_HAVE_TO_WAIT_@
+    @_FORMAT_DATE("%d-%m-%Y %H:%M:%S"):NEW_POST_DATE_@</p>
   @@ELSE@@
     <h1>@_BABEL_ADD_NEW_PHOTO_@</h1>
 

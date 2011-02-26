@@ -78,7 +78,7 @@
         @@END_IF@@
 
         @@IF@@ @_IMAGE_SOURCE_@ = ""
-        <span class="date">. @_BABEL_DATE_POST_@ @_DATE_POST_@</span>
+        <span class="date">. @_BABEL_DATE_POST_@ @_FORMAT_DATE("%d-%m-%Y %H:%M:%S"):DATE_POST_@</span>
         @@END_IF@@
       </p>
 @@IF@@ @_IMAGE_COMMENT_@ /= ""
@@ -102,7 +102,7 @@
           </span>
         </p>
         <p id="pfe_info"> <span class="theader">@_BABEL_DATE_@ :</span>
-          <span>@_DATE_POST_@</td></span>
+          <span>@_FORMAT_DATE("%d-%m-%Y %H:%M:%S"):DATE_POST_@</td></span>
         </p>
         <div class="clear" name="exif">@_LAZY_EXIF_@</div>
         <div id="global_lazy_metadata" class="clear">@_LAZY_METADATA_@</div>
