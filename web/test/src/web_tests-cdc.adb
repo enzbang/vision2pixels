@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2008-2009                          --
+--                         Copyright (C) 2008-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -35,6 +35,9 @@ package body Web_Tests.CdC is
 
    procedure CdC (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  The very first thing to do is to get the main page
+
+   procedure CdC_Data (T : in out AUnit.Test_Cases.Test_Case'Class);
+   --  Check for the CdC data on a given TID
 
    procedure Close (T : in out AUnit.Test_Cases.Test_Case'Class);
    --  Close the Web connection
@@ -79,7 +82,36 @@ package body Web_Tests.CdC is
                7 => +"/forum/entry?TID=134"),
             "wrong entries in the CdC page");
       end Check_Page;
-   end Cdc;
+   end CdC;
+
+   --------------
+   -- CdC_Data --
+   --------------
+
+   procedure CdC_Data (T : in out AUnit.Test_Cases.Test_Case'Class) is
+      Result : Response.Data;
+   begin
+      Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
+
+      Call (Connection, Result, URI => "/forum/entry?TID=141");
+
+      Check_Page : declare
+         use AUnit.Assertions;
+         Page : constant String := Response.Message_Body (Result);
+      begin
+         Check
+           (Page,
+            Word_Set'
+              (1 => +"bcd_data",
+               2 => +" score ",
+               3 => +"1.75",
+               4 => +" par :",
+               5 => +"turbo",
+               6 => +"test",
+               7 => +"pfe_comments_section"),
+            "wrong CdC data for TID 141");
+      end Check_Page;
+   end CdC_Data;
 
    ----------
    -- Name --
@@ -97,7 +129,8 @@ package body Web_Tests.CdC is
    overriding procedure Register_Tests (T : in out Test_Case) is
       use AUnit.Test_Cases.Registration;
    begin
-      Register_Routine (T, Cdc'Access, "cdc page");
+      Register_Routine (T, CdC'Access, "cdc page");
+      Register_Routine (T, CdC_Data'Access, "cdc data");
       Register_Routine (T, Close'Access, "close connection");
    end Register_Tests;
 

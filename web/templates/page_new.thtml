@@ -15,6 +15,10 @@
 <p>Les dates sont affichées en utilisant le format standard français
    (JJ-MM-AAAA).</p>
 
+<p>Il est possible d'afficher la date, le score et les électeurs pour les
+   photos coups-de-cœur en cliquant sur le petit bouton à droite du texte
+   "A été élu coup-de-cœur"</p>
+
 <h1>Version 3.3 (novembre 2010)</h1>
 
 <p>Optimisation des filtres permettant au serveur d'être plus réactif.</p>
@@ -73,7 +77,7 @@ mention <span class="newlv">!NEW</span></p>
    sous Windows.</p>
 
 <p>Corrige l'affichage du séparateur indiquant à quel moment un auteur est
-  révélé dans le flux des commentaites.</p>
+  révélé dans le flux des commentaires.</p>
 
 <h2>Version 3.1.4 (février 2010)</h2>
 
@@ -129,7 +133,7 @@ la photo commentée.</p>
 </p>
 
 <p>Un séparateur indique à quel moment un auteur est révélé dans le flux
-   des commentaites.</p>
+   des commentaires.</p>
 
 <p>Il est maintenant possible de naviguer dans la liste des photographies dans
   la page utilisateur. Le nombre initial de photographies affichées est
@@ -261,7 +265,7 @@ la photo commentée.</p>
   les photographies des 7 derniers jours sont affichées par défaut.</p>
 
 <p>Le formulaire pour poster une photographie ou un message a été amélioré.
-  La catégorie n'est plus selectionnée par défaut et les messages d'erreur
+  La catégorie n'est plus sélectionnée par défaut et les messages d'erreur
   sont plus clairs.</p>
 
 <h3>Corrections de bugs</h3>

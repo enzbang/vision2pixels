@@ -651,7 +651,11 @@ h2#pfe_comments_section {
 #pfe_comments li.comment {
     border-left:2px solid #69ADE0 !important;
 }
-#pfe_comments li.comment cite a {
+#pfe_comments li.comment cite a, #bcd_user_name a {
+    color: #69ADE0;
+}
+
+#pfe_comments li.comment cite a, #bcd_user_name {
     color: #69ADE0;
 }
 
@@ -708,6 +712,15 @@ h2#pfe_comments_section {
 #pm_cdc a {
     color: #FA5858;
     border: none;
+}
+
+#pfe_cdcdata_table {
+    width: 600px;
+    margin: 1em auto 0;
+}
+
+#bcd_info {
+    color: #e0e0ff;
 }
 
 fieldset#pfnpe_mandatory_fields {

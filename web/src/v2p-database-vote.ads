@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                            Copyright (C) 2010                            --
+--                         Copyright (C) 2010-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -42,6 +42,9 @@ package V2P.Database.Vote is
 
    function Get_CdC (From : in Positive) return Templates.Translate_Set;
    --  Returns all CdC photos
+
+   function Get_CdC_Data (Tid : in Id) return Templates.Translate_Set;
+   --  Returns all data about a specific CdC (score, voting users)
 
    function Get_CdC_Info return Templates.Translate_Set;
    --  Returns the current CdC information
