@@ -155,47 +155,53 @@ package body V2P.Database.Vote is
 
       DBH.Handle.Prepare_Select
         (Iter,
-         "SELECT val, " & Timezone.Date ("elected_on", "")
+         "SELECT id, val, " & Timezone.Date ("elected_on", "")
          & " FROM photo_of_the_week WHERE post_id=" & To_String (Tid));
 
       if Iter.More then
          Iter.Get_Line (Line);
 
-         Templates.Insert
-           (Set,
-            Templates.Assoc
-              (Template_Defs.Block_Cdc_Data.SCORE,
-               DB.String_Vectors.Element (Line, 1)));
-         Templates.Insert
-           (Set,
-            Templates.Assoc
-              (Template_Defs.Block_Cdc_Data.DATE,
-               DB.String_Vectors.Element (Line, 2)));
+         declare
+            Week_Id : constant String :=
+                        DB.String_Vectors.Element (Line, 1);
+         begin
+            Templates.Insert
+              (Set,
+               Templates.Assoc
+                 (Template_Defs.Block_Cdc_Data.SCORE,
+                  DB.String_Vectors.Element (Line, 2)));
+            Templates.Insert
+              (Set,
+               Templates.Assoc
+                 (Template_Defs.Block_Cdc_Data.DATE,
+                  DB.String_Vectors.Element (Line, 3)));
 
-         Line.Clear;
+            Line.Clear;
+
+            Iter.End_Select;
+
+            --  Get electors
+
+            DBH.Handle.Prepare_Select
+              (Iter,
+               "SELECT user_login FROM user_photo_of_the_week"
+               & " WHERE post_id=" & To_String (Tid)
+               & " AND week_id = " & Q (Week_Id));
+
+            while Iter.More loop
+               Iter.Get_Line (Line);
+
+               Electors := Electors & DB.String_Vectors.Element (Line, 1);
+               Line.Clear;
+            end loop;
+
+            Templates.Insert
+              (Set,
+               Templates.Assoc (Template_Defs.Block_Cdc_Data.USERS, Electors));
+         end;
       end if;
 
       Iter.End_Select;
-
-      --  Get electors
-
-      DBH.Handle.Prepare_Select
-        (Iter,
-         "SELECT user_login FROM user_photo_of_the_week"
-         & " WHERE post_id=" & To_String (Tid)
-         & " AND week_id != 0");
-
-      while Iter.More loop
-         Iter.Get_Line (Line);
-
-         Electors := Electors & DB.String_Vectors.Element (Line, 1);
-         Line.Clear;
-      end loop;
-
-      Iter.End_Select;
-
-      Templates.Insert
-        (Set, Templates.Assoc (Template_Defs.Block_Cdc_Data.USERS, Electors));
 
       return Set;
    end Get_CdC_Data;
