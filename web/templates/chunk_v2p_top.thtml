@@ -12,6 +12,8 @@
     <meta name="keywords" content="photo, photographie, critique, Ada, GNAT, Ajax, AWS, Gwiad, Open Source, GPL"/>
     <meta name="copyright" content="Pascal Obry, Olivier Ramonat"/>
     <title>@_$1_@</title>
+    <link rel="icon" type="image/png" href="/css/img/favicon.png" />
+    <link rel="shortcut icon" href="/css/img/favicon.ico" />
     <link media="screen" type="text/css" rel="stylesheet"
     @@IF@@ @_CSS_URL_@ = ""
     href="/css/style.css"
