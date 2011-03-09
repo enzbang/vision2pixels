@@ -7,6 +7,9 @@
 @@INCLUDE@@ chunk_v2p_top.thtml "@_BABEL_V2P_SMALL_WEBSITE_NAME_@ - @_FORUM_NAME_@" forum_threads yui-t7
 @@--
 @@--  FILTERS
+@@IF@@ @_FORUM_DESCRIPTION_@ /= ""
+<div id="pft_description">@_FORUM_DESCRIPTION_@</div>
+@@END_IF@@
 <div id="pft_filters">
 <div id="pft_lazy_forum_category_filter_set">
 @_LAZY_FORUM_CATEGORY_FILTER_@</div>

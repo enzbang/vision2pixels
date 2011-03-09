@@ -81,6 +81,7 @@ create trigger after_comment_insert after insert on comment
 create table "forum" (
    "id" integer not null primary key autoincrement,
    "name" varchar(100) not null,
+   "description" varchar(512),
    "last_activity" date,
    "anonymity" boolean default TRUE,
    "for_photo" boolean default TRUE

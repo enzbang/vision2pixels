@@ -8,13 +8,13 @@ insert into user ("login", "password", "email", "admin", created)
 --  Create forums
 
 insert into forum
-       values (1, "Photographies", datetime(current_timestamp), "TRUE", "TRUE");
+       values (1, "Photographies", "", datetime(current_timestamp), "TRUE", "TRUE");
 insert into forum
-       values (2, "Techniques", datetime(current_timestamp), "FALSE", "FALSE");
+       values (2, "Techniques", "Discussions autour des aspects techniques de la photographie comme la gestion de la lumière ou la profondeur de champ mais aussi les questions sur les logiciels de développement.", datetime(current_timestamp), "FALSE", "FALSE");
 insert into forum
-       values (3, "Matériels", datetime(current_timestamp), "FALSE", "FALSE");
+       values (3, "Matériels", "Discussions autour du matériel photographique, nouveautés, achat, vente...", datetime(current_timestamp), "FALSE", "FALSE");
 insert into forum
-       values (4, "Site v2p", datetime(current_timestamp), "FALSE", "FALSE");
+       values (4, "Site v2p", "Discussions à propos du site lui même, les évolutions possibles, les rapports de bug.", datetime(current_timestamp), "FALSE", "FALSE");
 
 --  Create categories
 

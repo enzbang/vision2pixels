@@ -714,8 +714,8 @@ package body V2P.Database is
       begin
          DBH.Handle.Prepare_Select
            (Iter,
-            "SELECT name, anonymity, for_photo FROM forum WHERE id="
-            & To_String (L_Fid));
+            "SELECT name, anonymity, for_photo, description "
+            & "FROM forum WHERE id=" & To_String (L_Fid));
 
          if Iter.More then
             Iter.Get_Line (Line);
@@ -732,6 +732,10 @@ package body V2P.Database is
               (Set, Templates.Assoc
                  (Page_Forum_Threads.FORUM_FOR_PHOTO,
                   DB.String_Vectors.Element (Line, 3)));
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Page_Forum_Threads.FORUM_DESCRIPTION,
+                  DB.String_Vectors.Element (Line, 4)));
             Templates.Insert (Set, Templates.Assoc (Set_Global.FID, L_Fid));
 
             Line.Clear;
