@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2010                          --
+--                         Copyright (C) 2006-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -71,6 +71,7 @@ package V2P.Database is
       CSS_URL                : Unbounded_String;
       Accept_Private_Message : Boolean;
       Avatar                 : Unbounded_String;
+      Start_Comment_Visible  : Boolean;
    end record;
 
    type User_Data is record
@@ -305,7 +306,8 @@ private
                                 CSS_URL                =>
                                   Null_Unbounded_String,
                                 Avatar                 =>
-                                  Null_Unbounded_String);
+                                  Null_Unbounded_String,
+                               Start_Comment_Visible   => True);
 
    No_User_Data : constant User_Data :=
                     User_Data'

@@ -25,7 +25,8 @@ create table "user_preferences" (
    "image_size" varchar(15) default "MAX_SIZE",
    "css_url" varchar(200) default "",
    "accept_private_message" boolean default FALSE,
-   "avatar" varchar(50) default ""
+   "avatar" varchar(50) default "",
+   "start_comment_visible" boolean default TRUE
 );
 
 create table "user_to_validate" (

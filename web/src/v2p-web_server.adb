@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2010                          --
+--                         Copyright (C) 2006-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -77,6 +77,7 @@ with V2P.Template_Defs.Block_Pref_Forum_Sort;
 with V2P.Template_Defs.Block_Pref_Image_Size;
 with V2P.Template_Defs.Block_Pref_New_Avatar;
 with V2P.Template_Defs.Block_Pref_Private_Message;
+with V2P.Template_Defs.Block_Pref_Show_Comments;
 with V2P.Template_Defs.Block_Pref_User_Email;
 with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Page;
@@ -134,6 +135,7 @@ with V2P.Template_Defs.R_Block_Logout;
 with V2P.Template_Defs.R_Block_Metadata_Form_Enter;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_Pref_Private_Message;
+with V2P.Template_Defs.R_Block_Pref_Show_Comments;
 with V2P.Template_Defs.R_Block_Rate;
 with V2P.Template_Defs.R_Block_Send_Private_Message;
 with V2P.Template_Defs.R_Block_User_Email_Form_Enter;
@@ -499,6 +501,9 @@ package body V2P.Web_Server is
             Settings.Avatars_Source_Prefix));
 
       V2P.Callbacks.Web_Block.Pref_Image_Size
+        (Request, Context'Access, Translations);
+
+      V2P.Callbacks.Web_Block.Pref_Show_Comments
         (Request, Context'Access, Translations);
 
       V2P.Callbacks.Web_Block.Pref_CSS_URL
@@ -1106,6 +1111,13 @@ package body V2P.Web_Server is
         (Template_Defs.Block_Pref_Private_Message.Ajax.onclick_bppm_check,
          Template_Defs.R_Block_Pref_Private_Message.Template,
          Callbacks.Ajax.Onclick_Pref_Private_Message_Preference'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Pref_Show_Comments.Ajax.onclick_bpsc_check,
+         Template_Defs.R_Block_Pref_Show_Comments.Template,
+         Callbacks.Ajax.Onclick_Pref_Show_Comments'Access,
          Content_Type     => MIME.Text_XML,
          Context_Required => True);
 

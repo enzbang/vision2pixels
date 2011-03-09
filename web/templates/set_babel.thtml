@@ -232,3 +232,5 @@
 @@SET@@ BABEL_AVATAR_SIZE="Taille maximum 150x150"
 @@SET@@ BABEL_CHANGE_EMAIL="Changer son adresse de messagerie"
 @@SET@@ BABEL_READ_MORE="En savoir plus..."
+@@SET@@ BABEL_START_SHOW_COMMENTS="commentaires visibles par défaut."
+@@SET@@ BABEL_COMMENT_VISIBILITY="Visibilité des commentaires"
