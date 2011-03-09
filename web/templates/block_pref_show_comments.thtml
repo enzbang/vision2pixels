@@ -1,0 +1,18 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@-- HTTP_GET(bpsc_check)
+@@--  Must be logged to send message to a user
+@@--  User can set its preference
+<div>
+  <p class="pref_header">
+    @_BABEL_COMMENT_VISIBILITY_@
+  </p>
+@@INLINE@@
+<input id="bpsc_check" type="checkbox"
+@@IF@@ @_PREF_SHOW_COMMENTS_@
+  checked
+@@END_IF@@
+>@_BABEL_START_SHOW_COMMENTS_@</input>
+@@END_INLINE@@
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bpsc_check, 4=>bpsc_check)
+</div>

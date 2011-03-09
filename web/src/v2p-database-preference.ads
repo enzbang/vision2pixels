@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                            Copyright (C) 2010                            --
+--                         Copyright (C) 2010-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -34,6 +34,10 @@ package V2P.Database.Preference is
      (Login  : in String;
       Avatar : in String);
    --  Set avatar preference for the given user
+
+   procedure Set_Comment_Visible
+     (Login                 : in String;
+      Start_Comment_Visible : in Boolean);
 
    procedure Set_Filter
      (Login  : in String;

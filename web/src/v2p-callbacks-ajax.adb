@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2010                          --
+--                         Copyright (C) 2007-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -65,6 +65,7 @@ with V2P.Template_Defs.Block_Pref_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Pref_Forum_Sort;
 with V2P.Template_Defs.Block_Pref_Image_Size;
 with V2P.Template_Defs.Block_Pref_Private_Message;
+with V2P.Template_Defs.Block_Pref_Show_Comments;
 with V2P.Template_Defs.Block_Pref_User_Email;
 with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Page;
@@ -81,6 +82,7 @@ with V2P.Template_Defs.R_Block_Forum_Filter;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_Pref_Private_Message;
+with V2P.Template_Defs.R_Block_Pref_Show_Comments;
 with V2P.Template_Defs.R_Block_Send_Private_Message;
 with V2P.Template_Defs.R_Block_Comment_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
@@ -708,6 +710,30 @@ package body V2P.Callbacks.Ajax is
          Templates.Assoc
            (Template_Defs.R_Block_Pref_Private_Message.SELECTED, Status));
    end Onclick_Pref_Private_Message_Preference;
+
+   --------------------------------
+   -- Onclick_Pref_Show_Comments --
+   --------------------------------
+
+   procedure Onclick_Pref_Show_Comments
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      package HTTP renames Template_Defs.Block_Pref_Show_Comments.HTTP;
+
+      Login  : constant String :=
+                 Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      P      : constant Parameters.List := Status.Parameters (Request);
+      Status : constant Boolean := Parameters.Get (P, HTTP.bpsc_check) = "on";
+   begin
+      Database.Preference.Set_Comment_Visible (Login, Status);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.R_Block_Pref_Show_Comments.SELECTED, Status));
+   end Onclick_Pref_Show_Comments;
 
    ----------------------------
    -- Onclick_Send_Reminders --
