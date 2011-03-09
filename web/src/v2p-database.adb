@@ -720,28 +720,22 @@ package body V2P.Database is
          if Iter.More then
             Iter.Get_Line (Line);
 
-            Forum_Data : declare
-               Name      : constant String  :=
-                             DB.String_Vectors.Element (Line, 1);
-               Anonymity : constant String :=
-                             DB.String_Vectors.Element (Line, 2);
-               For_Photo : constant String :=
-                             DB.String_Vectors.Element (Line, 3);
-            begin
-               Line.Clear;
-               Iter.End_Select;
+            Templates.Insert
+              (Set, Templates.Assoc (Block_Forum_List.FORUM_NAME,
+               DB.String_Vectors.Element (Line, 1)));
+            Templates.Insert
+              (Set,
+               Templates.Assoc
+                 (Page_Forum_Entry.FORUM_ANONYMITY,
+                  DB.String_Vectors.Element (Line, 2)));
+            Templates.Insert
+              (Set, Templates.Assoc
+                 (Page_Forum_Threads.FORUM_FOR_PHOTO,
+                  DB.String_Vectors.Element (Line, 3)));
+            Templates.Insert (Set, Templates.Assoc (Set_Global.FID, L_Fid));
 
-               Templates.Insert
-                 (Set, Templates.Assoc (Block_Forum_List.FORUM_NAME, Name));
-               Templates.Insert
-                 (Set,
-                  Templates.Assoc
-                    (Page_Forum_Entry.FORUM_ANONYMITY, Anonymity));
-               Templates.Insert
-                 (Set, Templates.Assoc
-                    (Page_Forum_Threads.FORUM_FOR_PHOTO, For_Photo));
-               Templates.Insert (Set, Templates.Assoc (Set_Global.FID, L_Fid));
-            end Forum_Data;
+            Line.Clear;
+            Iter.End_Select;
 
          else
             Iter.End_Select;
