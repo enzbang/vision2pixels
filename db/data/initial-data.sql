@@ -17,6 +17,8 @@ insert into forum
        values (4, "Site v2p", "Discussions à propos du site lui même, les évolutions possibles, les rapports de bug.", datetime(current_timestamp), "FALSE", "FALSE");
 insert into forum
        values (5, "Le Bar", "Discussions à bâtons rompus jusqu'au bout de la nuit...", datetime(current_timestamp), "FALSE", "FALSE");
+insert into forum
+       values (6, "Thèmes", "Animation autour d'un thème", datetime(current_timestamp), "FALSE", "FALSE");
 
 --  Create categories
 
@@ -45,6 +47,9 @@ insert into category values (11, 4, 'Idée');
 insert into category values (18, 4, 'Divers');
 
 insert into category values (20, 5, 'Divers');
+
+insert into category values (21, 6, 'Préparation');
+insert into category values (22, 6, 'Thème');
 
 --  Create criteria
 
