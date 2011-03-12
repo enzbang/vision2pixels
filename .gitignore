@@ -39,3 +39,6 @@ web/obj
 web/test/bin
 web/test/obj
 web/tools/wmaint
+image/obj
+image/test/dumpexif
+image/test/images_medium
