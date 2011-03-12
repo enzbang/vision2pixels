@@ -32,7 +32,7 @@ package Web_Tests is
    Host : constant String := "127.0.0.10";
    --  v2p web server host
 
-   Port : constant := 8042;
+   Port : constant Natural := 8042;
    --  v2p web server port
 
    type Word_Set is array (Positive range <>) of Unbounded_String;
