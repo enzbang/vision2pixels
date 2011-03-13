@@ -2,6 +2,7 @@
 @@-- HTTP_GET(FID): forum Id
 @@--
 @@SET@@ SET_URL = /forum/threads
+@@SET@@ SET_URL_PREFIX = /forums/
 @@--
 @@INCLUDE@@ chunk_v2p_top.thtml "@_BABEL_V2P_SMALL_WEBSITE_NAME_@ - @_FORUM_NAME_@" forum_threads yui-t7
 @@--

@@ -73,11 +73,10 @@ package body Web_Tests.User_Page is
          Word_Set'(+"Forum photographies", +"Forum mat",
            +"20 photographies", +"15 messages", +"9 commentaires",
            +"3 coups-de", +"diter votre page",
-           +"?TID=67", +"?TID=66", +"?TID=65", +"?TID=64", +"?TID=75",
-           +"?TID=74", +"?TID=73", +"?TID=72", +"?TID=71", +"?TID=70",
+           +"/67-", +"/66-", +"/65-", +"/64-", +"/75-",
+           +"/74-", +"/73-", +"/72-", +"/71-", +"/70-",
            not ">#17", not ">#19", +">#21", +">#20"),
-         "wrong content for obry's personal page:"
-         & Response.Message_Body (Result));
+         "wrong content for obry's personal page:");
    end Turbo_Page;
 
    --------------------

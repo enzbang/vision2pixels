@@ -63,7 +63,7 @@ package body Web_Tests.Last_Visit is
 
       declare
          Page  : constant String := Response.Message_Body (Result);
-         Index : constant Natural := Strings.Fixed.Index (Page, "TID=71");
+         Index : constant Natural := Strings.Fixed.Index (Page, "/71-F");
       begin
          --  Cut the Page before the second post
          Check
@@ -92,7 +92,7 @@ package body Web_Tests.Last_Visit is
 
       declare
          Page  : constant String := Response.Message_Body (Result);
-         Index : constant Natural := Strings.Fixed.Index (Page, "TID=71");
+         Index : constant Natural := Strings.Fixed.Index (Page, "/71-F");
       begin
          --  Cut the Page before the second post
          Check
@@ -109,7 +109,7 @@ package body Web_Tests.Last_Visit is
 
       declare
          Page  : constant String := Response.Message_Body (Result);
-         Index : constant Natural := Strings.Fixed.Index (Page, "TID=71");
+         Index : constant Natural := Strings.Fixed.Index (Page, "/71-F");
       begin
          --  Cut the Page before the second post
          Check

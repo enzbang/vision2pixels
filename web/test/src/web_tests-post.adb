@@ -317,7 +317,7 @@ package body Web_Tests.Post is
            (Page,
             Word_Set'
               (1 => +"Vous devez être connecté pour poster un message"),
-            "Must be connected to upload a photo");
+            "Must be connected to post a message");
       end Check_Anonymous_Post_Page;
 
       --  Go to the post text page (turbo)

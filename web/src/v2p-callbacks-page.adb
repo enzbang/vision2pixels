@@ -42,6 +42,7 @@ with V2P.Utils;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Pref_New_Avatar;
 with V2P.Template_Defs.Block_User_Avatar;
+with V2P.Template_Defs.Chunk_Navlink;
 with V2P.Template_Defs.Page_Admin_Database_Cleanup;
 with V2P.Template_Defs.Page_Forum_Entry;
 with V2P.Template_Defs.Page_Forum_Threads;
@@ -57,6 +58,20 @@ with V2P.Template_Defs.Set_Global;
 package body V2P.Callbacks.Page is
 
    use Ada;
+
+   procedure Forum_Entry_Internal
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set;
+      TID          : in              Database.Id;
+      From_Main    : in              Boolean);
+
+   procedure Forum_Threads_Internal
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set;
+      FID          : in              Database.Id;
+      From         : in              Natural);
 
    ----------------------------
    -- Admin_Database_Cleanup --
@@ -137,6 +152,39 @@ package body V2P.Callbacks.Page is
                       and then Boolean'Value
                         (Parameters.Get
                            (P, Template_Defs.Page_Forum_Entry.HTTP.From_Main));
+   begin
+      Forum_Entry_Internal (Request, Context, Translations, TID, From_Main);
+   end Forum_Entry;
+
+   -----------------------
+   -- Forum_Entry_Cdc_P --
+   -----------------------
+
+   procedure Forum_Entry_Cdc_P
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Parameters   :                 Callback_Parameters;
+      Translations : in out          Templates.Translate_Set) is
+
+      TID : constant Database.Id :=
+              Database.Id'Value
+                (Strings.Unbounded.To_String (Parameters (1)));
+
+   begin
+      Forum_Entry_Internal (Request, Context, Translations, TID, True);
+   end Forum_Entry_Cdc_P;
+
+   --------------------------
+   -- Forum_Entry_Internal --
+   --------------------------
+
+   procedure Forum_Entry_Internal
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set;
+      TID          : in              Database.Id;
+      From_Main    : in              Boolean)
+   is
       Login       : constant String :=
                       Context.Get_Value (Template_Defs.Set_Global.LOGIN);
       Admin       : constant Boolean :=
@@ -203,6 +251,10 @@ package body V2P.Callbacks.Page is
                  (Translations, Templates.Assoc
                     (V2P.Template_Defs.Page_Forum_Entry.PREVIOUS_THUMB,
                      Database.Get_Thumbnail (Previous_Id)));
+               Templates.Insert
+                 (Translations, Templates.Assoc
+                    (V2P.Template_Defs.Chunk_Navlink.PREVIOUS_NAME,
+                     Database.Get_Forum_Entry_Name (Previous_Id)));
             end if;
 
             Templates.Insert
@@ -214,6 +266,10 @@ package body V2P.Callbacks.Page is
                  (Translations, Templates.Assoc
                     (V2P.Template_Defs.Page_Forum_Entry.NEXT_THUMB,
                      Database.Get_Thumbnail (Next_Id)));
+               Templates.Insert
+                 (Translations, Templates.Assoc
+                    (V2P.Template_Defs.Chunk_Navlink.NEXT_NAME,
+                     Database.Get_Forum_Entry_Name (Next_Id)));
             end if;
          end Insert_Links;
 
@@ -248,7 +304,25 @@ package body V2P.Callbacks.Page is
    exception
       when Database.Parameter_Error | Constraint_Error =>
          raise Error_404;
-   end Forum_Entry;
+   end Forum_Entry_Internal;
+
+   -------------------
+   -- Forum_Entry_P --
+   -------------------
+
+   procedure Forum_Entry_P
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Parameters   :                 Callback_Parameters;
+      Translations : in out          Templates.Translate_Set) is
+
+      TID : constant Database.Id :=
+              Database.Id'Value
+                (Strings.Unbounded.To_String (Parameters (1)));
+
+   begin
+      Forum_Entry_Internal (Request, Context, Translations, TID, False);
+   end Forum_Entry_P;
 
    -------------------
    -- Forum_Threads --
@@ -264,6 +338,31 @@ package body V2P.Callbacks.Page is
                   Database.Id'Value
                     (Parameters.Get
                        (P, Template_Defs.Page_Forum_Threads.HTTP.FID));
+      From    : Natural;
+   begin
+
+      if Parameters.Exist (P, Template_Defs.Block_Forum_List.HTTP.FROM) then
+         From := Positive'Value
+           (Parameters.Get
+              (P, Template_Defs.Block_Forum_List.HTTP.FROM));
+      else
+         From := 0;
+      end if;
+      Forum_Threads_Internal (Request, Context, Translations, FID, From);
+   end Forum_Threads;
+
+   ----------------------------
+   -- Forum_Threads_Internal --
+   ----------------------------
+
+   procedure Forum_Threads_Internal
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set;
+      FID          : in              Database.Id;
+      From         : in              Natural)
+   is
+      pragma Unreferenced (Request);
       Cur_FID : constant Natural :=
                   V2P.Context.Counter.Get_Value
                     (Context => Context.all,
@@ -287,15 +386,9 @@ package body V2P.Callbacks.Page is
          Context.Remove (Template_Defs.Set_Global.FILTER_CATEGORY);
       end if;
 
-      if Parameters.Exist (P, Template_Defs.Block_Forum_List.HTTP.FROM) then
-         Set_First_Post : declare
-            From : constant Positive := Positive'Value
-              (Parameters.Get
-                 (P, Template_Defs.Block_Forum_List.HTTP.FROM));
-         begin
-            V2P.Context.Not_Null_Counter.Set_Value
-              (Context.all, Template_Defs.Set_Global.NAV_FROM, From);
-         end Set_First_Post;
+      if From > 0 then
+         V2P.Context.Not_Null_Counter.Set_Value
+           (Context.all, Template_Defs.Set_Global.NAV_FROM, From);
 
       elsif not Context.Exist (Template_Defs.Set_Global.NAV_FROM) then
          --  Default is to start to first post when entering a forum
@@ -316,7 +409,24 @@ package body V2P.Callbacks.Page is
          --  ??? Log the exception message ?
          --  ??? Raise 404 Error
          raise Error_404;
-   end Forum_Threads;
+   end Forum_Threads_Internal;
+
+   ---------------------
+   -- Forum_Threads_P --
+   ---------------------
+
+   procedure Forum_Threads_P
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Parameters   :                 Callback_Parameters;
+      Translations : in out          Templates.Translate_Set)
+   is
+   begin
+      Forum_Threads_Internal
+        (Request, Context, Translations,
+         Database.Id'Value
+           (Strings.Unbounded.To_String (Parameters (1))), 0);
+   end Forum_Threads_P;
 
    ----------
    -- Main --

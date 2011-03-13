@@ -108,7 +108,7 @@ package body Web_Tests.Last_Visit_After_Post is
       begin
          Check
             (Page,
-             Word_Set'(not "!NEW", +"Un_Troll", +"TID=141", +"Hissez"),
+             Word_Set'(not "!NEW", +"Un_Troll", +"/141-", +"Hissez"),
              "New post Un_Troll should now not be marked as new");
       end;
 

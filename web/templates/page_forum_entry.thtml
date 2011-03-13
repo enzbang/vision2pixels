@@ -4,6 +4,11 @@
 @@-- HTTP_GET(From_Main): The referer is the main page
 @@INCLUDE@@ set_values.incl
 @@SET@@ SET_URL = /forum/entry
+@@SET@@ SET_URL_PREFIX = /post/
+@@SET@@ SET_URL_CDC_PREFIX = /coup_de_coeur/
+@@SET@@ SET_URL_PHOTOGRAPHY_PREFIX = /photo/
+@@SET@@ SET_URL_REGEXP = '([0-9]+)-.*'
+@@SET@@ SET_URL_REGEXPS = ([a-zA-Z_]+)-([0-9]*-)-.*
 @@--
 @@IF@@ @_IMAGE_SOURCE_@ /= ""
 @@SET@@ BODY_CLASS = forum_img_entry
@@ -137,10 +142,10 @@
     @@IF@@ @_PREVIOUS_@ /= "0"
     <li class="prev_link">
       @@INLINE@@
-      <a href="@_FORUM_ENTRY_URL_@?TID=@_PREVIOUS_@">
+      <a href="@_FORUM_ENTRY_URL_PREFIX_@@_PREVIOUS_@-@_URL_ENCODE_NAME:PREVIOUS_NAME_@">
         @_BABEL_PREVIOUS_@
         @@IF@@ @_PREVIOUS_THUMB_@ /= ""
-        <img alt="previous"
+        <img alt="@_BABEL_PREVIOUS_@ (@_PREVIOUS_NAME_@)"
              src="@_THUMB_SOURCE_PREFIX_@/@_PREVIOUS_THUMB_@" />
         @@END_IF@@
         </a>
@@ -148,15 +153,15 @@
     </li>
     @@END_IF@@
     <li id="pfe_go_to_list">
-      <a href="@_FORUM_THREAD_URL_@?FID=@_FID_@"
+      <a href="@_FORUM_THREAD_URL_PREFIX_@@_FID_@-@_URL_ENCODE_NAME:FORUM_NAME_@"
          title="@_BABEL_BACK_TO_@ @_FORUM_NAME_@">@_FORUM_NAME_@</a>
     </li>
     @@IF@@ @_NEXT_@ /= "0"
     <li class="next_link">
       @@INLINE@@
-      <a href="@_FORUM_ENTRY_URL_@?TID=@_NEXT_@">
+      <a href="@_FORUM_ENTRY_URL_PREFIX_@@_NEXT_@-@_URL_ENCODE_NAME:NEXT_NAME_@">
         @@IF@@ @_NEXT_THUMB_@ /= ""
-        <img alt="next"
+        <img alt="@_BABEL_NEXT_@ (@_NEXT_NAME_@)"
         src="@_THUMB_SOURCE_PREFIX_@/@_NEXT_THUMB_@" />
         @@END_IF@@
         @_BABEL_NEXT_@</a>
