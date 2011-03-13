@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2010                          --
+--                         Copyright (C) 2007-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -141,17 +141,18 @@ package body V2P.Callbacks.Page is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      P           : constant Parameters.List := Status.Parameters (Request);
-      TID         : constant Database.Id :=
-                      Database.Id'Value
-                        (Parameters.Get
-                           (P, Template_Defs.Page_Forum_Entry.HTTP.TID));
-      From_Main   : constant Boolean :=
-                      Parameters.Exist
-                        (P, Template_Defs.Page_Forum_Entry.HTTP.From_Main)
-                      and then Boolean'Value
-                        (Parameters.Get
-                           (P, Template_Defs.Page_Forum_Entry.HTTP.From_Main));
+      P         : constant Parameters.List := Status.Parameters (Request);
+      TID       : constant Database.Id :=
+                    Database.Id'Value
+                      (Parameters.Get
+                         (P, Template_Defs.Page_Forum_Entry.HTTP.TID));
+      From_Main : constant Boolean :=
+                    Parameters.Exist
+                      (P, Template_Defs.Page_Forum_Entry.HTTP.From_Main)
+                        and then Boolean'Value
+                          (Parameters.Get
+                             (P,
+                              Template_Defs.Page_Forum_Entry.HTTP.From_Main));
    begin
       Forum_Entry_Internal (Request, Context, Translations, TID, From_Main);
    end Forum_Entry;
@@ -160,19 +161,18 @@ package body V2P.Callbacks.Page is
    -- Forum_Entry_Cdc_P --
    -----------------------
 
-   procedure Forum_Entry_Cdc_P
+   procedure Forum_Entry_CdC_P
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
       Parameters   :                 Callback_Parameters;
-      Translations : in out          Templates.Translate_Set) is
-
+      Translations : in out          Templates.Translate_Set)
+   is
       TID : constant Database.Id :=
               Database.Id'Value
                 (Strings.Unbounded.To_String (Parameters (1)));
-
    begin
       Forum_Entry_Internal (Request, Context, Translations, TID, True);
-   end Forum_Entry_Cdc_P;
+   end Forum_Entry_CdC_P;
 
    --------------------------
    -- Forum_Entry_Internal --
@@ -314,12 +314,11 @@ package body V2P.Callbacks.Page is
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
       Parameters   :                 Callback_Parameters;
-      Translations : in out          Templates.Translate_Set) is
-
+      Translations : in out          Templates.Translate_Set)
+   is
       TID : constant Database.Id :=
               Database.Id'Value
                 (Strings.Unbounded.To_String (Parameters (1)));
-
    begin
       Forum_Entry_Internal (Request, Context, Translations, TID, False);
    end Forum_Entry_P;
@@ -333,12 +332,12 @@ package body V2P.Callbacks.Page is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      P       : constant Parameters.List := Status.Parameters (Request);
-      FID     : constant Database.Id :=
-                  Database.Id'Value
-                    (Parameters.Get
-                       (P, Template_Defs.Page_Forum_Threads.HTTP.FID));
-      From    : Natural;
+      P    : constant Parameters.List := Status.Parameters (Request);
+      FID  : constant Database.Id :=
+               Database.Id'Value
+                 (Parameters.Get
+                    (P, Template_Defs.Page_Forum_Threads.HTTP.FID));
+      From : Natural;
    begin
 
       if Parameters.Exist (P, Template_Defs.Block_Forum_List.HTTP.FROM) then
@@ -367,8 +366,8 @@ package body V2P.Callbacks.Page is
                   V2P.Context.Counter.Get_Value
                     (Context => Context.all,
                      Name    => Template_Defs.Set_Global.FID);
-      Login    : constant String :=
-                   Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      Login   : constant String :=
+                  Context.Get_Value (Template_Defs.Set_Global.LOGIN);
    begin
       if Context.Exist (Template_Defs.Set_Global.TID) then
          Context.Remove (Template_Defs.Set_Global.TID);
@@ -419,13 +418,11 @@ package body V2P.Callbacks.Page is
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
       Parameters   :                 Callback_Parameters;
-      Translations : in out          Templates.Translate_Set)
-   is
+      Translations : in out          Templates.Translate_Set) is
    begin
       Forum_Threads_Internal
         (Request, Context, Translations,
-         Database.Id'Value
-           (Strings.Unbounded.To_String (Parameters (1))), 0);
+         Database.Id'Value (Strings.Unbounded.To_String (Parameters (1))), 0);
    end Forum_Threads_P;
 
    ----------

@@ -878,22 +878,22 @@ package body V2P.Web_Server is
          Callbacks.Page.Forum_Entry'Access);
 
       Services.Web_Block.Registry.Register_Pattern_URL
-        (Prefix => Template_Defs.Page_Forum_Entry.Set.URL_PHOTOGRAPHY_PREFIX,
-         Regexp => "([0-9]+)-.*",
+        (Prefix   => Template_Defs.Page_Forum_Entry.Set.URL_PHOTOGRAPHY_PREFIX,
+         Regexp   => "([0-9]+)-.*",
          Template => Template_Defs.Page_Forum_Entry.Template,
-         Data_CB => Callbacks.Page.Forum_Entry_P'Access);
+         Data_CB  => Callbacks.Page.Forum_Entry_P'Access);
 
       Services.Web_Block.Registry.Register_Pattern_URL
-        (Prefix => Template_Defs.Page_Forum_Entry.Set.URL_CDC_PREFIX,
-         Regexp => "([0-9]+)-.*",
+        (Prefix   => Template_Defs.Page_Forum_Entry.Set.URL_CDC_PREFIX,
+         Regexp   => "([0-9]+)-.*",
          Template => Template_Defs.Page_Forum_Entry.Template,
-         Data_CB => Callbacks.Page.Forum_Entry_Cdc_P'Access);
+         Data_CB  => Callbacks.Page.Forum_Entry_CdC_P'Access);
 
       Services.Web_Block.Registry.Register_Pattern_URL
-        (Prefix => Template_Defs.Page_Forum_Entry.Set.URL_PREFIX,
-         Regexp => "([0-9]+)-.*",
+        (Prefix   => Template_Defs.Page_Forum_Entry.Set.URL_PREFIX,
+         Regexp   => "([0-9]+)-.*",
          Template => Template_Defs.Page_Forum_Entry.Template,
-         Data_CB => Callbacks.Page.Forum_Entry_P'Access);
+         Data_CB  => Callbacks.Page.Forum_Entry_P'Access);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Forum_Threads.Set.URL,
@@ -901,10 +901,10 @@ package body V2P.Web_Server is
          Callbacks.Page.Forum_Threads'Access);
 
       Services.Web_Block.Registry.Register_Pattern_URL
-        (Prefix => Template_Defs.Page_Forum_Threads.Set.URL_PREFIX,
-         Regexp => "([0-9]+)-.*",
+        (Prefix   => Template_Defs.Page_Forum_Threads.Set.URL_PREFIX,
+         Regexp   => "([0-9]+)-.*",
          Template => Template_Defs.Page_Forum_Threads.Template,
-         Data_CB => Callbacks.Page.Forum_Threads_P'Access);
+         Data_CB  => Callbacks.Page.Forum_Threads_P'Access);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Main.Set.URL,

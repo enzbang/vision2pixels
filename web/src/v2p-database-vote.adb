@@ -493,9 +493,9 @@ package body V2P.Database.Vote is
       return Result;
    end Has_User_Vote;
 
-   ------------------
-   -- No_More_Vote --
-   ------------------
+   -------------
+   -- Nb_Vote --
+   -------------
 
    function Nb_Vote (Uid : in String) return Natural is
       DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
