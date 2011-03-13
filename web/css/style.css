@@ -369,6 +369,11 @@ ul.thumb_metadata {
    font-style:italic;
    color:#eee;
 }
+.bc_cdc {
+   font-size:1.2em;
+   font-style:normal;
+   color:#FA5858;
+}
 .thumbs span.entry_name {
    font-variant:small-caps;
    text-transform:lowercase;
@@ -1016,12 +1021,13 @@ ul#bftt_navigate,
 ul#bft_navigate,
 ul#bu_navigate,
 ul#bupl_navigate,
-ul#bcdc_navigate {
+ul#bcdc_navigate,
+ul#pwv_navigate {
     text-align: right;
     padding: 0 1em 0 0;
 }
 
-ul#bft_navigate li, ul#pfe_navigate li, ul#pfe_navigate_bottom li, ul#bftt_navigate li, ul#bu_navigate li, ul#bupl_navigate li, ul#bcdc_navigate li {
+ul#bft_navigate li, ul#pfe_navigate li, ul#pfe_navigate_bottom li, ul#bftt_navigate li, ul#bu_navigate li, ul#bupl_navigate li, ul#bcdc_navigate li, ul#pwv_navigate li {
    display:inline;
    font-variant:small-caps;
    font-size:0.9em;
@@ -1031,7 +1037,7 @@ ul#pfe_navigate, ul#pfe_navigate_bottom {
    text-align:center;
    padding-top:1em;
 }
-ul#bft_navigate li.nav_info, ul#bftt_navigate li.nav_info, ul#bu_navigate li.nav_info, ul#bupl_navigate li.nav_info, ul#bcdc_navigate li.nav_info {
+ul#bft_navigate li.nav_info, ul#bftt_navigate li.nav_info, ul#bu_navigate li.nav_info, ul#bupl_navigate li.nav_info, ul#bcdc_navigate li.nav_info, ul#pwv_navigate li.nav_info {
    font-size:0.7em;
 }
 ul#pfe_navigate_bottom li a {
@@ -1428,4 +1434,32 @@ label.inline {
 .inlinehelp {
     padding-left: 2em;
     font-size: 0.8em;
+}
+
+#pwv_cdc_voters, #pwv_cdc_photos {
+    width: 90%;
+    margin-left: 5%;
+}
+
+.pwv_item {
+    width: 90%;
+    margin: 1em;
+    padding: 1em 2em;
+    background: #111111;
+    border-left: 8px solid #555555;
+}
+.pwv_thumb {
+    width: 200px;
+    float: left;
+}
+.pwv_data {
+    padding-top: 1em;
+}
+.pwv_data p {
+    font-size: 1.3em;
+    padding: 4px;
+}
+.voters_block p {
+    font-size: 1.3em;
+    padding: 0.4em;
 }

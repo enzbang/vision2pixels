@@ -67,6 +67,7 @@
 @@SET@@ BABEL_PREVIOUS_PAGE="Page Précédente"
 @@SET@@ BABEL_NEXT_PAGE="Page Suivante"
 @@SET@@ BABEL_BACK_TO="Retour vers"
+@@SET@@ BABEL_BACK="retour"
 @@SET@@ BABEL_SEND="Envoyer"
 @@SET@@ BABEL_SEND_MESSAGE="Envoyer un message"
 @@SET@@ BABEL_CHECK="Vérifier"
@@ -235,3 +236,5 @@
 @@SET@@ BABEL_NO_MORE_VOTE="Nombre maximum de vote atteint."
 @@SET@@ BABEL_START_SHOW_COMMENTS="commentaires visibles par défaut."
 @@SET@@ BABEL_COMMENT_VISIBILITY="Visibilité des commentaires"
+@@SET@@ BABEL_WEEK_VOTES="Votes pour le CdC n°"
+@@SET@@ BABEL_VOTES_PER_USER="Votes par utilisateur"

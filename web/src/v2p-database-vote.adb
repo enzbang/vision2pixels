@@ -19,6 +19,13 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Indefinite_Hashed_Maps;
+with Ada.Containers.Indefinite_Ordered_Maps;
+with Ada.Containers.Indefinite_Vectors;
+with Ada.Containers.Ordered_Sets;
+with Ada.Float_Text_IO;
+with Ada.Strings.Hash;
+
 with AWS.Utils;
 
 with V2P.Database.Support;
@@ -34,12 +41,47 @@ with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Photo_Of_The_Week;
 with V2P.Template_Defs.Block_User_Voted_Photos_List;
 with V2P.Template_Defs.Chunk_List_Navlink;
+with V2P.Template_Defs.Page_Week_Votes;
 with V2P.Template_Defs.Set_Global;
 
 package body V2P.Database.Vote is
 
+   use Ada;
+
    use V2P.Database.Support;
    use V2P.Template_Defs;
+
+   Weight : array (1 .. 7) of Float;
+   --  Scores weight given the number of vote per user
+   W_Initialized : Boolean := False;
+
+   procedure Initialize_Weights;
+   --  Initialize the Weight array above.
+   --  Note that this can't be called from the elaboration as this will create
+   --  an elaboration circuitry. It must be called in any routine using the
+   --  Weight array above. Note also that it is safe even if called from
+   --  multiple task, so this routine is not protected for this.
+
+   package String_Vectors is
+     new Containers.Indefinite_Vectors (Positive, String);
+
+   type Name_Vect is record
+      Filename : Unbounded_String;
+      Users    : String_Vectors.Vector;
+   end record;
+
+   package Photo_Set is new Containers.Indefinite_Ordered_Maps
+     (Id, Name_Vect, "<", "=");
+
+   package Vote_Voter is new Containers.Indefinite_Hashed_Maps
+     (String, Natural, Strings.Hash, "=", "=");
+
+   type Votes_Data is record
+      Photos      : Photo_Set.Map;
+      Voter_Count : Vote_Voter.Map;
+   end record;
+
+   function Get_Week_Votes (Week_Id : Positive) return Votes_Data;
 
    -------------
    -- Get_CdC --
@@ -50,7 +92,8 @@ package body V2P.Database.Vote is
                       TLS_DBH_Access (DBH_TLS.Reference);
       SQL         : constant String :=
                       "SELECT q.post_id, p.filename, q.elected_on, "
-                        & "o.comment_counter, o.visit_counter, c.name, o.name "
+                        & "o.comment_counter, o.visit_counter, c.name, "
+                        & "o.name, q.id "
                         & "FROM photo_of_the_week q, photo p, post o, "
                         & "category c "
                         & "WHERE q.post_id=o.id"
@@ -69,6 +112,7 @@ package body V2P.Database.Vote is
       Comments    : Templates.Tag;
       Categories  : Templates.Tag;
       Names       : Templates.Tag;
+      CdC_Id      : Templates.Tag;
       Lines       : Natural := 0;
       Total_Lines : Natural := 0;
    begin
@@ -101,7 +145,8 @@ package body V2P.Database.Vote is
          Templates.Append (Comments, DB.String_Vectors.Element (Line, 4));
          Templates.Append (Visits, DB.String_Vectors.Element (Line, 5));
          Templates.Append (Categories, DB.String_Vectors.Element (Line, 6));
-         Templates.Append (Names,  DB.String_Vectors.Element (Line, 7));
+         Templates.Append (Names, DB.String_Vectors.Element (Line, 7));
+         Templates.Append (CdC_Id, DB.String_Vectors.Element (Line, 8));
          Line.Clear;
       end loop;
 
@@ -123,6 +168,8 @@ package body V2P.Database.Vote is
         (Set, Templates.Assoc (Template_Defs.Block_Cdc.CATEGORY, Categories));
       Templates.Insert
         (Set, Templates.Assoc (Template_Defs.Block_Cdc.NAME, Names));
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Block_Cdc.CDC_ID, CdC_Id));
 
       Templates.Insert
         (Set, Templates.Assoc (Set_Global.NAV_FROM, From));
@@ -465,6 +512,248 @@ package body V2P.Database.Vote is
       return Set;
    end Get_User_Voted_Photos;
 
+   --------------------
+   -- Get_Week_Votes --
+   --------------------
+
+   function Get_Week_Votes (Week_Id : Positive) return Votes_Data is
+
+      DBH     : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      Iter    : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      SQL     : constant String :=
+                  "SELECT user_login, post_id, "
+                    & "(SELECT filename FROM photo, post"
+                    & " WHERE post.photo_id=photo.id AND post_id=post.id) "
+                    & "FROM user_photo_of_the_week "
+                    & "WHERE week_id=" & To_String (Week_Id);
+      Line    : DB.String_Vectors.Vector;
+
+      Result  : Votes_Data;
+      C_User  : Vote_Voter.Cursor;
+      C_Photo : Photo_Set.Cursor;
+   begin
+      Connect (DBH);
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      while Iter.More loop
+         Iter.Get_Line (Line);
+
+         declare
+            User : constant String := DB.String_Vectors.Element (Line, 1);
+            Pid  : constant Id :=
+                     Natural'Value (DB.String_Vectors.Element (Line, 2));
+         begin
+            --  Count number of votes for a given user
+
+            C_User := Result.Voter_Count.Find  (User);
+
+            if Vote_Voter.Has_Element (C_User) then
+               Result.Voter_Count.Replace_Element
+                 (C_User, Vote_Voter.Element (C_User) + 1);
+            else
+               Result.Voter_Count.Insert (User, 1);
+            end if;
+
+            --  Record vote for this photo
+
+            C_Photo := Result.Photos.Find (Pid);
+
+            if Photo_Set.Has_Element (C_Photo) then
+               declare
+                  procedure Add
+                    (Key : in     Id;
+                     NV  : in out Name_Vect);
+                  --  Add user into the vector
+
+                  ---------
+                  -- Add --
+                  ---------
+
+                  procedure Add
+                    (Key : in     Id;
+                     NV  : in out Name_Vect)
+                  is
+                     pragma Unreferenced (Key);
+                  begin
+                     NV.Users.Append (User);
+                  end Add;
+
+               begin
+                  Result.Photos.Update_Element (C_Photo, Add'Access);
+               end;
+
+            else
+               Result.Photos.Insert
+                 (Pid,
+                  Name_Vect'(
+                    To_Unbounded_String (DB.String_Vectors.Element (Line, 3)),
+                    String_Vectors.To_Vector (User, 1)));
+            end if;
+         end;
+      end loop;
+
+      Iter.End_Select;
+
+      return Result;
+   end Get_Week_Votes;
+
+   function Get_Week_Votes
+     (Week_Id : Positive) return Templates.Translate_Set
+   is
+      use type AWS.Templates.Tag;
+
+      procedure Add_Voters (Pos : in Vote_Voter.Cursor);
+      --  Handle voters and corresponding count
+
+      procedure Add_Photos (Pos : in Photo_Set.Cursor);
+      --  Handle photos and voters
+
+      type P_Data is record
+         Score    : Float := 0.0;
+         Pid      : Id;
+         Filename : Unbounded_String;
+         V        : Templates.Tag;
+      end record;
+
+      function "<" (Left, Right : P_Data) return Boolean;
+
+      function "=" (Left, Right : P_Data) return Boolean;
+
+      ---------
+      -- "<" --
+      ---------
+
+      function "<" (Left, Right : P_Data) return Boolean is
+      begin
+         return Left.Score > Right.Score
+           or else Left.Pid < Right.Pid;
+      end "<";
+
+      ---------
+      -- "=" --
+      ---------
+
+      function "=" (Left, Right : P_Data) return Boolean is
+      begin
+         return Left.Pid = Right.Pid;
+      end "=";
+
+      package P_Set is new Ada.Containers.Ordered_Sets (P_Data, "<", "=");
+
+      procedure Fill_Tag (Pos : in P_Set.Cursor);
+      --  Fill sorted value into the corresponding tags
+
+      D_Set    : P_Set.Set;
+
+      Data      : constant Votes_Data := Get_Week_Votes (Week_Id);
+      Set       : Templates.Translate_Set;
+      Voters    : Templates.Tag;
+      Votes     : Templates.Tag;
+      Photos    : Templates.Tag;
+      Filenames : Templates.Tag;
+      Scores    : Templates.Tag;
+      P_Voters  : Templates.Tag;
+
+      ----------------
+      -- Add_Photos --
+      ----------------
+
+      procedure Add_Photos (Pos : in Photo_Set.Cursor) is
+
+         procedure Add_Voters (Pos : in String_Vectors.Cursor);
+         --  Handle voter names
+
+         D : P_Data;
+
+         ----------------
+         -- Add_Voters --
+         ----------------
+
+         procedure Add_Voters (Pos : in String_Vectors.Cursor) is
+            Voter : constant String := String_Vectors.Element (Pos);
+         begin
+            D.V := D.V & Voter;
+
+            --  Compute score
+
+            declare
+               NV : constant Natural := Data.Voter_Count.Element (Voter);
+            begin
+               --  In the past we were not checking for the maximum of 7 votes,
+               --  so it may have happened that a user had voted for more than
+               --  7 photos. The script was then not counting thoses votes.
+               if NV <= Weight'Last then
+                  D.Score := D.Score + Weight (NV);
+               end if;
+            end;
+         end Add_Voters;
+
+      begin
+         D.Pid := Photo_Set.Key (Pos);
+         D.Filename := Photo_Set.Element (Pos).Filename;
+
+         --  Add each voters
+
+         Photo_Set.Element (Pos).Users.Iterate (Add_Voters'Access);
+
+         D_Set.Insert (D);
+      end Add_Photos;
+
+      ----------------
+      -- Add_Voters --
+      ----------------
+
+      procedure Add_Voters (Pos : in Vote_Voter.Cursor) is
+      begin
+         Voters := Voters & Vote_Voter.Key (Pos);
+         Votes  := Votes & Vote_Voter.Element (Pos);
+      end Add_Voters;
+
+      --------------
+      -- Fill_Tag --
+      --------------
+
+      procedure Fill_Tag (Pos : in P_Set.Cursor) is
+         D : constant P_Data := P_Set.Element (Pos);
+      begin
+         Photos := Photos & D.Pid;
+         Filenames := Filenames & D.Filename;
+         P_Voters := P_Voters & D.V;
+
+         declare
+            Buffer : String (1 .. 10);
+         begin
+            Float_Text_IO.Put (Buffer, D.Score, Aft => 2, Exp => 0);
+
+            Scores := Scores & Buffer;
+         end;
+      end Fill_Tag;
+
+   begin
+      Initialize_Weights;
+
+      Data.Voter_Count.Iterate (Add_Voters'Access);
+      Data.Photos.Iterate (Add_Photos'Access);
+
+      D_Set.Iterate (Fill_Tag'Access);
+
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Page_Week_Votes.VOTERS, Voters));
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Page_Week_Votes.NB_VOTES, Votes));
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Page_Week_Votes.PHOTOS, Photos));
+      Templates.Insert
+        (Set,
+         Templates.Assoc (Template_Defs.Page_Week_Votes.FILENAMES, Filenames));
+      Templates.Insert
+        (Set, Templates.Assoc (Template_Defs.Page_Week_Votes.SCORES, Scores));
+      Templates.Insert
+        (Set, Templates.Assoc
+           (Template_Defs.Page_Week_Votes.PHOTO_VOTERS, P_Voters));
+      return Set;
+   end Get_Week_Votes;
+
    -------------------
    -- Has_User_Vote --
    -------------------
@@ -492,6 +781,36 @@ package body V2P.Database.Vote is
 
       return Result;
    end Has_User_Vote;
+
+   ------------------------
+   -- Initialize_Weights --
+   ------------------------
+
+   procedure Initialize_Weights is
+      DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      SQL  : constant String := "SELECT * FROM vote_ponderated";
+      Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line : DB.String_Vectors.Vector;
+      K    : Positive := Weight'First;
+   begin
+      if not W_Initialized then
+         Connect (DBH);
+
+         DBH.Handle.Prepare_Select (Iter, SQL);
+
+         while Iter.More loop
+            Iter.Get_Line (Line);
+
+            Weight (K) := Float'Value (DB.String_Vectors.Element (Line, 1));
+            K := K + 1;
+            exit when K > Weight'Last;
+         end loop;
+
+         Iter.End_Select;
+
+         W_Initialized := True;
+      end if;
+   end Initialize_Weights;
 
    -------------
    -- Nb_Vote --

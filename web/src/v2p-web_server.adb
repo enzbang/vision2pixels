@@ -115,6 +115,7 @@ with V2P.Template_Defs.Page_User_Register;
 with V2P.Template_Defs.Page_Users;
 with V2P.Template_Defs.Page_Validate_New_Email;
 with V2P.Template_Defs.Page_Validate_User;
+with V2P.Template_Defs.Page_Week_Votes;
 with V2P.Template_Defs.Page_Rss;
 with V2P.Template_Defs.Page_Rss_Last_Comments;
 with V2P.Template_Defs.Page_Rss_Last_Photos;
@@ -970,15 +971,22 @@ package body V2P.Web_Server is
          Template_Defs.Page_Delete_User.Template,
          Callbacks.Page.Delete_User'Access);
 
-      Services.Web_Block.Registry.Register
-        (Template_Defs.Page_Cdc.Set.URL,
-         Template_Defs.Page_Cdc.Template,
-         Callbacks.Page.CdC'Access);
+      Services.Web_Block.Registry.Register_Pattern_URL
+        (Prefix   => Template_Defs.Page_Cdc.Set.URL_PREFIX,
+         Regexp   => "/?([a-z]*).*",
+         Template => Template_Defs.Page_Cdc.Template,
+         Data_CB  => Callbacks.Page.CdC'Access);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Search.Set.URL,
          Template_Defs.Page_Search.Template,
          Callbacks.Page.Search'Access);
+
+      Services.Web_Block.Registry.Register_Pattern_URL
+        (Prefix   => Template_Defs.Page_Week_Votes.Set.URL_PREFIX,
+         Regexp   => "([0-9]+).*",
+         Template => Template_Defs.Page_Week_Votes.Template,
+         Data_CB  => Callbacks.Page.Week_Votes'Access);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Help.Set.URL,

@@ -1,5 +1,7 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
+@@-- HTTP_GET(CDCID)
+@@--
 @@INCLUDE@@ chunk_list_navlink.thtml bcdc
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bcdc_goto_previous_page)
 @@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bcdc_goto_next_page)
@@ -20,6 +22,9 @@
       <a href="@_FORUM_ENTRY_URL_CDC_PREFIX_@@_TID_@-@_URL_ENCODE_NAME:NAME_@">@_NAME_@</a>
     </p>
     <ul class="thumb_metadata">
+      <li><a class="bc_cdc" href="@_WEEK_VOTES_URL_PREFIX_@@_CDC_ID_@">
+        CdC n°@_CDC_ID_@, votes.</a>
+      </li>
       <li class="photocat">@_CATEGORY_@</li>
       <li>@_COMMENT_COUNTER_@ / @_VISIT_COUNTER_@</li>
       <li>@_FORMAT_DATE("%d-%m-%Y"):ELECTED_ON_@</li>
