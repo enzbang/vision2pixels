@@ -55,6 +55,9 @@ package V2P.Database.Vote is
    function Has_User_Vote (Uid : in String; Tid : in Id) return Boolean;
    --  Returns True if user Uid has voted for the given photo
 
+   function Nb_Vote (Uid : in String) return Natural;
+   --  Returns the number of vote for the current week of the given user
+
    function Get_User_Voted_Photos
      (Uid : in String) return Templates.Translate_Set;
    --  Returns the translate table with the list of all voted photos for the

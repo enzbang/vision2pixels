@@ -493,6 +493,35 @@ package body V2P.Database.Vote is
       return Result;
    end Has_User_Vote;
 
+   ------------------
+   -- No_More_Vote --
+   ------------------
+
+   function Nb_Vote (Uid : in String) return Natural is
+      DBH    : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      SQL    : constant String :=
+                 "SELECT COUNT(*) FROM user_photo_of_the_week "
+                   & "WHERE user_login=" & Q (Uid)
+                   & " AND week_id=0";
+      --  week_id=0 as we want only the photo for which the user has voted for
+      --  the current open vote.
+      Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line   : DB.String_Vectors.Vector;
+      Result : Natural := 0;
+   begin
+      Connect (DBH);
+      DBH.Handle.Prepare_Select (Iter, SQL);
+
+      if Iter.More then
+         Iter.Get_Line (Line);
+         Result := Natural'Value (DB.String_Vectors.Element (Line, 1));
+      end if;
+
+      Iter.End_Select;
+
+      return Result;
+   end Nb_Vote;
+
    ----------------------------
    -- Toggle_Vote_Week_Photo --
    ----------------------------

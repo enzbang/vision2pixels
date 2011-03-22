@@ -1045,7 +1045,7 @@ ul#pfe_navigate_bottom li a:hover {
     padding: 1em;
 }
 
-a#bvwp_vote_button {
+a#bvwp_vote_button, #bvwp_not_more_vote {
     font-style: italic;
     color: #FA5858;
     border: none;
