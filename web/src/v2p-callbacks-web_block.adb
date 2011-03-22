@@ -1082,6 +1082,7 @@ package body V2P.Callbacks.Web_Block is
       Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
+      Nb_Vote : Natural;
    begin
       if Context.Exist (Template_Defs.Set_Global.LOGIN)
         and then Context.Exist (Template_Defs.Set_Global.TID)
@@ -1095,6 +1096,16 @@ package body V2P.Callbacks.Web_Block is
                   Tid => V2P.Context.Counter.Get_Value
                     (Context => Context.all,
                      Name    => Template_Defs.Set_Global.TID))));
+
+         Nb_Vote :=
+           Database.Vote.Nb_Vote
+             (Uid => Context.Get_Value (Template_Defs.Set_Global.LOGIN));
+
+         Templates.Insert
+           (Translations,
+            Templates.Assoc
+              (Template_Defs.Block_Vote_Week_Photo.NO_MORE_VOTE,
+               Nb_Vote = Settings.Max_Vote_Per_User));
       end if;
    end Vote_Week_Photo;
 

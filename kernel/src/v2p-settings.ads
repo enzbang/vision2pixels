@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2010                          --
+--                         Copyright (C) 2006-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -132,6 +132,9 @@ package V2P.Settings is
 
    function Number_Users_Listed return Positive;
    --  Returns the maximum number of users to list in the users page
+
+   function Max_Vote_Per_User return Positive;
+   --  Returns the maximum number of CdC vote per week per user
 
    function Google_Map_Key return String;
    --  Returns the Google map key
