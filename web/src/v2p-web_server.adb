@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2010                          --
+--                         Copyright (C) 2006-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -168,7 +168,7 @@ package body V2P.Web_Server is
    XML_Path        : constant String :=
                        Directories.Compose
                          (Containing_Directory => Gwiad_Plugin_Path,
-                         Name                 => "xml");
+                          Name                 => "xml");
    XML_Prefix_URI  : constant String := "/xml_";
    CSS_URI         : constant String := "/css";
    IMG_URI         : constant String := "/css/img";
@@ -884,7 +884,6 @@ package body V2P.Web_Server is
          Template => Template_Defs.Page_Forum_Entry.Template,
          Data_CB => Callbacks.Page.Forum_Entry_Cdc_P'Access);
 
-
       Services.Web_Block.Registry.Register_Pattern_URL
         (Prefix => Template_Defs.Page_Forum_Entry.Set.URL_PREFIX,
          Regexp => "([0-9]+)-.*",
@@ -901,7 +900,6 @@ package body V2P.Web_Server is
          Regexp => "([0-9]+)-.*",
          Template => Template_Defs.Page_Forum_Threads.Template,
          Data_CB => Callbacks.Page.Forum_Threads_P'Access);
-
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Main.Set.URL,
