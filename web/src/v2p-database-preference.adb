@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                            Copyright (C) 2010                            --
+--                         Copyright (C) 2010-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -94,6 +94,18 @@ package body V2P.Database.Preference is
       Set (Login, "avatar", Q (Avatar));
    end Set_Avatar;
 
+   -------------------------
+   -- Set_Comment_Visible --
+   -------------------------
+
+   procedure Set_Comment_Visible
+     (Login                 : in String;
+      Start_Comment_Visible : in Boolean) is
+   begin
+      Set (Login, "start_comment_visible",
+           Q (Boolean'Image (Start_Comment_Visible)));
+   end Set_Comment_Visible;
+
    -----------------
    -- Set_CSS_URL --
    -----------------
@@ -170,7 +182,7 @@ package body V2P.Database.Preference is
    is
       SQL  : constant String :=
                "SELECT photo_per_page, filter, sort, image_size, css_url, "
-                 & "accept_private_message, avatar "
+                 & "accept_private_message, avatar, start_comment_visible "
                  & "FROM user_preferences WHERE user_login=" & Q (Login);
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
@@ -198,7 +210,9 @@ package body V2P.Database.Preference is
               Accept_Private_Message => Boolean'Value
                 ((DB.String_Vectors.Element (Line, 6))),
               Avatar                 => To_Unbounded_String
-                (DB.String_Vectors.Element (Line, 7)));
+                (DB.String_Vectors.Element (Line, 7)),
+              Start_Comment_Visible  => Boolean'Value
+                ((DB.String_Vectors.Element (Line, 8))));
 
       else
          Preferences := Default_User_Settings;

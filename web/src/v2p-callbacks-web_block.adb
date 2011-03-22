@@ -38,6 +38,7 @@ with V2P.Template_Defs.Block_New_Comment;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Avatar;
+with V2P.Template_Defs.Block_Pref_Show_Comments;
 with V2P.Template_Defs.Block_Pref_User_Email;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Photo_List;
@@ -706,6 +707,33 @@ package body V2P.Callbacks.Web_Block is
            (Template_Defs.Set_Global.PREF_IMAGE_SIZE,
             Database.Image_Size'Image (Preferences.Image_Size)));
    end Pref_Image_Size;
+
+   ------------------------
+   -- Pref_Show_Comments --
+   ------------------------
+
+   procedure Pref_Show_Comments
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      Login       : constant String :=
+                      Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      Preferences : Database.User_Settings;
+   begin
+      if Login = "" then
+         Preferences := Database.Default_User_Settings;
+      else
+         Database.Preference.User (Login, Preferences);
+      end if;
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Block_Pref_Show_Comments.PREF_SHOW_COMMENTS,
+            Preferences.Start_Comment_Visible));
+   end Pref_Show_Comments;
 
    ---------------------
    -- Pref_User_Email --
