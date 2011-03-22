@@ -5,7 +5,11 @@
   @@IF@@ @_HAS_USER_VOTE_@
      <a id="bvwp_vote_button" href="#">@_BABEL_RESET_VOTE_WEEK_PHOTO_@</a>
   @@ELSE@@
-     <a id="bvwp_vote_button" href="#">@_BABEL_SET_VOTE_WEEK_PHOTO_@</a>
+    @@IF@@ @_NO_MORE_VOTE_@
+      <span id="bvwp_not_more_vote">@_BABEL_NO_MORE_VOTE_@</span>
+    @@ELSE@@
+       <a id="bvwp_vote_button" href="#">@_BABEL_SET_VOTE_WEEK_PHOTO_@</a>
+    @@END_IF@@
   @@END_IF@@
   <span class="inlinehelp">
      <a href="/help#helpcdc">@_BABEL_READ_MORE_@</a></span>

@@ -232,3 +232,4 @@
 @@SET@@ BABEL_AVATAR_SIZE="Taille maximum 150x150"
 @@SET@@ BABEL_CHANGE_EMAIL="Changer son adresse de messagerie"
 @@SET@@ BABEL_READ_MORE="En savoir plus..."
+@@SET@@ BABEL_NO_MORE_VOTE="Nombre maximum de vote atteint."
