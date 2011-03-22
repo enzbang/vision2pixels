@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2010                          --
+--                         Copyright (C) 2006-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -147,7 +147,7 @@ package V2P.Database is
    function Get_Latest_Users
      (Limit : in Positive) return Templates.Translate_Set;
    --  Returns the Limit latest registered users
-     --
+
    function Get_Forum_Entry_Name (Tid : in Id) return String;
    --  Get the name of a forum entry
 
