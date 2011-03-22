@@ -915,6 +915,16 @@ dl.bnc_comment_formatting dd {
     width: 90%;
 }
 
+#pft_description {
+    margin: 1em auto;
+    width: 90%;
+    padding: 4px;
+    background: #393939;
+    font-style: italic;
+    color: #CBCBFF;
+    font-size: 1.2em;
+}
+
 #pft_filters div {
     display: block;
     float: left;
