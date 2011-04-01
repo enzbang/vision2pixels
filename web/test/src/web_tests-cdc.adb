@@ -91,8 +91,6 @@ package body Web_Tests.CdC is
    procedure CdC_Data (T : in out AUnit.Test_Cases.Test_Case'Class) is
       Result : Response.Data;
    begin
-      Client.Create (Connection, "http://" & Host & ':' & Utils.Image (Port));
-
       Call (Connection, Result, URI => "/forum/entry?TID=141");
 
       Check_Page : declare
