@@ -1,0 +1,55 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@SET@@ SET_URL_PREFIX = /votes/
+@@--
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_CDC_@ week_votes
+@@--
+<h1>@_BABEL_WEEK_VOTES_@ @_CDC_ID_@</h1>
+@@--
+<ul id="pwv_navigate" class="pagination">
+<li class="prev_link"><a id="pwv_goto_prev_pae" href="/cdc/back">&lt;</a></li>
+<li>@_BABEL_BACK_@</li>
+</ul>
+
+<div id="pwv_cdc_photos">
+
+@@TABLE@@
+<div class="pwv_item">
+<div class="pwv_thumb">
+  @@IF@@ @_FILENAMES_@ /= ""
+  <span class="small_thumbs">
+    <span class="small_imgcontainer">
+      <span class="small_outernooverflow">
+        <span class="small_nooverflowimage">
+          <a href="@_FORUM_ENTRY_URL_@?TID=@_PHOTOS_@&amp;From_Main=False">
+            <img alt="@_PHOTOS_@" src="@_THUMB_SOURCE_PREFIX_@/@_FILENAMES_@"/>
+          </a>
+        </span>
+      </span>
+    </span>
+  </span>
+  @@END_IF@@
+</div>
+<div class="pwv_data">
+<p>Score: @_SCORES_@</p>
+<p>
+@@TABLE@@
+<a href="/~@_PHOTO_VOTERS_@">@_PHOTO_VOTERS_@</a>
+@@END_TABLE@@&nbsp;
+</p>
+</div>
+<div class="clear"></div>
+</div>
+@@END_TABLE@@
+</div>
+
+<h1>@_BABEL_VOTES_PER_USER_@</h1>
+
+<div id="pwv_cdc_voters">
+@@TABLE@@
+<div class="voters_block">
+<p><a href="/~@_VOTERS_@">@_VOTERS_@</a> : @_NB_VOTES_@</p>
+</div>
+@@END_TABLE@@
+</div>
+@@INCLUDE@@ chunk_v2p_end.thtml

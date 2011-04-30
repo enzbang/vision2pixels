@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2010                          --
+--                         Copyright (C) 2007-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -34,6 +34,7 @@ with V2P.Context;
 with V2P.Database.Admin;
 with V2P.Database.Preference;
 with V2P.Database.Registration;
+with V2P.Database.Vote;
 with V2P.Navigation_Links;
 with V2P.Settings;
 with V2P.URL;
@@ -53,11 +54,13 @@ with V2P.Template_Defs.Page_Photo_Post;
 with V2P.Template_Defs.Page_Rss_Last_Comments;
 with V2P.Template_Defs.Page_Rss_Last_Posts;
 with V2P.Template_Defs.Page_User;
+with V2P.Template_Defs.Page_Week_Votes;
 with V2P.Template_Defs.Set_Global;
 
 package body V2P.Callbacks.Page is
 
    use Ada;
+   use Ada.Strings.Unbounded;
 
    procedure Forum_Entry_Internal
      (Request      : in              Status.Data;
@@ -102,11 +105,22 @@ package body V2P.Callbacks.Page is
    procedure CdC
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
+      Parameters   :                 Callback_Parameters;
       Translations : in out          Templates.Translate_Set)
    is
-      pragma Unreferenced (Request, Translations);
+      pragma Unreferenced (Request);
    begin
-      Context.Remove (Template_Defs.Set_Global.NAV_FROM);
+      if Parameters'Length = 0
+        or else Parameters (Parameters'First) /= "back"
+      then
+         Context.Remove (Template_Defs.Set_Global.NAV_FROM);
+      end if;
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.WEEK_VOTES_URL_PREFIX,
+            Template_Defs.Page_Week_Votes.Set.URL_PREFIX));
    end CdC;
 
    -----------------
@@ -141,17 +155,18 @@ package body V2P.Callbacks.Page is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      P           : constant Parameters.List := Status.Parameters (Request);
-      TID         : constant Database.Id :=
-                      Database.Id'Value
-                        (Parameters.Get
-                           (P, Template_Defs.Page_Forum_Entry.HTTP.TID));
-      From_Main   : constant Boolean :=
-                      Parameters.Exist
-                        (P, Template_Defs.Page_Forum_Entry.HTTP.From_Main)
-                      and then Boolean'Value
-                        (Parameters.Get
-                           (P, Template_Defs.Page_Forum_Entry.HTTP.From_Main));
+      P         : constant Parameters.List := Status.Parameters (Request);
+      TID       : constant Database.Id :=
+                    Database.Id'Value
+                      (Parameters.Get
+                         (P, Template_Defs.Page_Forum_Entry.HTTP.TID));
+      From_Main : constant Boolean :=
+                    Parameters.Exist
+                      (P, Template_Defs.Page_Forum_Entry.HTTP.From_Main)
+                        and then Boolean'Value
+                          (Parameters.Get
+                             (P,
+                              Template_Defs.Page_Forum_Entry.HTTP.From_Main));
    begin
       Forum_Entry_Internal (Request, Context, Translations, TID, From_Main);
    end Forum_Entry;
@@ -160,19 +175,18 @@ package body V2P.Callbacks.Page is
    -- Forum_Entry_Cdc_P --
    -----------------------
 
-   procedure Forum_Entry_Cdc_P
+   procedure Forum_Entry_CdC_P
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
       Parameters   :                 Callback_Parameters;
-      Translations : in out          Templates.Translate_Set) is
-
+      Translations : in out          Templates.Translate_Set)
+   is
       TID : constant Database.Id :=
               Database.Id'Value
                 (Strings.Unbounded.To_String (Parameters (1)));
-
    begin
       Forum_Entry_Internal (Request, Context, Translations, TID, True);
-   end Forum_Entry_Cdc_P;
+   end Forum_Entry_CdC_P;
 
    --------------------------
    -- Forum_Entry_Internal --
@@ -314,12 +328,11 @@ package body V2P.Callbacks.Page is
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
       Parameters   :                 Callback_Parameters;
-      Translations : in out          Templates.Translate_Set) is
-
+      Translations : in out          Templates.Translate_Set)
+   is
       TID : constant Database.Id :=
               Database.Id'Value
                 (Strings.Unbounded.To_String (Parameters (1)));
-
    begin
       Forum_Entry_Internal (Request, Context, Translations, TID, False);
    end Forum_Entry_P;
@@ -333,12 +346,12 @@ package body V2P.Callbacks.Page is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      P       : constant Parameters.List := Status.Parameters (Request);
-      FID     : constant Database.Id :=
-                  Database.Id'Value
-                    (Parameters.Get
-                       (P, Template_Defs.Page_Forum_Threads.HTTP.FID));
-      From    : Natural;
+      P    : constant Parameters.List := Status.Parameters (Request);
+      FID  : constant Database.Id :=
+               Database.Id'Value
+                 (Parameters.Get
+                    (P, Template_Defs.Page_Forum_Threads.HTTP.FID));
+      From : Natural;
    begin
 
       if Parameters.Exist (P, Template_Defs.Block_Forum_List.HTTP.FROM) then
@@ -367,8 +380,8 @@ package body V2P.Callbacks.Page is
                   V2P.Context.Counter.Get_Value
                     (Context => Context.all,
                      Name    => Template_Defs.Set_Global.FID);
-      Login    : constant String :=
-                   Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      Login   : constant String :=
+                  Context.Get_Value (Template_Defs.Set_Global.LOGIN);
    begin
       if Context.Exist (Template_Defs.Set_Global.TID) then
          Context.Remove (Template_Defs.Set_Global.TID);
@@ -419,13 +432,11 @@ package body V2P.Callbacks.Page is
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
       Parameters   :                 Callback_Parameters;
-      Translations : in out          Templates.Translate_Set)
-   is
+      Translations : in out          Templates.Translate_Set) is
    begin
       Forum_Threads_Internal
         (Request, Context, Translations,
-         Database.Id'Value
-           (Strings.Unbounded.To_String (Parameters (1))), 0);
+         Database.Id'Value (Strings.Unbounded.To_String (Parameters (1))), 0);
    end Forum_Threads_P;
 
    ----------
@@ -459,7 +470,6 @@ package body V2P.Callbacks.Page is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      use Ada.Strings.Unbounded;
       use Image.Data;
 
       function Rand10 return String;
@@ -883,5 +893,25 @@ package body V2P.Callbacks.Page is
               (Template_Defs.Page_Validate_User.ERROR, True));
       end if;
    end Validate_User;
+
+   ----------------
+   -- Week_Votes --
+   ----------------
+
+   procedure Week_Votes
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Parameters   :                 Callback_Parameters;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context, Request);
+      CdC_Id : constant String := To_String (Parameters (1));
+   begin
+      Templates.Insert
+        (Translations, Templates.Assoc
+           (Template_Defs.Page_Week_Votes.CDC_ID, CdC_Id));
+      Templates.Insert
+        (Translations, Database.Vote.Get_Week_Votes (Natural'Value (CdC_Id)));
+   end Week_Votes;
 
 end V2P.Callbacks.Page;

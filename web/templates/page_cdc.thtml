@@ -1,6 +1,6 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
-@@SET@@ SET_URL = /cdc
+@@SET@@ SET_URL_PREFIX = /cdc
 @@--
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_CDC_@ cdc_page
 @@--

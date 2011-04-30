@@ -49,6 +49,7 @@ with V2P.Template_Defs.Page_Forum_New_Photo_Entry;
 with V2P.Template_Defs.Page_Search;
 with V2P.Template_Defs.Page_Lost_Password;
 with V2P.Template_Defs.Page_User_Register;
+with V2P.Template_Defs.Page_Week_Votes;
 with V2P.Template_Defs.Set_Global;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_New_Comment;
@@ -541,10 +542,16 @@ package body V2P.Callbacks.Ajax is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      pragma Unreferenced (Request, Translations);
+      pragma Unreferenced (Request);
    begin
       Navigation_Links.Goto_Next_Previous
         (Context, Settings.Number_CdC_Listed);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.WEEK_VOTES_URL_PREFIX,
+            Template_Defs.Page_Week_Votes.Set.URL_PREFIX));
    end Onclick_CdC_Goto_Next_Page;
 
    ------------------------------------
@@ -556,10 +563,16 @@ package body V2P.Callbacks.Ajax is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
-      pragma Unreferenced (Request, Translations);
+      pragma Unreferenced (Request);
    begin
       Navigation_Links.Goto_Next_Previous
         (Context, -Settings.Number_CdC_Listed);
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Set_Global.WEEK_VOTES_URL_PREFIX,
+            Template_Defs.Page_Week_Votes.Set.URL_PREFIX));
    end Onclick_CdC_Goto_Previous_Page;
 
    --------------------------------

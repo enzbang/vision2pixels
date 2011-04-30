@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2010                          --
+--                         Copyright (C) 2007-2011                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -43,7 +43,7 @@ package V2P.Callbacks.Page is
       Translations : in out          Templates.Translate_Set);
    --  Forum entry callback
 
-   procedure Forum_Entry_Cdc_P
+   procedure Forum_Entry_CdC_P
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
       Parameters   :                 Callback_Parameters;
@@ -69,7 +69,6 @@ package V2P.Callbacks.Page is
       Parameters   :                 Callback_Parameters;
       Translations : in out          Templates.Translate_Set);
    --  Forum threads callback
-
 
    procedure New_Photo_Entry
      (Request      : in              Status.Data;
@@ -109,6 +108,7 @@ package V2P.Callbacks.Page is
    procedure CdC
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
+      Parameters   :                 Callback_Parameters;
       Translations : in out          Templates.Translate_Set);
 
    procedure User
@@ -125,6 +125,12 @@ package V2P.Callbacks.Page is
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set) is null;
+
+   procedure Week_Votes
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Parameters   :                 Callback_Parameters;
+      Translations : in out          Templates.Translate_Set);
 
    -----------
    --  RSS  --

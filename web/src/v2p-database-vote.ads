@@ -63,4 +63,7 @@ package V2P.Database.Vote is
    --  Returns the translate table with the list of all voted photos for the
    --  given user.
 
+   function Get_Week_Votes (Week_Id : Positive) return Templates.Translate_Set;
+   --  Returns votes data (voters, nominated photos...) for the given week
+
 end V2P.Database.Vote;
