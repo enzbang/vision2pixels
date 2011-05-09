@@ -15,7 +15,7 @@
       @@ELSE@@
          @@IF@@ @_USER_@ = @_LOGIN_@
           class="comment level_@_COMMENT_LEVEL_@ type_you">
-         @@ELSE@@ 
+         @@ELSE@@
           class="comment level_@_COMMENT_LEVEL_@">
          @@END_IF@@
       @@END_IF@@
