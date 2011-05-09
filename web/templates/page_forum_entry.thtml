@@ -144,6 +144,7 @@
       </a>
       @@END_INLINE@@
       @@INCLUDE@@ ../we_js/chunk_show_hide.tjs pfe2 pfe_post_comments pfe2_symbol
+      @@INCLUDE@@ ../we_js/chunk_show.tjs pfe pfe_post_comments pfe2_symbol
       @@INCLUDE@@ ../we_js/aws_action_js.tjs (onclick, pfe_toggle_post_comments, rule_onclick_pfe2_show_rel)
   </h2>
   <div id="pfe_post_comments"
