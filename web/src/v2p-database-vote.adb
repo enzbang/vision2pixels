@@ -920,6 +920,8 @@ package body V2P.Database.Vote is
       DBH      : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Has_Vote : constant Boolean := Has_User_Vote (Uid, Tid);
    begin
+      Connect (DBH);
+
       if Has_Vote then
          DBH.Handle.Execute
            ("DELETE FROM user_photo_of_the_week "
