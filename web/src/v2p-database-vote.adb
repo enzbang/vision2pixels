@@ -81,7 +81,7 @@ package body V2P.Database.Vote is
       Voter_Count : Vote_Voter.Map;
    end record;
 
-   function Get_Week_Votes (Week_Id : Positive) return Votes_Data;
+   function Get_Week_Votes (Week_Id : Natural) return Votes_Data;
 
    -------------
    -- Get_CdC --
@@ -516,7 +516,7 @@ package body V2P.Database.Vote is
    -- Get_Week_Votes --
    --------------------
 
-   function Get_Week_Votes (Week_Id : Positive) return Votes_Data is
+   function Get_Week_Votes (Week_Id : Natural) return Votes_Data is
 
       DBH     : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
       Iter    : DB.Iterator'Class := DB_Handle.Get_Iterator;
