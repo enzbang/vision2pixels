@@ -130,6 +130,9 @@ package V2P.Settings is
    function Number_CdC_Listed return Positive;
    --  Returns the maximum number of CdC listed on the CdC page
 
+   function CdC_Score_Threshold return Float;
+   --  Returns the threshold for a CdC to be considered as having enough vote
+
    function Number_Users_Listed return Positive;
    --  Returns the maximum number of users to list in the users page
 

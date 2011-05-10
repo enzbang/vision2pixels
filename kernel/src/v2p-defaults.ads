@@ -115,6 +115,8 @@ package V2P.Defaults is
 
    Number_CdC_Listed           : constant Positive := 20;
 
+   CdC_Score_Threshold         : constant Float := 1.0;
+
    SMTP_Server                 : constant String := "localhost";
 
    SMTP_Port                   : constant Positive := 25;
