@@ -51,6 +51,9 @@ package body V2P.Database.Vote is
    use V2P.Database.Support;
    use V2P.Template_Defs;
 
+   Current_CdC_Score : Float;
+   CdC_Score_Ok      : Boolean := False;
+
    Weight : array (1 .. 7) of Float;
    --  Scores weight given the number of vote per user
    W_Initialized : Boolean := False;
@@ -182,6 +185,74 @@ package body V2P.Database.Vote is
            (Chunk_List_Navlink.NAV_NB_LINES_TOTAL, Total_Lines));
       return Set;
    end Get_CdC;
+
+   ------------------------
+   -- Get_CdC_Best_Score --
+   ------------------------
+
+   function Get_CdC_Best_Score return Float is
+   begin
+      if not CdC_Score_Ok then
+         Initialize_Weights;
+
+         Current_CdC_Score := 0.0;
+
+         declare
+            Data : constant Votes_Data := Get_Week_Votes (Week_Id => 0);
+
+            procedure Check_Photos (Pos : in Photo_Set.Cursor);
+            --  Compute the CdC score for the pointed photo
+
+            ------------------
+            -- Check_Photos --
+            ------------------
+
+            procedure Check_Photos (Pos : in Photo_Set.Cursor) is
+
+               procedure Check_Voters (Pos : in String_Vectors.Cursor);
+               --  Handle voters and computer score for corresponding photo
+
+               P_Score : Float := 0.0;
+
+               ------------------
+               -- Check_Voters --
+               ------------------
+
+               procedure Check_Voters (Pos : in String_Vectors.Cursor) is
+                  Voter : constant String := String_Vectors.Element (Pos);
+               begin
+                  --  Compute score
+
+                  declare
+                     NV : constant Natural := Data.Voter_Count.Element (Voter);
+                  begin
+                     --  In the past we were not checking for the maximum of 7
+                     --  votes, so it may have happened that a user had voted
+                     --  for more than 7 photos. The script was then not
+                     --  counting thoses votes.
+                     if NV <= Weight'Last then
+                        P_Score := P_Score + Weight (NV);
+                     end if;
+                  end;
+               end Check_Voters;
+
+            begin
+               --  Check voters
+
+               Photo_Set.Element (Pos).Users.Iterate (Check_Voters'Access);
+
+               Current_CdC_Score := Float'Max (Current_CdC_Score, P_Score);
+            end Check_Photos;
+
+         begin
+            Data.Photos.Iterate (Check_Photos'Access);
+         end;
+
+         CdC_Score_Ok := True;
+      end if;
+
+      return Current_CdC_Score;
+   end Get_CdC_Best_Score;
 
    ------------------
    -- Get_CdC_Data --
@@ -859,6 +930,10 @@ package body V2P.Database.Vote is
            ("INSERT INTO user_photo_of_the_week "
               & "VALUES (" & Q (Uid) & ", " & To_String (Tid) & ", 0)");
       end if;
+
+      --  Invalidate CdC score
+
+      CdC_Score_Ok := False;
    end Toggle_Vote_Week_Photo;
 
    -------------------

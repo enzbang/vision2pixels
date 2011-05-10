@@ -1,5 +1,5 @@
 <span id="bca">
-@@IF@@ @_NB_ELECTOR_@ <= @_NB_PHOTO_@
+@@IF@@ @_NOT_ENOUGH_VOTE_@
 Attention, le nombre de votes est insuffisant pour l'élection du prochain Coup De Cœur.
 @@END_IF@@
 </span>
