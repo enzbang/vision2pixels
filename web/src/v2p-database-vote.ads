@@ -66,4 +66,7 @@ package V2P.Database.Vote is
    function Get_Week_Votes (Week_Id : Positive) return Templates.Translate_Set;
    --  Returns votes data (voters, nominated photos...) for the given week
 
+   function Get_CdC_Best_Score return Float;
+   --  Returns the current CdC best score for the coming week
+
 end V2P.Database.Vote;
