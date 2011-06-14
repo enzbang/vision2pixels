@@ -15,9 +15,16 @@
       @@ELSE@@
          @@IF@@ @_USER_@ = @_LOGIN_@
           class="comment level_@_COMMENT_LEVEL_@ type_you">
-         @@ELSE@@ 
+         @@ELSE@@
           class="comment level_@_COMMENT_LEVEL_@">
          @@END_IF@@
+      @@END_IF@@
+
+      @@-- User has already commented, show comments
+      @@IF@@ @_USER_@ = @_LOGIN_@
+      <script type="text/javascript">
+         pfe_ShowComments();
+      </script>
       @@END_IF@@
     @@END_IF@@
       @@INCLUDE@@ chunk_comment.thtml

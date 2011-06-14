@@ -33,6 +33,12 @@
      <clear id="bnc_photo_filename" />
      <clear id="bnc_photo_post_target" />
      <clear id="bnc_comment_pid" />
+     <apply_style id="pfe_post_comments">
+       <attribute id="display" value="block" />
+     </apply_style>
+     <replace id="pfe2_symbol">
+       @_BABEL_SYM_OPEN_@
+     </replace>
   @@END_IF@@
 @@END_IF@@
 </response>
