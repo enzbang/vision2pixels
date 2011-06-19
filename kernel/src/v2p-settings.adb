@@ -47,7 +47,7 @@ package body V2P.Settings is
       SMTP_Server, SMTP_Port, Number_Users_Listed, Default_Timezone,
       Number_CdC_Listed, RSS_Latest_Comments, RSS_Latest_Posts, Log_Level,
       Avatars_Path, Avatar_Maximum_Size, Avatars_Source_Prefix,
-      Max_Vote_Per_User);
+      Max_Vote_Per_User, CdC_Score_Threshold);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -116,6 +116,15 @@ package body V2P.Settings is
    begin
       return Conf.Get_Value (Cache_Path);
    end Cache_Path;
+
+   -------------------------
+   -- CdC_Score_Threshold --
+   -------------------------
+
+   function CdC_Score_Threshold return Float is
+   begin
+      return Conf.Get_Value (CdC_Score_Threshold);
+   end CdC_Score_Threshold;
 
    -----------------
    -- Compression --
@@ -561,6 +570,7 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (Number_CdC_Listed, Defaults.Number_CdC_Listed);
    Conf.Set_Value (RSS_Latest_Comments, Defaults.RSS_Latest_Comments);
    Conf.Set_Value (RSS_Latest_Posts, Defaults.RSS_Latest_Posts);
+   Conf.Set_Value (CdC_Score_Threshold, Defaults.CdC_Score_Threshold);
 
    --  Now read the config file if any
 

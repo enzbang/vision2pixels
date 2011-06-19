@@ -32,6 +32,7 @@ with V2P.Navigation_Links;
 with V2P.Settings;
 with V2P.URL;
 
+with V2P.Template_Defs.Block_Cdc_Alert;
 with V2P.Template_Defs.Block_Forum_List;
 with V2P.Template_Defs.Block_Global_Rating;
 with V2P.Template_Defs.Block_New_Comment;
@@ -76,6 +77,24 @@ package body V2P.Callbacks.Web_Block is
 
       Templates.Insert (Translations, Database.Vote.Get_CdC (From));
    end CdC;
+
+   ---------------
+   -- CdC_Alert --
+   ---------------
+
+   procedure CdC_Alert
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context);
+   begin
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Block_Cdc_Alert.NOT_ENOUGH_VOTE,
+            Database.Vote.Get_CdC_Best_Score <= Settings.CdC_Score_Threshold));
+   end CdC_Alert;
 
    --------------
    -- CdC_Data --
