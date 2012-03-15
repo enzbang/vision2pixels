@@ -572,6 +572,7 @@ package body V2P.Callbacks.Page is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
+      use type Database.Themes.Stage;
       use Image.Data;
 
       package Post_Entry renames Template_Defs.Page_Forum_New_Photo_Entry;
@@ -682,6 +683,12 @@ package body V2P.Callbacks.Page is
             Context.Remove (Template_Defs.Set_Global.HAS_POST_PHOTO);
          end if;
       end if;
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Page_Forum_New_Photo_Entry.ACTIVE_THEME,
+            Database.Themes.Current_Stage /= Database.Themes.Closed));
    end New_Photo_Entry;
 
    ----------------

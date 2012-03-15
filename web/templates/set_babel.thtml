@@ -53,6 +53,7 @@
 @@SET@@ BABEL_THEME_LIST="Thèmes précédents"
 @@SET@@ BABEL_THEME_VOTES_REM="votes restant"
 @@SET@@ BABEL_THEME_VOTE_REM="vote restant"
+@@SET@@ BABEL_FOR_THEME="Pour le thème en cours"
 @@SET@@ BABEL_WINNER="Vainqueur"
 @@SET@@ BABEL_FINALIST="Finaliste"
 @@SET@@ BABEL_LOST_PASSWORD="Mot de passe perdu"

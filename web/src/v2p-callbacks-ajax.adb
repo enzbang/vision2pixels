@@ -1367,6 +1367,10 @@ package body V2P.Callbacks.Ajax is
       Last_Name    : constant String :=
                        Context.Get_Value (Set_Global.CONTEXT_LAST_POST_NAME);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
+      For_Theme    : constant Boolean :=
+                       Parameters.Get
+                         (P, Page_Forum_New_Photo_Entry.Set.THEME, 1)
+                         = Page_Forum_New_Photo_Entry.Set.THEME_OK;
       PID          : Database.Id := 0;
    begin
       Convert_PID : declare
@@ -1418,7 +1422,8 @@ package body V2P.Callbacks.Ajax is
                            Category_Id => CID,
                            Name        => Name,
                            Comment     => Comment_Wiki,
-                           Pid         => PID);
+                           Pid         => PID,
+                           For_Theme   => For_Theme);
          begin
             if Post_Id /= Database.Empty_Id then
                --  Set new context TID (needed by

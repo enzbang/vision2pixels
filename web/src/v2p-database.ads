@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2011                          --
+--                         Copyright (C) 2006-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -261,7 +261,8 @@ package V2P.Database is
       Category_Id : in Id;
       Name        : in String;
       Comment     : in String;
-      Pid         : in Id) return Id;
+      Pid         : in Id;
+      For_Theme   : in Boolean) return Id;
    --  Insert a new post into the database. If Pid /= Empty_Id it is the photo
    --  Id for the new post, otherwise it is a textual post. returns post id.
 

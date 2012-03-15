@@ -1138,7 +1138,8 @@ div.posting_form label {
 
 #bnc_upload_file input[type="file"],
 #pfnte_new_entry_name label,
-#pfnpe_new_entry_name label {
+#pfnpe_new_entry_name label,
+#pfnpe_for_theme label {
     float: left;
     padding: 0 1em;
 }
