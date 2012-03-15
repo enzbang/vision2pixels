@@ -1367,7 +1367,12 @@ package body V2P.Callbacks.Ajax is
       Last_Name    : constant String :=
                        Context.Get_Value (Set_Global.CONTEXT_LAST_POST_NAME);
       Comment_Wiki : constant String := V2P.Wiki.Wiki_To_HTML (Comment);
+      For_Theme    : constant Boolean :=
+                       Parameters.Get
+                         (P, Page_Forum_New_Photo_Entry.Set.THEME, 1)
+                         = Page_Forum_New_Photo_Entry.Set.THEME_OK;
       PID          : Database.Id := 0;
+      Theme_Id     : Database.Id := 0;
    begin
       Convert_PID : declare
          --  Check PID which could be empty if posting on a text forum
@@ -1410,6 +1415,14 @@ package body V2P.Callbacks.Ajax is
                Template_Defs.R_Block_Post_Form_Enter.Set.ERROR_DUPLICATED));
 
       else
+         --  If For_Theme then look for the current theme_id
+
+         if For_Theme then
+            Theme_Id := Database.Id'Value
+              (Parameters.Get
+                 (P, Page_Forum_New_Photo_Entry.HTTP.THEME_ID));
+         end if;
+
          Insert_Post : declare
             CID     : constant Database.Id := Database.Id'Value (Category);
             Post_Id : constant Database.Id :=
@@ -1418,7 +1431,8 @@ package body V2P.Callbacks.Ajax is
                            Category_Id => CID,
                            Name        => Name,
                            Comment     => Comment_Wiki,
-                           Pid         => PID);
+                           Pid         => PID,
+                           Theme_Id    => Theme_Id);
          begin
             if Post_Id /= Database.Empty_Id then
                --  Set new context TID (needed by
