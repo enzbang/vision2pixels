@@ -38,9 +38,9 @@ insert into user_page ("user_login", "content", "content_html")
 --  Create forums
 
 insert into forum values (1, "Forum photographies", "",
-       datetime(current_timestamp), "TRUE", "TRUE");
+       datetime(current_timestamp), "TRUE", "TRUE", "TRUE");
 insert into forum values (2, "Forum matériel", "Discussion autour du matériel photographique, nouveautés, achat, vente...",
-       datetime(current_timestamp, '-5.0003 days'), "FALSE", "FALSE");
+       datetime(current_timestamp, '-5.0003 days'), "FALSE", "FALSE", "TRUE");
 
 --  Create categories
 
