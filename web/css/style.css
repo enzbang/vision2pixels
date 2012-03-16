@@ -199,11 +199,75 @@ input[type="checkbox"] {
     color: #999999;
 }
 
+.theme_data {
+    font-size: 1.5em;
+    margin: 1em;
+    border: 2px solid;
+    border-color: #444444;
+    width: 80%;
+    background: #393939;
+}
+
+#bth_admin {
+    font-size: 1.5em;
+    margin: 1em;
+    border: 2px solid;
+    border-color: #444444;
+    width: 80%;
+    background: #393939;
+    padding: 0.5em;
+}
+
+#pt_list {
+    clear: both;
+    margin: 1em;
+    border: 2px solid;
+    border-color: #444444;
+    width: 80%;
+    background: #393939;
+    padding: 0.5em;
+}
+
+div#btl_div span.thumbs {
+    height: 100%;
+}
+
+.theme_data p {
+    padding: 0.5em;
+}
+
+#bth_photos h1 {
+   margin-left: 1em;
+}
+
+#bnt_div {
+   display: inline;
+}
+
+#pt_theme_header legend {
+    color: #FF8888;
+}
+#pt_theme_header fieldset {
+    -moz-border-radius:12px 12px 12px 12px;
+    margin: 1em;
+    border: thin solid #ff8888;
+    padding: 1em;
+    width: 80%;
+}
+
 .pagination {
     clear:both;
     font:bold 13px Verdana;
     margin:20px 0;
     text-align:left;
+}
+
+#pt_status {
+    color: #C3883C;
+}
+
+#btp_other_area {
+    clear:both;
 }
 
 .pagination a, .pagination a:visited {

@@ -1,0 +1,37 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@SET@@ SET_URL_PREFIX = /theme/
+@@SET@@ SET_URL_REGEXP = '([0-9]+)'
+@@--
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_THEME_@ theme
+<div id="pt_theme">
+
+<div class="theme_data">
+  <p>&#147;&nbsp;@_THEME_TITLE_@&nbsp;&#148; @_LOWER:BABEL_ON_DATE_@ @_FORMAT_DATE("%d-%m-%Y"):THEME_DATE_@</p>
+</div>
+
+@@TABLE@@
+  @@IF@@ @_THUMB_SOURCE_@ /= ""
+  <span class="thumbs">
+    <span class="imgcontainer">
+      <span class="outernooverflow">
+        <span class="nooverflowimage">
+          <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=False">
+            <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
+          </a>
+        </span>
+      </span>
+    </span>
+    <p>@_NAME_@</p>
+    <p id="pt_status">
+@@IF@@ @_PHOTO_STAGE_@ = 2
+    @_BABEL_WINNER_@
+@@ELSIF@@ @_PHOTO_STAGE_@ = 1
+    @_BABEL_FINALIST_@
+@@END_IF@@
+    </p>
+  </span>
+  @@END_IF@@
+@@END_TABLE@@
+</div>
+@@INCLUDE@@ chunk_v2p_end.thtml
