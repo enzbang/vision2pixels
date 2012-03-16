@@ -106,7 +106,7 @@ package body V2P.Callbacks.Page is
    procedure CdC
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Parameters   :                 Callback_Parameters;
+      Parameters   : in              Callback_Parameters;
       Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
@@ -179,7 +179,7 @@ package body V2P.Callbacks.Page is
    procedure Forum_Entry_CdC_P
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Parameters   :                 Callback_Parameters;
+      Parameters   : in              Callback_Parameters;
       Translations : in out          Templates.Translate_Set)
    is
       TID : constant Database.Id :=
@@ -328,7 +328,7 @@ package body V2P.Callbacks.Page is
    procedure Forum_Entry_P
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Parameters   :                 Callback_Parameters;
+      Parameters   : in              Callback_Parameters;
       Translations : in out          Templates.Translate_Set)
    is
       TID : constant Database.Id :=
@@ -432,7 +432,7 @@ package body V2P.Callbacks.Page is
    procedure Forum_Threads_P
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Parameters   :                 Callback_Parameters;
+      Parameters   : in              Callback_Parameters;
       Translations : in out          Templates.Translate_Set) is
    begin
       Forum_Threads_Internal
@@ -922,7 +922,7 @@ package body V2P.Callbacks.Page is
    procedure Week_Votes
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Parameters   :                 Callback_Parameters;
+      Parameters   : in              Callback_Parameters;
       Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Context, Request);
