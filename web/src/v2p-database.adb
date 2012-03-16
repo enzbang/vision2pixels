@@ -869,7 +869,8 @@ package body V2P.Database is
                       & Timezone.Date ("last_activity", TZ) & ", "
                       & Timezone.Time ("last_activity", TZ) & ", "
                       & Select_Is_New
-                      & " FROM forum";
+                      & " FROM forum"
+                      & " WHERE active='TRUE'";
       DBH       : constant TLS_DBH_Access :=
                     TLS_DBH_Access (DBH_TLS.Reference);
 
@@ -889,7 +890,7 @@ package body V2P.Database is
 
       if Filter /= Forum_All then
          DBH.Handle.Prepare_Select
-           (Iter, SQL & " WHERE for_photo='"
+           (Iter, SQL & " AND for_photo='"
             & Boolean'Image (Filter = Forum_Photo) & "'");
       else
          DBH.Handle.Prepare_Select (Iter, SQL);

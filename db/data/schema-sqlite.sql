@@ -85,7 +85,8 @@ create table "forum" (
    "description" varchar(512),
    "last_activity" date,
    "anonymity" boolean default TRUE,
-   "for_photo" boolean default TRUE
+   "for_photo" boolean default TRUE,
+   "active" boolean default TRUE
 );
 
 create table "category" (
