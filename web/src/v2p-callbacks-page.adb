@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2011                          --
+--                         Copyright (C) 2007-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -34,6 +34,7 @@ with V2P.Context;
 with V2P.Database.Admin;
 with V2P.Database.Preference;
 with V2P.Database.Registration;
+with V2P.Database.Themes;
 with V2P.Database.Vote;
 with V2P.Navigation_Links;
 with V2P.Settings;
@@ -814,6 +815,26 @@ package body V2P.Callbacks.Page is
             TZ            => Context.Get_Value (Template_Defs.Set_Global.TZ),
             Show_Category => True));
    end Rss_Last_Posts;
+
+   -----------
+   -- Theme --
+   -----------
+
+   procedure Theme
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Parameters   : in              Callback_Parameters;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      TID : constant Database.Id :=
+              Database.Id'Value (Strings.Unbounded.To_String (Parameters (1)));
+   begin
+      Templates.Insert
+        (Translations,
+         Database.Themes.Get_Theme_Data
+           (TID, Context.Get_Value (Template_Defs.Set_Global.TZ)));
+   end Theme;
 
    ----------
    -- User --

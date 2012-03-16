@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2011                          --
+--                         Copyright (C) 2007-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -37,6 +37,7 @@ with V2P.Database.Preference;
 with V2P.Database.Registration;
 with V2P.Database.Remember;
 with V2P.Database.Search;
+with V2P.Database.Themes;
 with V2P.Database.Vote;
 with V2P.Email;
 with V2P.Navigation_Links;
@@ -60,6 +61,7 @@ with V2P.Template_Defs.Block_Forum_Category_Set;
 with V2P.Template_Defs.Block_Forum_Filter;
 with V2P.Template_Defs.Block_Forum_Filter_Page_Size;
 with V2P.Template_Defs.Block_Forum_Sort;
+with V2P.Template_Defs.Block_New_Theme;
 with V2P.Template_Defs.Block_Pref_Css_Url;
 with V2P.Template_Defs.Block_Pref_Forum_Filter;
 with V2P.Template_Defs.Block_Pref_Forum_Filter_Page_Size;
@@ -69,6 +71,7 @@ with V2P.Template_Defs.Block_Pref_Private_Message;
 with V2P.Template_Defs.Block_Pref_Show_Comments;
 with V2P.Template_Defs.Block_Pref_User_Email;
 with V2P.Template_Defs.Block_Private_Message;
+with V2P.Template_Defs.Block_Theme_Photos;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_Users_To_Validate;
 with V2P.Template_Defs.Chunk_Forum_List_Select;
@@ -799,6 +802,46 @@ package body V2P.Callbacks.Ajax is
               (User, To_String (Data.Password), To_String (Data.Email)))));
    end Onclick_Show_Reminder;
 
+   ------------------------------
+   -- Onclick_Theme_Next_Stage --
+   ------------------------------
+
+   procedure Onclick_Theme_Next_Stage
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context, Translations);
+   begin
+      Database.Themes.Next_Stage;
+   end Onclick_Theme_Next_Stage;
+
+   ------------------------
+   -- Onclick_Theme_Vote --
+   ------------------------
+
+   procedure Onclick_Theme_Vote
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      Login    : constant String :=
+                   Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      P        : constant Parameters.List := Status.Parameters (Request);
+      Photo_Id : constant String :=
+                   Parameters.Get
+                     (P, Template_Defs.Block_Theme_Photos.Set.PHOTO_ID);
+   begin
+      --  Add or delete vote for this user
+
+      Database.Themes.Set_Reset_Vote (Login, Photo_Id);
+
+      --  Get selected photos
+
+      Templates.Insert
+        (Translations, Database.Themes.Get_Current_Photos (Login));
+   end Onclick_Theme_Vote;
+
    --------------------------------------------
    -- Onclick_User_Photo_List_Goto_Next_Page --
    --------------------------------------------
@@ -1232,6 +1275,26 @@ package body V2P.Callbacks.Ajax is
            (V2P.Template_Defs.Set_Global.ERROR_METADATA_WRONG_METADATA,
             "ERROR");
    end Onsubmit_Metadata_Form_Enter;
+
+   ------------------------
+   -- Onsubmit_New_Theme --
+   ------------------------
+
+   procedure Onsubmit_New_Theme
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Context, Translations);
+      use Template_Defs;
+      P      : constant Parameters.List := Status.Parameters (Request);
+      Title  : constant String :=
+                 Parameters.Get (P, Block_New_Theme.HTTP.TITLE);
+      Result : Boolean;
+      pragma Unreferenced (Result);
+   begin
+      Result := Database.Themes.Create (Title);
+   end Onsubmit_New_Theme;
 
    --------------------------------
    -- Onsubmit_Plp_Lost_Password --

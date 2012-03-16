@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2011                          --
+--                         Copyright (C) 2007-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -130,6 +130,17 @@ package V2P.Callbacks.Page is
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
       Parameters   :                 Callback_Parameters;
+      Translations : in out          Templates.Translate_Set);
+
+   procedure Themes
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set) is null;
+
+   procedure Theme
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Parameters   : in              Callback_Parameters;
       Translations : in out          Templates.Translate_Set);
 
    -----------

@@ -1,0 +1,15 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<div id="bnt_div">
+  <form enctype="multipart/form-data" id="bnt_theme_form"
+        action="#" method="POST">
+    <fieldset>
+      <legend>@_BABEL_CREATE_THEME_@</legend>
+      <label for="theme_title">@_BABEL_THEME_NAME_@</label>
+      <input name="TITLE" id="btn_title" type="text" size="50" />
+      <input name="CREATE_THEME" id="bnt_create_theme_enter" type="submit" value="@_BABEL_CREATE_THEME_@" />
+    </fieldset>
+  </form>
+</div>
+@@--
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onsubmit, bnt_theme_form, 4=>bnt_theme_form)
