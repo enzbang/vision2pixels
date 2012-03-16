@@ -25,6 +25,7 @@ with AWS.Parameters;
 with AWS.Utils;
 
 with V2P.Context;
+with V2P.Database.Modules;
 with V2P.Database.Preference;
 with V2P.Database.Registration;
 with V2P.Database.Themes;
@@ -496,6 +497,20 @@ package body V2P.Callbacks.Web_Block is
          end if;
       end if;
    end Metadata;
+
+   ------------------
+   -- Modules_List --
+   ------------------
+
+   procedure Modules_List
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context);
+   begin
+      Templates.Insert (Translations, Database.Modules.Get_List);
+   end Modules_List;
 
    -----------------
    -- New_Comment --

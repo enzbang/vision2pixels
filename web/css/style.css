@@ -514,6 +514,14 @@ ul.thumb_metadata {
     padding: 0 0 0 1.2em;
 }
 
+#cvt_contents ul.bml_navcontainer  li a {
+    color: #CBCBFF;
+    font-weight: bold;
+    border: none;
+    display: inline;
+    float: left;
+}
+
 #pm_main_content {
     margin-top: 1.5em;
 }

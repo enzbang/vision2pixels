@@ -1,0 +1,7 @@
+@@SET@@ SET_PREFIX = /module
+@@--
+<ul class="bml_navcontainer">
+  @@TABLE@@
+  <li><a href="@_SET_PREFIX_@/@_MODULE_NAME_@">@_MODULE_NAME_@</a></li>
+  @@END_TABLE@@
+</ul>

@@ -382,6 +382,13 @@ create table last_forum_visit (
    foreign key ("last_post_id") references post("id")
 );
 
+--  Modules
+
+create table modules (
+   "name" varchar(15),
+   "active" boolean default TRUE
+);
+
 --  Themes
 
 create table themes (

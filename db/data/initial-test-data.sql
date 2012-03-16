@@ -668,6 +668,10 @@ insert into last_forum_visit values ('turbo', 2, 15);
 insert into last_forum_visit values ('enzbang', 2, 15);
 insert into last_forum_visit values ('test', 2, 15);
 
+--  Modules
+
+insert into modules values ('Thèmes', "TRUE");
+
 --  Themes
 
 insert into themes ('id', 'title', 'created', 'stage')
