@@ -381,3 +381,28 @@ create table last_forum_visit (
    foreign key ("forum_id") references forum("id"),
    foreign key ("last_post_id") references post("id")
 );
+
+--  Themes
+
+create table themes (
+   "id" integer not null primary key autoincrement,
+   "title" varchar(100),
+   "created" date default current_timestamp,
+   "stage" integer
+   --  stage: 0 open, 1 vote stage 1, 2 vote stage 2, 3 closed
+);
+
+create table themes_photos (
+   "theme_id" integer,
+   "photo_id" integer,
+   "stage" integer default 0,
+   foreign key ("photo_id") references photo("id"),
+   foreign key ("theme_id") references themes("id")
+);
+
+create table themes_user_votes (
+   "user_login" varchar(50),
+   "photo_id" integer,
+   "stage" integer,
+   constraint unique_entry unique (user_login, photo_id, stage)
+);
