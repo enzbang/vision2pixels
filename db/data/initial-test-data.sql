@@ -667,3 +667,18 @@ insert into last_forum_visit values ('test', 1, 141);
 insert into last_forum_visit values ('turbo', 2, 15);
 insert into last_forum_visit values ('enzbang', 2, 15);
 insert into last_forum_visit values ('test', 2, 15);
+
+--  Themes
+
+insert into themes ('title', 'created', 'stage')
+  values ('En N&B', datetime(current_timestamp, '-10 days'), 3);
+
+insert into themes_photos values (1, 8, 0);
+insert into themes_photos values (1, 34, 1);
+insert into themes_photos values (1, 52, 2);
+
+insert into themes ('title', 'stage') values ('Tout en bleu', 0);
+insert into themes_photos values (2, 5, 0);
+insert into themes_photos values (2, 39, 0);
+insert into themes_photos values (2, 67, 0);
+insert into themes_photos values (2, 87, 0);
