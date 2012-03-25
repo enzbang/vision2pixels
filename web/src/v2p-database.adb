@@ -129,8 +129,6 @@ package body V2P.Database is
 
    --------------------
    -- Get_Categories --
-   --------------------
-
    function Get_Categories (Fid : in Id) return Templates.Translate_Set is
       use type Templates.Tag;
       DBH  : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
@@ -2705,7 +2703,35 @@ package body V2P.Database is
       procedure Insert_Table_Post_Comment (Post_Id, Comment_Id : in Id);
       --  Insert row into post_Comment table
 
+      function Already_Posted
+        (Post_Id : in Id; User_Login, Comment : in String) return Boolean;
+      --  Check if the comment is already posted (to avoid duplicates)
+
       DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+
+      --------------------
+      -- Already_Posted --
+      --------------------
+
+      function Already_Posted
+        (Post_Id : in Id; User_Login, Comment: in String)
+        return Boolean
+      is
+         Iter   : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      begin
+         DBH.Handle.Prepare_Select
+           (Iter, "SELECT id FROM post_comment, comment"
+            & " WHERE post_comment.comment_id=comment.id"
+            & " AND post_comment.post_id=" & I (Post_Id)
+            & " AND comment=" & Q (Comment)
+            & " AND comment.user_login=" & Q (User_Login));
+
+         if Iter.More then
+            return True;
+         else
+            return False; 
+         end if;
+      end Already_Posted;
 
       --------------------------
       -- Insert_Table_Comment --
@@ -2738,6 +2764,14 @@ package body V2P.Database is
 
    begin
       Connect (DBH);
+      if Already_Posted (Thread, Uid, Comment) then
+          Logs.Write
+            (Name    => Module,
+             Kind    => Logs.Error,
+             Content => "Duplicate comment");
+         --  This is a duplicate comment, exit now
+         return Empty_Id;
+      end if;
       DBH.Handle.Begin_Transaction;
       Insert_Table_Comment (Uid, Anonymous, Comment);
 
