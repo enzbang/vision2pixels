@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2011                          --
+--                         Copyright (C) 2006-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -21,6 +21,7 @@
 
 with Ada.Calendar;
 with Ada.Calendar.Arithmetic;
+with Ada.Calendar.Formatting;
 with Ada.Characters.Handling;
 with Ada.Directories;
 with Ada.Exceptions;
@@ -176,6 +177,7 @@ package body V2P.Web_Server is
    CSS_URI         : constant String := "/css";
    IMG_URI         : constant String := "/css/img";
    Web_JS_URI      : constant String := "/we_js";
+
    Timezone_Cookie : constant String := "V2PTZ";
 
    V2p_Lib_Path    : constant String :=
@@ -314,6 +316,12 @@ package body V2P.Web_Server is
 
       procedure Read_Timezone is
 
+         HH : constant Calendar.Formatting.Hour_Number :=
+                Calendar.Formatting.Hour (Calendar.Clock);
+         --  Timestamp changing obviously every hour, this is used to update
+         --  the TZ session and context every hour. This way the time will get
+         --  adjusted in case of DST.
+
          procedure Set_Timezone (TZ : in String);
          --  Set time in session
 
@@ -333,16 +341,20 @@ package body V2P.Web_Server is
                Session.Set
                  (SID, Template_Defs.Set_Global.TZ,
                   '-' & TZ (TZ'First + 1 .. TZ'Last));
+               Session.Set (SID, Template_Defs.Set_Global.TZHH, HH);
 
             elsif TZ (TZ'First) = '-' then
                Session.Set
                  (SID, Template_Defs.Set_Global.TZ,
                   '+' & TZ (TZ'First + 1 .. TZ'Last));
+               Session.Set (SID, Template_Defs.Set_Global.TZHH, HH);
             end if;
          end Set_Timezone;
 
       begin
-         if not Session.Exist (SID, Template_Defs.Set_Global.TZ) then
+         if not Session.Exist (SID, Template_Defs.Set_Global.TZ)
+           or else Session.Get (SID, Template_Defs.Set_Global.TZHH) /= HH
+         then
             declare
                use Strings.Unbounded;
 
