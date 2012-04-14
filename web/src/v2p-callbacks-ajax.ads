@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2011                          --
+--                         Copyright (C) 2007-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -226,6 +226,18 @@ package V2P.Callbacks.Ajax is
       Translations : in out          Templates.Translate_Set);
    --  Called when registering/reseting a weekly vote
 
+   procedure Onclick_Theme_Vote
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Vote for a photo on the current theme
+
+   procedure Onclick_Theme_Next_Stage
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Move to the next stage
+
    procedure Onsubmit_Comment_Form_Enter
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
@@ -285,6 +297,12 @@ package V2P.Callbacks.Ajax is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set);
    --  Send a private message
+
+   procedure Onsubmit_New_Theme
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set);
+   --  Create a new theme
 
    procedure On_Context_Error
      (Request      : in              Status.Data;

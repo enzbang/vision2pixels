@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2011                          --
+--                         Copyright (C) 2007-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -25,8 +25,10 @@ with AWS.Parameters;
 with AWS.Utils;
 
 with V2P.Context;
+with V2P.Database.Modules;
 with V2P.Database.Preference;
 with V2P.Database.Registration;
+with V2P.Database.Themes;
 with V2P.Database.Vote;
 with V2P.Navigation_Links;
 with V2P.Settings;
@@ -41,6 +43,8 @@ with V2P.Template_Defs.Block_Private_Message;
 with V2P.Template_Defs.Block_User_Avatar;
 with V2P.Template_Defs.Block_Pref_Show_Comments;
 with V2P.Template_Defs.Block_Pref_User_Email;
+with V2P.Template_Defs.Block_Theme_Header;
+with V2P.Template_Defs.Block_Theme_Rem_Vote;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_Vote_Week_Photo;
@@ -494,6 +498,20 @@ package body V2P.Callbacks.Web_Block is
       end if;
    end Metadata;
 
+   ------------------
+   -- Modules_List --
+   ------------------
+
+   procedure Modules_List
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context);
+   begin
+      Templates.Insert (Translations, Database.Modules.Get_List);
+   end Modules_List;
+
    -----------------
    -- New_Comment --
    -----------------
@@ -816,6 +834,119 @@ package body V2P.Callbacks.Web_Block is
                String'(Context.Get_Value  (Template_Defs.Set_Global.LOGIN))));
       end if;
    end Quick_Login;
+
+   -----------------
+   -- Theme_Admin --
+   -----------------
+
+   procedure Theme_Admin
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context);
+   begin
+      Templates.Insert (Translations, Database.Themes.Get_Admin_Status);
+   end Theme_Admin;
+
+   ------------------
+   -- Theme_Header --
+   ------------------
+
+   procedure Theme_Header
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context);
+      use type Database.Themes.Stage;
+   begin
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Block_Theme_Header.ACTIVE_THEME,
+            Database.Themes.Current_Stage /= Database.Themes.Closed));
+   end Theme_Header;
+
+   ----------------
+   -- Theme_List --
+   ----------------
+
+   procedure Theme_List
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request, Context);
+   begin
+      Templates.Insert (Translations, Database.Themes.Get_Themes);
+   end Theme_List;
+
+   ------------------
+   -- Theme_Photos --
+   ------------------
+
+   procedure Theme_Photos
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      Login : constant String :=
+                Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+   begin
+      Templates.Insert
+        (Translations, Database.Themes.Get_Current_Photos (Login));
+   end Theme_Photos;
+
+   --------------------
+   -- Theme_Rem_Vote --
+   --------------------
+
+   procedure Theme_Rem_Vote
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+
+      use type Database.Themes.Stage;
+
+      Login : constant String :=
+                Context.Get_Value (Template_Defs.Set_Global.LOGIN);
+      Count : Natural := 0;
+      Res   : Natural := 0;
+   begin
+      Count := Database.Themes.Get_Vote_Count (Login);
+
+      if Database.Themes.Current_Stage = Database.Themes.Stage_2 then
+         Res := 1 - Count;
+      else
+         Res := Settings.Max_Theme_Vote_Per_User - Count;
+      end if;
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Block_Theme_Rem_Vote.REM_VOTE, Res));
+   end Theme_Rem_Vote;
+
+   ------------------
+   -- Theme_Status --
+   ------------------
+
+   procedure Theme_Status
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+   begin
+      Templates.Insert
+        (Translations,
+         Database.Themes.Get_Current_Status
+           (TZ => Context.Get_Value (Template_Defs.Set_Global.TZ)));
+   end Theme_Status;
 
    -----------------
    -- User_Avatar --

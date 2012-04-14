@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2010                          --
+--                         Copyright (C) 2007-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -149,18 +149,16 @@ package body V2P.Context is
 
       --  Set timezone
 
-      if not Context.Exist (Template_Defs.Set_Global.TZ) then
-         declare
-            TZ : constant String :=
-                   Session.Get (SID, Template_Defs.Set_Global.TZ);
-         begin
-            if TZ = "" then
-               Context.Set_Value (Template_Defs.Set_Global.TZ, "+0");
-            else
-               Context.Set_Value (Template_Defs.Set_Global.TZ, TZ);
-            end if;
-         end;
-      end if;
+      declare
+         TZ : constant String :=
+                Session.Get (SID, Template_Defs.Set_Global.TZ);
+      begin
+         if TZ = "" then
+            Context.Set_Value (Template_Defs.Set_Global.TZ, "+0");
+         elsif TZ /= Context.Get_Value (Template_Defs.Set_Global.TZ) then
+            Context.Set_Value (Template_Defs.Set_Global.TZ, TZ);
+         end if;
+      end;
 
       if not Context.Exist (Template_Defs.Set_Global.NAV_FROM)
         or else not Context.Exist (Template_Defs.Set_Global.ORDER_DIR)

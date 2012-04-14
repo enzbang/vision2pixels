@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2010                          --
+--                         Copyright (C) 2006-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -52,6 +52,8 @@ project Web is
       "v2p.template_defs.block_new_comment",
       "v2p.template_defs.page_forum_threads",
       "v2p.template_defs.page_forum_new_photo_entry",
+      "v2p.template_defs.block_theme_admin",
+      "v2p.template_defs.block_theme_photos",
       "v2p.template_defs.page_forum_new_text_entry");
    for Library_Kind use "dynamic";
    for Library_Auto_Init use "false";

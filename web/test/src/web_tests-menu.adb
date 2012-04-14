@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2009                          --
+--                         Copyright (C) 2007-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -76,12 +76,13 @@ package body Web_Tests.Menu is
             Word_Set'
               (1 => +"Forum photographies",
                2 => +"Forum matériel",
-               3 => +"Ma page",
-               4 => +"Poster une nouvelle photo",
-               5 => +"Poster un nouveau message",
-               6 => +"Recherche",
-               7 => +"Photographes",
-               8 => +"Se déconnecter"),
+               3 => +"Thèmes",
+               4 => +"Ma page",
+               5 => +"Poster une nouvelle photo",
+               6 => +"Poster un nouveau message",
+               7 => +"Recherche",
+               8 => +"Photographes",
+               9 => +"Se déconnecter"),
             "wrong menu on the main page");
       end Check_Page;
    end Main_Page;

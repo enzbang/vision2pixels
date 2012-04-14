@@ -1,0 +1,28 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<div id="bts_div" class="theme_data">
+  <p>&#147;&nbsp;@_THEME_TITLE_@&nbsp;&#148; @_LOWER:BABEL_ON_DATE_@ @_FORMAT_DATE("%d-%m-%Y"):THEME_CREATE_DATE_@</p>
+
+  <p>
+@@IF@@ @_THEME_STAGE_@ = OPEN
+  @_BABEL_THEME_STAGE_OPEN_@
+@@ELSIF@@ @_THEME_STAGE_@ = STAGE_1
+  @_BABEL_THEME_STAGE_STAGE_1_@
+@@ELSIF@@ @_THEME_STAGE_@ = STAGE_2
+  @_BABEL_THEME_STAGE_STAGE_2_@
+@@END_IF@@
+
+@@INLINE@@
+  - @_THEME_NB_PHOTOS_@
+  @@IF@@ @_THEME_NB_PHOTOS_@ > 1
+    @_BABEL_THEME_NB_PHOTOS_@
+  @@ELSE@@@
+    @_BABEL_THEME_NB_PHOTO_@
+  @@END_IF@@
+@@END_INLINE@@
+
+  </p>
+  @@IF@@ @_LOGIN_@ /= "" AND NOT (@_THEME_STAGE_@ = OPEN)
+  <div id="bth_rem_vote">@_LAZY_THEME_REM_VOTE_@</div>
+  @@END_IF@@
+</div>

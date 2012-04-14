@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2011                          --
+--                         Copyright (C) 2006-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -869,7 +869,8 @@ package body V2P.Database is
                       & Timezone.Date ("last_activity", TZ) & ", "
                       & Timezone.Time ("last_activity", TZ) & ", "
                       & Select_Is_New
-                      & " FROM forum";
+                      & " FROM forum"
+                      & " WHERE active='TRUE'";
       DBH       : constant TLS_DBH_Access :=
                     TLS_DBH_Access (DBH_TLS.Reference);
 
@@ -889,7 +890,7 @@ package body V2P.Database is
 
       if Filter /= Forum_All then
          DBH.Handle.Prepare_Select
-           (Iter, SQL & " WHERE for_photo='"
+           (Iter, SQL & " AND for_photo='"
             & Boolean'Image (Filter = Forum_Photo) & "'");
       else
          DBH.Handle.Prepare_Select (Iter, SQL);
@@ -2889,7 +2890,8 @@ package body V2P.Database is
       Category_Id : in Id;
       Name        : in String;
       Comment     : in String;
-      Pid         : in Id) return Id
+      Pid         : in Id;
+      Theme_Id    : in Id) return Id
    is
       procedure Insert_Table_Post
         (Name, Category_Id, Comment, Photo_Id : in String);
@@ -2898,7 +2900,22 @@ package body V2P.Database is
       procedure Insert_Table_User_Post (Uid : in String; Post_Id : in Id);
       --  Insert row into the user_post table
 
+      procedure Insert_For_Theme (Theme_Id, Photo_Id : in String);
+      --  Register Photo_Id for theme Theme_Id
+
       DBH : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+
+      ----------------------
+      -- Insert_For_Theme --
+      ----------------------
+
+      procedure Insert_For_Theme (Theme_Id, Photo_Id : in String) is
+         SQL : constant String :=
+                 "INSERT INTO themes_photos ('theme_id', 'photo_id')"
+                 & " VALUES (" & Theme_Id & ", " & Photo_Id & ')';
+      begin
+         DBH.Handle.Execute (SQL);
+      end Insert_For_Theme;
 
       ------------------------
       -- Insert_Table_post --
@@ -2934,6 +2951,10 @@ package body V2P.Database is
       DBH.Handle.Begin_Transaction;
 
       if Pid /= Empty_Id then
+         if Theme_Id /= 0 then
+            Insert_For_Theme (To_String (Theme_Id), To_String (Pid));
+         end if;
+
          Insert_Table_Post
            (Name, To_String (Category_Id), Comment, To_String (Pid));
       else

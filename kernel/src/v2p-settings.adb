@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2011                          --
+--                         Copyright (C) 2006-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -47,7 +47,7 @@ package body V2P.Settings is
       SMTP_Server, SMTP_Port, Number_Users_Listed, Default_Timezone,
       Number_CdC_Listed, RSS_Latest_Comments, RSS_Latest_Posts, Log_Level,
       Avatars_Path, Avatar_Maximum_Size, Avatars_Source_Prefix,
-      Max_Vote_Per_User, CdC_Score_Threshold);
+      Max_Vote_Per_User, CdC_Score_Threshold, Max_Theme_Vote_Per_User);
 
    package Conf is new Morzhol.Iniparser (Parameter_Name => Attributes);
 
@@ -287,6 +287,15 @@ package body V2P.Settings is
    begin
       return Conf.Get_Value (Max_Search_Results);
    end Max_Search_Results;
+
+   -----------------------------
+   -- Max_Theme_Vote_Per_User --
+   -----------------------------
+
+   function Max_Theme_Vote_Per_User return Positive is
+   begin
+      return Conf.Get_Value (Max_Theme_Vote_Per_User);
+   end Max_Theme_Vote_Per_User;
 
    -----------------------
    -- Max_Vote_Per_User --
@@ -549,6 +558,7 @@ begin --  V2P.Settings : Set default values
    Conf.Set_Value (Website_Data_Prefix, Defaults.Website_Data_Prefix);
    Conf.Set_Value (Wiki_Service_Name, Defaults.Wiki_Service_Name);
    Conf.Set_Value (Max_Vote_Per_User, Defaults.Max_Vote_Per_User);
+   Conf.Set_Value (Max_Theme_Vote_Per_User, Defaults.Max_Theme_Vote_Per_User);
    Conf.Set_Value (Number_Latest_Posts, Defaults.Number_Latest_Posts);
    Conf.Set_Value (Number_Latest_Users, Defaults.Number_Latest_Users);
    Conf.Set_Value (Number_Latest_User_Posts,

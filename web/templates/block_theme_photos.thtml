@@ -1,0 +1,75 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@SET@@ SET_PHOTO_ID = PHOTO_ID
+@@--
+@@IF@@ @_THUMB_SOURCE'LENGTH_@ = 0
+<h1>@_BABEL_THEME_NO_PHOTO_@</h1>
+@@ELSE@@
+<div id="btp_photos">
+
+@@-- Area for the photos for which a vote is possible
+<div id="btp_vote_area">
+@@IF@@ TRUE in @_VOTE_@
+
+@@TABLE@@
+  @@IF@@ @_THUMB_SOURCE_@ /= "" AND @_VOTE_@
+  <span class="thumbs">
+    <span class="imgcontainer">
+      <span class="outernooverflow">
+        <span class="nooverflowimage">
+          <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=False">
+            <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
+          </a>
+        </span>
+      </span>
+    </span>
+    <p>@_NAME_@</p>
+@@IF@@ @_LOGIN_@ /= ""
+@@INLINE@@
+<div id="btp_div_@_PHOTO_ID_@"
+@@IF@@ not @_CAN_VOTE_@
+  @@IF@@ @_PHOTO_ID_@ IN @_SELECTED_PHOTOS_@
+    style="background:green;display:inline">
+  @@ELSE@@
+    style="display:none">
+  @@END_IF@@
+@@ELSE@@
+  @@IF@@ @_PHOTO_ID_@ IN @_SELECTED_PHOTOS_@
+    style="background:green;display:inline">
+  @@ELSE@@
+    >
+  @@END_IF@@
+@@END_IF@@
+<a id="btp_sel@_TABLE_LINE_@" href="#">[ X ]</a></div>
+@@END_INLINE@@
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, btp_sel, 3=>PHOTO_ID=@_PHOTO_ID_@, 18=>@_TABLE_LINE_@)
+@@END_IF@@
+  </span>
+  @@END_IF@@
+@@END_TABLE@@
+
+@@-- @@ELSE@@
+@@-- <p>@_BABEL_THEME_NO_VOTE_@</p>
+@@END_IF@@
+</div>
+
+@@-- Area for the photo for which no vote are possible
+<div id="btp_other_area">
+@@TABLE@@
+  @@IF@@ @_THUMB_SOURCE_@ /= "" AND not @_VOTE_@
+  <span class="thumbs">
+    <span class="imgcontainer">
+      <span class="outernooverflow">
+        <span class="nooverflowimage">
+          <a href="@_FORUM_ENTRY_URL_@?TID=@_TID_@&amp;From_Main=False">
+            <img alt="@_NAME_@" src="@_THUMB_SOURCE_PREFIX_@/@_THUMB_SOURCE_@"/>
+          </a>
+        </span>
+      </span>
+    </span>
+    <p>@_NAME_@</p>
+  </span>
+  @@END_IF@@
+@@END_TABLE@@
+</div>
+@@END_IF@@

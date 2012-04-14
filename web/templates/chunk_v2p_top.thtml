@@ -56,6 +56,7 @@
 
     <div id="cvt_contents" class="container">
     <div class="forums">@_LAZY_FORUM_LIST_@</div>
+    <div class="modules">@_LAZY_MODULES_LIST_@</div>
     <div id="cvt_lazy_quick_login">@_LAZY_QUICK_LOGIN_@</div>
     <div id="cvt_lazy_login" style="display:none" class="clear">
 @_LAZY_LOGIN_@</div>

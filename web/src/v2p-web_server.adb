@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2011                          --
+--                         Copyright (C) 2006-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -21,6 +21,7 @@
 
 with Ada.Calendar;
 with Ada.Calendar.Arithmetic;
+with Ada.Calendar.Formatting;
 with Ada.Characters.Handling;
 with Ada.Directories;
 with Ada.Exceptions;
@@ -69,6 +70,7 @@ with V2P.Template_Defs.Block_Forum_Threads_Text;
 with V2P.Template_Defs.Block_Login;
 with V2P.Template_Defs.Block_Metadata;
 with V2P.Template_Defs.Block_New_Comment;
+with V2P.Template_Defs.Block_New_Theme;
 with V2P.Template_Defs.Block_New_Vote;
 with V2P.Template_Defs.Block_Pref_Css_Url;
 with V2P.Template_Defs.Block_Pref_Forum_Filter;
@@ -80,6 +82,8 @@ with V2P.Template_Defs.Block_Pref_Private_Message;
 with V2P.Template_Defs.Block_Pref_Show_Comments;
 with V2P.Template_Defs.Block_Pref_User_Email;
 with V2P.Template_Defs.Block_Private_Message;
+with V2P.Template_Defs.Block_Theme_Admin;
+with V2P.Template_Defs.Block_Theme_Photos;
 with V2P.Template_Defs.Block_User_Page;
 with V2P.Template_Defs.Block_User_Photo_List;
 with V2P.Template_Defs.Block_Users;
@@ -120,6 +124,8 @@ with V2P.Template_Defs.Page_Rss;
 with V2P.Template_Defs.Page_Rss_Last_Comments;
 with V2P.Template_Defs.Page_Rss_Last_Photos;
 with V2P.Template_Defs.Page_Rss_Last_Posts;
+with V2P.Template_Defs.Page_Theme;
+with V2P.Template_Defs.Page_Themes;
 
 with V2P.Template_Defs.Set_Global;
 
@@ -133,12 +139,15 @@ with V2P.Template_Defs.R_Block_Forum_List;
 with V2P.Template_Defs.R_Block_Hidden_Status;
 with V2P.Template_Defs.R_Block_Login;
 with V2P.Template_Defs.R_Block_Logout;
+with V2P.Template_Defs.R_Block_New_Theme;
 with V2P.Template_Defs.R_Block_Metadata_Form_Enter;
 with V2P.Template_Defs.R_Block_Post_Form_Enter;
 with V2P.Template_Defs.R_Block_Pref_Private_Message;
 with V2P.Template_Defs.R_Block_Pref_Show_Comments;
 with V2P.Template_Defs.R_Block_Rate;
 with V2P.Template_Defs.R_Block_Send_Private_Message;
+with V2P.Template_Defs.R_Block_Theme_Admin;
+with V2P.Template_Defs.R_Block_Theme_Photos;
 with V2P.Template_Defs.R_Block_User_Email_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Page_Edit_Form_Enter;
 with V2P.Template_Defs.R_Block_User_Photo_List;
@@ -176,6 +185,7 @@ package body V2P.Web_Server is
    CSS_URI         : constant String := "/css";
    IMG_URI         : constant String := "/css/img";
    Web_JS_URI      : constant String := "/we_js";
+
    Timezone_Cookie : constant String := "V2PTZ";
 
    V2p_Lib_Path    : constant String :=
@@ -314,6 +324,12 @@ package body V2P.Web_Server is
 
       procedure Read_Timezone is
 
+         HH : constant Calendar.Formatting.Hour_Number :=
+                Calendar.Formatting.Hour (Calendar.Clock);
+         --  Timestamp changing obviously every hour, this is used to update
+         --  the TZ session and context every hour. This way the time will get
+         --  adjusted in case of DST.
+
          procedure Set_Timezone (TZ : in String);
          --  Set time in session
 
@@ -333,16 +349,20 @@ package body V2P.Web_Server is
                Session.Set
                  (SID, Template_Defs.Set_Global.TZ,
                   '-' & TZ (TZ'First + 1 .. TZ'Last));
+               Session.Set (SID, Template_Defs.Set_Global.TZHH, HH);
 
             elsif TZ (TZ'First) = '-' then
                Session.Set
                  (SID, Template_Defs.Set_Global.TZ,
                   '+' & TZ (TZ'First + 1 .. TZ'Last));
+               Session.Set (SID, Template_Defs.Set_Global.TZHH, HH);
             end if;
          end Set_Timezone;
 
       begin
-         if not Session.Exist (SID, Template_Defs.Set_Global.TZ) then
+         if not Session.Exist (SID, Template_Defs.Set_Global.TZ)
+           or else Session.Get (SID, Template_Defs.Set_Global.TZHH) /= HH
+         then
             declare
                use Strings.Unbounded;
 
@@ -896,6 +916,12 @@ package body V2P.Web_Server is
          Template => Template_Defs.Page_Forum_Entry.Template,
          Data_CB  => Callbacks.Page.Forum_Entry_P'Access);
 
+      Services.Web_Block.Registry.Register_Pattern_URL
+        (Prefix   => Template_Defs.Page_Theme.Set.URL_PREFIX,
+         Regexp   => "([0-9]+).*",
+         Template => Template_Defs.Page_Theme.Template,
+         Data_CB  => Callbacks.Page.Theme'Access);
+
       Services.Web_Block.Registry.Register
         (Template_Defs.Page_Forum_Threads.Set.URL,
          Template_Defs.Page_Forum_Threads.Template,
@@ -942,6 +968,11 @@ package body V2P.Web_Server is
          Template_Defs.Page_Forum_New_Photo_Entry.Template,
          Callbacks.Page.New_Photo_Entry'Access,
          Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Page_Themes.Set.URL,
+         Template_Defs.Page_Themes.Template,
+         Callbacks.Page.Themes'Access);
 
       Services.Web_Block.Registry.Register
         (Template_Defs.Block_New_Comment.Set.FORM_POST_COMMENT_PHOTO,
@@ -1418,10 +1449,33 @@ package body V2P.Web_Server is
          Context_Required => True);
 
       Services.Web_Block.Registry.Register
+        (Template_Defs.Block_New_Theme.Ajax.onsubmit_bnt_theme_form,
+         Template_Defs.R_Block_New_Theme.Template,
+         Callbacks.Ajax.Onsubmit_New_Theme'Access,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
         (Template_Defs.R_Context_Error.Set.CONTEXT_ERROR_URL,
          Template_Defs.R_Context_Error.Template,
          Callbacks.Ajax.On_Context_Error'Access,
          Content_Type => MIME.Text_XML);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Theme_Photos.Ajax.onclick_btp_sel,
+         Template_Defs.R_Block_Theme_Photos.Template,
+         Callbacks.Ajax.Onclick_Theme_Vote'Access,
+         Prefix           => True,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
+
+      Services.Web_Block.Registry.Register
+        (Template_Defs.Block_Theme_Admin.Ajax.onclick_bta_next_stage,
+         Template_Defs.R_Block_Theme_Admin.Template,
+         Callbacks.Ajax.Onclick_Theme_Next_Stage'Access,
+         Prefix           => True,
+         Content_Type     => MIME.Text_XML,
+         Context_Required => True);
 
       Services.Web_Block.Registry.Register
         (XML_Prefix_URI,
