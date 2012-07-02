@@ -1635,6 +1635,8 @@ begin  -- V2P.Web_Server : register vision2pixels website
    --  First we want to be sure that the cached files from the previous session
    --  are removed.
 
+   V2P.Template_Defs.Lazy.Register;
+
    Cache.Clear (Root_Directory => Settings.Cache_Path);
 
    Set_Log : declare
