@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                            Copyright (C) 2008                            --
+--                         Copyright (C) 2008-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -29,7 +29,7 @@ package body V2P.User_Validation is
 
    function Key (Login, Password, Email : in String) return String is
    begin
-      return String (GNAT.MD5.Digest (Login & "," & Password & "," & Email));
+      return String'(GNAT.MD5.Digest (Login & "," & Password & "," & Email));
    end Key;
 
 end V2P.User_Validation;
