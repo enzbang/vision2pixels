@@ -230,9 +230,10 @@ package body Web_Tests.Themes is
             Word_Set'
               (1 => +"Thèmes précédents",
                2 => +"Tout en bleu",
-               3 => +"Tour E",
-               4 => +"N&B",
-               5 => +"Le train en marche"),
+               3 => not "Quel gland  !",
+               4 => +"Tour E",
+               5 => +"N&B",
+               6 => +"Le train en marche"),
             "wrong entries in the Themes page (final stage)");
       end Check_Page_Stage1;
    end Vote_Final;
@@ -352,6 +353,10 @@ package body Web_Tests.Themes is
         (Connection, Result,
          URI => Block_Theme_Photos.Ajax.onclick_btp_sel & "2?PHOTO_ID=39");
 
+      Call
+        (Connection, Result,
+         URI => Block_Theme_Photos.Ajax.onclick_btp_sel & "3?PHOTO_ID=67");
+
       Call (Connection, Result, URI => "/module/Thèmes");
 
       Check_Vote_3 : declare
@@ -364,7 +369,7 @@ package body Web_Tests.Themes is
               (1  => +"Tout en bleu",
                2  => +"Etape 2",
                3  => +"4 photographies",
-               4  => +"2 votes restant",
+               4  => +"1 vote restant",
                5  => not "Etape suivante",
                6  => +"By night",
                7  => +"Tour E",
@@ -392,7 +397,7 @@ package body Web_Tests.Themes is
            (Page,
             Word_Set'
               (1 => +"(39 - 2)",
-               2 => +"(67 - 1)",
+               2 => +"(67 - 2)",
                3 => +"(87 - 1)",
                4 => +"Etape suivante"),
             "wrong count of vote");
@@ -443,6 +448,16 @@ package body Web_Tests.Themes is
       end Check_Page_Stage2;
 
       --  Do a vote
+
+      Logout (Connection);
+      Login (Connection, "test", "test");
+
+      Call
+        (Connection, Result,
+         URI => Block_Theme_Photos.Ajax.onclick_btp_sel & "3?PHOTO_ID=67");
+
+      Logout (Connection);
+      Login (Connection, "turbo", "turbopass");
 
       Call
         (Connection, Result,

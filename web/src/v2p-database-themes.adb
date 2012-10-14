@@ -562,6 +562,23 @@ package body V2P.Database.Themes is
    ----------------
 
    procedure Next_Stage is
+
+      function Get_Limit return String;
+      --  Returns the maximum number of photo get move to next stage
+
+      ---------------
+      -- Get_Limit --
+      ---------------
+
+      function Get_Limit return String is
+      begin
+         if Current_Stage = Stage_1 then
+            return "2"; -- Two photos moved to final
+         else
+            return "1"; -- A single photo is the winner
+         end if;
+      end Get_Limit;
+
    begin
       if Current_Stage in Theme_Running then
          declare
@@ -581,7 +598,8 @@ package body V2P.Database.Themes is
                            & " FROM themes_user_votes"
                            & " WHERE stage=" & I (Stage'Pos (Current_Stage))
                            & " GROUP BY photo_id"
-                           & " ORDER BY cnt DESC, photo_id ASC LIMIT 2";
+                           & " ORDER BY cnt DESC, photo_id ASC"
+                           & " LIMIT " & Get_Limit;
                   Iter : DB.Iterator'Class := DB_Handle.Get_Iterator;
                   Line : DB.String_Vectors.Vector;
                begin
