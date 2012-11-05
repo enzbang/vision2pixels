@@ -1515,8 +1515,8 @@ package body V2P.Web_Server is
    -------------------------
 
    function URL_Encode_Internal
-      (Value : in String;
-       Underline_Space : in Boolean) return String
+     (Value           : in String;
+      Underline_Space : in Boolean) return String
    is
       Result : String (Value'First .. Value'Last + Value'Length * 2);
       J      : Natural := Result'First - 1;
@@ -1533,9 +1533,11 @@ package body V2P.Web_Server is
                if Underline_Space and then Value (K) = ' ' then
                   J := J + 1;
                   Result (J) := '_';
+
                elsif P <= 128 then
                   Result (J + 1 .. J + 3) := "%" & Utils.Hex (P, Width => 2);
                   J := J + 3;
+
                else
                   J := J + 1;
                   Result (J) := Value (K);
@@ -1543,6 +1545,7 @@ package body V2P.Web_Server is
             end;
          end if;
       end loop;
+
       return Result (Result'First .. J);
    end URL_Encode_Internal;
 
