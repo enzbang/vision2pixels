@@ -1535,7 +1535,13 @@ package body V2P.Web_Server is
                   Result (J) := '_';
 
                elsif P <= 128 then
-                  Result (J + 1 .. J + 3) := "%" & Utils.Hex (P, Width => 2);
+                  if P = Character'Pos ('/') then
+                     Result (J + 1) := '$';
+                  else
+                     Result (J + 1) := '%';
+                  end if;
+
+                  Result (J + 2 .. J + 3) := Utils.Hex (P, Width => 2);
                   J := J + 3;
 
                else
