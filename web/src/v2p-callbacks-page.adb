@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2011                          --
+--                         Copyright (C) 2007-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -34,6 +34,7 @@ with V2P.Context;
 with V2P.Database.Admin;
 with V2P.Database.Preference;
 with V2P.Database.Registration;
+with V2P.Database.Themes;
 with V2P.Database.Vote;
 with V2P.Navigation_Links;
 with V2P.Settings;
@@ -105,7 +106,7 @@ package body V2P.Callbacks.Page is
    procedure CdC
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Parameters   :                 Callback_Parameters;
+      Parameters   : in              Callback_Parameters;
       Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Request);
@@ -178,7 +179,7 @@ package body V2P.Callbacks.Page is
    procedure Forum_Entry_CdC_P
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Parameters   :                 Callback_Parameters;
+      Parameters   : in              Callback_Parameters;
       Translations : in out          Templates.Translate_Set)
    is
       TID : constant Database.Id :=
@@ -327,7 +328,7 @@ package body V2P.Callbacks.Page is
    procedure Forum_Entry_P
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Parameters   :                 Callback_Parameters;
+      Parameters   : in              Callback_Parameters;
       Translations : in out          Templates.Translate_Set)
    is
       TID : constant Database.Id :=
@@ -431,7 +432,7 @@ package body V2P.Callbacks.Page is
    procedure Forum_Threads_P
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Parameters   :                 Callback_Parameters;
+      Parameters   : in              Callback_Parameters;
       Translations : in out          Templates.Translate_Set) is
    begin
       Forum_Threads_Internal
@@ -571,6 +572,7 @@ package body V2P.Callbacks.Page is
       Context      : not null access Services.Web_Block.Context.Object;
       Translations : in out          Templates.Translate_Set)
    is
+      use type Database.Themes.Stage;
       use Image.Data;
 
       package Post_Entry renames Template_Defs.Page_Forum_New_Photo_Entry;
@@ -681,6 +683,17 @@ package body V2P.Callbacks.Page is
             Context.Remove (Template_Defs.Set_Global.HAS_POST_PHOTO);
          end if;
       end if;
+
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Page_Forum_New_Photo_Entry.OPEN_THEME,
+            Database.Themes.Current_Stage = Database.Themes.Open));
+      Templates.Insert
+        (Translations,
+         Templates.Assoc
+           (Template_Defs.Page_Forum_New_Photo_Entry.THEME_ID,
+            Database.Themes.Current_Theme));
    end New_Photo_Entry;
 
    ----------------
@@ -815,6 +828,27 @@ package body V2P.Callbacks.Page is
             Show_Category => True));
    end Rss_Last_Posts;
 
+   -----------
+   -- Theme --
+   -----------
+
+   procedure Theme
+     (Request      : in              Status.Data;
+      Context      : not null access Services.Web_Block.Context.Object;
+      Parameters   : in              Callback_Parameters;
+      Translations : in out          Templates.Translate_Set)
+   is
+      pragma Unreferenced (Request);
+      Theme_Id : constant Database.Id :=
+                   Database.Id'Value
+                     (Strings.Unbounded.To_String (Parameters (1)));
+   begin
+      Templates.Insert
+        (Translations,
+         Database.Themes.Get_Theme_Data
+           (Theme_Id, Context.Get_Value (Template_Defs.Set_Global.TZ)));
+   end Theme;
+
    ----------
    -- User --
    ----------
@@ -901,7 +935,7 @@ package body V2P.Callbacks.Page is
    procedure Week_Votes
      (Request      : in              Status.Data;
       Context      : not null access Services.Web_Block.Context.Object;
-      Parameters   :                 Callback_Parameters;
+      Parameters   : in              Callback_Parameters;
       Translations : in out          Templates.Translate_Set)
    is
       pragma Unreferenced (Context, Request);

@@ -147,6 +147,9 @@ package @_PACKAGE_@ is
      @@END_IF@@
   @@END_TABLE@@
 
+      procedure Register;
+      --  Register lazy tags into the AWS's Web Block framework
+
    end Lazy;
 
 end @_PACKAGE_@;
@@ -223,9 +226,6 @@ package body @_PACKAGE_@ is
 
    package body Lazy is
 
-      procedure Register;
-      --  Register lazy tags into the AWS's Web Block framework
-
       --------------
       -- Register --
       --------------
@@ -245,8 +245,6 @@ package body @_PACKAGE_@ is
          null;
       end Register;
 
-   begin  -- Lazy
-      Lazy.Register;
    end Lazy;
 
 end @_PACKAGE_@;

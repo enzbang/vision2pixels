@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2007-2009                          --
+--                         Copyright (C) 2007-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -28,6 +28,7 @@ with GNAT.Expect;
 with GNAT.Regpat;
 with GNAT.OS_Lib;
 
+with Morzhol.Logs;
 with Morzhol.OS;
 
 package body Image.Metadata.Embedded is
@@ -36,6 +37,9 @@ package body Image.Metadata.Embedded is
    use GNAT;
 
    use Morzhol.OS;
+
+   Module       : constant Morzhol.Logs.Module_Name :=
+                    "Image.Metadata.Embedded";
 
    Exiftool     : constant String := "exiftool";
    Exiftool_Opt : constant String := "-e";
@@ -181,6 +185,14 @@ package body Image.Metadata.Embedded is
                   Input  => "",
                   Status => Status'Access));
 
+         elsif Exiftool_Exe = null then
+            --  Exiftool not installed
+
+            Morzhol.Logs.Write
+              (Name    => Module,
+               Kind    => Morzhol.Logs.Error,
+               Content => "exiftool not installed");
+
          else
             Args (1 .. 2) := (1 => new String'(Exiftool_Opt),
                               2 => new String'(Filename));
@@ -198,7 +210,6 @@ package body Image.Metadata.Embedded is
          return To_String (Res);
       exception
          when Expect.Invalid_Process =>
-            --  Exiftool not installed, ignore
          Free_Args (Args);
          return "";
       end Run_Exiftool;

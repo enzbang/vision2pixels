@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2011                          --
+--                         Copyright (C) 2006-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -97,6 +97,8 @@ package V2P.Defaults is
 
    Max_Vote_Per_User           : constant Positive := 7;
 
+   Max_Theme_Vote_Per_User     : constant Positive := 3;
+
    Google_Map_Key              : constant String := "";
 
    Log_Path                    : constant String := "./";
@@ -114,6 +116,8 @@ package V2P.Defaults is
    Number_Users_Listed         : constant Positive := 20;
 
    Number_CdC_Listed           : constant Positive := 20;
+
+   CdC_Score_Threshold         : constant Float := 1.0;
 
    SMTP_Server                 : constant String := "localhost";
 

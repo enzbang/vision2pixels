@@ -1,0 +1,11 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@SET@@ SET_URL = /module/Thèmes
+@@--
+@@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_THEMES_@ themes
+<div id="pt_theme_header">
+  @_LAZY_THEME_HEADER_@
+</div>
+
+<div id='pt_list'>@_LAZY_THEME_LIST_@</p>
+@@INCLUDE@@ chunk_v2p_end.thtml

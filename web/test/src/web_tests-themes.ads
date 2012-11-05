@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2008-2012                          --
+--                            Copyright (C) 2012                            --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,17 +19,20 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with GNAT.MD5;
+with AUnit;
+with AUnit.Test_Cases;
 
-package body V2P.User_Validation is
+package Web_Tests.Themes is
 
-   ---------
-   -- Key --
-   ---------
+   use AUnit;
+   use AUnit.Test_Cases;
 
-   function Key (Login, Password, Email : in String) return String is
-   begin
-      return String'(GNAT.MD5.Digest (Login & "," & Password & "," & Email));
-   end Key;
+   type Test_Case is new Test_Cases.Test_Case with null record;
 
-end V2P.User_Validation;
+   overriding procedure Register_Tests (T : in out Test_Case);
+   --  Register routines to be run
+
+   overriding function Name (T : in Test_Case) return Message_String;
+   --  Returns name identifying the test case
+
+end Web_Tests.Themes;

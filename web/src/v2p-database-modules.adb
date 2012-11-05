@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2008-2012                          --
+--                            Copyright (C) 2012                            --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,17 +19,42 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with GNAT.MD5;
+with V2P.DB_Handle;
 
-package body V2P.User_Validation is
+with V2P.Template_Defs.Block_Modules_List;
 
-   ---------
-   -- Key --
-   ---------
+package body V2P.Database.Modules is
 
-   function Key (Login, Password, Email : in String) return String is
+   --------------
+   -- Get_List --
+   --------------
+
+   function Get_List return Templates.Translate_Set is
+      use type Templates.Tag;
+
+      DBH   : constant TLS_DBH_Access := TLS_DBH_Access (DBH_TLS.Reference);
+      SQL   : constant String :=
+                "SELECT name FROM modules WHERE active='TRUE'";
+      Iter  : DB.Iterator'Class := DB_Handle.Get_Iterator;
+      Line  : DB.String_Vectors.Vector;
+      Name  : Templates.Tag;
+      Set   : Templates.Translate_Set;
    begin
-      return String'(GNAT.MD5.Digest (Login & "," & Password & "," & Email));
-   end Key;
+      Connect (DBH);
+      DBH.Handle.Prepare_Select (Iter, SQL);
 
-end V2P.User_Validation;
+      while Iter.More loop
+         Iter.Get_Line (Line);
+         Name  := Name  & DB.String_Vectors.Element (Line, 1);
+         Line.Clear;
+      end loop;
+
+      Iter.End_Select;
+
+      Templates.Insert
+        (Set,
+         Templates.Assoc (Template_Defs.Block_Modules_List.MODULE_NAME, Name));
+      return Set;
+   end Get_List;
+
+end V2P.Database.Modules;

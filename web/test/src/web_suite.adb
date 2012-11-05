@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2010                          --
+--                         Copyright (C) 2006-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -26,6 +26,7 @@ with Web_Tests.Last_Visit_After_Post;
 with Web_Tests.Menu;
 with Web_Tests.Post;
 with Web_Tests.RSS;
+with Web_Tests.Themes;
 with Web_Tests.Threads_Navigation;
 with Web_Tests.User;
 with Web_Tests.User_Page;
@@ -58,4 +59,5 @@ begin --  Web_Suite : Initialize the web_suite test
    Add_Test (Web_Suite_Test, new Web_Tests.User_Page.Test_Case);
    Add_Test (Web_Suite_Test, new Web_Tests.Forum_Entry.Test_Case);
    Add_Test (Web_Suite_Test, new Web_Tests.RSS.Test_Case);
+   Add_Test (Web_Suite_Test, new Web_Tests.Themes.Test_Case);
 end Web_Suite;

@@ -1,0 +1,11 @@
+@@IF@@ @_ACTIVE_THEME_@
+  <div id="bth_status">@_LAZY_THEME_STATUS_@</div>
+@@IF@@ @_ADMIN_@
+  <div id="bth_admin">@_LAZY_THEME_ADMIN_@</div>
+@@END_IF@@
+  <div id="bth_photos">@_LAZY_THEME_PHOTOS_@</div>
+@@ELSE@@
+@@IF@@ @_LOGIN_@ /= ""
+  <div id="bth_new">@_LAZY_NEW_THEME_@</div>
+@@END_IF@@
+@@END_IF@@

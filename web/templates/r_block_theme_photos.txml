@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+@@-- We want here to change style for selected photos and/or disable non
+@@-- selected links if the max vote is reached.
+<response>
+  <replace id="bth_rem_vote"><![CDATA[@_LAZY_THEME_REM_VOTE_@]]></replace>
+@@TABLE@@
+  <apply_style id="btp_div_@_PHOTO_ID_@">
+@@IF@@ @_PHOTO_ID_@ IN @_SELECTED_PHOTOS_@
+    <attribute id="background" value="green"/>
+    <attribute id="display" value="inline"/>
+@@ELSIF@@ @_CAN_VOTE_@
+    <attribute id="background" value=""/>
+    <attribute id="display" value="inline"/>
+@@ELSE@@
+    <attribute id="display" value="none"/>
+@@END_IF@@
+  </apply_style>
+@@END_TABLE@@
+</response>
