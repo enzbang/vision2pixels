@@ -38,9 +38,9 @@ insert into user_page ("user_login", "content", "content_html")
 --  Create forums
 
 insert into forum values (1, "Forum photographies", "",
-       datetime(current_timestamp), "TRUE", "TRUE");
+       datetime(current_timestamp), "TRUE", "TRUE", "TRUE");
 insert into forum values (2, "Forum matériel", "Discussion autour du matériel photographique, nouveautés, achat, vente...",
-       datetime(current_timestamp, '-5.0003 days'), "FALSE", "FALSE");
+       datetime(current_timestamp, '-5.0003 days'), "FALSE", "FALSE", "TRUE");
 
 --  Create categories
 
@@ -667,3 +667,22 @@ insert into last_forum_visit values ('test', 1, 141);
 insert into last_forum_visit values ('turbo', 2, 15);
 insert into last_forum_visit values ('enzbang', 2, 15);
 insert into last_forum_visit values ('test', 2, 15);
+
+--  Modules
+
+insert into modules values ('Thèmes', "TRUE");
+
+--  Themes
+
+insert into themes ('title', 'created', 'stage')
+  values ('En N&B', datetime(current_timestamp, '-10 days'), 3);
+
+insert into themes_photos values (1, 8, 0);
+insert into themes_photos values (1, 34, 1);
+insert into themes_photos values (1, 52, 2);
+
+insert into themes ('title', 'stage') values ('Tout en bleu', 0);
+insert into themes_photos values (2, 5, 0);
+insert into themes_photos values (2, 39, 0);
+insert into themes_photos values (2, 67, 0);
+insert into themes_photos values (2, 87, 0);

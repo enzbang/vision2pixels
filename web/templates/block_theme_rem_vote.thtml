@@ -1,0 +1,11 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+@@INLINE@@
+<p>@_REM_VOTE_@
+@@IF@@ @_REM_VOTE_@ > 1
+  @_BABEL_THEME_VOTES_REM_@
+@@ELSE@@
+  @_BABEL_THEME_VOTE_REM_@
+@@END_IF@@
+</p>
+@@END_INLINE@@

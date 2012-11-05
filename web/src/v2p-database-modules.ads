@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2008-2012                          --
+--                            Copyright (C) 2012                            --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -19,17 +19,10 @@
 --  Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.       --
 ------------------------------------------------------------------------------
 
-with GNAT.MD5;
+with AWS.Templates;
 
-package body V2P.User_Validation is
+package V2P.Database.Modules is
 
-   ---------
-   -- Key --
-   ---------
+   function Get_List return Templates.Translate_Set;
 
-   function Key (Login, Password, Email : in String) return String is
-   begin
-      return String'(GNAT.MD5.Digest (Login & "," & Password & "," & Email));
-   end Key;
-
-end V2P.User_Validation;
+end V2P.Database.Modules;

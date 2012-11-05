@@ -1,6 +1,8 @@
 @@INCLUDE@@ set_babel.thtml
 @@--
 @@SET@@ SET_URL = /forum/new_photo_entry
+@@SET@@ SET_THEME = for_theme
+@@SET@@ SET_THEME_OK = OK
 @@--
 @@INCLUDE@@ chunk_v2p_top.thtml @_BABEL_FORUM_NEW_ENTRY_@ forum_new_photo_entry yui-t7
 
@@ -34,6 +36,15 @@
       <label for="new_entry_name_input">@_BABEL_POST_NAME_@</label>
       <input name="NAME" id="pfnpe_new_entry_name_input" type="entry" value=""/>
     </p>
+@@IF@@ @_OPEN_THEME_@
+    <p id="pfnpe_for_theme">
+      <label for="for_theme_check">@_BABEL_FOR_THEME_@</label>
+      <input name="@_SET_THEME_@" id="pfnpe_for_theme_check"
+             type="checkbox" value="@_SET_THEME_OK_@"/>
+      <input name="THEME_ID" id="pfnpe_theme_id"
+             type="hidden" value="@_THEME_ID_@"/>
+    </p>
+@@END_IF@@
   </fieldset>
 
   <fieldset>

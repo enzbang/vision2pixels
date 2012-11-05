@@ -1,0 +1,9 @@
+@@INCLUDE@@ set_babel.thtml
+@@--
+<p>
+@@TABLE@@
+(@_PHOTO_ID_@ - @_NB_VOTE_@) -
+@@END_TABLE@@
+<a id="bta_next_stage" href="#">@_BABEL_NEXT_STAGE_@</a>
+</p>
+@@INCLUDE@@ ../we_js/aws_action_xml.tjs (onclick, bta_next_stage)

@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------
 --                              Vision2Pixels                               --
 --                                                                          --
---                         Copyright (C) 2006-2011                          --
+--                         Copyright (C) 2006-2012                          --
 --                      Pascal Obry - Olivier Ramonat                       --
 --                                                                          --
 --  This library is free software; you can redistribute it and/or modify    --
@@ -130,11 +130,17 @@ package V2P.Settings is
    function Number_CdC_Listed return Positive;
    --  Returns the maximum number of CdC listed on the CdC page
 
+   function CdC_Score_Threshold return Float;
+   --  Returns the threshold for a CdC to be considered as having enough vote
+
    function Number_Users_Listed return Positive;
    --  Returns the maximum number of users to list in the users page
 
    function Max_Vote_Per_User return Positive;
    --  Returns the maximum number of CdC vote per week per user
+
+   function Max_Theme_Vote_Per_User return Positive;
+   --  Returns the maximum number of stage 1 vote for a theme per user
 
    function Google_Map_Key return String;
    --  Returns the Google map key

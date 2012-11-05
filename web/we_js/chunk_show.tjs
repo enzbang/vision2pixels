@@ -1,0 +1,21 @@
+@@-- Must be included into a page having loaded babel.thtml
+@@--
+@@SET@@ CS_PREFIX = $1
+@@SET@@ CS_WIDGET = $2
+@@SET@@ CS_SYMBOL = $3
+@@--
+<script type="text/javascript">
+<!--
+   function @_CS_PREFIX_@_ShowComments()
+   {
+      el = $("@_CS_WIDGET_@")
+
+      if ($(el).style.display == "none") {
+         Element.show(el);
+@@IF@@ @_CS_SYMBOL_@ /= ""
+         $('@_CS_SYMBOL_@').innerHTML = "@_BABEL_SYM_OPEN_@";
+@@END_IF@@
+      }
+   };
+-->
+</script>

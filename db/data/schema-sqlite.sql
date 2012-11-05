@@ -85,7 +85,8 @@ create table "forum" (
    "description" varchar(512),
    "last_activity" date,
    "anonymity" boolean default TRUE,
-   "for_photo" boolean default TRUE
+   "for_photo" boolean default TRUE,
+   "active" boolean default TRUE
 );
 
 create table "category" (
@@ -380,4 +381,36 @@ create table last_forum_visit (
    constraint unique_entry unique (user_login, forum_id),
    foreign key ("forum_id") references forum("id"),
    foreign key ("last_post_id") references post("id")
+);
+
+--  Modules
+
+create table modules (
+   "name" varchar(15),
+   "active" boolean default TRUE
+);
+
+--  Themes
+
+create table themes (
+   "id" integer not null primary key autoincrement,
+   "title" varchar(100),
+   "created" date default current_timestamp,
+   "stage" integer
+   --  stage: 0 open, 1 vote stage 1, 2 vote stage 2, 3 closed
+);
+
+create table themes_photos (
+   "theme_id" integer,
+   "photo_id" integer,
+   "stage" integer default 0,
+   foreign key ("photo_id") references photo("id"),
+   foreign key ("theme_id") references themes("id")
+);
+
+create table themes_user_votes (
+   "user_login" varchar(50),
+   "photo_id" integer,
+   "stage" integer,
+   constraint unique_entry unique (user_login, photo_id, stage)
 );
